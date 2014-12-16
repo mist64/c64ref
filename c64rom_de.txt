@@ -150,7 +150,7 @@
 .:A190 A4 52 49 47 48 54 A4 4D  right$ mid$
 .:A198 49 44 A4 47 CF 00        go
 
-                                BASIC-Fehlerme1dungen
+                                BASIC-Fehlermeldungen
 .:A1A0 54 4F                    1 too many files
 .:A1A0 4F 20 4D 41 4E 59 20 46
 .:A1A8 49 4C 45 D3 46 49 4C 45  2 file open
