@@ -18,6 +18,7 @@ lines = [line.rstrip() for line in open(filename)]
 
 print "<meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\" />"
 
+print "<title>" + lines[0][2:] + "</title>"
 print "<h1>" + lines[0][2:] + "</h1>"
 
 f = os.popen("git log -1 --pretty=format:%h " + filename)
