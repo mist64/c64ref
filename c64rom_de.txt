@@ -3114,7 +3114,7 @@
                                 BASIC-Funktion ASC
 .,B78B 20 82 B7 JSR $B782       String holen, Zeiger in
                                 $22/$23, Länge in Y
-.,B78E F0 08    BEQ $B798       Länge gleich nul1,
+.,B78E F0 08    BEQ $B798       Länge gleich null,
                                 'ILLEGAL QUANTITY'
 .,B790 A0 00    LDY #$00        Zähler auf Null
 .,B792 B1 22    LDA ($22),Y     erstes Zeichen holen
@@ -3367,7 +3367,7 @@
 .,B92E B0 C7    BCS $B8F7       Verschiebungen, dann wird die
                                 Zahl als Null behandelt
 .,B930 49 FF    EOR #$FF        Exponent um
-.,B932 69 01    ADC #$01        Verschiebungsanzah1
+.,B932 69 01    ADC #$01        Verschiebungsanzahl
 .,B934 85 61    STA $61         vermindern
 .,B936 90 0E    BCC $B946       Carry gesetzt, nein dann RTS
 .,B938 E6 61    INC $61         Exponent erhöhen
