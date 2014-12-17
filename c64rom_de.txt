@@ -2814,7 +2814,7 @@
 .,B5B8 20 C7 B5 JSR $B5C7       Stringposition feststellen
 .,B5BB F0 F3    BEQ $B5B0       unbedingter Sprung
 
-                                prüft Beseitigungsmög1ichkeit
+                                prüft Beseitigungsmöglichkeit
 .,B5BD B1 22    LDA ($22),Y     Variablenname erstes Zeichen
 .,B5BF 30 35    BMI $B5F6       Integer o. Funktion ?
 .,B5C1 C8       INY             Zähler erhöhen
@@ -4696,7 +4696,7 @@
 .,E2A8 10 03    BPL $E2AD       positiv ?
 .,E2AA 20 B4 BF JSR $BFB4       Vorzeichen wechseln
 .,E2AD A9 EF    LDA #$EF        Zeiger auf
-.,E2AF A0 E2    LDY #$E2        Po1ynomkoef fizienten
+.,E2AF A0 E2    LDY #$E2        Polynomkoeffizienten
 .,E2B1 4C 43 E0 JMP $E043       Polynom berechnen
 
                                 BASIC-Funktion TAN
@@ -4848,7 +4848,7 @@
 .,E3F8 8E FD 01 STX $01FD       für Linkadresse beim
 .,E3FB 8E FC 01 STX $01FC       Zeileneinbau
 .,E3FE A2 19    LDX #$19        Zeiger für
-.,E400 86 16    STX $16         Stringverwa1tung
+.,E400 86 16    STX $16         Stringverwaltung
 .,E402 38       SEC             RAM-
 .,E403 20 9C FF JSR $FF9C       Start holen
 .,E406 86 2B    STX $2B         als BASIC-Start
