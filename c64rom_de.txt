@@ -1027,7 +1027,8 @@
                                 Offset des nächsten
                                 Trennzeichens finden
 .,A906 A2 3A    LDX #$3A        ':' Doppelpunkt
-.,A908 2C A2 00 BIT $00A2       $0 Zeilenende
+.:A908 2C       .BYTE $2C
+.,A909 A2 00    LDX #$00        $0 Zeilenende
 .,A90B 86 07    STX $07         als Suchzeichen
 .,A90D A0 00    LDY #$00        Zähler
 .,A90F 84 08    STY $08         initialisieren
@@ -1334,8 +1335,10 @@
 .,AB3B A5 13    LDA $13         Ausgabe in File?
 .,AB3D F0 03    BEQ $AB42       Bildschirm: dann Cursor right
 .,AB3F A9 20    LDA #$20        ' ' Leerzeichencode laden
-.,AB41 2C A9 1D BIT $1DA9       Cursor right Code laden
-.,AB44 2C A9 3F BIT $3FA9       '?' Fragezeichencode laden
+.:AB41 2C       .BYTE $2C
+.,AB42 A9 1D    LDA #$1D        Cursor right Code laden
+.:AB44 2C       .BYTE $2C
+.,AB45 A9 3F    LDA #$3F        '?' Fragezeichencode laden
 .,AB47 20 0C E1 JSR $E10C       Code ausgeben
 .,AB4A 29 FF    AND #$FF        Flags setzen
 .,AB4C 60       RTS             Rücksprung
