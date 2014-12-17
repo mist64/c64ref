@@ -27,10 +27,9 @@
 # * Lines starting with ".," indicate code to be disassembled.
 # * Lines starting with ".:" indicate bytes to be dumped.
 # * Comments start at the 33rd column.
-# * 32 leading spaces after a blank line indicate a heading.
-# * 32 leading spaces after a heading indicate a heading continuation.
-# * Otherwise, 32 leading spaces indicate a continuation of the
-#   comment in the previous line.
+# * 32 leading spaces and "***" indicate a heading. (Please leave one
+#   line blank above every heading.)
+# * Otherwise, 32 leading spaces indicate an overflow comment.
 # The encoding is UTF-8.
 
 .:A000 94 E3                    Start-Vektor $E394
@@ -38,8 +37,8 @@
 
 .:A004 43 42 4D 42 41 53 49 43  'cbmbasic'
 
-                                Adressen der BASIC-Befehle -1
-                                (Interpreterkode Adresse Befehl)
+                                *** Adressen der BASIC-Befehle -1
+                                *** (Interpreterkode Adresse Befehl)
 .:A00C 30 A8                    $80 $A831 END
 .:A00E 41 A7                    $81 $A742 FOR
 .:A010 1D AD                    $82 $AD1E NEXT
@@ -76,7 +75,7 @@
 .:A04E 7A AB                    $A1 $AB7B GET
 .:A050 41 A6                    $A2 $A642 NEW
 
-                                Adressen der BASIC-Funktionen
+                                *** Adressen der BASIC-Funktionen
 .:A052 39 BC                    $B4 $BC39 SGN
 .:A054 CC BC                    $B5 $BCCC INT
 .:A056 58 BC                    $B6 $BC58 ABS
@@ -101,8 +100,8 @@
 .:A07C 2C B7                    $C9 $B72C RIGHT$
 .:A07E 37 B7                    $CA $B737 MID$
 
-                                Hierachiecodes und
-                                Adressen-1 der Operatoren
+                                *** Hierachiecodes und
+                                *** Adressen-1 der Operatoren
 .:A080 79 69 B8                 $79, $B86A Addition
 .:A083 79 52 B8                 $79, $B853 Subtraktion
 .:A086 7B 2A BA                 $7B, $BA2B Multiplikation
@@ -115,7 +114,7 @@
 .:A09B 64 15 B0                 $64, $B016 Vergleich
 
 
-                                BASIC-Befehlsworte
+                                *** BASIC-Befehlsworte
 .:A09E 45 4E                    end
 .:A0A0 C4 46 4F D2 4E 45 58 D4  for next
 .:A0A8 44 41 54 C1 49 4E 50 55  data input#
@@ -150,7 +149,7 @@
 .:A190 A4 52 49 47 48 54 A4 4D  right$ mid$
 .:A198 49 44 A4 47 CF 00        go
 
-                                BASIC-Fehlermeldungen
+                                *** BASIC-Fehlermeldungen
 .:A1A0 54 4F                    1 too many files
 .:A1A0 4F 20 4D 41 4E 59 20 46
 .:A1A8 49 4C 45 D3 46 49 4C 45  2 file open
@@ -202,7 +201,7 @@
 .:A318 4E 43 54 49 4F CE 56 45  28 verify
 .:A320 52 49 46 D9 4C 4F 41 C4  29 load
 
-                                Adressen der Fehlermeldungen
+                                *** Adressen der Fehlermeldungen
 .:A328 9E A1 AC A1 B5 A1 C2 A1
 .:A330 D0 A1 E2 A1 F0 A1 FF A1
 .:A338 10 A2 25 A2 35 A2 3B A2
@@ -212,7 +211,7 @@
 .:A358 ED A2 00 A3 0E A3 1E A3
 .:A360 24 A3 83 A3
 
-                                Meldungen des Interpreters
+                                *** Meldungen des Interpreters
 .:A364 0D 4F 4B 0D              OK
 .:A368 00 20 20 45 52 52 4F 52  ERROR
 .:A370 00 20 49 4E 20 00 0D 0A  IN
@@ -220,8 +219,8 @@
 .:A380 00 0D 0A 42 52 45 41 4B  BREAK
 .:A388 00 A0
 
-                                Stapelsuch-Routine für
-                                FOR-NEXT- und GOSUB-Befehl
+                                *** Stapelsuch-Routine für
+                                *** FOR-NEXT- und GOSUB-Befehl
 .,A38A BA       TSX             Stapelzeiger in X-Register
 .,A38B E8       INX             4 mal erhöhen
 .,A38C E8       INX             (nächsten zwei Rücksprung-
@@ -248,7 +247,7 @@
 .,A3B5 D0 D8    BNE $A38F       nächste Schleife prüfen
 .,A3B7 60       RTS             Rücksprung
 
-                                Block-Verschiebe-Routine
+                                *** Block-Verschiebe-Routine
 .,A3B8 20 08 A4 JSR $A408       prüft auf Platz im Speicher
 .,A3BB 85 31    STA $31         Ende des Arraybereichs
 .,A3BD 84 32    STY $32         als Beginn für freien Platz
@@ -289,7 +288,7 @@
 .,A3F8 D0 F2    BNE $A3EC       Alles? Wenn nicht: weiter
 .,A3FA 60       RTS             sonst Rücksprung
 
-                                Prüfung auf Platz im Stapel
+                                *** Prüfung auf Platz im Stapel
 .,A3FB 0A       ASL             Akku muß die halbe Zahl an
 .,A3FC 69 3E    ADC #$3E        erforderlichem Platz haben
 .,A3FE B0 35    BCS $A435       gibt 'OUT OF MEMORY'
@@ -299,7 +298,7 @@
 .,A405 90 2E    BCC $A435       Wenn ja, dann OUT OF MEMORY
 .,A407 60       RTS             Rücksprung
 
-                                Schafft Platz im Speicher
+                                *** Schafft Platz im Speicher
 .,A408 C4 34    CPY $34         für Zeileneinfügung
 .,A40A 90 28    BCC $A434       und Variablen
 .,A40C D0 04    BNE $A412       A/Y = Adresse, bis zu der
@@ -329,10 +328,10 @@
 .,A434 60       RTS             Rücksprung
 .,A435 A2 10    LDX #$10        Fehlernummer 'out of memory'
 
-                                Fehlereinsprung
+                                *** Fehlereinsprung
 .,A437 6C 00 03 JMP ($0300)     Zum BASIC-Warmstart ($E38B)
 
-                                Fehlermeldung ausgeben
+                                *** Fehlermeldung ausgeben
 .,A43A 8A       TXA             Fehlernummer im X-Register
 .,A43B 0A       ASL             Akku * 2
 .,A43C AA       TAX             Akku als Zeiger nach X
@@ -367,7 +366,7 @@
 .,A47B A9 80    LDA #$80        Wert für Direktmodus laden
 .,A47D 20 90 FF JSR $FF90       und Flag setzen
 
-                                Eingabe-Warteschleife
+                                *** Eingabe-Warteschleife
 .,A480 6C 02 03 JMP ($0302)     JMP $A483
 .,A483 20 60 A5 JSR $A560       BASIC-Zeile nach
                                 Eingabepuffer
@@ -382,15 +381,15 @@
 .,A496 20 79 A5 JSR $A579       BASIC-Zeile in Code wandeln
 .,A499 4C E1 A7 JMP $A7E1       Befehl ausführen
 
-                                Löschen und Einfügen von
-                                Programmzeilen
+                                *** Löschen und Einfügen von
+                                *** Programmzeilen
 .,A49C 20 6B A9 JSR $A96B       Zeilenr. nach Adressformat
 .,A49F 20 79 A5 JSR $A579       BASIC-Zeile in Code wandeln
 .,A4A2 84 0B    STY $0B         Zeiger in Eingabepuffer
 .,A4A4 20 13 A6 JSR $A613       Zeilenadresse berechnen
 .,A4A7 90 44    BCC $A4ED       Vorhanden? Ja: löschen
 
-                                Programmzeile löschen
+                                *** Programmzeile löschen
 .,A4A9 A0 01    LDY #$01        Zeiger setzen
 .,A4AB B1 5F    LDA ($5F),Y     Startadresse der nächsten
 .,A4AD 85 23    STA $23         Zeile (HIGH) setzen
@@ -431,7 +430,7 @@
 .,A4EA CA       DEX             Blockzähter um 1 vermindern
 .,A4EB D0 F2    BNE $A4DF       Alle Blöcke? Nein: weiter
 
-                                Programmzeile einfügen
+                                *** Programmzeile einfügen
 .,A4ED 20 59 A6 JSR $A659       CLR-Befehl
 .,A4F0 20 33 A5 JSR $A533       Programmzeilen neu binden
 .,A4F3 AD 00 02 LDA $0200       Zeichen im Puffer ?
@@ -466,7 +465,7 @@
 .,A52D 20 33 A5 JSR $A533       Programmzeilen neu binden
 .,A530 4C 80 A4 JMP $A480       zur Eingabe-Warteschleife
 
-                                BASIC-Zeilen neu binden
+                                *** BASIC-Zeilen neu binden
 .,A533 A5 2B    LDA $2B         Zeiger auf BASIC-Programm-
 .,A535 A4 2C    LDY $2C         start holen und
 .,A537 85 22    STA $22         und als Suchzeiger nach
@@ -495,7 +494,7 @@
 .,A55D 90 DD    BCC $A53C       Zum Zeilenanfang
 .,A55F 60       RTS             Rücksprung
 
-                                Eingabe einer Zeile
+                                *** Eingabe einer Zeile
 .,A560 A2 00    LDX #$00        Zeiger setzen
 .,A562 20 12 E1 JSR $E112       ein Zeichen holen
 .,A565 C9 0D    CMP #$0D        RETURN-Taste ?
@@ -508,8 +507,8 @@
 .,A573 4C 37 A4 JMP $A437       Fehlermeldung ausgeben
 .,A576 4C CA AA JMP $AACA       Puffer mit $0 abschließen, CR
 
-                                Umwandlung einer Zeile in den
-                                Interpreter-Code
+                                *** Umwandlung einer Zeile in den
+                                *** Interpreter-Code
 .,A579 6C 04 03 JMP ($0304)     JMP $A57C
 .,A57C A6 7A    LDX $7A         Zeiger setzen, erstes Zeichen
 .,A57E A0 04    LDY #$04        Wert für codierte Zeile
@@ -589,8 +588,8 @@
 .,A610 85 7A    STA $7A         setzen (LOW)
 .,A612 60       RTS             Rücksprung
 
-                                Startadresse einer
-                                Programmzeile berechnen
+                                *** Startadresse einer
+                                *** Programmzeile berechnen
 .,A613 A5 2B    LDA $2B         Zeiger auf BASIC-
 .,A615 A6 2C    LDX $2C         Programmstart laden
 .,A617 A0 01    LDY #$01        Zähler setzen
@@ -620,7 +619,7 @@
 .,A640 18       CLC             Carry löschen
 .,A641 60       RTS             Rücksprung
 
-                                BASIC-Befehl NEW
+                                *** BASIC-Befehl NEW
 .,A642 D0 FD    BNE $A641       Kein Trennzeichen: SYNTAX
                                 ERROR
 .,A644 A9 00    LDA #$00        Nullcode laden
@@ -638,7 +637,7 @@
 .,A659 20 8E A6 JSR $A68E       CHRGET, Routine neu setzen
 .,A65C A9 00    LDA #$00        Zero-Flag für CLR = 1 setzen
 
-                                BASIC-Befehl CLR
+                                *** BASIC-Befehl CLR
 .,A65E D0 2D    BNE $A68D       Kein Trennzeichen: SYNTAX
                                 ERROR
 .,A660 20 E7 FF JSR $FFE7       alle I/O Kanäle zurücksetzen
@@ -668,8 +667,8 @@
 .,A68B 85 10    STA $10         und in FN-Flag speichern
 .,A68D 60       RTS             Rücksprung
 
-                                Programmzeiger auf
-                                BASIC-Start
+                                *** Programmzeiger auf
+                                *** BASIC-Start
 .,A68E 18       CLC             Carry löschen (Addition)
 .,A68F A5 2B    LDA $2B         Zeiger auf Programmstart (LOW)
 .,A691 69 FF    ADC #$FF        minus 1 ergibt
@@ -679,7 +678,7 @@
 .,A699 85 7B    STA $7B         CHRGET-Zeiger (HIGH)
 .,A69B 60       RTS             Rücksprung
 
-                                BASIC Befehl LIST
+                                *** BASIC Befehl LIST
 .,A69C 90 06    BCC $A6A4       Ziffer ? (Zeilennummer)
 .,A69E F0 04    BEQ $A6A4       nur LIST ?
 .,A6A0 C9 AB    CMP #$AB        Code für '-'?
@@ -742,8 +741,8 @@
 .,A712 D0 B5    BNE $A6C9       weitermachen
 .,A714 4C 86 E3 JMP $E386       zum BASIC-Warmstart
 
-                                BASIC Code in Klartext
-                                umwandlen
+                                *** BASIC Code in Klartext
+                                *** umwandlen
 .,A717 6C 06 03 JMP ($0306)     JMP $A71A
 .,A71A 10 D7    BPL $A6F3       kein Interpretercode:ausgeben
 .,A71C C9 FF    CMP #$FF        Code für Pi?
@@ -767,7 +766,7 @@
 .,A73D 20 47 AB JSR $AB47       Zeichen ausgeben
 .,A740 D0 F5    BNE $A737       nächsten Buchstaben ausgeben
 
-                                BASIC-Befehl FOR
+                                *** BASIC-Befehl FOR
 .,A742 A9 80    LDA #$80        Wert laden und
 .,A744 85 10    STA $10         Integer sperren
 .,A746 20 A5 A9 JSR $A9A5       LET, setzt FOR-Variable
@@ -823,7 +822,7 @@
 .,A7AB A9 81    LDA #$81        und FOR-Code
 .,A7AD 48       PHA             auf den Stapel legen
 
-                                Interpreterschleife
+                                *** Interpreterschleife
 .,A7AE 20 2C A8 JSR $A82C       prüft auf Stop-Taste
 .,A7B1 A5 7A    LDA $7A         CHRGET Zeiger (LOW und HIGH)
 .,A7B3 A4 7B    LDY $7B         laden
@@ -856,7 +855,7 @@
 .,A7E7 20 ED A7 JSR $A7ED       Statement ausführen
 .,A7EA 4C AE A7 JMP $A7AE       zurück zur Interpreterschlei.
 
-                                BASIC-Statement ausführen
+                                *** BASIC-Statement ausführen
 .,A7ED F0 3C    BEQ $A82B       Zeilenende, dann fertig
 .,A7EF E9 80    SBC #$80        Token?
 .,A7F1 90 11    BCC $A804       nein: dann zum LET-Befehl
@@ -874,7 +873,7 @@
 .,A809 F0 D6    BEQ $A7E1       ja: $A7E1
 .,A80B 4C 08 AF JMP $AF08       sonst 'SYNTAX ERROR'
 
-                                prüft auf 'GO' 'TO' Code
+                                *** prüft auf 'GO' 'TO' Code
 .,A80E C9 4B    CMP #$4B        'GO' (minus $80)
 .,A810 D0 F9    BNE $A80B       nein: 'SYNTAX ERROR'
 .,A812 20 73 00 JSR $0073       nächstes Zeichen holen
@@ -882,7 +881,7 @@
 .,A817 20 FF AE JSR $AEFF       prüft auf Code
 .,A81A 4C A0 A8 JMP $A8A0       zum GOTO-Befehl
 
-                                BASIC-Befehl RESTORE
+                                *** BASIC-Befehl RESTORE
 .,A81D 38       SEC             Carry setzen (Subtraktion)
 .,A81E A5 2B    LDA $2B         Programmstartzeiger (LOW)
 .,A820 E9 01    SBC #$01        laden und davon 1 abziehen
@@ -893,13 +892,13 @@
 .,A829 84 42    STY $42         abspeichern
 .,A82B 60       RTS             Rücksprung
 
-                                prüft auf Stop-Taste
+                                *** prüft auf Stop-Taste
 .,A82C 20 E1 FF JSR $FFE1       Stop-Taste abfragen
 
-                                BASIC-Befehl STOP
+                                *** BASIC-Befehl STOP
 .,A82F B0 01    BCS $A832       C=1: Flag für STOP
 
-                                BASIC-Befehl END
+                                *** BASIC-Befehl END
 .,A831 18       CLC             C=0 Flag für END
 .,A832 D0 3C    BNE $A870       RUN/STOP nicht gedrückt: RTS
 .,A834 A5 7A    LDA $7A         Programmzeiger laden
@@ -921,7 +920,7 @@
 .,A851 4C 69 A4 JMP $A469       nein: 'BREAK IN XXX' ausgeben
 .,A854 4C 86 E3 JMP $E386       zum BASIC-Warmstart
 
-                                BASIC-Befehl CONT
+                                *** BASIC-Befehl CONT
 .,A857 D0 17    BNE $A870       Kein Trennzeichen: SYNTAX ERR
 .,A859 A2 1A    LDX #$1A        Fehlernr. für 'CAN'T CONTINUE
 .,A85B A4 3E    LDY $3E         CONT gesperrt?
@@ -936,7 +935,7 @@
 .,A86E 84 3A    STY $3A         (LOW- und HIGH-Byte)
 .,A870 60       RTS             Rücksprung
 
-                                BASIC-Befehl RUN
+                                *** BASIC-Befehl RUN
 .,A871 08       PHP             Statusregister retten
 .,A872 A9 00    LDA #$00        Wert laden und
 .,A874 20 90 FF JSR $FF90       Flag für Programmodus setzen
@@ -946,7 +945,7 @@
 .,A87D 20 60 A6 JSR $A660       CLR-Befehl
 .,A880 4C 97 A8 JMP $A897       GOTO-Befehl
 
-                                BASIC-Befehl GOSUB
+                                *** BASIC-Befehl GOSUB
 .,A883 A9 03    LDA #$03        Wert für Prüfung
 .,A885 20 FB A3 JSR $A3FB       prüft auf Platz im Stapel
 .,A888 A5 7B    LDA $7B         Programmzeiger (LOW-
@@ -963,7 +962,7 @@
 .,A89A 20 A0 A8 JSR $A8A0       GOTO-Befehl
 .,A89D 4C AE A7 JMP $A7AE       zur Interpreterschleife
 
-                                BASIC-Befehl GOTO
+                                *** BASIC-Befehl GOTO
 .,A8A0 20 6B A9 JSR $A96B       Zeilennummer nach $14/$15
 .,A8A3 20 09 A9 JSR $A909       nächsten Zeilenanfang suchen
 .,A8A6 38       SEC             Carry löschen (Subtraktion)
@@ -991,7 +990,7 @@
 .,A8CF 85 7B    STA $7B         und als Programmzeiger
 .,A8D1 60       RTS             Rücksprung
 
-                                BASIC-Befehl RETURN
+                                *** BASIC-Befehl RETURN
 .,A8D2 D0 FD    BNE $A8D1       Kein Trennzeichen: SYNTAX ERR
 .,A8D4 A9 FF    LDA #$FF        Wert laden und
 .,A8D6 85 4A    STA $4A         FOR-NEXT-ZEIGER neu setzen
@@ -1014,7 +1013,7 @@
 .,A8F5 68       PLA             Programmzeiger (HIGH) holen
 .,A8F6 85 7B    STA $7B         abspeichern
 
-                                BASIC-Befehl DATA
+                                *** BASIC-Befehl DATA
 .,A8F8 20 06 A9 JSR $A906       nächstes Statement suchen
 .,A8FB 98       TYA             Offset
 .,A8FC 18       CLC             Carry löschen (Addition)
@@ -1024,8 +1023,8 @@
 .,A903 E6 7B    INC $7B         Programmzeiger vermindern
 .,A905 60       RTS             Rücksprung
 
-                                Offset des nächsten
-                                Trennzeichens finden
+                                *** Offset des nächsten
+                                *** Trennzeichens finden
 .,A906 A2 3A    LDX #$3A        ':' Doppelpunkt
 .:A908 2C       .BYTE $2C
 .,A909 A2 00    LDX #$00        $0 Zeilenende
@@ -1045,7 +1044,7 @@
 .,A924 D0 F3    BNE $A919       nein: $A919
 .,A926 F0 E9    BEQ $A911       sonst $7 und $8 vertauschen
 
-                                BASIC-Befehl IF
+                                *** BASIC-Befehl IF
 .,A928 20 9E AD JSR $AD9E       FRMEVL Ausdruck berechnen
 .,A92B 20 79 00 JSR $0079       CHRGOT letztes Zeichen
 .,A92E C9 89    CMP #$89        'GOTO'-Code?
@@ -1055,7 +1054,7 @@
 .,A937 A5 61    LDA $61         Ergebnis des IF-Ausdrucks
 .,A939 D0 05    BNE $A940       Ausdruck wahr?
 
-                                BASIC-Befehl REM
+                                *** BASIC-Befehl REM
 .,A93B 20 09 A9 JSR $A909       nein, Zeilenanfang suchen
 .,A93E F0 BB    BEQ $A8FB       Programmz. auf nächste Zeile
 .,A940 20 79 00 JSR $0079       CHRGOT: letztes Zeichen holen
@@ -1063,7 +1062,7 @@
 .,A945 4C A0 A8 JMP $A8A0       zum GOTO-Befehl
 .,A948 4C ED A7 JMP $A7ED       Befehl dekodieren, ausführen
 
-                                BASIC-Befehl ON
+                                *** BASIC-Befehl ON
 .,A94B 20 9E B7 JSR $B79E       Byte-Wert (0 bis 255) holen
 .,A94E 48       PHA             Code merken
 .,A94F C9 8D    CMP #$8D        'GOSUB'-Code?
@@ -1081,7 +1080,7 @@
 .,A969 68       PLA             kein Sprung: Code zurückholen
 .,A96A 60       RTS             Rücksprung
 
-                                Zeilennummer nach $14/$15
+                                *** Zeilennummer nach $14/$15
 .,A96B A2 00    LDX #$00        Wert Laden und
 .,A96D 86 14    STX $14         Vorsetzen
 .,A96F 86 15    STX $15         (für Zeilennummer gleich 0)
@@ -1112,7 +1111,7 @@
 .,A99F 20 73 00 JSR $0073       CHRGET nächstes Zeichen holen
 .,A9A2 4C 71 A9 JMP $A971       und weiter machen
 
-                                BASIC-Befehl LET
+                                *** BASIC-Befehl LET
 .,A9A5 20 8B B0 JSR $B08B       sucht Variable hinter LET
 .,A9A8 85 49    STA $49         und Variablenadresse
 .,A9AA 84 4A    STY $4A         merken (LOW- und HIGH-Byte)
@@ -1130,7 +1129,7 @@
 .,A9C1 68       PLA             Integer-Flag zurückholen
 .,A9C2 10 12    BPL $A9D6       INTEGER? ja: $A9D6
 
-                                Wertzuweisung INTEGER
+                                *** Wertzuweisung INTEGER
 .,A9C4 20 1B BC JSR $BC1B       FAC runden
 .,A9C7 20 BF B1 JSR $B1BF       und nach INTEGER wandlen
 .,A9CA A0 00    LDY #$00        Zeiger setzen
@@ -1141,10 +1140,10 @@
 .,A9D3 91 49    STA ($49),Y     Wert in Variable bringen
 .,A9D5 60       RTS             Rücksprung
 
-                                Wertzuweisung REAL
+                                *** Wertzuweisung REAL
 .,A9D6 4C D0 BB JMP $BBD0       FAC nach Variable bringen
 
-                                Wertzuweisung String
+                                *** Wertzuweisung String
 .,A9D9 68       PLA             Akku vom Stapel holen
 .,A9DA A4 4A    LDY $4A         Variablenadresse (HIGH) holen
 .,A9DC C0 BF    CPY #$BF        ist Variable TI$?
@@ -1178,7 +1177,7 @@
 .,AA18 A5 65    LDA $65         holen und
 .,AA1A 4C DB FF JMP $FFDB       Time setzen
 
-                                Zeichen auf Ziffer prüfen
+                                *** Zeichen auf Ziffer prüfen
 .,AA1D B1 22    LDA ($22),Y     Zeichen holen (aus String)
 .,AA1F 20 80 00 JSR $0080       auf Ziffer prüfen
 .,AA22 90 03    BCC $AA27       Ziffer: $AA27
@@ -1186,8 +1185,8 @@
 .,AA27 E9 2F    SBC #$2F        von ASCII nach HEX umwandeln
 .,AA29 4C 7E BD JMP $BD7E       in FAC und ARG übertragen
 
-                                Wertzuweisung an normalen
-                                String
+                                *** Wertzuweisung an normalen
+                                *** String
 .,AA2C A0 02    LDY #$02        Zeiger setzen
 .,AA2E B1 64    LDA ($64),Y     Stringadresse HIGH mit
 .,AA30 C5 34    CMP $34         Stringanfangsadr. vergleichen
@@ -1231,11 +1230,11 @@
 .,AA7D 91 49    STA ($49),Y     in Variable bringen
 .,AA7F 60       RTS             Rücksprung
 
-                                BASIC-Befehl PRINT#
+                                *** BASIC-Befehl PRINT#
 .,AA80 20 86 AA JSR $AA86       CMD-Befehl
 .,AA83 4C B5 AB JMP $ABB5       und CLRCH
 
-                                BASIC-Befehl CMD
+                                *** BASIC-Befehl CMD
 .,AA86 20 9E B7 JSR $B79E       holt Byte-Ausdruck
 .,AA89 F0 05    BEQ $AA90       Trennzeichen: $AA90
 .,AA8B A9 2C    LDA #$2C        ',', Wert laden
@@ -1248,7 +1247,7 @@
 .,AA9A 20 21 AB JSR $AB21       String drucken
 .,AA9D 20 79 00 JSR $0079       CHRGOT letztes Zeichen
 
-                                BASIC-Befehl PRINT
+                                *** BASIC-Befehl PRINT
 .,AAA0 F0 35    BEQ $AAD7       Trennzeichen: $AAD7
 .,AAA2 F0 43    BEQ $AAE7       Trennz. (TAB, SPC): RTS
 .,AAA4 C9 A3    CMP #$A3        'TAB('-Code?
@@ -1292,7 +1291,7 @@
 .,AAF4 69 01    ADC #$01        +1 (Zweierkomplement)
 .,AAF6 D0 16    BNE $AB0E       unbedingter Sprung
 
-                                TAB( (C=1) und SPC( (C=0)
+                                *** TAB( (C=1) und SPC( (C=0)
 .,AAF8 08       PHP             Flags merken
 .,AAF9 38       SEC             Carry setzen
 .,AAFA 20 F0 FF JSR $FFF0       Cursorposition holen
@@ -1314,7 +1313,7 @@
 .,AB19 20 3B AB JSR $AB3B       Cursor right bzw. Leerzeichen
 .,AB1C D0 F2    BNE $AB10       zum Schleifenanfang
 
-                                String ausgeben
+                                *** String ausgeben
 .,AB1E 20 87 B4 JSR $B487       Stringparameter holen
 .,AB21 20 A6 B6 JSR $B6A6       FRESTR
 .,AB24 AA       TAX             Stringlänge
@@ -1330,8 +1329,8 @@
 .,AB35 20 E5 AA JSR $AAE5       Fehler ! Test auf LF-Ausgabe
 .,AB38 4C 28 AB JMP $AB28       und weitermachen
 
-                                Ausgabe eines Leerzeichens
-                                bzw. Cursor right
+                                *** Ausgabe eines Leerzeichens
+                                *** bzw. Cursor right
 .,AB3B A5 13    LDA $13         Ausgabe in File?
 .,AB3D F0 03    BEQ $AB42       Bildschirm: dann Cursor right
 .,AB3F A9 20    LDA #$20        ' ' Leerzeichencode laden
@@ -1343,23 +1342,23 @@
 .,AB4A 29 FF    AND #$FF        Flags setzen
 .,AB4C 60       RTS             Rücksprung
 
-                                Fehlerbehandlung bei Eingabe
+                                *** Fehlerbehandlung bei Eingabe
 .,AB4D A5 11    LDA $11         Flag für INPUT / GET / READ
 .,AB4F F0 11    BEQ $AB62       INPUT: $AB62
 .,AB51 30 04    BMI $AB57       READ: $AB57
 .,AB53 A0 FF    LDY #$FF        GET:
 .,AB55 D0 04    BNE $AB5B       unbedingter Sprung
 
-                                Fehler bei READ
+                                *** Fehler bei READ
 .,AB57 A5 3F    LDA $3F         DATA-Zeilennummer
 .,AB59 A4 40    LDY $40         holen (LOW- und HIGH-Byte)
 
-                                Fehler bei GET
+                                *** Fehler bei GET
 .,AB5B 85 39    STA $39         gleiche Zeilennummer
 .,AB5D 84 3A    STY $3A         des Fehlers
 .,AB5F 4C 08 AF JMP $AF08       'SYNTAX ERROR'
 
-                                Fehler bei INPUT
+                                *** Fehler bei INPUT
 .,AB62 A5 13    LDA $13         Nummer des Eingabegeräts
 .,AB64 F0 05    BEQ $AB6B       Tastatur: 'REDO FROM START'
 .,AB66 A2 18    LDX #$18        Nummer für 'FILE DATA'
@@ -1373,7 +1372,7 @@
 .,AB78 84 7B    STY $7B         auf INPUT-Befehl
 .,AB7A 60       RTS             Rücksprung
 
-                                BASIC-Befehl GET
+                                *** BASIC-Befehl GET
 .,AB7B 20 A6 B3 JSR $B3A6       Testet auf Direkt-Modus
 .,AB7E C9 23    CMP #$23        folgt '#’?
 .,AB80 D0 10    BNE $AB92       nein: $AB92
@@ -1393,7 +1392,7 @@
 .,ABA2 D0 13    BNE $ABB7       nicht Tastatur, dann CLRCH
 .,ABA4 60       RTS             Rücksprung
 
-                                BASIC-Befehl INPUT#
+                                *** BASIC-Befehl INPUT#
 .,ABA5 20 9E B7 JSR $B79E       holt Byte-Wert
 .,ABA8 A9 2C    LDA #$2C        ',' Code für Komma
 .,ABAA 20 FF AE JSR $AEFF       prüft auf Komma
@@ -1406,7 +1405,7 @@
 .,ABBC 86 13    STX $13         Eingabegerät wieder Tastatur
 .,ABBE 60       RTS             Rücksprung
 
-                                BASIC-Befehl INPUT
+                                *** BASIC-Befehl INPUT
 .,ABBF C9 22    CMP #$22        '"' Hochkomma?
 .,ABC1 D0 0B    BNE $ABCE       nein: $ABDE
 .,ABC3 20 BD AE JSR $AEBD       Dialogstring holen
@@ -1436,7 +1435,7 @@
 .,AC00 20 3B AB JSR $AB3B       ' ' Leerzeichen ausgeben
 .,AC03 4C 60 A5 JMP $A560       Eingabezeile holen
 
-                                BASIC-Befehl READ
+                                *** BASIC-Befehl READ
 .,AC06 A6 41    LDX $41         DATA-Zeiger nach
 .,AC08 A4 42    LDY $42         $41/42 holen
 .,AC0A A9 98    LDA #$98        READ-Flag
@@ -1561,7 +1560,7 @@
 .:AD14 4F 4D 20 53 54 41 52 54
 .:AD1C 0D 00
 
-                                BASIC-Befehl NEXT
+                                *** BASIC-Befehl NEXT
 .,AD1E D0 04    BNE $AD24       folgt Variablenname? ja:$AD24
 .,AD20 A0 00    LDY #$00        Variablenzeiger = 0
 .,AD22 F0 03    BEQ $AD27       unbedingter Sprung
@@ -1614,15 +1613,15 @@
 .,AD84 20 73 00 JSR $0073       CHRGET nächstes Zeichen holen
 .,AD87 20 24 AD JSR $AD24       nächste NEXT-Variable
 
-                                FRMNUM Ausdruck holen und
-                                auf numerisch prüfen
+                                *** FRMNUM Ausdruck holen und
+                                *** auf numerisch prüfen
 .,AD8A 20 9E AD JSR $AD9E       FRMEVL Term holen
 
-                                prüft auf numerisch
+                                *** prüft auf numerisch
 .,AD8D 18       CLC             Flag für Test auf numerisch
 .:AD8E 24       .BYTE $24
 
-                                prüft auf String
+                                *** prüft auf String
 .,AD8F 38       SEC             Flag für Test auf String
 .,AD90 24 0D    BIT $0D         Typflag testen
 .,AD92 30 03    BMI $AD97       gesetzt: $AD97
@@ -1632,8 +1631,8 @@
 .,AD99 A2 16    LDX #$16        Nummer für 'TYPE MISMATCH'
 .,AD9B 4C 37 A4 JMP $A437       Fehlermeldung ausgeben
 
-                                FRMEVL auswerten eines
-                                beliebigen Ausdrucks
+                                *** FRMEVL auswerten eines
+                                *** beliebigen Ausdrucks
 .,AD9E A6 7A    LDX $7A         Programmzeiger (LOW) = 0?
 .,ADA0 D0 02    BNE $ADA4       ja: HIGH-B. nicht vermindern
 .,ADA2 C6 7B    DEC $7B         HIGH-Byte vermindern
@@ -1758,8 +1757,8 @@
 .,AE80 A5 61    LDA $61         Exponentbyte von FAC laden
 .,AE82 60       RTS             Rücksprung
 
-                                Nächstes Element eines
-                                Ausdrucks holen
+                                *** Nächstes Element eines
+                                *** Ausdrucks holen
 .,AE83 6C 0A 03 JMP ($030A)     JMP $AE86
 .,AE86 A9 00    LDA #$00        Wert laden und damit
 .,AE88 85 0D    STA $0D         Typflag auf numerisch setzen
@@ -1798,7 +1797,7 @@
 .,AED0 A0 18    LDY #$18        Offset des H.Flags in Tabelle
 .,AED2 D0 3B    BNE $AF0F       unbedingter Sprung
 
-                                BASIC-Befehl NOT
+                                *** BASIC-Befehl NOT
 .,AED4 20 BF B1 JSR $B1BF       FAC nach INTEGER wandeln
 .,AED7 A5 65    LDA $65         HIGH-Byte holen
 .,AED9 49 FF    EOR #$FF        alle Bits umdrehen
@@ -1813,11 +1812,11 @@
 .,AEEC 90 03    BCC $AEF1       kleiner (keine Stringfunkt.)?
 .,AEEE 4C A7 AF JMP $AFA7       holt String ,ersten Parameter
 
-                                holt Term in Klammern
+                                *** holt Term in Klammern
 .,AEF1 20 FA AE JSR $AEFA       prüft auf Klammer auf
 .,AEF4 20 9E AD JSR $AD9E       FRMEVL holt Term
 
-                                prüft auf Zeichen im B.-Text
+                                *** prüft auf Zeichen im B.-Text
 .,AEF7 A9 29    LDA #$29        ')' Klammer zu
 .:AEF9 2C       .BYTE $2C
 .,AEFA A9 28    LDA #$28        '(' Klammer auf
@@ -1834,7 +1833,7 @@
 .,AF10 68       PLA             Stapel entfernen
 .,AF11 4C FA AD JMP $ADFA       zur Auswertung
 
-                                prüft auf Variable
+                                *** prüft auf Variable
 .,AF14 38       SEC             innerhalb des BASICs
 .,AF15 A5 64    LDA $64         Carry setzen (Subtr.)
 .,AF17 E9 00    SBC #$00        Descriptor holen
@@ -1847,7 +1846,7 @@
 .,AF25 E5 65    SBC $65         und Descriptorwert abziehen
 .,AF27 60       RTS             Rücksprung
 
-                                Variable holen
+                                *** Variable holen
 .,AF28 20 8B B0 JSR $B08B       Variable suchen
 .,AF2B 85 64    STA $64         Zeiger auf Variable
 .,AF2D 84 65    STY $65         bzw. Stringdescriptor
@@ -1876,7 +1875,7 @@
 .,AF5D 24 0E    BIT $0E         INTEGER/ REAL Flag
 .,AF5F 10 0D    BPL $AF6E       REAL? ja: $AF6E
 
-                                Integervariable holen
+                                *** Integervariable holen
 .,AF61 A0 00    LDY #$00        Zeiger setzen
 .,AF63 B1 64    LDA ($64),Y     Intgerzahl holen (1. Byte)
 .,AF65 AA       TAX             ins X-Reg.
@@ -1886,7 +1885,7 @@
 .,AF6A 8A       TXA             1. Byte in Akku holen
 .,AF6B 4C 91 B3 JMP $B391       und nach Fließkomma wandeln
 
-                                REAL-Variable holen
+                                *** REAL-Variable holen
 .,AF6E 20 14 AF JSR $AF14       Descriptor im Interpreter?
 .,AF71 90 2D    BCC $AFA0       nein
 .,AF73 E0 54    CPX #$54        'T'? (von TI)
@@ -1898,7 +1897,7 @@
 .,AF7F A2 A0    LDX #$A0        Exponentbyte für FAC
 .,AF81 4C 4F BC JMP $BC4F       FAC linksbündig machen
 
-                                Zeit holen
+                                *** Zeit holen
 .,AF84 20 DE FF JSR $FFDE       TIME holen
 .,AF87 86 64    STX $64         1. Byte nach FAC
 .,AF89 84 63    STY $63         2. Byte nach FAC
@@ -1913,12 +1912,12 @@
 .,AF9A 20 B7 FF JSR $FFB7       Status holen
 .,AF9D 4C 3C BC JMP $BC3C       Byte in Fließkommaformat
 
-                                REAL-Variable holen
+                                *** REAL-Variable holen
 .,AFA0 A5 64    LDA $64         LOW- und HIGH-Byte der
 .,AFA2 A4 65    LDY $65         Variablenadresse
 .,AFA4 4C A2 BB JMP $BBA2       Variable in FAC holen
 
-                                Funktionsberechnung
+                                *** Funktionsberechnung
 .,AFA7 0A       ASL             Funktionscode mal 2
 .,AFA8 48       PHA             auf den Stapel retten
 .,AFA9 AA       TAX             und ins X-Register
@@ -1926,8 +1925,8 @@
 .,AFAD E0 8F    CPX #$8F        numerische Funktion?
 .,AFAF 90 20    BCC $AFD1       ja: $AFD1
 
-                                Stringfunktion, String und
-                                ersten Parameter
+                                *** Stringfunktion, String und
+                                *** ersten Parameter
 .,AFB1 20 FA AE JSR $AEFA       prüft auf Klammer auf
 .,AFB4 20 9E AD JSR $AD9E       FRMEVL holen beliebigen Term
 .,AFB7 20 FD AE JSR $AEFD       prüft auf Komma
@@ -1947,7 +1946,7 @@
 .,AFCD 48       PHA             und auf den Stapel retten
 .,AFCE 4C D6 AF JMP $AFD6       Routine ausführen
 
-                                numerische Funktion auswerten
+                                *** numerische Funktion auswerten
 .,AFD1 20 F1 AE JSR $AEF1       holt Term in Klammern
 .,AFD4 68       PLA             BASIC-Code für Funktion holen
 .,AFD5 A8       TAY             und als Zeiger ins Y-Reg.
@@ -1958,11 +1957,11 @@
 .,AFE0 20 54 00 JSR $0054       Funktion ausführen
 .,AFE3 4C 8D AD JMP $AD8D       prüft auf numerisch
 
-                                BASIC-Befehl OR
+                                *** BASIC-Befehl OR
 .,AFE6 A0 FF    LDY #$FF        Flag für OR
 .:AFE8 2C       .BYTE $2C
 
-                                BASIC-Befehl AND
+                                *** BASIC-Befehl AND
 .,AFE9 A0 00    LDY #$00        Flag fur AND
 .,AFEB 84 0B    STY $0B         Flag setzen
 .,AFED 20 BF B1 JSR $B1BF       FAC nach INTEGER wandeln
@@ -1985,7 +1984,7 @@
 .,B011 45 0B    EOR $0B         mit Flag verknüpfen
 .,B013 4C 91 B3 JMP $B391       wieder in Fließkomma wandeln
 
-                                Vergleich
+                                *** Vergleich
 .,B016 20 90 AD JSR $AD90       prüft auf identischen Typ
 .,B019 B0 13    BCS $B02E       String: dann weiter
 .,B01B A5 6E    LDA $6E         Wert holen
@@ -1998,7 +1997,7 @@
 .,B02A AA       TAX
 .,B02B 4C 61 B0 JMP $B061       Ergebnis in FAC holen
 
-                                Stringvergleich
+                                *** Stringvergleich
 .,B02E A9 00    LDA #$00        Wert laden und damit
 .,B030 85 0D    STA $0D         Stringflag löschen
 .,B032 C6 4D    DEC $4D         Operatormaske - 1
@@ -2044,14 +2043,14 @@
 .,B07B 4C 3C BC JMP $BC3C       Ergebnis nach FAC holen
 .,B07E 20 FD AE JSR $AEFD       CHKCOM prüft auf Komma
 
-                                BASIC-Befehl DIM
+                                *** BASIC-Befehl DIM
 .,B081 AA       TAX             nächstes Zeichen
 .,B082 20 90 B0 JSR $B090       Variable dimensionieren
 .,B085 20 79 00 JSR $0079       CHRGOT letztes Zeichen holen
 .,B088 D0 F4    BNE $B07E       nicht Ende: zur nächsten Var.
 .,B08A 60       RTS             Rücksprung
 
-                                Variable holen
+                                *** Variable holen
 .,B08B A2 00    LDX #$00        Flag für nicht dimensionieren
 .,B08D 20 79 00 JSR $0079       CHRGOT letztes Zeichen holen
 .,B090 86 0C    STX $0C         DIM-Flag setzen
@@ -2120,7 +2119,7 @@
 .,B110 E8       INX             Übertrag addieren
 .,B111 D0 DC    BNE $B0EF       weiter suchen
 
-                                prüft auf Buchstabe
+                                *** prüft auf Buchstabe
 .,B113 C9 41    CMP #$41        'A'-Code? (Buchstabencode)
 .,B115 90 05    BCC $B11C       nein: $B11C sonst C = 0
 .,B117 E9 5B    SBC #$5B        'Z' + 1
@@ -2128,7 +2127,7 @@
 .,B11A E9 A5    SBC #$A5        nein: dann C = 0
 .,B11C 60       RTS             Rücksprung
 
-                                Variable anlegen
+                                *** Variable anlegen
 .,B11D 68       PLA
 .,B11E 48       PHA             Aufrufadresse prüfen
 .,B11F C9 2A    CMP #$2A        Aufruf von FRMEVL?
@@ -2196,8 +2195,8 @@
 .,B191 84 48    STY $48         nach $47/48 speichern
 .,B193 60       RTS             Rücksprung
 
-                                berechnet Zeiger auf erstes
-                                Arrayelement
+                                *** berechnet Zeiger auf erstes
+                                *** Arrayelement
 .,B194 A5 0B    LDA $0B         Anzahl der Dimensionen
 .,B196 0A       ASL             mal 2
 .,B197 69 05    ADC #$05        plus 5
@@ -2211,14 +2210,14 @@
 
 .:B1A5 90 80 00 00 00           Konstante -32768
 
-                                Umwandlung FAC nach Integer
+                                *** Umwandlung FAC nach Integer
 .,B1AA 20 BF B1 JSR $B1BF       FAC nach Integer wandeln
 .,B1AD A5 64    LDA $64         LOW-Byte
 .,B1AF A4 65    LDY $65         HIGH-Byte
 .,B1B1 60       RTS             Rücksprung
 
-                                Ausdruck holen und
-                                nach Integer
+                                *** Ausdruck holen und
+                                *** nach Integer
 .,B1B2 20 73 00 JSR $0073       CHRGET nächstes Zeichen holen
 .,B1B5 20 9E AD JSR $AD9E       FRMEVL, Ausdruck auswerten
 .,B1B8 20 8D AD JSR $AD8D       prüft auf numerisch
@@ -2233,7 +2232,7 @@
 .,B1CC D0 7A    BNE $B248       ungleich: 'ILLEGAL QUANT'
 .,B1CE 4C 9B BC JMP $BC9B       wandelt Fließkomma in Integer
 
-                                dimensionierte Variable holen
+                                *** dimensionierte Variable holen
 .,B1D1 A5 0C    LDA $0C         DIM Flag
 .,B1D3 05 0E    ORA $0E         Integer Flag
 .,B1D5 48       PHA             auf Stapel retten
@@ -2314,7 +2313,7 @@
 .,B25C D0 E7    BNE $B245       ungleich: 'bad subscript'
 .,B25E 4C EA B2 JMP $B2EA       sucht gewünschtes Element
 
-                                Arrayvariable anlegen
+                                *** Arrayvariable anlegen
 .,B261 20 94 B1 JSR $B194       Länge des Arraykopfs
 .,B264 20 08 A4 JSR $A408       prüft auf genügend Platz
 .,B267 A0 00    LDY #$00        Zeiger für Polynom-
@@ -2392,7 +2391,7 @@
 .,B2E5 A5 0C    LDA $0C         Aufruf vom DIM-Befehl?
 .,B2E7 D0 62    BNE $B34B       ja: RTS
 
-                                Arrayelement suchen
+                                *** Arrayelement suchen
 .,B2E9 C8       INY             Zeiger erhöhen
 .,B2EA B1 5F    LDA ($5F),Y     Zahl der Dimensionen
 .,B2EC 85 0B    STA $0B         speichern
@@ -2415,8 +2414,8 @@
 .,B308 4C 45 B2 JMP $B245       'bad subscript'
 .,B30B 4C 35 A4 JMP $A435       'out of memory'
 
-                                Berechnung der Adresse
-                                eines Arrayelements
+                                *** Berechnung der Adresse
+                                *** eines Arrayelements
 .,B30E C8       INY             Zeiger erhöhen
 .,B30F A5 72    LDA $72         Zeiger auf Polynomausw.(HIGH)
 .,B311 05 71    ORA $71         Zeiger auf Polynomausw.(LOW)
@@ -2454,8 +2453,8 @@
 .,B349 A5 47    LDA $47         1.Byte wieder in Akku holen
 .,B34B 60       RTS             Rücksprung
 
-                                Hilfsroutine für
-                                Arrayberechnung
+                                *** Hilfsroutine für
+                                *** Arrayberechnung
 .,B34C 84 22    STY $22         Register merken
 .,B34E B1 5F    LDA ($5F),Y     1. Wert holen
 .,B350 85 28    STA $28         und abspeichern
@@ -2488,7 +2487,7 @@
 .,B37A D0 E3    BNE $B35F       alle 16 Bits? nein: weiter
 .,B37C 60       RTS             Rücksprung
 
-                                BASIC-Funktion FRE
+                                *** BASIC-Funktion FRE
 .,B37D A5 0D    LDA $0D         Typflag
 .,B37F F0 03    BEQ $B384       kein String
 .,B381 20 A6 B6 JSR $B6A6       FRESTR
@@ -2506,13 +2505,13 @@
 .,B399 A2 90    LDX #$90        und nach
 .,B39B 4C 44 BC JMP $BC44       Fließkomma wandlen
 
-                                BASIC-Funktion POS
+                                *** BASIC-Funktion POS
 .,B39E 38       SEC             C=1 Cursorposition holen
 .,B39F 20 F0 FF JSR $FFF0       Cursorposition holen
 .,B3A2 A9 00    LDA #$00        Z=1
 .,B3A4 F0 EB    BEQ $B391       unbedingter Sprung
 
-                                Test auf Direkt-Modus
+                                *** Test auf Direkt-Modus
 .,B3A6 A6 3A    LDX $3A         Flag laden (Direktm. = $FF)
 .,B3A8 E8       INX             testen
 .,B3A9 D0 A0    BNE $B34B       nein: dann RTS
@@ -2521,7 +2520,7 @@
 .,B3AE A2 1B    LDX #$1B        Nummer für 'undef'd function'
 .,B3B0 4C 37 A4 JMP $A437       Fehlermeldung ausgeben
 
-                                BASIC-Befehl DEF FN
+                                *** BASIC-Befehl DEF FN
 .,B3B3 20 E1 B3 JSR $B3E1       prüft FN-Syntax
 .,B3B6 20 A6 B3 JSR $B3A6       testet auf Direkt-Modus
 .,B3B9 20 FA AE JSR $AEFA       prüft auf 'Klammer auf
@@ -2544,7 +2543,7 @@
 .,B3DB 20 F8 A8 JSR $A8F8       Programmzeiger auf Statement
 .,B3DE 4C 4F B4 JMP $B44F       FN-Variable vom Stapel holen
 
-                                prüft FN-Syntax
+                                *** prüft FN-Syntax
 .,B3E1 A9 A5    LDA #$A5        FN-Code
 .,B3E3 20 FF AE JSR $AEFF       prüft auf FN-Code
 .,B3E6 09 80    ORA #$80        Wert laden
@@ -2554,7 +2553,7 @@
 .,B3EF 84 4F    STY $4F         FN-Variablenzeiger setzen
 .,B3F1 4C 8D AD JMP $AD8D       prüft auf numerisch
 
-                                BASIC-Funktion FN
+                                *** BASIC-Funktion FN
 .,B3F4 20 E1 B3 JSR $B3E1       prüft FN-Syntax
 .,B3F7 A5 4F    LDA $4F         LOW- und HiGH-Byte des
 .,B3F9 48       PHA             FN-Variablenzeigers
@@ -2623,7 +2622,7 @@
 .,B462 91 4E    STA ($4E),Y     und abspeichern
 .,B464 60       RTS             Rücksprung
 
-                                BASIC-Funktion STR$
+                                *** BASIC-Funktion STR$
 .,B465 20 8D AD JSR $AD8D       prüft auf numerisch
 .,B468 A0 00    LDY #$00        Wert laden und
 .,B46A 20 DF BD JSR $BDDF       FAC nach ASCII umwandeln
@@ -2633,7 +2632,7 @@
 .,B471 A0 00    LDY #$00        Startadresse des Strings=$FF
 .,B473 F0 12    BEQ $B487
 
-                                Stringzeiger berechnen
+                                *** Stringzeiger berechnen
 .,B475 A6 64    LDX $64         Zeiger in
 .,B477 A4 65    LDY $65         $64/65 in
 .,B479 86 50    STX $50         Zeiger auf Stringdescriptor
@@ -2644,7 +2643,7 @@
 .,B484 85 61    STA $61         Länge
 .,B486 60       RTS
 
-                                String holen, Zeiger in A/Y
+                                *** String holen, Zeiger in A/Y
 .,B487 A2 22    LDX #$22        '"'-Code
 .,B489 86 07    STX $07         nach Suchzeichen
 .,B48B 86 08    STX $08         und Hochkommaflag
@@ -2681,8 +2680,8 @@
 .,B4C5 A4 70    LDY $70         Startadresse holen
 .,B4C7 20 88 B6 JSR $B688       String in Bereich kopieren
 
-                                Stringzeiger in
-                                Descriptorstapel bringen
+                                *** Stringzeiger in
+                                *** Descriptorstapel bringen
 .,B4CA A6 16    LDX $16         Stringdescriptor-Zeiger
 .,B4CC E0 22    CPX #$22        Stringstapel voll?
 .,B4CE D0 05    BNE $B4D5       nein: $B4D5
@@ -2707,8 +2706,8 @@
 .,B4F1 86 16    STX $16         neuen Index merken
 .,B4F3 60       RTS             Rücksprung
 
-                                Platz für String reservieren,
-                                Länge in A
+                                *** Platz für String reservieren,
+                                *** Länge in A
 .,B4F4 46 0F    LSR $0F         Flag für Garbage Collection
                                 zurücksetzen
 .,B4F6 48       PHA             Stringlänge
@@ -2739,7 +2738,7 @@
 .,B523 68       PLA             Stringlänge
 .,B524 D0 D0    BNE $B4F6       String nochmals einbauen
 
-                                Garbage Collection
+                                *** Garbage Collection
 .,B526 A6 37    LDX $37         LOW-Byte Basic-RAM-Zeiger
 .,B528 A5 38    LDA $38         HIGH-Byte Basic-RAM-Zeiger
 .,B52A 86 33    STX $33         in Stringzeiger
@@ -2819,7 +2818,7 @@
 .,B5B8 20 C7 B5 JSR $B5C7       Stringposition feststellen
 .,B5BB F0 F3    BEQ $B5B0       unbedingter Sprung
 
-                                prüft Beseitigungsmöglichkeit
+                                *** prüft Beseitigungsmöglichkeit
 .,B5BD B1 22    LDA ($22),Y     Variablenname erstes Zeichen
 .,B5BF 30 35    BMI $B5F6       Integer o. Funktion ?
 .,B5C1 C8       INY             Zähler erhöhen
@@ -2861,7 +2860,7 @@
 .,B603 A0 00    LDY #$00        Zähler löschen
 .,B605 60       RTS             Rücksprung
 
-                                Strings zusammenfügen
+                                *** Strings zusammenfügen
 .,B606 A5 4F    LDA $4F         String zwischen Tabellenende
 .,B608 05 4E    ORA $4E         und dem oberen RAM-Bereich
 .,B60A F0 F5    BEQ $B601       gefunden ? nein, dann RTS
@@ -2921,7 +2920,7 @@
 .,B674 20 CA B4 JSR $B4CA       Descriptor in Stringstack
 .,B677 4C B8 AD JMP $ADB8       zurück zur Formelauswertung
 
-                                String in reserv. Bereich
+                                *** String in reserv. Bereich
 .,B67A A0 00    LDY #$00        Zähler auf Null
 .,B67C B1 6F    LDA ($6F),Y     Stringlänge holen
 .,B67E 48       PHA             und merken
@@ -2950,7 +2949,7 @@
 .,B6A0 E6 36    INC $36         erhöhen
 .,B6A2 60       RTS             Rücksprung
 
-                                Stringverwaltung FRESTR
+                                *** Stringverwaltung FRESTR
 .,B6A3 20 8F AD JSR $AD8F       prüft auf Stringvariable
 .,B6A6 A5 64    LDA $64         Zeiger auf
 .,B6A8 A4 65    LDY $65         Stringdescriptor
@@ -2985,8 +2984,8 @@
 .,B6D8 84 23    STY $23         HIGH-Byte der Startadresse
 .,B6DA 60       RTS             Rücksprung
 
-                                Stringzeiger aus
-                                Descriptorstack entfernen
+                                *** Stringzeiger aus
+                                *** Descriptorstack entfernen
 .,B6DB C4 18    CPY $18         Zeiger auf Stringdescriptor
 .,B6DD D0 0C    BNE $B6EB       identisch mit $18, nicht? RTS
 .,B6DF C5 17    CMP $17         identisch mit 17
@@ -2997,7 +2996,7 @@
 .,B6E9 A0 00    LDY #$00        Zähler auf Null
 .,B6EB 60       RTS             Rücksprung
 
-                                BASIC-Funktion CHR$
+                                *** BASIC-Funktion CHR$
 .,B6EC 20 A1 B7 JSR $B7A1       holt Byte-Wert (0 bis 255)
 .,B6EF 8A       TXA             Kode in Akku
 .,B6F0 48       PHA             Akkuinhalt in Stack
@@ -3010,7 +3009,7 @@
 .,B6FC 68       PLA             Stack entfernen
 .,B6FD 4C CA B4 JMP $B4CA       Descriptor in Stringstack
 
-                                BASIC-Funktion LEFT$
+                                *** BASIC-Funktion LEFT$
 .,B700 20 61 B7 JSR $B761       Stringadresse & Länge
                                 aus Stack holen
 .,B703 D1 50    CMP ($50),Y     Länge mit LEFT$-Parameter
@@ -3042,7 +3041,7 @@
 .,B729 4C CA B4 JMP $B4CA       Descriptor in Stringstack
                                 bringen
 
-                                BASIC-Funktion RIGHT$
+                                *** BASIC-Funktion RIGHT$
 .,B72C 20 61 B7 JSR $B761       Stringparameter und Länge
                                 vom Stack holen
 .,B72F 18       CLC             von Stringlänge
@@ -3051,7 +3050,7 @@
                                 im alten String
 .,B734 4C 06 B7 JMP $B706       weiter wie LEFT$
 
-                                BASIC-Funktion MID$
+                                *** BASIC-Funktion MID$
 .,B737 A9 FF    LDA #$FF        Ersatzwert für den zweiten
 .,B739 85 65    STA $65         Zahlenparameter
 .,B73B 20 79 00 JSR $0079       CHRGOT letztes Zeichen holen
@@ -3080,8 +3079,8 @@
                                 Stringbegrenzung
 .,B75F B0 AD    BCS $B70E       unbedingter Sprung
 
-                                Stringparameter numerischer Wert
-                                vom Stack holen
+                                *** Stringparameter numerischer Wert
+                                *** vom Stack holen
 .,B761 20 F7 AE JSR $AEF7       prüft auf Klammer zu
 .,B764 68       PLA             LOW-Byte der
 .,B765 A8       TAY             Aufrufadresse merken
@@ -3103,12 +3102,12 @@
 .,B77A 8A       TXA             Länge, zweiter Parameter
 .,B77B 60       RTS             Rücksprung
 
-                                BASIC-Funktion LEN
+                                *** BASIC-Funktion LEN
 .,B77C 20 82 B7 JSR $B782       FRESTR, Stringlänge holen
 .,B77F 4C A2 B3 JMP $B3A2       Byte-Wert nach
                                 Fließkommaformat wandeln
 
-                                Stringparameter holen
+                                *** Stringparameter holen
 .,B782 20 A3 B6 JSR $B6A3       FRESTR, String holen, Länge
                                 in A
 .,B785 A2 00    LDX #$00        Typeflag
@@ -3116,7 +3115,7 @@
 .,B789 A8       TAY             Länge in Y
 .,B78A 60       RTS             Rücksprung
 
-                                BASIC-Funktion ASC
+                                *** BASIC-Funktion ASC
 .,B78B 20 82 B7 JSR $B782       String holen, Zeiger in
                                 $22/$23, Länge in Y
 .,B78E F0 08    BEQ $B798       Länge gleich null,
@@ -3127,7 +3126,7 @@
 .,B795 4C A2 B3 JMP $B3A2       nach Fließkomma wandeln
 .,B798 4C 48 B2 JMP $B248       'ILLEGAL QUANTITY'
 
-                                holt Byte-Wert nach X
+                                *** holt Byte-Wert nach X
 .,B79B 20 73 00 JSR $0073       CHRGET nächstes Zeichen holen
 .,B79E 20 8A AD JSR $AD8A       FRMNUM numerischen Wert
                                 nach FAC holen
@@ -3140,7 +3139,7 @@
                                 Ausdrucks ins X-Reg
 .,B7AA 4C 79 00 JMP $0079       CHRGOT letztes Zeichen holen
 
-                                BASIC-Funktion VAL
+                                *** BASIC-Funktion VAL
 .,B7AD 20 82 B7 JSR $B782       Stringadresse und Länge holen
 .,B7B0 D0 03    BNE $B7B5       Stringlänge ungleich Null ?
 .,B7B2 4C F7 B8 JMP $B8F7       Null in FAC
@@ -3175,16 +3174,16 @@
 .,B7E8 84 7B    STY $7B         zurückholen
 .,B7EA 60       RTS             Rücksprung
 
-                                GETADR und GETBYT holt
-                                16-Bit und 8-Bit-Wert
+                                *** GETADR und GETBYT holt
+                                *** 16-Bit und 8-Bit-Wert
 .,B7EB 20 8A AD JSR $AD8A       FRMNUM holt numerischen Wert
 .,B7EE 20 F7 B7 JSR $B7F7       FAC in Adressformat wandlen
                                 $14/$15
 .,B7F1 20 FD AE JSR $AEFD       CHKCOM prüft auf Komma
 .,B7F4 4C 9E B7 JMP $B79E       holt Byte-Wert nach X
 
-                                GETADR FAC in positive
-                                16-Bit-Zahl wandeln
+                                *** GETADR FAC in positive
+                                *** 16-Bit-Zahl wandeln
 .,B7F7 A5 66    LDA $66         Vorzeichen
 .,B7F9 30 9D    BMI $B798       negativ, dann
                                 'ILLEGAL QUANTITY'
@@ -3199,7 +3198,7 @@
 .,B80A 85 15    STA $15         speichern
 .,B80C 60       RTS             Rücksprung
 
-                                BASIC-Funktion PEEK
+                                *** BASIC-Funktion PEEK
 .,B80D A5 15    LDA $15         $15 und $16
 .,B80F 48       PHA             in
 .,B810 A5 14    LDA $14         Stack
@@ -3215,14 +3214,14 @@
 .,B81F 85 15    STA $15         zurückholen
 .,B821 4C A2 B3 JMP $B3A2       Y nach Fließkommaformat
 
-                                BASIC-Befehl POKE
+                                *** BASIC-Befehl POKE
 .,B824 20 EB B7 JSR $B7EB       Poke-Adrefcse und Wert holen
 .,B827 8A       TXA             Poke-Wert in Akku
 .,B828 A0 00    LDY #$00        Zähler auf Null
 .,B82A 91 14    STA ($14),Y     und in Speicher schreiben
 .,B82C 60       RTS             Rücksprung
 
-                                BASIC-Befehl WAIT
+                                *** BASIC-Befehl WAIT
 .,B82D 20 EB B7 JSR $B7EB       Adresse und Wert holen
 .,B830 86 49    STX $49         zweiter Parameter nach $49
 .,B832 A2 00    LDX #$00        Default für dritten Parameter
@@ -3238,18 +3237,18 @@
 .,B846 F0 F8    BEQ $B840       weiter warten
 .,B848 60       RTS             Rücksprung
 
-                                Arithmetik-Routinen
+                                *** Arithmetik-Routinen
 
-                                FAC = FAC + 0.5
+                                *** FAC = FAC + 0.5
 .,B849 A9 11    LDA #$11        Zeiger auf
 .,B84B A0 BF    LDY #$BF        Konstante 0.5
 .,B84D 4C 67 B8 JMP $B867       FAC = FAC + Konstante (A/Y)
 
-                                Minus FAC = Konstante
-                                (A/Y) - FAC
+                                *** Minus FAC = Konstante
+                                *** (A/Y) - FAC
 .,B850 20 8C BA JSR $BA8C       Konstante (A/Y) nach ARG
 
-                                Minus FAC = ARG - FAC
+                                *** Minus FAC = ARG - FAC
 .,B853 A5 66    LDA $66         Die
 .,B855 49 FF    EOR #$FF        Vorzeichen
 .,B857 85 66    STA $66         umdrehen
@@ -3260,11 +3259,11 @@
 .,B862 20 99 B9 JSR $B999       Exponenten von FAC und ARG
 .,B865 90 3C    BCC $B8A3       angleichen
 
-                                Plus FAC = Konstante (A/Y) +
-                                FAC
+                                *** Plus FAC = Konstante (A/Y) +
+                                *** FAC
 .,B867 20 8C BA JSR $BA8C       Konstante (A/Y) nach ARG
 
-                                Plus FAC = FAC + ARG
+                                *** Plus FAC = FAC + ARG
 .,B86A D0 03    BNE $B86F       FAC ungleich null ?
 .,B86C 4C FC BB JMP $BBFC       nein, dann FAC = ARG
 .,B86F A6 70    LDX $70         Rundungsbyte für FAC
@@ -3385,7 +3384,7 @@
 .,B944 66 70    ROR $70         höchstwertigen Bits
 .,B946 60       RTS             Rücksprung
 
-                                Mantisse von FAC invertieren
+                                *** Mantisse von FAC invertieren
 .,B947 A5 66    LDA $66         FAC Vorzeichen
 .,B949 49 FF    EOR #$FF        invertieren
 .,B94B 85 66    STA $66         und speichern
@@ -3417,8 +3416,8 @@
 .,B97E A2 0F    LDX #$0F        Nummer für 'OVERFLOW'
 .,B980 4C 37 A4 JMP $A437       Fehlermeldung ausgeben
 
-                                Rechtsverschieben eines
-                                Registers
+                                *** Rechtsverschieben eines
+                                *** Registers
 .,B983 A2 25    LDX #$25        Offset-Zeiger auf Register
 .,B985 B4 04    LDY $04,X       FAC-
 .,B987 84 70    STY $70         Rundungsbyte
@@ -3453,7 +3452,7 @@
 .,B9BA 18       CLC             Carry löschen
 .,B9BB 60       RTS             Rücksprung
 
-                                Konstanten für LOG
+                                *** Konstanten für LOG
 .:B9BC 81 00 00 00 00           1
 .:B9C1 03                       3 = Polynomgrad, dann 4
                                 Koeffizienten
@@ -3466,7 +3465,7 @@
 .:B9E0 80 80 00 00 00           -.5
 .:B9E5 80 31 72 17 F8            .693147181  =  LOG(2)
 
-                                BASIC-Funktion LOG
+                                *** BASIC-Funktion LOG
 .,B9EA 20 2B BC JSR $BC2B       Vorzeichen holen
 .,B9ED F0 02    BEQ $B9F1       null ?, dann fertig
 .,B9EF 10 03    BPL $B9F4       positiv ?, dann ok
@@ -3496,12 +3495,12 @@
 .,BA24 A9 E5    LDA #$E5        Zeiger auf
 .,BA26 A0 B9    LDY #$B9        Konstante LOG(2)
 
-                                Multiplikation FAC =
-                                Konstante (A/Y) * FAC
+                                *** Multiplikation FAC =
+                                *** Konstante (A/Y) * FAC
 .,BA28 20 8C BA JSR $BA8C       Konstante nach ARG
 
-                                Multiplikation FAC = ARG *
-                                FAC
+                                *** Multiplikation FAC = ARG *
+                                *** FAC
 .,BA2B D0 03    BNE $BA30       nicht null ?
 .,BA2D 4C 8B BA JMP $BA8B       RTS
 .,BA30 20 B7 BA JSR $BAB7       Exponent berechnen
@@ -3553,7 +3552,7 @@
 .,BA89 D0 D6    BNE $BA61       bei $B34C.
 .,BA8B 60       RTS             Rücksprung
 
-                                ARG = Konstante (A/Y)
+                                *** ARG = Konstante (A/Y)
 .,BA8C 85 22    STA $22         Die
 .,BA8E 84 23    STY $23         Konstante,
 .,BA90 A0 04    LDY #$04        auf
@@ -3604,7 +3603,7 @@
 .,BADC 4C F7 B8 JMP $B8F7       FAC = 0
 .,BADF 4C 7E B9 JMP $B97E       'OVERFLOW ERROR'
 
-                                FAC = FAC * 10
+                                *** FAC = FAC * 10
 .,BAE2 20 0C BC JSR $BC0C       FAC runden und nach ARG
 .,BAE5 AA       TAX             FAC-Exponent
 .,BAE6 F0 10    BEQ $BAF8       FAC gleich null, dann fertig
@@ -3622,7 +3621,7 @@
 
 .:BAF9 84 20 00 00 00           Fließkommakonstante 10
 
-                                FAC = FAC / 10
+                                *** FAC = FAC / 10
 .,BAFE 20 0C BC JSR $BC0C       FAC runden und nach ARG
 .,BB01 A9 F9    LDA #$F9        Zeiger
 .,BB03 A0 BA    LDY #$BA        auf
@@ -3631,10 +3630,10 @@
 .,BB09 20 A2 BB JSR $BBA2       Konstante 10 nach FAC
 .,BB0C 4C 12 BB JMP $BB12       FAC = ARG / FAC
 
-                                FAC = Konstante (A/Y) / FAC
+                                *** FAC = Konstante (A/Y) / FAC
 .,BB0F 20 8C BA JSR $BA8C       Konstante (A/Y) nach ARG
 
-                                FAC = ARG / FAC
+                                *** FAC = ARG / FAC
 .,BB12 F0 76    BEQ $BB8A       FAC gleich null,
                                 'DIVISION BY ZERO'
 .,BB14 20 1B BC JSR $BC1B       FAC runden
@@ -3715,8 +3714,8 @@
 .,BB9D 85 65    STA $65         gen
 .,BB9F 4C D7 B8 JMP $B8D7       FAC linksbündig machen
 
-                                Konstante (A/Y) nach FAC
-                                übertragen
+                                *** Konstante (A/Y) nach FAC
+                                *** übertragen
 .,BBA2 85 22    STA $22         Zeiger
 .,BBA4 84 23    STY $23         setzen
 .,BBA6 A0 04    LDY #$04        Zähler setzen
@@ -3741,12 +3740,12 @@
 .,BBC7 A2 5C    LDX #$5C        Adresse LOW
 .:BBC9 2C       .BYTE $2C       Akku #4
 
-                                FAC nach Akku #3 übertragen
+                                *** FAC nach Akku #3 übertragen
 .,BBCA A2 57    LDX #$57        Adresse LOW Akku #3
 .,BBCC A0 00    LDY #$00        Adresse HIGH
 .,BBCE F0 04    BEQ $BBD4       unbedingter Sprung
 
-                                FAC nach Variable übertragen
+                                *** FAC nach Variable übertragen
 .,BBD0 A6 49    LDX $49         Variablenadresse
 .,BBD2 A4 4A    LDY $4A         holen
 .,BBD4 20 1B BC JSR $BC1B       FAC runden
@@ -3772,7 +3771,7 @@
 .,BBF9 84 70    STY $70         FAC-Rundungsstelle löschen
 .,BBFB 60       RTS             Rücksprung
 
-                                ARG nach FAC übertragen
+                                *** ARG nach FAC übertragen
 .,BBFC A5 6E    LDA $6E         ARG-Vorzeichen
 .,BBFE 85 66    STA $66         in FAC-Reg übertragen
 .,BC00 A2 05    LDX #$05        5 Bytes
@@ -3783,7 +3782,7 @@
 .,BC09 86 70    STX $70         FAC-Rundungsstelle löschen
 .,BC0B 60       RTS             Rücksprung
 
-                                FAC nach ARG übertragen
+                                *** FAC nach ARG übertragen
 .,BC0C 20 1B BC JSR $BC1B       FAC runden
 .,BC0F A2 06    LDX #$06        6 Zeichen
 .,BC11 B5 60    LDA $60,X       FAC in
@@ -3793,7 +3792,7 @@
 .,BC18 86 70    STX $70         FAC-Rundungsstelle löschen
 .,BC1A 60       RTS             Rücksprung
 
-                                FAC runden
+                                *** FAC runden
 .,BC1B A5 61    LDA $61         Exponent null ?,
 .,BC1D F0 FB    BEQ $BC1A       dann fertig
 .,BC1F 06 70    ASL $70         Rundungsstelle größer $7F ?
@@ -3803,7 +3802,7 @@
 .,BC28 4C 38 B9 JMP $B938       nach rechts verschieben,
                                 Exponent erhöhen
 
-                                Vorzeichen von FAC holen
+                                *** Vorzeichen von FAC holen
 .,BC2B A5 61    LDA $61         wenn null,
 .,BC2D F0 09    BEQ $BC38       dann RTS
 .,BC2F A5 66    LDA $66         FAC-Vorzeichen
@@ -3813,7 +3812,7 @@
 .,BC36 A9 01    LDA #$01        sonst positiv
 .,BC38 60       RTS             Rücksprung
 
-                                BASIC-Funktion SGN
+                                *** BASIC-Funktion SGN
 .,BC39 20 2B BC JSR $BC2B       Vorzeichen holen
 .,BC3C 85 62    STA $62         und in FAC speichern
 .,BC3E A9 00    LDA #$00        $63
@@ -3830,12 +3829,12 @@
 .,BC53 85 66    STA $66         löschen
 .,BC55 4C D2 B8 JMP $B8D2       linksbündig machen
 
-                                BASIC-Funktion ABS
+                                *** BASIC-Funktion ABS
 .,BC58 46 66    LSR $66         Vorzeichenbit löschen
 .,BC5A 60       RTS             Rücksprung
 
-                                Vergleich Konstante (A/Y) mit
-                                FAC
+                                *** Vergleich Konstante (A/Y) mit
+                                *** FAC
 .,BC5B 85 24    STA $24         Zeiger auf
 .,BC5D 84 25    STY $25         Konstante
 .,BC5F A0 00    LDY #$00        Zähler setzen
@@ -3878,8 +3877,8 @@
                                 invertieren
 .,BC98 4C 31 BC JMP $BC31       Flag für Ergebnis setzen
 
-                                Umwandlung Fließkomma nach
-                                Integer
+                                *** Umwandlung Fließkomma nach
+                                *** Integer
 .,BC9B A5 61    LDA $61         Exponent
 .,BC9D F0 4A    BEQ $BCE9       null ?
 .,BC9F 38       SEC             Integer-
@@ -3908,7 +3907,7 @@
 .,BCC9 84 68    STY $68         FAC-Rundungsbyte löschen
 .,BCCB 60       RTS             Rücksprung
 
-                                BASIC-Funktion INT
+                                *** BASIC-Funktion INT
 .,BCCC A5 61    LDA $61         Exponent
 .,BCCE C9 A0    CMP #$A0        ganze Zahl ?
 .,BCD0 B0 20    BCS $BCF2       ja, dann fertig
@@ -3930,8 +3929,8 @@
 .,BCF1 A8       TAY             Y-Reg löschen
 .,BCF2 60       RTS             Rücksprung
 
-                                Umwandlung ASCII nach
-                                Fließkommaformat
+                                *** Umwandlung ASCII nach
+                                *** Fließkommaformat
 .,BCF3 A0 00    LDY #$00        Wert festlegen
 .,BCF5 A2 0A    LDX #$0A        Zähler stellen
 .,BCF7 94 5D    STY $5D,X       den Bereich
@@ -4030,22 +4029,22 @@
 .,BDAE 85 5E    STA $5E         ren
 .,BDB0 4C 30 BD JMP $BD30       nächstes Zeichen holen
 
-                                Konstanten für Fließkomma
-                                nach ASCII
+                                *** Konstanten für Fließkomma
+                                *** nach ASCII
 .:BDB3 9B 3E BC 1F FD           99999999.9
 .:BDB8 9E 6E 6B 27 FD           999999999
 .:BDBD 9E 6E 6B 28 00           1E9
 
-                                Ausgabe der Zeilennummer
-                                bei Fehlermeldung
+                                *** Ausgabe der Zeilennummer
+                                *** bei Fehlermeldung
 .,BDC2 A9 71    LDA #$71        Zeiger
 .,BDC4 A0 A3    LDY #$A3        auf 'in'
 .,BDC6 20 DA BD JSR $BDDA       String ausgeben
 .,BDC9 A5 3A    LDA $3A         laufende
 .,BDCB A6 39    LDX $39         Zeilennummer holen
 
-                                positive Integerzahl
-                                in A/X ausgeben
+                                *** positive Integerzahl
+                                *** in A/X ausgeben
 .,BDCD 85 62    STA $62         für Umwandlung
 .,BDCF 86 63    STX $63         in FAC schreiben
 .,BDD1 A2 90    LDX #$90        Exponent
@@ -4055,8 +4054,8 @@
 .,BDD7 20 DF BD JSR $BDDF       FAC nach ASCII wandeln
 .,BDDA 4C 1E AB JMP $AB1E       String ausgeben
 
-                                FAC nach ASCII-Format
-                                wandeln und nach $100
+                                *** FAC nach ASCII-Format
+                                *** wandeln und nach $100
 .,BDDD A0 01    LDY #$01        Stringzeiger
 .,BDDF A9 20    LDA #$20        ' ' Leerzeichen für positive
                                 Zahl
@@ -4226,8 +4225,8 @@
 .:BF11 80 00 00 00 00           Konstante 0.5 für
                                 SQR-Funktion
 
-                                Konstanten für Gleitkomma
-                                nach ASCII
+                                *** Konstanten für Gleitkomma
+                                *** nach ASCII
                                 (32-Bit Binärzahlen mit Vorzeichen)
 .:BF16 FA 0A 1F 00              -100 000 000
 .:BF1A 00 98 96 80                10 000 000
@@ -4239,8 +4238,8 @@
 .:BF32 00 00 00 0A                        10
 .:BF36 FF FF FF FF                        -1
 
-                                Konstanten für Umwandlung
-                                TI nach TI$
+                                *** Konstanten für Umwandlung
+                                *** TI nach TI$
 .:BF3A FF DF 0A 80              -2 160 000
 .:BF3E 00 03 4B C0                  216 000
 .:BF42 FF FF 73 60                  -36 000
@@ -4256,17 +4255,17 @@
 .:BF68 AA AA AA AA AA AA AA AA
 .:BF70 AA
 
-                                BASIC-Funktion SQR
+                                *** BASIC-Funktion SQR
 .,BF71 20 0C BC JSR $BC0C       FAC runden und nach ARG
 .,BF74 A9 11    LDA #$11        Zeiger auf
 .,BF76 A0 BF    LDY #$BF        Konstante 0.5
 
-                                Potenzierung FAC = ARG
-                                hoch Konstante (A/Y)
+                                *** Potenzierung FAC = ARG
+                                *** hoch Konstante (A/Y)
 .,BF78 20 A2 BB JSR $BBA2       Konstante nach FAC
 
-                                Potenzierung FAC = ARG
-                                hoch FAC
+                                *** Potenzierung FAC = ARG
+                                *** hoch FAC
 .,BF7B F0 70    BEQ $BFED       wenn FAC=0, dann zu $BFED
 .,BF7D A5 69    LDA $69         Exponent ARG = Basis
 .,BF7F D0 03    BNE $BF84       nicht null ?,
@@ -4296,7 +4295,7 @@
 .,BFB1 4A       LSR             wenn Exponent gradzahlig,
 .,BFB2 90 0A    BCC $BFBE       dann fertig
 
-                                Vorzeichenwechsel
+                                *** Vorzeichenwechsel
 .,BFB4 A5 61    LDA $61         Exponent
 .,BFB6 F0 06    BEQ $BFBE       Zahl gleich null, dann fertig
 .,BFB8 A5 66    LDA $66         Vorzeichen
@@ -4304,7 +4303,7 @@
 .,BFBC 85 66    STA $66         speichern
 .,BFBE 60       RTS             Rücksprung
 
-                                Konstanten für EXP
+                                *** Konstanten für EXP
 .:BFBF 81 38 AA 3B 29           1.44269504 = 1/LOG(2)
 .:BFC4 07                       7 = Polynomgrad, 8
                                 Koeffizienten
@@ -4317,7 +4316,7 @@
 .:BFE3 80 31 72 18 10           .693147186
 .:BFE8 81 00 00 00 00           1
 
-                                BASIC-Funktion EXP
+                                *** BASIC-Funktion EXP
 .,BFED A9 BF    LDA #$BF        Zeiger auf
 .,BFEF A0 BF    LDY #$BF        Konstante 1/LOG(2)
 .,BFF1 20 28 BA JSR $BA28       mit FAC multiplizieren
@@ -4363,8 +4362,8 @@
                                 FAC und ARG addieren
 .,E042 60       RTS             Rücksprung
 
-                                Polynomberechnung
-                                y=a1*x+a2*x^3+a3*x^5+...
+                                *** Polynomberechnung
+                                *** y=a1*x+a2*x^3+a3*x^5+...
 .,E043 85 71    STA $71         Zeiger auf
 .,E045 84 72    STY $72         Polynomkoeffizienten
 .,E047 20 CA BB JSR $BBCA       FAC nach Akku #3 bringen
@@ -4375,8 +4374,8 @@
 .,E054 A0 00    LDY #$00        Akku #3
 .,E056 4C 28 BA JMP $BA28       FAC = FAC * Akku #3
 
-                                Polynomberechnung
-                                y=a0+a1*x+a2*x^2+a3*x^3+...
+                                *** Polynomberechnung
+                                *** y=a0+a1*x+a2*x^2+a3*x^3+...
 .,E059 85 71    STA $71         Zeiger auf
 .,E05B 84 72    STY $72         Polynomgrad
 .,E05D 20 C7 BB JSR $BBC7       FAC nach Akku #4 bringen
@@ -4406,11 +4405,11 @@
                                 zu $E070
 .,E08C 60       RTS             Rücksprung
 
-                                Konstanten für RND
+                                *** Konstanten für RND
 .:E08D 98 35 44 7A 00           11879546
 .:E092 68 28 B1 46 00           3.92767774E-4
 
-                                BASIC-Funktion RND
+                                *** BASIC-Funktion RND
 .,E097 20 2B BC JSR $BC2B       Vorzeichen holen
 .,E09A 30 37    BMI $E0D3       negativ ?, dann zu $E0D3
 .,E09C D0 20    BNE $E0BE       nicht Null?, dann zu $E0BE
@@ -4458,8 +4457,8 @@
 .,E0F4 A0 00    LDY #$00        letzten RND-Wert
 .,E0F6 4C D4 BB JMP $BBD4       FAC runden und speichern
 
-                                Fehlerauswertung nach
-                                I/O-Routinen
+                                *** Fehlerauswertung nach
+                                *** I/O-Routinen
 .,E0F9 C9 F0    CMP #$F0        RS 232 OPEN oder CLOSE ?
 .,E0FB D0 07    BNE $E104       nein
 .,E0FD 84 38    STY $38         BASIC-RAM Ende
@@ -4470,32 +4469,32 @@
 .,E107 A2 1E    LDX #$1E        sonst Nummer für 'BREAK'
 .,E109 4C 37 A4 JMP $A437       Fehlermeldung ausgeben
 
-                                BASIC BSOUT
+                                *** BASIC BSOUT
 .,E10C 20 D2 FF JSR $FFD2       ein Zeichen ausgeben
 .,E10F B0 E8    BCS $E0F9       Fehler ?
 .,E111 60       RTS             Rücksprung
 
-                                BASIC BASIN
+                                *** BASIC BASIN
 .,E112 20 CF FF JSR $FFCF       ein Zeichen holen
 .,E115 B0 E2    BCS $E0F9       Fehler ?
 .,E117 60       RTS             Rücksprung
 
-                                BASIC CKOUT
+                                *** BASIC CKOUT
 .,E118 20 AD E4 JSR $E4AD       Ausgabegerät setzen
 .,E11B B0 DC    BCS $E0F9       Fehler ?
 .,E11D 60       RTS             Rücksprung
 
-                                BASIC CHKIN
+                                *** BASIC CHKIN
 .,E11E 20 C6 FF JSR $FFC6       Eingabegerät setzen
 .,E121 B0 D6    BCS $E0F9       Fehler ?
 .,E123 60       RTS             Rücksprung
 
-                                BASIC GETIN
+                                *** BASIC GETIN
 .,E124 20 E4 FF JSR $FFE4       ein Zeichen holen
 .,E127 B0 D0    BCS $E0F9       Fehler ?
 .,E129 60       RTS             Rücksprung
 
-                                SYS-Befehl
+                                *** SYS-Befehl
 .,E12A 20 8A AD JSR $AD8A       FRMNUM, numerischen
                                 Ausdruck holen
 .,E12D 20 F7 B7 JSR $B7F7       in Adressformat wandeln,
@@ -4519,7 +4518,7 @@
 .,E152 8D 0F 03 STA $030F       wieder speichern
 .,E155 60       RTS             Rücksprung
 
-                                SAVE-Befehl
+                                *** SAVE-Befehl
 .,E156 20 D4 E1 JSR $E1D4       Parameter (Filenamen, Prim,
                                 und Sek. Adresse)
 .,E159 A6 2D    LDX $2D         Endadresse gleich
@@ -4530,11 +4529,11 @@
 .,E162 B0 95    BCS $E0F9       Fehler ?
 .,E164 60       RTS             Rücksprung
 
-                                VERIFY-Befehl
+                                *** VERIFY-Befehl
 .,E165 A9 01    LDA #$01        Verify-
 .:E167 2C       .BYTE $2C       Flag
 
-                                LOAD-Befehl
+                                *** LOAD-Befehl
 .,E168 A9 00    LDA #$00        Load-Flag
 .,E16A 85 0A    STA $0A         speichern
 .,E16C 20 D4 E1 JSR $E1D4       Parameter holen
@@ -4577,21 +4576,21 @@
 .,E1B8 20 33 A5 JSR $A533       Programmzeilen neu binden
 .,E1BB 4C 77 A6 JMP $A677       RESTORE, BASIC initialisieren
 
-                                BASIC-Befehl OPEN
+                                *** BASIC-Befehl OPEN
 .,E1BE 20 19 E2 JSR $E219       Parameter holen
 .,E1C1 20 C0 FF JSR $FFC0       OPEN-Routine
 .,E1C4 B0 0B    BCS $E1D1       Fehler ?
 .,E1C6 60       RTS             Rücksprung
 
-                                BASIC-Befehl CLOSE
+                                *** BASIC-Befehl CLOSE
 .,E1C7 20 19 E2 JSR $E219       Parameter holen
 .,E1CA A5 49    LDA $49         Filenummer
 .,E1CC 20 C3 FF JSR $FFC3       CLOSE-Routine
 .,E1CF 90 C3    BCC $E194       kein Fehler, RTS
 .,E1D1 4C F9 E0 JMP $E0F9       zur Fehlerauswertung
 
-                                Parameter für LOAD und SAVE
-                                holen
+                                *** Parameter für LOAD und SAVE
+                                *** holen
 .,E1D4 A9 00    LDA #$00        Default für Länge des
                                 Filenamen
 .,E1D6 20 BD FF JSR $FFBD       Filenamenparameter setzen
@@ -4615,7 +4614,7 @@
                                 Zeichen
 .,E203 4C 9E B7 JMP $B79E       holt Byte-Wert nach X
 
-                                prüft auf weitere Zeichen
+                                *** prüft auf weitere Zeichen
 .,E206 20 79 00 JSR $0079       CHRGOT letztes Zeichen
 .,E209 D0 02    BNE $E20D       weiteres Zeichen, dann
                                 Rückkehr
@@ -4628,7 +4627,7 @@
                                 Rückkehr
 .,E216 4C 08 AF JMP $AF08       'SYNTAX ERROR'
 
-                                Parameter für OPEN holen
+                                *** Parameter für OPEN holen
 .,E219 A9 00    LDA #$00        Default für Länge des
                                 Filenamens
 .,E21B 20 BD FF JSR $FFBD       Filenamenparameter setzen
@@ -4665,12 +4664,12 @@
 .,E25F A4 23    LDY $23         Filenamens
 .,E261 4C BD FF JMP $FFBD       Filenamenparameter setzen
 
-                                BASIC-Funktion COS
+                                *** BASIC-Funktion COS
 .,E264 A9 E0    LDA #$E0        Zeiger auf
 .,E266 A0 E2    LDY #$E2        Konstante Pi/2
 .,E268 20 67 B8 JSR $B867       zu FAC addieren
 
-                                BASIC-Funktion SIN
+                                *** BASIC-Funktion SIN
 .,E26B 20 0C BC JSR $BC0C       FAC runden und nach ARG
 .,E26E A9 E5    LDA #$E5        Zeiger auf
 .,E270 A0 E2    LDY #$E2        Konstante Pi*2
@@ -4704,7 +4703,7 @@
 .,E2AF A0 E2    LDY #$E2        Polynomkoeffizienten
 .,E2B1 4C 43 E0 JMP $E043       Polynom berechnen
 
-                                BASIC-Funktion TAN
+                                *** BASIC-Funktion TAN
 .,E2B4 20 CA BB JSR $BBCA       FAC nach Akku#3
 .,E2B7 A9 00    LDA #$00        Flag
 .,E2B9 85 12    STA $12         setzen
@@ -4725,7 +4724,7 @@
 .,E2DC 48       PHA             COS
 .,E2DD 4C 9D E2 JMP $E29D       berechnen
 
-                                Konstanten für SIN und COS
+                                *** Konstanten für SIN und COS
 .:E2E0 81 49 0F DA A2           1.57079633   Pi/2
 .:E2E5 83 49 0F DA A2           6.28318531   2*Pi
 .:E2EA 7F 00 00 00 00            .25
@@ -4738,7 +4737,7 @@
 .:E304 86 A5 5D E7 28           -41.3147021
 .:E309 83 49 0F DA A2             6.28318531   2*Pi
 
-                                BASIC-Funktion ATN
+                                *** BASIC-Funktion ATN
 .,E30E A5 66    LDA $66         Vorzeichen
 .,E310 48       PHA             retten
 .,E311 10 03    BPL $E316       positiv ?
@@ -4765,8 +4764,8 @@
 .,E33A 4C B4 BF JMP $BFB4       Vorzeichen wechseln
 .,E33D 60       RTS             Rücksprung
 
-                                Fließkommakonstanten für
-                                ATN-Funktion
+                                *** Fließkommakonstanten für
+                                *** ATN-Funktion
 .:E33E 0B                       11 = Polynomgrad, dann 12
                                 Koeffizienten
 .:E33F 76 B3 83 BD D3           -6.84793912E-04
@@ -4782,7 +4781,7 @@
 .:E371 7F AA AA AA 13            -.333333316
 .:E376 81 00 00 00 00            1
 
-                                BASIC NMI-Einsprung
+                                *** BASIC NMI-Einsprung
 .,E37B 20 CC FF JSR $FFCC       CLRCH
 .,E37E A9 00    LDA #$00        Eingabegerät gleich
 .,E380 85 13    STA $13         Tastatur
@@ -4796,7 +4795,7 @@
 .,E38E 4C 3A A4 JMP $A43A       Fehlermeldung ausgeben
 .,E391 4C 74 A4 JMP $A474       Ready - Modus
 
-                                BASIC Kaltstart
+                                *** BASIC Kaltstart
 .,E394 20 53 E4 JSR $E453       BASIC-Vektoren setzen
 .,E397 20 BF E3 JSR $E3BF       RAM initialisieren
 .,E39A 20 22 E4 JSR $E422       Einschaltmeldung ausgeben
@@ -4804,7 +4803,7 @@
 .,E39F 9A       TXS             setzen
 .,E3A0 D0 E4    BNE $E386       zum Warmstart
 
-                                Kopie der CHRGET-Routine
+                                *** Kopie der CHRGET-Routine
 .,E3A2 E6 7A    INC $7A         LOW-Byte Zeiger erhöhen
 .,E3A4 D0 02    BNE $E3A8       Zeiger in BASIC-Text erhöhen
 .,E3A6 E6 7B    INC $7B         HIGH-Byte Zeiger erhöhen
@@ -4819,10 +4818,10 @@
 .,E3B7 E9 D0    SBC #$D0        C=1
 .,E3B9 60       RTS             Rücksprung
 
-                                Anfangswert für RND-Funktion
+                                *** Anfangswert für RND-Funktion
 .:E3BA 80 4F C7 52 58           .811635157
 
-                                RAM für BASIC initialisieren
+                                *** RAM für BASIC initialisieren
 .,E3BF A9 4C    LDA #$4C        JMP
 .,E3C1 85 54    STA $54         für Funktionen
 .,E3C3 8D 10 03 STA $0310       für USR-Funktion
@@ -4889,7 +4888,7 @@
 .,E441 20 1E AB JSR $AB1E       String ausgeben
 .,E444 4C 44 A6 JMP $A644       zum NEW-Befehl
 
-                                Tabelle der BASIC-Vektoren
+                                *** Tabelle der BASIC-Vektoren
 .:E447 8B E3 83 A4 7C A5 1A A7
 .:E44F E4 A7 86 AE
 
@@ -4900,9 +4899,9 @@
 .,E45C 10 F7    BPL $E455       schon alle?
 .,E45E 60       RTS             Rücksprung
 
-                                Betriebssystem
+                                *** Betriebssystem
 
-                                System-Meldungen
+                                *** System-Meldungen
 .:E45F 00 20 42 41 53 49 43 20  basic bytes free
 .:E467 42 59 54 45 53 20 46 52
 .:E46F 45 45 0D 00 93 0D 20 20
@@ -4916,7 +4915,7 @@
 .:E4AB 00
 .:E4AC 5C
 
-                                BASIC-CKOUT Routine
+                                *** BASIC-CKOUT Routine
 .,E4AD 48       PHA             Akkuinhalt in Stack
 .,E4AE 20 C9 FF JSR $FFC9       CKOUT Ausgabegerät setzen
 .,E4B1 AA       TAX             Fehlernummer nach X
@@ -4931,12 +4930,12 @@
 .:E4CF AA AA AA AA AA AA AA AA
 .:E4D7 AA AA AA
 
-                                Hintergrundfarbe setzen
+                                *** Hintergrundfarbe setzen
 .,E4DA AD 21 D0 LDA $D021       Farbe holen
 .,E4DD 91 F3    STA ($F3),Y     ins Farbram schreiben
 .,E4DF 60       RTS             Rücksprung
 
-                                wartet auf Commodore-Taste
+                                *** wartet auf Commodore-Taste
 .,E4E0 69 02    ADC #$02        2*256/60 = 8.5 Sekunden
                                 warten
 .,E4E2 A4 91    LDY $91         Flag testen
@@ -4946,8 +4945,8 @@
 .,E4E9 D0 F7    BNE $E4E2       dann warten
 .,E4EB 60       RTS             Rücksprung
 
-                                Timerkonstanten für RS 232
-                                Baud Rate, PAL-Version
+                                *** Timerkonstanten für RS 232
+                                *** Baud Rate, PAL-Version
 .:E4EC 19 26                    $2619 = 9753     50 Baud
 .:E4EE 44 19                    $1944 = 6468     75 Baud
 .:E4F0 1A 11                    $111A = 4378    110 Baud
@@ -4959,19 +4958,19 @@
 .:E4FC AE 00                    $00AE =  174   1800 Baud
 .:E4FE 69 00                    $0069 =  105   2400 Baud
 
-                                Basis-Adresse des CIAs holen
+                                *** Basis-Adresse des CIAs holen
 .,E500 A2 00    LDX #$00        Adresse
 .,E502 A0 DC    LDY #$DC        $DC00
 .,E504 60       RTS             Rücksprung
 
-                                holt Anzahl der Zeilen und
-                                Spalten
+                                *** holt Anzahl der Zeilen und
+                                *** Spalten
 .,E505 A2 28    LDX #$28        40 Spalten
 .,E507 A0 19    LDY #$19        25 Zeilen
 .,E509 60       RTS             Rücksprung
 
-                                Cursor setzen (C=0) / holen
-                                (C=1)
+                                *** Cursor setzen (C=0) / holen
+                                *** (C=1)
 .,E50A B0 07    BCS $E513       Carry gesetzt, dann zu $E513
 .,E50C 86 D6    STX $D6         Zeile
 .,E50E 84 D3    STY $D3         Spalte
@@ -4980,7 +4979,7 @@
 .,E515 A4 D3    LDY $D3         Spalte
 .,E517 60       RTS             Rücksprung
 
-                                Bildschirm Reset
+                                *** Bildschirm Reset
 .,E518 20 A0 E5 JSR $E5A0       Videocontroller
                                 initialisieren
 .,E51B A9 00    LDA #$00        Shift-
@@ -5004,7 +5003,7 @@
 .,E540 85 CD    STA $CD         Blinkzeit
 .,E542 85 CC    STA $CC         Cursor Blinkflag
 
-                                Bildschirm löschen
+                                *** Bildschirm löschen
 .,E544 AD 88 02 LDA $0288       Speicherseite für
                                 Bildschirm-RAM
 .,E547 09 80    ORA #$80        Adressen
@@ -5027,13 +5026,13 @@
 .,E563 CA       DEX             Zähler erniedrigen
 .,E564 10 FA    BPL $E560       schon alle?
 
-                                Cursor Home
+                                *** Cursor Home
 .,E566 A0 00    LDY #$00        Löschen der
 .,E568 84 D3    STY $D3         Cursorspalte und
 .,E56A 84 D6    STY $D6         Cursorzeile
 
-                                Cursorpos. berechnen,
-                                Bildschirmzeiger setzen
+                                *** Cursorpos. berechnen,
+                                *** Bildschirmzeiger setzen
 .,E56C A6 D6    LDX $D6         Cursorzeile
 .,E56E A5 D3    LDA $D3         Cursorspalte
 .,E570 B4 D9    LDY $D9,X       HIGH-Bytes für Doppelzeilen
@@ -5069,8 +5068,8 @@
                                 initialisieren
 .,E59D 4C 66 E5 JMP $E566       Cursor Home
 
-                                Videocontroller
-                                initialisieren
+                                *** Videocontroller
+                                *** initialisieren
 .,E5A0 A9 03    LDA #$03        Ausgabe auf
 .,E5A2 85 9A    STA $9A         Bildschirm
 .,E5A4 A9 00    LDA #$00        Eingabe von
@@ -5082,8 +5081,8 @@
 .,E5B1 D0 F7    BNE $E5AA       schon alle?
 .,E5B3 60       RTS             Rücksprung
 
-                                Zeichen aus Tastaturpuffer
-                                holen
+                                *** Zeichen aus Tastaturpuffer
+                                *** holen
 .,E5B4 AC 77 02 LDY $0277       erstes Zeichen holen
 .,E5B7 A2 00    LDX #$00        Zähler auf Null
 .,E5B9 BD 78 02 LDA $0278,X     Puffer nach
@@ -5097,8 +5096,8 @@
 .,E5C8 18       CLC             Carry löschen
 .,E5C9 60       RTS             Rücksprung
 
-                                Warteschleife für
-                                Tastatureingabe
+                                *** Warteschleife für
+                                *** Tastatureingabe
 .,E5CA 20 16 E7 JSR $E716       Zeichen auf Bildschirm
                                 ausgeben
 .,E5CD A5 C6    LDA $C6         Anzahl der
@@ -5157,8 +5156,8 @@
 .,E630 B0 2B    BCS $E65D       wenn größer oder gleich, dann
                                 keine Eingabe
 
-                                Ein Zeichen vom Bildschirm
-                                holen
+                                *** Ein Zeichen vom Bildschirm
+                                *** holen
 .,E632 98       TYA             die
 .,E633 48       PHA             Re-
 .,E634 8A       TXA             gister
@@ -5209,7 +5208,7 @@
 .,E682 18       CLC             Carry löschen
 .,E683 60       RTS             Rücksprung
 
-                                auf Hochkomma testen
+                                *** auf Hochkomma testen
 .,E684 C9 22    CMP #$22        '"' ?
 .,E686 D0 08    BNE $E690       nein ?, dann fertig
 .,E688 A5 D4    LDA $D4         Hochkomma-
@@ -5219,8 +5218,8 @@
                                 herstellen
 .,E690 60       RTS             Rücksprung
 
-                                Zeichen auf Bildschirm
-                                ausgeben
+                                *** Zeichen auf Bildschirm
+                                *** ausgeben
 .,E691 09 40    ORA #$40        Bit 6 im Zeichen setzen
 .,E693 A6 C7    LDX $C7         RVS ?
 .,E695 F0 02    BEQ $E699       Umwandlung in Bildschirmcode
@@ -5245,8 +5244,8 @@
 .,E6B4 58       CLI             Interrupt freigeben
 .,E6B5 60       RTS             Rücksprung
 
-                                HIGH-Byte für Zeilenanfänge
-                                neu berechnen
+                                *** HIGH-Byte für Zeilenanfänge
+                                *** neu berechnen
 .,E6B6 20 B3 E8 JSR $E8B3       Zeilenzeiger erhöhen
 .,E6B9 E6 D3    INC $D3         Cursorspalte erhöhen
 .,E6BB A5 D5    LDA $D5         Zeilenlänge holen
@@ -5287,8 +5286,8 @@
 .,E6FE 85 D3    STA $D3         auf Null
 .,E700 60       RTS             Rücksprung
 
-                                Rückschritt in vorhergehende
-                                Zeile
+                                *** Rückschritt in vorhergehende
+                                *** Zeile
 .,E701 A6 D6    LDX $D6         Cursorzeile
 .,E703 D0 06    BNE $E70B       wenn null, dann zu $E70B
 .,E705 86 D3    STX $D3         Cursorspalte
@@ -5302,7 +5301,7 @@
 .,E713 84 D3    STY $D3         speichern
 .,E715 60       RTS             Rücksprung
 
-                                Ausgabe auf Bildschirm
+                                *** Ausgabe auf Bildschirm
 .,E716 48       PHA             Zeichen
 .,E717 85 D7    STA $D7         merken
 .,E719 8A       TXA             die
@@ -5403,7 +5402,7 @@
 .,E7D1 4C 44 EC JMP $EC44       Test auf weitere
                                 Sonderzeichen
 
-                                Zeichen größer $127
+                                *** Zeichen größer $127
 .,E7D4 29 7F    AND #$7F        Kode größer 127,
                                 Bit 7 löschen
 .,E7D6 C9 7F    CMP #$7F        nicht 'Pi' ?
@@ -5537,7 +5536,7 @@
                                 erhöhen
 .,E8CA 60       RTS             Rücksprung
 
-                                prüft auf Farbcodes
+                                *** prüft auf Farbcodes
 .,E8CB A2 0F    LDX #$0F        Anzahl der Kodes
 .,E8CD DD DA E8 CMP $E8DA,X     mit Farbcodetabelle
                                 vergleichen
@@ -5549,11 +5548,11 @@
 .,E8D6 8E 86 02 STX $0286       Farbcode setzen
 .,E8D9 60       RTS             Rücksprung
 
-                                Tabelle der Farb-Kodes
+                                *** Tabelle der Farb-Kodes
 .:E8DA 90 05 1C 9F 9C 1E 1F 9E
 .:E8E2 81 95 96 97 98 99 9A 9B
 
-                                Bildschirm scrollen
+                                *** Bildschirm scrollen
 .,E8EA A5 AC    LDA $AC         Alle
 .,E8EC 48       PHA             wichtigen
 .,E8ED A5 AD    LDA $AD         Zeiger
@@ -5624,8 +5623,8 @@
 .,E962 85 AC    STA $AC         len
 .,E964 60       RTS             Rücksprung
 
-                                Einfügen einer
-                                Fortsetzungszeile
+                                *** Einfügen einer
+                                *** Fortsetzungszeile
 .,E965 A6 D6    LDX $D6         Zeiger auf Cursorzeile
 .,E967 E8       INX             Zeiger erhöhen
 .,E968 B5 D9    LDA $D9,X       untere Zeile gleich
@@ -5675,7 +5674,7 @@
 .,E9C2 20 DA E6 JSR $E6DA       MSB neu berechnen
 .,E9C5 4C 58 E9 JMP $E958       Register zurückholen, RTS
 
-                                Zeile nach oben schieben
+                                *** Zeile nach oben schieben
 .,E9C8 29 03    AND #$03        Bildschirmzeiger
 .,E9CA 0D 88 02 ORA $0288       für neue Zeile
 .,E9CD 85 AD    STA $AD         berechnen
@@ -5690,8 +5689,8 @@
 .,E9DD 10 F5    BPL $E9D4       schon alle ?
 .,E9DF 60       RTS             Rücksprung
 
-                                Bildschirmzeile für
-                                Scrollzeile berechnen
+                                *** Bildschirmzeile für
+                                *** Scrollzeile berechnen
 .,E9E0 20 24 EA JSR $EA24       Zeiger auf Farb-RAM berechnen
 .,E9E3 A5 AC    LDA $AC         Zeiger
 .,E9E5 85 AE    STA $AE         für Zeile
@@ -5701,8 +5700,8 @@
 .,E9ED 85 AF    STA $AF         berechnen
 .,E9EF 60       RTS             Rücksprung
 
-                                Zeiger auf Video-RAM für
-                                Zeile X
+                                *** Zeiger auf Video-RAM für
+                                *** Zeile X
 .,E9F0 BD F0 EC LDA $ECF0,X     LOW-Byte
 .,E9F3 85 D1    STA $D1         holen
 .,E9F5 B5 D9    LDA $D9,X       HIGH-Byte
@@ -5711,7 +5710,7 @@
 .,E9FC 85 D2    STA $D2         RAM
 .,E9FE 60       RTS             Rücksprung
 
-                                Bildschirmzeile X löschen
+                                *** Bildschirmzeile X löschen
 .,E9FF A0 27    LDY #$27        40-1 Spalten
 .,EA01 20 F0 E9 JSR $E9F0       Zeilenpointer (D1/D2) setzen
 .,EA04 20 24 EA JSR $EA24       Pointer (F3/F4) für Farb-RAM
@@ -5731,8 +5730,8 @@
                                 berechnen
 .,EA1B 98       TYA             Akku wieder holen
 
-                                Zeichen und Farbe auf
-                                Bildschirm setzen
+                                *** Zeichen und Farbe auf
+                                *** Bildschirm setzen
 .,EA1C A4 D3    LDY $D3         Spaltenposition
 .,EA1E 91 D1    STA ($D1),Y     Zeichen in Akku auf
                                 Bildschirm
@@ -5740,7 +5739,7 @@
 .,EA21 91 F3    STA ($F3),Y     in Farb-RAM schreiben
 .,EA23 60       RTS             Rücksprung zum Hauptprogramm
 
-                                Zeiger auf Farb-RAM berechnen
+                                *** Zeiger auf Farb-RAM berechnen
 .,EA24 A5 D1    LDA $D1         $D1/$D2 = Zeiger auf
                                 Video-RAM-Position
 .,EA26 85 F3    STA $F3         LOW-Byte auf Zeichenposition
@@ -5751,7 +5750,7 @@
 .,EA2E 85 F4    STA $F4         in $F4 = speichern
 .,EA30 60       RTS             Rücksprung zum Hauptprogramm
 
-                                Interrupt-Routine
+                                *** Interrupt-Routine
 .,EA31 20 EA FF JSR $FFEA       Stop-Taste, Zeit erhöhen
 .,EA34 A5 CC    LDA $CC         Blink-Flag für Cursor
 .,EA36 D0 29    BNE $EA61       nicht blinkend, dann weiter
@@ -5797,7 +5796,7 @@
 .,EA85 68       PLA             und Rückkehr vom Interrupt
 .,EA86 40       RTI
 
-                                Tastaturabfrage
+                                *** Tastaturabfrage
 .,EA87 A9 00    LDA #$00
 .,EA89 8D 8D 02 STA $028D       Shift/CTRL Flag rücksetzen
 .,EA8C A0 40    LDY #$40        $40 = keine Taste gedrückt
@@ -5909,8 +5908,8 @@
 .,EB44 8D 00 DC STA $DC00       auf Normalwert
 .,EB47 60       RTS             Rücksprung
 
-                                Prüft auf Shift, CTRL,
-                                Commodore
+                                *** Prüft auf Shift, CTRL,
+                                *** Commodore
 .,EB48 AD 8D 02 LDA $028D       Flag für Shift/CTRL
 .,EB4B C9 03    CMP #$03        SHIFT und COMMOD.-Taste
                                 gedrückt?
@@ -5942,12 +5941,12 @@
                                 HIGH schreiben
 .,EB76 4C E0 EA JMP $EAE0       zurück zur Dekodierung
 
-                                Zeiger auf Tastatur-
-                                Dekodiertabellen
+                                *** Zeiger auf Tastatur-
+                                *** Dekodiertabellen
 .:EB79 81 EB C2 EB 03 EC 78 EC
 
-                                Tastatur-Dekodiertabelle 1
-                                ungeshifted
+                                *** Tastatur-Dekodiertabelle 1
+                                *** ungeshifted
 .:EB81 14 0D 1D 88 85 86 87 11
 .:EB89 33 57 41 34 5A 53 45 01
 .:EB91 35 52 44 36 43 46 54 58
@@ -5958,8 +5957,8 @@
 .:EBB9 31 5F 04 32 20 02 51 03
 .:EBC1 FF
 
-                                Tastatur-Dekodierung,
-                                Tabelle 2 geshifted
+                                *** Tastatur-Dekodierung,
+                                *** Tabelle 2 geshifted
 .:EBC2 94 8D 9D 8C 89 8A 8B 91
 .:EBCA 23 D7 C1 24 DA D3 C5 01
 .:EBD2 25 D2 C4 26 C3 C6 D4 D8
@@ -5970,8 +5969,8 @@
 .:EBFA 21 5F 04 22 A0 02 D1 83
 .:EC02 FF
 
-                                Tastatur-Dekodierung,
-                                Tabelle 3, mit 'C='-Taste
+                                *** Tastatur-Dekodierung,
+                                *** Tabelle 3, mit 'C='-Taste
 .:EC03 94 8D 9D 8C 89 8A 8B 91
 .:EC0B 96 B3 B0 97 AD AE B1 01
 .:EC13 98 B2 AC 99 BC BB A3 BD
@@ -5982,7 +5981,7 @@
 .:EC3B 81 5F 04 95 A0 02 AB 83
 .:EC43 FF
 
-                                prüft auf Steuerzeichen
+                                *** prüft auf Steuerzeichen
 .,EC44 C9 0E    CMP #$0E        chr$(14) Großschrift
 .,EC46 D0 07    BNE $EC4F       verzweige wenn nein
 .,EC48 AD 18 D0 LDA $D018       Character-Generator
@@ -6008,8 +6007,8 @@
 .,EC72 8D 91 02 STA $0291       Wert speichern
 .,EC75 4C A8 E6 JMP $E6A8       Ausgabe abschließen
 
-                                Tastaturdekodierung,
-                                Tabelle 4, mit CTRL-Taste
+                                *** Tastaturdekodierung,
+                                *** Tabelle 4, mit CTRL-Taste
 .:EC78 FF FF FF FF FF FF FF FF
 .:EC80 1C 17 01 9F 1A 13 05 FF
 .:EC88 9C 12 04 1E 03 06 14 18
@@ -6020,8 +6019,8 @@
 .:ECB0 90 06 FF 05 FF FF 11 FF
 .:ECB8 FF
 
-                                Konstanten für
-                                Videocontroller
+                                *** Konstanten für
+                                *** Videocontroller
 .:ECB9 00 00 00 00 00 00 00 00
 .:ECC1 00 00 00 00 00 00 00 00
 .:ECC9 00 9B 37 00 00 00 08 00
@@ -6029,25 +6028,25 @@
 .:ECD9 0E 06 01 02 03 04 00 01
 .:ECE1 02 03 04 05 06 07
 
-                                Text nach Drücken von SHIFT
-                                RUN/STOP
+                                *** Text nach Drücken von SHIFT
+                                *** RUN/STOP
 .:ECE7 4C 4F 41 44 0D 52 55 4E  'load (cr) run (cr)'
 .:ECEA 44 0D 52 55 4E 0D
 
-                                Tabelle der LSB der
-                                Bildschirmzeilen-Anfänge
+                                *** Tabelle der LSB der
+                                *** Bildschirmzeilen-Anfänge
 .:ECF0 00 28 50 78 A0 C8 F0 18
 .:ECF8 40 68 90 B8 E0 08 30 58
 .:ED00 80 A8 D0 F8 20 48 70 98
 .:ED08 C0
 
-                                IEC-Bus Routinen
+                                *** IEC-Bus Routinen
 
-                                TALK senden
+                                *** TALK senden
 .,ED09 09 40    ORA #$40        Bit für Talk setzen
 .:ED0B 2C       .BYTE $2C       Skip nach $ED0E
 
-                                LISTEN senden
+                                *** LISTEN senden
 .,ED0C 09 20    ORA #$20        Bit für Listen setzen
 .,ED0E 20 A4 F0 JSR $F0A4       Ende der RS 232 Übertragung
                                 abwarten
@@ -6075,8 +6074,8 @@
 .,ED3A 20 97 EE JSR $EE97       DATA auf LOW setzen
 .,ED3D 20 B3 EE JSR $EEB3       eine Millisekunde warten
 
-                                ein Byte auf IEC-Bus
-                                ausgeben
+                                *** ein Byte auf IEC-Bus
+                                *** ausgeben
 .,ED40 78       SEI             Interruptflag setzen
 .,ED41 20 97 EE JSR $EE97       DATA auf LOW setzen
 .,ED44 20 A9 EE JSR $EEA9       Hardware-Rückmeldung aus
@@ -6138,8 +6137,8 @@
 .,EDB6 18       CLC             Carry setzen
 .,EDB7 90 4A    BCC $EE03       unbedingter Sprung
 
-                                Sekundäradresse nach LISTEN
-                                senden
+                                *** Sekundäradresse nach LISTEN
+                                *** senden
 .,EDB9 85 95    STA $95         Sekundäradresse speichern
 .,EDBB 20 36 ED JSR $ED36       mit ATN HIGH ausgeben
 .,EDBE AD 00 DD LDA $DD00       Port A laden
@@ -6147,8 +6146,8 @@
 .,EDC3 8D 00 DD STA $DD00       und ausgeben
 .,EDC6 60       RTS             Rücksprung
 
-                                Sekundäradresse nach TALK
-                                ausgeben
+                                *** Sekundäradresse nach TALK
+                                *** ausgeben
 .,EDC7 85 95    STA $95         Sekundäradresse speichern
 .,EDC9 20 36 ED JSR $ED36       mit ATN ausgeben
 .,EDCC 78       SEI             Interruptflag setzen
@@ -6160,8 +6159,8 @@
 .,EDDB 58       CLI             Interruptflag löschen
 .,EDDC 60       RTS             Rücksprung
 
-                                IECOUT ein Byte auf IEC-Bus
-                                ausgeben
+                                *** IECOUT ein Byte auf IEC-Bus
+                                *** ausgeben
 .,EDDD 24 94    BIT $94         noch ein Byte auszugeben ?
 .,EDDF 30 05    BMI $EDE6       verzweige wenn ja
 .,EDE1 38       SEC             Carry setzen
@@ -6176,7 +6175,7 @@
 .,EDED 18       CLC             Carry löschen
 .,EDEE 60       RTS             Rücksprung
 
-                                UNTALK senden
+                                *** UNTALK senden
 .,EDEF 78       SEI             Interruptflag setzen
 .,EDF0 20 8E EE JSR $EE8E       CLOCK auf HIGH setzen
 .,EDF3 AD 00 DD LDA $DD00       Poar A laden
@@ -6185,7 +6184,7 @@
 .,EDFB A9 5F    LDA #$5F        Kennzeichnung für UNTALK
 .:EDFD 2C       .BYTE $2C       Skip nach $EE00
 
-                                UNLISTEN senden
+                                *** UNLISTEN senden
 .,EDFE A9 3F    LDA #$3F        Kennzeichnung für UNLISTEN
 .,EE00 20 11 ED JSR $ED11       ausgeben
 .,EE03 20 BE ED JSR $EDBE       ATN rücksetzen, LOW
@@ -6197,8 +6196,8 @@
 .,EE0D 20 85 EE JSR $EE85       CLOCK auf LOW setzen
 .,EE10 4C 97 EE JMP $EE97       DATA auf LOW setzen
 
-                                IECIN ein Zeichen vom
-                                IEC-Bus holen
+                                *** IECIN ein Zeichen vom
+                                *** IEC-Bus holen
 .,EE13 78       SEI             Interruptflag setzen
 .,EE14 A9 00    LDA #$00        $00 laden
 .,EE16 85 A5    STA $A5         und Zähler löschen
@@ -6252,39 +6251,39 @@
 .,EE83 18       CLC             Carry löschen
 .,EE84 60       RTS             Rücksprung
 
-                                CLOCK auf LOW setzen
+                                *** CLOCK auf LOW setzen
 .,EE85 AD 00 DD LDA $DD00       Port A laden
 .,EE88 29 EF    AND #$EF        Bit 4 löschen
 .,EE8A 8D 00 DD STA $DD00       und wieder speichern
 .,EE8D 60       RTS             Rücksprung
 
-                                CLOCK auf HIGH setzen
+                                *** CLOCK auf HIGH setzen
 .,EE8E AD 00 DD LDA $DD00       Port A laden
 .,EE91 09 10    ORA #$10        Bit 4 setzen
 .,EE93 8D 00 DD STA $DD00       und wieder speichern
 .,EE96 60       RTS             Rücksprung
 
-                                DATA auf LOW setzen
+                                *** DATA auf LOW setzen
 .,EE97 AD 00 DD LDA $DD00       Port A laden
 .,EE9A 29 DF    AND #$DF        Bit 5 löschen
 .,EE9C 8D 00 DD STA $DD00       und wieder speichern
 .,EE9F 60       RTS             Rücksprung
 
-                                DATA auf HIGH setzen
+                                *** DATA auf HIGH setzen
 .,EEA0 AD 00 DD LDA $DD00       Port A laden
 .,EEA3 09 20    ORA #$20        Bit 5 setzen
 .,EEA5 8D 00 DD STA $DD00       und wieder speichern
 .,EEA8 60       RTS             Rücksprung
 
-                                Bit vom IEC-Bus ins
-                                Carry-Flag holen
+                                *** Bit vom IEC-Bus ins
+                                *** Carry-Flag holen
 .,EEA9 AD 00 DD LDA $DD00       Port A laden
 .,EEAC CD 00 DD CMP $DD00       Änderung ?
 .,EEAF D0 F8    BNE $EEA9       verzweige wenn ja
 .,EEB1 0A       ASL             Datenbit ins Carry schieben
 .,EEB2 60       RTS             Rücksprung
 
-                                Verzögerung 1 Millisekunde
+                                *** Verzögerung 1 Millisekunde
 .,EEB3 8A       TXA             X-Register retten
 .,EEB4 A2 B8    LDX #$B8        X-Register mit $B8 laden
 .,EEB6 CA       DEX             herunterzählen
@@ -6292,7 +6291,7 @@
 .,EEB9 AA       TAX             X-Register wiederherstellen
 .,EEBA 60       RTS             Rücksprung
 
-                                RS 232 Ausgabe
+                                *** RS 232 Ausgabe
 .,EEBB A5 B4    LDA $B4         Anzahl Bits zu senden
 .,EEBD F0 47    BEQ $EF06       verzweige wenn Byte schon
                                 komplett übertragen
@@ -6385,8 +6384,8 @@
                                 zulassen NMIs
 .,EF49 60       RTS             Rücksprung
 
-                                Anzahl der RS 232 Datenbits
-                                berechnen
+                                *** Anzahl der RS 232 Datenbits
+                                *** berechnen
 .,EF4A A2 09    LDX #$09        Zähler für Wortlänge
 .,EF4C A9 20    LDA #$20        Maskenwert für Bit 5
 .,EF4E 2C 93 02 BIT $0293       Testen vom RS-232
@@ -6399,7 +6398,7 @@
 .,EF57 CA       DEX             vermindern
 .,EF58 60       RTS             Rücksprung
 
-                                empfangenes Bit verarbeiten
+                                *** empfangenes Bit verarbeiten
 .,EF59 A6 A9    LDX $A9         Startbit ?
 .,EF5B D0 33    BNE $EF90       verzweige wenn ja
 .,EF5D C6 A8    DEC $A8         Bitzähler erniedrigen
@@ -6440,8 +6439,8 @@
                                 rücksetzen
 .,EF96 60       RTS             Rücksprung
 
-                                Empfangenes Byte
-                                weiterverarbeiten
+                                *** Empfangenes Byte
+                                *** weiterverarbeiten
 .,EF97 AC 9B 02 LDY $029B       Pufferzeiger laden
 .,EF9A C8       INY             und erhöhen
 .,EF9B CC 9C 02 CPY $029C       mit Empfangspuffer
@@ -6494,8 +6493,8 @@
 .,EFDF F0 EC    BEQ $EFCD       sonst zu Break-Befehl
                                 empfangen
 
-                                RS-232 CKOUT, Ausgabe auf
-                                RS-232
+                                *** RS-232 CKOUT, Ausgabe auf
+                                *** RS-232
 .,EFE1 85 9A    STA $9A         Gerätenummer abspeichern
 .,EFE3 AD 94 02 LDA $0294       RS 232 Kommandregister laden
 .,EFE6 4A       LSR             Bit 0 (Handshake) ins Carry
@@ -6525,7 +6524,7 @@
                                 setzen
 .,F013 60       RTS             Rücksprung
 
-                                Ausgabe in RS 232 Puffer
+                                *** Ausgabe in RS 232 Puffer
 .,F014 20 28 F0 JSR $F028       falls erforderlich Übertragung starten
 .,F017 AC 9E 02 LDY $029E       Zeiger auf Ausgabepuffer
                                 laden
@@ -6557,8 +6556,8 @@
 .,F049 8D 0E DD STA $DD0E       Timer A starten
 .,F04C 60       RTS             Rücksprung
 
-                                RS-232 CHKIN, Eingabe auf
-                                RS-232 setzen
+                                *** RS-232 CHKIN, Eingabe auf
+                                *** RS-232 setzen
 .,F04D 85 99    STA $99         Gerätenummer speichern
 .,F04F AD 94 02 LDA $0294       RS 232 Befehlsregister laden
 .,F052 4A       LSR             Bit 0 ins Carry schieben
@@ -6584,8 +6583,8 @@
 .,F079 18       CLC             Carry löschen (ok Kennzeichen)
 .,F07A 4C 3B EF JMP $EF3B       NMI freigeben
 
-                                RS-232 CHKIN bei 3-Line
-                                Handshake
+                                *** RS-232 CHKIN bei 3-Line
+                                *** Handshake
 .,F07D AD A1 02 LDA $02A1       RS-232 NMI Status laden
 .,F080 29 12    AND #$12        wenn RS-232 nicht aktiv
 .,F082 F0 F3    BEQ $F077       dann starten
@@ -6593,7 +6592,7 @@
                                 Kenneichen)
 .,F085 60       RTS             Rücksprung
 
-                                GET von RS-232
+                                *** GET von RS-232
 .,F086 AD 97 02 LDA $0297       RS-232 Status holen
 .,F089 AC 9C 02 LDY $029C       Zeiger auf Ende des
                                 Eingabepuffers
@@ -6612,8 +6611,8 @@
 .,F0A1 A9 00    LDA #$00        Null übergeben
 .,F0A3 60       RTS             Rücksprung
 
-                                Ende der RS-232 Übertragung
-                                abwarten
+                                *** Ende der RS-232 Übertragung
+                                *** abwarten
 .,F0A4 48       PHA             Akku auf Stack retten
 .,F0A5 AD A1 02 LDA $02A1       RS-232 NMI Status laden
 .,F0A8 F0 11    BEQ $F0BB       nicht gesetzt, dann ok
@@ -6629,7 +6628,7 @@
 .,F0BB 68       PLA             Akku wieder holen
 .,F0BC 60       RTS             Rücksprung
 
-                                Systemmeldungen
+                                *** Systemmeldungen
 .:F0BD 0D 49 2F 4F 20 45 52 52  I/O ERROR #
 .:F0C6 52 20 A3 0D 53 45 41 52
 .:F0C9 0D 53 45 41 52 43 48 49  SEARCHING
@@ -6650,7 +6649,7 @@
 .:F127 0D 4F 4B 8D              OK
 
 
-                                Systemmeldungen ausgeben
+                                *** Systemmeldungen ausgeben
 .,F12B 24 9D    BIT $9D         Direkt-Modus Flag
 .,F12D 10 0D    BPL $F13C       Programm, dann überspringen
 .,F12F B9 BD F0 LDA $F0BD,Y     Zeichen holen mit Offset der
@@ -6665,7 +6664,7 @@
 .,F13C 18       CLC             Carry löschen, ok
 .,F13D 60       RTS             Rücksprung
 
-                                GETIN
+                                *** GETIN
 .,F13E A5 99    LDA $99         Eingabegerät laden
 .,F140 D0 08    BNE $F14A       verzweige wenn nicht Tastatur
 .,F142 A5 C6    LDA $C6         Anzahl der Zeichen im
@@ -6682,8 +6681,8 @@
 .,F155 18       CLC             Carry löschen, ok
 .,F156 60       RTS             Rücksprung
 
-                                BASIN Eingabe eines
-                                Zeichens
+                                *** BASIN Eingabe eines
+                                *** Zeichens
 .,F157 A5 99    LDA $99         Gerätenummer laden
 .,F159 D0 0B    BNE $F166       verzweige wenn nicht Tastatur
 .,F15B A5 D3    LDA $D3         Cursorposition holen
@@ -6694,7 +6693,7 @@
 .,F166 C9 03    CMP #$03        Eingabekanal 3 = Bildschirm
 .,F168 D0 09    BNE $F173       wenn nicht verzweige
 
-                                vom Bildschirm
+                                *** vom Bildschirm
 .,F16A 85 D0    STA $D0         Flag auf Eingabe von Bild-
                                 schimrstelle
 .,F16C A5 D5    LDA $D5         Cursorzeile laden
@@ -6706,7 +6705,7 @@
 .,F175 C9 02    CMP #$02        Eingabe von RS-232 ?
 .,F177 F0 3F    BEQ $F1B8       ja, so verzweige
 
-                                Eingabe vom Band
+                                *** Eingabe vom Band
 .,F179 86 97    STX $97         X-Register merken
 .,F17B 20 99 F1 JSR $F199       ein Zeichen vom Band holen
 .,F17E B0 16    BCS $F196       verzweige bei Fehler
@@ -6726,7 +6725,7 @@
 .,F196 A6 97    LDX $97         X-Register zurückholen
 .,F198 60       RTS             Rücksprung
 
-                                ein Zeichen vom Band holen
+                                *** ein Zeichen vom Band holen
 .,F199 20 0D F8 JSR $F80D       Bandpuffer Zeiger erhöhen
 .,F19C D0 0B    BNE $F1A9       verzweige wenn noch Zeichen
                                 im Puffer
@@ -6740,7 +6739,7 @@
 .,F1AB 18       CLC             Carry =0 (ok Kennzeichen)
 .,F1AC 60       RTS             Rücksprung
 
-                                Eingabe vom IEC-Bus
+                                *** Eingabe vom IEC-Bus
 .,F1AD A5 90    LDA $90         Status testen
 .,F1AF F0 04    BEQ $F1B5       verzweige wenn ok
 .,F1B1 A9 0D    LDA #$0D        'CR' Kode ausgeben
@@ -6748,7 +6747,7 @@
 .,F1B4 60       RTS             Rücksprung
 .,F1B5 4C 13 EE JMP $EE13       ein Byte vom IEC-Bus holen
 
-                                RS 232 Eingabe
+                                *** RS 232 Eingabe
 .,F1B8 20 4E F1 JSR $F14E       ein Byte von RS 232 holen
 .,F1BB B0 F7    BCS $F1B4       verzweige wenn Fehler
 .,F1BD C9 00    CMP #$00        vergleiche mit Nullbyte
@@ -6758,8 +6757,8 @@
 .,F1C6 D0 E9    BNE $F1B1       ja, 'CR' zurückgeben
 .,F1C8 F0 EE    BEQ $F1B8       nein, neuer Versuch
 
-                                BSOUT Ausgabe eines
-                                Zeichens
+                                *** BSOUT Ausgabe eines
+                                *** Zeichens
 .,F1CA 48       PHA             Datenbyte retten
 .,F1CB A5 9A    LDA $9A         Gerätenummer für Ausgabe
 .,F1CD C9 03    CMP #$03        vergleiche mit Bildschirm
@@ -6770,7 +6769,7 @@
 .,F1D5 90 04    BCC $F1DB       verzweige wenn keine Ausgabe
                                 IEC-Bus
 
-                                Ausgabe auf IEC-Bus
+                                *** Ausgabe auf IEC-Bus
 .,F1D7 68       PLA             Datenbyte retten
 .,F1D8 4C DD ED JMP $EDDD       ein Byte auf IEC-Bus ausgeben
 .,F1DB 4A       LSR             Bit 0 der Ausgabekanal-
@@ -6783,7 +6782,7 @@
 .,F1E2 48       PHA             retten
 .,F1E3 90 23    BCC $F208       RS-232 Ausgabe
 
-                                Ausgabe auf Band
+                                *** Ausgabe auf Band
 .,F1E5 20 0D F8 JSR $F80D       Bandpuffer Zeiger erhöhen
 .,F1E8 D0 0E    BNE $F1F8       verzweige wenn Puffer
                                 nicht voll
@@ -6807,12 +6806,12 @@
                                 gedrückt'
 .,F207 60       RTS             Rücksprung
 
-                                RS-232 Ausgabe
+                                *** RS-232 Ausgabe
 .,F208 20 17 F0 JSR $F017       ein Zeichen in RS-232
                                 Puffer schreiben
 .,F20B 4C FC F1 JMP $F1FC       CHROUT
 
-                                CHKIN Eingabegerät setzen
+                                *** CHKIN Eingabegerät setzen
 .,F20E 20 0F F3 JSR $F30F       sucht logische Filenummer
 .,F211 F0 03    BEQ $F216       verzweige wenn gefunden
 .,F213 4C 01 F7 JMP $F701       sonst 'file not open'
@@ -6826,7 +6825,7 @@
 .,F225 D0 03    BNE $F22A       nein, dann Band
 .,F227 4C 4D F0 JMP $F04D       ja, dann RS-232
 
-                                Band als Eingabegerät setzen
+                                *** Band als Eingabegerät setzen
 .,F22A A6 B9    LDX $B9         Sekundäradresse laden
 .,F22C E0 60    CPX #$60        vergleichemit 'Null'
 .,F22E F0 03    BEQ $F233       verzweige wenn 'Null'
@@ -6836,7 +6835,7 @@
 .,F235 18       CLC             Carry =0 (ok Kennzeichen)
 .,F236 60       RTS             Rücksprung
 
-                                IEC-Bus als Eingabegerät
+                                *** IEC-Bus als Eingabegerät
 .,F237 AA       TAX             Geräteadresse retten
 .,F238 20 09 ED JSR $ED09       TALK senden
 .,F23B A5 B9    LDA $B9         Sekundäradresse laden
@@ -6850,7 +6849,7 @@
 .,F24B 10 E6    BPL $F233       verzweige wenn ok
 .,F24D 4C 07 F7 JMP $F707       sonst 'DEVICE NOT PRESENT'
 
-                                CKOUT Ausgabegerät setzen
+                                *** CKOUT Ausgabegerät setzen
 .,F250 20 0F F3 JSR $F30F       sucht logische Filenummer
 .,F253 F0 03    BEQ $F258       verzweige wenn gefunden
 .,F255 4C 01 F7 JMP $F701       sonst 'FILE NOT OPEN'
@@ -6866,7 +6865,7 @@
 .,F26C 4C E1 EF JMP $EFE1       Ausgabe auf RS-232
                                 vorbereiten
 
-                                Band als Ausgabegerät setzen
+                                *** Band als Ausgabegerät setzen
 .,F26F A6 B9    LDX $B9         Sekundäradresse laden
 .,F271 E0 60    CPX #$60        mit 'Null' vergleichen
 .,F273 F0 EA    BEQ $F25F       Bandfile zum Lesen, 'NOT
@@ -6876,7 +6875,7 @@
 .,F277 18       CLC             Carry =0 (ok Kennzeichen)
 .,F278 60       RTS             Rücksprung
 
-                                Ausgabe auf IEC-Bus legen
+                                *** Ausgabe auf IEC-Bus legen
 .,F279 AA       TAX             Geräteadresse retten
 .,F27A 20 0C ED JSR $ED0C       LISTEN senden
 .,F27D A5 B9    LDA $B9         Sekundäradresse laden
@@ -6890,8 +6889,8 @@
 .,F28C 10 E7    BPL $F275       verzweige wenn ok
 .,F28E 4C 07 F7 JMP $F707       'device not present'
 
-                                CLOSE logische Filenummer
-                                im Akku
+                                *** CLOSE logische Filenummer
+                                *** im Akku
 .,F291 20 14 F3 JSR $F314       sucht logische Filenummer
 .,F294 F0 02    BEQ $F298       verzweige wenn gefunden
 .,F296 18       CLC             File nicht vorhanden, dann
@@ -6909,7 +6908,7 @@
 .,F2A7 C9 02    CMP #$02        vergleiche mit RS-232
 .,F2A9 D0 1D    BNE $F2C8       nein, dann Band
 
-                                RS-232 File schließen
+                                *** RS-232 File schließen
 .,F2AB 68       PLA             Zeiger auf Parametereintrag
 .,F2AC 20 F2 F2 JSR $F2F2       Fileeintrag in Tabelle
                                 löschen
@@ -6930,7 +6929,7 @@
 .,F2C3 85 FA    STA $FA         freigeben
 .,F2C5 4C 7D F4 JMP $F47D       Memory Top neu setzen
 
-                                Band File schließen
+                                *** Band File schließen
 .,F2C8 A5 B9    LDA $B9         Sekundäradresse laden
 .,F2CA 29 0F    AND #$0F        Bits 0 bis 3 isolieren
 .,F2CC F0 23    BEQ $F2F1       verzweige wenn File zum Lesen
@@ -6969,8 +6968,8 @@
 .,F30D 18       CLC             Carry =0 (ok Kennzeichnung)
 .,F30E 60       RTS             Rücksprung
 
-                                sucht logische Filenummer
-                                (in X)
+                                *** sucht logische Filenummer
+                                *** (in X)
 .,F30F A9 00    LDA #$00        Status
 .,F311 85 90    STA $90         löschen
 .,F313 8A       TXA             Filenummer in Akku schieben
@@ -6984,7 +6983,7 @@
                                 gefunden
 .,F31E 60       RTS             Rücksprung
 
-                                setzt Fileparameter
+                                *** setzt Fileparameter
 .,F31F BD 59 02 LDA $0259,X     logische Filenummer aus
 .,F322 85 B8    STA $B8         Tabelle holen und speichern
 .,F324 BD 63 02 LDA $0263,X     Geräteadresse aus Tabelle
@@ -6993,13 +6992,13 @@
 .,F32C 85 B9    STA $B9         holen und speichern
 .,F32E 60       RTS             Rücksprung
 
-                                CLALL schließt alle
+                                *** CLALL schließt alle
                                 Ein-/Ausgabe Kanäle
 .,F32F A9 00    LDA #$00        Anzahl der offenen Files
 .,F331 85 98    STA $98         auf Null stellen
 
-                                CLRCH schließt aktiven
-                                I/O-Kanal
+                                *** CLRCH schließt aktiven
+                                *** I/O-Kanal
 .,F333 A2 03    LDX #$03        Vergleichswert in X
 .,F335 E4 9A    CPX $9A         vergleiche mit Nummer des
                                 Ausgabegeräts
@@ -7014,7 +7013,7 @@
 .,F347 85 99    STA $99         von Tastatur
 .,F349 60       RTS             Rücksprung
 
-                                OPEN
+                                *** OPEN
 .,F34A A6 B8    LDX $B8         Filenummer in X
 .,F34C D0 03    BNE $F351       verzweige wenn ungleich Null
 .,F34E 4C 0A F7 JMP $F70A       'not input file' (??)
@@ -7088,7 +7087,7 @@
 .,F3D3 18       CLC             Carry =0 (ok Kennzeichen)
 .,F3D4 60       RTS             Rücksprung
 
-                                File auf IEC-Bus eröffnen
+                                *** File auf IEC-Bus eröffnen
 .,F3D5 A5 B9    LDA $B9         Sekundäradresse laden
 .,F3D7 30 FA    BMI $F3D3       Rücksprung wenn größer,
                                 gleich 128
@@ -7119,7 +7118,7 @@
                                 alle Zeichen
 .,F406 4C 54 F6 JMP $F654       UNLISTEN, return
 
-                                RS-232 Open
+                                *** RS-232 Open
 .,F409 20 83 F4 JSR $F483       CIAs setzen
 .,F40C 8C 97 02 STY $0297       RS-232 Status löschen
 .,F40F C4 B7    CPY $B7         Länge des "Filenamens"
@@ -7192,7 +7191,7 @@
                                 freigeben setzen
 .,F480 4C 2D FE JMP $FE2D       Memory-Top neu setzen
 
-                                CIAs nach RS 232 rücksetzen
+                                *** CIAs nach RS 232 rücksetzen
 .,F483 A9 7F    LDA #$7F        Bitwert für alle
 .,F485 8D 0D DD STA $DD0D       NMIs blockieren setzen
 .,F488 A9 06    LDA #$06        Bit 1 und 2 Ausgang
@@ -7205,7 +7204,7 @@
 .,F49A 8C A1 02 STY $02A1       NMI-Flag löschen
 .,F49D 60       RTS             Rücksprung
 
-                                LOAD - Routine
+                                *** LOAD - Routine
 .,F49E 86 C3    STX $C3         Startadresse
 .,F4A0 84 C4    STY $C4         speichern
 .,F4A2 6C 30 03 JMP ($0330)     JMP $F4A5 LOAD-Vektor
@@ -7220,7 +7219,7 @@
 .,F4B4 F0 F9    BEQ $F4AF       verzweige wenn ja, Fehler
 .,F4B6 90 7B    BCC $F533       kleiner 3, dann vom Band
 
-                                IEC-Load
+                                *** IEC-Load
 .,F4B8 A4 B7    LDY $B7         Länge des Filenamens laden
 .,F4BA D0 03    BNE $F4BF       ungleich Null, dann ok
 .,F4BC 4C 10 F7 JMP $F710       'MISSING FILENAME'
@@ -7367,8 +7366,8 @@
 .,F5AC A4 AF    LDY $AF         nach X/Y
 .,F5AE 60       RTS             Rücksprung
 
-                                'SEARCHING FOR' (Filename)
-                                ausgeben
+                                *** 'SEARCHING FOR' (Filename)
+                                *** ausgeben
 .,F5AF A5 9D    LDA $9D         Direkt-Modus-Flag laden
 .,F5B1 10 1E    BPL $F5D1       verzweige wenn Bit 7 =0
                                 (Programm-Mode)
@@ -7390,14 +7389,14 @@
                                 alle Buchstaben
 .,F5D1 60       RTS             Rücksprung
 
-                                'LOADING/VERIFYING' ausgeben
+                                *** 'LOADING/VERIFYING' ausgeben
 .,F5D2 A0 49    LDY #$49        Offset für 'LOADING'
 .,F5D4 A5 93    LDA $93         Load/Verify-Flag laden
 .,F5D6 F0 02    BEQ $F5DA       Load wenn 0, dann ausgeben
 .,F5D8 A0 59    LDY #$59        sonst Offset für 'VERIFYING'
 .,F5DA 4C 2B F1 JMP $F12B       Meldung ausgeben, Rücksprung
 
-                                SAVE - Routine
+                                *** SAVE - Routine
 .,F5DD 86 AE    STX $AE         LOW-Byte der Endadresse
                                 speichern
 .,F5DF 84 AF    STY $AF         High-Byte der Endadresse
@@ -7417,7 +7416,7 @@
 .,F5F6 F0 F9    BEQ $F5F1       wenn Bildschirm, dann Fehler
 .,F5F8 90 5F    BCC $F659       kleiner 3, dann verzweige
 
-                                Speichern auf IEC-Bus
+                                *** Speichern auf IEC-Bus
 .,F5FA A9 61    LDA #$61        Sekundäradresse 1
 .,F5FC 85 B9    STA $B9         setzen
 .,F5FE A4 B7    LDY $B7         Länge des Filenamens laden
@@ -7450,7 +7449,7 @@
 .,F63D D0 E5    BNE $F624       unbedingter Sprung
 .,F63F 20 FE ED JSR $EDFE       UNLISTEN senden
 
-                                File auf IEC-Bus schließen
+                                *** File auf IEC-Bus schließen
 .,F642 24 B9    BIT $B9         Sekundäradresse testen
 .,F644 30 11    BMI $F657       verzweige falls keine
                                 Sekundäradresse
@@ -7497,7 +7496,7 @@
 .,F68D 18       CLC             Carry =0 (ok Kennzeichen)
 .,F68E 60       RTS             Rücksprung
 
-                                'SAVING' ausgeben
+                                *** 'SAVING' ausgeben
 .,F68F A5 9D    LDA $9D         Flag für Direktmodus laden
 .,F691 10 FB    BPL $F68E       Bit 7 gelöscht, dann
                                 Programm-Mode
@@ -7506,8 +7505,8 @@
 .,F698 4C C1 F5 JMP $F5C1       Filenamen ausgeben,
                                 Rücksprung
 
-                                UDTIM Time erhöhen und
-                                STOP-Taste abfragen
+                                *** UDTIM Time erhöhen und
+                                *** STOP-Taste abfragen
 .,F69B A2 00    LDX #$00        X-REG auf Null setzen
 .,F69D E6 A2    INC $A2         Sekundenzeiger erhöhen
 .,F69F D0 06    BNE $F6A7       verzweige falls kein Überlauf
@@ -7526,8 +7525,8 @@
 .,F6B8 86 A1    STX $A1         Zeiger
 .,F6BA 86 A2    STX $A2         auf Null setzen
 
-                                Abfrage auf STOP-Taste direkt
-                                vom Port
+                                *** Abfrage auf STOP-Taste direkt
+                                *** vom Port
 .,F6BC AD 01 DC LDA $DC01       Port B laden
 .,F6BF CD 01 DC CMP $DC01       und
 .,F6C2 D0 F8    BNE $F6BC       entprellen
@@ -7547,14 +7546,14 @@
 .,F6DA 85 91    STA $91         Flag für Stop-Taste setzen
 .,F6DC 60       RTS             Rücksprung
 
-                                TIME holen
+                                *** TIME holen
 .,F6DD 78       SEI             Interrupt verhindern um Uhr
                                 anzuhalten
 .,F6DE A5 A2    LDA $A2         Stunden
 .,F6E0 A6 A1    LDX $A1         Minuten
 .,F6E2 A4 A0    LDY $A0         Sekunden holen
 
-                                TIME setzen
+                                *** TIME setzen
 .,F6E4 78       SEI             Interrupt verhindern um Uhr
                                 anzuhalten
 .,F6E5 85 A2    STA $A2         Stunden
@@ -7563,7 +7562,7 @@
 .,F6EB 58       CLI             Interrupt wieder ermöglichen
 .,F6EC 60       RTS             Rücksprung
 
-                                STOP-Taste abfragen
+                                *** STOP-Taste abfragen
 .,F6ED A5 91    LDA $91         STOP-Flag laden
 .,F6EF C9 7F    CMP #$7F        auf Code für STOP testen
 .,F6F1 D0 07    BNE $F6FA       verzweige falls nicht
@@ -7574,8 +7573,8 @@
 .,F6F9 28       PLP             Statusregister holen
 .,F6FA 60       RTS             Rücksprung
 
-                                Meldungen des Betriebs
-                                systems ausgeben
+                                *** Meldungen des Betriebs
+                                *** systems ausgeben
 .,F6FB A9 01    LDA #$01        'TOO MANY FILES'
 .:F6FD 2C       .BYTE $2C       Skip zu $F700
 .,F6FE A9 02    LDA #$02        'FILE OPEN'
@@ -7608,8 +7607,8 @@
 .,F72A 38       SEC             Carry =1 (Fehlerkennzeichen)
 .,F72B 60       RTS             Rücksprung
 
-                                Programm Header vom Band
-                                lesen
+                                *** Programm Header vom Band
+                                *** lesen
 .,F72C A5 93    LDA $93         Load/Verify Flag laden
 .,F72E 48       PHA             und retten
 .,F72F 20 41 F8 JSR $F841       Block vom Band lesen
@@ -7648,8 +7647,8 @@
                                 nung, daß kein EOT
 .,F769 60       RTS             Rücksprung
 
-                                Header generieren und auf
-                                Band schreiben
+                                *** Header generieren und auf
+                                *** Band schreiben
 .,F76A 85 9E    STA $9E         Header-Typ speichern
 .,F76C 20 D0 F7 JSR $F7D0       Bandpufferadresse holen
 .,F76F 90 5E    BCC $F7CF       verzweige falls Adresse
@@ -7719,15 +7718,15 @@
 .,F7CE 98       TYA             Akku wiederholen
 .,F7CF 60       RTS             Rücksprung
 
-                                Bandpuffer Startadresse holen
-                                und prüfen ob gültig
+                                *** Bandpuffer Startadresse holen
+                                *** und prüfen ob gültig
 .,F7D0 A6 B2    LDX $B2         Anfang Bandpuffer LOW in X
 .,F7D2 A4 B3    LDY $B3         Anfang Bandpuffer HIGH in Y
 .,F7D4 C0 02    CPY #$02        Adresse kleiner $200 ?
 .,F7D6 60       RTS             Rücksprung
 
-                                Bandpufferendadresse = Puf-
-                                ferstartadresse + $C0 (192)
+                                *** Bandpufferendadresse = Puf-
+                                *** ferstartadresse + $C0 (192)
 .,F7D7 20 D0 F7 JSR $F7D0       BandpufferaAdresse holen
 .,F7DA 8A       TXA             Pufferanfang LOW in Akku
 .,F7DB 85 C1    STA $C1         und speichern
@@ -7741,7 +7740,7 @@
 .,F7E7 85 AF    STA $AF         und speichern
 .,F7E9 60       RTS             Rücksprung
 
-                                Bandheader nach Namen suchen
+                                *** Bandheader nach Namen suchen
 .,F7EA 20 2C F7 JSR $F72C       nächsten Bandheader suchen
 .,F7ED B0 1D    BCS $F80C       verzweige falls EOT (fertig)
 .,F7EF A0 05    LDY #$05        Offset für Filenamen im
@@ -7767,7 +7766,7 @@
 .,F80B 18       CLC             Carry =0 (ok Kennzeichen)
 .,F80C 60       RTS             Rücksprung
 
-                                Bandpufferzeiger erhöhen
+                                *** Bandpufferzeiger erhöhen
 .,F80D 20 D0 F7 JSR $F7D0       Bandpufferadresse holen
 .,F810 E6 A6    INC $A6         Zeiger erhöhen
 .,F812 A4 A6    LDY $A6         und laden um
@@ -7775,7 +7774,7 @@
                                 vergleichen
 .,F816 60       RTS             Rücksprung
 
-                                Wartet auf Bandtaste
+                                *** Wartet auf Bandtaste
 .,F817 20 2E F8 JSR $F82E       fragt BandtTaste ab
 .,F81A F0 1A    BEQ $F836       gedrückt, dann fertig
 .,F81C A0 1B    LDY #$1B        Offset für 'PRESS PLAY ON
@@ -7788,8 +7787,8 @@
 .,F829 A0 6A    LDY #$6A        Offset für 'OK'
 .,F82B 4C 2F F1 JMP $F12F       und ausgeben, Rücksprung
 
-                                Abfrage ob Band-Taste
-                                gedrückt
+                                *** Abfrage ob Band-Taste
+                                *** gedrückt
 .,F82E A9 10    LDA #$10        Bit 4 testen
 .,F830 24 01    BIT $01         mit Port vergleichen
 .,F832 D0 02    BNE $F836       verzweige wenn Bandtaste
@@ -7798,21 +7797,21 @@
 .,F836 18       CLC             Carry =0 (ok Kennzeichen)
 .,F837 60       RTS             Rücksprung
 
-                                Wartet auf Bandtaste für
-                                Schreiben
+                                *** Wartet auf Bandtaste für
+                                *** Schreiben
 .,F838 20 2E F8 JSR $F82E       fragt Bandtaste ab
 .,F83B F0 F9    BEQ $F836       gedrückt, dann fertig
 .,F83D A0 2E    LDY #$2E        Offset für 'PRESS RECORD &
                                 PLAY ON TAPE'
 .,F83F D0 DD    BNE $F81E       unbedingter Sprung
 
-                                Block vom Band lesen
+                                *** Block vom Band lesen
 .,F841 A9 00    LDA #$00        Status
 .,F843 85 90    STA $90         und Verify-Flag
 .,F845 85 93    STA $93         löschen
 .,F847 20 D7 F7 JSR $F7D7       Bandpufferadresse holen
 
-                                Programm vom Band laden
+                                *** Programm vom Band laden
 .,F84A 20 17 F8 JSR $F817       wartet auf Play-Taste
 .,F84D B0 1F    BCS $F86E       STOP-Taste gedrückt ?
 .,F84F 78       SEI             Interrupt verhindern
@@ -7828,13 +7827,13 @@
 .,F860 A2 0E    LDX #$0E        Nummer des IRQ-Vektors, $F92C
 .,F862 D0 11    BNE $F875       unbedingter Sprung
 
-                                Bandpuffer auf Band schreiben
+                                *** Bandpuffer auf Band schreiben
 .,F864 20 D7 F7 JSR $F7D7       Bandpufferadresse holen
 .,F867 A9 14    LDA #$14        Länge des Vorspanns vor WRITE
 .,F869 85 AB    STA $AB         speichern
 
-                                Block bzw. Programm auf Band
-                                schreiben
+                                *** Block bzw. Programm auf Band
+                                *** schreiben
 .,F86B 20 38 F8 JSR $F838       wartet auf Record & Play
                                 Taste
 .,F86E B0 6C    BCS $F8DC       verzweige falls STOP-Taste
@@ -7880,7 +7879,7 @@
 .,F8BD 58       CLI             Interrupt für Band I/O
                                 freigeben
 
-                                I/O Abschluß abwarten
+                                *** I/O Abschluß abwarten
 .,F8BE AD A0 02 LDA $02A0       Band IRQ Vector mit normalem
 .,F8C1 CD 15 03 CMP $0315       IRQ Vector vergleichen
 .,F8C4 18       CLC             Carry =0 (ok Kennzeichen)
@@ -7890,7 +7889,7 @@
                                 Flag setzen
 .,F8CD 4C BE F8 JMP $F8BE       weiter warten
 
-                                testet auf Stop-Taste
+                                *** testet auf Stop-Taste
 .,F8D0 20 E1 FF JSR $FFE1       Stop-Taste abfragen
 .,F8D3 18       CLC             Carry =0 (ok Kennzeichen)
 .,F8D4 D0 0B    BNE $F8E1       verzweige wenn Taste nein
@@ -7904,7 +7903,7 @@
 .,F8DE 8D A0 02 STA $02A0       IRQ setzen
 .,F8E1 60       RTS             Rücksprung
 
-                                Band für Lesen vorbereiten
+                                *** Band für Lesen vorbereiten
 .,F8E2 86 B1    STX $B1         X-Register speichern
 .,F8E4 A5 B0    LDA $B0         Timing-Konstante laden
 .,F8E6 0A       ASL             mit vier
@@ -7948,8 +7947,8 @@
 .,F92A 58       CLI             alle Interrupts freigeben
 .,F92B 60       RTS             Rücksprung
 
-                                Interrupt-Routine für Band
-                                lesen
+                                *** Interrupt-Routine für Band
+                                *** lesen
 .,F92C AE 07 DC LDX $DC07       Timer B HIGH laden
 .,F92F A0 FF    LDY #$FF        Y-Register mit $FF laden (für
                                 Timer)
@@ -8302,16 +8301,16 @@
 .,FB88 20 1C FE JSR $FE1C       Status setzen
 .,FB8B 4C BC FE JMP $FEBC       Rückkehr vom Interrupt
 
-                                laufenden Zeiger auf
-                                Programmstart
+                                *** laufenden Zeiger auf
+                                *** Programmstart
 .,FB8E A5 C2    LDA $C2         Startadresse
 .,FB90 85 AD    STA $AD         $C1/$C2
 .,FB92 A5 C1    LDA $C1         nach $AC/$AD
 .,FB94 85 AC    STA $AC         speichern
 .,FB96 60       RTS             Rücksprung
 
-                                Bitzähler für serielle
-                                Ausgabe setzen
+                                *** Bitzähler für serielle
+                                *** Ausgabe setzen
 .,FB97 A9 08    LDA #$08        Zähler für 8 Bits
 .,FB99 85 A3    STA $A3         Nach $A3
 .,FB9B A9 00    LDA #$00        Akku mit $00 laden
@@ -8321,7 +8320,7 @@
 .,FBA3 85 A9    STA $A9         Impulswechsel-Flag löschen
 .,FBA5 60       RTS             Rücksprung
 
-                                Ein Bit auf Band schreiben
+                                *** Ein Bit auf Band schreiben
 .,FBA6 A5 BD    LDA $BD         Bit in $BD
 .,FBA8 4A       LSR             Bit 0 in Carry
 .,FBA9 A9 60    LDA #$60        Zeit für '0' Bit
@@ -8343,8 +8342,8 @@
 .,FBC9 66 B6    ROR $B6         Negativ
 .,FBCB 30 3C    BMI $FC09       Rückkehr vom Interrupt
 
-                                Interrupt-Routine für Band
-                                schreiben
+                                *** Interrupt-Routine für Band
+                                *** schreiben
 .,FBCD A5 A8    LDA $A8         falls 'Byte'-Impuls ge-
 .,FBCF D0 12    BNE $FBE3       schrieben, dann verzweige
 .,FBD1 A9 10    LDA #$10        Timer auf
@@ -8425,8 +8424,8 @@
 .,FC65 20 BD FC JSR $FCBD       IRQ auf $FC6A
 .,FC68 D0 EA    BNE $FC54       Rückkehr vom Interrupt
 
-                                Interrupt-Routine für Band
-                                schreiben
+                                *** Interrupt-Routine für Band
+                                *** schreiben
 .,FC6A A9 78    LDA #$78        120
 .,FC6C 20 AF FB JSR $FBAF       Bit auf Band schreiben
 .,FC6F D0 E3    BNE $FC54       Rückkehr vom Interrupt
@@ -8451,7 +8450,7 @@
 .,FC8F 86 B6    STX $B6         Flag für Block geschrieben
 .,FC91 D0 83    BNE $FC16       unbedingter Sprung
 
-                                Rekorderbetrieb beenden
+                                *** Rekorderbetrieb beenden
 .,FC93 08       PHP             Status merken
 .,FC94 78       SEI             Interrupt verhindern
 .,FC95 AD 11 D0 LDA $D011       Bildschirm
@@ -8471,8 +8470,8 @@
 .,FCB6 28       PLP             Status zurückholen
 .,FCB7 60       RTS             Rücksprung
 
-                                IRQ-Vektor setzen,
-                                X-indiziert
+                                *** IRQ-Vektor setzen,
+                                *** X-indiziert
 .,FCB8 20 93 FC JSR $FC93       IRQ auf Standard
 .,FCBB F0 97    BEQ $FC54       Abschluß IRQ
 .,FCBD BD 93 FD LDA $FD93,X     IRQ-Vektor
@@ -8485,8 +8484,8 @@
 .,FCCE 85 01    STA $01         ausschalten
 .,FCD0 60       RTS             Rücksprung
 
-                                prüft auf Erreichen der
-                                Endadresse
+                                *** prüft auf Erreichen der
+                                *** Endadresse
 .,FCD1 38       SEC             Carry für Subtraktion
                                 vorbereiten
 .,FCD2 A5 AC    LDA $AC         laufende Adresse
@@ -8499,7 +8498,7 @@
 .,FCDF E6 AD    INC $AD         höhen
 .,FCE1 60       RTS             Rücksprung
 
-                                RESET
+                                *** RESET
 .,FCE2 A2 FF    LDX #$FF        Wert für Stapelzeiger
 .,FCE4 78       SEI             Interrupt setzen
 .,FCE5 9A       TXS             Stapelzeiger initialisieren
@@ -8515,7 +8514,7 @@
 .,FCFE 58       CLI
 .,FCFF 6C 00 A0 JMP ($A000)     zum BASIC Kaltstart
 
-                                prüft auf ROM in $8000
+                                *** prüft auf ROM in $8000
 .,FD02 A2 05    LDX #$05        Zeiger setzen
 .,FD04 BD 0F FD LDA $FD0F,X     Wert aus Tabelle holen und
 .,FD07 DD 03 80 CMP $8003,X     ab $8000 vergleichen (CBM80)
@@ -8524,11 +8523,11 @@
 .,FD0D D0 F5    BNE $FD04       weiter wenn nicht 5 Bytes
 .,FD0F 60       RTS             Rücksprung
 
-                                ROM-Modul Identifizierung
+                                *** ROM-Modul Identifizierung
 .:FD10 C3 C2 CD 38 30           'CBM80’
 
-                                Hardware und I/O Vektoren
-                                setzen/holen
+                                *** Hardware und I/O Vektoren
+                                *** setzen/holen
 .,FD15 A2 30    LDX #$30        LOW- und HIGH-Byte des
 .,FD17 A0 FD    LDY #$FD        Zeigers auf Tabelle $FD30
 .,FD19 18       CLC             Flag für 'Vektoren setzen'
@@ -8544,14 +8543,14 @@
 .,FD2D 10 F1    BPL $FD20       Fertig? nein: nächster Wert
 .,FD2F 60       RTS             Rücksprung
 
-                                Tabelle der Hardware
-                                und I/O-Vektoren
+                                *** Tabelle der Hardware
+                                *** und I/O-Vektoren
 .:FD30 31 EA 66 FE 47 FE 4A F3
 .:FD38 91 F2 0E F2 50 F2 33 F3
 .:FD40 57 F1 CA F1 ED F6 3E F1
 .:FD48 2F F3 66 FE A5 F4 ED F5
 
-                                Arbeitsspei. initialisieren
+                                *** Arbeitsspei. initialisieren
 .,FD50 A9 00    LDA #$00        Wert zum Löschen laden
 .,FD52 A8       TAY             als Zähler nach Y
 .,FD53 99 02 00 STA $0002,Y     Zeropage,
@@ -8593,10 +8592,10 @@
 .,FD97 8D 88 02 STA $0288       Video-RAM auf $400
 .,FD9A 60       RTS             Rücksprung
 
-                                IRQ Vektoren
+                                *** IRQ Vektoren
 .:FD9B 6A FC CD FB 31 EA 2C F9  $FC6A, $FBCD, $EA31, $F92C
 
-                                Interrupt Initialisierung
+                                *** Interrupt Initialisierung
 .,FDA3 A9 7F    LDA #$7F        Interrupt löschen
 .,FDA5 8D 0D DC STA $DC0D       ICR CIA 1
 .,FDA8 8D 0D DD STA $DD0D       ICR CIA 2
@@ -8635,20 +8634,20 @@
 .,FDF3 8D 05 DC STA $DC05       Timer-HIGH setzen
 .,FDF6 4C 6E FF JMP $FF6E       Interrupt durch Timer setzen
 
-                                Parameter f. Filenamen setzen
+                                *** Parameter f. Filenamen setzen
 .,FDF9 85 B7    STA $B7         Länge speichern
 .,FDFB 86 BB    STX $BB         Adresse-LOW speichern
 .,FDFD 84 BC    STY $BC         Adresse-HIGH speichern
 .,FDFF 60       RTS             Rücksprung
 
-                                Parameter für aktives
-                                File setzen
+                                *** Parameter für aktives
+                                *** File setzen
 .,FE00 85 B8    STA $B8         logische Filenummer
 .,FE02 86 BA    STX $BA         Geräteadresse
 .,FE04 84 B9    STY $B9         Sekundäradresse
 .,FE06 60       RTS             Rücksprung
 
-                                Status holen
+                                *** Status holen
 .,FE07 A5 BA    LDA $BA         Gerätenummer holen
 .,FE09 C9 02    CMP #$02        gleich 2 ? (RS 232)
 .,FE0B D0 0D    BNE $FE1A       nein
@@ -8659,22 +8658,22 @@
 .,FE16 68       PLA             und Statuswert zurückholen
 .,FE17 60       RTS             Rücksprung
 
-                                Flag für Betriebssystem-
-                                meldungen setzen
+                                *** Flag für Betriebssystem-
+                                *** meldungen setzen
 .,FE18 85 9D    STA $9D         Ausgabeflag (Direktmodus)
 .,FE1A A5 90    LDA $90         Statusflag holen
 
-                                Status setzen
+                                *** Status setzen
 .,FE1C 05 90    ORA $90         Statusflag testen und
 .,FE1E 85 90    STA $90         wieder abspeichern
 .,FE20 60       RTS             Rücksprung
 
-                                Timeout-Flag für IEC setzen
+                                *** Timeout-Flag für IEC setzen
 .,FE21 8D 85 02 STA $0285       Timeout-disable
 .,FE24 60       RTS             Rücksprung
 
-                                MEMTOP, Obergrenze des
-                                BASIC-RAM holen/setzen
+                                *** MEMTOP, Obergrenze des
+                                *** BASIC-RAM holen/setzen
 .,FE25 90 06    BCC $FE2D       C=0: Adresse setzen
 .,FE27 AE 83 02 LDX $0283       Carry gesetzt
 .,FE2A AC 84 02 LDY $0284       Adresse nach X/Y holen
@@ -8682,8 +8681,8 @@
 .,FE30 8C 84 02 STY $0284       X/Y nach Adresse setzen
 .,FE33 60       RTS             Rücksprung
 
-                                MEMBOT, Untergrenze des
-                                BASIC-RAM holen/setzen
+                                *** MEMBOT, Untergrenze des
+                                *** BASIC-RAM holen/setzen
 .,FE34 90 06    BCC $FE3C       C=0: Adresse setzen
 .,FE36 AE 81 02 LDX $0281       Carry gesetzt
 .,FE39 AC 82 02 LDY $0282       Adresse nach X/Y holen
@@ -8691,7 +8690,7 @@
 .,FE3F 8C 82 02 STY $0282       Adresse aus X/Y setzen
 .,FE42 60       RTS             Rücksprung
 
-                                NMI Einsprung
+                                *** NMI Einsprung
 .,FE43 78       SEI             Interrupt setzen
 .,FE44 6C 18 03 JMP ($0318)     JMP $FE47, NMI-Vektor
 .,FE47 48       PHA             Akku auf Stapel retten
@@ -8715,7 +8714,7 @@
 .,FE6C 20 18 E5 JSR $E518       Bildschirmreset
 .,FE6F 6C 02 A0 JMP ($A002)     zum BASIC-Warmstart
 
-                                NMI-Routine für RS 232
+                                *** NMI-Routine für RS 232
 .,FE72 98       TYA             ICR-Register
 .,FE73 2D A1 02 AND $02A1       mit RS 232 NMI-Flag verknüp.
 .,FE76 AA       TAX             nach X retten
@@ -8757,8 +8756,8 @@
 .,FEC0 68       PLA             Akku zurückholen
 .,FEC1 40       RTI             Rücksprung
 
-                                Timerkonstanten für RS 232 Baud-Rate,
-                                NTSC-Version
+                                *** Timerkonstanten für RS 232 Baud-Rate,
+                                *** NTSC-Version
 .:FEC2 C1 27                    $27C1 = 10177       50 Baud
 .:FEC4 3E 1A                    $1A3E =  6718       75 Baud
 .:FEC6 C5 11                    $11C5 =  4549      110 Baud
@@ -8770,8 +8769,8 @@
 .:FED2 B8 00                    $00B8 =   184     1800 Baud
 .:FED4 71 00                    $0071 =   113     2400 Baud
 
-                                NMI-Routine für RS-232
-                                Eingabe
+                                *** NMI-Routine für RS-232
+                                *** Eingabe
 .,FED6 AD 01 DD LDA $DD01       Port Register B
 .,FED9 29 01    AND #$01        Bit für Receive Data isolie-
                                 ren
@@ -8792,7 +8791,7 @@
 .,FF01 8D 07 DD STA $DD07       Timer setzen
 .,FF04 4C 59 EF JMP $EF59       Bit holen
 
-                                NMI-Routine RS 232 Ausgabe
+                                *** NMI-Routine RS 232 Ausgabe
 .,FF07 AD 95 02 LDA $0295       LOW- und HIGH-Byte
 .,FF0A 8D 06 DD STA $DD06       holen und in
 .,FF0D AD 96 02 LDA $0296       RS 232 Timerkonstanten für
@@ -8809,8 +8808,8 @@
 .,FF2B 86 A8    STX $A8         in Zähler für Wortlänge
 .,FF2D 60       RTS             Rücksprung
 
-                                Timerwert für Sendebaudrate
-                                ermitteln
+                                *** Timerwert für Sendebaudrate
+                                *** ermitteln
 .,FF2E AA       TAX             Baudrate aus Tabelle nach X
 .,FF2F AD 96 02 LDA $0296       HIGH-Byte holen
 .,FF32 2A       ROL             mal 2
@@ -8825,13 +8824,13 @@
 .,FF41 EA       NOP             No OPeration
 .,FF42 EA       NOP             No OPeration
 
-                                Einsprung aus Bandroutine
+                                *** Einsprung aus Bandroutine
 .,FF43 08       PHP             Statusregister auf Stapel
 .,FF44 68       PLA             Statusregister in Akku
 .,FF45 29 EF    AND #$EF        Break-Flag löschen
 .,FF47 48       PHA             und wieder auf Stapel legen
 
-                                IRQ-Einsprung
+                                *** IRQ-Einsprung
 .,FF48 48       PHA             Akku auf Stapel retten
 .,FF49 8A       TXA             X nach Akku
 .,FF4A 48       PHA             X-Register retten
@@ -8844,7 +8843,7 @@
 .,FF55 6C 16 03 JMP ($0316)     BREAK - Routine
 .,FF58 6C 14 03 JMP ($0314)     Interrupt - Routine
 
-                                Video-Reset
+                                *** Video-Reset
 .,FF5B 20 18 E5 JSR $E518       Videocontroller initialisie-
                                 ren
 .,FF5E AD 12 D0 LDA $D012       Rasterzeile
@@ -8854,7 +8853,7 @@
 .,FF68 8D A6 02 STA $02A6       PAL/NTSC-Version merken
 .,FF6B 4C DD FD JMP $FDDD       Interrupttimer setzen
 
-                                Timer für Interrupt setzen
+                                *** Timer für Interrupt setzen
 .,FF6E A9 81    LDA #$81        Timer A Unterlauf
 .,FF70 8D 0D DC STA $DC0D       Interrupt Control Register
 .,FF73 AD 0E DC LDA $DC0E       Control Register A
@@ -8865,8 +8864,8 @@
 .,FF7D 4C 8E EE JMP $EE8E       seriellen Takt aus
 .,FF80 00       BRK             BReaK
 
-                                Sprungtabelle für
-                                Betriebssystem-Routinen
+                                *** Sprungtabelle für
+                                *** Betriebssystem-Routinen
 .,FF81 4C 5B FF JMP $FF5B       Video-Reset
 .,FF84 4C A3 FD JMP $FDA3       CIAs initialisieren
 .,FF87 4C 50 FD JMP $FD50       RAM löschen bzw. testen
@@ -8910,7 +8909,7 @@
 
 .:FFF6 52 52 42 59
 
-                                Hardware Vektorenz
+                                *** Hardware Vektoren
 .:FFFA 43 FE                    NMI Vektor
 .:FFFC E2 FC                    RESET Vektor
 .:FFFE 48 FF                    IRQ Vektor

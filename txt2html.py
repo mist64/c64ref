@@ -49,7 +49,9 @@ for line in lines[1:]:
 	left = line[:32]
 	right = cgi.escape(line[32:])
 	
-	if left.rstrip() == '' and (previous_line == '' or previous_line_was_heading):
+#	if left.rstrip() == '' and (previous_line == '' or previous_line_was_heading):
+	if left.rstrip() == '' and len(right) >= 3 and right[0:3] == '***':
+		right = right[3:]
 		if cached_header == '':
 			cached_header = right
 		else:
