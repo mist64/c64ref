@@ -1623,7 +1623,7 @@
 .:AD8E 24       .BYTE $24
 
                                 prüft auf String
-,.AD8F 38       SEC             Flag für Test auf String
+.,AD8F 38       SEC             Flag für Test auf String
 .,AD90 24 0D    BIT $0D         Typflag testen
 .,AD92 30 03    BMI $AD97       gesetzt: $AD97
 .,AD94 B0 03    BCS $AD99       C=1: 'TYPE MISMATCH'
@@ -1639,7 +1639,8 @@
 .,ADA2 C6 7B    DEC $7B         HIGH-Byte vermindern
 .,ADA4 C6 7A    DEC $7A         LOW-Byte vermindern
 .,ADA6 A2 00    LDX #$00        Prioritätswert laden
-.,ADA8 24 48    BIT $48         Operatormaske retten
+.:ADA8 24       .BYTE $24
+.,ADA9 48       PHA             Operatormaske retten
 .,ADAA 8A       TXA             Prioritätswert in Akku
 .,ADAB 48       PHA             schieben und retten
 .,ADAC A9 01    LDA #$01        2 Bytes
@@ -2300,7 +2301,7 @@
 .,B243 90 D7    BCC $B21C       und weiter suchen
 .,B245 A2 12    LDX #$12        Nummer für 'bad subscript'
 .:B247 2C       .BYTE $2C
-.,B248 A2 0E                    Nummer für 'illegal quanti.'
+.,B248 A2 0E    LDX #$0E        Nummer für 'illegal quanti.'
 .,B24A 4C 37 A4 JMP $A437       Fehlermeldung ausgeben
 .,B24D A2 13    LDX #$13        Nummer für 'redim'd array'
 .,B24F A5 0C    LDA $0C         DIM-Flag null?
@@ -2516,7 +2517,8 @@
 .,B3A8 E8       INX             testen
 .,B3A9 D0 A0    BNE $B34B       nein: dann RTS
 .,B3AB A2 15    LDX #$15        Nummer für 'illegal direct'
-.,B3AD 2C A2 1B BIT $1BA2       Nummer für 'undef'd function'
+.:B3AD 2C
+.,B3AE A2 1B    LDX #$1B        Nummer für 'undef'd function'
 .,B3B0 4C 37 A4 JMP $A437       Fehlermeldung ausgeben
 
                                 BASIC-Befehl DEF FN
@@ -4533,7 +4535,7 @@
 .:E167 2C       .BYTE $2C       Flag
 
                                 LOAD-Befehl
-.,E168 A9 00                    Load-Flag
+.,E168 A9 00    LDA #$00        Load-Flag
 .,E16A 85 0A    STA $0A         speichern
 .,E16C 20 D4 E1 JSR $E1D4       Parameter holen
 .,E16F A5 0A    LDA $0A         Flag
@@ -8550,7 +8552,7 @@
 .:FD48 2F F3 66 FE A5 F4 ED F5
 
                                 Arbeitsspei. initialisieren
-,.FD50 A9 00    LDA #$00        Wert zum Löschen laden
+.,FD50 A9 00    LDA #$00        Wert zum Löschen laden
 .,FD52 A8       TAY             als Zähler nach Y
 .,FD53 99 02 00 STA $0002,Y     Zeropage,
 .,FD56 99 00 02 STA $0200,Y     Page 2 und
