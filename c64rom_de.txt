@@ -2516,7 +2516,7 @@
 .,B3A8 E8       INX             testen
 .,B3A9 D0 A0    BNE $B34B       nein: dann RTS
 .,B3AB A2 15    LDX #$15        Nummer für 'illegal direct'
-.:B3AD 2C
+.:B3AD 2C       .BYTE $2C
 .,B3AE A2 1B    LDX #$1B        Nummer für 'undef'd function'
 .,B3B0 4C 37 A4 JMP $A437       Fehlermeldung ausgeben
 
