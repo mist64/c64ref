@@ -66,7 +66,7 @@ for line in lines[1:]:
 		sys.stdout.write("<a name=\"" + address + "\"/>")
 
 	if cached_header != '':
-		print "</pre><h2>" + cgi.escape(cached_header) + "</h2><pre>"
+		print "</pre><h2>" + cached_header + "</h2><pre>"
 		cached_header = ''
 
 	hex_numbers = re.findall(r'\$[0-9A-F][0-9A-F][0-9A-F][0-9A-F]', line)
