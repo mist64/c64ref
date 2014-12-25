@@ -1,6 +1,6 @@
 # Fully Commented Commodore 64 ROM Disassembly
 
-This project maintains two commented disassemblies of the C64 ROM (BASIC and KERNEL), one in English and one in German.
+This project maintains three commented disassemblies of the C64 ROM (BASIC and KERNAL), two in English and one in German.
 
 The txt files are the parsable master versions that can be used to create more rich representations.
 
@@ -11,6 +11,14 @@ The comments have been taken from
 *The almost completely commented C64 ROM disassembly. V1.01 Lee Davison 2012*
 
 Converted and formatted by Michael Steil <mist64@mac.com>
+
+## c64rom_sc.txt
+
+This is CBMBASIC only. The comments have been taken from
+
+*Bob Sander-Cederlof: S-C DocuMentor for Applesoft, [txbobsc.com/scsc/scdocumentor](http://www.txbobsc.com/scsc/scdocumentor/)*
+
+Converted and adapted from Applesoft to CBMBASIC, as well as formatted by Michael Steil <mist64@mac.com>
 
 ## c64rom_de.txt
 
