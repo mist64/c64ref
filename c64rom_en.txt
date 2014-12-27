@@ -98,7 +98,7 @@
 .:A07E 37 B7                    perform MID$    $CA
 
                                 *** precedence byte and action addresses for operators
-                                like the primarry commands these are called by pushing the address onto the stack
+                                like the primary commands these are called by pushing the address onto the stack
                                 and doing an RTS, so again the actual address -1 needs to be pushed
 .:A080 79 69 B8                 +
 .:A083 79 52 B8                 -
