@@ -8,7 +8,7 @@ The txt files are the parsable master versions that can be used to create more r
 
 This is CBMBASIC only. The comments have been taken from
 
-*Microsoft's original BASIC for M6502 source, [www.pagetable.com/?p=774](http://www.pagetable.com/?p=774)*
+*Microsoft's original BASIC for M6502 source, [pagetable.com/?p=774](http://www.pagetable.com/?p=774)*
 
 Converted and formatted by Michael Steil <mist64@mac.com>
 
