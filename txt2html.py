@@ -50,14 +50,20 @@ for line in lines[1:]:
 	right = cgi.escape(line[32:])
 	
 #	if left.rstrip() == '' and (previous_line == '' or previous_line_was_heading):
-	if left.rstrip() == '' and len(right) >= 3 and right[0:3] == '***':
-		right = right[3:]
-		if cached_header == '':
-			cached_header = right
-		else:
-			cached_header = cached_header + " " + right
-		previous_line_was_heading = True
-		continue
+	if left.rstrip() == '':
+		start_index = 0
+		if len(right) >= 3 and right[0:3] == '***':
+			start_index = 3
+		if len(right) >= 6 and right[0:6] == 'SUBTTL':
+			start_index = 6
+		if (start_index != 0):
+			right = right[start_index:]
+			if cached_header == '':
+				cached_header = right
+			else:
+				cached_header = cached_header + " " + right
+			previous_line_was_heading = True
+			continue
 
 	previous_line_was_heading = False
 	

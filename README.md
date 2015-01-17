@@ -1,8 +1,16 @@
 # Fully Commented Commodore 64 ROM Disassembly
 
-This project maintains three commented disassemblies of the C64 ROM (BASIC and KERNAL), two in English and one in German.
+This project maintains four commented disassemblies of the C64 ROM (BASIC and KERNAL), three in English and one in German.
 
 The txt files are the parsable master versions that can be used to create more rich representations.
+
+## c64rom_ms.txt
+
+This is CBMBASIC only. The comments have been taken from
+
+*Microsoft's original BASIC for M6502 source, [www.pagetable.com/?p=774](http://www.pagetable.com/?p=774)*
+
+Converted and formatted by Michael Steil <mist64@mac.com>
 
 ## c64rom_en.txt
 
