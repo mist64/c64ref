@@ -1,9 +1,11 @@
 #!/usr/bin/python
 
-import cgi, re
+import cgi, re, os
 
 filenames = [ "c64rom_ms.txt", "c64rom_de.txt", "c64rom_en.txt", "c64rom_sc.txt" ]
+descriptions = [ "<a href=\"http://www.pagetable.com/?p=793\">Microsoft BASIC for 6502 Original Source</a>", "<a href=\"http://www.pagetable.com/?p=718\">64 intern (Data Becker)</a>", "<a href=\"http://www.pagetable.com/?p=726\">Lee Davison</a>", "<a href=\"http://www.pagetable.com/?p=728\">Bob Sander-Cederlof (Apple II)</a>" ]
 asm_donor_index = 1
+source_index = 0 # we treat the Microsoft source differently
 
 data = []
 linenumber = []
@@ -27,7 +29,20 @@ for i in range(0, files):
 
 print '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />'
 print '<style type="text/css">table{border-collapse:collapse;} tr {border: none;} td{border-right: solid 1px; border-left: solid 1px;} tr:nth-child(even) {background-color: #f0f0f0;} </style>'
+print '<title>Comparative C64 ROM Disassembly Study Guide</title>'
+print '<h1>Comparative C64 ROM Disassembly Study Guide</h1>'
+f = os.popen("git log -1 --pretty=format:%h .")
+revision = f.read()
+print '<p>revision ' + revision + '</p>'
+print '<p>By <a href="http://www.pagetable.com/">Michael Steil</a>. See <a href="https://github.com/mist64/c64rom">github.com/mist64/c64rom</a> for information on how this was created and how to contribute.</p><hr>'
 print '<table border="0">'
+
+print '<tr>'
+print '<th>Disassembly</th>'
+for i in range(0, files):
+	print '<th>' + descriptions[i] + '</th>'
+
+print '</tr>'
 
 while(True):
 	for i in range(0, files):
@@ -87,23 +102,24 @@ while(True):
 				if (hex_number[1] == 'A' or hex_number[1] == 'B' or hex_number[1] == 'E' or hex_number[1] == 'F'):
 					comment = comment.replace(hex_number, "<a href=\"#" + hex_number[1:] + "\">" + hex_number + "</a>")
 
-			index = comment.find(';')
-			if index >= 0:
-				if not (len(comment) >= 9 and comment[0:9] == '        ;'):
-					comment_left = comment[:index]
-					comment_right = comment[index:]
-					comment_left = comment_left.replace(' ', '&nbsp;')
-					comment = comment_left + comment_right
-			elif not (len(comment) >= 6 and comment[0:6] == 'SUBTTL'):
-				comment = comment.replace(' ', '&nbsp;')
+			if i == source_index:
+				index = comment.find(';')
+				if index >= 0:
+					if not (len(comment) >= 9 and comment[0:9] == '        ;'):
+						comment_left = comment[:index]
+						comment_right = comment[index:]
+						comment_left = comment_left.replace(' ', '&nbsp;')
+						comment = comment_left + comment_right
+				elif not (len(comment) >= 6 and comment[0:6] == 'SUBTTL'):
+					comment = comment.replace(' ', '&nbsp;')
 
 			if len(comment) >= 3 and comment[0:3] == '***':
 				comment = '<h2>' + comment[3:] + '</h2>'
 			elif len(comment) >= 6 and comment[0:6] == 'SUBTTL':
 				comment = '<h2>' + comment[6:] + '</h2>'
-			elif len(comment) >= 1 and comment[0] == ';':
+			elif i == source_index and len(comment) >= 1 and comment[0] == ';':
 				comment = '<tt><b>' + comment + '</b></tt><br/>'
-			elif len(comment) >= 9 and comment[0:9] == '        ;':
+			elif i == source_index and len(comment) >= 9 and comment[0:9] == '        ;':
 				comment = '<tt><b>' + comment + '</b></tt><br/>'
 			else:
 				comment = '<tt>' + comment + '</tt><br/>'
