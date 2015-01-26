@@ -36,11 +36,17 @@ The comments have been taken from
 
 OCRed and formatted by Michael Steil <mist64@mac.com>
 
-## HTML Version
+## HTML Versions
 
 txt2html.py converts the txt version into cross-referenced HTML.
 
 The most current HTML versions can be found at [pagetable.com/c64rom](http://pagetable.com/c64rom)
+
+## Combined HTML version ("Study Guide")
+
+combine.py creates a cross-referenced HTML from all commentaries.
+
+The most current version can be found at [pagetable.com/c64rom](http://pagetable.com/c64rom)
 
 ## Contributing
 
