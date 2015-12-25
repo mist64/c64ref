@@ -100,7 +100,7 @@
 .:A07C 2C B7                    $C9 $B72C RIGHT$
 .:A07E 37 B7                    $CA $B737 MID$
 
-                                *** Hierachiecodes und
+                                *** Hierarchiecodes und
                                 *** Adressen-1 der Operatoren
 .:A080 79 69 B8                 $79, $B86A Addition
 .:A083 79 52 B8                 $79, $B853 Subtraktion
@@ -251,7 +251,7 @@
 .,A3B8 20 08 A4 JSR $A408       prüft auf Platz im Speicher
 .,A3BB 85 31    STA $31         Ende des Arraybereichs
 .,A3BD 84 32    STY $32         als Beginn für freien Platz
-.,A3BF 38       SEC             Carry löschen (Subtraktion)
+.,A3BF 38       SEC             Carry setzen (Subtraktion)
 .,A3C0 A5 5A    LDA $5A         Startadresse von Endad. des
 .,A3C2 E5 5F    SBC $5F         Bereichs abziehen (LOW)
 .,A3C4 85 22    STA $22         Ergebnis (=Länge) speichern
@@ -310,7 +310,7 @@
 .,A416 48       PHA             Stapel retten
 .,A417 B5 57    LDA $57,X       Ab $57 Zwischenspeichern
 .,A419 CA       DEX             Zähler vermindern
-.,A41A 10 FA    BPL $A416       Alle? sonstweiter
+.,A41A 10 FA    BPL $A416       Alle? sonst weiter
 .,A41C 20 26 B5 JSR $B526       Garbage Collection
 .,A41F A2 F7    LDX #$F7        Zähler setzen, um
 .,A421 68       PLA             Akku, Y-Register und andere
@@ -965,7 +965,7 @@
                                 *** BASIC-Befehl GOTO
 .,A8A0 20 6B A9 JSR $A96B       Zeilennummer nach $14/$15
 .,A8A3 20 09 A9 JSR $A909       nächsten Zeilenanfang suchen
-.,A8A6 38       SEC             Carry löschen (Subtraktion)
+.,A8A6 38       SEC             Carry setzen (Subtraktion)
 .,A8A7 A5 39    LDA $39         aktuelle Zeilennummer (LOW)
 .,A8A9 E5 14    SBC $14         kleiner als laufende Zeile?
 .,A8AB A5 3A    LDA $3A         aktuelle Zeilennummer (HIGH)
@@ -999,7 +999,7 @@
 .,A8DC C9 8D    CMP #$8D        'GOSUB'-Code?
 .,A8DE F0 0B    BEQ $A8EB       ja: $A8E8
 .,A8E0 A2 0C    LDX #$0C        Nr für 'return without gosub’
-.:A8E2 2C       .BYTE $2C
+.:A8E2 2C       .BYTE $2C       BIT-Befehl um folgenden Befehl auszulassen
 .,A8E3 A2 11    LDX #$02        Nr für 'undef'd statement'
 .,A8E5 4C 37 A4 JMP $A437       Fehlermeldung ausgeben
 .,A8E8 4C 08 AF JMP $AF08       'syntax error' ausgeben
@@ -1619,7 +1619,7 @@
 
                                 *** prüft auf numerisch
 .,AD8D 18       CLC             Flag für Test auf numerisch
-.:AD8E 24       .BYTE $24
+.:AD8E 24       .BYTE $24       BIT-Befehl um folgenden Befehl auszulassen
 
                                 *** prüft auf String
 .,AD8F 38       SEC             Flag für Test auf String
@@ -2121,10 +2121,10 @@
 
                                 *** prüft auf Buchstabe
 .,B113 C9 41    CMP #$41        'A'-Code? (Buchstabencode)
-.,B115 90 05    BCC $B11C       nein: $B11C sonst C = 0
+.,B115 90 05    BCC $B11C       wenn kleiner: RTS mit C = 0
 .,B117 E9 5B    SBC #$5B        'Z' + 1
-.,B119 38       SEC             ja: dann C = 1
-.,B11A E9 A5    SBC #$A5        nein: dann C = 0
+.,B119 38       SEC             wenn größer 'Z': C = 0
+.,B11A E9 A5    SBC #$A5        sonst: C = 1 = Buchstabe
 .,B11C 60       RTS             Rücksprung
 
                                 *** Variable anlegen
@@ -2190,7 +2190,7 @@
 .,B188 69 02    ADC #$02        zwei für Namen addieren
 .,B18A A4 60    LDY $60         in Zeiger auf Variable
 .,B18C 90 01    BCC $B18F       Zeiger auf erstes Byte
-.,B18E C8       INY
+.,B18E C8       INY             High-Byte $48 erhöhen
 .,B18F 85 47    STA $47         als Variablenzeiger
 .,B191 84 48    STY $48         nach $47/48 speichern
 .,B193 60       RTS             Rücksprung
@@ -2369,16 +2369,16 @@
 .,B2BC 85 31    STA $31         Zeiger auf Ende
 .,B2BE 84 32    STY $32         der Arraytabelle setzen
 .,B2C0 A9 00    LDA #$00        Array mit Nullen füllen
-.,B2C2 E6 72    INC $72
-.,B2C4 A4 71    LDY $71         1.Schleifenende?
-.,B2C6 F0 05    BEQ $B2CD       ja: $B2CD
+.,B2C2 E6 72    INC $72         Schleifenzähler high um 1 erhöhen
+.,B2C4 A4 71    LDY $71         Schleifenzähler low
+.,B2C6 F0 05    BEQ $B2CD       wenn null: $B2CD
 .,B2C8 88       DEY             Zeiger vermindern
 .,B2C9 91 58    STA ($58),Y     Nullwert setzen
-.,B2CB D0 FB    BNE $B2C8       fertig: $B2C8
-.,B2CD C6 59    DEC $59
-.,B2CF C6 72    DEC $72
-.,B2D1 D0 F5    BNE $B2C8
-.,B2D3 E6 59    INC $59
+.,B2CB D0 FB    BNE $B2C8       solang Y <>0: $B2C8
+.,B2CD C6 59    DEC $59         High-Byte STA-Ziel verringern
+.,B2CF C6 72    DEC $72         Schleifenzähler high verringern
+.,B2D1 D0 F5    BNE $B2C8       solang <>0: $B2C8
+.,B2D3 E6 59    INC $59         High-Byte STA-Ziel erhöhen
 .,B2D5 38       SEC             Carry setzen (Subtr.)
 .,B2D6 A5 31    LDA $31         Zeiger auf Feldende
 .,B2D8 E5 5F    SBC $5F         - Zeiger auf Arrayheader
@@ -2469,7 +2469,7 @@
 .,B360 0A       ASL             um 1 Bit nach links schieben
 .,B361 AA       TAX             Byte zurück ins X-Reg.
 .,B362 98       TYA             HIGH-Byte in den Akku holen,
-.,B363 2A       ROL             um 1 Bit nach links schieben
+.,B363 2A       ROL             um 1 Bit nach links rotieren
 .,B364 A8       TAY             und zurückbringen
 .,B365 B0 A4    BCS $B30B       Überlauf: 'out of memory'
 .,B367 06 71    ASL $71         nächstes Bit aus
