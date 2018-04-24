@@ -581,7 +581,7 @@
 .,A5AC 84 71    STY $71         copy save index
 .,A5AE A0 00    LDY #$00        clear table pointer
 .,A5B0 84 0B    STY $0B         clear word index
-.,A5B2 88       DEYadjust for pre increment loop
+.,A5B2 88       DEY             adjust for pre increment loop
 .,A5B3 86 7A    STX $7A         save BASIC execute pointer low byte, buffer index
 .,A5B5 CA       DEX             adjust for pre increment loop
 .,A5B6 C8       INY             next table byte
@@ -605,7 +605,7 @@
 .,A5C5 05 0B    ORA $0B         OR with word index, +$80 in A makes token
 .,A5C7 A4 71    LDY $71         restore save index
                                 save byte then continue crunching
-.,A5C9 E8       INXincrement buffer read index
+.,A5C9 E8       INX             increment buffer read index
 .,A5CA C8       INY             increment save index
 .,A5CB 99 FB 01 STA $01FB,Y     save byte to output
 .,A5CE B9 FB 01 LDA $01FB,Y     get byte from output, set flags
@@ -980,7 +980,7 @@
 .,A81E A5 2B    LDA $2B         get start of memory low byte
 .,A820 E9 01    SBC #$01        -1
 .,A822 A4 2C    LDY $2C         get start of memory high byte
-.,A824 B0 01    BCS $A827branch if no rollunder
+.,A824 B0 01    BCS $A827       branch if no rollunder
 .,A826 88       DEY             else decrement high byte
 .,A827 85 41    STA $41         set DATA pointer low byte
 .,A829 84 42    STY $42         set DATA pointer high byte
@@ -1078,7 +1078,7 @@
 
                                 *** search for line number in temporary integer from start of memory pointer
 .,A8BC A5 2B    LDA $2B         get start of memory low byte
-.,A8BE A6 2C    LDX $2Cget start of memory high byte
+.,A8BE A6 2C    LDX $2C         get start of memory high byte
 
                                 *** search for line # in temporary integer from (AX)
 .,A8C0 20 17 A6 JSR $A617       search Basic for temp integer line number from AX
@@ -1098,7 +1098,7 @@
 .,A8D6 85 4A    STA $4A         save FOR/NEXT variable pointer high byte
 .,A8D8 20 8A A3 JSR $A38A       search the stack for FOR or GOSUB activity,
                                 get token off stack
-.,A8DB 9A       TXScorrect the stack
+.,A8DB 9A       TXS             correct the stack
 .,A8DC C9 8D    CMP #$8D        compare with GOSUB token
 .,A8DE F0 0B    BEQ $A8EB       if matching GOSUB go continue RETURN
 .,A8E0 A2 0C    LDX #$0C        else error code $04, return without gosub error
@@ -1824,7 +1824,7 @@
 .,ADC0 C9 03    CMP #$03        compare with ">" to +3
 .,ADC2 B0 13    BCS $ADD7       branch if >= 3
                                 was token for ">" "=" or "<"
-.,ADC4 C9 01    CMP #$01compare with token for =
+.,ADC4 C9 01    CMP #$01        compare with token for =
 .,ADC6 2A       ROL             *2, b0 = carry (=1 if token was = or <)
 .,ADC7 49 01    EOR #$01        toggle b0
 .,ADC9 45 4D    EOR $4D         EOR with comparrison evaluation flag
@@ -1856,7 +1856,7 @@
 .,ADF6 20 8D AD JSR $AD8D       check if source is numeric, else do type mismatch
 .,ADF9 48       PHA             save precedence
 .,ADFA 20 20 AE JSR $AE20       get vector, execute function then continue evaluation
-.,ADFD 68       PLArestore precedence
+.,ADFD 68       PLA             restore precedence
 .,ADFE A4 4B    LDY $4B         get precedence stacked flag
 .,AE00 10 17    BPL $AE19       branch if stacked values
 .,AE02 AA       TAX             copy precedence, set flags
@@ -2217,7 +2217,7 @@
 .,B023 A9 69    LDA #$69        set pointer low byte to FAC2
 .,B025 A0 00    LDY #$00        set pointer high byte to FAC2
 .,B027 20 5B BC JSR $BC5B       compare FAC1 with (AY)
-.,B02A AA       TAXcopy the result
+.,B02A AA       TAX             copy the result
 .,B02B 4C 61 B0 JMP $B061       go evaluate result
                                 do string < compare
 .,B02E A9 00    LDA #$00        clear byte
@@ -2265,7 +2265,7 @@
 .,B074 2A       ROL             * 2 (1, 2 or 4)
 .,B075 25 12    AND $12         AND with the comparison evaluation flag
 .,B077 F0 02    BEQ $B07B       branch if 0 (compare is false)
-.,B079 A9 FF    LDA #$FFelse set result true
+.,B079 A9 FF    LDA #$FF        else set result true
 .,B07B 4C 3C BC JMP $BC3C       save A as integer byte and return
 .,B07E 20 FD AE JSR $AEFD       scan for ",", else do syntax error then warm start
 
@@ -2364,7 +2364,7 @@
 .,B11C 60       RTS             
                                 reached end of variable memory without match
                                 ... so create new variable
-.,B11D 68       PLApop return address low byte
+.,B11D 68       PLA             pop return address low byte
 .,B11E 48       PHA             push return address low byte
 .,B11F C9 2A    CMP #$2A        compare with expected calling routine return low byte
 .,B121 D0 05    BNE $B128       if not get variable go create new variable
@@ -2435,7 +2435,7 @@
 .,B188 69 02    ADC #$02        +2, offset past variable name bytes
 .,B18A A4 60    LDY $60         get variable address high byte
 .,B18C 90 01    BCC $B18F       branch if no overflow from add
-.,B18E C8       INYelse increment high byte
+.,B18E C8       INY             else increment high byte
 .,B18F 85 47    STA $47         save current variable pointer low byte
 .,B191 84 48    STY $48         save current variable pointer high byte
 .,B193 60       RTS             
@@ -2645,16 +2645,16 @@
 .,B2BE 84 32    STY $32         set end of arrays high byte
                                 now the aray is created we need to zero all the elements in it
 .,B2C0 A9 00    LDA #$00        clear A for array clear
-.,B2C2 E6 72    INC $72increment array size high byte, now block count
+.,B2C2 E6 72    INC $72         increment array size high byte, now block count
 .,B2C4 A4 71    LDY $71         get array size low byte, now index to block
 .,B2C6 F0 05    BEQ $B2CD       branch if $00
 .,B2C8 88       DEY             decrement index, do 0 to n-1
 .,B2C9 91 58    STA ($58),Y     clear array element byte
 .,B2CB D0 FB    BNE $B2C8       loop until this block done
-.,B2CD C6 59    DEC $59decrement array pointer high byte
-.,B2CF C6 72    DEC $72decrement block count high byte
-.,B2D1 D0 F5    BNE $B2C8loop until all blocks done
-.,B2D3 E6 59    INC $59correct for last loop
+.,B2CD C6 59    DEC $59         decrement array pointer high byte
+.,B2CF C6 72    DEC $72         decrement block count high byte
+.,B2D1 D0 F5    BNE $B2C8       loop until all blocks done
+.,B2D3 E6 59    INC $59         correct for last loop
 .,B2D5 38       SEC             set carry for subtract
 .,B2D6 A5 31    LDA $31         get end of arrays low byte
 .,B2D8 E5 5F    SBC $5F         subtract array start low byte
@@ -2698,15 +2698,15 @@
 .,B314 F0 0A    BEQ $B320       branch if array data pointer = null, skip multiply
 .,B316 20 4C B3 JSR $B34C       compute array size
 .,B319 8A       TXA             get result low byte
-.,B31A 65 64    ADC $64add index low byte from FAC1 mantissa 3
+.,B31A 65 64    ADC $64         add index low byte from FAC1 mantissa 3
 .,B31C AA       TAX             save result low byte
-.,B31D 98       TYAget result high byte
+.,B31D 98       TYA             get result high byte
 .,B31E A4 22    LDY $22         restore index
-.,B320 65 65    ADC $65add index high byte from FAC1 mantissa 4
-.,B322 86 71    STX $71save array data pointer low byte
+.,B320 65 65    ADC $65         add index high byte from FAC1 mantissa 4
+.,B322 86 71    STX $71         save array data pointer low byte
 .,B324 C6 0B    DEC $0B         decrement dimensions count
 .,B326 D0 CA    BNE $B2F2       loop if dimensions still to do
-.,B328 85 72    STA $72save array data pointer high byte
+.,B328 85 72    STA $72         save array data pointer high byte
 .,B32A A2 05    LDX #$05        set default element size
 .,B32C A5 45    LDA $45         get variable name 1st byte
 .,B32E 10 01    BPL $B331       branch if not string or floating point array
@@ -2859,7 +2859,7 @@
 .,B41A 48       PHA             stack it
 .,B41B 88       DEY             decrement index
 .,B41C 10 FA    BPL $B418       loop until variable stacked
-.,B41E A4 48    LDY $48get current variable pointer high byte
+.,B41E A4 48    LDY $48         get current variable pointer high byte
 .,B420 20 D4 BB JSR $BBD4       pack FAC1 into (XY)
 .,B423 A5 7B    LDA $7B         get BASIC execute pointer high byte
 .,B425 48       PHA             push it
@@ -2915,7 +2915,7 @@
 .,B46E 68       PLA             dump return address (skip type check)
 .,B46F A9 FF    LDA #$FF        set result string low pointer
 .,B471 A0 00    LDY #$00        set result string high pointer
-.,B473 F0 12    BEQ $B487print null terminated string to utility pointer
+.,B473 F0 12    BEQ $B487       print null terminated string to utility pointer
 
                                 *** do string vector
                                 copy descriptor pointer and make string space A bytes long
@@ -6211,7 +6211,7 @@
                                 
                                 8) save the decoded key to the buffer if first press or repeat
                                 scan the keyboard
-.,EA87 A9 00    LDA #$00clear A
+.,EA87 A9 00    LDA #$00        clear A
 .,EA89 8D 8D 02 STA $028D       clear the keyboard shift/control/c= flag
 .,EA8C A0 40    LDY #$40        set no key
 .,EA8E 84 CB    STY $CB         save which key
@@ -6221,10 +6221,10 @@
 .,EA98 F0 61    BEQ $EAFB       if no key pressed clear current key and exit (does
                                 further BEQ to $EBBA)
 .,EA9A A8       TAY             clear the key count
-.,EA9B A9 81    LDA #$81get the decode table low byte
+.,EA9B A9 81    LDA #$81        get the decode table low byte
 .,EA9D 85 F5    STA $F5         save the keyboard pointer low byte
 .,EA9F A9 EB    LDA #$EB        get the decode table high byte
-.,EAA1 85 F6    STA $F6save the keyboard pointer high byte
+.,EAA1 85 F6    STA $F6         save the keyboard pointer high byte
 .,EAA3 A9 FE    LDA #$FE        set column 0 low
 .,EAA5 8D 00 DC STA $DC00       save VIA 1 DRA, keyboard column drive
 .,EAA8 A2 08    LDX #$08        set the row count
@@ -8040,7 +8040,7 @@
 .,F7B3 E6 9F    INC $9F         increment tape buffer index
 .,F7B5 D0 EE    BNE $F7A5       loop, branch always
 .,F7B7 20 D7 F7 JSR $F7D7       set tape buffer start and end pointers
-.,F7BA A9 69    LDA #$69set write lead cycle count
+.,F7BA A9 69    LDA #$69        set write lead cycle count
 .,F7BC 85 AB    STA $AB         save write lead cycle count
 .,F7BE 20 6B F8 JSR $F86B       do tape write, no cycle count set
 .,F7C1 A8       TAY             
@@ -8851,7 +8851,7 @@
 .,FCF5 20 50 FD JSR $FD50       RAM test and find RAM end
 .,FCF8 20 15 FD JSR $FD15       restore default I/O vectors
 .,FCFB 20 5B FF JSR $FF5B       initialise VIC and screen editor
-.,FCFE 58       CLIenable the interrupts
+.,FCFE 58       CLI             enable the interrupts
 .,FCFF 6C 00 A0 JMP ($A000)     execute BASIC
 
                                 *** scan for autostart ROM at $8000, returns Zb=1 if ROM found
