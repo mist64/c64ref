@@ -156,10 +156,10 @@
 
                                 lastly is GO, this is an add on so that GO TO, as well as GOTO, will work
 .:A198 49 44 A4 47 CF           go
-.:A19F 00                       end marker
+.:A19D 00                       end marker
 
                                 *** BASIC error messages
-.:A1A0 54 4F                    1 too many files
+.:A19E 54 4F                    1 too many files
 .:A1A0 4F 20 4D 41 4E 59 20 46
 .:A1A8 49 4C 45 D3 46 49 4C 45  2 file open
 .:A1B0 20 4F 50 45 CE 46 49 4C  3 file not open
