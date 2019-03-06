@@ -12,6 +12,14 @@ This is CBMBASIC only. The comments have been taken from
 
 Converted and formatted by Michael Steil <mist64@mac.com>
 
+## c64rom_cbm.txt
+
+This is KERNAL only. The comments have been taken from
+
+*The original C64 KERNAL source by Commodore (901227-03), [pagetable.com/?p=894](http://www.pagetable.com/?p=894), [github.com/mist64/cbmsrc](https://github.com/mist64/cbmsrc)*
+
+Converted and formatted by Michael Steil <mist64@mac.com>
+
 ## c64rom_en.txt
 
 The comments have been taken from

@@ -2,8 +2,8 @@
 
 import cgi, re, os
 
-filenames = [ "c64rom_ms.txt", "c64rom_de.txt", "c64rom_en.txt", "c64rom_sc.txt" ]
-descriptions = [ "<a href=\"http://www.pagetable.com/?p=793\">Microsoft BASIC for 6502 Original Source</a>", "<a href=\"http://www.pagetable.com/?p=718\">64 intern (Data Becker)</a>", "<a href=\"http://www.pagetable.com/?p=726\">Lee Davison</a>", "<a href=\"http://www.pagetable.com/?p=728\">Bob Sander-Cederlof (Apple II)</a>" ]
+filenames = [ "c64rom_ms.txt;c64rom_cbm.txt", "c64rom_de.txt", "c64rom_en.txt", "c64rom_sc.txt" ]
+descriptions = [ "<a href=\"http://www.pagetable.com/?p=793\">Microsoft BASIC for 6502 Original Source</a><br/><a href=\"https://github.com/mist64/cbmsrc\">Original C64 KERNAL Source by Commodore</a>", "<a href=\"http://www.pagetable.com/?p=718\">64 intern (Data Becker)</a>", "<a href=\"http://www.pagetable.com/?p=726\">Lee Davison</a>", "<a href=\"http://www.pagetable.com/?p=728\">Bob Sander-Cederlof (Apple II)</a>" ]
 asm_donor_index = 1
 source_index = 0 # we treat the Microsoft source differently
 
@@ -11,7 +11,10 @@ data = []
 linenumber = []
 address = []
 for filename in filenames:
-	data.append([line.rstrip() for line in open(filename)])
+	d = []
+	for f in filename.split(";"):
+		d += [line.rstrip() for line in open(f)]
+	data.append(d)
 	linenumber.append(0)
 	address.append(0)
 files = len(filenames)
@@ -90,7 +93,7 @@ while(True):
 
 			line = data[i][linenumber[i]]
 
-			if len(line) > 0 and line[0] == '.':
+			if line.startswith('.'):
 				address[i] = int(line[2:6], 16)
 			if address[i] > asmaddress:
 				break
@@ -102,27 +105,22 @@ while(True):
 				if (hex_number[1] == 'A' or hex_number[1] == 'B' or hex_number[1] == 'E' or hex_number[1] == 'F'):
 					comment = comment.replace(hex_number, "<a href=\"#" + hex_number[1:] + "\">" + hex_number + "</a>")
 
-			if i == source_index:
-				index = comment.find(';')
-				if index >= 0:
-					if not (len(comment) >= 9 and comment[0:9] == '        ;'):
-						comment_left = comment[:index]
-						comment_right = comment[index:]
-						comment_left = comment_left.replace(' ', '&nbsp;')
-						comment = comment_left + comment_right
-				elif not (len(comment) >= 6 and comment[0:6] == 'SUBTTL'):
-					comment = comment.replace(' ', '&nbsp;')
-
-			if len(comment) >= 3 and comment[0:3] == '***':
+			if comment.startswith('***'):
 				comment = '<h2>' + comment[3:] + '</h2>'
-			elif len(comment) >= 6 and comment[0:6] == 'SUBTTL':
+			elif comment.startswith('SUBTTL'):
 				comment = '<h2>' + comment[6:] + '</h2>'
-			elif i == source_index and len(comment) >= 1 and comment[0] == ';':
-				comment = '<tt><b>' + comment + '</b></tt><br/>'
-			elif i == source_index and len(comment) >= 9 and comment[0:9] == '        ;':
-				comment = '<tt><b>' + comment + '</b></tt><br/>'
+			elif comment.startswith('.LIB '):
+				comment = '<h2>' + comment + '</h2>'
 			else:
+				scomment = comment.lstrip()
+
+				if scomment.startswith(';'):
+					comment = '<b>' + comment + '</b>'
+
+				comment = comment.replace(' ', '&nbsp;')
 				comment = '<tt>' + comment + '</tt><br/>'
+
+
 			print comment
 			linenumber[i] = linenumber[i] + 1
 		print "</td>"

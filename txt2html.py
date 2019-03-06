@@ -56,6 +56,8 @@ for line in lines[1:]:
 			start_index = 3
 		if len(right) >= 6 and right[0:6] == 'SUBTTL':
 			start_index = 6
+		if len(right) >= 7 and right[0:7] == '.LIB   ':
+			start_index = 7
 		if (start_index != 0):
 			right = right[start_index:]
 			if cached_header == '':
