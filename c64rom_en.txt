@@ -5690,13 +5690,14 @@
 .,E72C D0 03    BNE $E731       branch if not [CR]
 .,E72E 4C 91 E8 JMP $E891       else output [CR] and return
 .,E731 C9 20    CMP #$20        compare with [SPACE]
-.,E733 90 10    BCC $E745       branch if < [SPACE]
+.,E733 90 10    BCC $E745       branch if < [SPACE], not a printable character
 .,E735 C9 60    CMP #$60        
 .,E737 90 04    BCC $E73D       branch if $20 to $5F
                                 character is $60 or greater
-.,E739 29 DF    AND #$DF        
-.,E73B D0 02    BNE $E73F       
-.,E73D 29 3F    AND #$3F        
+.,E739 29 DF    AND #$DF        conversion of PETSCII character to screen code
+.,E73B D0 02    BNE $E73F       branch always
+                                character is $20 to $5F
+.,E73D 29 3F    AND #$3F        conversion of PETSCII character to screen code
 .,E73F 20 84 E6 JSR $E684       if open quote toggle cursor direct/programmed flag
 .,E742 4C 93 E6 JMP $E693       
                                 character was < [SPACE] so is a control character
