@@ -137,7 +137,7 @@
                                 next are the secondary command keywords, these can not start a statement
 .:A128 D7 54 41 42 A8 54 CF 46  tab( to
 .:A130 CE 53 50 43 A8 54 48 45  spc( then
-.:A138 CE 4E 4F D4 53 54 45 D0  not stop
+.:A138 CE 4E 4F D4 53 54 45 D0  not step
                                 next are the operators
 .:A140 AB AD AA AF DE 41 4E C4  + - * / ' and
 .:A148 4F D2 BE BD BC           or <=>

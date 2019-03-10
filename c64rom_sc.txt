@@ -132,7 +132,7 @@
 .:A120 4F 53 C5 47 45 D4 4E 45  get new
 .:A128 D7 54 41 42 A8 54 CF 46  tab( to
 .:A130 CE 53 50 43 A8 54 48 45  spc( then
-.:A138 CE 4E 4F D4 53 54 45 D0  not stop
+.:A138 CE 4E 4F D4 53 54 45 D0  not step
 .:A140 AB AD AA AF DE 41 4E C4  + - * / ' and
 .:A148 4F D2 BE BD BC           or <=>
 .:A14D                53 47 CE  sgn
