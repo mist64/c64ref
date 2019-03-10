@@ -3790,7 +3790,7 @@
 .:B9C7 80 13 9B 0B 64            .576584541
 .:B9CC 80 76 38 93 16            .961800759
 .:B9D1 82 38 AA 3B 20           2.88539007
-.:B9D5 80 35 04 F3 34            .707106781 = 1/SQR(2)
+.:B9D6 80 35 04 F3 34            .707106781 = 1/SQR(2)
 .:B9DB 81 35 04 F3 34           1.41421356 = SQR(2)
 .:B9E0 80 80 00 00 00           -.5
 .:B9E5 80 31 72 17 F8            .693147181  =  LOG(2)
@@ -6451,7 +6451,7 @@
                                  4  1 = enable multicolor mode
                                  3  1 = 40 column display, 0 = 38 column display
                                 2-0 horizontal scroll count
-.:ECC0 00                       sprite 0 to 7 y expand
+.:ECD0 00                       sprite 0 to 7 y expand
 .:ECD1 14                       memory control
                                 bit function
                                 --- -------
@@ -6487,7 +6487,7 @@
 .:ECDD 03                       background colour 3
 .:ECDE 04                       sprite multicolour 0
 .:ECDF 00                       sprite multicolour 1
-.:ECD0 01                       sprite 0 colour
+.:ECE0 01                       sprite 0 colour
 .:ECE1 02                       sprite 1 colour
 .:ECE2 03                       sprite 2 colour
 .:ECE3 04                       sprite 3 colour
