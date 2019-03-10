@@ -2,8 +2,8 @@
 
 import cgi, re, os
 
-filenames = [ "c64rom_ms.txt;c64rom_cbm.txt", "c64rom_de.txt", "c64rom_en.txt", "c64rom_sc.txt" ]
-descriptions = [ "<a href=\"http://www.pagetable.com/?p=793\">Microsoft BASIC for 6502 Original Source</a><br/><a href=\"https://github.com/mist64/cbmsrc\">Original C64 KERNAL Source by Commodore</a>", "<a href=\"http://www.pagetable.com/?p=718\">64 intern (Data Becker)</a>", "<a href=\"http://www.pagetable.com/?p=726\">Lee Davison</a>", "<a href=\"http://www.pagetable.com/?p=728\">Bob Sander-Cederlof (Apple II)</a>" ]
+filenames = [ "c64rom_ms.txt;c64rom_cbm.txt", "c64rom_de.txt", "c64rom_en.txt", "c64rom_sc.txt", "c64rom_mm.txt" ]
+descriptions = [ "<a href=\"http://www.pagetable.com/?p=793\">Microsoft BASIC</a>/<a href=\"https://github.com/mist64/cbmsrc\">Commodore KERNAL</a> Source", "<a href=\"http://www.pagetable.com/?p=718\">64 intern (Data Becker)</a>", "<a href=\"http://www.pagetable.com/?p=726\">Lee Davison</a>", "<a href=\"http://www.pagetable.com/?p=728\">Bob Sander-Cederlof (Apple II)</a>", "<a href=\"http://www.unusedino.de/ec64/technical/misc/c64/romlisting.html\">Marko M&auml;kel&auml;</a>" ]
 asm_donor_index = 1
 source_index = 0 # we treat the Microsoft source differently
 
@@ -33,12 +33,30 @@ for i in range(0, files):
 print '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />'
 print '<style type="text/css">table{border-collapse:collapse;} tr {border: none;} td{border-right: solid 1px; border-left: solid 1px;} tr:nth-child(even) {background-color: #f0f0f0;} </style>'
 print '<title>Comparative C64 ROM Disassembly Study Guide</title>'
+print '<script language="javascript">'
+print '    function hideCol(col, checked) {'
+print '        var tbl = document.getElementById("disassembly_table");'
+print '        for (var i = 0; i < tbl.rows.length; i++) {'
+print '            tbl.rows[i].cells[col].style.display = checked ? "" : "none";'
+print '        }'
+print '    }'
+print '</script>'
+
+
+
 print '<h1>Comparative C64 ROM Disassembly Study Guide</h1>'
 f = os.popen("git log -1 --pretty=format:%h .")
 revision = f.read()
 print '<p>revision ' + revision + '</p>'
 print '<p>By <a href="http://www.pagetable.com/">Michael Steil</a>. See <a href="https://github.com/mist64/c64rom">github.com/mist64/c64rom</a> for information on how this was created and how to contribute.</p><hr>'
-print '<table border="0">'
+
+i = 1
+for description in descriptions:
+	print '<input type="checkbox" id="checkbox_' + str(i) + '" checked onclick="hideCol(' + str(i) + ', document.getElementById(\'checkbox_' + str(i) + '\').checked);" />' + description + '<br/>'
+	i += 1
+print '<hr>'
+
+print '<table border="0" id="disassembly_table">'
 
 print '<tr>'
 print '<th>Disassembly</th>'
