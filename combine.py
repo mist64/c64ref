@@ -2,8 +2,8 @@
 
 import cgi, re, os
 
-filenames = [ "c64rom_ms.txt;c64rom_cbm.txt", "c64rom_de.txt", "c64rom_en.txt", "c64rom_sc.txt", "c64rom_mm.txt" ]
-descriptions = [ "<a href=\"http://www.pagetable.com/?p=793\">Microsoft BASIC</a>/<a href=\"https://github.com/mist64/cbmsrc\">Commodore KERNAL</a> Source", "<a href=\"http://www.pagetable.com/?p=718\">64 intern (Data Becker)</a>", "<a href=\"http://www.pagetable.com/?p=726\">Lee Davison</a>", "<a href=\"http://www.pagetable.com/?p=728\">Bob Sander-Cederlof (Apple II)</a>", "<a href=\"http://www.unusedino.de/ec64/technical/misc/c64/romlisting.html\">Marko M&auml;kel&auml;</a>" ]
+filenames = [ "c64rom_ms.txt;c64rom_cbm.txt", "c64rom_de.txt", "c64rom_en.txt", "c64rom_sc.txt", "c64rom_mn.txt", "c64rom_mm.txt" ]
+descriptions = [ "<a href=\"http://www.pagetable.com/?p=793\">Microsoft BASIC</a>/<a href=\"https://github.com/mist64/cbmsrc\">Commodore KERNAL</a> Source", "<a href=\"http://www.pagetable.com/?p=718\">64 intern (Data Becker)</a>", "<a href=\"http://www.pagetable.com/?p=726\">Lee Davison</a>", "<a href=\"http://www.pagetable.com/?p=728\">Bob Sander-Cederlof (Apple II)</a>", "<a href=\"https://www.telecomm.at/documents/Jiffydos_Romlisting.doc\">Magnus Nyman</a>", "<a href=\"http://www.unusedino.de/ec64/technical/misc/c64/romlisting.html\">Marko M&auml;kel&auml;</a>" ]
 asm_donor_index = 1
 source_index = 0 # we treat the Microsoft source differently
 
