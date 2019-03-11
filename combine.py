@@ -31,8 +31,8 @@ for i in range(0, files):
 
 
 print '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />'
-print '<style type="text/css">table{border-collapse:collapse;} tr {border: none;} td{border-right: solid 1px; border-left: solid 1px;} tr:nth-child(even) {background-color: #f0f0f0;} </style>'
 print '<title>Comparative C64 ROM Disassembly Study Guide</title>'
+print ''
 print '<script language="javascript">'
 print '    function hideCol(col, checked) {'
 print '        var tbl = document.getElementById("disassembly_table");'
@@ -41,7 +41,75 @@ print '            tbl.rows[i].cells[col].style.display = checked ? "" : "none";
 print '        }'
 print '    }'
 print '</script>'
-
+print ''
+print '<style type="text/css">'
+print ''
+print 'table {'
+print '  border-collapse: collapse;'
+print '}'
+print ''
+print 'td, th {'
+print '  margin: 0px;'
+print '  padding: 2px 4px;'
+print '  border: solid grey;'
+print '  border-width:0px 1px 0px 1px;'
+print '  text-align:left;'
+print '  vertical-align: text-top;'
+print '  font-family: monospace;'
+print '}'
+print ''
+print 'h3 {'
+print '  font-family: serif;'
+print '}'
+print ''
+print '.com {'
+print '  white-space: pre;'
+print '}'
+print ''
+print 'th.com {'
+print '  font-weight: bold;'
+print '}'
+print ''
+print 'div {'
+print '  padding: 1em;'
+print '}'
+print ''
+#print '.sticky {'
+#print '  position: -webkit-sticky;'
+#print '  position: -moz-sticky;'
+#print '  position: -ms-sticky;'
+#print '  position: -o-sticky;'
+#print '  position: sticky;'
+#print '  outline: 1px solid green;'
+#print '  outline-offset: -1px;'
+#print '}'
+print ''
+print '.top_row {'
+print '  top: 0em;'
+print '  z-index: 10;'
+#print '  background-color:yellow;'
+print '  border-bottom: 1px solid grey;'
+print '}'
+print ''
+print '.left_column {'
+print '  left: 0em;'
+print '  z-index: 11;'
+#print '  background-color:red;'
+print '}'
+print ''
+print '.top_left_corner {'
+print '  top: 0em;'
+print '  left: 0em;'
+print '  z-index: 12;'
+#print '  background-color:orange;'
+print '  border-bottom: 1px solid grey;'
+print '}'
+print ''
+print 'tr:nth-child(even) {'
+print '  background: #f0f0f0;'
+print '}'
+print ''
+print '</style>'
 
 
 print '<h1>Comparative C64 ROM Disassembly Study Guide</h1>'
@@ -56,16 +124,21 @@ for description in descriptions:
 	i += 1
 print '<hr>'
 
-print '<table border="0" id="disassembly_table">'
+print '<div>'
+print '<table id="disassembly_table">'
 
 print '<tr>'
-print '<th>Disassembly</th>'
+print '<th class="sticky top_left_corner">Disassembly</th>'
 for i in range(0, files):
-	print '<th>' + descriptions[i] + '</th>'
-
+	print '<th class="sticky top_row">' + descriptions[i] + '</th>'
 print '</tr>'
 
+count = 0
 while(True):
+	count += 1
+#	if count > 80:
+#		break
+	
 	for i in range(0, files):
 		if linenumber[i] >= len(data[i]):
 			continue
@@ -89,19 +162,16 @@ while(True):
 		asmaddress = int(hexaddress, 16)
 		has_address = True
 
-	asm = asm.replace(' ', '&nbsp;')
-
 	hex_numbers = re.findall(r'\$[0-9A-F][0-9A-F][0-9A-F][0-9A-F]', asm)
 	for hex_number in hex_numbers:
 		if (hex_number[1] == 'A' or hex_number[1] == 'B' or hex_number[1] == 'E' or hex_number[1] == 'F'):
 			asm = asm.replace(hex_number, "<a href=\"#" + hex_number[1:] + "\">" + hex_number + "</a>")
 
-	print '<tr valign="top">'
-	print '<td>'
+	print '<tr>'
+	print '<th class="sticky left_column">'
 	if has_address:
 		print "<a name=\"" + hexaddress + "\"/>"
-	print '<tt><b>' + asm + '</b></tt></td>'
-	
+	print '<span class="com">' + asm + '</span></th>'
 
 	for i in range(0, files):
 		print '<td>'
@@ -124,23 +194,24 @@ while(True):
 					comment = comment.replace(hex_number, "<a href=\"#" + hex_number[1:] + "\">" + hex_number + "</a>")
 
 			if comment.startswith('***'):
-				comment = '<h2>' + comment[3:] + '</h2>'
+				comment = '<h3>' + comment[3:] + '</h3>'
 			elif comment.startswith('SUBTTL'):
-				comment = '<h2>' + comment[6:] + '</h2>'
+				comment = '<h3>' + comment[6:] + '</h3>'
 			elif comment.startswith('.LIB '):
-				comment = '<h2>' + comment + '</h2>'
+				comment = '<h3>' + comment + '</h3>'
 			else:
 				scomment = comment.lstrip()
 
 				if scomment.startswith(';'):
 					comment = '<b>' + comment + '</b>'
 
-				comment = comment.replace(' ', '&nbsp;')
-				comment = '<tt>' + comment + '</tt><br/>'
-
+				if len(comment) != 0:
+					comment = '<span class="com">' + comment + '</span><br />'
 
 			print comment
 			linenumber[i] = linenumber[i] + 1
 		print "</td>"
-	
-	print "</td>"
+	print "</tr>"
+
+print '</table>'
+print '</div>'
