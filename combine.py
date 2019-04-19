@@ -20,9 +20,9 @@ names = [
 ]
 links = [
 	"https://github.com/mist64/cbmsrc",
-	"http://www.pagetable.com/?p=718",
-	"http://www.pagetable.com/?p=726",
-	"http://www.pagetable.com/?p=728",
+	"https://www.pagetable.com/?p=1015",
+	"https://www.pagetable.com/?p=726",
+	"https://www.pagetable.com/?p=728",
 	"https://www.telecomm.at/documents/Jiffydos_Romlisting.doc",
 	"http://www.unusedino.de/ec64/technical/misc/c64/romlisting.html"
 ]
@@ -70,7 +70,7 @@ for i in range(0, files):
 
 
 print '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />'
-print '<title>Commodore 64 BASIC & KERNAL ROM Disassembly</title>'
+print '<title>Ultimate Commodore 64 BASIC & KERNAL ROM Disassembly</title>'
 print ''
 print '<script language="javascript">'
 print '    function hideCol(col, checked) {'
@@ -208,7 +208,7 @@ print ''
 print '</style>'
 print '<body>'
 
-print '<h1>Commodore 64 BASIC & KERNAL ROM Disassembly</h1>'
+print '<h1>Ultimate Commodore 64 BASIC & KERNAL ROM Disassembly</h1>'
 
 print '<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64rom">github.com/mist64/c64rom</a>. Revision ' + revision + '</i></p>'
 
