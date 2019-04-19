@@ -34,6 +34,11 @@ descriptions = [
 	"Comments from <i>JIFFYDOS version 6.01/version 6.02</i> by Magnus Nyman (Harlekin/FairLight), which were written for the JiffyDOS KERNAL, so some serial code and all tape code is missing comments.",
 	"Comments from the <i>Commodore 64 BASIC/KERNAL ROM Disassembly Version 1.0 (June 1994)</i> by Marko M&auml;kel&auml;."
 ]
+
+
+darkcolor = ["D8F2CB", "C6E2FC", "BFB7E8", "FCF6CD", "F4D2E3", "D2F6F0"]
+lightcolor = ["E5F2DF","E3F0FC","D5D1E8","FCFAE6","F5E4EC","E1F5F2"]
+
 asm_donor_index = 1
 source_index = 0 # we treat the Microsoft/Commodore source differently
 
@@ -153,6 +158,16 @@ print 'table.disassembly_table th.left_column a {'
 print '    color: #e0f0ff;'
 print '}'
 print ''
+
+for i in range(0, len(filenames)):
+	print 'table.disassembly_table tr td:nth-of-type(' + str(i+1) + ') {'
+	print '    background: #' + darkcolor[i] + ';'
+	print '}'
+	print ''
+	print 'table.disassembly_table tr:nth-child(even) td:nth-of-type(' + str(i+1) + ') {'
+	print '    background: #' + lightcolor[i] + ';'
+	print '}'
+
 print 'table.disassembly_table tr {'
 print '    background: #f0f0f0;'
 print '}'
