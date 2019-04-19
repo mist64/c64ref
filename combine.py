@@ -2,8 +2,38 @@
 
 import cgi, re, os
 
-filenames = [ "c64rom_ms.txt;c64rom_cbm.txt", "c64rom_de.txt", "c64rom_en.txt", "c64rom_sc.txt", "c64rom_mn.txt", "c64rom_mm.txt" ]
-descriptions = [ "<a href=\"http://www.pagetable.com/?p=793\">Microsoft BASIC</a>/<a href=\"https://github.com/mist64/cbmsrc\">Commodore KERNAL</a> Source", "<a href=\"http://www.pagetable.com/?p=718\">64 intern (Data Becker)</a>", "<a href=\"http://www.pagetable.com/?p=726\">Lee Davison</a>", "<a href=\"http://www.pagetable.com/?p=728\">Bob Sander-Cederlof (Apple II)</a>", "<a href=\"https://www.telecomm.at/documents/Jiffydos_Romlisting.doc\">Magnus Nyman</a>", "<a href=\"http://www.unusedino.de/ec64/technical/misc/c64/romlisting.html\">Marko M&auml;kel&auml;</a>" ]
+filenames = [
+	"c64rom_ms.txt;c64rom_cbm.txt",
+	"c64rom_de.txt",
+	"c64rom_en.txt",
+	"c64rom_sc.txt",
+	"c64rom_mn.txt",
+	"c64rom_mm.txt"
+]
+names = [
+	"Microsoft/Commodore Source",
+	"Data Becker [German]",
+	"Lee Davison",
+	"Bob Sander-Cederlof [BASIC only]",
+	"Magnus Nyman [KERNAL only]",
+	"Marko M&auml;kel&auml;"
+]
+links = [
+	"https://github.com/mist64/cbmsrc",
+	"http://www.pagetable.com/?p=718",
+	"http://www.pagetable.com/?p=726",
+	"http://www.pagetable.com/?p=728",
+	"https://www.telecomm.at/documents/Jiffydos_Romlisting.doc",
+	"http://www.unusedino.de/ec64/technical/misc/c64/romlisting.html"
+]
+descriptions = [
+	"The original M6502 BASIC source by Microsoft (KIM-1 version, not everything lines up, Commodore extensions are missing, but lots of comments by the original authors)<br/>and the original C64 KERNAL source by Commodore (lots of comments by the original authors)",
+	"German-language comments from <i>Das neue Commodore-64-intern-Buch</i> by Data Becker, ISBN 3890113079. Some minor corrections have been made.",
+	"Comments from <i>The almost completely commented C64 ROM disassembly V1.01</i> by Lee Davison. Some minor corrections have been made.",
+	"Comments adapted from <i>S-C DocuMentor for Applesoft</i> by Bob Sander-Cederlof, for the version of Microsoft BASIC that shipped with the Apple II.",
+	"Comments from <i>JIFFYDOS version 6.01/version 6.02</i> by Magnus Nyman (Harlekin/FairLight), which were written for the JiffyDOS KERNAL, so some serial code and all tape code is missing comments.",
+	"Comments from the <i>Commodore 64 BASIC/KERNAL ROM Disassembly Version 1.0 (June 1994)</i> by Marko M&auml;kel&auml;."
+]
 asm_donor_index = 1
 source_index = 0 # we treat the Microsoft/Commodore source differently
 
@@ -40,7 +70,7 @@ print '<script language="javascript">'
 print '    function hideCol(col, checked) {'
 print '        var tbl = document.getElementById("disassembly_table");'
 print '        for (var i = 0; i < tbl.rows.length; i++) {'
-print '            tbl.rows[i].cells[col].style.display = checked ? "" : "none";'
+print '            tbl.rows[i].cells[col+1].style.display = checked ? "" : "none";'
 print '        }'
 print '    }'
 print '</script>'
@@ -58,12 +88,12 @@ print 'a {'
 print '    color: #0060a0;'
 print '}'
 print ''
-print 'table {'
+print 'table.disassembly_table {'
 print '    border-collapse: collapse;'
 print '    color: black;'
 print '}'
 print ''
-print 'td, th {'
+print 'table.disassembly_table td, table.disassembly_table th {'
 print '  margin: 0px;'
 print '  padding: 2px 4px;'
 print '  border: solid grey;'
@@ -120,12 +150,27 @@ print '  z-index: 12;'
 print '  border-bottom: 1px solid grey;'
 print '}'
 print ''
-print 'tr {'
+print 'table.disassembly_table tr {'
 print '  background: #f0f0f0;'
 print '}'
 print ''
-print 'tr:nth-child(even) {'
+print 'table.disassembly_table tr:nth-child(even) {'
 print '  background: #ffffff;'
+print '}'
+print ''
+print 'table.checkbox_table {'
+print '    border-collapse: collapse;'
+print '    border: solid 1px #0060a0;'
+print '    color: black;'
+print '}'
+print ''
+print 'table.checkbox_table tr, table.checkbox_table td {'
+print '  margin: 0px;'
+print '  padding: 4px 8px;'
+print '  border: solid grey;'
+print '  border-width:1px 0px 1px 0px;'
+print '  text-align:left;'
+print '  vertical-align: text-top;'
 print '}'
 print ''
 print '</style>'
@@ -133,23 +178,21 @@ print '<body bgcolor="#e0f0ff">'
 
 print '<h1>Commodore 64 BASIC & KERNAL ROM Disassembly</h1>'
 
-print '<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>. See <a href="https://github.com/mist64/c64rom">github.com/mist64/c64rom</a> for information on how this was created and how to contribute. Revision ' + revision + '</i></p>'
+print '<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64rom">github.com/mist64/c64rom</a>. Revision ' + revision + '</i></p>'
 
-print '<div style="border-style: solid; display: inline-block">'
-print 'This allows you to view different commentaries side-by-side.<br/>You can enable/disable the display of individual ones:<br/><br/>'
-i = 1
-for description in descriptions:
-	print '<input type="checkbox" id="checkbox_' + str(i) + '" checked onclick="hideCol(' + str(i) + ', document.getElementById(\'checkbox_' + str(i) + '\').checked);" />' + description + '<br/>'
-	i += 1
-print '</div>'
+print '<b>This allows you to view different commentaries side-by-side. You can enable/disable individual columns:</b><br/><br/>'
+print '<table class="checkbox_table">'
+for i in range(0, len(filenames)):
+	print '<tr><td><input type="checkbox" id="checkbox_' + str(i) + '" checked onclick="hideCol(' + str(i) + ', document.getElementById(\'checkbox_' + str(i) + '\').checked);" /></td><td style="white-space: nowrap;"><b><a href="' + links[i] + '">' + names[i] + '</a></b><td>' + descriptions[i] + '</td></tr>'
+print '</table>'
 
 print '<div>'
-print '<table id="disassembly_table">'
+print '<table id="disassembly_table" class="disassembly_table">'
 
 print '<tr>'
 print '<th class="sticky top_left_corner">Disassembly</th>'
 for i in range(0, files):
-	print '<th class="sticky top_row">' + descriptions[i] + '</th>'
+	print '<th class="sticky top_row">' + names[i] + '</th>'
 print '</tr>'
 
 count = 0
