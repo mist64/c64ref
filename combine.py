@@ -36,6 +36,7 @@ descriptions = [
 ]
 
 
+titlecolor = ["017100", "004D7F", "99195E", "F8BA00", "B51700", "017B76"]
 darkcolor = ["D8F2CB", "C6E2FC", "BFB7E8", "FCF6CD", "F4D2E3", "D2F6F0"]
 lightcolor = ["E5F2DF","E3F0FC","D5D1E8","FCFAE6","F5E4EC","E1F5F2"]
 
@@ -141,6 +142,7 @@ print '}'
 print ''
 print 'table.disassembly_table th.top_row {'
 print '    border-width: 1px;'
+print '    color: #e0f0ff;'
 print '}'
 print ''
 print 'table.disassembly_table th.left_column {'
@@ -160,6 +162,10 @@ print '}'
 print ''
 
 for i in range(0, len(filenames)):
+	print 'table.disassembly_table th.top_row:nth-of-type(' + str(i+2) + ') {'
+	print '    background: #' + titlecolor[i] + ';'
+	print '}'
+	print ''
 	print 'table.disassembly_table tr td:nth-of-type(' + str(i+1) + ') {'
 	print '    background: #' + darkcolor[i] + ';'
 	print '}'
@@ -167,6 +173,15 @@ for i in range(0, len(filenames)):
 	print 'table.disassembly_table tr:nth-child(even) td:nth-of-type(' + str(i+1) + ') {'
 	print '    background: #' + lightcolor[i] + ';'
 	print '}'
+	print ''
+	print 'table.checkbox_table tr:nth-of-type(' + str(i+1) + ') {'
+	print '    background: #' + lightcolor[i] + ';'
+	print '}'
+	print ''
+	print 'table.checkbox_table tr:nth-of-type(' + str(i+1) + ') td:nth-of-type(2) {'
+	print '    background: #' + titlecolor[i] + ';'
+	print '}'
+	print ''
 
 print 'table.disassembly_table tr {'
 print '    background: #f0f0f0;'
@@ -178,6 +193,10 @@ print '}'
 print ''
 print 'table.checkbox_table {'
 print '    border-color: #0060a0;'
+print '}'
+print ''
+print 'table.checkbox_table a {'
+print '    color: #e0f0ff;'
 print '}'
 print ''
 print 'table.checkbox_table tr, table.checkbox_table td {'
