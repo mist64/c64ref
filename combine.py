@@ -45,6 +45,8 @@ source_index = 0 # we treat the Microsoft/Commodore source differently
 
 f = os.popen("git log -1 --pretty=format:%h .")
 revision = f.read()
+f = os.popen("git log -1 --date=short --pretty=format:%cd .")
+date = f.read()
 
 data = []
 linenumber = []
@@ -210,7 +212,7 @@ print '<body>'
 
 print '<h1>Ultimate Commodore 64 BASIC & KERNAL ROM Disassembly</h1>'
 
-print '<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64disasm">github.com/mist64/c64disasm</a>. Revision ' + revision + '</i></p>'
+print '<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64disasm">github.com/mist64/c64disasm</a>. Revision ' + revision + ', ' + date + '</i></p>'
 
 print '<b>This allows you to view different commentaries side-by-side. You can enable/disable individual columns:</b><br/><br/>'
 print '<table class="checkbox_table">'
