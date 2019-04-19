@@ -15,7 +15,7 @@
 - Converted, formatted and adapted by Michael Steil <mist64@mac.com>
 -
 - Corrections (typos, formatting, content) welcome at:
-- https://github.com/mist64/c64rom
+- https://github.com/mist64/c64disasm
 -
 ------------------------------------------------------------
 -

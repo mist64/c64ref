@@ -1,10 +1,10 @@
 #!/usr/bin/python
 #
-# txt2html.py - converts a "c64rom" commented disassembly txt file
+# txt2html.py - converts a "c64disasm" commented disassembly txt file
 # into cross-referenced HTML.
 #
 # Michael Steil
-# https://github.com/mist64/c64rom
+# https://github.com/mist64/c64disasm
 #
 import sys, re, cgi, os
 
