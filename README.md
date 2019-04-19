@@ -1,6 +1,6 @@
-# Fully Commented Commodore 64 ROM Disassembly
+# Ultimate Commodore 64 BASIC & KERNAL ROM Disassembly
 
-This project maintains four commented disassemblies of the C64 ROM (BASIC and KERNAL), three in English and one in German.
+This project maintains six commented disassemblies of the C64 ROM (BASIC and KERNAL), five in English and one in German.
 
 The txt files are the parsable master versions that can be used to create more rich representations.
 
@@ -43,6 +43,22 @@ The comments have been taken from
 *Baloui, Said. Das neue Commodore-64-intern-Buch. Düsseldorf: Data-Becker, 1990. ISBN 3890113079*
 
 OCRed and formatted by Michael Steil <mist64@mac.com>
+
+## c64disasm_mn.txt
+
+The comments have been taken from
+
+*JIFFYDOS version 6.01/version 6.02 by Magnus Nyman (Harlekin/FairLight)*
+
+Converted and formatted by Michael Steil <mist64@mac.com>
+
+## c64disasm_mm.txt
+
+The comments have been taken from
+
+*Commodore 64 BASIC/KERNAL ROM Disassembly Version 1.0 (June 1994), by Marko Mäkelä*
+
+Converted and formatted by Michael Steil <mist64@mac.com>
 
 ## Side-by-side HTML version
 
