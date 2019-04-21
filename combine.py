@@ -271,6 +271,7 @@ while(True):
 
 	for i in range(0, files):
 		print '<td>'
+		comments = []
 		while True:
 			if linenumber[i] >= len(data[i]):
 				break
@@ -304,8 +305,17 @@ while(True):
 				if len(comment) != 0:
 					comment = '<span class="com">' + comment + '</span><br />'
 
-			print comment
+			if len(comment) != 0:
+				comments.append(comment)
+
 			linenumber[i] = linenumber[i] + 1
+
+		if len(comments):
+			for comment in comments:
+				print comment
+		else:
+			print '&nbsp;'
+
 		print "</td>"
 	print "</tr>"
 
