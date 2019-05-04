@@ -1119,7 +1119,7 @@
 .,EA0E 88       DEY                    DEY
 .,EA0F 10 F6    BPL $EA07              BPL CLR10
 .,EA11 60       RTS                    RTS
-.,EA12 .A       NOP                    NOP
+.,EA12 EA       NOP                    NOP
                                 ;
                                 ;PUT A CHAR ON THE SCREEN
                                 ;
