@@ -1127,7 +1127,7 @@
 .:A08C 7F                               127
 .:A08D 7A BF                            ADR(FPWRT-1)
 .:A08F 50                               80
-.:A090  E8 AF                           ADR(ANDOP-1)
+.:A090 E8 AF                            ADR(ANDOP-1)
 .:A092 46                               70
 .:A093 E5 AF                            ADR(OROP-1)
 .:A095 7D                       NEGTAB: 125
@@ -1177,7 +1177,7 @@
 .:A188 43 48 52 A4 4C 45 46 54          DCI"SAVE"
 .:A190 A4 52 49 47 48 54 A4 4D  IFE     REALIO-3,<
 .:A198 49 44 A4 47 CF 00                DCI"VERIFY">>
-.:A1A0 54 4F                            DCI"DEF"
+.:A19E 54 4F                            DCI"DEF"
                                         DCI"POKE"
                                 IFN     EXTIO,<
                                         DCI"PRINT#">
