@@ -1046,7 +1046,7 @@
 .,A8DE F0 0B    BEQ $A8EB       
 .,A8E0 A2 0C    LDX #$0C        
 .:A8E2 2C       .BYTE $2C       FAKE
-.,A8E3 A2 11    LDX #$02        
+.,A8E3 A2 11    LDX #$11        
 .,A8E5 4C 37 A4 JMP $A437       
 
 .,A8E8 4C 08 AF JMP $AF08       
