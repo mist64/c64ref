@@ -3199,7 +3199,7 @@
 .,B80C 60       RTS             Rücksprung
 
                                 *** BASIC-Funktion PEEK
-.,B80D A5 15    LDA $15         $15 und $16
+.,B80D A5 15    LDA $15         $14 und $15
 .,B80F 48       PHA             in
 .,B810 A5 14    LDA $14         Stack
 .,B812 48       PHA             sichern
@@ -3208,7 +3208,7 @@
 .,B816 A0 00    LDY #$00        Zähler auf Null
 .,B818 B1 14    LDA ($14),Y     Peek-Wert holen
 .,B81A A8       TAY             nach Y-Reg
-.,B81B 68       PLA             $15 und $16
+.,B81B 68       PLA             $14 und $15
 .,B81C 85 14    STA $14         wieder
 .,B81E 68       PLA             vom Stack
 .,B81F 85 15    STA $15         zurückholen
