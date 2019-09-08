@@ -1445,7 +1445,7 @@
 .,AC11 86 43    STX $43         INPUT-Zeiger auf
 .,AC13 84 44    STY $44         Eingabequelle setzen
 .,AC15 20 8B B0 JSR $B08B       sucht Variable
-.,AC18 85 49    STA $49         Vari ablenadresse
+.,AC18 85 49    STA $49         Variablenadresse
 .,AC1A 84 4A    STY $4A         speichern
 .,AC1C A5 7A    LDA $7A         LOW- und HIGH-Byte des
 .,AC1E A4 7B    LDY $7B         Programmzeigers
