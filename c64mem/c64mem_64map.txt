@@ -7,323 +7,318 @@
 -
 # [...]
 
-COMMODORE 64  MEMORY MAPS
+$0000        D6510   6510 On-chip Data Direction Register.
+$0001        R6510   6510 On-chip 8-bit Input/Output Register.
+$0002        TEMP    Unused. Free for user programs.
+$0003-$0004  ADRAY1  Jump Vector: Convert FAC to Integer in (A/Y)
+                     ($B1AA).
+$0005-$0006  ADRAY2  Jump Vector: Convert Integer in (A/Y) to
+                     Floating point in (FAC); ($B391).
+$0007        CHARAC  Search Character/Temporary Integer during INT.
+$0008        ENDCHR  Flag: Scan for Quote at end of String.
+$0007-$0008  INTEGR  Temporary Integer during OR/AND.
+$0009        TRMPOS  Screen Column for last TAB.
+$000A        VERCK   Flag: 0 = Load, 1 = Verify.
+$000B        COUNT   Input Buffer Pointer/Number of Subscripts.
+$000C        DIMFLG  Flag: Default Array dimension.
+$000D        VALTYP  Data type Flag: $00 = Numeric, $FF = String.
+$000E        INTFLG  Data type Flag: $00 = Floating point, $80 =
+                     Integer.
+$000F        GARBFL  Flag: DATA scan/List Quote/Garbage collection.
+$0010        SUBFLG  Flag: Subscript reference/User Function call.
+$0011        INPFLG  Input Flag: $00 = INPUT, $40 = GET, $98 =
+                     READ.
+$0012        TANSGN  Flag: TAN sign/Comparative result.
+$0013        CHANNL  File number of current Input Device.
+$0014-$0015  LINNUM  Temporary: Integer value.
+$0016        TEMPPT  Pointer: Temporary String Stack.
+$0017-$0018  LASTPT  Last temporary String Address.
+$0019-$0021  TEMPST  Stack for temporary Strings.
+$0022-$0025  INDEX   Utility Pointer Area.
+$0022-$0023  INDEX1  First Utility Pointer.
+$0024-$0025  INDEX2  Secong Utility Pointer.
+$0026-$002A  RESHO   Floating point product of Multiply and
+                     Divide.
+$002B-$002C  TXTTAB  Pointer: Start of BASIC Text Area ($0801).
+$002D-$002E  VARTAB  Pointer: Start of BASIC Variables.
+$002F-$0030  ARYTAB  Pointer: Start of BASIC Arrays.
+$0031-$0032  STREND  Pointer: End of BASIC Arrays + 1.
+$0033-$0034  FRETOP  Pointer: Bottom of String space.
+$0035-$0036  FRESPC  Utility String Pointer.
+$0037-$0038  MEMSIZ  Pointer: Highest Address available to BASIC
+                     ($A000).
+$0039-$003A  CURLIN  Current BASIC Line number.
+$003B-$003C  OLDLIN  Previous BASIC Line number.
+$003D-$003E  OLDTXT  Pointer: BASIC Statement for CONT.
+$003F-$0040  DATLIN  Current DATA Line number.
+$0041-$0042  DATPTR  Pointer: Used by READ - current DATA Item
+                     Address.
+$0043-$0044  INPPTR  Pointer: Temporary storage of Pointer during
+                     INPUT Routine.
+$0045-$0046  VARNAM  Name of Variable being sought in Variable
+                     Table.
+$0047-$0048  VARPNT  Pointer: to value of (VARNAM) if Integer, to
+                     descriptor if String.
+$0049-$004A  FORPNT  Pointer: Index Variable for FOR/NEXT loop.
+$004B-$004C  VARTXT  Temporary storage for TXTPTR during READ,
+                     INPUT and GET.
+$004D        OPMASK  Mask used during FRMEVL.
+$004E-$0052  TEMPF3  Temporary storage for FLPT value.
+$0053        FOUR6   Length of String Variable during Garbege
+                     collection.
+$0054-$0056  JMPER   Jump Vector used in Function Evaluation -
+                     JMP followed by Address ($4C,$LB,$MB).
+$0057-$005B  TEMPF1  Temporary storage for FLPT value.
+$005C-$0060  TEMPF2  Temporary storage for FLPT value.
+$0061-$0066  FAC     Main Floating point Accumulator.
+$0061        FACEXP  FAC Exponent.
+$0062-$0065  FACHO   FAC Mantissa.
+$0066        FACSGN  FAC Sign.
+$0067        SGNFLG  Pointer: Series Evaluation Constant.
+$0068        BITS    Bit Overflow Area during normalisation
+                     Routine.
+$0069-$006E  AFAC    Auxiliary Floating point Accumulator.
+$0069        ARGEXP  AFAC Exponent.
+$006A-$006D  ARGHO   AFAC Mantissa.
+$006E        ARGSGN  AFAC Sign.
+$006F        ARISGN  Sign of result of Arithmetic Evaluation.
+$0070        FACOV   FAC low-order rounding.
+$0071-$0072  FBUFPT  Pointer: Used during CRUNCH/ASCII conversion.
+$0073-$008A  CHRGET  Subroutine: Get next Byte of BASIC Text.
 
-          ADDRESS
-LABEL     HEX         DEC     DESCRIPTION
-----------------------------------------------------------------------------
-D6510     0000        0       6510 On-chip Data Direction Register.
-R6510     0001        1       6510 On-chip 8-bit Input/Output Register.
-TEMP      0002        2       Unused. Free for user programs.
-ADRAY1    0003-0004   3       Jump Vector: Convert FAC to Integer in (A/Y)
-                              ($B1AA).
-ADRAY2    0005-0006   5       Jump Vector: Convert Integer in (A/Y) to
-                              Floating point in (FAC); ($B391).
-CHARAC    0007        7       Search Character/Temporary Integer during INT.
-ENDCHR    0008        8       Flag: Scan for Quote at end of String.
-INTEGR    0007-0008   7       Temporary Integer during OR/AND.
-TRMPOS    0009        9       Screen Column for last TAB.
-VERCK     000A        10      Flag: 0 = Load, 1 = Verify.
-COUNT     000B        11      Input Buffer Pointer/Number of Subscripts.
-DIMFLG    000C        12      Flag: Default Array dimension.
-VALTYP    000D        13      Data type Flag: $00 = Numeric, $FF = String.
-INTFLG    000E        14      Data type Flag: $00 = Floating point, $80 =
-                              Integer.
-GARBFL    000F        15      Flag: DATA scan/List Quote/Garbage collection.
-SUBFLG    0010        16      Flag: Subscript reference/User Function call.
-INPFLG    0011        17      Input Flag: $00 = INPUT, $40 = GET, $98 =
-                              READ.
-TANSGN    0012        18      Flag: TAN sign/Comparative result.
-CHANNL    0013        19      File number of current Input Device.
-LINNUM    0014-0015   20      Temporary: Integer value.
-TEMPPT    0016        22      Pointer: Temporary String Stack.
-LASTPT    0017-0018   23      Last temporary String Address.
-TEMPST    0019-0021   25      Stack for temporary Strings.
-INDEX     0022-0025   34      Utility Pointer Area.
-INDEX1    0022-0023   34      First Utility Pointer.
-INDEX2    0024-0025   36      Secong Utility Pointer.
-RESHO     0026-002A   38      Floating point product of Multiply and
-                              Divide.
-TXTTAB    002B-002C   43      Pointer: Start of BASIC Text Area ($0801).
-VARTAB    002D-002E   45      Pointer: Start of BASIC Variables.
-ARYTAB    002F-0030   47      Pointer: Start of BASIC Arrays.
-STREND    0031-0032   49      Pointer: End of BASIC Arrays + 1.
-FRETOP    0033-0034   51      Pointer: Bottom of String space.
-FRESPC    0035-0036   53      Utility String Pointer.
-MEMSIZ    0037-0038   55      Pointer: Highest Address available to BASIC
-                              ($A000).
-CURLIN    0039-003A   57      Current BASIC Line number.
-OLDLIN    003B-003C   59      Previous BASIC Line number.
-OLDTXT    003D-003E   61      Pointer: BASIC Statement for CONT.
-DATLIN    003F-0040   63      Current DATA Line number.
-DATPTR    0041-0042   65      Pointer: Used by READ - current DATA Item
-                              Address.
-INPPTR    0043-0044   67      Pointer: Temporary storage of Pointer during
-                              INPUT Routine.
-VARNAM    0045-0046   69      Name of Variable being sought in Variable
-                              Table.
-VARPNT    0047-0048   71      Pointer: to value of (VARNAM) if Integer, to
-                              descriptor if String.
-FORPNT    0049-004A   73      Pointer: Index Variable for FOR/NEXT loop.
-VARTXT    004B-004C   75      Temporary storage for TXTPTR during READ,
-                              INPUT and GET.
-OPMASK    004D        77      Mask used during FRMEVL.
-TEMPF3    004E-0052   78      Temporary storage for FLPT value.
-FOUR6     0053        83      Length of String Variable during Garbege
-                              collection.
-JMPER     0054-0056   84      Jump Vector used in Function Evaluation -
-                              JMP followed by Address ($4C,$LB,$MB).
-TEMPF1    0057-005B   87      Temporary storage for FLPT value.
-TEMPF2    005C-0060   92      Temporary storage for FLPT value.
-FAC       0061-0066   97      Main Floating point Accumulator.
-FACEXP    0061        97      FAC Exponent.
-FACHO     0062-0065   98      FAC Mantissa.
-FACSGN    0066        102     FAC Sign.
-SGNFLG    0067        103     Pointer: Series Evaluation Constant.
-BITS      0068        104     Bit Overflow Area during normalisation
-                              Routine.
-AFAC      0069-006E   105     Auxiliary Floating point Accumulator.
-ARGEXP    0069        105     AFAC Exponent.
-ARGHO     006A-006D   106     AFAC Mantissa.
-ARGSGN    006E        110     AFAC Sign.
-ARISGN    006F        111     Sign of result of Arithmetic Evaluation.
-FACOV     0070        112     FAC low-order rounding.
-FBUFPT    0071-0072   113     Pointer: Used during CRUNCH/ASCII conversion.
-CHRGET    0073-008A   115     Subroutine: Get next Byte of BASIC Text.
-            ,0073  INC $7A       ,0082  BEQ $0073
-            ,0075  BNE $0079     ,0084  SEC
-            ,0077  INC $7B       ,0085  SBC #$30
-          ! ,0079  LDA $0801     ,0087  SEC
-            ,007C  CMP #$3A      ,0088  SBC #$D0
-            ,007E  BCS $008A     ,008A  RTS
-            ,0080  CMP #$20
-CHRGOT    0079        121     Entry to Get same Byte again.
-TXTPTR    007A-007B   122     Pointer: Current Byte of BASIC Text.
-RNDX      008B-008F   139     Floating RND Function Seed Value.
-STATUS    0090        144     Kernal I/O Status Word  ST.
-STKEY     0091        145     Flag: $7F = STOP key.
-SVXT      0092        146     Timing Constant for Tape.
-VERCKK    0093        147     Flag: 0 = Load, 1 = Verify.
-C3PO      0094        148     Flag: Serial Bus - Output Character buffered.
-BSOUR     0095        149     Buffered Character for Serial Bus.
-SYNO      0096        150     Cassette Sync. number.
-TEMPX     0097        151     Temporary storage of X Register during CHRIN.
-TEMPY     0097        151     Temporary storage of Y Register during RS232
-                              fetch.
-LDTND     0098        152     Number of Open Files/Index to File Table.
-DFLTN     0099        153     Default Input Device (0).
-DFLTO     009A        154     Default Output Device (3).
-PRTY      009B        155     Parity of Byte Output to Tape.
-DPSW      009C        156     Flag: Byte received from Tape.
-MSGFLG    009D        157     Flag: $00 = Program mode: Suppress Error
-                              Messages, $40 = Kernal Error Messages only,
-                              $80 = Direct mode: Full Error Messages.
-FNMIDX    009E        158     Index to Cassette File name/Header ID for
-                              Tape write.
-PTR1      009E        158     Tape Error log pass 1.
-PTR2      009F        159     Tape Error log pass 2.
-TIME      00A0-00A2   160     Real-time jiffy Clock (Updated by IRQ
-                              Interrupt approx. every 1/60 of Second);
-                              Update Routine: UDTIMK ($F69B).
-TSFCNT    00A3        163     Bit Counter Tape Read or Write/Serial Bus
-                              EOI (End Of Input) Flag.
-TBTCNT    00A4        164     Pulse Counter Tape Read or Write/Serial Bus
-                              shift Counter.
-CNTDN     00A5        165     Tape Synchronising count down.
-BUFPNT    00A6        166     Pointer: Tape I/O buffer.
-INBIT     00A7        167     RS232 temporary for received Bit/Tape
-                              temporary.
-BITC1     00A8        168     RS232 Input Bit count/Tape temporary.
-RINONE    00A9        169     RS232 Flag: Start Bit check/Tape temporary.
-RIDATA    00AA        170     RS232 Input Byte Buffer/Tape temporary.
-RIPRTY    00AB        171     RS232 Input parity/Tape temporary.
-SAL       00AC-00AD   172     Pointer: Tape Buffer/Screen scrolling.
-EAL       00AE-00AF   174     Tape End Address/End of Program.
-CMPO      00B0-00B1   176     Tape timing Constants.
-TAPE1     00B2-00B3   178     Pointer: Start Address of Tape Buffer ($033C).
-BITTS     00B4        180     RS232 Write bit count/Tape Read timing Flag.
-NXTBIT    00B5        181     RS232 Next Bit to send/Tape Read - End of
-                              Tape.
-RODATA    00B6        182     RS232 Output Byte Buffer/Tape Read Error Flag.
-FNLEN     00B7        183     Number of Characters in Filename.
-LA        00B8        184     Current File - Logical File number.
-SA        00B9        185     Current File - Secondary Address.
-FA        00BA        186     Current File - First Address (Device number).
-                                OPEN LA,FA,SA;  OPEN 1,8,15,"I0":CLOSE 1
-FNADR     00BB-00BC   187     Pointer: Current File name Address.
-ROPRTY    00BD        189     RS232 Output Parity/Tape Byte to be Input or
-                              Output.
-FSBLK     00BE        190     Tape Input/Output Block count.
-MYCH      00BF        191     Serial Word Buffer.
-CAS1      00C0        192     Tape Motor Switch.
-STAL      00C1-00C2   193     Start Address for LOAD and Cassette Write.
-MEMUSS    00C3-00C4   195     Pointer: Type 3 Tape LOAD and general use.
-LSTX      00C5        197     Matrix value of last Key pressed; No Key = $40.
-NDX       00C6        198     Number of Characters in Keyboard Buffer
-                              queue.
-RVS       00C7        199     Flag: Reverse On/Off; On = $01, Off = $00.
-INDX      00C8        200     Pointer: End of Line for Input (Used to
-                              suppress trailing spaces).
-LXSP      00C9-00CA   201     Cursor X/Y (Line/Column) position at start of
-                              Input.
-SFDX      00CB        203     Flag: Print shifted Characters.
-BLNSW     00CC        204     Flag: Cursor blink; $00 = Enabled, $01 =
-                              Disabled.
-BLNCT     00CD        205     Timer: Count down for Cursor blink toggle.
-GDBLN     00CE        206     Character under Cursor while Cursor Inverted.
-BLNON     00CF        207     Flag: Cursor Status; $00 = Off, $01 = On.
-CRSW      00D0        208     Flag: Input from Screen = $03, or Keyboard =
-                              $00.
-PNT       00D1-00D2   209     Pointer: Current Screen Line Address.
-PNTR      00D3        211     Cursor Column on current Line, including
-                              Wrap-round Line, if any.
-QTSW      00D4        212     Flag: Editor in Quote Mode; $00 = Not.
-LNMX      00D5        213     Current logical Line length: 39 or 79.
-TBLX      00D6        214     Current Screen Line number of Cursor.
-SCHAR     00D7        215     Screen value of current Input Character/Last
-                              Character Output.
-INSRT     00D8        216     Count of number of inserts outstanding.
-LDTB1     00D9-00F2   217     Screen Line link Table/Editor temporaries.
-                              High Byte of Line Screen Memory Location.
-USER      00F3-00F4   243     Pointer: Current Colour RAM Location.
-KEYTAB    00F5-00F6   245     Vector: Current Keyboard decoding Table.
-                              ($EB81)
-RIBUF     00F7-00F8   247     RS232 Input Buffer Pointer.
-ROBUF     00F9-00FA   249     RS232 Output Buffer Pointer.
-FREKZP    00FB-00FE   251     Free Zero Page space for User Programs.
-BASZPT    00FF        255     BASIC temporary Data Area.
-ASCWRK    00FF-010A   255     Assembly Area for Floating point to ASCII
-                              conversion.
-BAD       0100-013E   256     Tape Input Error log.
-STACK     0100-01FF   256     6510 Hardware Stack Area.
-BSTACK    013F-01FF   319     BASIC Stack Area.
-BUF       0200-0258   512     BASIC Input Buffer (Input Line from Screen).
-LAT       0259-0262   601     Kernal Table: Active logical File numbers.
-FAT       0263-026C   611     Kernal Table: Active File First Addresses
-                              (Device numbers).
-SAT       026D-0276   621     Kernal Table: Active File Secondary
-                              Addresses.
-KEYD      0277-0280   631     Keyboard Buffer Queue (FIFO).
-MEMSTR    0281-0282   641     Pointer: Bottom of Memory for Operating
-                              System ($0800).
-MEMSIZ    0283-0284   643     Pointer: Top of Memory for Operating
-                              System ($A000).
-TIMOUT    0285        645     Serial IEEE Bus timeout defeat Flag.
-COLOR     0286        646     Current Character Colour code.
-GDCOL     0287        647     Background Colour under Cursor.
-HIBASE    0288        648     High Byte of Screen Memory Address ($04).
-XMAX      0289        649     Maximum number of Bytes in Keyboard
-                              Buffer ($0A).
-RPTFLG    028A        650     Flag: Repeat keys; $00 = Cursors, INST/DEL &
-                              Space repeat, $40 no Keys repeat, $80 all
-                              Keys repeat ($00).
-KOUNT     028B        651     Repeat Key: Speed Counter ($04).
-DELAY     028C        652     Repeat Key: First repeat delay Counter ($10).
-SHFLAG    028D        653     Flag: Shift Keys: Bit 1 = Shift, Bit 2 = CBM,
-                              Bit 3 = CTRL; ($00 = None, $01 = Shift, etc.).
-LSTSHF    028E        654     Last Shift Key used for debouncing.
-KEYLOG    028F-0290   655     Vector: Routine to determine Keyboard table
-                              to use based on Shift Key Pattern ($EB48).
-MODE      0291        657     Flag: Upper/Lower Case change: $00 = Disabled,
-                              $80 = Enabled ($00).
-AUTODN    0292        658     Flag: Auto scroll down: $00 = Disabled ($00).
-M51CTR    0293        659     RS232 Pseudo 6551 control Register Image.
-M51CDR    0294        660     RS232 Pseudo 6551 command Register Image.
-M51AJB    0295-0296   661     RS232 Non-standard Bits/Second.
-RSSTAT    0297        663     RS232 Pseudo 6551 Status Register Image.
-BITNUM    0298        664     RS232 Number of Bits left to send.
-BAUDOF    0299-029A   665     RS232 Baud Rate; Full Bit time microseconds.
-RIDBE     029B        667     RS232 Index to End of Input Buffer.
-RIDBS     029C        668     RS232 Pointer: High Byte of Address of Input
-                              Buffer.
-RODBS     029D        669     RS232 Pointer: High Byte of Address of Output
-                              Buffer.
-RODBE     029E        670     RS232 Index to End of Output Buffer.
-IRQTMP    029F-02A0   671     Temporary store for IRQ Vector during Tape
-                              operations.
-ENABL     02A1        673     RS232 Enables.
-TODSNS    02A2        674     TOD sense during Tape I/O.
-TRDTMP    02A3        675     Temporary storage during Tape READ.
-TD1IRQ    02A4        676     Temporary D1IRQ Indicator during Tape READ.
-TLNIDX    02A5        677     Temporary for Line Index.
-TVSFLG    02A6        678     Flag: TV Standard: $00 = NTSC, $01 = PAL.
-TEMP      02A7-02FF   679     Unused.
-SPR11     02C0-02FE   704     Sprite #11 Data Area.
-                                (SCREEN + $03F8 + SPR number)
-                                POKE 1024+1016+0,11  to use Sprite#0 DATA
-                                from ($02C0-$02FE).
-IERROR    0300-0301   768     Vector: Indirect entry to BASIC Error
-                              Message, (X) points to Message ($E38B).
-IMAIN     0302-0303   770     Vector: Indirect entry to BASIC Input Line
-                              and Decode ($A483).
-ICRNCH    0304-0305   772     Vector: Indirect entry to BASIC Tokenise
-                              Routine ($A57C).
-IQPLOP    0306-0307   774     Vector: Indirect entry to BASIC LIST
-                              Routine ($A71A).
-IGONE     0308-0309   776     Vector: Indirect entry to BASIC Character
-                              dispatch Routine ($A7E4).
-IEVAL     030A-030B   778     Vector: Indirect entry to BASIC Token
-                              evaluation ($AE86).
-SAREG     030C        780     Storage for 6510 Accumulator during SYS.
-SXREG     030D        781     Storage for 6510 X-Register during SYS.
-SYREG     030E        782     Storage for 6510 Y-Register during SYS.
-SPREG     030F        783     Storage for 6510 Status Register during SYS.
-USRPOK    0310        784     USR Function JMP Instruction ($4C).
-USRADD    0311-0312   785     USR Address ($LB,$MB).
-TEMP      0313        787     Unused.
-CINV      0314-0315   788     Vector: Hardware IRQ Interrupt Address ($EA31).
-CNBINV    0316-0317   790     Vector: BRK Instruction Interrupt Address
-                              ($FE66).
-NMINV     0318-0319   792     Vector: Hardware NMI Interrupt Address ($FE47).
-IOPEN     031A-031B   794     Vector: Indirect entry to Kernal OPEN
-                              Routine ($F34A).
-ICLOSE    031C-031D   796     Vector: Indirect entry to Kernal CLOSE
-                              Routine ($F291).
-ICHKIN    031E-031F   798     Vector: Indirect entry to Kernal CHKIN
-                              Routine ($F20E).
-ICKOUT    0320-0321   800     Vector: Indirect entry to Kernal CHKOUT
-                              Routine ($F250).
-ICLRCH    0322-0323   802     Vector: Indirect entry to Kernal CLRCHN
-                              Routine ($F333).
-IBASIN    0324-0325   804     Vector: Indirect entry to Kernal CHRIN
-                              Routine ($F157).
-IBSOUT    0326-0327   806     Vector: Indirect entry to Kernal CHROUT
-                              Routine ($F1CA).
-ISTOP     0328-0329   808     Vector: Indirect entry to Kernal STOP
-                              Routine ($F6ED).
-IGETIN    032A-032B   810     Vector: Indirect entry to Kernal GETIN
-                              Routine ($F13E).
-ICLALL    032C-032D   812     Vector: Indirect entry to Kernal CLALL
-                              Routine ($F32F).
-USRCMD    032E-032F   814     User Defined Vector ($FE66).
-ILOAD     0330-0331   816     Vector: Indirect entry to Kernal LOAD
-                              Routine ($F4A5).
-ISAVE     0332-0333   818     Vector: Indirect entry to Kernal SAVE
-                              Routine ($F5ED).
-TEMP      0334-033B   820     Unused.
-TBUFFR    033C-03FB   828     Tape I/O Buffer.
-SPR13     0340-037E   832     Sprite #13.
-SPR14     0380-03BE   896     Sprite #14.
-SPR15     03C0-03FE   960     Sprite #15.
-TEMP      03FC-03FF   1020    Unused.
-VICSCN    0400-07E7   1024    Default Screen Video Matrix.
-TEMP      07E8-07F7   2024    Unused.
-SPNTRS    07F8-07FF   2040    Default Sprite Data Pointers.
+                     ,0073  INC $7A       ,0082  BEQ $0073
+                     ,0075  BNE $0079     ,0084  SEC
+                     ,0077  INC $7B       ,0085  SBC #$30
+                     ,0079  LDA $0801     ,0087  SEC
+                     ,007C  CMP #$3A      ,0088  SBC #$D0
+                     ,007E  BCS $008A     ,008A  RTS
+                     ,0080  CMP #$20
+$0079        CHRGOT  Entry to Get same Byte again.
+$007A-$007B  TXTPTR  Pointer: Current Byte of BASIC Text.
+$008B-$008F  RNDX    Floating RND Function Seed Value.
+$0090        STATUS  Kernal I/O Status Word  ST.
+$0091        STKEY   Flag: $7F = STOP key.
+$0092        SVXT    Timing Constant for Tape.
+$0093        VERCK   Flag: 0 = Load, 1 = Verify.
+$0094        C3P0    Flag: Serial Bus - Output Character buffered.
+$0095        BSOUR   Buffered Character for Serial Bus.
+$0096        SYNO    Cassette Sync. number.
+$0097        TEMPX   Temporary storage of X Register during CHRIN.
+$0097        TEMPY   Temporary storage of Y Register during RS232
+                     fetch.
+$0098        LDTND   Number of Open Files/Index to File Table.
+$0099        DFLTN   Default Input Device (0).
+$009A        DFLTO   Default Output Device (3).
+$009B        PRTY    Parity of Byte Output to Tape.
+$009C        DPSW    Flag: Byte received from Tape.
+$009D        MSGFLG  Flag: $00 = Program mode: Suppress Error
+                     Messages, $40 = Kernal Error Messages only,
+                     $80 = Direct mode: Full Error Messages.
+$009E        FNMIDX  Index to Cassette File name/Header ID for
+                     Tape write.
+$009E        PTR1    Tape Error log pass 1.
+$009F        PTR2    Tape Error log pass 2.
+$00A0-$00A2  TIME    Real-time jiffy Clock (Updated by IRQ
+                     Interrupt approx. every 1/60 of Second);
+                     Update Routine: UDTIMK ($F69B).
+$00A3        TSFCNT  Bit Counter Tape Read or Write/Serial Bus
+                     EOI (End Of Input) Flag.
+$00A4        TBTCNT  Pulse Counter Tape Read or Write/Serial Bus
+                     shift Counter.
+$00A5        CNTDN   Tape Synchronising count down.
+$00A6        BUFPT   Pointer: Tape I/O buffer.
+$00A7        INBIT   RS232 temporary for received Bit/Tape
+                     temporary.
+$00A8        BITC1   RS232 Input Bit count/Tape temporary.
+$00A9        RINONE  RS232 Flag: Start Bit check/Tape temporary.
+$00AA        RIDATA  RS232 Input Byte Buffer/Tape temporary.
+$00AB        RIPRTY  RS232 Input parity/Tape temporary.
+$00AC-$00AD  SAL     Pointer: Tape Buffer/Screen scrolling.
+$00AE-$00AF  EAL     Tape End Address/End of Program.
+$00B0-$00B1  CMPO    Tape timing Constants.
+$00B2-$00B3  TAPE1   Pointer: Start Address of Tape Buffer ($033C).
+$00B4        BITTS   RS232 Write bit count/Tape Read timing Flag.
+$00B5        NXTBIT  RS232 Next Bit to send/Tape Read - End of
+                     Tape.
+$00B6        RODATA  RS232 Output Byte Buffer/Tape Read Error Flag.
+$00B7        FNLEN   Number of Characters in Filename.
+$00B8        LA      Current File - Logical File number.
+$00B9        SA      Current File - Secondary Address.
+$00BA        FA      Current File - First Address (Device number).
+                      OPEN LA,FA,SA;  OPEN 1,8,15,"I0":CLOSE 1
+$00BB-$00BC  FNADR   Pointer: Current File name Address.
+$00BD        ROPRTY  RS232 Output Parity/Tape Byte to be Input or
+                     Output.
+$00BE        FSBLK   Tape Input/Output Block count.
+$00BF        MYCH    Serial Word Buffer.
+$00C0        CAS1    Tape Motor Switch.
+$00C1-$00C2  STAL    Start Address for LOAD and Cassette Write.
+$00C3-$00C4  MEMUSS  Pointer: Type 3 Tape LOAD and general use.
+$00C5        LSTX    Matrix value of last Key pressed; No Key = $40.
+$00C6        NDX     Number of Characters in Keyboard Buffer
+                     queue.
+$00C7        RVS     Flag: Reverse On/Off; On = $01, Off = $00.
+$00C8        INDX    Pointer: End of Line for Input (Used to
+                     suppress trailing spaces).
+$00C9-$00CA  LSXP    Cursor X/Y (Line/Column) position at start of
+                     Input.
+$00CB        SFDX    Flag: Print shifted Characters.
+$00CC        BLNSW   Flag: Cursor blink; $00 = Enabled, $01 =
+                     Disabled.
+$00CD        BLNCT   Timer: Count down for Cursor blink toggle.
+$00CE        GDBLN   Character under Cursor while Cursor Inverted.
+$00CF        BLNON   Flag: Cursor Status; $00 = Off, $01 = On.
+$00D0        CRSW    Flag: Input from Screen = $03, or Keyboard =
+                     $00.
+$00D1-$00D2  PNT     Pointer: Current Screen Line Address.
+$00D3        PNTR    Cursor Column on current Line, including
+                     Wrap-round Line, if any.
+$00D4        QTSW    Flag: Editor in Quote Mode; $00 = Not.
+$00D5        LNMX    Current logical Line length: 39 or 79.
+$00D6        TBLX    Current Screen Line number of Cursor.
+$00D7        SCHAR   Screen value of current Input Character/Last
+                     Character Output.
+$00D8        INSRT   Count of number of inserts outstanding.
+$00D9-$00F2  LDTB1   Screen Line link Table/Editor temporaries.
+                     High Byte of Line Screen Memory Location.
+$00F3-$00F4  USER    Pointer: Current Colour RAM Location.
+$00F5-$00F6  KEYTAB  Vector: Current Keyboard decoding Table.
+                     ($EB81)
+$00F7-$00F8  RIBUF   RS232 Input Buffer Pointer.
+$00F9-$00FA  ROBUF   RS232 Output Buffer Pointer.
+$00FB-$00FE  FREKZP  Free Zero Page space for User Programs.
+$00FF        BASZPT  BASIC temporary Data Area.
+$00FF-$010A  ASCWRK  Assembly Area for Floating point to ASCII
+                     conversion.
+$0100-$013E  BAD     Tape Input Error log.
+$0100-$01FF  STACK   6510 Hardware Stack Area.
+$013F-$01FF  BSTACK  BASIC Stack Area.
+$0200-$0258  BUF     BASIC Input Buffer (Input Line from Screen).
+$0259-$0262  LAT     Kernal Table: Active logical File numbers.
+$0263-$026C  FAT     Kernal Table: Active File First Addresses
+                     (Device numbers).
+$026D-$0276  SAT     Kernal Table: Active File Secondary
+                     Addresses.
+$0277-$0280  KEYD    Keyboard Buffer Queue (FIFO).
+$0281-$0282  MEMSTR  Pointer: Bottom of Memory for Operating
+                     System ($0800).
+$0283-$0284  MEMSIZ  Pointer: Top of Memory for Operating
+                     System ($A000).
+$0285        TIMOUT  Serial IEEE Bus timeout defeat Flag.
+$0286        COLOR   Current Character Colour code.
+$0287        GDCOL   Background Colour under Cursor.
+$0288        HIBASE  High Byte of Screen Memory Address ($04).
+$0289        XMAX    Maximum number of Bytes in Keyboard
+                     Buffer ($0A).
+$028A        RPTFLG  Flag: Repeat keys; $00 = Cursors, INST/DEL &
+                     Space repeat, $40 no Keys repeat, $80 all
+                     Keys repeat ($00).
+$028B        KOUNT   Repeat Key: Speed Counter ($04).
+$028C        DELAY   Repeat Key: First repeat delay Counter ($10).
+$028D        SHFLAG  Flag: Shift Keys: Bit 1 = Shift, Bit 2 = CBM,
+                     Bit 3 = CTRL; ($00 = None, $01 = Shift, etc.).
+$028E        LSTSHF  Last Shift Key used for debouncing.
+$028F-$0290  KEYLOG  Vector: Routine to determine Keyboard table
+                     to use based on Shift Key Pattern ($EB48).
+$0291        MODE    Flag: Upper/Lower Case change: $00 = Disabled,
+                     $80 = Enabled ($00).
+$0292        AUTODN  Flag: Auto scroll down: $00 = Disabled ($00).
+$0293        M51CTR  RS232 Pseudo 6551 control Register Image.
+$0294        M51CDR  RS232 Pseudo 6551 command Register Image.
+$0295-$0296  M51AJB  RS232 Non-standard Bits/Second.
+$0297        RSSTAT  RS232 Pseudo 6551 Status Register Image.
+$0298        BITNUM  RS232 Number of Bits left to send.
+$0299-$029A  BAUDOF  RS232 Baud Rate; Full Bit time microseconds.
+$029B        RIDBE   RS232 Index to End of Input Buffer.
+$029C        RIDBS   RS232 Pointer: High Byte of Address of Input
+                     Buffer.
+$029D        RODBS   RS232 Pointer: High Byte of Address of Output
+                     Buffer.
+$029E        RODBE   RS232 Index to End of Output Buffer.
+$029F-$02A0  IRQTMP  Temporary store for IRQ Vector during Tape
+                     operations.
+$02A1        ENABL   RS232 Enables.
+$02A2        TODSNS  TOD sense during Tape I/O.
+$02A3        TRDTMP  Temporary storage during Tape READ.
+$02A4        TD1IRQ  Temporary D1IRQ Indicator during Tape READ.
+$02A5        TLNIDX  Temporary for Line Index.
+$02A6        TVSFLG  Flag: TV Standard: $00 = NTSC, $01 = PAL.
+$02A7-$02FF  TEMP    Unused.
+$02C0-$02FE  SPR11   Sprite #11 Data Area.
+                     (SCREEN + $03F8 + SPR number)
+                     POKE 1024+1016+0,11  to use Sprite#0 DATA
+                     from ($02C0-$02FE).
+$0300-$0301  IERROR  Vector: Indirect entry to BASIC Error
+                     Message, (X) points to Message ($E38B).
+$0302-$0303  IMAIN   Vector: Indirect entry to BASIC Input Line
+                     and Decode ($A483).
+$0304-$0305  ICRNCH  Vector: Indirect entry to BASIC Tokenise
+                     Routine ($A57C).
+$0306-$0307  IQPLOP  Vector: Indirect entry to BASIC LIST
+                     Routine ($A71A).
+$0308-$0309  IGONE   Vector: Indirect entry to BASIC Character
+                     dispatch Routine ($A7E4).
+$030A-$030B  IEVAL   Vector: Indirect entry to BASIC Token
+                     evaluation ($AE86).
+$030C        SAREG   Storage for 6510 Accumulator during SYS.
+$030D        SXREG   Storage for 6510 X-Register during SYS.
+$030E        SYREG   Storage for 6510 Y-Register during SYS.
+$030F        SPREG   Storage for 6510 Status Register during SYS.
+$0310        USRPOK  USR Function JMP Instruction ($4C).
+$0311-$0312  USRADD  USR Address ($LB,$MB).
+$0313        TEMP    Unused.
+$0314-$0315  CINV    Vector: Hardware IRQ Interrupt Address ($EA31).
+$0316-$0317  CNBINV  Vector: BRK Instruction Interrupt Address
+                     ($FE66).
+$0318-$0319  NMINV   Vector: Hardware NMI Interrupt Address ($FE47).
+$031A-$031B  IOPEN   Vector: Indirect entry to Kernal OPEN
+                     Routine ($F34A).
+$031C-$031D  ICLOSE  Vector: Indirect entry to Kernal CLOSE
+                     Routine ($F291).
+$031E-$031F  ICHKIN  Vector: Indirect entry to Kernal CHKIN
+                     Routine ($F20E).
+$0320-$0321  ICKOUT  Vector: Indirect entry to Kernal CHKOUT
+                     Routine ($F250).
+$0322-$0323  ICLRCH  Vector: Indirect entry to Kernal CLRCHN
+                     Routine ($F333).
+$0324-$0325  IBASIN  Vector: Indirect entry to Kernal CHRIN
+                     Routine ($F157).
+$0326-$0327  IBSOUT  Vector: Indirect entry to Kernal CHROUT
+                     Routine ($F1CA).
+$0328-$0329  ISTOP   Vector: Indirect entry to Kernal STOP
+                     Routine ($F6ED).
+$032A-$032B  IGETIN  Vector: Indirect entry to Kernal GETIN
+                     Routine ($F13E).
+$032C-$032D  ICLALL  Vector: Indirect entry to Kernal CLALL
+                     Routine ($F32F).
+$032E-$032F  USRCMD  User Defined Vector ($FE66).
+$0330-$0331  ILOAD   Vector: Indirect entry to Kernal LOAD
+                     Routine ($F4A5).
+$0332-$0333  ISAVE   Vector: Indirect entry to Kernal SAVE
+                     Routine ($F5ED).
+$0334-$033B  TEMP    Unused.
+$033C-$03FB  TBUFFR  Tape I/O Buffer.
+$0340-$037E  SPR13   Sprite #13.
+$0380-$03BE  SPR14   Sprite #14.
+$03C0-$03FE  SPR15   Sprite #15.
+$03FC-$03FF  TEMP    Unused.
+$0400-$07E7  VICSCN  Default Screen Video Matrix.
+$07E8-$07F7  TEMP    Unused.
+$07F8-$07FF  SPNTRS  Default Sprite Data Pointers.
 
-
-          0800-9FFF   2048    Normal BASIC Program space.
-          8000-9FFF   32768   Optional Cartridge ROM space.
-          A000-BFFF   40960   BASIC ROM (Part) or 8 KB RAM.
-          C000-CFFF   49152   4 KB RAM.
-          D000-DFFF   53248   Input/Output Devices and Colour RAM or
-                              4 KB RAM or Character ROM.
-          D000-D02E   53248   6566 Video Interface Chip, VIC II.
-          D400-D41C   54272   6581 Sound Interface Device, SID.
-          D500-D7FF   54528   SID Images.
-          D800-DBE7   55296   Colour RAM (Nybbles = 4 Bit RAM, LSB).
-          DBE8-DBFF   56296   Unused Nybbles.
-          DC00-DC0F   56320   6526 Complex Interface Adaptor, CIA.
-          DD00-DD0F   56576   6526 Complex Interface Adaptor, CIA.
-          E000-FFFF   57344   BASIC (Part)/Kernal ROM or 8 KB RAM.
-          E000-E4FF   57344   BASIC ROM (Part) or RAM.
-          E500-FFFF   58624   Kernal ROM or RAM.
+$0800-$9FFF           Normal BASIC Program space.
+$8000-$9FFF           Optional Cartridge ROM space.
+$A000-$BFFF           BASIC ROM (Part) or 8 KB RAM.
+$C000-$CFFF           4 KB RAM.
+$D000-$DFFF           Input/Output Devices and Colour RAM or
+                      4 KB RAM or Character ROM.
+$D000-$D02E           6566 Video Interface Chip, VIC II.
+$D400-$D41C           6581 Sound Interface Device, SID.
+$D500-$D7FF           SID Images.
+$D800-$DBE7           Colour RAM (Nybbles = 4 Bit RAM, LSB).
+$DBE8-$DBFF           Unused Nybbles.
+$DC00-$DC0F           6526 Complex Interface Adaptor, CIA.
+$DD00-$DD0F           6526 Complex Interface Adaptor, CIA.
+$E000-$FFFF           BASIC (Part)/Kernal ROM or 8 KB RAM.
+$E000-$E4FF           BASIC ROM (Part) or RAM.
+$E500-$FFFF           Kernal ROM or RAM.
