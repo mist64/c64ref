@@ -933,8 +933,7 @@ $0054-$0056  JMPER   Jump to Function Instruction
                      address of the required function taken from the table at 41042
                      ($A052).
                      
-                     87-96         $57-$60
-                     BASIC Numeric Work Area
+$0057-$0060          BASIC Numeric Work Area
                      
                      This is a very busy work area, used by many routines.
                      
@@ -1859,8 +1858,7 @@ $00D6        TBLX    Current Cursor Physical Line Number
                      Kernal PLOT routine (58634, $E50A) as explained in the entry from
                      locations 780-783 ($30C-$30F).
                      
-                     215           $D7
-                     Temporary Storage Area for ASCII Value of Last Character Printed
+$00D7                Temporary Storage Area for ASCII Value of Last Character Printed
                      
                      The ASCII value of the last character printed to the screen is held
                      here temporarily.
@@ -2005,8 +2003,7 @@ $0100-$01FF          Microprocessor Stack Area
                      Microsoft BASIC uses part of the stack for a temporary work area.
                      Therefore, the stack may be broken down into the following subregions:
                      
-                     256-266       $100-$10A
-                     Work Area for Floating Point to String Conversions
+$0100-$010A          Work Area for Floating Point to String Conversions
                      
                      Used in the conversion of numbers to the equivalent ASCII digits, and
                      in scanning strings.
@@ -2019,7 +2016,7 @@ $0100-$013E  BAD     Tape Input Error Log
                      during the first transmission, so that corrections might be made on
                      the second pass.
                      
-                     319-511       $13F-$1FF
+$013F-$01FF
                      
                      This area is exclusively for the microprocessor stack.  Some BASIC
                      commands, such as FOR-NEXT loops require many stack entries at a time.
@@ -2070,8 +2067,7 @@ $0200-$0258  BUF     BASIC Line Editor Input Buffer
                      this buffer are therefore normally not used, and can be considered
                      free space for the programmer to use as he or she sees fit.
                      
-                     Location Range: 601-630 ($259-$276)
-                     Tables for File Numbers, Device Numbers, and Secondary Addresses
+$0259-$0276          Tables for File Numbers, Device Numbers, and Secondary Addresses
                      
                      All three of the tables here have room for ten one-byte entries, each
                      of which represents an active Input/Output file.  When an I/O file is
@@ -2200,8 +2196,7 @@ $0277-$0280  KEYD    Keyboard Buffer (Queue)
                      indicates that the file has ended, press the STOP key rather than
                      RETURN, enter the name of the new file in line 60000, and RUN 60000
                      
-                     641-642       $281-282       MEMSTR
-                     Pointer: O.S. Start of Memory
+$0281-$0282  MEMSTR  Pointer: O.S. Start of Memory
                      
                      When the power is first turned on, or a cold start RESET is performed,
                      the Kernal routine RAMTAS (64848, $FD50) sets this location to point
@@ -2214,8 +2209,7 @@ $0277-$0280  KEYD    Keyboard Buffer (Queue)
                      this pointer, or these locations may be directly PEEKed or POKEd from
                      BASIC.
                      
-                     643-644       $283-284       MEMSIZ
-                     Pointer: O.S. End of Memory
+$0283-$0284  MEMSIZ  Pointer: O.S. End of Memory
                      
                      When the power is first turned on, or a cold start RESET is performed,
                      the Kernal routine RAMTAS (64848, $FD50) performs a nondestructive
@@ -2566,8 +2560,7 @@ $0292        AUTODN  Flag: Screen Scrolling Enabled
                      characters waiting in the keyboard buffer (these may include cursor
                      movement characters that would eliminate the need for a scroll).
                      
-                     Location Range: 659-663 ($293-$297)
-                     RS-232 Pseudo 6551 Registers
+$0293-$0297          RS-232 Pseudo 6551 Registers
                      
                      For serial Input/Output via the RS-232 port, the internal software of
                      the Commodore 64 emulates the operation of a 6551 UART chip (that's
@@ -2704,8 +2697,7 @@ $0295-$0296  M51AJB  RS-232: Nonstandard Bit Timing
                      American television monitors (NTSC standard) is 1.02273 MHz, and for
                      European monitors (PAL standard) .98525 MHz.
                      
-                     663           $297           RSSTAT
-                     RS-232: Mock 6551 Status Register
+$0297        RSSTAT  RS-232: Mock 6551 Status Register
                      
                      The contents of this register indicate the error status of RS-232 data
                      transmission.  That status can be determined by PEEKing this location
@@ -2762,8 +2754,7 @@ $0299-$029A  BAUDOF  Time Required to Send a Bit
                      value used for 50 baud.  The European (PAL standard) version of that
                      table is located at 58604 ($E4EC).
                      
-                     Location Range: 667-670 ($29B-$29E)
-                     Byte Indices to the Beginning and End of Receive and Transmit Buffers
+$029B-$029E          Byte Indices to the Beginning and End of Receive and Transmit Buffers
                      
                      The two 256-byte First In, First Out (FIFO) buffers for RS-232 data
                      reception and transmission are dynamic wraparound buffers.  This means
@@ -2817,20 +2808,15 @@ $02A1        ENABL   RS-232 Interrupts Enabled
                      Bit 1: 1 (bit value of 2)  = System is Receiving Data
                      Bit 0: 1 (bit value of 1)  = System is Transmitting Data
                      
-                     674           $2A2
-                     Indicator of CIA #1 Control Register B Activity During Cassette I/O
+$02A2                Indicator of CIA #1 Control Register B Activity During Cassette I/O
                      
-                     675           $2A3
-                     Save Area for CIA #1 Interrupt Control Register During Cassette Read
+$02A3                Save Area for CIA #1 Interrupt Control Register During Cassette Read
                      
-                     676           $2A4
-                     Save Area for CIA #1 Control Register A During Cassette Read
+$02A4                Save Area for CIA #1 Control Register A During Cassette Read
                      
-                     677           $2A5
-                     Temporary Index to the Next 40-Column Line for Screen Scrolling
+$02A5                Temporary Index to the Next 40-Column Line for Screen Scrolling
                      
-                     678           $2A6
-                     PAL/NTSC Flag
+$02A6                PAL/NTSC Flag
                      
                      At power-on, a test is performed to see if the monitor uses the NTSC
                      (North American) or PAL (European) television standard.
@@ -2847,8 +2833,7 @@ $02A1        ENABL   RS-232 Interrupts Enabled
                      second.  Since the PAL system 02 clock runs a bit slower than the NTSC
                      version, this prescaler value must be adjusted accordingly.
                      
-                     679-767       $2A7-$2FF
-                     Unused
+$02A7-$02FF          Unused
                      
                      The programmer may use this area for machine language subroutines, or
                      for graphics data storage.
@@ -2859,8 +2844,7 @@ $02A1        ENABL   RS-232 Interrupts Enabled
                      Locaitons 704-767 could be used for sprite data block number 11,
                      without interfering with BASIC program text or variables.
                      
-                     Location Range: 768-779 ($300-$30B)
-                     BASIC Indirect Vector Table
+$0300-$030B          BASIC Indirect Vector Table
                      
                      Several important BASIC routines are vectored through RAM.  This means
                      that the first instruction executed by the routine is an indirect jump
@@ -2948,8 +2932,7 @@ $030A-$030B  IEVAL   Vector to the Routine That Evaluates a Single-Term Arithmet
                      which, among other things, is used to evaluate BASIC functions such as
                      INT and ABS.
                      
-                     Location Range: 780-783 ($30C-$30F)
-                     Register Storage Area
+$030C-$030F          Register Storage Area
                      
                      The BASIC SYS command uses this area to store 6510 internal
                      registers--the Accumulator (.A), the .X and .Y index registers, and
@@ -3074,8 +3057,7 @@ $0311-$0312  USRADD  Address of USR Routine (Low Byte First)
                      with a JMP ($0005) instruction.  The floating point result will be
                      left in FAC1.
                      
-                     787           $313
-                     Unused
+$0313                Unused
                      
 $0314-$0315  CINV    Vector to IRQ Interrupt Routine
                      
@@ -3172,8 +3154,7 @@ $0318-$0319  NMINV   Vector: Non-Maskable Interrupt
                      POKE 792,71.  Note that this will cut out all NMIs, including those
                      required for RS-232 I/O.
                      
-                     Location Range: 794-813 ($31A-$32D)
-                     Kernal Indirect Vectors
+$031A-$032D          Kernal Indirect Vectors
                      
                      There are 39 Kernal routines for which there are vectors in the jump
                      table located at the top of the ROM (65409, $FF81).  For ten of these
@@ -3322,8 +3303,7 @@ $0400-$07FF  VICSCN  Video Screen Memory Area
                      ($D018), and the VIC-II memory bank select bits on CIA #2 Data Port A
                      (56576, $DD00).
                      
-                     1024-2023     $400-$7E7
-                     Video Matrix: 25 Lines by 40 Columns
+$0400-$07E7          Video Matrix: 25 Lines by 40 Columns
                      
                      The video matrix is where thext screen characters are stored in RAM.
                      Normally, the VIC-II chip will treat each byte of memory here as a
@@ -3366,8 +3346,7 @@ $0400-$07FF  VICSCN  Video Screen Memory Area
                      30 POKE 53281,1:REM BACKGROUND IS WHITE
                      40 POKE 1024,1:REM RED "A" APPEARS IN TOP LEFT CORNER
                      
-                     2040-2047     $7F8-$7FF
-                     Sprite Shape Data Pointers
+$07F8-$07FF          Sprite Shape Data Pointers
                      
                      The last eight bytes of the video matrix (whether it is here at the
                      default location, or has been relocated elsewhere) are used as
@@ -3391,8 +3370,7 @@ $0400-$07FF  VICSCN  Video Screen Memory Area
                      individual VIC-II chip sprite graphics locations, and the summary at
                      the beginning of the VIC-II chip section, at 53248 ($D000).
                      
-                     2048-40959    $800-$9FFF
-                     BASIC Program Text
+$0800-$9FFF          BASIC Program Text
                      
                      This is the area where the actual BASIC program text is stored.  The
                      text of a BASIC program consists of linked lines of program tokens.
@@ -3434,8 +3412,7 @@ $0400-$07FF  VICSCN  Video Screen Memory Area
                      all point to the end of a BASIC program before the program is RUN) to
                      the byte following these zeros.
                      
-                     4096-8191     $1000-$1FFF
-                     Character ROM Image for VIC-II Chip When Using Memory Bank 0 (Default)
+$1000-$1FFF          Character ROM Image for VIC-II Chip When Using Memory Bank 0 (Default)
                      
                      Though the VIC-II chip shares memory with the 6510 processor chip, it
                      does not always see that memory in exactly the same way as the main
@@ -3458,8 +3435,7 @@ $0400-$07FF  VICSCN  Video Screen Memory Area
                      character data storage, see the description of the Character ROM at
                      49152 ($C000).
                      
-                     32768         $8000
-                     Autostart ROM Cartridge
+$8000                Autostart ROM Cartridge
                      
                      An 8K or 16K autostart ROM cartridge designed to use this as a
                      starting memory address may be plugged into the Expansion Port on the
@@ -3480,8 +3456,7 @@ $0400-$07FF  VICSCN  Video Screen Memory Area
                      on and off alternately, so that a 32K program could fit into only 16K
                      of addressing space.
                      
-                     36864-40959   $9000-$9FFF
-                     Character ROM Image for VIC-II Chip When Using Memory Bank 2
+$9000-$9FFF          Character ROM Image for VIC-II Chip When Using Memory Bank 2
                      
                      When the VIC-II chip is set up to use the third 16K block of memory
                      for graphics (as would be the case when the 64 is set up to emulate
