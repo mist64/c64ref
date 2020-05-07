@@ -88,7 +88,7 @@
   STKEY   0091          145        Flag: STOP key / RVS key
   SVXT    0092          146        Timing Constant for Tape
   VERCK   0093          147        Flag: 0 = Load, 1 = Verify
-  C3PO    0094          148        Flag: Serial Bus-Output Char. Buffered
+  C3P0    0094          148        Flag: Serial Bus-Output Char. Buffered
   BSOUR   0095          149        Buffered Character for Serial Bus
   SYNO    0096          150        Cassette Sync No.
           0097          151        Temp Data Area
@@ -103,7 +103,7 @@
   TIME    00A0-00A2     160-162    Real-Time Jiffy Clock (approx) 1/60 Sec
           00A3-00A4     163-164    Temp Data Area
   CNTDN   00A5          165        Cassette Sync Countdown
-  BUFPNT  00A6          166        Pointer: Tape I/O Buffer
+  BUFPT   00A6          166        Pointer: Tape I/O Buffer
   INBIT   00A7          167        RS-232 Input Bits / Cassette Temp
   BITCI   00A8          168        RS-232 Input Bit Count / Cassette Temp
   RINONE  00A9          169        RS-232 Flag: Check for Start Bit
@@ -131,7 +131,7 @@
   NDX     00C6          198        No. of Chars. in Keyboard Buffer (Queue)
   RVS     00C7          199        Flag: Reverse Chars. - 1=Yes, 0=No Used
   INDX    00C8          200        Pointer: End of Logical Line for INPUT
-  LXSP    00C9-00CA     201-202    Cursor X-Y Pos. at Start of INPUT
+  LSXP    00C9-00CA     201-202    Cursor X-Y Pos. at Start of INPUT
   SFDX    00CB          203        Flag: Print Shifted Chars.
   BLNSW   00CC          204        Cursor Blink enable: 0 = Flash Cursor
   BLNCT   00CD          205        Timer: Countdown to Toggle Cursor
@@ -178,7 +178,7 @@
   MODE    0291          657        Flag: $00=Disable SHIFT Keys, $80=Enable
   AUTODN  0292          658        Flag: Auto Scroll Down, 0 = ON
   M51CTR  0293          659        RS-232: 6551 Control Register Image
-  MS1CDR  0294          660        RS-232: 6551 Command Register Image
+  M51CDR  0294          660        RS-232: 6551 Command Register Image
   M51AJB  0295-0296     661-662    RS-232 Non-Standard BPS (Time/2-100) USA
   RSSTAT  0297          663        RS-232: 6551 Status Register Image
   BITNUM  0298          664        RS-232 Number of Bits Left to Send
