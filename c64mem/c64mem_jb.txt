@@ -10,212 +10,207 @@
 -
 # [...]
 
-
-$0000            Chip directional register
-$0001            Chip I/O; memory & tape control
-$0003-$0004      Float-Fixed vector
-$0005-$0006      Fixed-Float vector
-$0007            Search character
-$0008            Scan-quotes flag
-$0009            TAB column save
-$000A            0 = LOAD, 1 = VERIFY
-$000B            Input buffer pointer/# subscrpt
-$000C            Default DIM flag
-$000D            Type : FF = string, 00 = numeric
-$000E            Type : 80 = integer, 00 = floating point
-$000F            DATA scan/LIST quote/memry flag
-$0010            Subscript/FNx flag
-$0011            0 = INPUT; $40 = GET; $98 = READ
-$0012            ATN sign/Comparison eval flag
-$0013            Current I/O prompt flag
-$0014-$0015      Integer value
-$0016            Pointer : temporary strg stack
-$0017-$0018      Last temp string vector
-$0019-$0021      Stack for temporary strings
-$0022-$0025      Utility pointer area
-$0026-$002A      Product area for multiplication
-$002B-$002C      Pointer : Start-of-Basic
-$002D-$002E      Pointer : Start-of-Variables
-$002F-$0030      Pointer : Start-of-Arrays
-$0031-$0032      Pointer : End-of-Arrays
-$0033-$0034      Pointer : String-storage(moving down)
-$0035-$0036      Utility string pointer
-$0037-$0038      Pointer : Limit-of-memory
-$0039-$003A      Current Basic line number
-$003B-$003C      Previous Basic line number
-$003D-$003E      Pointer : Basic statement for CONT
-$003F-$0040      Current DATA line number
-$0041-$0042      Current DATA address
-$0043-$0044      Input vector
-$0045-$0046      Current variable name
-$0047-$0048      Current variable address
-$0049-$004A      Variable pointer for FOR/NEXT
-$004B-$004C      Y-save; op-save; Basic pointer save
-$004D            Comparison symbol accumulator
-$004E-$0053      Misc work area, pointer, etc
-$0054-$0056      Jump vector for functions
-$0057-$0060      Misc numeric work area
-$0061            Accum#l : Exponent
-$0062-$0065      Accum#l : Mantissa
-$0066            Accum#l : Sign
-$0067            Series evaluation constant pointer
-$0068            Accum#l hi-order (over flow)
-$0069-$006E      Accum#2 : Exponent, etc.
-$006F            Sign comparison, Acc#l vs #2
-$0070            Accum#l lo-order (rounding)
-$0071-$0072      Cassette buff len/Series pointer
-$0073-$008A      CHRGET subroutine; get Basic char
-$007A-$007B      Basic pointer (within subrtn)
-$008B-$008F      RND seed value
-$0090            Status word ST
-$0091            Keyswitch PIA : STOP and RVS flags
-$0092            Timing constant for tape
-$0093            Load = 0, Verify = l
-$0094            Serial output : deferred char flag
-$0095            Serial deferred character
-$0096            Tape EOT received
-$0097            Register save
-$0098            How many open files
-$0099            Input device, normally 0
-$009A            Output CMD device, normally 3
-$009B            Tape character parity
-$009C            Byte-received flag
-$009D            Direct = $80/RUN = 0 output control
-$009E            Tp Pass 1 error log/char buffer
-$009F            Tp Pass 2 err log corrected
-$00A0-$00A2      Jiffy Clock HML
-$00A3            Serial bit count/EOI flag
-$00A4            Cycle count
-$00A5            Countdown, tape write/bit count
-$00A6            Tape buffer pointer
-$00A7            Tp Wrt ldr count/Rd pass/inbit
-$00A8            Tp Wrt new byte/Rd error/inbit cnt
-$00A9            Wrt start bit/Rd bit err/stbit
-$00AA            Tp Scan; Cnt; Ld; End/byte assy
-$00AB            Wr lead length/Rd checksum/parity
-$00AC-$00AD      Pointer : tape bufr, scrolling
-$00AE-$00AF      Tape end adds/End of program
-$00B0-$00B1      Tape timing constants
-$00B2-$00B3      Pntr : start of tape buffer
-$00B4            l = Tp timer enabled; bit count
-$00B5            Tp EOT/RS232 next bit to send
-$00B6            Read character error/outbyte buf
-$00B7            # characters in file name
-$00B8            Current logical file
-$00B9            Current secndy address
-$00BA            Current device
-$00BB-$00BC      Pointer to file name
-$00BD            Wr shift word/Rd input char
-$00BE            # blocks remaining to Wr/Rd
-$00BF            Serial word buffer
-$00C0            Tape motor interlock
-$00C1-$00C2      I/O start address
-$00C3-$00C4      Kernel setup pointer
-$00C5            Last key pressed
-$00C6            # chars in keybd buffer
-$00C7            Screen reverse flag
-$00C8            End-of-line for input pointer
-$00C9-$00CA      Input cursor log (row, column)
-$00CB            Which key :  64 if no key
-$00CC            0 = flash cursor
-$00CD            Cursor timing countdown
-$00CE            Character under cursor
-$00CF            Cursor in blink phase
-$00D0            Input from screen/from keyboard
-$00D1-$00D2      Pointer to screen line
-$00D3            Position of cursor on above line
-$00D4            0 = direct cursor, else programmed
-$00D5            Current screen line length
-$00D6            Row where curosr lives
-$00D7            Last inkey/checksum/buffer
-$00D8            # of INSERTs outstanding
-$00D9-$00F2      Screen line link table
-$00F3-$00F4      Screen color pointer
-$00F5-$00F6      Keyboard pointer
-$00F7-$00F8      RS-232 Rev pntr
-$00F9-$00FA      RS-232 Tx pntr
-$00FF-$010A      Floating to ASCII work area
-$0100-$013E      Tape error log
-$0100-$01FF      Processor stack area
-$0200-$0258      Basic input buffer
-$0259-$0262      Logical file table
-$0263-$026C      Device # table
-$026D-$0276      Sec Adds table
-$0277-$0280      Keybd buffer
-$0281-$0282      Start of Basic Memory
-$0283-$0284      Top of Basic Memory
-$0285            Serial bus timeout flag
-$0286            Current color code
-$0287            Color under cursor
-$0288            Screen memory page
-$0289            Max size of keybd buffer
-$028A            Repeat all keys
-$028B            Repeat speed counter
-$028C            Repeat delay counter
-$028D            Keyboard Shift/Control flag
-$028E            Last shift pattern
-$028F-$0290      Keyboard table setup pointer
-$0291            Keyboard shift mode
-$0292            0 = scroll enable
-$0293            RS-232 control reg
-$0294            RS-232 command reg
-$0295-$0296      Bit timing
-$0297            RS-232 status
-$0298            # bits to send
-$0299-$029A      RS-232 speed/code
-$029B            RS232 receive pointer
-$029C            RS232 input pointer
-$029D            RS232 transmit pointer
-$029E            RS232 output pointer
-$029F-$02A0      IRQ save during tape I/O
-$02A1            CIA 2 (NMI) Interrupt Control
-$02A2            CIA 1 Timer A control log
-$02A3            CIA 1 Interrupt Log
-$02A4            CIA 1 Timer A enabled flag
-$02A5            Screen row marker
-$02C0-$02FE       (Sprite 11)
-$0300-$0301      Error message link
-$0302-$0303      Basic warm start link
-$0304-$0305      Crunch Basic tokens link
-$0306-$0307      Print tokens link
-$0308-$0309      Start new Basic code link
-$030A-$030B      Get arithmetic element link
-$030C            SYS A-reg save
-$030D            SYS X-reg save
-$030E            SYS Y-reg save
-$030F            SYS status reg save
-$0310-$0312      USR function jump ($B248)
-$0314-$0315      Hardware interrupt vector ($EA31)
-$0316-$0317      Break interrupt vector ($FE66)
-$0318-$0319      NMI interrupt vector ($FE47)
-$031A-$031B      OPEN vector ($F34A)
-$031C-$031D      CLOSE vector ($F291)
-$031E-$031F      Set - input vector ($F20E)
-$0320-$0321      Set - output vector ($F250)
-$0322-$0323      Restore I/0 vector ($F333)
-$0324-$0325      INPUT vector ($F157)
-$0326-$0327      Output vector ($F1CA)
-$0328-$0329      Test-STOP vector ($F6ED)
-$032A-$032B      GET vector ($F13E)
-$032C-$032D      Abort I/o vector ($F32F)
-$032E-$032F      Warm start vector ($FE66)
-$0330-$0331      LOAD link ($F4A5)
-$0332-$0333      SAVE link ($F5ED)
-$033C-$03FB      Cassette buffer
-$0340-$037E      (Sprite 13)
-$0380-$03BE      (Sprite 14)
-$03C0-$03FE      (Sprite 15)
-$0400-$07FF      Screen memory
-$0800-$9FFF      Basic ROM memory
-$8000-$9FFF      Alternate: Rom plug-in area
-$A000-$BFFF      ROM : Basic
-$A000-$BFFF      Alternate: RAM
-$C000-$CFFF      RAM memory, including alternate
-$D000-$D02E      Video Chip (6566)
-$D400-$D41C      Sound Chip (6581 SID)
-$D800-$DBFF      Color nybble memory
-$DC00-$DC0F      Interface chip 1, IRQ (6526 CIA)
-$DD00-$DD0F      Interface chip 2, NMI (6526 CIA)
-$D000-$DFFF      Alternate: Character set
-$E000-$FFFF      ROM: Operating System
-$E000-$FFFF      Alternate : RAM
+$0000        D6510   Chip directional register
+$0001        R6510   Chip I/O; memory & tape control
+$0003-$0004  ADRAY1  Float-Fixed vector
+$0005-$0006  ADRAY2  Fixed-Float vector
+$0007        CHARAC  Search character
+$0008        ENDCHR  Scan-quotes flag
+$0009        TRMPOS  TAB column save
+$000A        VERCK   0 = LOAD, 1 = VERIFY
+$000B        COUNT   Input buffer pointer/# subscrpt
+$000C        DIMFLG  Default DIM flag
+$000D        VALTYP  Type : FF = string, 00 = numeric
+$000E        INTFLG  Type : 80 = integer, 00 = floating point
+$000F        GARBFL  DATA scan/LIST quote/memry flag
+$0010        SUBFLG  Subscript/FNx flag
+$0011        INPFLG  0 = INPUT; $40 = GET; $98 = READ
+$0012        TANSGN  ATN sign/Comparison eval flag
+$0013        CHANNL  Current I/O prompt flag
+$0014-$0015  LINNUM  Integer value
+$0016        TEMPPT  Pointer : temporary strg stack
+$0017-$0018  LASTPT  Last temp string vector
+$0019-$0021  TEMPST  Stack for temporary strings
+$0022-$0025  INDEX1  Utility pointer area
+$0026-$002A  RESHO   Product area for multiplication
+$002B-$002C  TXTTAB  Pointer : Start-of-Basic
+$002D-$002E  VARTAB  Pointer : Start-of-Variables
+$002F-$0030  ARYTAB  Pointer : Start-of-Arrays
+$0031-$0032  STREND  Pointer : End-of-Arrays
+$0033-$0034  FRETOP  Pointer : String-storage(moving down)
+$0035-$0036  FRESPC  Utility string pointer
+$0037-$0038  MEMSIZ  Pointer : Limit-of-memory
+$0039-$003A  CURLIN  Current Basic line number
+$003B-$003C  OLDLIN  Previous Basic line number
+$003D-$003E  OLDTXT  Pointer : Basic statement for CONT
+$003F-$0040  DATLIN  Current DATA line number
+$0041-$0042  DATPTR  Current DATA address
+$0043-$0044  INPPTR  Input vector
+$0045-$0046  VARNAM  Current variable name
+$0047-$0048  VARPNT  Current variable address
+$0049-$004A  FORPNT  Variable pointer for FOR/NEXT
+$004B-$004C  VARTXT  Y-save; op-save; Basic pointer save
+$004D        OPMASK  Comparison symbol accumulator
+$004E-$0053  TEMPF3  Misc work area, pointer, etc
+$0054-$0056  JMPER   Jump vector for functions
+$0057-$0060  TEMPF1  Misc numeric work area
+$0061        FACEXP  Accum#l : Exponent
+$0062-$0065  FACHO   Accum#l : Mantissa
+$0066        FACSGN  Accum#l : Sign
+$0067        SGNFLG  Series evaluation constant pointer
+$0068        BITS    Accum#l hi-order (over flow)
+$0069-$006E  ARGEXP  Accum#2 : Exponent, etc.
+$006F        ARISGN  Sign comparison, Acc#l vs #2
+$0070        FACOV   Accum#l lo-order (rounding)
+$0071-$0072  FBUFPT  Cassette buff len/Series pointer
+$0073-$008A  CHRGET  CHRGET subroutine; get Basic char
+$007A-$007B  TXTPTR  Basic pointer (within subrtn)
+$008B-$008F  RNDX    RND seed value
+$0090        STATUS  Status word ST
+$0091        STKEY   Keyswitch PIA : STOP and RVS flags
+$0092        SVXT    Timing constant for tape
+$0093        VERCK   Load = 0, Verify = l
+$0094        C3P0    Serial output : deferred char flag
+$0095        BSOUR   Serial deferred character
+$0096        SYNO    Tape EOT received
+$0097        XSAV    Register save
+$0098        LDTND   How many open files
+$0099        DFLTN   Input device, normally 0
+$009A        DFLTO   Output CMD device, normally 3
+$009B        PRTY    Tape character parity
+$009C        DPSW    Byte-received flag
+$009D        MSGFLG  Direct = $80/RUN = 0 output control
+$009E        PTR1    Tp Pass 1 error log/char buffer
+$009F        PTR2    Tp Pass 2 err log corrected
+$00A0-$00A2  TIME    Jiffy Clock HML
+$00A3        R2D2    Serial bit count/EOI flag
+$00A4        FIRT    Cycle count
+$00A5        CNTDN   Countdown, tape write/bit count
+$00A6        BUFPT   Tape buffer pointer
+$00A7        INBIT   Tp Wrt ldr count/Rd pass/inbit
+$00A8        BITCI   Tp Wrt new byte/Rd error/inbit cnt
+$00A9        RINONE  Wrt start bit/Rd bit err/stbit
+$00AA        RIDATA  Tp Scan; Cnt; Ld; End/byte assy
+$00AB        RIPRTY  Wr lead length/Rd checksum/parity
+$00AC-$00AD  SAL     Pointer : tape bufr, scrolling
+$00AE-$00AF  EAL     Tape end adds/End of program
+$00B0-$00B1  CMP0    Tape timing constants
+$00B2-$00B3  TAPE1   Pntr : start of tape buffer
+$00B4        BITTS   l = Tp timer enabled; bit count
+$00B5        NXTBIT  Tp EOT/RS232 next bit to send
+$00B6        RODATA  Read character error/outbyte buf
+$00B7        FNLEN   # characters in file name
+$00B8        LA      Current logical file
+$00B9        SA      Current secndy address
+$00BA        FA      Current device
+$00BB-$00BC  FNADR   Pointer to file name
+$00BD        ROPRTY  Wr shift word/Rd input char
+$00BE        FSBLK   # blocks remaining to Wr/Rd
+$00BF        MYCH    Serial word buffer
+$00C0        CAS1    Tape motor interlock
+$00C1-$00C2  STAL    I/O start address
+$00C3-$00C4  MEMUSS  Kernel setup pointer
+$00C5        LSTX    Last key pressed
+$00C6        NDX     # chars in keybd buffer
+$00C7        RVS     Screen reverse flag
+$00C8        INDX    End-of-line for input pointer
+$00C9-$00CA  LSXP    Input cursor log (row, column)
+$00CB        SFDX    Which key :  64 if no key
+$00CC        BLNSW   0 = flash cursor
+$00CD        BLNCT   Cursor timing countdown
+$00CE        GDBLN   Character under cursor
+$00CF        BLNON   Cursor in blink phase
+$00D0        CRSW    Input from screen/from keyboard
+$00D1-$00D2  PNT     Pointer to screen line
+$00D3        PNTR    Position of cursor on above line
+$00D4        QTSW    0 = direct cursor, else programmed
+$00D5        LNMX    Current screen line length
+$00D6        TBLX    Row where curosr lives
+$00D7        DATA    Last inkey/checksum/buffer
+$00D8        INSRT   # of INSERTs outstanding
+$00D9-$00F2  LDTB1   Screen line link table
+$00F3-$00F4  USER    Screen color pointer
+$00F5-$00F6  KEYTAB  Keyboard pointer
+$00F7-$00F8  RIBUF   RS-232 Rev pntr
+$00F9-$00FA  ROBUF   RS-232 Tx pntr
+$00FF-$010A  BASZPT  Floating to ASCII work area
+$0100-$013E  BAD     Tape error log
+$0100-$01FF  BAD     Processor stack area
+$0200-$0258  BUF     Basic input buffer
+$0259-$0262  LAT     Logical file table
+$0263-$026C  FAT     Device # table
+$026D-$0276  SAT     Sec Adds table
+$0277-$0280  KEYD    Keybd buffer
+$0281-$0282  MEMSTR  Start of Basic Memory
+$0283-$0284  MEMSIZ  Top of Basic Memory
+$0285        TIMOUT  Serial bus timeout flag
+$0286        COLOR   Current color code
+$0287        GDCOL   Color under cursor
+$0288        HIBASE  Screen memory page
+$0289        XMAX    Max size of keybd buffer
+$028A        RPTFLG  Repeat all keys
+$028B        KOUNT   Repeat speed counter
+$028C        DELAY   Repeat delay counter
+$028D        SHFLAG  Keyboard Shift/Control flag
+$028E        LSTSHF  Last shift pattern
+$028F-$0290  KEYLOG  Keyboard table setup pointer
+$0291        MODE    Keyboard shift mode
+$0292        AUTODN  0 = scroll enable
+$0293        M51CTR  RS-232 control reg
+$0294        M51CDR  RS-232 command reg
+$0295-$0296  M51AJB  Bit timing
+$0297        RSSTAT  RS-232 status
+$0298        BITNUM  # bits to send
+$0299-$029A  BAUDOF  RS-232 speed/code
+$029B        RIDBE   RS232 receive pointer
+$029C        RIDBS   RS232 input pointer
+$029D        RODBS   RS232 transmit pointer
+$029E        RODBE   RS232 output pointer
+$029F-$02A0  IRQTMP  IRQ save during tape I/O
+$02A1        ENABL   CIA 2 (NMI) Interrupt Control
+$02A2        CASTON  CIA 1 Timer A control log
+$02A3        KIKA26  CIA 1 Interrupt Log
+$02A4        STUPID  CIA 1 Timer A enabled flag
+$02A5        LINTMP  Screen row marker
+$0300-$0301  IERROR  Error message link
+$0302-$0303  IMAIN   Basic warm start link
+$0304-$0305  ICRNCH  Crunch Basic tokens link
+$0306-$0307  IQPLOP  Print tokens link
+$0308-$0309  IGONE   Start new Basic code link
+$030A-$030B  IEVAL   Get arithmetic element link
+$030C        SAREG   SYS A-reg save
+$030D        SXREG   SYS X-reg save
+$030E        SYREG   SYS Y-reg save
+$030F        SPREG   SYS status reg save
+$0310-$0312  USRPOK  USR function jump ($B248)
+$0314-$0315  CINV    Hardware interrupt vector ($EA31)
+$0316-$0317  CBINV   Break interrupt vector ($FE66)
+$0318-$0319  NMINV   NMI interrupt vector ($FE47)
+$031A-$031B  IOPEN   OPEN vector ($F34A)
+$031C-$031D  ICLOSE  CLOSE vector ($F291)
+$031E-$031F  ICHKIN  Set - input vector ($F20E)
+$0320-$0321  ICKOUT  Set - output vector ($F250)
+$0322-$0323  ICLRCH  Restore I/0 vector ($F333)
+$0324-$0325  IBASIN  INPUT vector ($F157)
+$0326-$0327  IBSOUT  Output vector ($F1CA)
+$0328-$0329  ISTOP   Test-STOP vector ($F6ED)
+$032A-$032B  IGETIN  GET vector ($F13E)
+$032C-$032D  ICLALL  Abort I/o vector ($F32F)
+$032E-$032F  USRCMD  Warm start vector ($FE66)
+$0330-$0331  ILOAD   LOAD link ($F4A5)
+$0332-$0333  ISAVE   SAVE link ($F5ED)
+$033C-$03FB  TBUFFR  Cassette buffer
+$0400-$07FF  VICSCN  Screen memory
+$0800-$9FFF          Basic ROM memory
+$8000-$9FFF          Alternate: Rom plug-in area
+$A000-$BFFF          ROM : Basic
+$A000-$BFFF          Alternate: RAM
+$C000-$CFFF          RAM memory, including alternate
+$D000-$D02E          Video Chip (6566)
+$D400-$D41C          Sound Chip (6581 SID)
+$D800-$DBFF          Color nybble memory
+$DC00-$DC0F          Interface chip 1, IRQ (6526 CIA)
+$DD00-$DD0F          Interface chip 2, NMI (6526 CIA)
+$D000-$DFFF          Alternate: Character set
+$E000-$FFFF          ROM: Operating System
+$E000-$FFFF          Alternate : RAM
