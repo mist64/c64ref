@@ -173,7 +173,6 @@ $0022-$0025  INDEX1  Zeiger für diverse Zwecke
                      Zwischenergebnisse zu speichern.
 
 $0026-$002A  RESHO   Register für Funktionsauswertung und
-
                      Arithmetik
 
                      Diese Speicherzellen werden vom
@@ -379,14 +378,13 @@ $006E        ARGSGN  Vorzeichen von ARG
                      im ARG steht, positiv oder negativ ist.
 
 $006F        ARISGN  Vergleichsbyte der Vorzeichen von FAC
-
                      und ARG
 
                      Diese Speicherzelle gibt dem
                      Interpreter an, ob die Vorzeichen der
                      beiden Akkus übereinstimmen.
 
-$0071-$0072  FBUFPT  113-1K   Zeiger für Polynomauswertung
+$0071-$0072  FBUFPT  Zeiger für Polynomauswertung
 
                      Hier ist in LOW- und HIGH-Byte
                      angegeben, was ausgewertet werden
@@ -519,7 +517,7 @@ $009C        DPSW    Flag für Byte empfangen
                      Byte die Quersumme richtig gebildet
                      hat oder nicht.
 
-$009D        MSGFLG  Flag für Direktmodus $80,  Programm $00
+$009D        MSGFLG  Flag für Direktmodus $80, Programm $00
 
                      In dieser Speicherzelle wird
                      angegeben, welche Fehlermeldungen
@@ -754,8 +752,7 @@ $00CF        BLNON   Flag für Cursor
                      in welcher Blink-Phase sich der Cursor
                      gerade befindet.
 
-$00D0        CRSW    Flag für Eingabe   von Tastatur oder
-
+$00D0        CRSW    Flag für Eingabe von Tastatur oder
                      Bildschirm
 
                      Hier wird die Länge der zu
@@ -792,7 +789,7 @@ $00D6        TBLX    Cursorzeile
                      Hier wird die Zeilenposition des
                      Cursors festgehalten.
 
-$00D7        DATA    Speicher für ASCII-Tasten*Code
+$00D7        DATA    Speicher für ASCII-Tasten-Code
 
                      Bevor ein Zeichen in den
                      Tastaturpuffer gebracht wird, wird es
@@ -820,7 +817,7 @@ $00F5-$00F6  KEYTAB  Zeiger auf Tastatur-Dekodiertabelle
                      Diese Speicherzellen zeigen auf die
                      Tastatur-Dekodiertabelle.
 
-$00F7-$00F8  RIBUF   Zeiger auf R$-232 Eingabepuffer
+$00F7-$00F8  RIBUF   Zeiger auf RS-232 Eingabepuffer
 
                      Diese Register zeigen auf die
                      Anfangsadresse des Eingabepuffers.
@@ -831,13 +828,13 @@ $00F9-$00FA  ROBUF   Zeiger auf RS-232 Ausgabepuffer
                      Anfangsadresse des Ausgabepuffers.
 
 $00FF-$010A  BASZPT  Puffer für Umwandlung Fließkomma nach
-
                      ASCII
+
                      Diese Register werden für die
                      Zwischenspeicherung von Fließkomma-
                      zahlen benutzt.
 
-$0100-$013E  BAD     256*318 Speicher für Korrektur bei Bandeingabe
+$0100-$013E  BAD     Speicher für Korrektur bei Bandeingabe
 
                      Beim Laden von Band werden hier die
                      Daten zwischengespeichert, aus denen
@@ -1106,7 +1103,6 @@ $029C        RIDBS   Zeiger auf Input von RS-232
                      Eingabepuffer eingegebenen Bytes.
 
 $029D        RODBS   Zeiger auf zu Übertragendes Byte
-
                      RS-232
 
                      Wenn man den Inhalt der Speicherzelle
@@ -1156,7 +1152,7 @@ $02A4        STUPID  CIA 1 Flag für Timer A
 
 $02A5        LINTMP  Bildschirmzeile
 
-$02A6        PALNTS  Flag für PAL- (1) o. NTSC- Version (0)
+$02A6        PALNTS  Flag für PAL- (1) o. NTSC-Version (0)
 
                      Hier steht ein Wert, der angibt, ob es
                      sich um eine PAL- oder eine NTSC-
@@ -1167,15 +1163,12 @@ $0300-$0301  IERROR  $E38B Vektor für BASIC-Warmstart
 $0302-$0303  IMAIN   $A483 Vektor für Eingabe einer Zeile
 
 $0304-$0305  ICRNCH  $A57C Vektor für Umwandlung in Inter-
-
                            pretercode
 
 $0306-$0307  IQPLOP  $A71A Vektor für Umwandlung in Klar-
-
                            text (LIST)
 
 $0308-$0309  IGONE   $A7E4 Vektor für BASIC-BefehLsadresse
-
                            holen
 
 $030A-$030B  IEVAL   $AE86 Vektor für Ausdruck auswerten
