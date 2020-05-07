@@ -7,12 +7,12 @@
 -
 # [...]
 
-$00          LABELN  Datenrichtungsregister für Prozessor-
+$0000        D6510   Datenrichtungsregister für Prozessor-
                      Port
-                     
+
                      Bit 0 - 6; 0= Eingang 1= Ausgang
 
-$01          LABELN  
+$0001        R6510   Prozessorport
 
                      Im Prozessorport kann man angeben,
                      welche Speicherbereiche ein- oder
@@ -28,43 +28,43 @@ $01          LABELN
                      Die Bits 6 und 7 sind unbenutzt und
                      immer 0
 
-$02          LABELN  unbenutzt
+$0002                unbenutzt
 
-$03-$04      LABELN  Vektor für Umwandlung von Fließkomma
+$0003-$0004  ADRAY1  Vektor für Umwandlung von Fließkomma
                      nach Fest
-                     
+
                      Von diesen Adressen aus beginnt der
                      Interpreter, eine Gleitkommazahl in
                      eine ganze Zahl umzuwandeln. Der
                      Vektor deutet auf die Adresse $B1AA.
 
-$05-$06      LABELN  Vektor für Umwandlung von Fest nach
+$0005-$0006  ADRAY2  Vektor für Umwandlung von Fest nach
                      Fließkomma
-                     
+
                      Diese Routine verwandelt eine ganze
                      Zahl in eine Fließkommazahl. Der
                      Zeiger steht auf $B391.
 
-$07          LABELN  Suchzeichen
+$0007        CHARAC  Suchzeichen
 
                      Die Speicherzelle $07 wird oft von
                      BASIC-Programmen als Suchzeiger für
                      Texteingaben verwendet.
 
-$08          LABELN  Hochkomma-Flag
+$0008        ENDCHR  Hochkomma-Flag
 
                      Wärend der Umwandlung von
                      BASIC-Befehlen in Tokens wird die
                      Speicherzelle $08 als Zwischenspeicher
                      für BASIC-Texteingaben verwendet.
 
-$09          LABELN  Speicher für Spalte beim TAB-Befehl
+$0009        TRMPOS  Speicher für Spalte beim TAB-Befehl
 
                      Nach der Ausführung von TAB oder SPC
                      wird die Cursorposition in der
                      Speicherzelle 9 zwischengespeichert.
 
-$0A          LABELN  0= LOAD, 1= Verify, Flag des Interpre-
+$000A        VERCK   0= LOAD, 1= Verify, Flag des Interpre-
                      ters
 
                      Weil die Routine von LOAD und VERIFY
@@ -73,7 +73,7 @@ $0A          LABELN  0= LOAD, 1= Verify, Flag des Interpre-
                      ein VERIFY-Vorgang ausgeführt worden
                      ist.
 
-$0B          LABELN  Zeiger im Eingabepuffer, Anzahl der
+$000B        COUNT   Zeiger im Eingabepuffer, Anzahl der
                      Dimensionen
 
                      Die Speicherzelle $0B wird dazu
@@ -81,26 +81,26 @@ $0B          LABELN  Zeiger im Eingabepuffer, Anzahl der
                      zu berechnen. Außerdem wird noch die
                      Länge der Tokenzeile hier angegeben.
 
-$0C          LABELN  FLag für DIM
+$000C        DIMFLG  FLag für DIM
 
                      Diese Speicherzelle wird benutzt, um
                      festzustellen, ob die Variable ein
                      Array oder schon eine dimensionierte
                      Variable ist.
 
-$OD          LABELN  Typflag $00= numerisch, $FF= String
+$00OD                Typflag $00= numerisch, $FF= String
 
                      Das FLag zeigt dem BASIC-Interpreter
                      an, ob es sich um Zahlenwerte oder um
                      einen String handelt.
 
-$0E          LABELN  $80= Interger, $00= Real
+$000E        INTFLG  $80= Interger, $00= Real
 
                      Wenn eine Gleitkommazahl auftritt,
                      steht in der Speicherzelle $00, bei
                      einer ganzen Zahl eine $80.
 
-$0F          LABELN  Hochkommaflag bei LIST
+$000F        GARBFL  Hochkommaflag bei LIST
 
                      Duch diese Speicherzelle wird beim
                      LIST-Befehl duch ein Hochkomma
@@ -110,19 +110,19 @@ $0F          LABELN  Hochkommaflag bei LIST
                      Garbage Collection durchgeführt
                      werden muß oder nicht.
 
-$10          LABELN  Flag für FN
+$0010        SUBFLG  Flag für FN
 
                      Hier wird angezeigt, ob es sich um eine
                      Array-Variable oder um eine mit DEF FN
                      definierte Variable handelt.
 
-$11          LABELN  $00= INPUT, $40= GET, $98= READ
+$0011        INPFLG  $00= INPUT, $40= GET, $98= READ
 
                      Diese Speicherzelle gibt an, in welche
                      Routine der BASIC-Interpreter
                      verzweigen soll.
 
-$12          LABELN  Vorzeichen bei ATN
+$0012        TANSGN  Vorzeichen bei ATN
 
                      Die Speicherzelle $12 wird von den
                      trigonometrischen Funktionen zur
@@ -131,7 +131,7 @@ $12          LABELN  Vorzeichen bei ATN
                      als Vergleichsoperator für
                      Vergleichsoperationen.
 
-$13          LABELN  aktives I/O-Gerät $00= Direkteingabe
+$0013        CHANNL  aktives I/O-Gerät $00= Direkteingabe
 
                      Die Speicherzelle $13 wird als Zeiger
                      für die Peripheriegeräte wie Tastatur,
@@ -139,7 +139,7 @@ $13          LABELN  aktives I/O-Gerät $00= Direkteingabe
                      Bildschirm, Drucker und Floppy
                      verwendet.
 
-$14-$15      LABELN  Integer-Adresse z.B. Zeilennummer
+$0014-$0015  LINNUM  Integer-Adresse z.B. Zeilennummer
 
                      In dieser Speicherzelle werden die
                      Zeilennummern von den Befehlen wie
@@ -147,32 +147,32 @@ $14-$15      LABELN  Integer-Adresse z.B. Zeilennummer
                      und der Zeilenausgabe beim
                      LIST-Befehl gespeichert.
 
-$16          LABELN  Zeiger auf Stringstack
+$0016        TEMPPT  Zeiger auf Stringstack
 
                      Die Speicherzelle $16 zeigt auf den
                      nächsten freien Speicherplatz im
                      Stringstack.
 
-$17-$18      LABELN  Zeiger auf zuletzt verwendeten String
+$0017-$0018  LASTPT  Zeiger auf zuletzt verwendeten String
 
                      Der Inhalt dieser beiden Bytes zeigt
                      auf den zuletzt verwendeten
                      Speicherplatz.
 
-$19-$21      LABELN  Stringstack
+$0019-$0021  TEMPST  Stringstack
 
                      Die Angaben im Stringstack enthalten
                      die Stringlänge sowie die Anfangs-
                      und Endadressen des vorherigen
                      Strings.
 
-$22-$25      LABELN  Zeiger für diverse Zwecke
+$0022-$0025  INDEX1  Zeiger für diverse Zwecke
 
                      Diese Speicherzellen benutzt der
                      Interpreter, um verschiedene
                      Zwischenergebnisse zu speichern.
 
-$26-$2A      LABELN  Register für Funktionsauswertung und
+$0026-$002A  RESHO   Register für Funktionsauswertung und
 
                      Arithmetik
 
@@ -181,21 +181,21 @@ $26-$2A      LABELN  Register für Funktionsauswertung und
                      von Zwischenergebnissen bei der
                      Multiplikation und Division benutzt.
 
-$2B-$2C      LABELN  Zeiger auf BASIC-Programm Anfang
+$002B-$002C  TXTTAB  Zeiger auf BASIC-Programm Anfang
 
                      Der Anfangsbereich des BASIC ist in
                      Low- und Highbyte angegeben. Man kann
                      durch die beiden Bytes den BASIC-Start
                      abfragen oder verändern.
 
-$2D-$2E      LABELN  Zeiger auf BASIC-Programmende
+$002D-$002E  VARTAB  Zeiger auf BASIC-Programmende
 
                      Dieser Zeiger teilt dem Interpreter
                      das BASIC-Ende mit, damit die
                      Variablen hinter dem Programm abgelegt
                      werden können.
 
-$2F-$30      LABELN  Zeiger auf Start der Arrays
+$002F-$0030  ARYTAB  Zeiger auf Start der Arrays
 
                      Das LOW- und HIGH-Byte der Adressen
                      geben dem BASIC-Interpreter die
@@ -203,14 +203,14 @@ $2F-$30      LABELN  Zeiger auf Start der Arrays
                      die Arrays eines BASIC-Programms
                      gespeichert sind.
 
-$31-$32      LABELN  Zeiger auf Ende der Datenfelder
+$0031-$0032  STREND  Zeiger auf Ende der Datenfelder
 
                      Diese beiden Speicherzellen zeigen auf
                      das Ende der Arrays. Zu beachten ist,
                      daß die Zeichenketten rückwärts
                      gespeichert werden.
 
-$33-$34      LABELN  Zeiger auf Stringgrenze
+$0033-$0034  FRETOP  Zeiger auf Stringgrenze
 
                      Der Inhalt dieser Speicherzellen
                      zeigt auf das Ende des Textspeichers,
@@ -218,7 +218,7 @@ $33-$34      LABELN  Zeiger auf Stringgrenze
                      des frei verfügbaren RAM-Bereichs
                      anzeigt.
 
-$35-$36      LABELN  Hilfszeiger für Strings
+$0035-$0036  FRESPC  Hilfszeiger für Strings
 
                      In diesen Zellen wird die Adresse der
                      Zeichenkette verzeichnet, die als
@@ -226,19 +226,19 @@ $35-$36      LABELN  Hilfszeiger für Strings
                      Stringmanipulation abgespeichert
                      worden ist.
 
-$37-$38      LABELN  Zeiger auf BASIC-RAM-Ende
+$0037-$0038  MEMSIZ  Zeiger auf BASIC-RAM-Ende
 
                      Dieser Zeiger gibt dem Interpreter an,
                      welches die höchste von BASIC
                      verwendbare Speicheradresse ist.
 
-$39-$3A      LABELN  augenblickliche BASIC-Zeilennummer
+$0039-$003A  CURLIN  augenblickliche BASIC-Zeilennummer
 
                      In diesen Speicherzellen wird die
                      Zeilennummer verzeichnet, welche
                      gerade ausgeführt wird.
 
-$3B-$3C      LABELN  Zeilennummer für CONT
+$003B-$003C  OLDLIN  Zeilennummer für CONT
 
                      Falls eine Unterbrechung des
                      Programmablaufs duch den Befehl STOP
@@ -247,7 +247,7 @@ $3B-$3C      LABELN  Zeilennummer für CONT
                      die Zeilennummer gespeichert, die
                      gerade abgearbeitet wurde.
 
-$3D-$3E      LABELN  Zeiger auf nächstes Statement für CONT
+$003D-$003E  OLDTXT  Zeiger auf nächstes Statement für CONT
 
                      Sobald eine neue BASIC-Zeile
                      verarbeitet wird, holt sich das
@@ -255,45 +255,45 @@ $3D-$3E      LABELN  Zeiger auf nächstes Statement für CONT
                      Zeilennummer und speichert diese dann
                      in S3D-$3E als LOW- und HIGH-Byte ab.
 
-$3F-$40      LABELN  augenblickliche Zeilennummer für DATA
+$003F-$0040  DATLIN  augenblickliche Zeilennummer für DATA
 
                      Diese beiden Speicherzellen enthalten
                      die Zeilennummer einer DATA-Zeile, die
                      gerade vom READ-Befehl ausgelesen
                      wird.
 
-$41-$42      LABELN  Zeiger für nächstes DATA-Element
+$0041-$0042  DATPTR  Zeiger für nächstes DATA-Element
 
                      Hier ist die Adresse aufgeführt, ab
                      welcher der READ-Befehl nach der
                      nächsten DATA-Zeile sucht.
 
-$43-$44      LABELN  Zeiger auf Herkunft der Eingabe
+$0043-$0044  INPPTR  Zeiger auf Herkunft der Eingabe
 
                      Der Zeiger zeigt auf die jeweilige
                      Adresse in diesem Eingabe-
                      pufferspeicher.
 
-$45-$46      LABELN  Variablenname
+$0045-$0046  VARNAM  Variablenname
 
                      Falls während des Ablaufs eines
                      Programms eine Variable auftaucht,
                      wird deren Name hier zwischen-
                      gespeichert.
 
-$47-$48      LABELN  Variablenadresse
+$0047-$0048  VARPNT  Variablenadresse
 
                      In diesen Speicherzellen wird der
                      Zeiger auf den Variablenwert
                      abgelegt.
 
-$49-$4A      LABELN  Zeiger auf Variablenelement
+$0049-$004A  FORPNT  Zeiger auf Variablenelement
 
                      Die Adresse einer Schleifenvariable
                      wird zunächst hier gespeichert,
                      bevor sie in den Stack gebracht wird.
 
-$4B-$4C      LABELN  Zwischenspeicher für Programmzeiger
+$004B-$004C  VARTXT  Zwischenspeicher für Programmzeiger
 
                      Diese Speicherzellen dienen als
                      Zwischenspeicher für mathematische
@@ -302,7 +302,7 @@ $4B-$4C      LABELN  Zwischenspeicher für Programmzeiger
                      READ-Befehl als Zwischenspeicher
                      verwendet.
 
-$4D          LABELN  Maske für Vergleichsoperationen
+$004D        OPMASK  Maske für Vergleichsoperationen
 
                      Dieser Zeiger wird von mathematischen
                      Routinen als Vergleichsoperator
@@ -310,13 +310,13 @@ $4D          LABELN  Maske für Vergleichsoperationen
                      ob ein Wert kleiner, gleich oder
                      größer ist.
 
-$4E-$4F      LABELN  Zeiger für FN
+$004E-$004F  TEMPF3  Zeiger für FN
 
                      In $4E-$4F ist die Adresse angegeben,
                      wo die Variablen und ihr Wert abgelegt
                      sind.
 
-50-  53     80-83    Stringdescriptor
+$0050-$0053  DSCPNT  Stringdescriptor
 
                      In diesen Speicherzellen wird unter
                      anderem die Schrittweite für Garbage
@@ -324,61 +324,61 @@ $4E-$4F      LABELN  Zeiger für FN
                      Informationen für den Interpreter
                      festgelegt.
 
-$54          LABELN  Konstante $4C JMP für Funktionen
+$0054        JMPER   Konstante $4C JMP für Funktionen
 
                      Hier ist die Konstante für JMP ($4C)
                      festgelegt.
 
-$55-$56      LABELN  Sprungvektor für Funktionen
+$0055-$0056          Sprungvektor für Funktionen
 
                      In $55-$56 werden die Sprungvektoren
                      für die Funktionen angegeben.
 
-$57-$5B      LABELN  Register für Arithmetik, Akku #3
+$0057-$005B  TEMPF1  Register für Arithmetik, Akku #3
 
                      Die Register werden für die
                      Zwischenspeicherung von
                      Polynomauswertungen (TAN) benÖtigt.
 
-$5C-$60      LABELN  Register für Arithmetik, Akku #4
+$005C-$0060  TEMPF2  Register für Arithmetik, Akku #4
 
                      siehe oben
 
-$61-$65      LABELN  Fließkommaakku #1, FAC
+$0061-$0065  FACEXP  Fließkommaakku #1, FAC
 
                      Diese Register werden für die
                      Berechnung von Fließkommazahlen
                      verwendet.
 
-$66          LABELN  Vorzeichen von FAC
+$0066        FACSGN  Vorzeichen von FAC
 
                      Der Zeiger gibt an, ob der Wert, der
                      im FAC steht, positiv oder negativ
                      ist.
 
-$67          LABELN  Zähler für Polynomauswertung
+$0067        SGNFLG  Zähler für Polynomauswertung
 
                      Diese Speicherzelle dient als Zähler
                      für die Polynomauswertung.
 
-$68          LABELN  Rundungsbyte für FAC
+$0068        BITS    Rundungsbyte für FAC
 
                      Hier wird angegeben, ob der Wert, der
                      im FAC steht, auf- oder abgerundet
                      werden soll.
 
-$69-$6D      LABELN  FlieBkommaakku#2, ARG
+$0069-$006D  ARGEXP  FlieBkommaakku#2, ARG
 
                      Diese Register werden für die
                      Berechnung von Fließkommazahlen
                      verwendet.
 
-$6E          LABELN  Vorzeichen von ARG
+$006E        ARGSGN  Vorzeichen von ARG
 
                      Hier wird angegeben, ob der Wert, der
                      im ARG steht, positiv oder negativ ist.
 
-$6F          LABELN  Vergleichsbyte der Vorzeichen von FAC
+$006F        ARISGN  Vergleichsbyte der Vorzeichen von FAC
 
                      und ARG
 
@@ -386,32 +386,32 @@ $6F          LABELN  Vergleichsbyte der Vorzeichen von FAC
                      Interpreter an, ob die Vorzeichen der
                      beiden Akkus übereinstimmen.
 
-$71-$72      LABELN  113-1K   Zeiger für Polynomauswertung
+$0071-$0072  FBUFPT  113-1K   Zeiger für Polynomauswertung
 
                      Hier ist in LOW- und HIGH-Byte
                      angegeben, was ausgewertet werden
                      sol 1.
 
-$73-$8A      LABELN  CHRGET-Routine
+$0073-$008A  CHRGET  CHRGET-Routine
 
                      Diese Routine holt ein Zeichen aus dem
                      BASIC-Text.
 
-$7A-$7B      LABELN  Programmzeiger
+$007A-$007B  TXTPTR  Programmzeiger
 
                      In diesen Speicherzellen wird in LOW-
                      und HIGH-Byte die Anfangsadresse des
                      als nächstes auszuführenden Befehls
                      im BASIC-RAM angegeben.
 
-$7C-$8A      LABELN  Unbenutzt
+$007C-$008A          Unbenutzt
 
-$8B-$8F      LABELN  letzter RND-Wert
+$008B-$008F  RNDX    letzter RND-Wert
 
                      In diesen Registern wird der letzte
                      RND-Wert im Fließkommaformat abgelegt.
 
-$90          LABELN  Statuswort ST
+$0090        STATUS  Statuswort ST
 
                      In dieser Speicherzelle, die auch mit
                      der BASIC-Variable ST identisch ist,
@@ -436,31 +436,31 @@ $90          LABELN  Statuswort ST
                      Bit 6 = Daten-Ende
                      Bit 7 = DEVICE NOT PRESENT ERROR
 
-$91          LABELN  Flag für STOP-Taste
+$0091        STKEY   Flag für STOP-Taste
 
                      In dieser Speicherzelle wird vermerkt,
                      ob die Stoptaste gedrückt worden ist
                      oder nicht.
 
-$92          LABELN  Zeitkonstante für Band
+$0092        SVXT    Zeitkonstante für Band
 
                      Dieses Register hat die Aufgabe, kleine
                      Unterschiede bei der Aufnahme-
                      geschwindigkeit auszugleichen.
 
-$93          LABELN  Flag für LOAD  $00, oder für VERIFY $01
+$0093        VERCK   Flag für LOAD  $00, oder für VERIFY $01
 
                      Dieses Flag dient dem Betriebssystem
                      dazu, um zu unterscheiden, ob eine
                      LOAD oder eine VERIFY Operation
                      erfolgt.
 
-$94          LABELN  Flag bei IEC-Ausgabe
+$0094        C3P0    Flag bei IEC-Ausgabe
 
                      Diese Adresse setzt bei Floppy und
                      Drucker den "LISTEN" Zustand.
 
-$95          LABELN  Ausgabepuffer für IEC-Bus
+$0095        BSOUR   Ausgabepuffer für IEC-Bus
 
                      Hier wird das Zeichen abgelegt,
                      welches über den seriellen Port zur
@@ -468,24 +468,24 @@ $95          LABELN  Ausgabepuffer für IEC-Bus
                      werden soll, sobald die Adresse $94
                      Bereitschaft zeigt.
 
-$96          LABELN  Flag für EOT vom Band empfangen
+$0096        SYNO    Flag für EOT vom Band empfangen
 
                      In $96 werden die Daten
                      zwischengespeichert, die vom Band
                      gelesen werden.
 
-$97          LABELN  Zwischenspeicher für Register
+$0097        XSAV    Zwischenspeicher für Register
 
                      Beim Lesen von Band wird hier das
                      X-Register zwischengespeichert.
 
-$98          LABELN  Anzahl der offenen Files
+$0098        LDTND   Anzahl der offenen Files
 
                      In dieser Speicherzelle wird
                      festgehalten, wie viele Files gleich-
                      zeitig geöffnet sind.
 
-$99          LABELN  aktives Eingabegerät
+$0099        DFLTN   aktives Eingabegerät
 
                      In dieser Speicherzelle wird
                      festgehalten, welches Gerät zur
@@ -499,27 +499,27 @@ $99          LABELN  aktives Eingabegerät
                      4-5  = Drucker
                      8-11 = Laufwerke
 
-$9A          LABELN  aktives Ausgabegerät
+$009A        DFLTO   aktives Ausgabegerät
 
                      Diese Speicherzelle ist mit der
                      vorherigen zu vergleichen, nur steht
                      hier die Nummer des Geräts, über das
                      die Ausgabe erfolgt.
 
-$9B          LABELN  Parität für Band
+$009B        PRTY    Parität für Band
 
                      Über diese Speicherzelle findet eine
                      Parity-Prüfung (Quersummenbildung)
                      statt. Dies dient dazu, um Lese- und
                      Schreibfehler zu vermeiden.
 
-$9C          LABELN  Flag für Byte empfangen
+$009C        DPSW    Flag für Byte empfangen
 
                      Hier wird festgelegt, ob das gelesene
                      Byte die Quersumme richtig gebildet
                      hat oder nicht.
 
-$9D          LABELN  Flag für Direktmodus $80,  Programm $00
+$009D        MSGFLG  Flag für Direktmodus $80,  Programm $00
 
                      In dieser Speicherzelle wird
                      angegeben, welche Fehlermeldungen
@@ -530,40 +530,40 @@ $9D          LABELN  Flag für Direktmodus $80,  Programm $00
                      meldungen zu. Diese Zustände können
                      alle künstlich erzeugt werden.
 
-$9E          LABELN  Bandpass 1 Checksumme
+$009E        PTR1    Bandpass 1 Checksumme
 
                      Diese Speicherzelle wird zur
                      Überprüfung von Bytes bei Kassetten-
                      operationen benutzt.
 
-$9F          LABELN  Bandpass 2 Fehlerkorrektur
+$009F        PTR2    Bandpass 2 Fehlerkorrektur
 
                      Hier werden die Fehler korrrigiert,
                      die bei Kassettenoperationen auf-
                      getreten sind.
 
-$A0-$A2      LABELN  Time
+$00A0-$00A2  TIME    Time
 
                      In diesen Speicherzellen wird die
                      Uhrzeit über die Interruptroutine
                      erhöht.
 
-$A3          LABELN  Bitzähler für serielle Ausgabe
+$00A3        R2D2    Bitzähler für serielle Ausgabe
 
                      Dieses Register wird als Zwischen-
                      speicher von Ein-/Ausgaberoutinen
                      benutzt.
 
-$A4          LABELN  Zähler für Band
+$00A4        FIRT    Zähler für Band
 
                      siehe oben
 
-$A5          LABELN  Zähler für Band schreiben
+$00A5        CNTDN   Zähler für Band schreiben
 
                      Diese Speicherzelle wird als Zähler
                      des Synchron-Bits verwendet.
 
-$A6          LABELN  Zeiger in Bandpuffer
+$00A6        BUFPT   Zeiger in Bandpuffer
 
                      Dieses Register wird als Zähler
                      benutzt, welcher angibt, wie viele
@@ -571,14 +571,14 @@ $A6          LABELN  Zeiger in Bandpuffer
                      oder in den Bandpuffer geschrieben
                      worden sind.
 
-$A7-$AB      LABELN  Arbeitsspeicher für Ein-/Ausgabe
+$00A7-$00AB  INBIT   Arbeitsspeicher für Ein-/Ausgabe
 
                      Diese Register werden häufig von
                      Kassettenoperationen und der RS-232
                      Schnittstelle als Zwischenspeicher
                      benutzt.
 
-$AC-$AD      LABELN  Zeiger für Bandpuffer und Scrolling
+$00AC-$00AD  SAL     Zeiger für Bandpuffer und Scrolling
 
                      Diese Speicherzellen dienen in erster
                      Linie als Zeiger auf die Adresse, ab
@@ -588,153 +588,153 @@ $AC-$AD      LABELN  Zeiger für Bandpuffer und Scrolling
                      während des Scroltings des Video-RAM
                      und beim Einfügen zusätzlicher Zeilen.
 
-$AE-$AF      LABELN  Zeiger auf Programmende bei LOAD/SAVE
+$00AE-$00AF  EAL     Zeiger auf Programmende bei LOAD/SAVE
 
                      Ähnlich wie $AC-$AD funktionieren
                      diese beiden Speicherzellen. Sie
                      Zeigen immer auf das Byte, das gerade
                      gelesen oder gespeichert wurde.
 
-$B0-$B1      LABELN  
+$00B0-$00B1  CMP0
 
                      Der Wert in den Speicherzellen wird
                      benutzt, um die Zeitkonstante beim
                      Lesen von Band einzustellen.
 
-$B2-$B3      LABELN  Zeiger auf Bandpuffer
+$00B2-$00B3  TAPE1   Zeiger auf Bandpuffer
 
                      Diese beiden Speicherzellen zeigen auf
                      den Bandpuffer ($033C)
 
-$B4          LABELN  Bitzähler für Band
+$00B4        BITTS   Bitzähler für Band
 
                      Hier wird die Anzahl der übertragenden
                      Bits gezählt.
 
-$B5          LABELN  nächstes Bit für RS-232
+$00B5        NXTBIT  nächstes Bit für RS-232
 
                      Diese Speicherzelle enthält immer das
                      nächste Bit, das bei RS-232 Opera-
                      tionen übertragen werden soll.
 
-$B6          LABELN  Puffer für auszugebendes Byte
+$00B6        RODATA  Puffer für auszugebendes Byte
 
                      Dieses Register wird als Ausgabe-
                      zwischenspeicher benutzt.
 
-$B7          LABELN  Länge des Filenamens
+$00B7        FNLEN   Länge des Filenamens
 
                      In dieser Speicherzelle wird
                      angegeben, aus wie vielen Zeichen der
                      Filename besteht.
 
-$B8          LABELN  logische Filenummer
+$00B8        LA      logische Filenummer
 
                      In dieser Speicherzelle wird die
                      logische Filenummer verzeichnet.
 
-$B9          LABELN  Sekundäradresse
+$00B9        SA      Sekundäradresse
 
                      Hier steht die jeweilige Sekundär-
                      adresse.
 
-$BA          LABELN  Gerätenummer
+$00BA        FA      Gerätenummer
 
                      Entsprechend ist auch in dieser
                      Speicherzelle die Gerätenummer zu
                      finden.
 
-$BB-$BC      LABELN  Zeiger auf Filenamen
+$00BB-$00BC  FNADR   Zeiger auf Filenamen
 
                      In diesen Speicherzellen steht ein
                      Zeiger, der in LOW- und HIGH-Byte-
                      Darstellung auf den Filenamen zeigt.
 
-$BD          LABELN  Arbeitsspeicher serielle Ein-/Ausgabe
+$00BD        ROPRTY  Arbeitsspeicher serielle Ein-/Ausgabe
 
                      Hier wird von den RS-232-Routinen ein
                      Prüfbyte abgelegt (Parity-Prüfung).
 
-$BE          LABELN  Passzähler für Band
+$00BE        FSBLK   Passzähler für Band
 
                      In dieser Speicherzelle ist angegeben,
                      wie viele Blockteile von Band gelesen
                      oder auf Band geschrieben werden
                      sollen.
 
-$BF          LABELN  Puffer für serielle Ausgabe
+$00BF        MYCH    Puffer für serielle Ausgabe
 
                      Beim Laden eines Programms von Band
                      wird diese Speicherzelle dazu benutzt,
                      um die einzelnen Bits zu einem Byte
                      zusammenzusetzen.
 
-$C0          LABELN  Flag für Bandmotor
+$00C0        CAS1    Flag für Bandmotor
 
                      Der Motor der Datasette kann nur
                      eingeschaltet werden, wenn die
                      Speicherzelle ungleich Null ist.
 
-$C1-$C2      LABELN  Startadresse für Ein-/Ausgabe
+$00C1-$00C2  STAL    Startadresse für Ein-/Ausgabe
 
                      In diesen Registern ist in LOW- und
                      HIGH-Byte-Darstellung angegeben, ab
                      welcher Adresse ein Programm geladen
                      oder gespeichert wird.
 
-$C3-$C4      LABELN  Endadresse für Ein-/Ausgabe
+$00C3-$00C4  MEMUSS  Endadresse für Ein-/Ausgabe
 
                      Hier steht in LOU- und HIGH-Byte der
                      Zeiger auf den Tape-Header im
                      Bandpuffer.
 
-$C5          LABELN  Nummer der gedrückten Taste
+$00C5        LSTX    Nummer der gedrückten Taste
 
                      Hier wird die Nummer der gedrückten
                      Taste gespeichert (64= keine Taste).
 
-$C6          LABELN  Anzahl der gedrückten Tasten
+$00C6        NDX     Anzahl der gedrückten Tasten
 
                      Hier steht die jeweilige Anzahl der
                      Zeichen, die im Tastaturpuffer
                      gespeichert sind.
 
-$C7          LABELN  Flag für RVS-Modus
+$00C7        RVS     Flag für RVS-Modus
 
                      Diese Speicherzelle gibt an, ob die
                      auszugebenden Zeichen revers oder
                      normal dargestellt werden sollen
                      (0= normal, 1= revers).
 
-$C8          LABELN  Zeilenende für Eingabe
+$00C8        INDX    Zeilenende für Eingabe
 
                      Dieses Register enthält die Position
                      des letzen Zeichens in einer Zeile.
 
-$C9          LABELN  Cursorzeile für Eingabe
+$00C9        LSXP    Cursorzeile für Eingabe
 
                      Diese Speicherzelle dient dazu, um die
                      Zeile des letzten eingegebenen Zeich-
                      ens festzustellen.
 
-$CA          LABELN  Cursorspalte für Eingabe
+$00CA                Cursorspalte für Eingabe
 
                      Diese Speicherzelle dient dazu, um die
                      Spalte des letzten eingegebenen
                      Zeichens festzustellen.
 
-$CB          LABELN  gedrückte Taste
+$00CB        SFDX    gedrückte Taste
 
                      Hier steht der jeweilige Code der
                      gedrückten Taste. (64= keine Taste).
 
-$CC          LABELN  Flag für Cursor
+$00CC        BLNSW   Flag für Cursor
 
                      Der Cursor wird ausgeschaltet, wenn
                      in dieser Speicherzelle ein größerer
                      Wert als Null steht.
 
-$CD          LABELN  Zähler für Cursor blinken
+$00CD        BLNCT   Zähler für Cursor blinken
 
                      Diese Speicherzelle dient als Zähler
                      für die Cursor-Blinkphase. Wenn der
@@ -742,26 +742,26 @@ $CD          LABELN  Zähler für Cursor blinken
                      abgezählt ist, wird der Cursor einge-
                      schaltet.
 
-$CE          LABELN  Zeichen unter dem Cursor
+$00CE        GDBLN   Zeichen unter dem Cursor
 
                      Hier ist jeweils der Bildschirmcode
                      eines Zeichens angegeben, das sich
                      gerade unter dem Cursor befindet.
 
-$CF          LABELN  Flag für Cursor
+$00CF        BLNON   Flag für Cursor
 
                      In diesem Register wird festgehalten,
                      in welcher Blink-Phase sich der Cursor
                      gerade befindet.
 
-$D0          LABELN  Flag für Eingabe   von Tastatur oder
+$00D0        CRSW    Flag für Eingabe   von Tastatur oder
 
                      Bildschirm
 
                      Hier wird die Länge der zu
                      übertragenden Zeichen gespeichert.
 
-$D1-$D2      LABELN  Zeiger auf Start der Bildschirmzeile
+$00D1-$00D2  PNT     Zeiger auf Start der Bildschirmzeile
 
                      In diesen Speicherzellen wird in LOW-
                      und HIGH-Byte-Darstellung angezeigt,
@@ -769,82 +769,82 @@ $D1-$D2      LABELN  Zeiger auf Start der Bildschirmzeile
                      findet, auf der der Cursor gerade
                      steht.
 
-$D3          LABELN  Cursorspalte
+$00D3        PNTR    Cursorspalte
 
                      Hier wird die Spaltenposition des
                      Cursors festgehalten.
 
-$D4          LABELN  Flag für Hochkommamodus
+$00D4        QTSW    Flag für Hochkommamodus
 
                      Falls in dieser Speicherzelle eine
                      Null steht, dann befindet sich der
                      Computer im Hochkommamodus. Andere
                      Werte bewirken den Normalmodus.
 
-$D5          LABELN  Länge der Bildschirmzeile
+$00D5        LNMX    Länge der Bildschirmzeile
 
                      Der Inhalt dieser Speicherzelle
                      entscheidet, ob eine neue Zeile
                      angefangen werden muß oder nicht.
 
-$D6          LABELN  Cursorzeile
+$00D6        TBLX    Cursorzeile
 
                      Hier wird die Zeilenposition des
                      Cursors festgehalten.
 
-$D7          LABELN  Speicher für ASCII-Tasten*Code
+$00D7        DATA    Speicher für ASCII-Tasten*Code
 
                      Bevor ein Zeichen in den
                      Tastaturpuffer gebracht wird, wird es
                      vorher hier zwischengespeichert.
 
-$D8          LABELN  Anzahl der Inserts
+$00D8        INSRT   Anzahl der Inserts
 
                      Hier wird die Anzahl der Inserts
                      festgelegt.
 
-$D9-$F2      LABELN  MSB der Bildschirmzeilenanfänge
+$00D9-$00F2  LDTB1   MSB der Bildschirmzeilenanfänge
 
                      Alle 25 Speicherzellen enthalten
                      Informationen über die Zeilen des
                      Bildschirms.
 
-$F3-$F4      LABELN  Zeiger in Farb-RAM
+$00F3-$00F4  USER    Zeiger in Farb-RAM
 
                      Diese Speicherzellen zeigen auf die
                      Stelle im Farb-RAM, an der der Cursor
                      auf der Zeile steht.
 
-$F5-$F6      LABELN  Zeiger auf Tastatur-Dekodiertabelle
+$00F5-$00F6  KEYTAB  Zeiger auf Tastatur-Dekodiertabelle
 
                      Diese Speicherzellen zeigen auf die
                      Tastatur-Dekodiertabelle.
 
-$F7-$F8      LABELN  Zeiger auf R$-232 Eingabepuffer
+$00F7-$00F8  RIBUF   Zeiger auf R$-232 Eingabepuffer
 
                      Diese Register zeigen auf die
                      Anfangsadresse des Eingabepuffers.
 
-$F9-$FA      LABELN  Zeiger auf RS-232 Ausgabepuffer
+$00F9-$00FA  ROBUF   Zeiger auf RS-232 Ausgabepuffer
 
                      Diese Register zeigen auf die
                      Anfangsadresse des Ausgabepuffers.
 
-$00FF-$010A  LABELN  Puffer für Umwandlung Fließkomma nach
+$00FF-$010A  BASZPT  Puffer für Umwandlung Fließkomma nach
 
                      ASCII
                      Diese Register werden für die
                      Zwischenspeicherung von Fließkomma-
                      zahlen benutzt.
 
-$0100-$013E  LABELN  256*318 Speicher für Korrektur bei Bandeingabe
+$0100-$013E  BAD     256*318 Speicher für Korrektur bei Bandeingabe
 
                      Beim Laden von Band werden hier die
                      Daten zwischengespeichert, aus denen
                      das Betriebssystem erkennen kann,
                      welche Bytes fehlerhaft sind.
 
-$013F-$01FF  LABELN  Prozessorstack
+$013F-$01FF          Prozessorstack
 
                      Der Stack ist generell ein
                      Zwischenspeicher, in dem der Pro-
@@ -861,7 +861,7 @@ $013F-$01FF  LABELN  Prozessorstack
                      sätzlich der Prozessorstatus im Stack
                      abgelegt.
 
-$0200-$0258  LABELN  BASIC-Eingabepuffer
+$0200-$0258  BUF     BASIC-Eingabepuffer
 
                      Nach der Eingabe eines Befehls oder
                      einer Programmzeile werden diese
@@ -869,7 +869,7 @@ $0200-$0258  LABELN  BASIC-Eingabepuffer
                      gespeichert, um dann wieder weiter-
                      verarbeitet zu werden.
 
-$0259-$0262  LABELN  Tabelle der logischen Filenummern
+$0259-$0262  LAT     Tabelle der logischen Filenummern
 
                      In dieser Tabelle werden die logischen
                      Filenummern der Reihe nach, von 1-10,
@@ -877,39 +877,39 @@ $0259-$0262  LABELN  Tabelle der logischen Filenummern
                      Datei werden diese Einträge wieder
                      entfernt.
 
-$0263-$026C  LABELN  Tabelle der Gerätenummern
+$0263-$026C  FAT     Tabelle der Gerätenummern
 
                      Diese Tabelle entspricht $0259-$0262,
                      nur mit dem Unterschied, daß hier die
                      Geräteadressen vermerkt werden.
 
-$026D-$0276  LABELN  Tabelle der Sekundäradressen
+$026D-$0276  SAT     Tabelle der Sekundäradressen
 
                      Diese Tabelle entspricht $0259-$0262,
                      nur mit dem Unterschied, daß hier die
                      Sekundäradressen vermerkt werden.
 
-$0277-$0280  LABELN  Tastaturpuffer
+$0277-$0280  KEYD    Tastaturpuffer
 
                      Hier werden die Tastencodes zwischen-
                      gespeichert, die nicht sofort vom
                      Betriebssystem weiterverarbeitet
                      werden können.
 
-$0281-$0282  LABELN  Start des BASIC-RAM
+$0281-$0282  MEMSTR  Start des BASIC-RAM
 
                      Nach einem Reset oder einem Kaltstart
                      wird dieser Zeiger auf den nächsten
                      freien Speicherplatz gesetzt.
 
-$0283-$0284  LABELN  Ende des BASIC-RAM
+$0283-$0284  MEMSIZ  Ende des BASIC-RAM
 
                      Dieser Zeiger wird nach einem Reset
                      oder einem Kaltstart auf den letzten
                      verfügbaren freien RAM-Speicherplatz
                      gesetzt.
 
-$0285        LABELN  Timeout-Flag für seriellen IEC-Bus
+$0285        TIMOUT  Timeout-Flag für seriellen IEC-Bus
 
                      Alle Zähler in dieser Speicherzelle,
                      die größer als 128 sind, bedeuten, daß
@@ -917,7 +917,7 @@ $0285        LABELN  Timeout-Flag für seriellen IEC-Bus
                      kleineren Werte bedeuten das
                      Gegenteil.
 
-$0286        LABELN  augenblickliche Farbe
+$0286        COLOR   augenblickliche Farbe
 
                      Hier wird die augenblickliche
                      Zeichenfarbe festgelegt:
@@ -938,26 +938,25 @@ $0286        LABELN  augenblickliche Farbe
                      14 = hellblau
                      15 = hellgrau
 
-$0287        LABELN  Farbe unter dem Cursor
+$0287        GDCOL   Farbe unter dem Cursor
 
                      In dieser Speicherzelle merkt sich das
                      Betriebssystem, welche Farbe gerade
                      unter dem Cursor steht.
 
-$0288        LABELN  HIGH-Byte Video-RAM
+$0288        HIBASE  HIGH-Byte Video-RAM
 
                      Dieses HIGH-Byte gibt dem Betriebssystem an,
                      ab welcher Adresse das Video-RAM zu finden
                      ist.
 
-$0289        LABELN  Länge des Tastaturpuffers
+$0289        XMAX    Länge des Tastaturpuffers
 
                      Dieses Register gibt an, wie viele
                      Speicherzellen des Tastaturpuffers
                      belegt werden sollen.
 
-$028A        LABELN  Flag für Repeatfunktion für alle
-
+$028A        RPTFLG  Flag für Repeatfunktion für alle
                      Tasten
 
                      In dieser Speicherzelle wird dem
@@ -969,19 +968,19 @@ $028A        LABELN  Flag für Repeatfunktion für alle
                       64 = keine Taste
                      128 = alle Tasten
 
-$028B        LABELN  Zähler für Repeatgeschwindigkeit
+$028B        KOUNT   Zähler für Repeatgeschwindigkeit
 
                      Diese Speicherzelle dient als Zähler,
                      die die Repeat-Geschwindigkeit
                      festlegt.
 
-$028C        LABELN  Zähler für Repeatverzögerung
+$028C        DELAY   Zähler für Repeatverzögerung
 
                      Hier wird angegeben, wie lange eine
                      Taste gedrückt sein muß, bis die
                      Repeat-Funktion einsetzt.
 
-$0280        LABELN  Flag für SHIFT, Commodore und CTRL
+$0280                Flag für SHIFT, Commodore und CTRL
 
                      In diesem Register stehen die
                      Tastencodes der Steuertasten:
@@ -993,32 +992,32 @@ $0280        LABELN  Flag für SHIFT, Commodore und CTRL
                      6 = Commodore und CTRL
                      7 = SHIFT, Commodore und CTRL
 
-$028E        LABELN  SHIFT-Flag
+$028E        LSTSHF  SHIFT-Flag
 
                      Hier steht die zuletzt gedrückte
                      Steuertaste.
 
-$028F-$0290  LABELN  Zeiger für Tastatur-Dekodierung
+$028F-$0290  KEYLOG  Zeiger für Tastatur-Dekodierung
 
                      Hier steht ein Zeiger, der auf die
                      Betriebssystemroutine für die Tastatur-
                      Dekodierung zeigt.
 
-$0291        LABELN  Flag für SHIFT/Commodore gesperrt
+$0291        MODE    Flag für SHIFT/Commodore gesperrt
 
                      Falls in der Speicherzelle eine 128
                      steht, wird eine Umschaltung mit
                      SHIFT/Commodore verriegelt. Bei einer
                      0 wird die Umschaltung zugelassen.
 
-$0292        LABELN  Flag für Scrollen
+$0292        AUTODN  Flag für Scrollen
 
                      Wenn in dieser Speicherzelle eine 0
                      steht, setzt der Scroll-Vorgang ein.
                      Bei einem größeren Wert setzt dieser
                      Vorgang nicht ein.
 
-$0293        LABELN  RS-232 Kontrollwert
+$0293        M51CTR  RS-232 Kontrollwert
 
                      Hier wird die Übertragungs-
                      geschwindigkeit der RS-232 Schnitt-
@@ -1050,19 +1049,19 @@ $0293        LABELN  RS-232 Kontrollwert
                      0               0          1-STOP-Bit
                      1               128        2-ST0P-Bits
 
-$0294        LABELN  RS-232 Befehlswort
+$0294        M51CDR  RS-232 Befehlswort
 
                      Die einzelnen Bits steuern das
                      'Handshake'-Protokol1.
 
-$0295-$0296  LABELN  Bit-Timing
+$0295-$0296  M51AJB  Bit-Timing
 
                      Die Möglichkeit, eine freiwählbare
                      Übertragungsgeschwindikeit einzu-
                      stetlen, wurde vorgesehen, aber nicht
                      eingebaut.
 
-$0297        LABELN  RS-232 Status
+$0297        RSSTAT  RS-232 Status
 
                      Hier werden die Fehlermeldungen der
                      RS-232 Schnittstelle angezeigt:
@@ -1077,12 +1076,12 @@ $0297        LABELN  RS-232 Status
                       7  128     Die Übertragung ist unter-
                                  brochen
 
-$0298        LABELN  Anzahl der Datenbits für RS-232
+$0298        BITNUM  Anzahl der Datenbits für RS-232
 
                      Diese Speicherzelle wird verwendet,
                      um die Uortlänge festzustellen.
 
-$0299-$029A  LABELN  RS-232 Baud-Rate
+$0299-$029A  BAUDOF  RS-232 Baud-Rate
 
                      Die Übertragungsrate errechnet sich
                      aus der Systemfrequenz (985.25) KHz
@@ -1092,62 +1091,62 @@ $0299-$029A  LABELN  RS-232 Baud-Rate
                      Speicherzellen. Er wird vom Betriebssystem
                      abgerufen.
 
-$029B        LABELN  Zeiger für empfangenes Byte RS-232
+$029B        RIDBE   Zeiger für empfangenes Byte RS-232
 
                      Wenn man den Inhalt der Speicherzelle
                      mit dem Wert in $F7-$F8 addiert,
                      erhält man die Adresse des zuletzt im
                      Eingabepuffer eingegebenen Bytes.
 
-$029C        LABELN  Zeiger auf Input von RS-232
+$029C        RIDBS   Zeiger auf Input von RS-232
 
                      Wenn man den Inhalt der Speicherzelle
                      mit dem Wert in $F7-$F8 addiert,
                      erhält man die Adresse des ersten im
                      Eingabepuffer eingegebenen Bytes.
 
-$029D        LABELN  Zeiger auf zu Übertragendes Byte
+$029D        RODBS   Zeiger auf zu Übertragendes Byte
 
                      RS-232
-                     
+
                      Wenn man den Inhalt der Speicherzelle
                      mit dem Wert in $F9-$FA addiert,
                      erhält man die Adresse des ersten im
                      Ausgabepuffer eingegebenen Bytes.
 
-$029E        LABELN  Zeiger auf Ausgabe auf RS-232
+$029E        RODBE   Zeiger auf Ausgabe auf RS-232
 
                      Wenn man den Inhalt der Speicherzelle
                      mit dem Wert in $F9-$FA addiert,
                      erhält man die Adresse des zuletzt im
                      Ausgabepuffer eingegebenen Bytes.
 
-$029F-$02A0  LABELN  Speicher für IRQ während Bandbetrieb
+$029F-$02A0  IRQTMP  Speicher für IRQ während Bandbetrieb
 
                      Bei Kassettenoperationen wird hier in
                      LOW- und HIGH-Byte-Darstellung der
                      Vektor für die Interruptroutine
                      gespeichert.
 
-$02A1        LABELN  CIA 2 NMI-Ftag
+$02A1        ENABL   CIA 2 NMI-Ftag
 
                      Diese Speicherzelle erhält den Wert
                      des Interruptsteuerregisters, das die
                      RS-232 Schnittstelle steuert.
 
-$02A2        LABELN  CIA 1 Timer A
+$02A2        CASTON  CIA 1 Timer A
 
                      Bei Bandroutinen wird hier das
                      HIGH-Byte von Timer A zwischen-
                      gespeichert.
 
-$02A3        LABELN  CIA 1 Interruptflag
+$02A3        KIKA26  CIA 1 Interruptflag
 
                      Bei Bandroutinen wird in dieser
                      Speicherzelle festgelegt, welche IRQs
                      freigegeben sind und welche nicht.
 
-$02A4        LABELN  CIA 1 Flag für Timer A
+$02A4        STUPID  CIA 1 Flag für Timer A
 
                      Hier wird bei Bandroutinen angegeben,
                      ob Timer A läuft oder nicht. Wenn hier
@@ -1155,77 +1154,72 @@ $02A4        LABELN  CIA 1 Flag für Timer A
                      freigegeben, andernfalls ist er
                      gesperrt.
 
-$02A5        LABELN  Bildschirmzeile
+$02A5        LINTMP  Bildschirmzeile
 
-$02A6        LABELN  Flag für PAL- (1) o. NTSC- Version (0)
+$02A6        PALNTS  Flag für PAL- (1) o. NTSC- Version (0)
 
                      Hier steht ein Wert, der angibt, ob es
                      sich um eine PAL- oder eine NTSC-
                      Version handelt.
 
-$02C0-$02FE  LABELN  Sprite 11
+$0300-$0301  IERROR  $E38B Vektor für BASIC-Warmstart
 
-$0300-$0301  LABELN  $E38B Vektor für BASIC-Warmstart
+$0302-$0303  IMAIN   $A483 Vektor für Eingabe einer Zeile
 
-$0302-$0303  LABELN  $A483 Vektor für Eingabe einer Zeile
-
-$0304-$0305  LABELN  $A57C Vektor für Umwandlung in Inter-
+$0304-$0305  ICRNCH  $A57C Vektor für Umwandlung in Inter-
 
                            pretercode
 
-$0306-$0307  LABELN  $A71A Vektor für Umwandlung in Klar-
+$0306-$0307  IQPLOP  $A71A Vektor für Umwandlung in Klar-
 
                            text (LIST)
 
-$0308-$0309  LABELN  $A7E4 Vektor für BASIC-BefehLsadresse
+$0308-$0309  IGONE   $A7E4 Vektor für BASIC-BefehLsadresse
 
                            holen
 
-$030A-$030B  LABELN  $AE86 Vektor für Ausdruck auswerten
+$030A-$030B  IEVAL   $AE86 Vektor für Ausdruck auswerten
 
-$030C        LABELN  Akku für SYS-Befehl
+$030C        SAREG   Akku für SYS-Befehl
 
-$030D        LABELN  X-REG für SYS-Befehl
+$030D        SXREG   X-REG für SYS-Befehl
 
-$030E        LABELN  Y-REG für SYS-Befehl
+$030E        SYREG   Y-REG für SYS-Befehl
 
-$0310        LABELN  Status-Register für SYS-Befehl
+$0310        USRPOK  Status-Register für SYS-Befehl
 
-$0311-$0312  LABELN  $B248 USR-Vektor
+$0311-$0312  USRADD  $B248 USR-Vektor
 
-$0314-$0315  LABELN  $EA31 IRQ-Vektor
+$0314-$0315  CINV    $EA31 IRQ-Vektor
 
-$0316-$0317  LABELN  $FE66 BRK-Vektor
+$0316-$0317  CBINV   $FE66 BRK-Vektor
 
-$0318-$0319  LABELN  $FE47 NMI-Vektor
+$0318-$0319  NMINV   $FE47 NMI-Vektor
 
-$031A-$031B  LABELN  $F34A OPEN-Vektor
+$031A-$031B  IOPEN   $F34A OPEN-Vektor
 
-$031C-$031D  LABELN  $F291 CLOSE-Vektor
+$031C-$031D  ICLOSE  $F291 CLOSE-Vektor
 
-$031E-$031F  LABELN  $F20E CHKIN-Vektor
+$031E-$031F  ICHKIN  $F20E CHKIN-Vektor
 
-$0320-$0321  LABELN  $F250 CKOUT-Vektor
+$0320-$0321  ICKOUT  $F250 CKOUT-Vektor
 
-$0322-$0323  LABELN  $F333 CLRCH-Vektor
+$0322-$0323  ICLRCH  $F333 CLRCH-Vektor
 
-$0324-$0325  LABELN  $F157 INPUT-Vektor
+$0324-$0325  IBASIN  $F157 INPUT-Vektor
 
-$0326-$0327  LABELN  $F1CA OUTPUT-Vektor
+$0326-$0327  IBSOUT  $F1CA OUTPUT-Vektor
 
-$0328-$0329  LABELN  $F6ED STOP-Vektor
+$0328-$0329  ISTOP   $F6ED STOP-Vektor
 
-$032A-$032B  LABELN  $F13E GET-Vektor
+$032A-$032B  IGETIN  $F13E GET-Vektor
 
-$032B-$032C  LABELN  $F32F CLALL-Vektor
+$032B-$032C          $F32F CLALL-Vektor
 
-$032E-$032F  LABELN  $FE66 Warmstart-Vektor
+$032E-$032F  USRCMD  $FE66 Warmstart-Vektor
 
-$0330-$0331  LABELN  $F4A5 LOAD-Vektor
+$0330-$0331  ILOAD   $F4A5 LOAD-Vektor
 
-$0332-$0333  LABELN  $F5ED SAVE-Vektor
+$0332-$0333  ISAVE   $F5ED SAVE-Vektor
 
-$033C-$03FB  LABELN  Bandpuffer
-
-$0340-$037E  LABELN  Sprite 13
-
+$033C-$03FB  TBUFFR  Bandpuffer

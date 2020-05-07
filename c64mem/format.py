@@ -4,7 +4,7 @@ import sys
 import os
 import pprint
 
-with open('c64mem_sta_awsm.txt', 'r') as f:
+with open('c64mem_64intern.txt', 'r') as f:
 	lines = f.read().split('\n')
 
 with open('symbols.txt', 'r') as f:
@@ -27,11 +27,11 @@ for line in lines:
 		continue
 
 	if not line.startswith('$'):
-		print("        " + line)
+		print(line)
 		continue
 	address = line[0:13]
 	start_address = line[1:5]
-	description = line[13:]
+	description = line[21:]
 	if start_address in symbols:
 		symbol = (symbols[start_address] + "        ")[:8]
 	else:
