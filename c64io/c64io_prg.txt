@@ -1,0 +1,373 @@
+- C64 I/O Map (Programmer's Reference Guide)
+-
+- C64PRG10.TXT
+-
+- practically the same:
+- 64MAP10.TXT/Commodore_64_IO_Maps.doc
+- 64MAP10.TXT/Commodore_64_Memory_Maps.txt
+------------------------------------------------------------
+-
+# [...]
+
+  0000           0          7-0    MOS 6510 Data Direction
+                                     Register (xx101111)
+                                     Bit= 1: Output, Bit=0:
+                                     Input, x=Don't Care
+
+  0001           1                 MOS 6510 Micro-Processor
+                                     On-Chip I/O Port
+                            0      /LORAM Signal (0=Switch BASIC ROM Out)
+                            1      /HIRAM Signal (0=Switch Kernal ROM Out)
+                            2      /CHAREN Signal (0=Switch Char. ROM In)
+                            3      Cassette Data Output Line
+                            4      Cassette Switch Sense: 1 = Switch Closed
+                            5      Cassette Motor Control 0 = ON, 1 = OFF
+                            6-7    Undefined
+
+
+  D000-D02E  53248-54271           MOS 6566 VIDEO INTERFACE CONTROLLER
+                                   (VIC)
+
+  D000       53248                 Sprite 0 X Pos
+  D001       53249                 Sprite 0 Y Pos
+  D002       53250                 Sprite 1 X Pos
+  D003       53251                 Sprite 1 Y Pos
+  D004       53252                 Sprite 2 X Pos
+  D005       53253                 Sprite 2 Y Pos
+  D006       53254                 Sprite 3 X Pos
+  D007       53255                 Sprite 3 Y Pos
+  D008       53256                 Sprite 4 X Pos
+  D009       53257                 Sprite 4 Y Pos
+  D00A       53258                 Sprite 5 X Pos
+  D00B       53259                 Sprite 5 Y Pos
+  D00C       53260                 Sprite 6 X Pos
+  D00D       53261                 Sprite 6 Y Pos
+  D00E       53262                 Sprite 7 X Pos
+  D00F       53263                 Sprite 7 Y Pos
+  D010       53264                 Sprites 0-7 X Pos (msb of X coord.)
+  D011       53265                 VIC Control Register
+                            7      Raster Compare: (Bit 8) See 53266
+                            6      Extended Color Text Mode 1 = Enable
+                            5      Bit Map Mode. 1 = Enable
+                            4      Blank Screen to Border Color: 0 = Blank
+                            3      Select 24/25 Row Text Display: 1=25 Rows
+                            2-0    Smooth Scroll to Y Dot-Position (0-7)
+
+  D012       53266                 Read Raster/Write Raster Value for
+                                     Compare IRQ
+  D013       53267                 Light-Pen Latch X Pos
+  D014       53268                 Light-Pen Latch Y Pos
+  D015       53269                 Sprite display Enable: 1 = Enable
+  D016       53270                 VIC Control Register
+                            7-6    Unused
+                            5      ALWAYS SET THIS BIT TO 0 !
+                            4      Multi-Color Mode: 1 = Enable (Text or
+                                     Bit-Map)
+                            3      Select 38/40 Column Text Display:
+                                     1 = 40 Cols
+                            2-0    Smooth Scroll to X Pos
+
+  D017       53271                 Sprites 0-7 Expand 2x Vertical (Y)
+  D018       53272                 VIC Memory Control Register
+                            7-4    Video Matrix Base Address (inside VIC)
+                            3-1    Character Dot-Data Base Address (inside
+                                     VIC)
+                            0      Select upper/lower Character Set
+
+  D019       53273                 VIC Interrupt Flag Register (Bit = 1:
+                                     IRQ Occurred)
+                            7      Set on Any Enabled VIC IRQ Condition
+                            3      Light-Pen Triggered IRQ Flag
+                            2      Sprite to Sprite Collision IRQ Flag
+                            1      Sprite to Background Collision IRQ Flag
+                            0      Raster Compare IRQ Flag
+
+  D01A       53274                 IRQ Mask Register: 1 = Interrupt Enabled
+  D01B       53275                 Sprite to Background Display Priority:
+                                     1 = Sprite
+  D01C       53276                 Sprites 0-7 Multi-Color Mode Select:
+                                     1 = M.C.M.
+  D01D       53277                 Sprites 0-7 Expand 2x Horizontal (X)
+  D01E       53278                 Sprite to Sprite Collision Detect
+  D01F       53279                 Sprite to Background Collision Detect
+  D020       53280                 Border Color
+  D021       53281                 Background Color 0
+  D022       53282                 Background Color 1
+  D023       53283                 Background Color 2
+  D024       53284                 Background Color 3
+  D025       53285                 Sprite Multi-Color Register 0
+  D026       53286                 Sprite Multi-Color Register 1
+  D027       53287                 Sprite 0 Color
+  D028       53288                 Sprite 1 Color
+  D029       53289                 Sprite 2 Color
+  D02A       53290                 Sprite 3 Color
+  D02B       53291                 Sprite 4 Color
+  D02C       53292                 Sprite 5 Color
+  D02D       53293                 Sprite 6 Color
+  D02E       53294                 Sprite 7 Color
+
+
+  D400-D7FF  54272-55295     MOS 6581 SOUND INTERFACE DEVICE (SID)
+
+  D400       54272                 Voice 1: Frequency Control - Low-Byte
+  D401       54273                 Voice 1: Frequency Control - High-Byte
+  D402       54274                 Voice 1: Pulse Waveform Width - Low-Byte
+  D403       54275          7-4    Unused
+                            3-0    Voice 1: Pulse Waveform Width - High-
+                                     Nybble
+
+  D404       54276                 Voice 1: Control Register
+                            7      Select Random Noise Waveform, 1 = On
+                            6      Select Pulse Waveform, 1 = On
+                            5      Select Sawtooth Waveform, 1 = On
+                            4      Select Triangle Waveform, 1 = On
+                            3      Test Bit: 1 = Disable Oscillator 1
+                            2      Ring Modulate Osc. 1 with Osc. 3 Output,
+                                     1 = On
+                            1      Synchronize Osc.1 with Osc.3 Frequency,
+                                     1 = On
+                            0      Gate Bit: 1 = Start Att/Dec/Sus,
+                                             0 = Start Release
+
+  D405       54277                 Envelope Generator 1: Attack/Decay Cycle
+                                     Control
+                            7-4    Select Attack Cycle Duration: 0-15
+                            3-0    Select Decay Cycle Duration: 0-15
+
+  D406       54278                 Envelope Generator 1: Sustain/Release
+                                     Cycle Control
+                            7-4    Select Sustain Cycle Duration: 0-15
+                            3-0    Select Release Cycle Duration: 0-15
+
+  D407       54279                 Voice 2: Frequency Control - Low-Byte
+  D408       54280                 Voice 2: Frequency Control - High-Byte
+  D409       54281                 Voice 2: Pulse Waveform Width - Low-Byte
+  D40A       54282          7-4    Unused
+                            3-0    Voice 2: Pulse Waveform Width - High-
+                                     Nybble
+
+  D40B       54283                 Voice 2: Control Register
+                            7      Select Random Noise Waveform, 1 = On
+                            6      Select Pulse Waveform, 1 = On
+                            5      Select Sawtooth Waveform, 1 = On
+                            4      Select Triangle Waveform, 1 = On
+                            3      Test Bit: 1 = Disable Oscillator 1
+                            2      Ring Modulate Osc. 2 with Osc. 1 Output,
+                                     1 = On
+                            1      Synchronize Osc.2 with Osc. 1 Frequency,
+                                     1 = On
+                            0      Gate Bit: 1 = Start Att/Dec/Sus,
+                                             0 = Start Release
+
+  D40C       54284                 Envelope Generator 2: Attack / Decay
+                                     Cycle Control
+                            7-4    Select Attack Cycle Duration: 0-15
+                            3-0    Select Decay Cycle Duration: 0-15
+
+  D40D       54285                 Envelope Generator 2: Sustain / Release
+                                     Cycle Control
+                            7-4    Select Sustain Cycle Duration: 0-15
+                            3-0    Select Release Cycle Duration: 0-15
+
+  D40E       54286                 Voice 3: Frequency Control - Low-Byte
+  D40F       54287                 Voice 3: Frequency Control - High-Byte
+  D410       54288                 Voice 3: Pulse Waveform Width - Low-Byte
+  D411       54289          7-4    Unused
+                            3-0    Voice 3: Pulse Waveform Width - High-
+                                     Nybble
+
+  D412       54290                 Voice 3: Control Register
+                            7      Select Random Noise Waveform, 1 = On
+                            6      Select Pulse Waveform, 1 = On
+                            5      Select Sawtooth Waveform, 1 = On
+                            4      Select Triangle Waveform, 1 = On
+                            3      Test Bit: 1 = Disable Oscillator 1
+                            2      Ring Modulate Osc. 3 with Osc. 2 Output,
+                                     1 = On
+                            1      Synchronize Osc. 3 with Osc.2 Frequency,
+                                     1 = On
+                            0      Gate Bit: 1 = Start Att/Dec/Sus,
+                                             0 = Start Release
+
+  D413       54291                 Envelope Generator 3: Attack/Decay Cycle
+                                     Control
+                            7-4    Select Attack Cycle Duration: 0-15
+                            3-0    Select Decay Cycle Duration: 0-15
+
+  D414       54285                 Envelope Generator 3: Sustain / Release
+                                     Cycle Control
+                            7-4    Select Sustain Cycle Duration: 0-15
+                            3-0    Select Release Cycle Duration: 0-15
+
+  D415       54293                 Filter Cutoff Frequency: Low-Nybble
+                                     (Bits 2-0)
+  D416       54294                 Filter Cutoff Frequency: High-Byte
+  D417       54295                 Filter Resonance Control / Voice Input
+                                     Control
+                            7-4    Select Filter Resonance: 0-15
+                            3      Filter External Input: 1 = Yes, 0 = No
+                            2      Filter Voice 3 Output: 1 = Yes, 0 = No
+                                   Filter Voice 2 Output: 1 = Yes, 0 = No
+                            0      Filter Voice 1 Output: 1 = Yes, 0 = No
+
+  D418       54296                 Select Filter Mode and Volume
+                            7      Cut-Off Voice 3 Output: 1 = Off, 0 = On
+                            6      Select Filter High-Pass Mode: 1 = On
+                            5      Select Filter Band-Pass Mode: 1 = On
+                            4      Select Filter Low-Pass Mode: 1 = On
+                            3-0    Select Output Volume: 0-15
+
+  D419       54297                 Analog/Digital Converter: Game Paddle 1
+                                     (0-255)
+  D41A       54298                 Analog/Digital Converter: Game Paddle 2
+                                     (0-255)
+  D41B       54299                 Oscillator 3 Random Number Generator
+  D41C       54230                 Envelope Generator 3 Output
+  D500-D7FF  54528-55295           SID IMAGES
+  D800-DBFF  55296-56319           Color RAM (Nybbles)
+
+  DC00-DCFF  56320-56575           MOS 6526 Complex Interface Adapter
+                                     (CIA) #1
+
+  DC00       56320                 Data Port A (Keyboard, Joystick,
+                                     Paddles, Light-Pen)
+                            7-0    Write Keyboard Column Values for
+                                     Keyboard Scan
+                            7-6    Read Paddles on Port A / B (01 = Port A,
+                                     10 = Port B)
+                            4      Joystick A Fire Button: 1 = Fire
+                            3-2    Paddle Fire Buttons
+                            3-0     Joystick A Direction (0-15)
+
+  DC01       56321                 Data Port B (Keyboard, Joystick,
+                                     Paddles): Game Port 1
+                            7-0    Read Keyboard Row Values for Keyboard
+                                     Scan
+                            7      Timer B Toggle/Pulse Output
+                            6      Timer A: Toggle/Pulse Output
+                            4      Joystick 1 Fire Button: 1 = Fire
+                            3-2    Paddle Fire Buttons
+                            3-0    Joystick 1 Direction
+
+  DC02       56322                 Data Direction Register - Port A (56320)
+  DC03       56323                 Data Direction Register - Port B (56321)
+  DC04       56324                 Timer A: Low-Byte
+  DC05       56325                 Timer A: High-Byte
+  DC06       56326                 Timer B: Low-Byte
+  DC07       56327                 Timer B: High-Byte
+
+  DC08       56328                 Time-of-Day Clock: 1/10 Seconds
+  DC09       56329                 Time-of-Day Clock: Seconds
+  DC0A       56330                 Time-of-Day Clock: Minutes
+  DC0B       56331                 Time-of-Day Clock: Hours + AM/PM Flag
+                                     (Bit 7)
+  DC0C       56332                 Synchronous Serial I/O Data Buffer
+  DC0D       56333                 CIA Interrupt Control Register
+                                     (Read IRQs/Write Mask)
+                            7      IRQ Flag (1 = IRQ Occurred) / Set-
+                                     Clear Flag
+                            4      FLAG1 IRQ (Cassette Read / Serial Bus
+                                     SRQ Input)
+                            3      Serial Port Interrupt
+                            2      Time-of-Day Clock Alarm Interrupt
+                            1      Timer B Interrupt
+                            0      Timer A Interrupt
+
+  DC0E       56334                 CIA Control Register A
+                            7      Time-of-Day Clock Frequency: 1 = 50 Hz,
+                                     0 = 60 Hz
+                            6      Serial Port I/O Mode Output, 0 = Input
+
+                            5      Timer A Counts: 1 = CNT Signals,
+                                     0 = System 02 Clock
+                            4      Force Load Timer A: 1 = Yes
+                            3      Timer A Run Mode: 1 = One-Shot,
+                                     0 = Continuous
+                            2      Timer A Output Mode to PB6: 1 = Toggle,
+                                     0 = Pulse
+                            1      Timer A Output on PB6: 1 = Yes, 0 = No
+                            0      Start/Stop Timer A: 1 = Start, 0 = Stop
+
+  DC0F       56335                 CIA Control Register B
+                            7      Set Alarm/TOD-Clock: 1 = Alarm,
+                                     0 = Clock
+                            6-5    Timer B Mode Select:
+                                     00 = Count System 02 Clock Pulses
+                                     01 = Count Positive CNT Transitions
+                                     10 = Count Timer A Underflow Pulses
+                                     11 = Count Timer A Underflows While
+                                       CNT Positive
+                            4-0    Same as CIA Control Reg. A - for Timer B
+
+  DD00-DDFF  56576-56831           MOS 6526 Complex Interface Adapter
+                                     (CIA) #2
+
+  DD00       56576                 Data Port A (Serial Bus, RS-232, VIC
+                                     Memory Control)
+                            7      Serial Bus Data Input
+                            6      Serial Bus Clock Pulse Input
+                            5      Serial Bus Data Output
+                            4      Serial Bus Clock Pulse Output
+                            3      Serial Bus ATN Signal Output
+                            2      RS-232 Data Output (User Port)
+                            1-0    VIC Chip System Memory Bank Select
+                                     (Default = 11)
+
+  DD01       56577                 Data Port B (User Port, RS-232)
+                            7      User / RS-232 Data Set Ready
+                            6      User / RS-232 Clear to Send
+                            5      User
+                            4      User / RS-232 Carrier Detect
+                            3      User / RS-232 Ring Indicator
+                            2      User / RS-232 Data Terminal Ready
+                            1      User / RS-232 Request to Send
+                            0      User / RS-232 Received Data
+
+  DD02       56578                 Data Direction Register - Port A
+  DD03       56579                 Data Direction Register - Port B
+  DD04       56580                 Timer A: Low-Byte
+  DD05       56581                 Timer A: High-Byte
+  DD06       56582                 Timer B: Low-Byte
+  DD07       56583                 Timer B: High-Byte
+  DD08       56584                 Time-of-Day Clock: 1/10 Seconds
+  DD09       56585                 Time-of-Day Clock: Seconds
+  DD0A       56586                 Time-of-Day Clock: Minutes
+  DD0B       56587                 Time-of-Day Clock: Hours + AM/PM Flag
+                                     (Bit 7)
+  DD0C       56588                 Synchronous Serial I/O Data Buffer
+  DD0D       56589                 CIA Interrupt Control Register (Read
+                                     NMls/Write Mask)
+                            7        NMI Flag (1 = NMI Occurred) / Set-
+                                       Clear Flag
+                            4        FLAG1 NMI (User/RS-232 Received Data
+                                       Input)
+                            3        Serial Port Interrupt
+                            1        Timer B Interrupt
+                            0        Timer A Interrupt
+
+  DD0E       56590                 CIA Control Register A
+                            7      Time-of-Day Clock Frequency: 1 = 50 Hz,
+                                     0 = 60 Hz
+                            6      Serial Port I/O Mode Output, 0 = Input
+                            5      Timer A Counts: 1 = CNT Signals,
+                                     0 = System 02 Clock
+                            4      Force Load Timer A: 1 = Yes
+                            3      Timer A Run Mode: 1 = One-Shot,
+                                     0 = Continuous
+                            2      Timer A Output Mode to PB6: 1 = Toggle,
+                                     0 = Pulse
+                            1      Timer A Output on PB6: 1 = Yes, 0 = No
+                            0      Start/Stop Timer A: 1 = Start, 0 = Stop
+
+  DD0F       56591                 CIA Control Register B
+                            7      Set Alarm/TOD-Clock: 1=Alarm, 0=Clock
+                            6-5    Timer B Mode Select:
+                                     00 = Count System 02 Clock Pulses
+                                     01 = Count Positive CNT Transitions
+                                     10 = Count Timer A Underflow Pulses
+                                     11 = Count Timer A Underflows While
+                                       CNT Positive
+                            4-0    Same as CIA Control Reg. A - for Timer B
+
+  DE00-DEFF  56832-57087           Reserved for Future I/O Expansion
+  DF00-DFFF  57088-57343           Reserved for Future I/O Expansion
