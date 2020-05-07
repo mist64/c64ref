@@ -6,7 +6,7 @@
 -
 # [...]
 
-$0            D6510  6510 On-Chip I/O DATA Direction Register
+$0000         D6510  6510 On-Chip I/O DATA Direction Register
                      
                      Bit 0: Direction of Bit 0 I/O on port at next address.  Default = 1 (output)
                      Bit 1: Direction of Bit 1 I/O on port at next address.  Default = 1 (output)
@@ -32,7 +32,8 @@ $0            D6510  6510 On-Chip I/O DATA Direction Register
                      set to 239 ($EF), which indicates that all bits, except for Bit 4
                      (which senses the cassette switch), are set up for Output.
                      
-$1            R6510  
+$0001         R6510  6510 On-Chip I/O Port
+
                      Bit 0: LORAM signal.  Selects ROM or RAM at 40960 ($A000).  1=BASIC, 0=RAM
                      Bit 1: HIRAM signal.  Selects ROM or RAM at 57344 ($E000).  1=Kernal, 0=RAM
                      Bit 2: CHAREN signal.  Selects character ROM or I/O devices.  1=I/O, 0=ROM
@@ -228,10 +229,9 @@ $1            R6510
                      can then shut off the motor and turn it back on as you please, by
                      manipulating this bit, so long as a button stays pressed.
                      
-                     2             $2
-                     Unused
+$0002                Unused
                      
-$3-$4        ADRAY1  Vector: Routine to Convert a Number from Floating Point to Signed
+$0003-$0004  ADRAY1  Vector: Routine to Convert a Number from Floating Point to Signed
                      Integer
                      
                      This vector points to the address of the BASIC routine which converts
@@ -254,7 +254,7 @@ $3-$4        ADRAY1  Vector: Routine to Convert a Number from Floating Point to 
                      See the entry for the USR vector at 785 ($311) for an explanation of
                      how to use this routine in connection with the USR command.
                      
-$5-$6        ADRAY2  Vector: Routine to Convert a Number from Integer to Floating Point
+$0005-$0006  ADRAY2  Vector: Routine to Convert a Number from Integer to Floating Point
                      
                      This vector points to the address of the BASIC routine which converts
                      an integer to a floating point number.  This routine is currently
@@ -264,7 +264,7 @@ $5-$6        ADRAY2  Vector: Routine to Convert a Number from Integer to Floatin
                      BASIC.  For an explanation of how to use this routine in connection
                      with the USR command, see the entry for the USR vector at 785 ($311).
                      
-$7           CHARAC  Search Character for Scanning BASIC Text Input
+$0007        CHARAC  Search Character for Scanning BASIC Text Input
                      
                      This location and the next are used heavily by the BASIC routines that
                      scan the text that comes into the buffer at 512 ($200), in order to
@@ -275,13 +275,13 @@ $7           CHARAC  Search Character for Scanning BASIC Text Input
                      This location is also used as a work area by other BASIC routines that
                      do not involve scanning text.
                      
-$8           ENDCHR  Search Character for Statement Termination or Quote
+$0008        ENDCHR  Search Character for Statement Termination or Quote
                      
                      Like location 7, this location is used as a work byte during the
                      tokenization of a BASIC statement.  Most of the time, its value is 0
                      or 34.
                      
-$9           TRMPOS  Column position of the Cursor before the Last TAB or SPC
+$0009        TRMPOS  Column position of the Cursor before the Last TAB or SPC
                      
                      TRMPOS is used by TAB and SPC.  The cursor column position prior to
                      the TAB or SPC is moved here from 211 ($D3), and is used to calculate
@@ -290,7 +290,7 @@ $9           TRMPOS  Column position of the Cursor before the Last TAB or SPC
                      a logical line.  Since one logical line can be up to two physical
                      lines long, the value stored here can range from 0 to 79.
                      
-$A           VERCK   Flag: LOAD or VERIFY
+$000A        VERCK   Flag: LOAD or VERIFY
                      
                      BASIC uses one Kernal routine to perform either the LOAD or VERIFY
                      function, depending on whether the Accumulator (.A) is set to 0 or 1
@@ -298,7 +298,7 @@ $A           VERCK   Flag: LOAD or VERIFY
                      LOAD, or 1 for a VERIFY.  Its contents are passed to the Kernal LOAD
                      routine, which in turn stores it in location 147 ($93).
                      
-$B           COUNT   Index into the Text Input Buffer/Number of Array Subscripts
+$000B        COUNT   Index into the Text Input Buffer/Number of Array Subscripts
                      
                      The routines that convert the text in the input buffer at 512 ($200)
                      into lines of executable program tokes, and the routines that link
@@ -312,7 +312,7 @@ $B           COUNT   Index into the Text Input Buffer/Number of Array Subscripts
                      amount of storage required for a newly created array, or the number of
                      subscripts specified when referencing an array element.
                      
-$C           DIMFLG  Flags for the Routines That Locate or Build an Array
+$000C        DIMFLG  Flags for the Routines That Locate or Build an Array
                      
                      This location is used as a flag by the routines that build an array or
                      reference an existing array.  It is used to determine whether a
@@ -320,21 +320,21 @@ $C           DIMFLG  Flags for the Routines That Locate or Build an Array
                      DIMensioned, and whether a new array should assume the default
                      dimensions.
                      
-$D           VALTYP  Flag: Type of Data (String or Numeric)
+$000D        VALTYP  Flag: Type of Data (String or Numeric)
                      
                      This flag is used internally to indicate whether data being operated
                      upon is string or numeric.  A value of 255 ($FF) in this location
                      indicates string data, while a 0 indicates numeric data.  This
                      determination is made every time a variable is located or created.
                      
-$E           INTFLG  Flat: Type of Numeric Data (Integer or Floating Point)
+$000E        INTFLG  Flat: Type of Numeric Data (Integer or Floating Point)
                      
                      If data which BASIC is using is determined to be numeric, it is
                      further classified here as either a floating point number or as an
                      integer.  A 128 ($80) in this location identifies the number as an
                      integer, and a 0 indicates a floating point number.
                      
-$F           GARBFL  Flag for LIST, Garbage Collection, and Program Tokenization
+$000F        GARBFL  Flag for LIST, Garbage Collection, and Program Tokenization
                      
                      The LIST routine uses this byte as a flag to let it know when it has
                      come to a character string in quotes.  It will then print the string,
@@ -349,7 +349,7 @@ $F           GARBFL  Flag for LIST, Garbage Collection, and Program Tokenization
                      converting a line of text in the BASIC input buffer (512, $200) into a
                      linked program line of BASIC keyword tokens.
                      
-$10         SUBFLG  Flag: Subscript Reference to an Array or User-Defined Function Call (FN)
+$0010        SUBFLG  Flag: Subscript Reference to an Array or User-Defined Function Call (FN)
                      
                      This flag is used by the PTRGET routine which finds or creates a
                      variable, at the time it checks whether the name of a variable is
@@ -362,7 +362,7 @@ $10         SUBFLG  Flag: Subscript Reference to an Array or User-Defined Functi
                      is also legal to redefine a function.  Using a FN name in an already
                      defined function results in the new definition of the function.
                      
-$11         INPFLG  Flag: Is Data Input to GET, READ or INPUT?
+$0011        INPFLG  Flag: Is Data Input to GET, READ or INPUT?
                      
                      Since the keywords GET, INPUT, and READ perform similar functions,
                      BASIC executes some of the same instructions for all three.  There are
@@ -381,7 +381,7 @@ $11         INPFLG  Flag: Is Data Input to GET, READ or INPUT?
                      As each command has its own error messages, this flag is used to
                      determine the appropriate message to issue in case of an error.
                      
-$12         TANSGN  Flag: Sign of the Result of the TAN or SIN Function
+$0012        TANSGN  Flag: Sign of the Result of the TAN or SIN Function
                      
                      This location is used to determine whether the sign of the value
                      returned by the functions SIN or TAN is positive or negative.
@@ -393,7 +393,7 @@ $12         TANSGN  Flag: Sign of the Result of the TAN or SIN Function
                      comparison operator was used to compare the two variables (e.g., >= or
                      <=), the value here will be a combination of the above values.
                      
-$13         CHANNL  Current I/O Channel (CMD Logical File) Number
+$0013        CHANNL  Current I/O Channel (CMD Logical File) Number
                      
                      Whenever BASIC inputs or outputs data, it looks here to determine
                      which I/O device is currently active for the purpose of prompting or
@@ -441,7 +441,7 @@ $13         CHANNL  Current I/O Channel (CMD Logical File) Number
                      the same thing for disk or tape users, see location 512 ($200), the
                      keyboard buffer.
                      
-$14-$15     LINNUM  Integer Line Number Value
+$0014-$0015  LINNUM  Integer Line Number Value
                      
                      The target line number for GOTO, LIST, ON, and GOSUB is stored here in
                      low- byte, high-byte integer format, as is the number of a BASIC line
@@ -462,7 +462,7 @@ $14-$15     LINNUM  Integer Line Number Value
                      PEEK, POKE, WAIT, and SYS use this location as a pointer to the
                      address which is the subject of the command.
                      
-$16         TEMPPT  Pointer to the Next Available Space in the Temporary String Stack
+$0016        TEMPPT  Pointer to the Next Available Space in the Temporary String Stack
                      
                      This location points to the next available slot in the temporary
                      string descriptor stack located at 25-33 ($19-$21).  Since that stack
@@ -476,14 +476,14 @@ $16         TEMPPT  Pointer to the Next Available Space in the Temporary String 
                      full, the FORMULA TOO COMPLEX error message is issued.  Otherwise, the
                      entry is added, and three is added to this pointer.
                      
-$17-$18     LASTPT  Pointer to the Address of the Last String in the Temporary String
+$0017-$0018  LASTPT  Pointer to the Address of the Last String in the Temporary String
                      Stack
                      
                      This pointer indicates the last slot used in the temporary string
                      descriptor stack.  Therefore, the value stored at 23 ($17) should be 3
                      less than that stored at 22 ($16), while 24 ($18) will contain a 0.
                      
-$19-$21     TEMPST  Descriptor Stack for Temporary Strings
+$0019-$0021  TEMPST  Descriptor Stack for Temporary Strings
                      
                      The temporary string descriptor stack contains information about
                      temporary strings which hve not yet been assigned to a string
@@ -494,18 +494,18 @@ $19-$21     TEMPST  Descriptor Stack for Temporary Strings
                      string, and its starting and ending locations, expresses as
                      displacements within the BASIC storage area.
                      
-$22-$25     INDEX  Miscellaneous Temporary Pointers and Save Area
+$0022-$0025  INDEX   Miscellaneous Temporary Pointers and Save Area
                      
                      This area is used by many BASIC routines to hold temporary pointers
                      and calculation results.
                      
-$26-$2A     RESHO  Floating Point Multiplication Work Area
+$0026-$002A  RESHO   Floating Point Multiplication Work Area
                      
                      This location is used by BASIC multiplication and division routines.
                      It is also used by the routines which compute the size of the area
                      required to store an array which is being created.
                      
-$2B-$2C     TXTTAB  Pointer to the Start of BASIC Program Text
+$002B-$002C  TXTTAB  Pointer to the Start of BASIC Program Text
                      
                      This two-byte pointer lets BASIC know where program text is stored.
                      Ordinarily, such text is located beginning at 2049 ($801).  Using this
@@ -586,7 +586,7 @@ $2B-$2C     TXTTAB  Pointer to the Start of BASIC Program Text
                      indicate the address of the byte after the last byte that you wish to
                      save.
                      
-$2D-$2E     VARTAB  Pointer to the Start of the BASIC Variable Storage Area
+$002D-$002E  VARTAB  Pointer to the Start of the BASIC Variable Storage Area
                      
                      This location points to the address which marks the end of the BASIC
                      program text area, and the beginning of the variable storage area.
@@ -685,7 +685,7 @@ $2D-$2E     VARTAB  Pointer to the Start of the BASIC Variable Storage Area
                      You should also note that SAVE uses this pointer as the address of the
                      byte after the last byte to SAVE.
                      
-$2F-$30     ARYTAB  Pointer to the Start of the BASIC Array Storage Area
+$002F-$0030  ARYTAB  Pointer to the Start of the BASIC Array Storage Area
                      
                      This location points to the address of the end of nonarray variable
                      storage, and the beginning of array variable storage.  The format for
@@ -712,7 +712,7 @@ $2F-$30     ARYTAB  Pointer to the Start of the BASIC Array Storage Area
                      stored elsewhere, in the area which starts at the location pointed to
                      in 51-52 ($33- $34).
                      
-$31-$32     STREND  Pointer to End of the BASIC Array Storage Area (+1), and the Start of
+$0031-$0032  STREND  Pointer to End of the BASIC Array Storage Area (+1), and the Start of
                      Free RAM
                      
                      This location points to the address of the end of BASIC array storage
@@ -728,7 +728,7 @@ $31-$32     STREND  Pointer to End of the BASIC Array Storage Area (+1), and the
                      the addresses pointed to here and the address of the end of string
                      text storage pointed to by location 51 ($33).
                      
-$33-$34     FREETOP  Pointer to the Bottom of the String Text Storage Area
+$0033-$0034  FREETOP Pointer to the Bottom of the String Text Storage Area
                      
                      This pointer marks the current end of the string text area, and the
                      top of free RAM (strings are built from the top of memory downward).
@@ -743,12 +743,12 @@ $33-$34     FREETOP  Pointer to the Bottom of the String Text Storage Area
                      area of BASIC memory that will not be disturbed by the program, as
                      detailed at location 55 ($37).
                      
-$35-$36     FRESPC  Temporary Pointer for Strings
+$0035-$0036  FRESPC  Temporary Pointer for Strings
                      
                      This is used as a temporary pointer to the most current string added
                      by the routines which build strings or move them in memory.
                      
-$37-$38     MEMSIZ  Pointer to the Highest Address Used by BASIC
+$0037-$0038  MEMSIZ  Pointer to the Highest Address Used by BASIC
                      
                      The power-on/reset routine tests each byte of RAM until it comes to
                      the BASIC ROM, and sets this pointer to the adress of the highest byte
@@ -787,7 +787,7 @@ $37-$38     MEMSIZ  Pointer to the Highest Address Used by BASIC
                      any variables, and before setting aside a safe area for machine
                      language programs or other uses, as described above.
                      
-$39-$3A     CURLIN  Current BASIC Line Number
+$0039-$003A  CURLIN  Current BASIC Line Number
                      
                      This location contains the line number of the BASIC statement which is
                      currently being executed, in LSB/MSB format.  A value of 255 ($FF) in
@@ -811,12 +811,12 @@ $39-$3A     CURLIN  Current BASIC Line Number
                      program execution stopped.  The value here is copied to 59 ($3B) by
                      STOP, END, and the stop-key BREAK, and copied back by CONT.
                      
-$3B-$3C     OLDLIN  Previous BASIC Line Number
+$003B-$003C  OLDLIN  Previous BASIC Line Number
                      
                      When program execution ends, the last line number executed is stored
                      here, and restored to location 57 ($39) by CONT.
                      
-$3D-$3E     OLDTXT  Pointer to the Address of the Current BASIC Statement
+$003D-$003E  OLDTXT  Pointer to the Address of the Current BASIC Statement
                      
                      This location contains the address (not the line number) of the text
                      of the BASIC statement that is being executed.  The value of TXTPTR
@@ -829,7 +829,7 @@ $3D-$3E     OLDTXT  Pointer to the Address of the Current BASIC Statement
                      ($3E) has been changed to a zero by a LOAD, a modification to the
                      program text, or by error routines.
                      
-$3F-$40     DATLIN  Current DATA Line Number
+$003F-$0040  DATLIN  Current DATA Line Number
                      
                      This location holds the line number of the current DATA statement
                      being READ.  It should be noted that this information is not used to
@@ -840,7 +840,7 @@ $3F-$40     DATLIN  Current DATA Line Number
                      the DATA statement, rather than in the line that contains the READ
                      statement.
                      
-$41-$42     DATPTR  Pointer to the Address of the Current DATA Item
+$0041-$0042  DATPTR  Pointer to the Address of the Current DATA Item
                      
                      This location points to the address (not the line number) within the
                      BASIC program text area where DATA is currently being READ.  RESTORE
@@ -862,20 +862,20 @@ $41-$42     DATPTR  Pointer to the Address of the Current DATA Item
                      80 POKE 65,A1:POKE 66,A2:READ A$:PRINT A$
                      90 POKE 65,C1:POKE 66,C2:READ A$:PRINT A$
                      
-$43-$44     INPPTR  Pointer in the Source of GET, READ, or INPUT Information
+$0043-$0044  INPPTR  Pointer in the Source of GET, READ, or INPUT Information
                      
                      READ, INPUT and GET all use this as a pointer to the address of the
                      source of incoming data, such as DATA statements, or the text input
                      buffer at 512 ($200).
                      
-$45-$46     VARNAM  Current BASIC Variable Name
+$0045-$0046  VARNAM  Current BASIC Variable Name
                      
                      The current variable name being searched for is stored here, in the
                      same two- byte format as in the variable value storage area located at
                      the address pointed to by 45 ($2D).  See that location for an
                      explanation of the format.
                      
-$47-$48     VARPNT  Pointer to the Current BASIC Variable Value
+$0047-$0048  VARPNT  Pointer to the Current BASIC Variable Value
                      
                      This location points to the address of the descriptor of the current
                      BASIC variable (see location 45 ($2D) for the format of a variable
@@ -886,7 +886,7 @@ $47-$48     VARPNT  Pointer to the Current BASIC Variable Value
                      variable (the A of FN A), so that a real variable of the same name
                      will not have its value changed by the call.
                      
-$49-$4A     FORPNT  Temporary Pointer to the Index Variable Used by FOR
+$0049-$004A  FORPNT  Temporary Pointer to the Index Variable Used by FOR
                      
                      The address of the BASIC variable which is the subject of a FOR/NEXT
                      loop is first stored here, but is then pushed onto the stack.  That
@@ -896,38 +896,38 @@ $49-$4A     FORPNT  Temporary Pointer to the Index Variable Used by FOR
                      For a description of the stack entries made by FOR, see location 256
                      ($100).
                      
-$4B-$4C     OPPTR  Math Operator Table Displacement
+$004B-$004C  OPPTR   Math Operator Table Displacement
                      
                      This location is used during the evaluation of mathematical
                      expressions to hold the displacement of the current math operator in
                      an operator table.  It is also used as a save area for the pointer to
                      the address of program text which is currently being read.
                      
-$4D         OPMASK  Mask for Comparison Operation
+$004D        OPMASK  Mask for Comparison Operation
                      
                      The expression evaluation routine creates a mask here which lets it
                      know whether the current comparieson operation is a less-than (1),
                      equals (2), or greater-than (4) comparison.
                      
-$4E-$4F     DEFPNT  Pointer to the Current FN Descriptor
+$004E-$004F  DEFPNT  Pointer to the Current FN Descriptor
                      
                      During function definition (DEF FN) this location is used as a pointer
                      to the descriptor that is created.  During function execution (FN) it
                      points to the FN descriptor in which the evaluation results should be
                      saved.
                      
-$50-$52     DSCPNT  Temporary Pointer to the Current String Descriptor
+$0050-$0052  DSCPNT  Temporary Pointer to the Current String Descriptor
                      
                      The string assignment and handling routines use the first two bytes as
                      a temporary pointer to the current string descriptor, and the third to
                      hold the value of the string length.
                      
-$53         FOUR6  Constant for Garbage Collection
+$0053        FOUR6   Constant for Garbage Collection
                      
                      The constant contained here lets the garbage collection routines know
                      whether a three- or seven-byte string descriptor is being collected.
                      
-$54-$56     JMPER  Jump to Function Instruction
+$0054-$0056  JMPER   Jump to Function Instruction
                      
                      The first byte is the 6502 JMP instruction ($4C), followed by the
                      address of the required function taken from the table at 41042
@@ -938,7 +938,7 @@ $54-$56     JMPER  Jump to Function Instruction
                      
                      This is a very busy work area, used by many routines.
                      
-$61-$66     FAC1  Floating Point Accumulator #1
+$0061-$0066  FAC1    Floating Point Accumulator #1
                      
                      The Floating Point Accumulator is central to the execution of any
                      BASIC mathematical operation.  It is used in the conversion of
@@ -961,7 +961,7 @@ $61-$66     FAC1  Floating Point Accumulator #1
                      Floating Point Accumulator #1 can be further divided into the
                      following locations:
                      
-$61         FACEXP  Floating Point Accumulator #1: Exponent
+$0061        FACEXP  Floating Point Accumulator #1: Exponent
                      
                      This exponent represents the closest power of two to the number, with
                      129 added to take care of the sign problem for negative exponents.  An
@@ -969,7 +969,7 @@ $61         FACEXP  Floating Point Accumulator #1: Exponent
                      2 to the 0 power, or 1; an exponent of 130 represents 2 to the first
                      power, or 2; 131 is 2 squared, or 4; 132 is 2 cubed, or 8; and so on.
                      
-$62-$65     FACHO  Floating Point Accumulator #1: Mantissa
+$0062-$0065  FACHO   Floating Point Accumulator #1: Mantissa
                      
                      The most significant digit can be assumed to be a 1 (remember that the
                      range of the mantissa is from 1 to 1.99999...) when a floating point
@@ -981,43 +981,43 @@ $62-$65     FACHO  Floating Point Accumulator #1: Mantissa
                      signed integer result of a floating point to integer conversion, in
                      high-byte, low- byte order.
                      
-$66         FACSGN  Floating Point Accumulator #1: Sign
+$0066        FACSGN  Floating Point Accumulator #1: Sign
                      
                      A value of 0 here indicates a positive number, while a value of 255
                      ($FF) indicates a negative number.
                      
-$67         SGNFLG  Number of Terms in a Series Evaluation
+$0067        SGNFLG  Number of Terms in a Series Evaluation
                      
                      This location is used by mathematical formula evaluation routines.  It
                      indicates the number of separate evaluations that must be done to
                      resolve a complex expression down to a single term.
                      
-$68         BITS  Floating Point Accumulator #1: Overflow Digit
+$0068        BITS    Floating Point Accumulator #1: Overflow Digit
                      
                      This location contains the overflow byte.  The overflow byte is used
                      in an intermediate step of conversion from an integer or text string
                      to a floating point number.
                      
-$69-$6E     FAC2  Floating Point Accumulator #2
+$0069-$006E  FAC2    Floating Point Accumulator #2
                      
                      A second Floating Point Accumulator, used in conjunction with Floating
                      Point Accumulator #1 in the evaluation of products, sums,
                      differences--in short, any operation requiring more than one value.
                      The format of this accumulator is the same as FAC1.
                      
-$69         ARGEXP  Floating Point Accumulator #2: Exponent
+$0069        ARGEXP  Floating Point Accumulator #2: Exponent
                      
-$6A-$6D     ARGHO  Floating Point Accumulator #2: Mantissa
+$006A-$006D  ARGHO   Floating Point Accumulator #2: Mantissa
                      
-$6E         ARGSGN  Floating Point Accumulator #2: Sign
+$006E        ARGSGN  Floating Point Accumulator #2: Sign
                      
-$6F         ARISGN  Result of a Signed Comparison of Accumulator #1 to Accumulator #2
+$006F        ARISGN  Result of a Signed Comparison of Accumulator #1 to Accumulator #2
                      
                      Used to indicate whether the two Floating Point Accumulators have like
                      or unlike signs.  A 0 indicates like signs, a 255 ($FF) indicates
                      unlike signs.
                      
-$70         FACOV  Low Order Mantissa Byte of Floating Point Accumulator #1 (For
+$0070        FACOV   Low Order Mantissa Byte of Floating Point Accumulator #1 (For
                      Rounding)
                      
                      If the mantissa of the floating point number has more significant
@@ -1025,7 +1025,7 @@ $70         FACOV  Low Order Mantissa Byte of Floating Point Accumulator #1 (For
                      are placed here.  They are used to extend the accuracy of intermediate
                      mathematical operations and to round to the final figure.
                      
-$71-$72     FBUFPT  Series Evaluation Pointer
+$0071-$0072  FBUFPT  Series Evaluation Pointer
                      
                      This location points to the address of a temporary table of values
                      built in the free RAM area for the evaluation of formulas.  It is also
@@ -1037,7 +1037,7 @@ $71-$72     FBUFPT  Series Evaluation Pointer
                      reference to this location for that purpose (see 178 ($B2) for pointer
                      to tape buffer).
                      
-$73-$8A     CHRGET  Subroutine: Get Next BASIC Text Character
+$0073-$008A  CHRGET  Subroutine: Get Next BASIC Text Character
                      
                      This is actually a machine language subroutine, which at the time of a
                      BASIC cold start (such as when the power is turned on) is copied from
@@ -1120,7 +1120,7 @@ $73-$8A     CHRGET  Subroutine: Get Next BASIC Text Character
                      does.  See the entries for the BASIC RAM vector area at 768-779
                      ($300-$30B) for more details.
                      
-$8B-$8F     RNDX  RND Function Seed Value
+$008B-$008F  RNDX    RND Function Seed Value
                      
                      This location holds the five-byte floating point value returned by the
                      RND function.  It is initially set to a seed value copied from ROM
@@ -1146,7 +1146,7 @@ $8B-$8F     RNDX  RND Function Seed Value
                      right on the 64 either (see location 57495 ($E097)), the expression
                      RND(-RND(0)) may produce a more random seed value.
                      
-$90         STATUS  Kernal I/O Status Word (ST)
+$0090        STATUS  Kernal I/O Status Word (ST)
                      
                      The Kernal routines which open I/O channels or perform input/output
                      functions check and update this location.  The value here is almost
@@ -1176,7 +1176,7 @@ $90         STATUS  Kernal I/O Status Word (ST)
                      For status codes for the RS-232 device, see the entry for location 663
                      ($297).
                      
-$91         STKEY  Flag: Was STOP Key Pressed?
+$0091        STKEY   Flag: Was STOP Key Pressed?
                      
                      This location is updated every 1/60 second during the execution of the
                      IRQ routine that reads the keyboard and updates the jiffy clock.
@@ -1208,37 +1208,37 @@ $91         STKEY  Flag: Was STOP Key Pressed?
                      BPL instruction, which will cause a branch to occur anytime that the
                      STOP key is pressed.
                      
-$92         SVXT  Timing Constant for Tape Reads
+$0092        SVXT    Timing Constant for Tape Reads
                      
                      This location is used as an adjustable timing constant for tape reads,
                      which can be changed to allow for the slight speed variation between
                      tapes.
                      
-$93         VERCK  Flag for Load Routine: 0=LOAD, 1=VERIFY
+$0093        VERCK   Flag for Load Routine: 0=LOAD, 1=VERIFY
                      
                      The same Kernal routine can perform either a LOAD or VERIFY, depending
                      on the value stored in the Accumulator (.A) on entry to the routine.
                      This location is used to determine which operation to perform.
                      
-$94         C3PO  Flag: Serial Bus--Output Character Was Buffered
+$0094        C3PO    Flag: Serial Bus--Output Character Was Buffered
                      
                      This location is used by the serial output routines to indicate that a
                      character has been placed in the output buffer and is waiting to be
                      sent.
                      
-$95         BSOUR  Buffered Character for Serial Bus
+$0095        BSOUR   Buffered Character for Serial Bus
                      
                      This is the character waiting to be sent.  A 255 ($FF) indicates that
                      no character is waiting for serial output.
                      
-$96         SYNO  Cassette Block Synchronization Number
+$0096        SYNO    Cassette Block Synchronization Number
                      
-$97         XSAV  Temporary .X Register Save Area
+$0097        XSAV    Temporary .X Register Save Area
                      
                      This .X register save area is used by the routines that get and put an
                      ASCII character.
                      
-$98         LDTND  Number of Open I/O Files/Index to the End of File Tables
+$0098        LDTND   Number of Open I/O Files/Index to the End of File Tables
                      
                      The number of currently open I/O files is stored here.  The maximum
                      number that can be open at one time is ten.  The number stored here is
@@ -1252,7 +1252,7 @@ $98         LDTND  Number of Open I/O Files/Index to the End of File Tables
                      all files by setting this number to 0, which effectively empties the
                      table.
                      
-$99         DFLTN  Default Input Device (Set to 0 for Keyboard)
+$0099        DFLTN   Default Input Device (Set to 0 for Keyboard)
                      
                      The default value of this location is 0, which designates the keyboard
                      as the current input device.  That value can be changed by the Kernal
@@ -1262,7 +1262,7 @@ $99         DFLTN  Default Input Device (Set to 0 for Keyboard)
                      BASIC calls CHKIN whenever the command INPUT# or GET# is executed, but
                      clears the channel after the input operation has been completed.
                      
-$9A         DFLTO  Default Output (CMD) Device (Set to 3 for the Screen)
+$009A        DFLTO   Default Output (CMD) Device (Set to 3 for the Screen)
                      
                      The default value of this location is 3, which designates the screen
                      as the current output device.  That value can be changed by the Kernal
@@ -1273,18 +1273,18 @@ $9A         DFLTO  Default Output (CMD) Device (Set to 3 for the Screen)
                      BASIC calls CHKOUT whenever the command PRINT# or CMD is executed, but
                      clears the channel after the PRINT# operation has been completed.
                      
-$9B         PRTY  Tape Character Parity
+$009B        PRTY    Tape Character Parity
                      
                      This location is used to help detect when bits of information have
                      been lost during transmission of tape data.
                      
-$9C         DPSW  Flag: Tape Byte Received
+$009C        DPSW    Flag: Tape Byte Received
                      
                      This location is used as a flag to indicate whether a complete byte of
                      tape data has been received, or whether it has only been partially
                      received.
                      
-$9D         MSGFLG  Flag: Kernal Message Control
+$009D        MSGFLG  Flag: Kernal Message Control
                      
                      This flag is set by the Kernal routine SETMSG (65048, $FE18), and it
                      controls whether or not Kernal error messages or control messages will
@@ -1305,19 +1305,19 @@ $9D         MSGFLG  Flag: Kernal Message Control
                      suppresses the display of all Kernal messages.  This is the value
                      placed here when BASIC enters the program or RUN mode.
                      
-$9E         PTR1  Tape Pass 1 Error Log Index
+$009E        PTR1    Tape Pass 1 Error Log Index
                      
                      This location is used in setting up an error log of bytes in which
                      transmission parity errors occur the first time that the block is
                      received (each tape block is sent twice to minimize data loss from
                      transmission error).
                      
-$9F         PTR2  Tape Pass 2 Error Log Correction Index
+$009F        PTR2    Tape Pass 2 Error Log Correction Index
                      
                      This location is used in correcting bytes of tape data which were
                      transmitted incorrectly on the first pass.
                      
-$A0-$A2     TIME  Software Jiffy Clock
+$00A0-$00A2  TIME    Software Jiffy Clock
                      
                      These three locations are updated 60 times a second, and serve as a
                      software clock which counts the number of jiffies (sixtieths of a
@@ -1358,37 +1358,37 @@ $A0-$A2     TIME  Software Jiffy Clock
                      These locations are used temporarily by the tape and serial I/O
                      routines.
                      
-$A5         CNTDN  Cassette Synchronization Character Countdown
+$00A5        CNTDN   Cassette Synchronization Character Countdown
                      
                      Used to count down the number of synchronization characters that are
                      sent before the actual data in a tape block.
                      
-$A6         BUFPNT  Count of Characters in Tape I/O Buffer
+$00A6        BUFPNT  Count of Characters in Tape I/O Buffer
                      
                      This location is used to count the number of bytes that have been read
                      in or written to the tape buffer.  Since on a tape write, no data is
                      sent until the 192 byte buffer is full, you can force output of the
                      buffer with the statement POKE 166,191.
                      
-$A7         INBIT  RS-232 Input Bits/Cassette Temporary Storage Area
+$00A7        INBIT   RS-232 Input Bits/Cassette Temporary Storage Area
                      
                      This location is used to temporarily store each bit of serial data
                      that is received, as well as for miscellaneous tasks by tape I/O.
                      
-$A8         BITCI  RS-232 Input Bit Count/Cassete Temporary Storage
+$00A8        BITCI   RS-232 Input Bit Count/Cassete Temporary Storage
                      
                      This location is used to count the number of bits of serial data that
                      has been received.  This is necessary so that the serial routines will
                      know when a full word has been received.  It is also used as an error
                      flag during tape loads.
                      
-$A9         RINONE  RS-232 Flag: Check for Start Bit
+$00A9        RINONE  RS-232 Flag: Check for Start Bit
                      
                      This flag is used when checking for a start bit.  A 144 ($90) here
                      indicates that no start bit was received, while a 0 means that a start
                      bit was received.
                      
-$AA         RIDATA  RS-232 Input Byte Buffer/Cassette Temporary Storage
+$00AA        RIDATA  RS-232 Input Byte Buffer/Cassette Temporary Storage
                      
                      Serial routines use this area to reassemble the bits received into a
                      byte that will be stored in the receiving buffer pointer to by 247
@@ -1396,12 +1396,12 @@ $AA         RIDATA  RS-232 Input Byte Buffer/Cassette Temporary Storage
                      received character should be treated as data or as a synchronization
                      character.
                      
-$AB         RIPRTY  RS-232 Input Parity/Cassete Leader Counter
+$00AB        RIPRTY  RS-232 Input Parity/Cassete Leader Counter
                      
                      This location is used to help detect if data was lost during RS-232
                      transmission, or if a tape leader is completed.
                      
-$AC-$AD     SAL  Pointer to the Starting Address of a Load/Screen Scrolling
+$00AC-$00AD  SAL     Pointer to the Starting Address of a Load/Screen Scrolling
                      
                      The pointer to the start of the RAM area to be SAVEd or LOADed at 193
                      ($C1) is copied here.  This pointer is used as a working version, to
@@ -1409,42 +1409,42 @@ $AC-$AD     SAL  Pointer to the Starting Address of a Load/Screen Scrolling
                      the operation, the initial value is restored here.  Screen management
                      routines temporarily use this as a work pointer.
                      
-$AE-$AF     EAL  Pointer to Ending Address of Load (End of Program)
+$00AE-$00AF  EAL     Pointer to Ending Address of Load (End of Program)
                      
                      This location is set by the Kernal routine SAVE to point to the ending
                      address for SAVE, LOAD, or VERIFY.
                      
-$B0-$B1     CMP0  Tape Timing
+$00B0-$00B1  CMP0    Tape Timing
                      
                      Location 176 ($B0) is used to determine the value of the adjustable
                      timing constant at 146 ($92).  Location 199 is also used in the timing
                      of tape reads.
                      
-$B2-$B3     TAPE1  Pointer: Start of Tape Buffer
+$00B2-$00B3  TAPE1   Pointer: Start of Tape Buffer
                      
                      On power-on, this pointer is set to the address of the cassette buffer
                      (828, $33C).  This pointer must contain an address greater than or
                      equal to 512 ($200), or an ILLEGAL DEVICE NUMBER error will be sent
                      when tape I/O is tried.
                      
-$B4         BITTS  RS-232 Output Bit Count/Cassette Temporary Storage
+$00B4        BITTS   RS-232 Output Bit Count/Cassette Temporary Storage
                      
                      RS-232 routines use this to count the number of bits transmitted, and
                      for parity and stop bit manipulation.  Tape load routines use this
                      location to flag when they are ready to receive data bytes.
                      
-$B5         NXTBIT  RS-232 Next Bit to Send/Tape EOT Flag
+$00B5        NXTBIT  RS-232 Next Bit to Send/Tape EOT Flag
                      
                      This location is used by the RS-232 routines to hold the next bit to
                      be sent, and by the tape routines to indicate what part of a block the
                      read routine is currently reading.
                      
-$B6         RODATA  RS-232 Output Byte Buffer
+$00B6        RODATA  RS-232 Output Byte Buffer
                      
                      RS-232 routines use this area to disassemble each byte to be sent from
                      the transmission buffer pointed to by 249 ($F9).
                      
-$B7         FNLEN  Length of Current Filename
+$00B7        FNLEN   Length of Current Filename
                      
                      This location holds the number of characters in the current filename.
                      Disk filenames may have from 1 to 16 characters, while tape filenames
@@ -1467,7 +1467,7 @@ $B7         FNLEN  Length of Current Filename
                      characters.  These characters are copied to locations 659-662
                      ($293-$296), and determine baud rate, word length, and parity.
                      
-$B8         LA  Current Logical File Number
+$00B8        LA      Current Logical File Number
                      
                      This location holds the logical file number of the device currently
                      being used.  A maximum of five disk files, and ten files in total, may
@@ -1483,7 +1483,7 @@ $B8         LA  Current Logical File Number
                      value of this location.  In the BASIC statement OPEN 4,8,15, the
                      logical file number corresponds to the first parameter 4.
                      
-$B9         SA  Current Secondary Address
+$00B9        SA      Current Secondary Address
                      
                      This location holds the secondary address of the device currently
                      being used.  The range of valid secondary address numbers is 0 through
@@ -1531,7 +1531,7 @@ $B9         SA  Current Secondary Address
                      a secondary address of 0, or without a secondary address, the
                      uppercase/graphics character set will be used.
                      
-$BA         FA  Current Device Number
+$00BA        FA      Current Device Number
                      
                      This location holds the number of the device that is currently being
                      used.  Device number assignments are as follows:
@@ -1543,7 +1543,7 @@ $BA         FA  Current Device Number
                      4-5  = Printer
                      8-11 = Disk
                      
-$BB-$BC     FNADR  Pointer: Current Filename
+$00BB-$00BC  FNADR   Pointer: Current Filename
                      
                      This location holds a pointer to the address of the current filename.
                      If an operation which OPENs a tape file does not specify a filename,
@@ -1563,23 +1563,23 @@ $BB-$BC     FNADR  Pointer: Current Filename
                      ($293-$296), where they are used to control such parameters as baud
                      rate, parity, and word length.
                      
-$BD         ROPRTY  RS-232 Output Parity/Cassette Temporary Storage
+$00BD        ROPRTY  RS-232 Output Parity/Cassette Temporary Storage
                      
                      This location is used by the RS-232 routines as an output parity work
                      byte, and by the tape as temporary storage for the current character
                      being read or sent.
                      
-$BE         FSBLK  Cassette Read/Write Block Count
+$00BE        FSBLK   Cassette Read/Write Block Count
                      
                      Used by the tape routines to count the number of copies of a data
                      block remaining to be read or written.
                      
-$BF         MYCH  Tape Input Byte Buffer
+$00BF        MYCH    Tape Input Byte Buffer
                      
                      This is used by the tape routines as a work area in which incoming
                      characters area assembled.
                      
-$C0         CAS1  Tape Motor Interlock
+$00C0        CAS1    Tape Motor Interlock
                      
                      This location is maintained by the IRQ interrupt routine that scans
                      the keyboard.  Whenever a button is pressed on the recorder, this
@@ -1597,7 +1597,7 @@ $C0         CAS1  Tape Motor Interlock
                      nonzero value after one of the buttons on the recorder has been
                      pressed.
                      
-$C1-$C2     STAL  I/O Start Address
+$00C1-$00C2  STAL    I/O Start Address
                      
                      This location points to the beginning address of the area in RAM which
                      is currently being LOADed or SAVEd.  For tape I/O, it will point to
@@ -1606,7 +1606,7 @@ $C1-$C2     STAL  I/O Start Address
                      address of the area of RAM to be used for the blocks of data that come
                      after the initial header.
                      
-$C5         LSTX  Matrix Coordinate of Last Key Pressed, 64=None Pressed
+$00C5        LSTX    Matrix Coordinate of Last Key Pressed, 64=None Pressed
                      
                      During every normal IRQ interrput this location is set with the value
                      of the last keypress, to be used in keyboard debouncing.  The
@@ -1618,7 +1618,7 @@ $C5         LSTX  Matrix Coordinate of Last Key Pressed, 64=None Pressed
                      returned for each key pressed are shown at the entry for location 203
                      ($CB).
                      
-$C6         NDX  Number of Characters in Keyboard Buffer (Queue)
+$00C6        NDX     Number of Characters in Keyboard Buffer (Queue)
                      
                      The value here indicates the number of charracters waiting in the
                      keyboard buffer at 631 ($277).  The maximum number of characters in
@@ -1665,7 +1665,7 @@ $C6         NDX  Number of Characters in Keyboard Buffer (Queue)
                      For more specific information and programming examples, see the
                      description of location 631 ($277), the keyboard buffer.
                      
-$C7         RVS  Flag: Print Reverse Characters? 0=No
+$00C7        RVS     Flag: Print Reverse Characters? 0=No
                      
                      When the [CTRL][RVS-ON] characters are printer (CHR$(18)), this flag
                      is set to 18 ($12), and the print routines will add 128 ($80) to the
@@ -1679,13 +1679,13 @@ $C7         RVS  Flag: Print Reverse Characters? 0=No
                      happens, characters printed thereafter appear with the normal
                      comination of colors.
                      
-$C8         INDX  Pointer: End of Logical Line for Input
+$00C8        INDX    Pointer: End of Logical Line for Input
                      
                      This pointer indicates the column number of the last nonblank
                      character on the logical line that is to be input.  Since a logical
                      line can be up to 80 characters long, this number can range from 0-79.
                      
-$C9-$CA     LXSP  Cursor X,Y Position at Start of Input
+$00C9-$00CA  LXSP    Cursor X,Y Position at Start of Input
                      
                      These locations keep track of the logical line that the cursor is on,
                      and its column position on that logical line (in line, column format).
@@ -1699,7 +1699,7 @@ $C9-$CA     LXSP  Cursor X,Y Position at Start of Input
                      For a more detailed exaplanation of logical lines, see the description
                      of the screen line link talbe, 217 ($D9).
                      
-$CB         SFDX  Matrix Coordinate of Current Key Pressed
+$00CB        SFDX    Matrix Coordinate of Current Key Pressed
                      
                      The keyscan interrupt routine uses this location to indicate which key
                      is currently being pressed.  The value here is then used as an index
@@ -1750,7 +1750,7 @@ $CB         SFDX  Matrix Coordinate of Current Key Pressed
                      microprocessor NMI line, and causes an NMI interrupt whenever it is
                      pressed.
                      
-$CC         BLNSW  Cursor Blink Enable: 0=Flash Cursor
+$00CC        BLNSW   Cursor Blink Enable: 0=Flash Cursor
                      
                      When this flag is set to a nonzero value, it indicates to the routine
                      that normally flashes the cursor not to do so.  The cursor blink is
@@ -1761,7 +1761,7 @@ $CC         BLNSW  Cursor Blink Enable: 0=Flash Cursor
                      a series of GET operations, for example, to show the user that input
                      is expected) by using the statement POKE 204,0.
                      
-$CD         BLNCT  Timer: Countdown to Blink Cursor
+$00CD        BLNCT   Timer: Countdown to Blink Cursor
                      
                      The interrupt routine that blinks the cursor uses this location to
                      tell when it's time for a blink.  First the number 20 is put here, and
@@ -1770,7 +1770,7 @@ $CD         BLNCT  Timer: Countdown to Blink Cursor
                      here, and the cycle starts all over again.  Thus, under normal
                      circumstances, the cursor blinks three times per second.
                      
-$CE         GDBLN  Character Under Cursor
+$00CE        GDBLN   Character Under Cursor
                      
                      The cursor is formed by printing the inverse of the character that
                      occupies the cursor position.  If that characters is the letter A, for
@@ -1779,32 +1779,32 @@ $CE         GDBLN  Character Under Cursor
                      of the character that is located at the cursor position, so that it
                      may be restored when the cursor moves on.
                      
-$CF         BLNON  Flag: Was Last Curson Blink on or off?
+$00CF        BLNON   Flag: Was Last Curson Blink on or off?
                      
                      This location keeps track of whether, during the current cursor blink,
                      the character under the cursor was reversed, or was restored to
                      normal.  This location will contain a 0 if the character is reversed,
                      and a 1 if the character is restored to its nonreversed status.
                      
-$D0         CRSW  Flag: Input from Keyboard or Screen
+$00D0        CRSW    Flag: Input from Keyboard or Screen
                      
                      This flag is used by the Kernal CHRIN (61783, $F157) routine to
                      indicate whether input is available from the screen (3), or whether a
                      new line should be obtained from the keyboard (0).
                      
-$D1-$D2     PNT  Pointer to the Address of the Current Screen Line
+$00D1-$00D2  PNT     Pointer to the Address of the Current Screen Line
                      
                      This location points to the address in screen RAM of the first column
                      of the logical line upon which the cursor is currently positioned.
                      
-$D3         PNTR  Cursor Column on Current Line
+$00D3        PNTR    Cursor Column on Current Line
                      
                      The number contained here is the cursor column position within the
                      logical line pointed to by 209 ($D1).  Since a logical line can
                      contain up to two physical lines, this value may be from 0 to 79 (the
                      number here is the value returned by the POS function).
                      
-$D4         QTSW  Flag: Editor in Quote Mode? 0=No
+$00D4        QTSW    Flag: Editor in Quote Mode? 0=No
                      
                      A nonzero value in this location indicates that the editor is in quote
                      mode.  Quote mode is toggled every time that you type in a quotation
@@ -1838,13 +1838,13 @@ $D4         QTSW  Flag: Editor in Quote Mode? 0=No
                      60 DATA 141 , 144 , 2 , 88 , 96 , 165 , 203 , 201 , 4 , 208
                      70 DATA 8 , 169 , 0 , 133 , 212 , 133 , 216 , 133 , 199 , 108 , 46 , 3
                      
-$D5         LNMX  Maximum Length of Physical Screen Line
+$00D5        LNMX    Maximum Length of Physical Screen Line
                      
                      The line editor uses this location when the end of a line has been
                      reached to determine whether another physical line can be added to the
                      current logical line, or if a new logical line must be started.
                      
-$D6         TBLX  Current Cursor Physical Line Number
+$00D6        TBLX    Current Cursor Physical Line Number
                      
                      This location contains the current physical screen line position of
                      the cursor (0-24).  It can be used in a fashion to move the cursor
@@ -1865,7 +1865,7 @@ $D6         TBLX  Current Cursor Physical Line Number
                      The ASCII value of the last character printed to the screen is held
                      here temporarily.
                      
-$D8         INSRT  Flag: Insert Mode (Any Number Greater Than 0 Is the Number of Inserts)
+$00D8        INSRT   Flag: Insert Mode (Any Number Greater Than 0 Is the Number of Inserts)
                      
                      When the INST key is pressed, the screen editor shifts the line to the
                      right, allocates another physical line to the logical line if
@@ -1883,7 +1883,7 @@ $D8         INSRT  Flag: Insert Mode (Any Number Greater Than 0 Is the Number of
                      DELETE key will leave a printed equivalent in insert mode, while the
                      INST key will insert spaces as normal.
                      
-$D9-$F2     LDTB1  Screen Line Link Table/Editor Temporary Storage
+$00D9-$00F2  LDTB1   Screen Line Link Table/Editor Temporary Storage
                      
                      This table contains 25 entries, one for each row of the screen
                      display.  Each entry has two functions.  Bits 0-3 indicate on which of
@@ -1911,14 +1911,14 @@ $D9-$F2     LDTB1  Screen Line Link Table/Editor Temporary Storage
                      bit is reset to 0 only when a line is the second half of a logical
                      line.
                      
-$F3-$F4     USER  Pointer to the Address of the Current Screen Color RAM Location
+$00F3-$00F4  USER    Pointer to the Address of the Current Screen Color RAM Location
                      
                      This poitner is synchronized with the pointer to the address of the
                      first byte of screen RAM for the current line kept in location 209
                      ($D1).  It holds the address of the first byte of color RAM for the
                      corresponding screen line.
                      
-$F5-$F6     KEYTAB  Vector: Keyboard Decode Table
+$00F5-$00F6  KEYTAB  Vector: Keyboard Decode Table
                      
                      KEYTAB points to the address of the keyboard matrix lookup table
                      currently being used.  Although there are only 64 keys on the keyboard
@@ -1947,7 +1947,7 @@ $F5-$F6     KEYTAB  Vector: Keyboard Decode Table
                      That character base is determined by location 53272 ($D018) of the
                      VIC-II chip.
                      
-$F7-$F8     RIBUF  Pointer: RS-232 Input Buffer
+$00F7-$00F8  RIBUF   Pointer: RS-232 Input Buffer
                      
                      When device number 2 (the RS-232 channel) is opened, two buffers of
                      256 bytes each are created at the top of memory.  This location points
@@ -1957,26 +1957,25 @@ $F7-$F8     RIBUF  Pointer: RS-232 Input Buffer
                      variables which were previously located at the top of memory, as BASIC
                      executes a CLR after opening this device.
                      
-$F9-$FA     ROBUF  Pointer: RS-232 Output Buffer
+$00F9-$00FA  ROBUF   Pointer: RS-232 Output Buffer
                      
                      This location points to the address of the 256-byte output buffer
                      which is used for transmitting data to RS-232 devices (device number
                      2)l
                      
-$FB-$FE     FREEZP  Four Free Bytes of Zero Page for User Programs
+$00FB-$00FE  FREEZP  Four Free Bytes of Zero Page for User Programs
                      
                      These locations were specifically set aside for user-written ML
                      routines that require zero-page addressing.  While other zero-page
                      locations can be used on a noninterference basis, it is guaranteed
                      that BASIC will not alter these locations.
                      
-$FF         BASZPT  BASIC Temporary Data for Floating Point to ASCII Conversion
+$00FF        BASZPT  BASIC Temporary Data for Floating Point to ASCII Conversion
                      
                      This location is used for temporary storage in the process of
                      converting floating point numbers to ASCII characters..
                      
-                     256-511       $100-$1FF
-                     Microprocessor Stack Area
+$0100-$01FF          Microprocessor Stack Area
                      
                      Locations 256-511 are reserved for the 6510 microprocessor hardware
                      stack.  The organization of this temporary storage area has often been
@@ -2012,7 +2011,7 @@ $FF         BASZPT  BASIC Temporary Data for Floating Point to ASCII Conversion
                      Used in the conversion of numbers to the equivalent ASCII digits, and
                      in scanning strings.
                      
-$100-$13E   BAD  Tape Input Error Log
+$0100-$013E  BAD     Tape Input Error Log
                      
                      Each tape block is saved twice consecutively, in order to minimize
                      loss of data from transmission errors.  These 62 bytes serve as
@@ -2050,7 +2049,7 @@ $100-$13E   BAD  Tape Input Error Log
                      141, the first number is a dummy byte, whose value has no
                      significance.
                      
-$200-$258   BUF  BASIC Line Editor Input Buffer
+$0200-$0258  BUF     BASIC Line Editor Input Buffer
                      
                      When you are in the BASIC immediate mode, and type in a line of
                      characters, those characters are stored here.  BASIC then scans the
@@ -2096,13 +2095,13 @@ $200-$258   BUF  BASIC Line Editor Input Buffer
                      (62255, $F32F) simply zeros location 152, which has the effect of
                      emptying these tables.
                      
-$259-$262   LAT  Kernal Table of Active Logical File Numbers
+$0259-$0262  LAT     Kernal Table of Active Logical File Numbers
                      
-$263-$26C   FAT  Kernal Table of Device Numbers for Each Logical File
+$0263-$026C  FAT     Kernal Table of Device Numbers for Each Logical File
                      
-$26D-$276   SAT  Kernal Table of Secondary Addresses for Each Logical File
+$026D-$0276  SAT     Kernal Table of Secondary Addresses for Each Logical File
                      
-$277-$280   KEYD  Keyboard Buffer (Queue)
+$0277-$0280  KEYD    Keyboard Buffer (Queue)
                      
                      This buffer, sometimes also referred to as the keyboard queue, holds
                      the ASCII values of the characters entered from the keyboard.  The
@@ -2235,14 +2234,14 @@ $277-$280   KEYD  Keyboard Buffer (Queue)
                      The Kernal routine MEMTOP (65061, $FE25) may be used to read or set
                      this pointer.
                      
-$285         TIMOUT  Flag: Kernal Variable for IEEE Time-Out
+$0285        TIMOUT  Flag: Kernal Variable for IEEE Time-Out
                      
                      This location is used only with the external IEEE interface card
                      (which was not yet available from Commodore at the time of writing).
                      For more information, see the entry for the Kernal SETTMO routine at
                      65057 ($FE21).
                      
-$286         COLOR  Current Foreground Color for Text
+$0286        COLOR   Current Foreground Color for Text
                      
                      The process of PRINTing a character to the screen consists of both
                      placing the screen code value for the character in screen memory and
@@ -2278,7 +2277,7 @@ $286         COLOR  Current Foreground Color for Text
                      14        Lt Blue   154    Logo-7
                      15        Lt Gray   155    Logo-8
                      
-$287         GDCOL  Color of Character under Cursor
+$0287        GDCOL   Color of Character under Cursor
                      
                      This location is used to keep track of the original color code of the
                      character stored at the present cursor location.  Since the blinking
@@ -2287,7 +2286,7 @@ $287         GDCOL  Color of Character under Cursor
                      changing that character, its color code can be restored to its
                      original value.
                      
-$288         HIBASE  Top Page of Screen Memory
+$0288        HIBASE  Top Page of Screen Memory
                      
                      This location contains the value used by the Operating System routines
                      that print to the screen as the base address for screen RAM.  The top
@@ -2341,7 +2340,7 @@ $288         HIBASE  Top Page of Screen Memory
                      70 GET A$:IF A$="" THEN 50
                      80 POKE 648,4:POKE 646,1
                      
-$289         XMAX  Maximum Keyboard Buffer Size
+$0289        XMAX    Maximum Keyboard Buffer Size
                      
                      The value here indicates the maximum number of characters that the
                      keyboard buffer at 631 ($277) may hold at any one time.  Anytime that
@@ -2354,7 +2353,7 @@ $289         XMAX  Maximum Keyboard Buffer Size
                      pointers to the bottom and top of memory at 641-644 ($281-$284) to be
                      overwritten, but no real harm should result.
                      
-$28A         RPTFLAG  Flag: Which Keys Will Repeat?
+$028A        RPTFLAG Flag: Which Keys Will Repeat?
                      
                      The flag at this location is used to determine whether to continue
                      printing a character as long as its key is held down, or whether to
@@ -2365,7 +2364,7 @@ $28A         RPTFLAG  Flag: Which Keys Will Repeat?
                      POKEing this location with 128 ($80) will make all keys repeating,
                      while a value of 64 ($40) will disable all keys from repeating.
                      
-$28B         KOUNT  Counter for Timing the Delay Between Key Repeats
+$028B        KOUNT   Counter for Timing the Delay Between Key Repeats
                      
                      This location is used as a delay counter to determine how long to wait
                      while a key is being held down until the next repeat printing of that
@@ -2379,7 +2378,7 @@ $28B         KOUNT  Counter for Timing the Delay Between Key Repeats
                      of 4 is then placed in location 651, allowing subsequent repeats to
                      occur at a rate of 15 per second.
                      
-$28C         DELAY  Counter for Timing the Delay Until the First Key Repeat Begins
+$028C        DELAY   Counter for Timing the Delay Until the First Key Repeat Begins
                      
                      This location is used as a delay counter to determine how long a key
                      must be held down before the entry of that key should be repeated.
@@ -2392,7 +2391,7 @@ $28C         DELAY  Counter for Timing the Delay Until the First Key Repeat Begi
                      held to 0 after the first repeat, so that subsequent keystroke
                      repititions occur much more quickly.
                      
-$28D         SHFLAG  Flag: SHIFT/CTRL/Logo Keypress
+$028D        SHFLAG  Flag: SHIFT/CTRL/Logo Keypress
                      
                      This flag signals which of the SHIFT, CTRL, or Commodore logo keys are
                      currently being pressed, if any.
@@ -2423,14 +2422,14 @@ $28D         SHFLAG  Flag: SHIFT/CTRL/Logo Keypress
                      in 53272 ($D018) being changed.  The came result may be obtained by
                      POKEing that address directly.
                      
-$28E         LSTSHF  Last Pattern of SHIFT/CTRL/Logo Keypress
+$028E        LSTSHF  Last Pattern of SHIFT/CTRL/Logo Keypress
                      
                      This location is used in combination with the one above to debounce
                      the special SHIFT keys.  This will keep the SHIFT/logo combination
                      from changing character sets back and forth during a single pressing
                      of both keys.
                      
-$28F-$290    KEYLOG  Vector to Keyboard Table Setup Routine
+$028F-$0290  KEYLOG  Vector to Keyboard Table Setup Routine
                      
                      This location points to the address of the Operating System routine
                      which actually determines which keyboard matrix lookup table will be
@@ -2539,7 +2538,7 @@ $28F-$290    KEYLOG  Vector to Keyboard Table Setup Routine
                      Y     SIN     COS
                      Z     RUN     SYS
                      
-$291         MODE  Flag: Enable or Disable Changing Character Sets with SHIFT/Logo
+$0291        MODE    Flag: Enable or Disable Changing Character Sets with SHIFT/Logo
                      Keypress
                      
                      This flag is used to enable or disable the feature which lets you
@@ -2555,7 +2554,7 @@ $291         MODE  Flag: Enable or Disable Changing Character Sets with SHIFT/Lo
                      ($D018) and 49152 ($C000) for more information on switching character
                      sets.
                      
-$292         AUTODN  Flag: Screen Scrolling Enabled
+$0292        AUTODN  Flag: Screen Scrolling Enabled
                      
                      This location is used to determine whether moving the cursor past the
                      fortieth column of a logical line will cause another physical line to
@@ -2588,7 +2587,7 @@ $292         AUTODN  Flag: Screen Scrolling Enabled
                      last two, which specify a nonstandard baud rate, are not used because
                      that feature is not implemented.
                      
-$293         M51CTR  RS-232: Mock 6551 Control Register
+$0293        M51CTR  RS-232: Mock 6551 Control Register
                      
                      This location is used to control the RS-232 serial I/O baud rate
                      (speed at which data is transmitted and received), the word length
@@ -2639,7 +2638,7 @@ $293         M51CTR  RS-232: Mock 6551 Control Register
                      this sets up the RS-232 device for a data transfer rate of 300 baud,
                      using seven data bits per character and one stop bit.
                      
-$294         M51CDR  RS-232: Mock 6551 Command Register
+$0294        M51CDR  RS-232: Mock 6551 Command Register
                      
                      This location performs the same function as the 6551 UART chip's
                      command register, which specifies type of parity, duplex mode, and
@@ -2687,7 +2686,7 @@ $294         M51CDR  RS-232: Mock 6551 Command Register
                      see from the above chart, this configures the RS-232 device for half
                      duplex data transfer using odd parity and three-line handshaking.
                      
-$295-$296   M51AJB  RS-232: Nonstandard Bit Timing
+$0295-$0296  M51AJB  RS-232: Nonstandard Bit Timing
                      
                      These locations are provided for storing a nonstandard user-defined
                      baud rate, to be used when the low nybble of the control register at
@@ -2736,13 +2735,13 @@ $295-$296   M51AJB  RS-232: Nonstandard Bit Timing
                      keep up at 300 baud, but not higher).  If Bit 7 is set, you will want
                      to stop sending, and execute a GET#2 to see what is being sent.
                      
-$298         BITNUM  RS-232: Number of Bits Left to be Sent/Received
+$0298        BITNUM  RS-232: Number of Bits Left to be Sent/Received
                      
                      This location is used to determine how many zero bits must be added to
                      the data character to pad its length out to the word length specified
                      in 659 ($293).
                      
-$299-$29A   BAUDOF  Time Required to Send a Bit
+$0299-$029A  BAUDOF  Time Required to Send a Bit
                      
                      This location holds the prescaler value used by CIA #2 timers A and B.
                      
@@ -2775,27 +2774,27 @@ $299-$29A   BAUDOF  Time Required to Send a Bit
                      To maintain this system, the following four locations are used as
                      indices to the starting and the ending point of each buffer.
                      
-$29B         RIDBE  RS-232: Index to End of Receive Buffer
+$029B        RIDBE   RS-232: Index to End of Receive Buffer
                      
                      This index points to the ending byte within the 256-byte RS-232
                      receive buffer, and is used to add data to that buffer.
                      
-$29C         RIDBS  RS-232: Index to Start of Receive Buffer
+$029C        RIDBS   RS-232: Index to Start of Receive Buffer
                      
                      This index points to the starting byte within the 256-byte RS-232
                      receive buffer, and is used to remove data from that buffer.
                      
-$29D         RODBS  RS-232: Index to Start of Transmit Buffer
+$029D        RODBS   RS-232: Index to Start of Transmit Buffer
                      
                      This index points to the starting byte within the 256-byte RS-232
                      transmit buffer, and is used to remove data from that buffer.
                      
-$29E         RODBE  RS-232: Index to End of Transmit Buffer
+$029E        RODBE   RS-232: Index to End of Transmit Buffer
                      
                      This index points to the ending byte within the 256-byte RS-232
                      transmit buffer, and is used to add data to that buffer.
                      
-$29F-$2A0   IRQTMP  SAve Area for IRQ Vector During Cassette I/O
+$029F-$02A0 IRQTMP   Save Area for IRQ Vector During Cassette I/O
                      
                      The routines that read and write tape data are driven by an IRQ
                      interrupt.  In order to hook one of these routines into the interrupt,
@@ -2808,7 +2807,7 @@ $29F-$2A0   IRQTMP  SAve Area for IRQ Vector During Cassette I/O
                      You will note that all of the above functions will be suspended during
                      tape I/O.
                      
-$2A1         ENABL  RS-232 Interrupts Enabled
+$02A1        ENABL   RS-232 Interrupts Enabled
                      
                      This location holds the active NMI interrupt flag byte from CIA #2
                      Interrupt Control Register (56589, $DD0D).  The bit values for this
@@ -2914,35 +2913,35 @@ $2A1         ENABL  RS-232 Interrupts Enabled
                      more elegant and efficient solution than the old wedge technique
                      discussed at location 115 ($73)
                      
-$300-$301   IERROR  Vector to the Print BASIC Error Message Routine
+$0300-$0301  IERROR  Vector to the Print BASIC Error Message Routine
                      
                      This vector points to the address of the ERROR routine at 58251
                      ($E38B).
                      
-$302-$303   IMAIN  Vector to the Main BASIC Program Loop
+$0302-$0303  IMAIN   Vector to the Main BASIC Program Loop
                      
                      This vector points to the address of the main BASIC program loop at
                      42115 ($A483).  This is the routine that is operating when you are in
                      the direct mode (READY).  It executes statements, or stores them as
                      program lines.
                      
-$304-$305   ICRNCH  Vector to the Routine That Crunches the ASCII Text of Keywords into
+$0304-$0305  ICRNCH  Vector to the Routine That Crunches the ASCII Text of Keywords into
                      Tokens
                      
                      This vector points to the address of the CRUNCH routine at 42364
                      ($A57C).
                      
-$306-$307   IQPLOP  Vector to the Routine That Lists BASIC Program Token as ASCII Text
+$0306-$0307  IQPLOP  Vector to the Routine That Lists BASIC Program Token as ASCII Text
                      
                      This vector points to the address of the QPLOP routine at 42778
                      ($A71A).
                      
-$308-$309   IGONE  Vector to the Routine That Executes the Next BASIC Program Token
+$0308-$0309  IGONE   Vector to the Routine That Executes the Next BASIC Program Token
                      
                      This vector points to the address of the GONE routine at 42980 ($A7E4)
                      that executes the next program token.
                      
-$30A-$30B   IEVAL  Vector to the Routine That Evaluates a Single-Term Arithmetic
+$030A-$030B  IEVAL   Vector to the Routine That Evaluates a Single-Term Arithmetic
                      Expression
                      
                      This vector points to the address of the EVAL routinea t 44678 ($AE86)
@@ -2993,13 +2992,13 @@ $30A-$30B   IEVAL  Vector to the Routine That Evaluates a Single-Term Arithmetic
                      PEEK(781) after a SYS 65517 to see how many screen columns the
                      computer display has.
                      
-$30C         SAREG  Storage Area for .A Register (Accumulator)
+$030C        SAREG   Storage Area for .A Register (Accumulator)
                      
-$30D         SXREG  Storage Area for .X Index Register
+$030D        SXREG   Storage Area for .X Index Register
                      
-$30E         SYREG  Storage Area for .Y Index Register
+$030E        SYREG   Storage Area for .Y Index Register
                      
-$30F         SPREG  Storage Area for .P (Status) Register
+$030F        SPREG   Storage Area for .P (Status) Register
                      
                      The Status (.P) register has seven different flags.  Their bit
                      assignments are as follows:
@@ -3023,12 +3022,12 @@ $30F         SPREG  Storage Area for .P (Status) Register
                      difficult to operate!  To set all flags except for Interrupt disable
                      to 1, POKE 783,247.
                      
-$310         USRPOK  Jump Instruction for User Function ($4C)
+$0310        USRPOK  Jump Instruction for User Function ($4C)
                      
                      The value here (67, $4C) is first part of the 6510 machine language
                      JuMP instruction for the USR command.
                      
-$311-$312   USRADD  Address of USR Routine (Low Byte First)
+$0311-$0312  USRADD  Address of USR Routine (Low Byte First)
                      
                      These locations contain the target address of the USR command.  They
                      are initialized by the Operating System to point to the BASIC error
@@ -3078,7 +3077,7 @@ $311-$312   USRADD  Address of USR Routine (Low Byte First)
                      787           $313
                      Unused
                      
-$314-$315   CINV  Vector to IRQ Interrupt Routine
+$0314-$0315  CINV    Vector to IRQ Interrupt Routine
                      
                      This vector points to the address of the routine that is executed when
                      an IRQ interrupt occurs (normally 59953 ($FA31)).
@@ -3123,7 +3122,7 @@ $314-$315   CINV  Vector to IRQ Interrupt Routine
                      vector, rather than assuming that the ROM address will never change
                      and that it is safe to jump into the ROM directly.
                      
-$316-$317   CBINV  Vector: BRK Instruction Interrupt
+$0316-$0317  CBINV   Vector: BRK Instruction Interrupt
                      
                      This vector points to the address of the routine which will be
                      executed anytime that a 6510 BRK instruction (00) is encountered.
@@ -3138,7 +3137,7 @@ $316-$317   CBINV  Vector: BRK Instruction Interrupt
                      point to the monitor warm start address, so that break points may be
                      set that will return control to the monitor for debugging purposes.
                      
-$318-$319   NMINV  Vector: Non-Maskable Interrupt
+$0318-$0319  NMINV   Vector: Non-Maskable Interrupt
                      
                      This vector points to the address of the routine that will be executed
                      when a Non-Maskable Interrupt (NMI) occurs (currently at 65095
@@ -3199,21 +3198,21 @@ $318-$319   NMINV  Vector: Non-Maskable Interrupt
                      More specific information about the individual routines can be found
                      in the descriptions given for their ROM locations.
                      
-$31A-$31B   IOPEN  Vector to Kernal OPEN Routine (Currently at 62282 ($F34A))
+$031A-$031B  IOPEN   Vector to Kernal OPEN Routine (Currently at 62282 ($F34A))
                      
-$31C-$31D   ICLOSE  Vector to Kernal CLOSE Routine (Currently at 62097 ($F291))
+$031C-$031D  ICLOSE  Vector to Kernal CLOSE Routine (Currently at 62097 ($F291))
                      
-$31E-$31F   ICHKIN  Vector to Kernal CHKIN Routine (Currently at 61966 ($F20E))
+$031E-$031F  ICHKIN  Vector to Kernal CHKIN Routine (Currently at 61966 ($F20E))
                      
-$320-$321   ICKOUT  Vector to Kernal CKOUT Routine (Currently at 62032 ($F250))
+$0320-$0321  ICKOUT  Vector to Kernal CKOUT Routine (Currently at 62032 ($F250))
                      
-$322-$323   ICLRCH  Vector to Kernal CLRCHN Routine (Currently at 62259 ($F333))
+$0322-$0323  ICLRCH  Vector to Kernal CLRCHN Routine (Currently at 62259 ($F333))
                      
-$324-$325   IBASIN  Vector to Kernal CHRIN Routine (Currently at 61783 ($F157))
+$0324-$0325  IBASIN  Vector to Kernal CHRIN Routine (Currently at 61783 ($F157))
                      
-$326-$327   IBSOUT  Vector to Kernal CHROUT Routine (Currently at 61898 ($F1CA))
+$0326-$0327  IBSOUT  Vector to Kernal CHROUT Routine (Currently at 61898 ($F1CA))
                      
-$328-$329   ISTOP  Vector to Kernal STOP Routine (Currently at 63213 ($F6ED))
+$0328-$0329  ISTOP   Vector to Kernal STOP Routine (Currently at 63213 ($F6ED))
                      
                      This vector points to the address of the routine that tests the STOP
                      key.  The STOP key can be disabled by changing this with a POKE
@@ -3222,11 +3221,11 @@ $328-$329   ISTOP  Vector to Kernal STOP Routine (Currently at 63213 ($F6ED))
                      will cause the LIST command not to function properly).  To bring
                      things back to normal in either case, POKE 808, 237.
                      
-$32A-$32B   IGETIN  Vector to Kernal GETIN Routine (Currently at 61758 ($F13E))
+$032A-$032B  IGETIN  Vector to Kernal GETIN Routine (Currently at 61758 ($F13E))
                      
-$32C-$32D   ICLALL  Vector to Kernal CLALL Routine (Currently at 62255 ($F32F))
+$032C-$032D  ICLALL  Vector to Kernal CLALL Routine (Currently at 62255 ($F32F))
                      
-$32E-$32F   USRCMD  Vector to User-Defined Command (Currently Points to BRK at 65126
+$032E-$032F  USRCMD  Vector to User-Defined Command (Currently Points to BRK at 65126
                      ($FE66))
                      
                      This appears to be a holdover from PET days, when the built-in machine
@@ -3239,16 +3238,15 @@ $32E-$32F   USRCMD  Vector to User-Defined Command (Currently Points to BRK at 6
                      VECTOR routine (64794, $FD1A), it does not seem to have the function
                      of aiding in the addition of new commands.
                      
-$330-$331   ILOAD  Vector to Kernal LOAD Routine (Currently at 62622 ($F49E))
+$0330-$0331  ILOAD   Vector to Kernal LOAD Routine (Currently at 62622 ($F49E))
                      
-$332-$333   ISAVE  Vector: Kernal SAVE Routine (Currently at 62941 ($F5DD))
+$0332-$0333  ISAVE   Vector: Kernal SAVE Routine (Currently at 62941 ($F5DD))
                      
-                     820-827       $334-$33B
-                     Unused
+$0334-$033B          Unused
                      
                      Eight free bytes for user vectors or other data.
                      
-$33C-$3FB   TBUFFER  Cassette I/O Buffer
+$033C-$03FB  TBUFFER Cassette I/O Buffer
                      
                      This 192-byte buffer area is used to temporarily hold data that is
                      read from or written to the tape device (device number 1).
@@ -3310,12 +3308,11 @@ $33C-$3FB   TBUFFER  Cassette I/O Buffer
                      even if there are additional tape blocks physically present on the
                      tape.
                      
-                     1020-1023     $3FC-$3FF
-                     Unused
+$03FC-$03FF          Unused
                      
                      Four more free bytes.
                      
-$400-$7FF    VICSCN  Video Screen Memory Area
+$0400-$07FF  VICSCN  Video Screen Memory Area
                      
                      This is the default location of the video screen memory area, which
                      contains the video matrix and the sprite data pointers.  Keep in mind,
