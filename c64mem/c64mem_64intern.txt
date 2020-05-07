@@ -384,6 +384,8 @@ $006F        ARISGN  Vergleichsbyte der Vorzeichen von FAC
                      Interpreter an, ob die Vorzeichen der
                      beiden Akkus übereinstimmen.
 
+$0070        FACOV   FAC-Rundungsbyte
+
 $0071-$0072  FBUFPT  Zeiger für Polynomauswertung
 
                      Hier ist in LOW- und HIGH-Byte
@@ -401,8 +403,6 @@ $007A-$007B  TXTPTR  Programmzeiger
                      und HIGH-Byte die Anfangsadresse des
                      als nächstes auszuführenden Befehls
                      im BASIC-RAM angegeben.
-
-$007C-$008A          Unbenutzt
 
 $008B-$008F  RNDX    letzter RND-Wert
 
@@ -775,8 +775,8 @@ $00D4        QTSW    Flag für Hochkommamodus
 
                      Falls in dieser Speicherzelle eine
                      Null steht, dann befindet sich der
-                     Computer im Hochkommamodus. Andere
-                     Werte bewirken den Normalmodus.
+                     Computer im Normalmodus. Andere
+                     Werte bewirken den Hochkommamodus.
 
 $00D5        LNMX    Länge der Bildschirmzeile
 
@@ -826,6 +826,8 @@ $00F9-$00FA  ROBUF   Zeiger auf RS-232 Ausgabepuffer
 
                      Diese Register zeigen auf die
                      Anfangsadresse des Ausgabepuffers.
+
+$00FB-$00FE          unbenutzt
 
 $00FF-$010A  BASZPT  Puffer für Umwandlung Fließkomma nach
                      ASCII
@@ -1179,7 +1181,7 @@ $030D        SXREG   X-REG für SYS-Befehl
 
 $030E        SYREG   Y-REG für SYS-Befehl
 
-$0310        USRPOK  Status-Register für SYS-Befehl
+$030F        USRPOK  Status-Register für SYS-Befehl
 
 $0311-$0312  USRADD  $B248 USR-Vektor
 
@@ -1207,7 +1209,7 @@ $0328-$0329  ISTOP   $F6ED STOP-Vektor
 
 $032A-$032B  IGETIN  $F13E GET-Vektor
 
-$032B-$032C          $F32F CLALL-Vektor
+$032C-$032D          $F32F CLALL-Vektor
 
 $032E-$032F  USRCMD  $FE66 Warmstart-Vektor
 
