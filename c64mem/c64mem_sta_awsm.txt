@@ -1,0 +1,4241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="EN">
+<link rel="stylesheet" type="text/css" href="stylesheet.css" />
+<script>
+(function(i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function() {
+        (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', 'UA-40925561-2', 'awsm.de');
+ga('send', 'pageview');
+</script>
+
+<head>
+    <!--<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">-->
+    <title>Commodore 64 memory map</title>
+
+    <meta name="description" content="A complete memory map of the Commodore 64">
+    <meta name="author" content="Ingo Hinterding">
+    <meta charset="UTF-8">
+    <meta property="og:title" content="Memory Map C64">
+    <meta property="og:description" content="A complete memory map of the Commodore 64">
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:description" content="A complete memory map of the Commodore 64"/>
+    <meta name="twitter:title" content="C64 Memory Map"/>
+    <meta name="twitter:creator" content="@awsm9000"/>
+
+</head>
+
+<body>
+    <center>
+        <h2>Commodore 64 memory map</h2>
+    </center>
+    <div class="container">
+        <div class="c1-head">Address Hex</div>
+        <div class="c2-head">Address Dec</div>
+        <div class="c3-head">Description</div>
+    </div>
+    <div class="cspan">$0000-$00FF, 0-256
+        <br>Zero page
+    </div>
+    <div class="container">
+        <div class="c1">$0000
+        </div>
+        <div class="c2">0</div>
+        <div class="c3">
+            Processor port data direction register. Bits:
+            <ul>
+                <li>
+                    Bit #x: 0 = Bit #x in processor port can only be read; 1 = Bit #x in processor port can be read and written.
+                </li>
+            </ul>
+            Default: $2F, %00101111.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0001
+        </div>
+        <div class="c2">1
+        </div>
+        <div class="c3">Processor port. Bits:
+            <ul>
+                <li>
+                    Bits #0-#2: Configuration for memory areas $A000-$BFFF, $D000-$DFFF and $E000-$FFFF. Values:
+                    <ul>
+                        <li>
+                            %x00: RAM visible in all three areas.
+                        </li>
+                        <li>
+                            %x01: RAM visible at $A000-$BFFF and $E000-$FFFF.
+                        </li>
+                        <li>
+                            %x10: RAM visible at $A000-$BFFF; KERNAL ROM visible at $E000-$FFFF.
+                        </li>
+                        <li>
+                            %x11: BASIC ROM visible at $A000-$BFFF; KERNAL ROM visible at $E000-$FFFF.
+                        </li>
+                        <li>
+                            %0xx: Character ROM visible at $D000-$DFFF. (Except for the value %000, see above.)
+                        </li>
+                        <li>
+                            %1xx: I/O area visible at $D000-$DFFF. (Except for the value %100, see above.)
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Bit #3: Datasette output signal level.
+                </li>
+                <li>
+                    Bit #4: Datasette button status; 0 = One or more of PLAY, RECORD, F.FWD or REW pressed; 1 = No button is pressed.
+                </li>
+                <li>
+                    Bit #5: Datasette motor control; 0 = On; 1 = Off.
+                </li>
+            </ul>
+            Default: $37, %00110111.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0002
+        </div>
+        <div class="c2">2</div>
+        <div class="c3">Unused.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0003-$0004
+        </div>
+        <div class="c2">3-4</div>
+        <div class="c3">Unused.
+            <br/> Default: $B1AA, execution address of routine converting floating point to integer.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0005-$0006
+        </div>
+        <div class="c2">5-6</div>
+        <div class="c3">Unused.
+            <br/> Default: $B391, execution address of routine converting integer to floating point.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0007
+        </div>
+        <div class="c2">7</div>
+        <div class="c3">Byte being search for during various operations.
+            <br/> Current digit of number being input.
+            <br/> Low byte of first integer operand during AND and OR.
+            <br/> Low byte of integer-format FAC during INT().</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0008
+        </div>
+        <div class="c2">8</div>
+        <div class="c3">Byte being search for during various operations.
+            <br/> Current byte of BASIC line during tokenization.
+            <br/> High byte of first integer operand during AND and OR.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0009
+        </div>
+        <div class="c2">9</div>
+        <div class="c3">Current column number during SPC() and TAB().</div>
+    </div>
+    <div class="container">
+        <div class="c1">$000A
+        </div>
+        <div class="c2">10</div>
+        <div class="c3">LOAD/VERIFY switch. Values:
+            <ul>
+                <li>
+                    $00: LOAD.
+                </li>
+                <li>
+                    $01-$FF: VERIFY.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$000B
+        </div>
+        <div class="c2">11</div>
+        <div class="c3">Current token during tokenization.
+            <br/> Length of BASIC line during insertion of line.
+            <br/> AND/OR switch; $00 = AND; $FF = OR.
+            <br/> Number of dimensions during array operations.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$000C
+        </div>
+        <div class="c2">12</div>
+        <div class="c3">Switch for array operations. Values:
+            <ul>
+                <li>
+                    $00: Operation was not called by DIM.
+                </li>
+                <li>
+                    $40-$7F: Operation was called by DIM.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$000D
+        </div>
+        <div class="c2">13</div>
+        <div class="c3">Current expression type. Values:
+            <ul>
+                <li>
+                    $00: Numerical.
+                </li>
+                <li>
+                    $FF: String.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$000E
+        </div>
+        <div class="c2">14</div>
+        <div class="c3">Current numerical expression type. Bits:
+            <ul>
+                <li>
+                    Bit #7: 0 = Floating point; 1 = Integer.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$000F
+        </div>
+        <div class="c2">15</div>
+        <div class="c3">Quotation mode switch during tokenization; Bit #6: 0 = Normal mode; 1 = Quotation mode.
+            <br/> Quotation mode switch during LIST; $01 = Normal mode; $FE = Quotation mode.
+            <br/> Garbage collection indicator during memory allocation for string variable; $00-$7F = There was no garbage collection yet; $80 = Garbage collection already took place.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0010
+        </div>
+        <div class="c2">16</div>
+        <div class="c3">Switch during fetch of variable name. Values:
+            <ul>
+                <li>
+                    $00: Integer variables are accepted.
+                </li>
+                <li>
+                    $01-$FF: Integer variables are not accepted.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0011
+        </div>
+        <div class="c2">17</div>
+        <div class="c3">GET/INPUT/READ switch. Values:
+            <ul>
+                <li>
+                    $00: INPUT.
+                </li>
+                <li>
+                    $40: GET.
+                </li>
+                <li>
+                    $98: READ.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0012
+        </div>
+        <div class="c2">18</div>
+        <div class="c3">Sign during SIN() and TAN(). Values:
+            <ul>
+                <li>
+                    $00: Positive.
+                </li>
+                <li>
+                    $FF: Negative.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0013
+        </div>
+        <div class="c2">19</div>
+        <div class="c3">Current I/O device number.
+            <br/> Default: $00, keyboard for input and screen for output.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0014-$0015
+        </div>
+        <div class="c2">20-21</div>
+        <div class="c3">Line number during GOSUB, GOTO and RUN.
+            <br/> Second line number during LIST.
+            <br/> Memory address during PEEK, POKE, SYS and WAIT.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0016
+        </div>
+        <div class="c2">22</div>
+        <div class="c3">Pointer to next expression in string stack. Values: $19; $1C; $1F; $22.
+            <br/> Default: $19.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0017-$0018
+        </div>
+        <div class="c2">23-24</div>
+        <div class="c3">Pointer to previous expression in string stack.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0019-$0021
+        </div>
+        <div class="c2">25-33</div>
+        <div class="c3">String stack, temporary area for processing string expressions (9 bytes, 3 entries).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0022-$0025
+        </div>
+        <div class="c2">34-37</div>
+        <div class="c3">Temporary area for various operations (4 bytes).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0026-$0029
+        </div>
+        <div class="c2">38-41</div>
+        <div class="c3">Auxiliary arithmetical register for division and multiplication (4 bytes).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$002A
+        </div>
+        <div class="c2">42</div>
+        <div class="c3">Unused.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$002B-$002C
+        </div>
+        <div class="c2">43-44</div>
+        <div class="c3">Pointer to beginning of BASIC area.
+            <br/> Default: $0801, 2049.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$002D-$002E
+        </div>
+        <div class="c2">45-46</div>
+        <div class="c3">Pointer to beginning of variable area. (End of program plus 1.)</div>
+    </div>
+    <div class="container">
+        <div class="c1">$002F-$0030
+        </div>
+        <div class="c2">47-48</div>
+        <div class="c3">Pointer to beginning of array variable area.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0031-$0032
+        </div>
+        <div class="c2">49-50</div>
+        <div class="c3">Pointer to end of array variable area.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0033-$0034
+        </div>
+        <div class="c2">51-52</div>
+        <div class="c3">Pointer to beginning of string variable area. (Grows downwards from end of BASIC area.)</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0035-$0036
+        </div>
+        <div class="c2">53-54</div>
+        <div class="c3">Pointer to memory allocated for current string variable.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0037-$0038
+        </div>
+        <div class="c2">55-56</div>
+        <div class="c3">Pointer to end of BASIC area.
+            <br/> Default: $A000, 40960.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0039-$003A
+        </div>
+        <div class="c2">57-58</div>
+        <div class="c3">Current BASIC line number. Values:
+            <ul>
+                <li>
+                    $0000-$F9FF, 0-63999: Line number.
+                </li>
+                <li>
+                    $FF00-$FFFF: Direct mode, no BASIC program is being executed.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$003B-$003C
+        </div>
+        <div class="c2">59-60</div>
+        <div class="c3">Current BASIC line number for CONT.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$003D-$003E
+        </div>
+        <div class="c2">61-62</div>
+        <div class="c3">Pointer to next BASIC instruction for CONT. Values:
+            <ul>
+                <li>
+                    $0000-$00FF: CONT'ing is not possible.
+                </li>
+                <li>
+                    $0100-$FFFF: Pointer to next BASIC instruction.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$003F-$0040
+        </div>
+        <div class="c2">63-64</div>
+        <div class="c3">BASIC line number of current DATA item for READ.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0041-$0042
+        </div>
+        <div class="c2">65-66</div>
+        <div class="c3">Pointer to next DATA item for READ.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0043-$0044
+        </div>
+        <div class="c2">67-68</div>
+        <div class="c3">Pointer to input result during GET, INPUT and READ.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0045-$0046
+        </div>
+        <div class="c2">69-70</div>
+        <div class="c3">Name and type of current variable. Bits:
+            <ul>
+                <li>
+                    $0045 bits #0-#6: First character of variable name.
+                </li>
+                <li>
+                    $0046 bits #0-#6: Second character of variable name; $00 = Variable name consists of only one character.
+                </li>
+                <li>
+                    $0045 bit #7 and $0046 bit #7:
+                    <ul>
+                        <li>
+                            %00: Floating-point variable.
+                        </li>
+                        <li>
+                            %01: String variable.
+                        </li>
+                        <li>
+                            %10: FN function, created with DEF FN.
+                        </li>
+                        <li>
+                            %11: Integer variable.
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0047-$0048
+        </div>
+        <div class="c2">71-72</div>
+        <div class="c3">Pointer to value of current variable or FN function.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0049-$004A
+        </div>
+        <div class="c2">73-74</div>
+        <div class="c3">Pointer to value of current variable during LET.
+            <br/> Value of second and third parameter during WAIT.
+            <br/> Logical number and device number during OPEN.
+            <br/> $0049, 73: Logical number of CLOSE.
+            <br/> Device number of LOAD, SAVE and VERIFY.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$004B-$004C
+        </div>
+        <div class="c2">75-76</div>
+        <div class="c3">Temporary area for saving original pointer to current BASIC instruction during GET, INPUT and READ.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$004D
+        </div>
+        <div class="c2">77</div>
+        <div class="c3">Comparison operator indicator. Bits:
+            <ul>
+                <li>
+                    Bit #1: 1 = "&gt;" (greater than) is present in expression.
+                </li>
+                <li>
+                    Bit #2: 1 = "=" (equal to) is present in expression.
+                </li>
+                <li>
+                    Bit #3: 1 = "&lt;" (less than) is present in expression.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$004E-$004F
+        </div>
+        <div class="c2">78-79</div>
+        <div class="c3">Pointer to current FN function.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0050-$0051
+        </div>
+        <div class="c2">80-81</div>
+        <div class="c3">Pointer to current string variable during memory allocation.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0052
+        </div>
+        <div class="c2">82</div>
+        <div class="c3">Unused.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0053
+        </div>
+        <div class="c2">83</div>
+        <div class="c3">Step size of garbage collection. Values: $03; $07.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0054-$0056
+        </div>
+        <div class="c2">84-86</div>
+        <div class="c3">JMP ABS machine instruction, jump to current BASIC function.
+            <br/> $0055-$0056, 85-86: Execution address of current BASIC function.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0057-$005B
+        </div>
+        <div class="c2">87-91</div>
+        <div class="c3">Arithmetic register #3 (5 bytes).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$005C-$0060
+        </div>
+        <div class="c2">92-96</div>
+        <div class="c3">Arithmetic register #4 (5 bytes).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0061-$0065
+        </div>
+        <div class="c2">97-101</div>
+        <div class="c3">FAC, arithmetic register #1 (5 bytes).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0066
+        </div>
+        <div class="c2">102</div>
+        <div class="c3">Sign of FAC. Bits:
+            <ul>
+                <li>
+                    Bit #7: 0 = Positive; 1 = Negative.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0067
+        </div>
+        <div class="c2">103</div>
+        <div class="c3">Number of degrees during polynomial evaluation.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0068
+        </div>
+        <div class="c2">104</div>
+        <div class="c3">Temporary area for various operations.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0069-$006D
+        </div>
+        <div class="c2">105-109</div>
+        <div class="c3">ARG, arithmetic register #2 (5 bytes).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$006E
+        </div>
+        <div class="c2">110</div>
+        <div class="c3">Sign of ARG. Bits:
+            <ul>
+                <li>
+                    Bit #7: 0 = Positive; 1 = Negative.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$006F-$0070
+        </div>
+        <div class="c2">111-112</div>
+        <div class="c3">Pointer to first string expression during string comparison.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0071-$0072
+        </div>
+        <div class="c2">113-114</div>
+        <div class="c3">Auxiliary pointer during array operations.
+            <br/> Temporary area for saving original pointer to current BASIC instruction during VAL().
+            <br/> Pointer to current item of polynomial table during polynomial evaluation.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0073-$008A
+        </div>
+        <div class="c2">115-138</div>
+        <div class="c3">CHRGET. Machine code routine to read next byte from BASIC program or direct command (24 bytes).
+            <br/> $0079, 121: CHRGOT. Read current byte from BASIC program or direct command.
+            <br/> $007A-$007B, 122-123: Pointer to current byte in BASIC program or direct command.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$008B-$008F
+        </div>
+        <div class="c2">139-143</div>
+        <div class="c3">Previous result of RND().
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0090
+        </div>
+        <div class="c2">144</div>
+        <div class="c3">Value of ST variable, device status for serial bus and datasette input/output. Serial bus bits:
+            <ul>
+                <li>
+                    Bit #0: Transfer direction during which the timeout occured; 0 = Input; 1 = Output.
+                </li>
+                <li>
+                    Bit #1: 1 = Timeout occurred.
+                </li>
+                <li>
+                    Bit #4: 1 = VERIFY error occurred (only during VERIFY), the file read from the device did not match that in the memory.
+                </li>
+                <li>
+                    Bit #6: 1 = End of file has been reached.
+                </li>
+                <li>
+                    Bit #7: 1 = Device is not present.
+                </li>
+            </ul>
+            Datasette bits:
+            <ul>
+                <li>
+                    Bit #2: 1 = Block is too short (shorter than 192 bytes).
+                </li>
+                <li>
+                    Bit #3: 1 = Block is too long (longer than 192 bytes).
+                </li>
+                <li>
+                    Bit #4: 1 = Not all bytes read with error during pass 1 could be corrected during pass 2, or a VERIFY error occurred, the file read from the device did not match that in the memory.
+                </li>
+                <li>
+                    Bit #5: 1 = Checksum error occurred.
+                </li>
+                <li>
+                    Bit #6: 1 = End of file has been reached (only during reading data files).
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0091
+        </div>
+        <div class="c2">145</div>
+        <div class="c3">Stop key indicator. Values:
+            <ul>
+                <li>
+                    $7F: Stop key is pressed.
+                </li>
+                <li>
+                    $FF: Stop key is not pressed.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0092
+        </div>
+        <div class="c2">146</div>
+        <div class="c3">Unknown. (Timing constant during datasette input.)</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0093
+        </div>
+        <div class="c2">147</div>
+        <div class="c3">LOAD/VERIFY switch. Values:
+            <ul>
+                <li>
+                    $00: LOAD.
+                </li>
+                <li>
+                    $01-$FF: VERIFY.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0094
+        </div>
+        <div class="c2">148</div>
+        <div class="c3">Serial bus output cache status. Bits:
+            <ul>
+                <li>
+                    Bit #7: 1 = Output cache dirty, must transfer cache contents upon next output to serial bus.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0095
+        </div>
+        <div class="c2">149</div>
+        <div class="c3">Serial bus output cache, previous byte to be sent to serial bus.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0096
+        </div>
+        <div class="c2">150</div>
+        <div class="c3">Unknown. (End of tape indicator during datasette input/output.)</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0097
+        </div>
+        <div class="c2">151</div>
+        <div class="c3">Temporary area for saving original value of Y register during input from RS232.
+            <br/> Temporary area for saving original value of X register during input from datasette.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0098
+        </div>
+        <div class="c2">152</div>
+        <div class="c3">Number of files currently open. Values: $00-$0A, 0-10.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0099
+        </div>
+        <div class="c2">153</div>
+        <div class="c3">Current input device number.
+            <br/> Default: $00, keyboard.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$009A
+        </div>
+        <div class="c2">154</div>
+        <div class="c3">Current output device number.
+            <br/> Default: $03, screen.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$009B
+        </div>
+        <div class="c2">155</div>
+        <div class="c3">Unknown. (Parity bit during datasette input/output.)</div>
+    </div>
+    <div class="container">
+        <div class="c1">$009C
+        </div>
+        <div class="c2">156</div>
+        <div class="c3">Unknown. (Byte ready indicator during datasette input/output.)</div>
+    </div>
+    <div class="container">
+        <div class="c1">$009D
+        </div>
+        <div class="c2">157</div>
+        <div class="c3">System error display switch. Bits:
+            <ul>
+                <li>
+                    Bit #6: 0 = Suppress I/O error messages; 1 = Display them.
+                </li>
+                <li>
+                    Bit #7: 0 = Suppress system messages; 1 = Display them.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$009E
+        </div>
+        <div class="c2">158</div>
+        <div class="c3">Byte to be put into output buffer during RS232 and datasette output.
+            <br/> Block header type during datasette input/output.
+            <br/> Length of file name during datasette input/output.
+            <br/> Error counter during LOAD from datasette. Values: $00-$3E, 0-62.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$009F
+        </div>
+        <div class="c2">159</div>
+        <div class="c3">Auxiliary counter for writing file name into datasette buffer.
+            <br/> Auxiliary counter for comparing requested file name with file name read from datasette during datasette input.
+            <br/> Error correction counter during LOAD from datasette. Values: $00-$3E, 0-62.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00A0-$00A2
+        </div>
+        <div class="c2">160-162</div>
+        <div class="c3">Value of TI variable, time of day, increased by 1 every 1/60 second (on PAL machines). Values: $000000-$4F19FF, 0-518399 (on PAL machines).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00A3
+        </div>
+        <div class="c2">163</div>
+        <div class="c3">EOI switch during serial bus output. Bits:
+            <ul>
+                <li>
+                    Bit #7: 0 = Send byte right after handshake; 1 = Do EOI delay first.
+                </li>
+            </ul>
+            Bit counter during datasette output.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00A4
+        </div>
+        <div class="c2">164</div>
+        <div class="c3">Byte buffer during serial bus input.
+            <br/> Parity during datasette input/output.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00A5
+        </div>
+        <div class="c2">165</div>
+        <div class="c3">Bit counter during serial bus input/output.
+            <br/> Counter for sync mark during datasette output.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00A6
+        </div>
+        <div class="c2">166</div>
+        <div class="c3">Offset of current byte in datasette buffer.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00A7
+        </div>
+        <div class="c2">167</div>
+        <div class="c3">Bit buffer during RS232 input.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00A8
+        </div>
+        <div class="c2">168</div>
+        <div class="c3">Bit counter during RS232 input.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00A9
+        </div>
+        <div class="c2">169</div>
+        <div class="c3">Stop bit switch during RS232 input. Values:
+            <ul>
+                <li>
+                    $00: Data bit.
+                </li>
+                <li>
+                    $01-$FF: Stop bit.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00AA
+        </div>
+        <div class="c2">170</div>
+        <div class="c3">Byte buffer during RS232 input.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00AB
+        </div>
+        <div class="c2">171</div>
+        <div class="c3">Parity during RS232 input.
+            <br/> Computed block checksum during datasette input.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00AC-$00AD
+        </div>
+        <div class="c2">172-173</div>
+        <div class="c3">Start address for SAVE to serial bus.
+            <br/> Pointer to current byte during SAVE to serial bus or datasette.
+            <br/> Pointer to line in screen memory to be scrolled during scrolling the screen.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00AE-$00AF
+        </div>
+        <div class="c2">174-175</div>
+        <div class="c3">Load address read from input file and pointer to current byte during LOAD/VERIFY from serial bus.
+            <br/> End address after LOAD/VERIFY from serial bus or datasette.
+            <br/> End address for SAVE to serial bus or datasette.
+            <br/> Pointer to line in Color RAM to be scrolled during scrolling the screen.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00B0-$00B1
+        </div>
+        <div class="c2">176-177</div>
+        <div class="c3">Unknown.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00B2-$00B3
+        </div>
+        <div class="c2">178-179</div>
+        <div class="c3">Pointer to datasette buffer.
+            <br/> Default: $033C, 828.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00B4
+        </div>
+        <div class="c2">180</div>
+        <div class="c3">Bit counter and stop bit switch during RS232 output. Bits:
+            <ul>
+                <li>
+                    Bits #0-#6: Bit count.
+                </li>
+                <li>
+                    Bit #7: 0 = Data bit; 1 = Stop bit.
+                </li>
+            </ul>
+            Bit counter during datasette input/output.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00B5
+        </div>
+        <div class="c2">181</div>
+        <div class="c3">Bit buffer (in bit #2) during RS232 output.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00B6
+        </div>
+        <div class="c2">182</div>
+        <div class="c3">Byte buffer during RS232 output.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00B7
+        </div>
+        <div class="c2">183</div>
+        <div class="c3">Length of file name or disk command; first parameter of LOAD, SAVE and VERIFY or fourth parameter of OPEN. Values:
+            <ul>
+                <li>
+                    $00: No parameter.
+                </li>
+                <li>
+                    $01-$FF: Parameter length.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00B8
+        </div>
+        <div class="c2">184</div>
+        <div class="c3">Logical number of current file.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00B9
+        </div>
+        <div class="c2">185</div>
+        <div class="c3">Secondary address of current file.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00BA
+        </div>
+        <div class="c2">186</div>
+        <div class="c3">Device number of current file.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00BB-$00BC
+        </div>
+        <div class="c2">187-188</div>
+        <div class="c3">Pointer to current file name or disk command; first parameter of LOAD, SAVE and VERIFY or fourth parameter of OPEN.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00BD
+        </div>
+        <div class="c2">189</div>
+        <div class="c3">Parity during RS232 output.
+            <br/> Byte buffer during datasette input/output.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00BE
+        </div>
+        <div class="c2">190</div>
+        <div class="c3">Block counter during datasette input/output.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00BF
+        </div>
+        <div class="c2">191</div>
+        <div class="c3">Unknown.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00C0
+        </div>
+        <div class="c2">192</div>
+        <div class="c3">Datasette motor switch. Values:
+            <ul>
+                <li>
+                    $00: No button was pressed, motor has been switched off. If a button is pressed on the datasette, must switch motor on.
+                </li>
+                <li>
+                    $01-$FF: Motor is on.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00C1-$00C2
+        </div>
+        <div class="c2">193-194</div>
+        <div class="c3">Start address during SAVE to serial bus, LOAD and VERIFY from datasette and SAVE to datasette.
+            <br/> Pointer to current byte during memory test.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00C3-$00C4
+        </div>
+        <div class="c2">195-196</div>
+        <div class="c3">Start address for a secondary address of 0 for LOAD and VERIFY from serial bus or datasette.
+            <br/> Pointer to ROM table of default vectors during initialization of I/O vectors.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00C5
+        </div>
+        <div class="c2">197</div>
+        <div class="c3">Matrix code of key previously pressed. Values:
+            <ul>
+                <li>
+                    $00-$3F: Keyboard matrix code.
+                </li>
+                <li>
+                    $40: No key was pressed at the time of previous check.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00C6
+        </div>
+        <div class="c2">198</div>
+        <div class="c3">Length of keyboard buffer. Values:
+            <ul>
+                <li>
+                    $00, 0: Buffer is empty.
+                </li>
+                <li>
+                    $01-$0A, 1-10: Buffer length.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00C7
+        </div>
+        <div class="c2">199</div>
+        <div class="c3">Reverse mode switch. Values:
+            <ul>
+                <li>
+                    $00: Normal mode.
+                </li>
+                <li>
+                    $12: Reverse mode.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00C8
+        </div>
+        <div class="c2">200</div>
+        <div class="c3">Length of line minus 1 during screen input. Values: $27, 39; $4F, 79.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00C9
+        </div>
+        <div class="c2">201</div>
+        <div class="c3">Cursor row during screen input. Values: $00-$18, 0-24.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00CA
+        </div>
+        <div class="c2">202</div>
+        <div class="c3">Cursor column during screen input. Values: $00-$27, 0-39.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00CB
+        </div>
+        <div class="c2">203</div>
+        <div class="c3">Matrix code of key currently being pressed. Values:
+            <ul>
+                <li>
+                    $00-$3F: Keyboard matrix code.
+                </li>
+                <li>
+                    $40: No key is currently pressed.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00CC
+        </div>
+        <div class="c2">204</div>
+        <div class="c3">Cursor visibility switch. Values:
+            <ul>
+                <li>
+                    $00: Cursor is on.
+                </li>
+                <li>
+                    $01-$FF: Cursor is off.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00CD
+        </div>
+        <div class="c2">205</div>
+        <div class="c3">Delay counter for changing cursor phase. Values:
+            <ul>
+                <li>
+                    $00, 0: Must change cursor phase.
+                </li>
+                <li>
+                    $01-$14, 1-20: Delay.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00CE
+        </div>
+        <div class="c2">206</div>
+        <div class="c3">Screen code of character under cursor.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00CF
+        </div>
+        <div class="c2">207</div>
+        <div class="c3">Cursor phase switch. Values:
+            <ul>
+                <li>
+                    $00: Cursor off phase, original character visible.
+                </li>
+                <li>
+                    $01: Cursor on phase, reverse character visible.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00D0
+        </div>
+        <div class="c2">208</div>
+        <div class="c3">End of line switch during screen input. Values:
+            <ul>
+                <li>
+                    $00: Return character reached, end of line.
+                </li>
+                <li>
+                    $01-$FF: Still reading characters from line.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00D1-$00D2
+        </div>
+        <div class="c2">209-210</div>
+        <div class="c3">Pointer to current line in screen memory.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00D3
+        </div>
+        <div class="c2">211</div>
+        <div class="c3">Current cursor column. Values: $00-$27, 0-39.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00D4
+        </div>
+        <div class="c2">212</div>
+        <div class="c3">Quotation mode switch. Values:
+            <ul>
+                <li>
+                    $00: Normal mode.
+                </li>
+                <li>
+                    $01: Quotation mode.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00D5
+        </div>
+        <div class="c2">213</div>
+        <div class="c3">Length of current screen line minus 1. Values: $27, 39; $4F, 79.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00D6
+        </div>
+        <div class="c2">214</div>
+        <div class="c3">Current cursor row. Values: $00-$18, 0-24.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00D7
+        </div>
+        <div class="c2">215</div>
+        <div class="c3">PETSCII code of character during screen input/output.
+            <br/> Bit buffer during datasette input.
+            <br/> Block checksum during datasette output.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00D8
+        </div>
+        <div class="c2">216</div>
+        <div class="c3">Number of insertions. Values:
+            <ul>
+                <li>
+                    $00: No insertions made, normal mode, control codes change screen layout or behavior.
+                </li>
+                <li>
+                    $01-$FF: Number of insertions, when inputting this many character next, those must be turned into control codes, similarly to quotation mode.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00D9-$00F1
+        </div>
+        <div class="c2">217-241</div>
+        <div class="c3">High byte of pointers to each line in screen memory (25 bytes). Values:
+            <ul>
+                <li>
+                    $00-$7F: Pointer high byte.
+                </li>
+                <li>
+                    $80-$FF: No pointer, line is an extension of previous line on screen.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00F2
+        </div>
+        <div class="c2">242</div>
+        <div class="c3">Temporary area during scrolling the screen.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00F3-$00F4
+        </div>
+        <div class="c2">243-244</div>
+        <div class="c3">Pointer to current line in Color RAM.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00F5-$00F6
+        </div>
+        <div class="c2">245-246</div>
+        <div class="c3">Pointer to current conversion table during conversion from keyboard matrix codes to PETSCII codes.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00F7-$00F8
+        </div>
+        <div class="c2">247-248</div>
+        <div class="c3">Pointer to RS232 input buffer. Values:
+            <ul>
+                <li>
+                    $0000-$00FF: No buffer defined, a new buffer must be allocated upon RS232 input.
+                </li>
+                <li>
+                    $0100-$FFFF: Buffer pointer.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00F9-$00FA
+        </div>
+        <div class="c2">249-250</div>
+        <div class="c3">Pointer to RS232 output buffer. Values:
+            <ul>
+                <li>
+                    $0000-$00FF: No buffer defined, a new buffer must be allocated upon RS232 output.
+                </li>
+                <li>
+                    $0100-$FFFF: Buffer pointer.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$00FB-$00FE
+        </div>
+        <div class="c2">251-254</div>
+        <div class="c3">Unused (4 bytes).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$00FF-$010A
+        </div>
+        <div class="c2">255-266</div>
+        <div class="c3">Buffer for conversion from floating point to string (12 bytes.)
+        </div>
+    </div>
+    <div class="cspan">$0100-$01FF, 256-511
+        <br>Processor stack
+    </div>
+    <div class="container">
+        <div class="c1">$00FF-$010A
+        </div>
+        <div class="c2">255-266</div>
+        <div class="c3">Buffer for conversion from floating point to string (12 bytes.)</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0100-$013D
+        </div>
+        <div class="c2">256-317</div>
+        <div class="c3">Pointers to bytes read with error during datasette input (62 bytes, 31 entries).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0100-$01FF
+        </div>
+        <div class="c2">256-511</div>
+        <div class="c3">Processor stack. Also used for storing data related to FOR and GOSUB.
+        </div>
+    </div>
+    <div class="cspan">$0200-$02FF, 512-767
+    </div>
+    <div class="container">
+        <div class="c1">$0200-$0258
+        </div>
+        <div class="c2">512-600</div>
+        <div class="c3">Input buffer, storage area for data read from screen (89 bytes).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0259-$0262
+        </div>
+        <div class="c2">601-610</div>
+        <div class="c3">Logical numbers assigned to files (10 bytes, 10 entries).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0263-$026C
+        </div>
+        <div class="c2">611-620</div>
+        <div class="c3">Device numbers assigned to files (10 bytes, 10 entries).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$026D-$0276
+        </div>
+        <div class="c2">621-630</div>
+        <div class="c3">Secondary addresses assigned to files (10 bytes, 10 entries).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0277-$0280
+        </div>
+        <div class="c2">631-640</div>
+        <div class="c3">Keyboard buffer (10 bytes, 10 entries).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0281-$0282
+        </div>
+        <div class="c2">641-642</div>
+        <div class="c3">Pointer to beginning of BASIC area after memory test.
+            <br/> Default: $0800, 2048.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0283-$0284
+        </div>
+        <div class="c2">643-644</div>
+        <div class="c3">Pointer to end of BASIC area after memory test.
+            <br/> Default: $A000, 40960.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0285
+        </div>
+        <div class="c2">645</div>
+        <div class="c3">Unused. (Serial bus timeout.)</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0286
+        </div>
+        <div class="c2">646</div>
+        <div class="c3">Current color, cursor color. Values: $00-$0F, 0-15.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0287
+        </div>
+        <div class="c2">647</div>
+        <div class="c3">Color of character under cursor. Values: $00-$0F, 0-15.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0288
+        </div>
+        <div class="c2">648</div>
+        <div class="c3">High byte of pointer to screen memory for screen input/output.
+            <br/> Default: $04, $0400, 1024.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0289
+        </div>
+        <div class="c2">649</div>
+        <div class="c3">Maximum length of keyboard buffer. Values:
+            <ul>
+                <li>
+                    $00, 0: No buffer.
+                </li>
+                <li>
+                    $01-$0F, 1-15: Buffer size.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$028A
+        </div>
+        <div class="c2">650</div>
+        <div class="c3">Keyboard repeat switch. Bits:
+            <ul>
+                <li>
+                    Bits #6-#7: %00 = Only cursor up/down, cursor left/right, Insert/Delete and Space repeat; %01 = No key repeats; %1x = All keys repeat.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$028B
+        </div>
+        <div class="c2">651</div>
+        <div class="c3">Delay counter during repeat sequence, for delaying between successive repeats. Values:
+            <ul>
+                <li>
+                    $00, 0: Must repeat key.
+                </li>
+                <li>
+                    $01-$04, 1-4: Delay repetition.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$028C
+        </div>
+        <div class="c2">652</div>
+        <div class="c3">Repeat sequence delay counter, for delaying before first repetition. Values:
+            <ul>
+                <li>
+                    $00, 0: Must start repeat sequence.
+                </li>
+                <li>
+                    $01-$10, 1-16: Delay repeat sequence.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$028D
+        </div>
+        <div class="c2">653</div>
+        <div class="c3">Shift key indicator. Bits:
+            <ul>
+                <li>
+                    Bit #0: 1 = One or more of left Shift, right Shift or Shift Lock is currently being pressed or locked.
+                </li>
+                <li>
+                    Bit #1: 1 = Commodore is currently being pressed.
+                </li>
+                <li>
+                    Bit #2: 1 = Control is currently being pressed.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$028E
+        </div>
+        <div class="c2">654</div>
+        <div class="c3">Previous value of shift key indicator. Bits:
+            <ul>
+                <li>
+                    Bit #0: 1 = One or more of left Shift, right Shift or Shift Lock was pressed or locked at the time of previous check.
+                </li>
+                <li>
+                    Bit #1: 1 = Commodore was pressed at the time of previous check.
+                </li>
+                <li>
+                    Bit #2: 1 = Control was pressed at the time of previous check.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$028F-$0290
+        </div>
+        <div class="c2">655-656</div>
+        <div class="c3">Execution address of routine that, based on the status of shift keys, sets the pointer at memory address $00F5-$00F6 to the appropriate conversion table for converting keyboard matrix codes to PETSCII codes.
+            <br/> Default: $EB48.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0291
+        </div>
+        <div class="c2">657</div>
+        <div class="c3">Commodore-Shift switch. Bits:
+            <ul>
+                <li>
+                    Bit #7: 0 = Commodore-Shift is disabled; 1 = Commodore-Shift is enabled, the key combination will toggle between the uppercase/graphics and lowercase/uppercase character set.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0292
+        </div>
+        <div class="c2">658</div>
+        <div class="c3">Scroll direction switch during scrolling the screen. Values:
+            <ul>
+                <li>
+                    $00: Insertion of line before current line, current line and all lines below it must be scrolled 1 line downwards.
+                </li>
+                <li>
+                    $01-$FF: Bottom of screen reached, complete screen must be scrolled 1 line upwards.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0293
+        </div>
+        <div class="c2">659</div>
+        <div class="c3">RS232 control register. Bits:
+            <ul>
+                <li>
+                    Bits #0-#3: Baud rate, transfer speed. Values:
+                    <ul>
+                        <li>
+                            %0000: User specified.
+                        </li>
+                        <li>
+                            %0001: 50 bit/s.
+                        </li>
+                        <li>
+                            %0010: 75 bit/s.
+                        </li>
+                        <li>
+                            %0011: 110 bit/s.
+                        </li>
+                        <li>
+                            %0100: 150 bit/s.
+                        </li>
+                        <li>
+                            %0101: 300 bit/s.
+                        </li>
+                        <li>
+                            %0110: 600 bit/s.
+                        </li>
+                        <li>
+                            %0111: 1200 bit/s.
+                        </li>
+                        <li>
+                            %1000: 2400 bit/s.
+                        </li>
+                        <li>
+                            %1001: 1800 bit/s.
+                        </li>
+                        <li>
+                            %1010: 2400 bit/s.
+                        </li>
+                        <li>
+                            %1011: 3600 bit/s.
+                        </li>
+                        <li>
+                            %1100: 4800 bit/s.
+                        </li>
+                        <li>
+                            %1101: 7200 bit/s.
+                        </li>
+                        <li>
+                            %1110: 9600 bit/s.
+                        </li>
+                        <li>
+                            %1111: 19200 bit/s.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Bits #5-#6: Byte size, number of data bits per byte; %00 = 8; %01 = 7, %10 = 6; %11 = 5.
+                </li>
+                <li>
+                    Bit #7: Number of stop bits; 0 = 1 stop bit; 1 = 2 stop bits.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0294
+        </div>
+        <div class="c2">660</div>
+        <div class="c3">RS232 command register. Bits:
+            <ul>
+                <li>
+                    Bit #0: Synchronization type; 0 = 3 lines; 1 = X lines.
+                </li>
+                <li>
+                    Bit #4: Transmission type; 0 = Duplex; 1 = Half duplex.
+                </li>
+                <li>
+                    Bits #5-#7: Parity mode. Values:
+                    <ul>
+                        <li>
+                            %xx0: No parity check, bit #7 does not exist.
+                        </li>
+                        <li>
+                            %001: Odd parity.
+                        </li>
+                        <li>
+                            %011: Even parity.
+                        </li>
+                        <li>
+                            %101: No parity check, bit #7 is always 1.
+                        </li>
+                        <li>
+                            %111: No parity check, bit #7 is always 0.
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0295-$0296
+        </div>
+        <div class="c2">661-662</div>
+        <div class="c3">Default value of RS232 output timer, based on baud rate. (Must be filled with actual value before RS232 input/output if baud rate is "user specified" in RS232 control register, memory address $0293.)</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0297
+        </div>
+        <div class="c2">663</div>
+        <div class="c3">Value of ST variable, device status for RS232 input/output. Bits:
+            <ul>
+                <li>
+                    Bit #0: 1 = Parity error occurred.
+                </li>
+                <li>
+                    Bit #1: 1 = Frame error, a stop bit with the value of 0, occurred.
+                </li>
+                <li>
+                    Bit #2: 1 = Input buffer underflow occurred, too much data has arrived but it has not been read from the buffer in time.
+                </li>
+                <li>
+                    Bit #3: 1 = Input buffer is empty, nothing to read.
+                </li>
+                <li>
+                    Bit #4: 0 = Sender is Clear To Send; 1 = Sender is not ready to send data to receiver.
+                </li>
+                <li>
+                    Bit #6: 0 = Receiver reports Data Set Ready; 1 = Receiver is not ready to receive data.
+                </li>
+                <li>
+                    Bit #7: 1 = Carrier loss, a stop bit and a data byte both with the value of 0, detected.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$0298
+        </div>
+        <div class="c2">664</div>
+        <div class="c3">RS232 byte size, number of data bits per data byte, default value for bit counters.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0299-$029A
+        </div>
+        <div class="c2">665-666</div>
+        <div class="c3">Default value of RS232 input timer, based on baud rate. (Calculated automatically from default value of RS232 output timer, at memory address $0295-$0296.)</div>
+    </div>
+    <div class="container">
+        <div class="c1">$029B
+        </div>
+        <div class="c2">667</div>
+        <div class="c3">Offset of byte received in RS232 input buffer.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$029C
+        </div>
+        <div class="c2">668</div>
+        <div class="c3">Offset of current byte in RS232 input buffer.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$029D
+        </div>
+        <div class="c2">669</div>
+        <div class="c3">Offset of byte to send in RS232 output buffer.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$029E
+        </div>
+        <div class="c2">670</div>
+        <div class="c3">Offset of current byte in RS232 output buffer.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$029F-$02A0
+        </div>
+        <div class="c2">671-672</div>
+        <div class="c3">Temporary area for saving pointer to original interrupt service routine during datasette input output. Values:
+            <ul>
+                <li>
+                    $0000-$00FF: No datasette input/output took place yet or original pointer has been already restored.
+                </li>
+                <li>
+                    $0100-$FFFF: Original pointer, datasette input/output currently in progress.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$02A1
+        </div>
+        <div class="c2">673</div>
+        <div class="c3">Temporary area for saving original value of CIA#2 interrupt control register, at memory address $DD0D, during RS232 input/output.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$02A2
+        </div>
+        <div class="c2">674</div>
+        <div class="c3">Temporary area for saving original value of CIA#1 timer #1 control register, at memory address $DC0E, during datasette input/output.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$02A3-$02A4
+        </div>
+        <div class="c2">675-676</div>
+        <div class="c3">Unknown.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$02A5
+        </div>
+        <div class="c2">677</div>
+        <div class="c3">Number of line currently being scrolled during scrolling the screen.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$02A6
+        </div>
+        <div class="c2">678</div>
+        <div class="c3">PAL/NTSC switch, for selecting RS232 baud rate from the proper table. Values:
+            <ul>
+                <li>
+                    $00: NTSC.
+                </li>
+                <li>
+                    $01: PAL.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$02A7-$02FF
+        </div>
+        <div class="c2">679-767</div>
+        <div class="c3">Unused (89 bytes).
+        </div>
+    </div>
+    <div class="cspan">$0300-$03FF, 768-1023
+    </div>
+    <div class="container">
+        <div class="c1">$0300-$0301
+        </div>
+        <div class="c2">768-769</div>
+        <div class="c3">Execution address of warm reset, displaying optional BASIC error message and entering BASIC idle loop.
+            <br/> Default: $E38B.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0302-$0303
+        </div>
+        <div class="c2">770-771</div>
+        <div class="c3">Execution address of BASIC idle loop.
+            <br/> Default: $A483.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0304-$0305
+        </div>
+        <div class="c2">772-773</div>
+        <div class="c3">Execution address of BASIC line tokenizater routine.
+            <br/> Default: $A57C.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0306-$0307
+        </div>
+        <div class="c2">774-775</div>
+        <div class="c3">Execution address of BASIC token decoder routine.
+            <br/> Default: $A71A.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0308-$0309
+        </div>
+        <div class="c2">776-777</div>
+        <div class="c3">Execution address of BASIC instruction executor routine.
+            <br/> Default: $A7E4.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$030A-$030B
+        </div>
+        <div class="c2">778-779</div>
+        <div class="c3">Execution address of routine reading next item of BASIC expression.
+            <br/> Default: $AE86.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$030C
+        </div>
+        <div class="c2">780</div>
+        <div class="c3">Default value of register A for SYS.
+            <br/> Value of register A after SYS.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$030D
+        </div>
+        <div class="c2">781</div>
+        <div class="c3">Default value of register X for SYS.
+            <br/> Value of register X after SYS.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$030E
+        </div>
+        <div class="c2">782</div>
+        <div class="c3">Default value of register Y for SYS.
+            <br/> Value of register Y after SYS.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$030F
+        </div>
+        <div class="c2">783</div>
+        <div class="c3">Default value of status register for SYS.
+            <br/> Value of status register after SYS.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0310-$0312
+        </div>
+        <div class="c2">784-786</div>
+        <div class="c3">JMP ABS machine instruction, jump to USR() function.
+            <br/> $0311-$0312, 785-786: Execution address of USR() function.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0313
+        </div>
+        <div class="c2">787</div>
+        <div class="c3">Unused.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0314-$0315
+        </div>
+        <div class="c2">788-789</div>
+        <div class="c3">Execution address of interrupt service routine.
+            <br/> Default: $EA31.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0316-$0317
+        </div>
+        <div class="c2">790-791</div>
+        <div class="c3">Execution address of BRK service routine.
+            <br/> Default: $FE66.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0318-$0319
+        </div>
+        <div class="c2">792-793</div>
+        <div class="c3">Execution address of non-maskable interrupt service routine.
+            <br/> Default: $FE47.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$031A-$031B
+        </div>
+        <div class="c2">794-795</div>
+        <div class="c3">Execution address of OPEN, routine opening files.
+            <br/> Default: $F34A.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$031C-$031D
+        </div>
+        <div class="c2">796-797</div>
+        <div class="c3">Execution address of CLOSE, routine closing files.
+            <br/> Default: $F291.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$031E-$031F
+        </div>
+        <div class="c2">798-799</div>
+        <div class="c3">Execution address of CHKIN, routine defining file as default input.
+            <br/> Default: $F20E.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0320-$0321
+        </div>
+        <div class="c2">800-801</div>
+        <div class="c3">Execution address of CHKOUT, routine defining file as default output.
+            <br/> Default: $F250.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0322-$0323
+        </div>
+        <div class="c2">802-803</div>
+        <div class="c3">Execution address of CLRCHN, routine initializating input/output.
+            <br/> Default: $F333.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0324-$0325
+        </div>
+        <div class="c2">804-805</div>
+        <div class="c3">Execution address of CHRIN, data input routine, except for keyboard and RS232 input.
+            <br/> Default: $F157.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0326-$0327
+        </div>
+        <div class="c2">806-807</div>
+        <div class="c3">Execution address of CHROUT, general purpose data output routine.
+            <br/> Default: $F1CA.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0328-$0329
+        </div>
+        <div class="c2">808-809</div>
+        <div class="c3">Execution address of STOP, routine checking the status of Stop key indicator, at memory address $0091.
+            <br/> Default: $F6ED.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$032A-$032B
+        </div>
+        <div class="c2">810-811</div>
+        <div class="c3">Execution address of GETIN, general purpose data input routine.
+            <br/> Default: $F13E.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$032C-$032D
+        </div>
+        <div class="c2">812-813</div>
+        <div class="c3">Execution address of CLALL, routine initializing input/output and clearing all file assignment tables.
+            <br/> Default: $F32F.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$032E-$032F
+        </div>
+        <div class="c2">814-815</div>
+        <div class="c3">Unused.
+            <br/> Default: $FE66.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0330-$0331
+        </div>
+        <div class="c2">816-817</div>
+        <div class="c3">Execution address of LOAD, routine loading files.
+            <br/> Default: $F4A5.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0332-$0333
+        </div>
+        <div class="c2">818-819</div>
+        <div class="c3">Execution address of SAVE, routine saving files.
+            <br/> Default: $F5ED.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0334-$033B
+        </div>
+        <div class="c2">820-827</div>
+        <div class="c3">Unused (8 bytes).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$033C-$03FB
+        </div>
+        <div class="c2">828-1019</div>
+        <div class="c3">Datasette buffer (192 bytes).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$03FC-$03FF
+        </div>
+        <div class="c2">1020-1023</div>
+        <div class="c3">Unused (4 bytes).
+        </div>
+    </div>
+    <div class="cspan">$0400-$07FF, 1024-2047
+        <br>Default screen memory
+    </div>
+    <div class="container">
+        <div class="c1">$0400-$07E7
+        </div>
+        <div class="c2">1024-2023</div>
+        <div class="c3">Default area of screen memory (1000 bytes).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$07E8-$07F7
+        </div>
+        <div class="c2">2024-2039</div>
+        <div class="c3">Unused (16 bytes).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$07F8-$07FF
+        </div>
+        <div class="c2">2040-2047</div>
+        <div class="c3">Default area for sprite pointers (8 bytes).
+        </div>
+    </div>
+    <div class="cspan">$0800-$9FFF, 2048-40959
+        <br>BASIC area
+    </div>
+    <div class="container">
+        <div class="c1">$0800
+        </div>
+        <div class="c2">2048</div>
+        <div class="c3">Unused. (Must contain a value of 0 so that the BASIC program can be RUN.)</div>
+    </div>
+    <div class="container">
+        <div class="c1">$0801-$9FFF
+        </div>
+        <div class="c2">2049-40959</div>
+        <div class="c3">Default BASIC area (38911 bytes).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$8000-$9FFF
+        </div>
+        <div class="c2">32768-40959</div>
+        <div class="c3">Optional cartridge ROM (8192 bytes).
+            <br/> $8000-$8001, 32768-32769: Execution address of cold reset.
+            <br/> $8002-$8003, 32770-32771: Execution address of non-maskable interrupt service routine.
+            <br/> $8004-$8008, 32772-32776: Cartridge signature. If contains the uppercase PETSCII string "CBM80" ($C3,$C2,$CD,$38,$30) then the routine vectors are accepted by the KERNAL.
+        </div>
+    </div>
+    <div class="cspan">$A000-$BFFF, 40960-49151
+        <br>BASIC ROM
+    </div>
+    <div class="container">
+        <div class="c1">$A000-$BFFF
+        </div>
+        <div class="c2">40960-49151</div>
+        <div class="c3">BASIC ROM or RAM area (8192 bytes); depends on the value of bits #0-#2 of the processor port at memory address $0001:
+            <ul>
+                <li>
+                    %x00, %x01 or %x10: RAM area.
+                </li>
+                <li>
+                    %x11: BASIC ROM.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="cspan">$C000-$CFFF, 49152-53247
+        <br>Upper RAM area
+    </div>
+    <div class="container">
+        <div class="c1">$C000-$CFFF
+        </div>
+        <div class="c2">49152-53247</div>
+        <div class="c3">Upper RAM area (4096 bytes).
+        </div>
+    </div>
+    <div class="cspan">$D000-$DFFF, 53248-57343
+        <br>I/O Area
+    </div>
+    <div class="container">
+        <div class="c1">$D000-$DFFF
+        </div>
+        <div class="c2">53248-57343</div>
+        <div class="c3">I/O Area (memory mapped chip registers), Character ROM or RAM area (4096 bytes); depends on the value of bits #0-#2 of the processor port at memory address $0001:
+            <ul>
+                <li>
+                    %x00: RAM area.
+                </li>
+                <li>
+                    %0xx: Character ROM. (Except for the value %000, see above.)
+                </li>
+                <li>
+                    %1xx: I/O Area. (Except for the value %100, see above.)
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="cspan">$D000-$DFFF, 53248-57343
+        <br>Character ROM
+    </div>
+    <div class="container">
+        <div class="c1">$D000-$DFFF
+        </div>
+        <div class="c2">53248-57343</div>
+        <div class="c3">Character ROM, shape of characters (4096 bytes).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D000-$D7FF
+        </div>
+        <div class="c2">53248-55295</div>
+        <div class="c3">Shape of characters in uppercase/graphics character set (2048 bytes, 256 entries).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D800-$DFFF
+        </div>
+        <div class="c2">55295-57343</div>
+        <div class="c3">Shape of characters in lowercase/uppercase character set (2048 bytes, 256 entries).
+        </div>
+    </div>
+    <div class="cspan">$D000-$D3FF, 53248-54271
+        <br>VIC-II; video display
+    </div>
+    <div class="container">
+        <div class="c1">$D000
+        </div>
+        <div class="c2">53248</div>
+        <div class="c3">Sprite #0 X-coordinate (only bits #0-#7).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D001
+        </div>
+        <div class="c2">53249</div>
+        <div class="c3">Sprite #0 Y-coordinate.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D002
+        </div>
+        <div class="c2">53250</div>
+        <div class="c3">Sprite #1 X-coordinate (only bits #0-#7).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D003
+        </div>
+        <div class="c2">53251</div>
+        <div class="c3">Sprite #1 Y-coordinate.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D004
+        </div>
+        <div class="c2">53252</div>
+        <div class="c3">Sprite #2 X-coordinate (only bits #0-#7).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D005
+        </div>
+        <div class="c2">53253</div>
+        <div class="c3">Sprite #2 Y-coordinate.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D006
+        </div>
+        <div class="c2">53254</div>
+        <div class="c3">Sprite #3 X-coordinate (only bits #0-#7).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D007
+        </div>
+        <div class="c2">53255</div>
+        <div class="c3">Sprite #3 Y-coordinate.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D008
+        </div>
+        <div class="c2">53256</div>
+        <div class="c3">Sprite #4 X-coordinate (only bits #0-#7).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D009
+        </div>
+        <div class="c2">53257</div>
+        <div class="c3">Sprite #4 Y-coordinate.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D00A
+        </div>
+        <div class="c2">53258</div>
+        <div class="c3">Sprite #5 X-coordinate (only bits #0-#7).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D00B
+        </div>
+        <div class="c2">53259</div>
+        <div class="c3">Sprite #5 Y-coordinate.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D00C
+        </div>
+        <div class="c2">53260</div>
+        <div class="c3">Sprite #6 X-coordinate (only bits #0-#7).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D00D
+        </div>
+        <div class="c2">53261</div>
+        <div class="c3">Sprite #6 Y-coordinate.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D00E
+        </div>
+        <div class="c2">53262</div>
+        <div class="c3">Sprite #7 X-coordinate (only bits #0-#7).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D00F
+        </div>
+        <div class="c2">53263</div>
+        <div class="c3">Sprite #7 Y-coordinate.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D010
+        </div>
+        <div class="c2">53264</div>
+        <div class="c3">Sprite #0-#7 X-coordinates (bit #8). Bits:
+            <ul>
+                <li>
+                    Bit #x: Sprite #x X-coordinate bit #8.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D011
+        </div>
+        <div class="c2">53265</div>
+        <div class="c3">Screen control register #1. Bits:
+            <ul>
+                <li>
+                    Bits #0-#2: Vertical raster scroll.
+                </li>
+                <li>
+                    Bit #3: Screen height; 0 = 24 rows; 1 = 25 rows.
+                </li>
+                <li>
+                    Bit #4: 0 = Screen off, complete screen is covered by border; 1 = Screen on, normal screen contents are visible.
+                </li>
+                <li>
+                    Bit #5: 0 = Text mode; 1 = Bitmap mode.
+                </li>
+                <li>
+                    Bit #6: 1 = Extended background mode on.
+                </li>
+                <li>
+                    Bit #7: Read: Current raster line (bit #8).
+                    <br/> Write: Raster line to generate interrupt at (bit #8).
+                </li>
+            </ul>
+            Default: $1B, %00011011.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D012
+        </div>
+        <div class="c2">53266</div>
+        <div class="c3">Read: Current raster line (bits #0-#7).
+            <br/> Write: Raster line to generate interrupt at (bits #0-#7).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D013
+        </div>
+        <div class="c2">53267</div>
+        <div class="c3">Light pen X-coordinate (bits #1-#8).
+            <br/> Read-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D014
+        </div>
+        <div class="c2">53268</div>
+        <div class="c3">Light pen Y-coordinate.
+            <br/> Read-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D015
+        </div>
+        <div class="c2">53269</div>
+        <div class="c3">Sprite enable register. Bits:
+            <ul>
+                <li>
+                    Bit #x: 1 = Sprite #x is enabled, drawn onto the screen.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D016
+        </div>
+        <div class="c2">53270</div>
+        <div class="c3">Screen control register #2. Bits:
+            <ul>
+                <li>
+                    Bits #0-#2: Horizontal raster scroll.
+                </li>
+                <li>
+                    Bit #3: Screen width; 0 = 38 columns; 1 = 40 columns.
+                </li>
+                <li>
+                    Bit #4: 1 = Multicolor mode on.
+                </li>
+            </ul>
+            Default: $C8, %11001000.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D017
+        </div>
+        <div class="c2">53271</div>
+        <div class="c3">Sprite double height register. Bits:
+            <ul>
+                <li>
+                    Bit #x: 1 = Sprite #x is stretched to double height.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D018
+        </div>
+        <div class="c2">53272</div>
+        <div class="c3">Memory setup register. Bits:
+            <ul>
+                <li>
+                    Bits #1-#3: In text mode, pointer to character memory (bits #11-#13), relative to VIC bank, memory address $DD00. Values:
+                    <ul>
+                        <li>
+                            %000, 0: $0000-$07FF, 0-2047.
+                        </li>
+                        <li>
+                            %001, 1: $0800-$0FFF, 2048-4095.
+                        </li>
+                        <li>
+                            %010, 2: $1000-$17FF, 4096-6143.
+                        </li>
+                        <li>
+                            %011, 3: $1800-$1FFF, 6144-8191.
+                        </li>
+                        <li>
+                            %100, 4: $2000-$27FF, 8192-10239.
+                        </li>
+                        <li>
+                            %101, 5: $2800-$2FFF, 10240-12287.
+                        </li>
+                        <li>
+                            %110, 6: $3000-$37FF, 12288-14335.
+                        </li>
+                        <li>
+                            %111, 7: $3800-$3FFF, 14336-16383.
+                        </li>
+                    </ul>
+                    Values %010 and %011 in VIC bank #0 and #2 select Character ROM instead.
+                    <br/> In bitmap mode, pointer to bitmap memory (bit #13), relative to VIC bank, memory address $DD00. Values:
+                    <ul>
+                        <li>
+                            %0xx, 0: $0000-$1FFF, 0-8191.
+                        </li>
+                        <li>
+                            %1xx, 4: $2000-$3FFF, 8192-16383.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Bits #4-#7: Pointer to screen memory (bits #10-#13), relative to VIC bank, memory address $DD00. Values:
+                    <ul>
+                        <li>
+                            %0000, 0: $0000-$03FF, 0-1023.
+                        </li>
+                        <li>
+                            %0001, 1: $0400-$07FF, 1024-2047.
+                        </li>
+                        <li>
+                            %0010, 2: $0800-$0BFF, 2048-3071.
+                        </li>
+                        <li>
+                            %0011, 3: $0C00-$0FFF, 3072-4095.
+                        </li>
+                        <li>
+                            %0100, 4: $1000-$13FF, 4096-5119.
+                        </li>
+                        <li>
+                            %0101, 5: $1400-$17FF, 5120-6143.
+                        </li>
+                        <li>
+                            %0110, 6: $1800-$1BFF, 6144-7167.
+                        </li>
+                        <li>
+                            %0111, 7: $1C00-$1FFF, 7168-8191.
+                        </li>
+                        <li>
+                            %1000, 8: $2000-$23FF, 8192-9215.
+                        </li>
+                        <li>
+                            %1001, 9: $2400-$27FF, 9216-10239.
+                        </li>
+                        <li>
+                            %1010, 10: $2800-$2BFF, 10240-11263.
+                        </li>
+                        <li>
+                            %1011, 11: $2C00-$2FFF, 11264-12287.
+                        </li>
+                        <li>
+                            %1100, 12: $3000-$33FF, 12288-13311.
+                        </li>
+                        <li>
+                            %1101, 13: $3400-$37FF, 13312-14335.
+                        </li>
+                        <li>
+                            %1110, 14: $3800-$3BFF, 14336-15359.
+                        </li>
+                        <li>
+                            %1111, 15: $3C00-$3FFF, 15360-16383.
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D019
+        </div>
+        <div class="c2">53273</div>
+        <div class="c3">Interrupt status register. Read bits:
+            <ul>
+                <li>
+                    Bit #0: 1 = Current raster line is equal to the raster line to generate interrupt at.
+                </li>
+                <li>
+                    Bit #1: 1 = Sprite-background collision occurred.
+                </li>
+                <li>
+                    Bit #2: 1 = Sprite-sprite collision occurred.
+                </li>
+                <li>
+                    Bit #3: 1 = Light pen signal arrived.
+                </li>
+                <li>
+                    Bit #7: 1 = An event (or more events), that may generate an interrupt, occurred and it has not been (not all of them have been) acknowledged yet.
+                </li>
+            </ul>
+            Write bits:
+            <ul>
+                <li>
+                    Bit #0: 1 = Acknowledge raster interrupt.
+                </li>
+                <li>
+                    Bit #1: 1 = Acknowledge sprite-background collision interrupt.
+                </li>
+                <li>
+                    Bit #2: 1 = Acknowledge sprite-sprite collision interrupt.
+                </li>
+                <li>
+                    Bit #3: 1 = Acknowledge light pen interrupt.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D01A
+        </div>
+        <div class="c2">53274</div>
+        <div class="c3">Interrupt control register. Bits:
+            <ul>
+                <li>
+                    Bit #0: 1 = Raster interrupt enabled.
+                </li>
+                <li>
+                    Bit #1: 1 = Sprite-background collision interrupt enabled.
+                </li>
+                <li>
+                    Bit #2: 1 = Sprite-sprite collision interrupt enabled.
+                </li>
+                <li>
+                    Bit #3: 1 = Light pen interrupt enabled.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D01B
+        </div>
+        <div class="c2">53275</div>
+        <div class="c3">Sprite priority register. Bits:
+            <ul>
+                <li>
+                    Bit #x: 0 = Sprite #x is drawn in front of screen contents; 1 = Sprite #x is behind screen contents.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D01C
+        </div>
+        <div class="c2">53276</div>
+        <div class="c3">Sprite multicolor mode register. Bits:
+            <ul>
+                <li>
+                    Bit #x: 0 = Sprite #x is single color; 1 = Sprite #x is multicolor.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D01D
+        </div>
+        <div class="c2">53277</div>
+        <div class="c3">Sprite double width register. Bits:
+            <ul>
+                <li>
+                    Bit #x: 1 = Sprite #x is stretched to double width.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D01E
+        </div>
+        <div class="c2">53278</div>
+        <div class="c3">Sprite-sprite collision register. Read bits:
+            <ul>
+                <li>
+                    Bit #x: 1 = Sprite #x collided with another sprite.
+                </li>
+            </ul>
+            Write: Enable further detection of sprite-sprite collisions.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D01F
+        </div>
+        <div class="c2">53279</div>
+        <div class="c3">Sprite-background collision register. Read bits:
+            <ul>
+                <li>
+                    Bit #x: 1 = Sprite #x collided with background.
+                </li>
+            </ul>
+            Write: Enable further detection of sprite-background collisions.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D020
+        </div>
+        <div class="c2">53280</div>
+        <div class="c3">Border color (only bits #0-#3).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D021
+        </div>
+        <div class="c2">53281</div>
+        <div class="c3">Background color (only bits #0-#3).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D022
+        </div>
+        <div class="c2">53282</div>
+        <div class="c3">Extra background color #1 (only bits #0-#3).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D023
+        </div>
+        <div class="c2">53283</div>
+        <div class="c3">Extra background color #2 (only bits #0-#3).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D024
+        </div>
+        <div class="c2">53284</div>
+        <div class="c3">Extra background color #3 (only bits #0-#3).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D025
+        </div>
+        <div class="c2">53285</div>
+        <div class="c3">Sprite extra color #1 (only bits #0-#3).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D026
+        </div>
+        <div class="c2">53286</div>
+        <div class="c3">Sprite extra color #1 (only bits #0-#3).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D027
+        </div>
+        <div class="c2">53287</div>
+        <div class="c3">Sprite #0 color (only bits #0-#3).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D028
+        </div>
+        <div class="c2">53288</div>
+        <div class="c3">Sprite #1 color (only bits #0-#3).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D029
+        </div>
+        <div class="c2">53289</div>
+        <div class="c3">Sprite #2 color (only bits #0-#3).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D02A
+        </div>
+        <div class="c2">53290</div>
+        <div class="c3">Sprite #3 color (only bits #0-#3).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D02B
+        </div>
+        <div class="c2">53291</div>
+        <div class="c3">Sprite #4 color (only bits #0-#3).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D02C
+        </div>
+        <div class="c2">53292</div>
+        <div class="c3">Sprite #5 color (only bits #0-#3).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D02D
+        </div>
+        <div class="c2">53293</div>
+        <div class="c3">Sprite #6 color (only bits #0-#3).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D02E
+        </div>
+        <div class="c2">53294</div>
+        <div class="c3">Sprite #7 color (only bits #0-#3).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D02F-$D03F
+        </div>
+        <div class="c2">53295-53311</div>
+        <div class="c3">Unusable (17 bytes).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D040-$D3FF
+        </div>
+        <div class="c2">53312-54271</div>
+        <div class="c3">VIC-II register images (repeated every $40, 64 bytes).
+        </div>
+    </div>
+    <div class="cspan">$D400-$D7FF, 54272-55295
+        <br>SID; audio
+    </div>
+    <div class="container">
+        <div class="c1">$D400-$D401
+        </div>
+        <div class="c2">54272-54273</div>
+        <div class="c3">Voice #1 frequency.
+            <br/> Write-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D402-$D403
+        </div>
+        <div class="c2">54274-54275</div>
+        <div class="c3">Voice #1 pulse width.
+            <br/> Write-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D404
+        </div>
+        <div class="c2">54276</div>
+        <div class="c3">Voice #1 control register. Bits:
+            <ul>
+                <li>
+                    Bit #0: 0 = Voice off, Release cycle; 1 = Voice on, Attack-Decay-Sustain cycle.
+                </li>
+                <li>
+                    Bit #1: 1 = Synchronization enabled.
+                </li>
+                <li>
+                    Bit #2: 1 = Ring modulation enabled.
+                </li>
+                <li>
+                    Bit #3: 1 = Disable voice, reset noise generator.
+                </li>
+                <li>
+                    Bit #4: 1 = Triangle waveform enabled.
+                </li>
+                <li>
+                    Bit #5: 1 = Saw waveform enabled.
+                </li>
+                <li>
+                    Bit #6: 1 = Rectangle waveform enabled.
+                </li>
+                <li>
+                    Bit #7: 1 = Noise enabled.
+                </li>
+            </ul>
+            Write-only.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D405
+        </div>
+        <div class="c2">54277</div>
+        <div class="c3">Voice #1 Attack and Decay length. Bits:
+            <ul>
+                <li>
+                    Bits #0-#3: Decay length. Values:
+                    <ul>
+                        <li>
+                            %0000, 0: 6 ms.
+                        </li>
+                        <li>
+                            %0001, 1: 24 ms.
+                        </li>
+                        <li>
+                            %0010, 2: 48 ms.
+                        </li>
+                        <li>
+                            %0011, 3: 72 ms.
+                        </li>
+                        <li>
+                            %0100, 4: 114 ms.
+                        </li>
+                        <li>
+                            %0101, 5: 168 ms.
+                        </li>
+                        <li>
+                            %0110, 6: 204 ms.
+                        </li>
+                        <li>
+                            %0111, 7: 240 ms.
+                        </li>
+                        <li>
+                            %1000, 8: 300 ms.
+                        </li>
+                        <li>
+                            %1001, 9: 750 ms.
+                        </li>
+                        <li>
+                            %1010, 10: 1.5 s.
+                        </li>
+                        <li>
+                            %1011, 11: 2.4 s.
+                        </li>
+                        <li>
+                            %1100, 12: 3 s.
+                        </li>
+                        <li>
+                            %1101, 13: 9 s.
+                        </li>
+                        <li>
+                            %1110, 14: 15 s.
+                        </li>
+                        <li>
+                            %1111, 15: 24 s.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Bits #4-#7: Attack length. Values:
+                    <ul>
+                        <li>
+                            %0000, 0: 2 ms.
+                        </li>
+                        <li>
+                            %0001, 1: 8 ms.
+                        </li>
+                        <li>
+                            %0010, 2: 16 ms.
+                        </li>
+                        <li>
+                            %0011, 3: 24 ms.
+                        </li>
+                        <li>
+                            %0100, 4: 38 ms.
+                        </li>
+                        <li>
+                            %0101, 5: 56 ms.
+                        </li>
+                        <li>
+                            %0110, 6: 68 ms.
+                        </li>
+                        <li>
+                            %0111, 7: 80 ms.
+                        </li>
+                        <li>
+                            %1000, 8: 100 ms.
+                        </li>
+                        <li>
+                            %1001, 9: 250 ms.
+                        </li>
+                        <li>
+                            %1010, 10: 500 ms.
+                        </li>
+                        <li>
+                            %1011, 11: 800 ms.
+                        </li>
+                        <li>
+                            %1100, 12: 1 s.
+                        </li>
+                        <li>
+                            %1101, 13: 3 s.
+                        </li>
+                        <li>
+                            %1110, 14: 5 s.
+                        </li>
+                        <li>
+                            %1111, 15: 8 s.
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            Write-only.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D406
+        </div>
+        <div class="c2">54278</div>
+        <div class="c3">Voice #1 Sustain volume and Release length. Bits:
+            <ul>
+                <li>
+                    Bits #0-#3: Release length. Values:
+                    <ul>
+                        <li>
+                            %0000, 0: 6 ms.
+                        </li>
+                        <li>
+                            %0001, 1: 24 ms.
+                        </li>
+                        <li>
+                            %0010, 2: 48 ms.
+                        </li>
+                        <li>
+                            %0011, 3: 72 ms.
+                        </li>
+                        <li>
+                            %0100, 4: 114 ms.
+                        </li>
+                        <li>
+                            %0101, 5: 168 ms.
+                        </li>
+                        <li>
+                            %0110, 6: 204 ms.
+                        </li>
+                        <li>
+                            %0111, 7: 240 ms.
+                        </li>
+                        <li>
+                            %1000, 8: 300 ms.
+                        </li>
+                        <li>
+                            %1001, 9: 750 ms.
+                        </li>
+                        <li>
+                            %1010, 10: 1.5 s.
+                        </li>
+                        <li>
+                            %1011, 11: 2.4 s.
+                        </li>
+                        <li>
+                            %1100, 12: 3 s.
+                        </li>
+                        <li>
+                            %1101, 13: 9 s.
+                        </li>
+                        <li>
+                            %1110, 14: 15 s.
+                        </li>
+                        <li>
+                            %1111, 15: 24 s.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Bits #4-#7: Sustain volume.
+                </li>
+            </ul>
+            Write-only.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D407-$D408
+        </div>
+        <div class="c2">54279-54280</div>
+        <div class="c3">Voice #2 frequency.
+        </div>
+        <div class="c2">Write-only.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D409-$D40A
+        </div>
+        <div class="c2">54281-54282</div>
+        <div class="c3">Voice #2 pulse width.
+        </div>
+        <div class="c2">Write-only.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D40B
+        </div>
+        <div class="c2">54283</div>
+        <div class="c3">Voice #2 control register.
+            <br/> Write-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D40C
+        </div>
+        <div class="c2">54284</div>
+        <div class="c3">Voice #2 Attack and Decay length.
+            <br/> Write-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D40D
+        </div>
+        <div class="c2">54285</div>
+        <div class="c3">Voice #2 Sustain volume and Release length.
+            <br/> Write-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D40E-$D40F
+        </div>
+        <div class="c2">54286-54287</div>
+        <div class="c3">Voice #3 frequency.
+            <br/> Write-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D410-$D411
+        </div>
+        <div class="c2">54288-54289</div>
+        <div class="c3">Voice #3 pulse width.
+            <br/> Write-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D412
+        </div>
+        <div class="c2">54290</div>
+        <div class="c3">Voice #3 control register.
+            <br/> Write-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D413
+        </div>
+        <div class="c2">54291</div>
+        <div class="c3">Voice #3 Attack and Decay length.
+            <br/> Write-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D414
+        </div>
+        <div class="c2">54292</div>
+        <div class="c3">Voice #3 Sustain volume and Release length.
+            <br/> Write-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D415
+        </div>
+        <div class="c2">54293</div>
+        <div class="c3">Filter cut off frequency (bits #0-#2).
+            <br/> Write-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D416
+        </div>
+        <div class="c2">54294</div>
+        <div class="c3">Filter cut off frequency (bits #3-#10).
+            <br/> Write-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D417
+        </div>
+        <div class="c2">54295</div>
+        <div class="c3">Filter control. Bits:
+            <ul>
+                <li>
+                    Bit #0: 1 = Voice #1 filtered.
+                </li>
+                <li>
+                    Bit #1: 1 = Voice #2 filtered.
+                </li>
+                <li>
+                    Bit #2: 1 = Voice #3 filtered.
+                </li>
+                <li>
+                    Bit #3: 1 = External voice filtered.
+                </li>
+                <li>
+                    Bits #4-#7: Filter resonance.
+                </li>
+            </ul>
+            Write-only.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D418
+        </div>
+        <div class="c2">54296</div>
+        <div class="c3">Volume and filter modes. Bits:
+            <ul>
+                <li>
+                    Bits #0-#3: Volume.
+                </li>
+                <li>
+                    Bit #4: 1 = Low pass filter enabled.
+                </li>
+                <li>
+                    Bit #5: 1 = Band pass filter enabled.
+                </li>
+                <li>
+                    Bit #6: 1 = High pass filter enabled.
+                </li>
+                <li>
+                    Bit #7: 1 = Voice #3 disabled.
+                </li>
+            </ul>
+            Write-only.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$D419
+        </div>
+        <div class="c2">54297</div>
+        <div class="c3">X value of paddle selected at memory address $DD00. (Updates at every 512 system cycles.)
+            <br/> Read-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D41A
+        </div>
+        <div class="c2">54298</div>
+        <div class="c3">Y value of paddle selected at memory address $DD00. (Updates at every 512 system cycles.)
+            <br/> Read-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D41B
+        </div>
+        <div class="c2">54299</div>
+        <div class="c3">Voice #3 waveform output.
+            <br/> Read-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D41C
+        </div>
+        <div class="c2">54300</div>
+        <div class="c3">Voice #3 ADSR output.
+            <br/> Read-only.
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D41D-$D41F
+        </div>
+        <div class="c2">54301-54303</div>
+        <div class="c3">Unusable (3 bytes).
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$D420-$D7FF
+        </div>
+        <div class="c2">54304-55295</div>
+        <div class="c3">SID register images (repeated every $20, 32 bytes).
+        </div>
+    </div>
+    <div class="cspan">$D800-$DBFF, 55296-56319
+        <br>Color RAM
+    </div>
+    <div class="container">
+        <div class="c1">$D800-$DBE7
+        </div>
+        <div class="c2">55296-56295</div>
+        <div class="c3">Color RAM (1000 bytes, only bits #0-#3).</div>
+    </div>
+    <div class="container">
+        <div class="c1">$DBE8-$DBFF
+        </div>
+        <div class="c2">56296-56319</div>
+        <div class="c3">Unused (24 bytes, only bits #0-#3).
+        </div>
+    </div>
+    <div class="cspan">$DC00-$DCFF, 56320-56575
+        <br>CIA#1; inputs (keyboard, joystick, mouse), datasette, IRQ control
+    </div>
+    <div class="container">
+        <div class="c1">$DC00
+        </div>
+        <div class="c2">56320</div>
+        <div class="c3">Port A, keyboard matrix columns and joystick #2. Read bits:
+            <ul>
+                <li>
+                    Bit #0: 0 = Port 2 joystick up pressed.
+                </li>
+                <li>
+                    Bit #1: 0 = Port 2 joystick down pressed.
+                </li>
+                <li>
+                    Bit #2: 0 = Port 2 joystick left pressed.
+                </li>
+                <li>
+                    Bit #3: 0 = Port 2 joystick right pressed.
+                </li>
+                <li>
+                    Bit #4: 0 = Port 2 joystick fire pressed.
+                </li>
+            </ul>
+            Write bits:
+            <ul>
+                <li>
+                    Bit #x: 0 = Select keyboard matrix column #x.
+                </li>
+                <li>
+                    Bits #6-#7: Paddle selection; %01 = Paddle #1; %10 = Paddle #2.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$DC01
+        </div>
+        <div class="c2">56321</div>
+        <div class="c3">Port B, keyboard matrix rows and joystick #1. Bits:
+            <ul>
+                <li>
+                    Bit #x: 0 = A key is currently being pressed in keyboard matrix row #x, in the column selected at memory address $DC00.
+                </li>
+                <li>
+                    Bit #0: 0 = Port 1 joystick up pressed.
+                </li>
+                <li>
+                    Bit #1: 0 = Port 1 joystick down pressed.
+                </li>
+                <li>
+                    Bit #2: 0 = Port 1 joystick left pressed.
+                </li>
+                <li>
+                    Bit #3: 0 = Port 1 joystick right pressed.
+                </li>
+                <li>
+                    Bit #4: 0 = Port 1 joystick fire pressed.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$DC02
+        </div>
+        <div class="c2">56322</div>
+        <div class="c3">Port A data direction register.
+            <ul>
+                <li>
+                    Bit #x: 0 = Bit #x in port A can only be read; 1 = Bit #x in port A can be read and written.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$DC03
+        </div>
+        <div class="c2">56323</div>
+        <div class="c3">Port B data direction register.
+            <ul>
+                <li>
+                    Bit #x: 0 = Bit #x in port B can only be read; 1 = Bit #x in port B can be read and written.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$DC04-$DC05
+        </div>
+        <div class="c2">56324-56325</div>
+        <div class="c3">Timer A. Read: Current timer value.
+            <br/> Write: Set timer start value.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$DC06-$DC07
+        </div>
+        <div class="c2">56326-56327</div>
+        <div class="c3">Timer B. Read: Current timer value.
+            <br/> Write: Set timer start value.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$DC08
+        </div>
+        <div class="c2">56328</div>
+        <div class="c3">Time of Day, tenth seconds (in BCD). Values: $00-$09. Read: Current TOD value.
+            <br/> Write: Set TOD or alarm time.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$DC09
+        </div>
+        <div class="c2">56329</div>
+        <div class="c3">Time of Day, seconds (in BCD). Values: $00-$59. Read: Current TOD value.
+            <br/> Write: Set TOD or alarm time.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$DC0A
+        </div>
+        <div class="c2">56330</div>
+        <div class="c3">Time of Day, minutes (in BCD). Values: $00-$59. Read: Current TOD value.
+            <br/> Write: Set TOD or alarm time.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$DC0B
+        </div>
+        <div class="c2">56331</div>
+        <div class="c3">Time of Day, hours (in BCD). Read bits:
+            <ul>
+                <li>
+                    Bits #0-#5: Hours.
+                </li>
+                <li>
+                    Bit #7: 0 = AM; 1 = PM.
+                </li>
+            </ul>
+            Write: Set TOD or alarm time.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$DC0C
+        </div>
+        <div class="c2">56332</div>
+        <div class="c3">Serial shift register. (Bits are read and written upon every positive edge of the CNT pin.)</div>
+    </div>
+    <div class="container">
+        <div class="c1">$DC0D
+        </div>
+        <div class="c2">56333</div>
+        <div class="c3">Interrupt control and status register. Read bits:
+            <ul>
+                <li>
+                    Bit #0: 1 = Timer A underflow occurred.
+                </li>
+                <li>
+                    Bit #1: 1 = Timer B underflow occurred.
+                </li>
+                <li>
+                    Bit #2: 1 = TOD is equal to alarm time.
+                </li>
+                <li>
+                    Bit #3: 1 = A complete byte has been received into or sent from serial shift register.
+                </li>
+                <li>
+                    Bit #4: Signal level on FLAG pin, datasette input.
+                </li>
+                <li>
+                    Bit #7: An interrupt has been generated.
+                </li>
+            </ul>
+            Write bits:
+            <ul>
+                <li>
+                    Bit #0: 1 = Enable interrupts generated by timer A underflow.
+                </li>
+                <li>
+                    Bit #1: 1 = Enable interrupts generated by timer B underflow.
+                </li>
+                <li>
+                    Bit #2: 1 = Enable TOD alarm interrupt.
+                </li>
+                <li>
+                    Bit #3: 1 = Enable interrupts generated by a byte having been received/sent via serial shift register.
+                </li>
+                <li>
+                    Bit #4: 1 = Enable interrupts generated by positive edge on FLAG pin.
+                </li>
+                <li>
+                    Bit #7: Fill bit; bits #0-#6, that are set to 1, get their values from this bit; bits #0-#6, that are set to 0, are left unchanged.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$DC0E
+        </div>
+        <div class="c2">56334</div>
+        <div class="c3">Timer A control register. Bits:
+            <ul>
+                <li>
+                    Bit #0: 0 = Stop timer; 1 = Start timer.
+                </li>
+                <li>
+                    Bit #1: 1 = Indicate timer underflow on port B bit #6.
+                </li>
+                <li>
+                    Bit #2: 0 = Upon timer underflow, invert port B bit #6; 1 = upon timer underflow, generate a positive edge on port B bit #6 for 1 system cycle.
+                </li>
+                <li>
+                    Bit #3: 0 = Timer restarts upon underflow; 1 = Timer stops upon underflow.
+                </li>
+                <li>
+                    Bit #4: 1 = Load start value into timer.
+                </li>
+                <li>
+                    Bit #5: 0 = Timer counts system cycles; 1 = Timer counts positive edges on CNT pin.
+                </li>
+                <li>
+                    Bit #6: Serial shift register direction; 0 = Input, read; 1 = Output, write.
+                </li>
+                <li>
+                    Bit #7: TOD speed; 0 = 60 Hz; 1 = 50 Hz.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$DC0F
+        </div>
+        <div class="c2">56335</div>
+        <div class="c3">Timer B control register. Bits:
+            <ul>
+                <li>
+                    Bit #0: 0 = Stop timer; 1 = Start timer.
+                </li>
+                <li>
+                    Bit #1: 1 = Indicate timer underflow on port B bit #7.
+                </li>
+                <li>
+                    Bit #2: 0 = Upon timer underflow, invert port B bit #7; 1 = upon timer underflow, generate a positive edge on port B bit #7 for 1 system cycle.
+                </li>
+                <li>
+                    Bit #3: 0 = Timer restarts upon underflow; 1 = Timer stops upon underflow.
+                </li>
+                <li>
+                    Bit #4: 1 = Load start value into timer.
+                </li>
+                <li>
+                    Bits #5-#6: %00 = Timer counts system cycles; %01 = Timer counts positive edges on CNT pin; %10 = Timer counts underflows of timer A; %11 = Timer counts underflows of timer A occurring along with a positive edge on CNT pin.
+                </li>
+                <li>
+                    Bit #7: 0 = Writing into TOD registers sets TOD; 1 = Writing into TOD registers sets alarm time.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$DC10-$DCFF
+        </div>
+        <div class="c2">56336-56575</div>
+        <div class="c3">CIA#1 register images (repeated every $10, 16 bytes).
+        </div>
+    </div>
+    <div class="cspan">$DD00-$DDFF, 56576-56831
+        <br>CIA#2; serial bus, RS232, NMI control
+    </div>
+    <div class="container">
+        <div class="c1">$DD00
+        </div>
+        <div class="c2">56576</div>
+        <div class="c3">Port A, serial bus access. Bits:
+            <ul>
+                <li>
+                    Bits #0-#1: VIC bank. Values:
+                    <ul>
+                        <li>
+                            %00, 0: Bank #3, $C000-$FFFF, 49152-65535.
+                        </li>
+                        <li>
+                            %01, 1: Bank #2, $8000-$BFFF, 32768-49151.
+                        </li>
+                        <li>
+                            %10, 2: Bank #1, $4000-$7FFF, 16384-32767.
+                        </li>
+                        <li>
+                            %11, 3: Bank #0, $0000-$3FFF, 0-16383.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Bit #2: RS232 TXD line, output bit.
+                </li>
+                <li>
+                    Bit #3: Serial bus ATN OUT; 0 = High; 1 = Low.
+                </li>
+                <li>
+                    Bit #4: Serial bus CLOCK OUT; 0 = High; 1 = Low.
+                </li>
+                <li>
+                    Bit #5: Serial bus DATA OUT; 0 = High; 1 = Low.
+                </li>
+                <li>
+                    Bit #6: Serial bus CLOCK IN; 0 = Low; 1 = High.
+                </li>
+                <li>
+                    Bit #7: Serial bus DATA IN; 0 = Low; 1 = High.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$DD01
+        </div>
+        <div class="c2">56577</div>
+        <div class="c3">Port B, RS232 access. Read bits:
+            <ul>
+                <li>
+                    Bit #0: RS232 RXD line, input bit.
+                </li>
+                <li>
+                    Bit #3: RS232 RI line.
+                </li>
+                <li>
+                    Bit #4: RS232 DCD line.
+                </li>
+                <li>
+                    Bit #5: User port H pin.
+                </li>
+                <li>
+                    Bit #6: RS232 CTS line; 1 = Sender is ready to send.
+                </li>
+                <li>
+                    Bit #7: RS232 DSR line; 1 = Receiver is ready to receive.
+                </li>
+            </ul>
+            Write bits:
+            <ul>
+                <li>
+                    Bit #1: RS232 RTS line. 1 = Sender is ready to send.
+                </li>
+                <li>
+                    Bit #2: RS232 DTR line. 1 = Receiver is ready to receive.
+                </li>
+                <li>
+                    Bit #3: RS232 RI line.
+                </li>
+                <li>
+                    Bit #4: RS232 DCD line.
+                </li>
+                <li>
+                    Bit #5: User port H pin.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$DD02
+        </div>
+        <div class="c2">56578</div>
+        <div class="c3">Port A data direction register.
+            <ul>
+                <li>
+                    Bit #x: 0 = Bit #x in port A can only be read; 1 = Bit #x in port A can be read and written.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$DD03
+        </div>
+        <div class="c2">56579</div>
+        <div class="c3">Port B data direction register.
+            <ul>
+                <li>
+                    Bit #x: 0 = Bit #x in port B can only be read; 1 = Bit #x in port B can be read and written.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$DD04-$DD05
+        </div>
+        <div class="c2">56580-56581</div>
+        <div class="c3">Timer A. Read: Current timer value.
+            <br/> Write: Set timer start value.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$DD06-$DD07
+        </div>
+        <div class="c2">56582-56583</div>
+        <div class="c3">Timer B. Read: Current timer value.
+            <br/> Write: Set timer start value.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$DD08
+        </div>
+        <div class="c2">56584</div>
+        <div class="c3">Time of Day, tenth seconds (in BCD). Values: $00-$09. Read: Current TOD value.
+            <br/> Write: Set TOD or alarm time.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$DD09
+        </div>
+        <div class="c2">56585</div>
+        <div class="c3">Time of Day, seconds (in BCD). Values: $00-$59. Read: Current TOD value.
+            <br/> Write: Set TOD or alarm time.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$DD0A
+        </div>
+        <div class="c2">56586</div>
+        <div class="c3">Time of Day, minutes (in BCD). Values: $00-$59. Read: Current TOD value.
+            <br/> Write: Set TOD or alarm time.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$DD0B
+        </div>
+        <div class="c2">56587</div>
+        <div class="c3">Time of Day, hours (in BCD). Read bits:
+            <ul>
+                <li>
+                    Bits #0-#5: Hours.
+                </li>
+                <li>
+                    Bit #7: 0 = AM; 1 = PM.
+                </li>
+            </ul>
+            Write: Set TOD or alarm time.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$DD0C
+        </div>
+        <div class="c2">56588</div>
+        <div class="c3">Serial shift register. (Bits are read and written upon every positive edge of the CNT pin.)</div>
+    </div>
+    <div class="container">
+        <div class="c1">$DD0D
+        </div>
+        <div class="c2">56589</div>
+        <div class="c3">Interrupt control and status register. Read bits:
+            <ul>
+                <li>
+                    Bit #0: 1 = Timer A underflow occurred.
+                </li>
+                <li>
+                    Bit #1: 1 = Timer B underflow occurred.
+                </li>
+                <li>
+                    Bit #2: 1 = TOD is equal to alarm time.
+                </li>
+                <li>
+                    Bit #3: 1 = A complete byte has been received into or sent from serial shift register.
+                </li>
+                <li>
+                    Bit #4: Signal level on FLAG pin.
+                </li>
+                <li>
+                    Bit #7: A non-maskable interrupt has been generated.
+                </li>
+            </ul>
+            Write bits:
+            <ul>
+                <li>
+                    Bit #0: 1 = Enable non-maskable interrupts generated by timer A underflow.
+                </li>
+                <li>
+                    Bit #1: 1 = Enable non-maskable interrupts generated by timer B underflow.
+                </li>
+                <li>
+                    Bit #2: 1 = Enable TOD alarm non-maskable interrupt.
+                </li>
+                <li>
+                    Bit #3: 1 = Enable non-maskable interrupts generated by a byte having been received/sent via serial shift register.
+                </li>
+                <li>
+                    Bit #4: 1 = Enable non-maskable interrupts generated by positive edge on FLAG pin.
+                </li>
+                <li>
+                    Bit #7: Fill bit; bits #0-#6, that are set to 1, get their values from this bit; bits #0-#6, that are set to 0, are left unchanged.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$DD0E
+        </div>
+        <div class="c2">56590</div>
+        <div class="c3">Timer A control register. Bits:
+            <ul>
+                <li>
+                    Bit #0: 0 = Stop timer; 1 = Start timer.
+                </li>
+                <li>
+                    Bit #1: 1 = Indicate timer underflow on port B bit #6.
+                </li>
+                <li>
+                    Bit #2: 0 = Upon timer underflow, invert port B bit #6; 1 = upon timer underflow, generate a positive edge on port B bit #6 for 1 system cycle.
+                </li>
+                <li>
+                    Bit #3: 0 = Timer restarts upon underflow; 1 = Timer stops upon underflow.
+                </li>
+                <li>
+                    Bit #4: 1 = Load start value into timer.
+                </li>
+                <li>
+                    Bit #5: 0 = Timer counts system cycles; 1 = Timer counts positive edges on CNT pin.
+                </li>
+                <li>
+                    Bit #6: Serial shift register direction; 0 = Input, read; 1 = Output, write.
+                </li>
+                <li>
+                    Bit #7: TOD speed; 0 = 60 Hz; 1 = 50 Hz.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$DD0F
+        </div>
+        <div class="c2">56591</div>
+        <div class="c3">Timer B control register. Bits:
+            <ul>
+                <li>
+                    Bit #0: 0 = Stop timer; 1 = Start timer.
+                </li>
+                <li>
+                    Bit #1: 1 = Indicate timer underflow on port B bit #7.
+                </li>
+                <li>
+                    Bit #2: 0 = Upon timer underflow, invert port B bit #7; 1 = upon timer underflow, generate a positive edge on port B bit #7 for 1 system cycle.
+                </li>
+                <li>
+                    Bit #3: 0 = Timer restarts upon underflow; 1 = Timer stops upon underflow.
+                </li>
+                <li>
+                    Bit #4: 1 = Load start value into timer.
+                </li>
+                <li>
+                    Bits #5-#6: %00 = Timer counts system cycles; %01 = Timer counts positive edges on CNT pin; %10 = Timer counts underflows of timer A; %11 = Timer counts underflows of timer A occurring along with a positive edge on CNT pin.
+                </li>
+                <li>
+                    Bit #7: 0 = Writing into TOD registers sets TOD; 1 = Writing into TOD registers sets alarm time.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c1">$DD10-$DDFF
+        </div>
+        <div class="c2">56592-56831</div>
+        <div class="c3">CIA#2 register images (repeated every $10, 16 bytes).
+        </div>
+    </div>
+    <div class="cspan">$DE00-$DEFF, 56832-57087
+        <br>I/O Area #1
+    </div>
+    <div class="container">
+        <div class="c1">$DE00-$DEFF
+        </div>
+        <div class="c2">56832-57087</div>
+        <div class="c3">I/O Area #1, memory mapped registers or machine code routines of optional external devices (256 bytes). Layout and contents depend on the actual device.
+        </div>
+    </div>
+    <div class="cspan">$DF00-$DFFF, 57088-57343
+        <br>I/O Area #2
+    </div>
+    <div class="container">
+        <div class="c1">$DF00-$DFFF
+        </div>
+        <div class="c2">57088-57343</div>
+        <div class="c3">I/O Area #2, memory mapped registers or machine code routines of optional external devices (256 bytes). Layout and contents depend on the actual device.
+        </div>
+    </div>
+    <div class="cspan">$E000-$FFFF, 57344-65535
+        <br>KERNAL ROM
+    </div>
+
+    <div class="container">
+        <div class="c1">$E000-$FFFF
+        </div>
+        <div class="c2">57344-65535</div>
+        <div class="c3">KERNAL ROM or RAM area (8192 bytes); depends on the value of bits #0-#2 of the processor port at memory address $0001:
+            <ul>
+                <li>
+                    %x0x: RAM area.
+                </li>
+                <li>
+                    %x1x: KERNAL ROM.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+<!-- start -->
+
+<div class="cspan">$FF81-$FFF3, 65409-65523
+        <br>Kernal functions
+    </div>
+    <div class="container">
+        <div class="c1">$FF81
+        </div>
+        <div class="c2">65409</div>
+        <div class="c3">SCINIT
+            <br/>Initialize VIC; restore default input/output to keyboard/screen; clear screen; set PAL/NTSC switch and interrupt timer.
+            <br/>Input: –
+            <br/>Output: –
+            <br/>Used registers: A, X, Y.
+            <br/>Real address: $FF5B.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FF84  
+
+        </div>
+        <div class="c2">65412</div>
+        <div class="c3">IOINIT
+            <br/>Initialize CIA's, SID volume; setup memory configuration; set and start interrupt timer.
+            <br/>Input: –
+            <br/>Output: –
+            <br/>Used registers: A, X.
+            <br/>Real address: $FDA3.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FF87
+        </div>
+        <div class="c2">65415</div>
+        <div class="c3">RAMTAS
+            <br/>Clear memory addresses $0002-$0101 and $0200-$03FF; run memory test and set start and end address of BASIC work area accordingly; set screen memory to $0400 and datasette buffer to $033C.
+            <br/>Input: –
+            <br/>Output: –
+            <br/>Used registers: A, X, Y.
+            <br/>Real address: $FD50.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FF8A
+        </div>
+        <div class="c2">65418</div>
+        <div class="c3">RESTOR 
+            <br/>Fill vector table at memory addresses $0314-$0333 with default values.
+            <br/>Input: –
+            <br/>Output: –
+            <br/>Used registers: –
+            <br/>Real address: $FD15.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FF8D
+        </div>
+        <div class="c2">65421</div>
+        <div class="c3">VECTOR
+            <br/>Copy vector table at memory addresses $0314-$0333 from or into user table.
+            <br/>Input: Carry: 0 = Copy user table into vector table, 1 = Copy vector table into user table; X/Y = Pointer to user table.
+            <br/>Output: –
+            <br/>Used registers: A, Y.
+            <br/>Real address: $FD1A.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FF90
+        </div>
+        <div class="c2">65424</div>
+        <div class="c3">SETMSG 
+            <br/>Set system error display switch at memory address $009D.
+            <br/>Input: A = Switch value.
+            <br/>Output: –
+            <br/>Used registers: –
+            <br/>Real address: $FE18.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FF93
+        </div>
+        <div class="c2">65427</div>
+        <div class="c3">LSTNSA 
+            <br/>Send LISTEN secondary address to serial bus. (Must call LISTEN beforehands.)
+            <br/>Input: A = Secondary address.
+            <br/>Output: –
+            <br/>Used registers: A.
+            <br/>Real address: $EDB9.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FF96
+        </div>
+        <div class="c2">65430</div>
+        <div class="c3">TALKSA 
+            <br/>Send TALK secondary address to serial bus. (Must call TALK beforehands.)
+            <br/>Input: A = Secondary address.
+            <br/>Output: –
+            <br/>Used registers: A.
+            <br/>Real address: $EDC7.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FF99
+        </div>
+        <div class="c2">65433</div>
+        <div class="c3">MEMBOT
+            <br/>Save or restore start address of BASIC work area.
+            <br/>Input: Carry: 0 = Restore from input, 1 = Save to output; X/Y = Address (if Carry = 0).
+            <br/>Output: X/Y = Address (if Carry = 1).
+            <br/>Used registers: X, Y.
+            <br/>Real address: $FE25.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FF9C
+        </div>
+        <div class="c2">65436</div>
+        <div class="c3">MEMTOP
+            <br/>Save or restore end address of BASIC work area.
+            <br/>Input: Carry: 0 = Restore from input, 1 = Save to output; X/Y = Address (if Carry = 0).
+            <br/>Output: X/Y = Address (if Carry = 1).
+            <br/>Used registers: X, Y.
+            <br/>Real address: $FE34.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FF9F
+        </div>
+        <div class="c2">65439</div>
+        <div class="c3">SCNKEY
+            <br/>Query keyboard; put current matrix code into memory address $00CB, current status of shift keys into memory address $028D and PETSCII code into keyboard buffer.
+            <br/>Input: –
+            <br/>Output: –
+            <br/>Used registers: A, X, Y.
+            <br/>Real address: $EA87.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFA2
+        </div>
+        <div class="c2">65442</div>
+        <div class="c3">SETTMO
+            <br/>Unknown. (Set serial bus timeout.)
+            <br/>Input: A = Timeout value.
+            <br/>Output: –
+            <br/>Used registers: –
+            <br/>Real address: $FE21.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFA5
+        </div>
+        <div class="c2">65445</div>
+        <div class="c3">IECIN
+            <br/>Read byte from serial bus. (Must call TALK and TALKSA beforehands.)
+            <br/>Input: –
+            <br/>Output: A = Byte read.
+            <br/>Used registers: A.
+            <br/>Real address: $EE13.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFA8
+        </div>
+        <div class="c2">65448</div>
+        <div class="c3">IECOUT
+            <br/>Write byte to serial bus. (Must call LISTEN and LSTNSA beforehands.)
+            <br/>Input: A = Byte to write.
+            <br/>Output: –
+            <br/>Used registers: –
+            <br/>Real address: $EDDD.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFAB
+        </div>
+        <div class="c2">65451</div>
+        <div class="c3">UNTALK
+            <br/>Send UNTALK command to serial bus.
+            <br/>Input: –
+            <br/>Output: –
+            <br/>Used registers: A.
+            <br/>Real address: $EDEF.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFAE
+        </div>
+        <div class="c2">65454</div>
+        <div class="c3">UNLSTN
+            <br/>Send UNLISTEN command to serial bus.
+            <br/>Input: –
+            <br/>Output: –
+            <br/>Used registers: A.
+            <br/>Real address: $EDFE.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFB1
+        </div>
+        <div class="c2">65457</div>
+        <div class="c3">LISTEN
+            <br/>Send LISTEN command to serial bus.
+            <br/>Input: A = Device number.
+            <br/>Output: –
+            <br/>Used registers: A.
+            <br/>Real address: $ED0C.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFB4
+        </div>
+        <div class="c2">65460</div>
+        <div class="c3">TALK
+            <br/>Send TALK command to serial bus.
+            <br/>Input: A = Device number.
+            <br/>Output: –
+            <br/>Used registers: A.
+            <br/>Real address: $ED09.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFB7
+        </div>
+        <div class="c2">65463</div>
+        <div class="c3">READST
+            <br/>Fetch status of current input/output device, value of ST variable. (For RS232, status is cleared.)
+            <br/>Input: –
+            <br/>Output: A = Device status.
+            <br/>Used registers: A.
+            <br/>Real address: $FE07.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFBA
+        </div>
+        <div class="c2">65466</div>
+        <div class="c3">SETLFS
+            <br/>Set file parameters.
+            <br/>Input: A = Logical number; X = Device number; Y = Secondary address.
+            <br/>Output: –
+            <br/>Used registers: –
+            <br/>Real address: $FE00.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFBD
+        </div>
+        <div class="c2">65469</div>
+        <div class="c3">SETNAM
+            <br/>Set file name parameters.
+            <br/>Input: A = File name length; X/Y = Pointer to file name.
+            <br/>Output: –
+            <br/>Used registers: –
+            <br/>Real address: $FDF9.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFC0
+        </div>
+        <div class="c2">65472</div>
+        <div class="c3">OPEN
+            <br/>Open file. (Must call SETLFS and SETNAM beforehands.)
+            <br/>Input: –
+            <br/>Output: –
+            <br/>Used registers: A, X, Y.
+            <br/>Real address: ($031A), $F34A.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFC3
+        </div>
+        <div class="c2">65475</div>
+        <div class="c3">CLOSE
+            <br/>Close file.
+            <br/>Input: A = Logical number.
+            <br/>Output: –
+            <br/>Used registers: A, X, Y.
+            <br/>Real address: ($031C), $F291.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFC6
+        </div>
+        <div class="c2">65478</div>
+        <div class="c3">CHKIN
+            <br/>Define file as default input. (Must call OPEN beforehands.)
+            <br/>Input: X = Logical number.
+            <br/>Output: –
+            <br/>Used registers: A, X.
+            <br/>Real address: ($031E), $F20E.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFC9
+        </div>
+        <div class="c2">65481</div>
+        <div class="c3">CHKOUT
+            <br/>Define file as default output. (Must call OPEN beforehands.)
+            <br/>Input: X = Logical number.
+            <br/>Output: –
+            <br/>Used registers: A, X.
+            <br/>Real address: ($0320), $F250.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFCC
+        </div>
+        <div class="c2">65484</div>
+        <div class="c3">CLRCHN
+            <br/>Close default input/output files (for serial bus, send UNTALK and/or UNLISTEN); restore default input/output to keyboard/screen.
+            <br/>Input: –
+            <br/>Output: –
+            <br/>Used registers: A, X.
+            <br/>Real address: ($0322), $F333.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFCF
+        </div>
+        <div class="c2">65487</div>
+        <div class="c3">CHRIN
+            <br/>Read byte from default input (for keyboard, read a line from the screen). (If not keyboard, must call OPEN and CHKIN beforehands.)
+            <br/>Input: –
+            <br/>Output: A = Byte read.
+            <br/>Used registers: A, Y.
+            <br/>Real address: ($0324), $F157.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFD2
+        </div>
+        <div class="c2">65490</div>
+        <div class="c3">CHROUT
+            <br/>Write byte to default output. (If not screen, must call OPEN and CHKOUT beforehands.)
+            <br/>Input: A = Byte to write.
+            <br/>Output: –
+            <br/>Used registers: –
+            <br/>Real address: ($0326), $F1CA.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFD5
+        </div>
+        <div class="c2">65493</div>
+        <div class="c3">LOAD
+            <br/>Load or verify file. (Must call SETLFS and SETNAM beforehands.)
+            <br/>Input: A: 0 = Load, 1-255 = Verify; X/Y = Load address (if secondary address = 0).
+            <br/>Output: Carry: 0 = No errors, 1 = Error; A = KERNAL error code (if Carry = 1); X/Y = Address of last byte loaded/verified (if Carry = 0).
+            <br/>Used registers: A, X, Y.
+            <br/>Real address: $F49E.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFD8
+        </div>
+        <div class="c2">65496</div>
+        <div class="c3">SAVE
+            <br/>Save file. (Must call SETLFS and SETNAM beforehands.)
+            <br/>Input: A = Address of zero page register holding start address of memory area to save; X/Y = End address of memory area plus 1.
+            <br/>Output: Carry: 0 = No errors, 1 = Error; A = KERNAL error code (if Carry = 1).
+            <br/>Used registers: A, X, Y.
+            <br/>Real address: $F5DD.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFDB
+        </div>
+        <div class="c2">65499</div>
+        <div class="c3">SETTIM
+            <br/>Set Time of Day, at memory address $00A0-$00A2.
+            <br/>Input: A/X/Y = New TOD value.
+            <br/>Output: –
+            <br/>Used registers: –
+            <br/>Real address: $F6E4.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFDE
+        </div>
+        <div class="c2">65502</div>
+        <div class="c3">RDTIM
+            <br/>Read Time of Day, at memory address $00A0-$00A2.
+            <br/>Input: –
+            <br/>Output: A/X/Y = Current TOD value.
+            <br/>Used registers: A, X, Y.
+            <br/>Real address: $F6DD.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFE1
+        </div>
+        <div class="c2">65505</div>
+        <div class="c3">STOP
+            <br/>Query Stop key indicator, at memory address $0091; if pressed, call CLRCHN and clear keyboard buffer.
+            <br/>Input: –
+            <br/>Output: Zero: 0 = Not pressed, 1 = Pressed; Carry: 1 = Pressed.
+            <br/>Used registers: A, X.
+            <br/>Real address: ($0328), $F6ED.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFE4
+        </div>
+        <div class="c2">65508</div>
+        <div class="c3">GETIN
+            <br/>Read byte from default input. (If not keyboard, must call OPEN and CHKIN beforehands.)
+            <br/>Input: –
+            <br/>Output: A = Byte read.
+            <br/>Used registers: A, X, Y.
+            <br/>Real address: ($032A), $F13E.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFE7
+        </div>
+        <div class="c2">65511</div>
+        <div class="c3">CLALL
+            <br/>Clear file table; call CLRCHN.
+            <br/>Input: –
+            <br/>Output: –
+            <br/>Used registers: A, X.
+            <br/>Real address: ($032C), $F32F.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFEA
+        </div>
+        <div class="c2">65514</div>
+        <div class="c3">UDTIM
+            <br/>Update Time of Day, at memory address $00A0-$00A2, and Stop key indicator, at memory address $0091.
+            <br/>Input: –
+            <br/>Output: –
+            <br/>Used registers: A, X.
+            <br/>Real address: $F69B.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFED
+        </div>
+        <div class="c2">65517</div>
+        <div class="c3">SCREEN
+            <br/>Fetch number of screen rows and columns.
+            <br/>Input: –
+            <br/>Output: X = Number of columns (40); Y = Number of rows (25).
+            <br/>Used registers: X, Y.
+            <br/>Real address: $E505.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFF0
+        </div>
+        <div class="c2">65520</div>
+        <div class="c3">PLOT
+            <br/>Save or restore cursor position.
+            <br/>Input: Carry: 0 = Restore from input, 1 = Save to output; X = Cursor column (if Carry = 0); Y = Cursor row (if Carry = 0).
+            <br/>Output: X = Cursor column (if Carry = 1); Y = Cursor row (if Carry = 1).
+            <br/>Used registers: X, Y.
+            <br/>Real address: $E50A.
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="c1">$FFF3
+        </div>
+        <div class="c2">65523</div>
+        <div class="c3">IOBASE
+            <br/>Fetch CIA #1 base address.
+            <br/>Input: –
+            <br/>Output: X/Y = CIA #1 base address ($DC00).
+            <br/>Used registers: X, Y.
+            <br/>Real address: $E500.
+        </div>
+    </div>
+
+
+
+
+<!-- end -->
+
+
+    <div class="cspan">$FFFA-$FFFF, 65530-65535
+        <br>Hardware vectors
+    </div>
+    <div class="container">
+        <div class="c1">$FFFA-$FFFB
+        </div>
+        <div class="c2">65530-65531</div>
+        <div class="c3">Execution address of non-maskable interrupt service routine.
+            <br/>Default: $FE43.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$FFFC-$FFFD
+        </div>
+        <div class="c2">65532-65533</div>
+        <div class="c3">Execution address of cold reset.
+            <br/>Default: $FCE2.</div>
+    </div>
+    <div class="container">
+        <div class="c1">$FFFE-$FFFF
+        </div>
+        <div class="c2">65534-65535</div>
+        <div class="c3">Execution address of interrupt service routine.
+            <br/>Default: $FF48.</div>
+    </div>
+</body>
+<footer>
+Changelog:<br/>
+2018-10-12: Added Kernal functions<br />
+2016-08-31: Corrected wrong value for $D019, minor typo and consistency fixes (thanks to Joe Forster/STA)<br />
+2016-08-01: Initial release, replaced old table structure by CSS flexbox, visual overhaul, added minor missing info<br/>
+<br/>
+<br/>
+Memory map based on <a href="http://sta.c64.org/cbm64mem.html">http://sta.c64.org/cbm64mem.html</a> and converted by <a href="http://www.awsm.de">awsm.de</a> // <a href="https://twitter.com/awsm9000">@awsm9000</a>.<br />
+If you find errors or like to contribute to the memory map, please contact <a href="https://twitter.com/awsm9000">@awsm9000</a>.
+</footer>
+</html>
+
