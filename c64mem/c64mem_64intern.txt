@@ -88,7 +88,7 @@ $000C        DIMFLG  FLag für DIM
                      Array oder schon eine dimensionierte
                      Variable ist.
 
-$00OD                Typflag $00= numerisch, $FF= String
+$000D                Typflag $00= numerisch, $FF= String
 
                      Das FLag zeigt dem BASIC-Interpreter
                      an, ob es sich um Zahlenwerte oder um

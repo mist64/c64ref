@@ -306,19 +306,19 @@ $0400-$07E7  VICSCN  Default Screen Video Matrix.
 $07E8-$07F7  TEMP    Unused.
 $07F8-$07FF  SPNTRS  Default Sprite Data Pointers.
 
-$0800-$9FFF           Normal BASIC Program space.
-$8000-$9FFF           Optional Cartridge ROM space.
-$A000-$BFFF           BASIC ROM (Part) or 8 KB RAM.
-$C000-$CFFF           4 KB RAM.
-$D000-$DFFF           Input/Output Devices and Colour RAM or
-                      4 KB RAM or Character ROM.
-$D000-$D02E           6566 Video Interface Chip, VIC II.
-$D400-$D41C           6581 Sound Interface Device, SID.
-$D500-$D7FF           SID Images.
-$D800-$DBE7           Colour RAM (Nybbles = 4 Bit RAM, LSB).
-$DBE8-$DBFF           Unused Nybbles.
-$DC00-$DC0F           6526 Complex Interface Adaptor, CIA.
-$DD00-$DD0F           6526 Complex Interface Adaptor, CIA.
-$E000-$FFFF           BASIC (Part)/Kernal ROM or 8 KB RAM.
-$E000-$E4FF           BASIC ROM (Part) or RAM.
-$E500-$FFFF           Kernal ROM or RAM.
+$0800-$9FFF          Normal BASIC Program space.
+$8000-$9FFF          Optional Cartridge ROM space.
+$A000-$BFFF          BASIC ROM (Part) or 8 KB RAM.
+$C000-$CFFF          4 KB RAM.
+$D000-$DFFF          Input/Output Devices and Colour RAM or
+                     4 KB RAM or Character ROM.
+$D000-$D02E          6566 Video Interface Chip, VIC II.
+$D400-$D41C          6581 Sound Interface Device, SID.
+$D500-$D7FF          SID Images.
+$D800-$DBE7          Colour RAM (Nybbles = 4 Bit RAM, LSB).
+$DBE8-$DBFF          Unused Nybbles.
+$DC00-$DC0F          6526 Complex Interface Adaptor, CIA.
+$DD00-$DD0F          6526 Complex Interface Adaptor, CIA.
+$E000-$FFFF          BASIC (Part)/Kernal ROM or 8 KB RAM.
+$E000-$E4FF          BASIC ROM (Part) or RAM.
+$E500-$FFFF          Kernal ROM or RAM.
