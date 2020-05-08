@@ -132,7 +132,7 @@ print '    padding: 1em;'
 print '}'
 print ''
 print 'div.disassembly_container {'
-print '    padding: 1em 0em 1em 16em;'
+print '    padding: 1em 0em 1em 11em;'
 print '    overflow: scroll;'
 print '}'
 print ''
@@ -167,7 +167,7 @@ print '}'
 print ''
 print 'table.disassembly_table th.left_column {'
 print '    position: absolute;'
-print '    width: 18em;'
+print '    width: 12em;'
 print '    left: 8px;'
 print '    z-index: 11;'
 print '    border: 1px solid #000;'
@@ -276,11 +276,6 @@ while(True):
 		asmaddress = int(hexaddress, 16)
 		has_address = True
 
-	hex_numbers = re.findall(r'\$[0-9A-F][0-9A-F][0-9A-F][0-9A-F]', asm)
-	for hex_number in hex_numbers:
-		if (hex_number[1] == 'A' or hex_number[1] == 'B' or hex_number[1] == 'E' or hex_number[1] == 'F'):
-			asm = asm.replace(hex_number, "<a href=\"#" + hex_number[1:] + "\">" + hex_number + "</a>")
-
 	print '<tr>'
 	print '<th class="left_column">'
 	if has_address:
@@ -289,7 +284,9 @@ while(True):
 
 	for i in range(0, files):
 		print '<td>'
+		headings = []
 		comments = []
+		has_seen_blank_line = False
 		while True:
 			if linenumber[i] >= len(data[i]):
 				break
@@ -308,12 +305,11 @@ while(True):
 				if (hex_number[1] == 'A' or hex_number[1] == 'B' or hex_number[1] == 'E' or hex_number[1] == 'F'):
 					comment = comment.replace(hex_number, "<a href=\"#" + hex_number[1:] + "\">" + hex_number + "</a>")
 
-			if comment.startswith('***'):
-				comment = '<h3>' + comment[3:] + '</h3>'
-			elif comment.startswith('SUBTTL'):
-				comment = '<h3>' + comment[6:] + '</h3>'
-			elif comment.startswith('.LIB '):
-				comment = '<h3>' + comment + '</h3>'
+			if not has_seen_blank_line:
+				if len(comment.lstrip()) == 0:
+					has_seen_blank_line = True
+				else:
+					headings.append(comment)
 			else:
 				scomment = comment.lstrip()
 
@@ -323,10 +319,16 @@ while(True):
 				if len(comment) != 0:
 					comment = '<span class="com">' + comment + '</span><br />'
 
-			if len(comment) != 0:
-				comments.append(comment)
+				if len(comment) != 0:
+					comments.append(comment)
 
-			linenumber[i] = linenumber[i] + 1
+			linenumber[i] += 1
+
+		if len(headings):
+			print("<b>")
+			for heading in headings:
+				print heading
+			print("</b><br/>")
 
 		if len(comments):
 			for comment in comments:
