@@ -12,46 +12,72 @@ $0000        D6510   Datenrichtungsregister für Ein-/Ausgabe-Port des 6510-Mikr
 
 $0001                Datenregister für Ein-/Ausgabe-Port des 6510-Mikroprozessors
                      
-                     Im Gegensatz zum Mikroprozessor des VC 20 hat der des C 64 sechs Ein-/Ausgabe-Leitungen, die einzeln programmierbar sind und so eine direkte Verbindung zwischen dem Mikroprozessor und der Außenwelt herstellen. Warum nur sechs Leitungen und nicht wie üblich acht? Auf dem Chip selbst könnten acht Bit verkraftet werden, aber es stehen nur sechs Anschlußbeine zur Verfügung.
+                     Im Gegensatz zum Mikroprozessor des VC 20 hat der des C 64 sechs Ein-/Ausgabe-
+                     Leitungen, die einzeln programmierbar sind und so eine direkte Verbindung 
+                     zwischen dem Mikroprozessor und der Außenwelt herstellen. Warum nur sechs 
+                     Leitungen und nicht wie üblich acht? Auf dem Chip selbst könnten acht Bit 
+                     verkraftet werden, aber es stehen nur sechs Anschlußbeine zur Verfügung.
 
-                     Um trotzdem flexibel zu bleiben, ist dieses Tor zum Prozessor - zutreffend auch »Port« genannt - in beiden Richtungen begehbar. Jede einzelne der sechs Leitungen kann vom Programmierer auf »Eingang« oder auf »Ausgang« geschaltet werden. Dazu dient das Datenrichtungsregister in der Speicherzelle 0.
+                     Um trotzdem flexibel zu bleiben, ist dieses Tor zum Prozessor - zutreffend auch 
+                     »Port« genannt - in beiden Richtungen begehbar. Jede einzelne der sechs 
+                     Leitungen kann vom Programmierer auf »Eingang« oder auf »Ausgang« geschaltet 
+                     werden. Dazu dient das Datenrichtungsregister in der Speicherzelle 0.
 
-                     #### Datenrichtungsreglster In Zelle 0
+                     #### Datenrichtungsreglster in Zelle 0
 
-                     Wenn zum Beispiel in das Bit 4 der Zelle 0 eine 0 hineingePOKEt wird, ist die Leitung Nummer 4 des Ports auf »Eingang« geschaltet. Es gilt für alle 6 Bit (Nummer 0 bis 5):
+                     Wenn zum Beispiel in das Bit 4 der Zelle 0 eine 0 hineingePOKEt wird, ist die 
+                     Leitung Nummer 4 des Ports auf »Eingang« geschaltet. Es gilt für alle 6 Bit 
+                     (Nummer 0 bis 5):
 
                      * Bit auf 0 = Eingang
                      * Bit auf 1 = Ausgang
 
-                     Beim Einschalten schreibt das Betriebssystem in dieses Register die Dualzahl ..101111 (dezimal=47). Das heißt also, daß nur die Leitung Nummer 4 als Eingang verwendet wird, alle anderen aber als Ausgang. Warum das so ist, sehen wir gleich. Vorher will ich aber noch erwähnen, daß im C 64 von dieser Flexibilität des Mikroprozessor-Ports kein Gebrauch gemacht wird. Ich habe das ganze Betriebssystem durchgesehen, aber das einzige Mal, wo die Speicherzelle 0 angesprochen wird, ist eben bei der Einschaltroutine.
+                     Beim Einschalten schreibt das Betriebssystem in dieses Register die 
+                     Dualzahl ..101111 (dezimal=47). Das heißt also, daß nur die Leitung Nummer 4 
+                     als Eingang verwendet wird, alle anderen aber als Ausgang. Warum das so ist, 
+                     sehen wir gleich. Vorher will ich aber noch erwähnen, daß im C 64 von dieser 
+                     Flexibilität des Mikroprozessor-Ports kein Gebrauch gemacht wird. Ich habe das 
+                     ganze Betriebssystem durchgesehen, aber das einzige Mal, wo die Speicherzelle 0 
+                     angesprochen wird, ist eben bei der Einschaltroutine.
 
-                     Das heißt aber nicht, daß Sie, lieber Hobby-Programmierer, darauf verzichten müssen. Ich kann mir vorstellen, daß besonders Ausgefuchste unter Ihnen durch POKEn eines anderen Bitmusters in die Speicherzelle 0 vielseitige Befehle erzeugen und einsetzen können.
+                     Das heißt aber nicht, daß Sie, lieber Hobby-Programmierer, darauf verzichten 
+                     müssen. Ich kann mir vorstellen, daß besonders Ausgefuchste unter Ihnen durch 
+                     POKEn eines anderen Bitmusters in die Speicherzelle 0 vielseitige Befehle 
+                     erzeugen und einsetzen können.
 
-                     Das wird besonders deutlich, wenn Sie jetzt sehen, mit welchen Teilen des Computers diese sechs Leitungen verbunden sind.
+                     Das wird besonders deutlich, wenn Sie jetzt sehen, mit welchen Teilen des 
+                     Computers diese sechs Leitungen verbunden sind.
 
                      #### Datenregister in Speicherzelle 1
 
-                     Mit diesem Register steuert der Mikroprozessor (und damit natürlich das Betriebssystem) die Auswahl von Speicherblöcken und den Betrieb mit dem Kassettenrecorder. Dem Programmierer steht diese Möglichkeit über POKEn auch zur Verfügung.
+                     Mit diesem Register steuert der Mikroprozessor (und damit natürlich das 
+                     Betriebssystem) die Auswahl von Speicherblöcken und den Betrieb mit dem 
+                     Kassettenrecorder. Dem Programmierer steht diese Möglichkeit über POKEn auch 
+                     zur Verfügung.
 
                      Bit 0
 
-                     schaltet den Speicherbereich 40960 bis 49151 ($A000 bis $BFFF) zwischen dem Basic-Übersetzer (Interpreter) im ROM und freiem RAM um (Normalzustand^).
+                     schaltet den Speicherbereich 40960 bis 49151 ($A000 bis $BFFF) zwischen dem 
+                     Basic-Übersetzer (Interpreter) im ROM und freiem RAM um (Normalzustand = 1).
 
                      Bit 1
 
-                     schaltet den Speicherbereich 57344 bis 65535 ($E000 bis $FFFF) zwischen dem Betriebssystem (Kernel) im ROM und freiem RAM um (Normalzustand =1).
+                     schaltet den Speicherbereich 57344 bis 65535 ($E000 bis $FFFF) zwischen dem 
+                     Betriebssystem (Kernel) im ROM und freiem RAM um (Normalzustand = 1).
 
                      Bit 2
 
-                     schaltet den Speicherbereich 53248 bis 57343 ($D000 bis $DFFF) zwischen Zeichen-ROM und Ein-/Ausgabe-ROM um (Normalzustand = 1).
+                     schaltet den Speicherbereich 53248 bis 57343 ($D000 bis $DFFF) zwischen 
+                     Zeichen-ROM und Ein-/Ausgabe-ROM um (Normalzustand = 1).
 
                      Bit 3
 
-                     sendet serielle Daten zum Kassettenrecorder (Normalzustand =0).
+                     sendet serielle Daten zum Kassettenrecorder (Normalzustand = 0).
 
                      Bit 4
 
-                     prüft, ob eine der Tasten des Recorders gedrückt ist, welche den Motor einschalten (Normalzustand = 1).
+                     prüft, ob eine der Tasten des Recorders gedrückt ist, welche den Motor 
+                     einschalten (Normalzustand = 1).
 
                      Bit 5
 
@@ -59,99 +85,172 @@ $0001                Datenregister für Ein-/Ausgabe-Port des 6510-Mikroprozesso
 
                      #### Die RAM-ROM-Umschaltung
 
-                     Sie wissen, daß Ihr C 64 deswegen so heißt, weil er 64 KByte Speicherplätze hat. Nur stimmt das nicht! Er hat nämlich 88 KByte und müßte eigentlich C 88 heißen.
+                     Sie wissen, daß Ihr C 64 deswegen so heißt, weil er 64 KByte Speicherplätze 
+                     hat. Nur stimmt das nicht! Er hat nämlich 88 KByte und müßte eigentlich C 88 
+                     heißen.
 
-                     Da mit den 16 Bit der High-/Low-Byte-Methode (siehe Texteinschub Nr. 2) nur 64 KByte adressierbar sind, müssen die restlichen 22 KByte bei Bedarf eingeschoben werden - und das machen die oben erwähnten Bit 0 bis 2 des Datenregisters.
+                     Da mit den 16 Bit der High-/Low-Byte-Methode (siehe Texteinschub Nr. 2) nur 64 
+                     KByte adressierbar sind, müssen die restlichen 22 KByte bei Bedarf eingeschoben 
+                     werden - und das machen die oben erwähnten Bit 0 bis 2 des Datenregisters.
 
-                     In Bild 1 sehen Sie die drei oben erwähnten Speicherblöcke, die sowohl mit RAM als auch mit ROM belegt sind, einer davon gleich doppelt. Ich habe ihnen folgende Namen gegeben:
+                     In Bild 1 sehen Sie die drei oben erwähnten Speicherblöcke, die sowohl mit RAM 
+                     als auch mit ROM belegt sind, einer davon gleich doppelt. Ich habe ihnen 
+                     folgende Namen gegeben:
 
                      * 40960 bis 49151 ($A000 bis $BFFF) = BLOCK A
                      * 53248 bis 57343 ($D000 bis $DFFF) = BLOCK D
                      * 57344 bis 65535 ($E000 bis $FFFF) = BLOCK E
 
-                     Tabelle 2 gibt Ihnen die Übersicht über die gemeinsame Wirkung der Bit 0, 1 und 2 des Datenregisters auf den jeweiligen Inhalt der Speicherblöcke.
+                     Tabelle 2 gibt Ihnen die Übersicht über die gemeinsame Wirkung der Bit 0, 1 und 
+                     2 des Datenregisters auf den jeweiligen Inhalt der Speicherblöcke.
 
-                     Der Vollständigkeit halber muß ich hier noch erwähnen, daß neben den drei ersten Bits der Speicherzelle 1 noch zwei weitere Signale die RAM/ROM-Umschaltung beeinflussen. Es sind das die Leitungen auf Pin 8 und 9 des Erweiterungssteckers (GAME und EXROM), welche durch Spiel- und Programmodule benutzt werden. Eine genaue Beschreibung der dadurch erzeugten sinnvollen Speicherkombinationen finden Sie in dem Buch »64 Intern« von Data Becker ab Seite 14. Zwei Anwendungsbeispiele dieser Umschaltung finden Sie im Texteinschub Nr. 3 »Manipuliertes Basic«.
+                     Der Vollständigkeit halber muß ich hier noch erwähnen, daß neben den drei 
+                     ersten Bits der Speicherzelle 1 noch zwei weitere Signale die RAM/ROM-
+                     Umschaltung beeinflussen. Es sind das die Leitungen auf Pin 8 und 9 des 
+                     Erweiterungssteckers (GAME und EXROM), welche durch Spiel- und Programmodule 
+                     benutzt werden. Eine genaue Beschreibung der dadurch erzeugten sinnvollen 
+                     Speicherkombinationen finden Sie in dem Buch »64 Intern« von Data Becker ab 
+                     Seite 14. Zwei Anwendungsbeispiele dieser Umschaltung finden Sie im 
+                     Texteinschub Nr. 3 »Manipuliertes Basic«.
 
-                     Betrieb des Kassettenrecorders
+                     #### Betrieb des Kassettenrecorders
 
                      Bit 3, 4 und 5 regeln, wie schon gesagt, den Betrieb des Kassettenrecorders.
 
                      Zu Bit 3 ist oben schon das Notwendige gesagt.
 
-                     Bit 4 ist im Normalzustand auf 1, »normal« heißt hier, solange keine der Motor-Tasten der Datasette (PLAY, REWIND, FAST FORWARD) gedrückt ist. Zur Probe:
+                     Bit 4 ist im Normalzustand auf 1, »normal« heißt hier, solange keine der Motor-
+                     Tasten der Datasette (PLAY, REWIND, FAST FORWARD) gedrückt ist. Zur Probe:
 
                          10 X=PEEK(l)
 
-                     funktioniert das alles nur, wenn - wie im »Normalfall« - das Bit 4 des Datenrichtungsregisters (Speicherzelle 0) auf 0 (Eingang) steht.
+                     funktioniert das alles nur, wenn - wie im »Normalfall« - das Bit 4 des 
+                     Datenrichtungsregisters (Speicherzelle 0) auf 0 (Eingang) steht.
 
-                     Bit 5 schaltet den Motor der Datasette ein und aus. Es bietet sich an, damit per Programm die Datasette zu schalten - wenn so etwas nützlich ist. Leider ist dieses Bit etwas schwieriger zu handhaben, da es in der Interrupt-Routine des Betriebssystems eine Rolle spielt.
+                     Bit 5 schaltet den Motor der Datasette ein und aus. Es bietet sich an, damit 
+                     per Programm die Datasette zu schalten - wenn so etwas nützlich ist. Leider ist 
+                     dieses Bit etwas schwieriger zu handhaben, da es in der Interrupt-Routine des 
+                     Betriebssystems eine Rolle spielt.
 
-                     Die Tasten der Datasette werden nämlich 60mal in der Sekunde abgefragt. Wenn keine Taste gedrückt ist, setzt das Betriebssystem sowohl das sogenannte »lnterlock«-Register in Speicherzelle 192 auf 0 als auch Bit 5 der Zelle 1 auf 1, wodurch der Motor ausgeschaltet wird beziehungsweise bleibt. Da kann man nicht dagegen an. Wir haben nur eine Chance, wenn eine Taste bereits gedrückt ist und der Kassettenmotor schon läuft.
+                     Die Tasten der Datasette werden nämlich 60mal in der Sekunde abgefragt. Wenn 
+                     keine Taste gedrückt ist, setzt das Betriebssystem sowohl das sogenannte 
+                     »Interlock«-Register in Speicherzelle 192 auf 0 als auch Bit 5 der Zelle 1 auf 
+                     1, wodurch der Motor ausgeschaltet wird beziehungsweise bleibt. Da kann man 
+                     nicht dagegen an. Wir haben nur eine Chance, wenn eine Taste bereits gedrückt 
+                     ist und der Kassettenmotor schon läuft.
 
-                     Dann nämlich können wir zuerst das lnterlock-Register mit einem Wert größer als 0 lahmlegen:
+                     Dann nämlich können wir zuerst das lnterlock-Register mit einem Wert größer als 
+                     0 lahmlegen:
 
                          POKE 192,255
 
-                     Jetzt läßt sich der Motor der Datasette mit Bit 5 steuern: POKE 1,39 beziehungsweise POKE 1,PEEK(1) 0R 32 schaltet den Motor aus,
+                     Jetzt läßt sich der Motor der Datasette mit Bit 5 steuern: POKE 1,39 
+                     beziehungsweise POKE 1,PEEK(1) 0R 32 schaltet den Motor aus,
 
                      POKE 1,7 beziehungsweise POKE l,PEEK(l) AND 31 schaltet den Motor ein.
 
-                     Das Interlock-Register in Speicherzelle 192 werde ich später noch einmal erwähnen, da es seine Funktion auch beim VC 20 ausübt, allerdings mit anderen Ein-/Ausgangs-Ports. Das ist alles, was zur Speicherzelle 1 zu sagen ist.
+                     Das Interlock-Register in Speicherzelle 192 werde ich später noch einmal 
+                     erwähnen, da es seine Funktion auch beim VC 20 ausübt, allerdings mit anderen 
+                     Ein-/Ausgangs-Ports. Das ist alles, was zur Speicherzelle 1 zu sagen ist.
 
-                     Ab Speicherzelle 3 bis zur Speicherzelle 672 gelten alleAngaben sowohl für den C 64 als auch für den VC 20, zumindest was die Bedeutung der Zellen betrifft. Ihr Inhalt kann entsprechend der verschiedenen Adressen der Betriebssysteme voneinander abweichen. Wie üblich werde ich natürlich jeweils darauf aufmerksam machen.
+                     Ab Speicherzelle 3 bis zur Speicherzelle 672 gelten alleAngaben sowohl für den 
+                     C 64 als auch für den VC 20, zumindest was die Bedeutung der Zellen betrifft. 
+                     Ihr Inhalt kann entsprechend der verschiedenen Adressen der Betriebssysteme 
+                     voneinander abweichen. Wie üblich werde ich natürlich jeweils darauf aufmerksam 
+                     machen.
 
 
 $0002                unbenutzt
 
-$0003-$0004          Vektor auf die Routine zur Umwandlung einer Gleitkommazahl in eine ganze Zahl mit Vorzeichen
+$0003-$0004          Vektor auf die Routine zur Umwandlung einer Gleitkommazahl in eine ganze Zahl
+                     mit Vorzeichen
 
-                     In diesen beiden Speicherzellen steht also ein Vektor. Was das ist, wird im Texteinschub Nr. 4 näher erläutert. Beim VC 20 deutet dieser Vektor auf die Adresse 63674 ($D1AA), beim C 64 auf 45482 ($B1AA). Sie können das mit
+                     In diesen beiden Speicherzellen steht also ein Vektor. Was das ist, wird im 
+                     Texteinschub Nr. 4 näher erläutert. Beim VC 20 deutet dieser Vektor auf die 
+                     Adresse 63674 ($D1AA), beim C 64 auf 45482 ($B1AA). Sie können das mit
 
                          PRINT PEEK (3)+256*PEEK (4)
 
-                     leicht nachprüfen. Ab diesen Adressen beginnt im Basic-Übersetzer (Interpreter) ein Programm, welches - natürlich in Maschinensprache - eine Gleitkommazahl in eine ganze Zahl umwandelt.
+                     leicht nachprüfen. Ab diesen Adressen beginnt im Basic-Übersetzer (Interpreter) 
+                     ein Programm, welches - natürlich in Maschinensprache - eine Gleitkommazahl in 
+                     eine ganze Zahl umwandelt.
 
-                     Diejenigen Leser, die mit Gleitkommazahlen nicht so vertraut sind, möchte ich auf den Texteinschub Nr. 6 verweisen. Er ist nur eine kleine Einführung. Eine detaillierte Beschreibung finden Sie im Assemblerkurs (Teil 8) von Heimo Ponnath (Ausgabe 4/85) beziehungsweise im 64er-Sonderheft 8/85, ab Seite 42.
+                     Diejenigen Leser, die mit Gleitkommazahlen nicht so vertraut sind, möchte ich 
+                     auf den Texteinschub Nr. 6 verweisen. Er ist nur eine kleine Einführung. Eine 
+                     detaillierte Beschreibung finden Sie im Assemblerkurs (Teil 8) von Heimo 
+                     Ponnath (Ausgabe 4/85) beziehungsweise im 64er-Sonderheft 8/85, ab Seite 42.
 
-                     Dieses Umwandlungsprogramm steht nicht nur den Maschinen, sondern auch den Basic-Programmierern zur Verfügung, allerdings nur über den USR-Befehl und da auch nur, wenn der »Floating Point Accumulator« #1 (FAC1) in den besagten Adressen 97 bis 102 mitbenutzt wird. Ich verschiebe daher alle weiteren Details auf unsere Ankunft bei diesen Speicherzellen.
+                     Dieses Umwandlungsprogramm steht nicht nur den Maschinen, sondern auch den 
+                     Basic-Programmierern zur Verfügung, allerdings nur über den USR-Befehl und da 
+                     auch nur, wenn der »Floating Point Accumulator« #1 (FAC1) in den besagten 
+                     Adressen 97 bis 102 mitbenutzt wird. Ich verschiebe daher alle weiteren Details 
+                     auf unsere Ankunft bei diesen Speicherzellen.
 
 
 $0005-$0006          Vektor auf die Routine zur Umwandlung einer ganzen Zahl in eine Gleitkommazahl
 
-                     Dieses Programm ist die Umkehrung der oberen Routine. Sie beginnt beim VC 20 ab Speicherzelle 54161 ($D391), beim C 64 ab 45969 ($B391). Da hier prinzipiell dasselbe gilt wie oben, möchte ich nur kurz den Vorteil beleuchten, den derartige Vektoren haben. Eigentlich könnten wir direkt auf die im Vektor enthaltenen Adressen springen - wenn wir sie kennen.
+                     Dieses Programm ist die Umkehrung der oberen Routine. Sie beginnt beim VC 20 ab 
+                     Speicherzelle 54161 ($D391), beim C 64 ab 45969 ($B391). Da hier prinzipiell 
+                     dasselbe gilt wie oben, möchte ich nur kurz den Vorteil beleuchten, den 
+                     derartige Vektoren haben. Eigentlich könnten wir direkt auf die im Vektor 
+                     enthaltenen Adressen springen - wenn wir sie kennen.
 
-                     Ein Sprung auf die Adresse des Vektors erlaubt uns jedoch immer die völlige Ignoranz seines Inhalts - und Commodore erlaubt die Änderung der Adressen im Basic-Übersetzer, wie es ja beim C 64 gegenüber dem VC 20 auch gemacht worden ist, ohne daß vorhandene Programme umgeschrieben werden müssen.
+                     Ein Sprung auf die Adresse des Vektors erlaubt uns jedoch immer die völlige 
+                     Ignoranz seines Inhalts - und Commodore erlaubt die Änderung der Adressen im 
+                     Basic-Übersetzer, wie es ja beim C 64 gegenüber dem VC 20 auch gemacht worden 
+                     ist, ohne daß vorhandene Programme umgeschrieben werden müssen.
 
 $0007                Suchzeichen zur Prüfung von Texteingaben in Basic
 
-                     Diese Speicherzelle wird viel von denjenigen Basic-Routinen als Zwischenspeicher benutzt, die den direkt eingegebenen Text absuchen, um Steuerzeichen (Gänsefüße, Kommata, Doppelpunkte und die Zeilenbeendigung durch die RETURN-Taste) rechtzeitig zu erkennen. Normalerweise wird in der Zelle 7 der ASCII-Wert dieser Zeichen abgelegt. Die Speicherzelle 7 wird aber auch von anderen Basic-Routinen benutzt. Sie ist daher für den Programmierer praktisch nicht zu verwerten.
+                     Diese Speicherzelle wird viel von denjenigen Basic-Routinen als 
+                     Zwischenspeicher benutzt, die den direkt eingegebenen Text absuchen, um 
+                     Steuerzeichen (Gänsefüße, Kommata, Doppelpunkte und die Zeilenbeendigung durch 
+                     die RETURN-Taste) rechtzeitig zu erkennen. Normalerweise wird in der Zelle 7 
+                     der ASCII-Wert dieser Zeichen abgelegt. Die Speicherzelle 7 wird aber auch von 
+                     anderen Basic-Routinen benutzt. Sie ist daher für den Programmierer praktisch 
+                     nicht zu verwerten.
 
 $0008                Suchzeichen speziell für Befehlsende und Gänsefüße
 
-                     Wie Speicherzelle 7 dient auch die Zelle 8 als Zwischenspeicher für Basic-Texteingabe und zwar während der Umwandlung von Basic-Befehlen in den vom Computer verwendeten Befehlscode (Tokens). Die Speicherzelle 8 ist in Basic nicht verwertbar.
+                     Wie Speicherzelle 7 dient auch die Zelle 8 als Zwischenspeicher für Basic-
+                     Texteingabe und zwar während der Umwandlung von Basic-Befehlen in den vom 
+                     Computer verwendeten Befehlscode (Tokens). Die Speicherzelle 8 ist in Basic 
+                     nicht verwertbar.
 
 $0009                Spaltenposition des Cursors vor dem letzten TAB- oder SPC-Befehl
 
-                     Speicherzelle 9 wird von den Basic-Befehlen TAB und SPC verwendet. Vor ihrer Ausführung wird die Nummer der Spalte, in der sich der Cursor befindet, aus der Speicherzelle 211 ($D3) nach 9 gebracht,von wo sie geholt wird, um die Position des Cursors nach der Ausführung von TAB und SPC auszurechnen.
+                     Speicherzelle 9 wird von den Basic-Befehlen TAB und SPC verwendet. Vor ihrer 
+                     Ausführung wird die Nummer der Spalte, in der sich der Cursor befindet, aus der 
+                     Speicherzelle 211 ($D3) nach 9 gebracht,von wo sie geholt wird, um die Position 
+                     des Cursors nach der Ausführung von TAB und SPC auszurechnen.
 
-                     Diese komplizierte Erklärung können wir durch Ausprobieren deutlicher machen. Dazu PRINTen wir 16mal den Buchstaben X hintereinander (Semikolon!), allerdings mit SPC (2) jeweils um 2 Spalten versetzt.
+                     Diese komplizierte Erklärung können wir durch Ausprobieren deutlicher machen. 
+                     Dazu PRINTen wir 16mal den Buchstaben X hintereinander (Semikolon!), allerdings 
+                     mit SPC (2) jeweils um 2 Spalten versetzt.
 
                          10 FOR I=0 TO 15
                          20 PRINT SPC (2) "X";
                          30 PRINT PEEK (9);
                          40 NEXT I
 
-                     Nach jedem X wird durch Zeile 30 die »alte« Cursor-Spaltenposition ausgedruckt und zwar in derselben Zeile, ausgelöst durch das Semikolon. Dadurch erhöht sich laufend die in Speicherzelle 9 stehende Positionsangabe des Cursors. Wir erhalten folgenden Ausdruck:
+                     Nach jedem X wird durch Zeile 30 die »alte« Cursor-Spaltenposition ausgedruckt 
+                     und zwar in derselben Zeile, ausgelöst durch das Semikolon. Dadurch erhöht sich 
+                     laufend die in Speicherzelle 9 stehende Positionsangabe des Cursors. Wir 
+                     erhalten folgenden Ausdruck:
 
                          ..X.0...X.6...X.12...X.19...X.26...X.33...X.40...X.47.
                          ..X.54...X.61...X.68...X.75...X.82...X.1...X.7...X.13
 
-                     Sie können die Positionsnummer nachrechnen. Berücksichtigen Sie aber dabei, daß bei PRINT vor und nach jeder Zahl eine Stelle frei bleibt, die erste für das Vorzeichen, die zweite wegen des Abstandes.
+                     Sie können die Positionsnummer nachrechnen. Berücksichtigen Sie aber dabei, daß 
+                     bei PRINT vor und nach jeder Zahl eine Stelle frei bleibt, die erste für das 
+                     Vorzeichen, die zweite wegen des Abstandes.
 
-                     Wichtig ist außerdem, daß die maximal mögliche Spaltenzahl nicht die Bildschirmspaltenzahl, sondern die »logische« Spaltenzahl ist, also 88 beim VC 20 und 80 beim C 64.
+                     Wichtig ist außerdem, daß die maximal mögliche Spaltenzahl nicht die 
+                     Bildschirmspaltenzahl, sondern die »logische« Spaltenzahl ist, also 88 beim VC 
+                     20 und 80 beim C 64.
 
-                     Wir können die Cursorposition in Adresse 9 auch abfragen und ein Programm damit steuern. Fügen Sie einfach in das obige Programm die folgende Zeile 35 ein:
+                     Wir können die Cursorposition in Adresse 9 auch abfragen und ein Programm damit 
+                     steuern. Fügen Sie einfach in das obige Programm die folgende Zeile 35 ein:
 
                          35 IF PEEK (9)=33 THEN PRINT "END": END
 
@@ -159,60 +258,98 @@ $0009                Spaltenposition des Cursors vor dem letzten TAB- oder SPC-B
 
 $000A                Flagge für LOAD oder VERIFY
 
-                     In Zelle 10 steht eine 0, wenn geladen wird und eine 1 bei einem VERIFY. Warum das so ist, will ich kurz erläutern:
+                     In Zelle 10 steht eine 0, wenn geladen wird und eine 1 bei einem VERIFY. Warum 
+                     das so ist, will ich kurz erläutern:
 
-                     Die Basic-Routinen für LOAD beziehungsweise für VERIFY sind völlig identisch. Was das Betriebssystem hinterher daraus machen muß, ist natürlich unterschiedlich. Das Basic erspart sich eine doppelte Routine, zeigt aber mit der Flagge in Speicherzelle 10 den Unterschied an.
+                     Die Basic-Routinen für LOAD beziehungsweise für VERIFY sind völlig identisch. 
+                     Was das Betriebssystem hinterher daraus machen muß, ist natürlich 
+                     unterschiedlich. Das Basic erspart sich eine doppelte Routine, zeigt aber mit 
+                     der Flagge in Speicherzelle 10 den Unterschied an.
 
-                     Erwähnenswert ist noch, daß das Betriebssystem in einer Art Nationalismus seine eigene Flagge aufzieht: Den Unterschied zwischen LOAD und VERIFY speichert es seinerseits in Zelle 147 ($93) ab. Soweit ich es sehen kann, sind Inhalt und Bedeutung beider Speicherzellen völlig identisch.
+                     Erwähnenswert ist noch, daß das Betriebssystem in einer Art Nationalismus seine 
+                     eigene Flagge aufzieht: Den Unterschied zwischen LOAD und VERIFY speichert es 
+                     seinerseits in Zelle 147 ($93) ab. Soweit ich es sehen kann, sind Inhalt und 
+                     Bedeutung beider Speicherzellen völlig identisch.
 
-                     Ich habe für Sie zwar kein Kochrezept zur Anwendung der
+                     Ich habe für Sie zwar kein Kochrezept zur Anwendung der LOAD-VERIFY-Flagge in 
+                     einem Programm vorrätig, möchte Sie aber trotzdem ein bißchen zum Spielen 
+                     anregen. Um meine Erklärung nachzuvollziehen, tippen Sie bitte direkt LOAD ein.
 
-                     LOAD-VERIFY-Flagge in einem Programm vorrätig, möchte Sie aber trotzdem ein bißchen zum Spielen anregen. Um meine Erklärung nachzuvollziehen, tippen Sie bitte direkt LOAD ein.
-
-                     Den Ladevorgang brechen Sie mit der STOP-Taste ab und fragen dann den Inhalt der Zelle 10 ab mit 
+                     Den Ladevorgang brechen Sie mit der STOP-Taste ab und fragen dann den Inhalt 
+                     der Zelle 10 ab mit 
 
                          PRINT PEEK (10)
 
                      Wir erhalten eine 0.
 
-                     Wiederholen Sie bitte diesen Vorgang, aber mit VERIFY. Wir erhalten jetzt eine 1 - Quod erat demonstrandum.
+                     Wiederholen Sie bitte diesen Vorgang, aber mit VERIFY. Wir erhalten jetzt eine 
+                     1 - Quod erat demonstrandum.
 
-                     Wir können auch in die Zelle 10 hineinPOKEn. Die »Wachablösung« zwischen Basic und Betriebssystem unter Hissen der Flagge in Zelle 10 findet beim VC 20 in der Speicherzelle 57705, beim C 64 in 57708 statt. Bevor wir diese Maschinenroutine mit SYS 57705 (SYS 57708) starten, geben wir mit dem Inhalt der Speicherzelle 10 an, ob es ein LOAD oder ein VERIFY sein soll.
+                     Wir können auch in die Zelle 10 hineinPOKEn. Die »Wachablösung« zwischen Basic 
+                     und Betriebssystem unter Hissen der Flagge in Zelle 10 findet beim VC 20 in der 
+                     Speicherzelle 57705, beim C 64 in 57708 statt. Bevor wir diese Maschinenroutine 
+                     mit SYS 57705 (SYS 57708) starten, geben wir mit dem Inhalt der Speicherzelle 
+                     10 an, ob es ein LOAD oder ein VERIFY sein soll.
 
-                     Legen Sie ein Band mit Programm in die Datasette. Um ein LOAD zu erzeugen, geben wir direkt ein:
+                     Legen Sie ein Band mit Programm in die Datasette. Um ein LOAD zu erzeugen, 
+                     geben wir direkt ein:
 
                          POKE 10,0:SYS 57705 
                          (POKE 10,0:SYS 57708) 
 
-                     Entsprechend der Anweisung auf dem Bildschirm drücken Sie PLAY, und das Auffinden des ersten Programms wird mit LOAD gemeldet. Machen Sie das Ganze noch einmal, diesmal aber POKEn Sie bitte eine 1 in die Zelle 10. Jetzt meldet das Betriebssystem das Auffinden des Programms mit VERIFY.
+                     Entsprechend der Anweisung auf dem Bildschirm drücken Sie PLAY, und das 
+                     Auffinden des ersten Programms wird mit LOAD gemeldet. Machen Sie das Ganze 
+                     noch einmal, diesmal aber POKEn Sie bitte eine 1 in die Zelle 10. Jetzt meldet 
+                     das Betriebssystem das Auffinden des Programms mit VERIFY.
 
                      Wie gesagt, vielleicht fällt Ihnen eine Anwendung dafür ein.
 
 $000B                Flagge für den Eingabepuffer/Anzahl der Dimensionen von Zahlenfeldern (Arrays)
 
-                     Alle Buchstaben und Zeichen, die mit der Tastatur direkt eingetippt werden, kommen in einen Eingabe-Pufferspeicher.
+                     Alle Buchstaben und Zeichen, die mit der Tastatur direkt eingetippt werden, 
+                     kommen in einen Eingabe-Pufferspeicher.
 
-                     Er beginnt ab Speicherzelle 512 ($200). Sobald die RETURN-Taste gedrückt wird, wandelt eine Routine des Basic-Übersetzers den Text in Codezahlen (Tokens) um. Diese Routine und eine andere, welche die Zeilen eines Programms aneinanderhängt, verwenden die Zelle 11 als Zwischenspeicher.
+                     Er beginnt ab Speicherzelle 512 ($200). Sobald die RETURN-Taste gedrückt wird, 
+                     wandelt eine Routine des Basic-Übersetzers den Text in Codezahlen (Tokens) um. 
+                     Diese Routine und eine andere, welche die Zeilen eines Programms 
+                     aneinanderhängt, verwenden die Zelle 11 als Zwischenspeicher.
 
-                     Sobald die Textumwandlung beendet ist, steht in Zelle 11 eine Zahl, die die Länge der Token-Zeile angibt.
+                     Sobald die Textumwandlung beendet ist, steht in Zelle 11 eine Zahl, die die 
+                     Länge der Token-Zeile angibt.
 
-                     Die Zelle 11 wird außerdem noch von den Basic-Routinen benutzt, die ein Feld (Array) aufbauen oder ein bestimmtes Element in einem Array suchen. Was ein Feld oder Array ist, finden Sie in den Commodore-Handbüchern gut beschrieben. Außerdem gehe ich bei der Behandlung der Speicherzellen 47 bis 50 näher darauf ein.
+                     Die Zelle 11 wird außerdem noch von den Basic-Routinen benutzt, die ein Feld 
+                     (Array) aufbauen oder ein bestimmtes Element in einem Array suchen. Was ein 
+                     Feld oder Array ist, finden Sie in den Commodore-Handbüchern gut beschrieben. 
+                     Außerdem gehe ich bei der Behandlung der Speicherzellen 47 bis 50 näher darauf 
+                     ein.
 
-                     Diese Routinen also verwenden die Speicherzelle 11, um die Anzahl der verlangten DIMensionen und den für ein neu aufgebautes Feld nötigen Speicherbedarf zu berechnen.
+                     Diese Routinen also verwenden die Speicherzelle 11, um die Anzahl der 
+                     verlangten DIMensionen und den für ein neu aufgebautes Feld nötigen 
+                     Speicherbedarf zu berechnen.
 
 $000C                Flagge für Basic-Routlnen, die ein Feld (Array) suchen beziehungsweise aufbauen
 
-                     Diese Speicherzelle wird von den Basic-Routinen als Zwischenspeicher benutzt, die feststellen, ob eine Variable ein Feld (Array) ist, ob das Feld bereits DIMensioniert worden ist, oder ob ein neues Feld die unDIMensionierte Zahl von 11 Elementen hat.
+                     Diese Speicherzelle wird von den Basic-Routinen als Zwischenspeicher benutzt, 
+                     die feststellen, ob eine Variable ein Feld (Array) ist, ob das Feld bereits 
+                     DIMensioniert worden ist, oder ob ein neues Feld die unDIMensionierte Zahl von 
+                     11 Elementen hat.
 
-$000D                Flagge zur Bestimmung des Datentyps (Zeichenkette/ String oder Zahl)
+$000D                Flagge zur Bestimmung des Datentyps (Zeichenkette/String oder Zahl)
 
-                     Diese Flagge zeigt den Routinen des Basic-Übersetzers an, ob es sich bei den zur Verarbeitung anstehenden Daten um einen String oder um Zahlenwerte handelt. Zeigt die Flagge 255 ($FF), ist es ein String. Bei 0 handelt es sich um Zahlen. Diese Bestimmung erfolgt jedesmal, wenn eine Variable definiert oder gesucht wird. Diese Flagge kann leider nicht durch ein Basic-Programm abgefragt werden.
+                     Diese Flagge zeigt den Routinen des Basic-Übersetzers an, ob es sich bei den 
+                     zur Verarbeitung anstehenden Daten um einen String oder um Zahlenwerte handelt. 
+                     Zeigt die Flagge 255 ($FF), ist es ein String. Bei 0 handelt es sich um Zahlen. 
+                     Diese Bestimmung erfolgt jedesmal, wenn eine Variable definiert oder gesucht 
+                     wird. Diese Flagge kann leider nicht durch ein Basic-Programm abgefragt werden.
 
 $000E                Flagge zur Bestimmung des Zahlentyps (Ganze Zahl oder Gleitkommazahl)
 
-                     Sobald durch die Flagge in der vorherigen Zelle 13 eine Zahl signalisiert wird, steht hier die Zahl 128 ($80), wenn es sich um eine ganze Zahl handelt, während eine 0 die Zahl als Gleitkommazahl identifiziert.
+                     Sobald durch die Flagge in der vorherigen Zelle 13 eine Zahl signalisiert wird, 
+                     steht hier die Zahl 128 ($80), wenn es sich um eine ganze Zahl handelt, während 
+                     eine 0 die Zahl als Gleitkommazahl identifiziert.
 
-                     Damit wollen wir ein bißchen experimentieren. Zeile 10 definiert eine Gleitkommazahl, Zeile 20 druckt sie und die Flagge aus Zelle 14 aus.
+                     Damit wollen wir ein bißchen experimentieren. Zeile 10 definiert eine 
+                     Gleitkommazahl, Zeile 20 druckt sie und die Flagge aus Zelle 14 aus.
 
                          10 A=13.41
                          20 PRINT A,PEEK (14) 
@@ -222,37 +359,61 @@ $000E                Flagge zur Bestimmung des Zahlentyps (Ganze Zahl oder Gleit
                          30 B=INT (A)
                          40 PRINT B,PEEK (14)
 
-                     INT bildet die ganze Zahl von 13.41. Also müßte die Flagge in Zelle 14 auf 128 stehen. Weit gefehlt! Da intern auch die 13 als Gleitkommazahl berechnet wird, erhalten wir immer noch eine 0.
+                     INT bildet die ganze Zahl von 13.41. Also müßte die Flagge in Zelle 14 auf 128 
+                     stehen. Weit gefehlt! Da intern auch die 13 als Gleitkommazahl berechnet wird, 
+                     erhalten wir immer noch eine 0.
 
                          50 B%=A
                          60 PRINT B%,PEEK (14)
 
-                     Erst die Definition der Variablen B als ganze Zahl (mit %) ergibt die Flagge 128.
+                     Erst die Definition der Variablen B als ganze Zahl (mit %) ergibt die Flagge 
+                     128.
 
                          70 D=16*B%
                          80 PRINT D,PEEK (14)
 
-                     Die Multiplikation einer ganzen Zahl mit der Ganzzahl-Variablen B% fällt in dieselbe Kategorie wie Zeile 30 oben, da die Verarbeitung als Gleitkommazahl erfolgt. Also erhalten wir zu Recht eine 0. Erst wenn D als ganze Zahl (Zeile 90) ausgewiesen wird, steht die Flagge wieder auf 128:
+                     Die Multiplikation einer ganzen Zahl mit der Ganzzahl-Variablen B% fällt in 
+                     dieselbe Kategorie wie Zeile 30 oben, da die Verarbeitung als Gleitkommazahl 
+                     erfolgt. Also erhalten wir zu Recht eine 0. Erst wenn D als ganze Zahl (Zeile 
+                     90) ausgewiesen wird, steht die Flagge wieder auf 128:
 
                          90 D%=16*B%
                          100 PRINT D%, PEEK (14)
 
 $000F                Flagge bei LIST, Garbage Collection und Textumwandlung
 
-                     Die Routine des LIST-Befehls muß unterscheiden zwischen Basic-Befehlen und normalem Text. Wenn eine Zeichenkette durch ein »Gänsefüßchen« identifiziert worden ist, wird die Flagge gesetzt, und der Text wird ausgedruckt.
+                     Die Routine des LIST-Befehls muß unterscheiden zwischen Basic-Befehlen und 
+                     normalem Text. Wenn eine Zeichenkette durch ein »Gänsefüßchen« identifiziert 
+                     worden ist, wird die Flagge gesetzt, und der Text wird ausgedruckt.
 
-                     Unter »Garbage Collection« (Müllabfuhr) wird die Routine des Betriebssystems verstanden, welche zu bestimmten Anlässen im Variablenspeicher alle nicht mehr benötigten Strings entfernt, um Platz zu schaffen. Dabei wird eine Flagge in Zelle 15 gesetzt, die anzeigt, daß eine Müllabfuhr bereits stattgefunden hat. Wenn bei der Speicherung eines neuen Strings zu wenig Speicherplatz vorhanden ist, wird bei der Flagge nachgesehen, ob gerade vorher schon durch die Müllabfuhr (Garbage Collection) der Speicher entrümpelt worden ist. Falls das der Fall ist, wird OUT OF MEMORY angezeigt, falls nicht, wird eine Müllabfuhr durchgeführt.
+                     Unter »Garbage Collection« (Müllabfuhr) wird die Routine des Betriebssystems 
+                     verstanden, welche zu bestimmten Anlässen im Variablenspeicher alle nicht mehr 
+                     benötigten Strings entfernt, um Platz zu schaffen. Dabei wird eine Flagge in 
+                     Zelle 15 gesetzt, die anzeigt, daß eine Müllabfuhr bereits stattgefunden hat. 
+                     Wenn bei der Speicherung eines neuen Strings zu wenig Speicherplatz vorhanden 
+                     ist, wird bei der Flagge nachgesehen, ob gerade vorher schon durch die 
+                     Müllabfuhr (Garbage Collection) der Speicher entrümpelt worden ist. Falls das 
+                     der Fall ist, wird OUT OF MEMORY angezeigt, falls nicht, wird eine Müllabfuhr 
+                     durchgeführt.
 
-                     Schließlich wird Zelle 15 auch bei der Umwandlung von Basic-Befehlen in internen Codezahlen (Tokens) eingesetzt.
+                     Schließlich wird Zelle 15 auch bei der Umwandlung von Basic-Befehlen in 
+                     internen Codezahlen (Tokens) eingesetzt.
 
 
 $0010                Flagge zur Anzeige eines Variablen-Feldes oder einer selbstdefinierten Funktion
 
-                     Im Basic-Übersetzer gibt es eine Routine, die den Speicher absucht, ob es eine Variable mit bestimmten Namen bereits gibt. Wenn diese mit einer Klammer beginnt, wird die Flagge in Zelle 16 gesetzt, um anzuzeigen, daß es sich um eine Array-Variable oder um eine mit DEF FN selbstdefinierte Funktion handelt.
+                     Im Basic-Übersetzer gibt es eine Routine, die den Speicher absucht, ob es eine 
+                     Variable mit bestimmten Namen bereits gibt. Wenn diese mit einer Klammer 
+                     beginnt, wird die Flagge in Zelle 16 gesetzt, um anzuzeigen, daß es sich um 
+                     eine Array-Variable oder um eine mit DEF FN selbstdefinierte Funktion handelt.
 
 $0011                Flagge für INPUT, GET oder READ
 
-                     Die Basic-Routinen für INPUT, GET und READ sind zum großen Teil identisch. Um Speicherplatz zu sparen, verwendet der Basic-Übersetzer die identischen Teile nur einmal. Um in die nichtidentischen Teile verzweigen zu können, wird in Zelle 17 angezeigt, um welchen der drei Befehle es sich gerade handelt. Die Flagge steht auf 0 für INPUT, auf 64 ($40) für GET und auf 152 ($98) für READ.
+                     Die Basic-Routinen für INPUT, GET und READ sind zum großen Teil identisch. Um 
+                     Speicherplatz zu sparen, verwendet der Basic-Übersetzer die identischen Teile 
+                     nur einmal. Um in die nichtidentischen Teile verzweigen zu können, wird in 
+                     Zelle 17 angezeigt, um welchen der drei Befehle es sich gerade handelt. Die 
+                     Flagge steht auf 0 für INPUT, auf 64 ($40) für GET und auf 152 ($98) für READ.
 
                      Mit dem folgenden kleinen Programm können wir das leicht nachprüfen.
 
@@ -264,33 +425,58 @@ $0011                Flagge für INPUT, GET oder READ
                          60 GET C$:IF C$= " "THEN 60
                          70 PRINT PEEK (17)
 
-                     Zeile 10 und 20, 40 sowie 60 sind Anwendungen der drei zur Debatte stehenden Basic-Befehle. Nach der Durchführung jedes Befehls wird in den Zeilen 30, 50 und 70 die jeweilige Flagge ausgelesen.
+                     Zeile 10 und 20, 40 sowie 60 sind Anwendungen der drei zur Debatte stehenden 
+                     Basic-Befehle. Nach der Durchführung jedes Befehls wird in den Zeilen 30, 50 
+                     und 70 die jeweilige Flagge ausgelesen.
 
-                     Nach RUN erhalten wir als Resultat der Zeile 20 die Zahl 152, als Resultat von Zeile 30 die INPUT-Aufforderung mit Fragezeichen. Geben Sie irgendeine Zahl und RETURN ein. Wir erhalten so die 0. Die GET-Schleife in Zeile 40 wartet auf einen Tastendruck, dann erhalten wir 64.
+                     Nach RUN erhalten wir als Resultat der Zeile 20 die Zahl 152, als Resultat von 
+                     Zeile 30 die INPUT-Aufforderung mit Fragezeichen. Geben Sie irgendeine Zahl und 
+                     RETURN ein. Wir erhalten so die 0. Die GET-Schleife in Zeile 40 wartet auf 
+                     einen Tastendruck, dann erhalten wir 64.
 
 $0012                1. Flagge für Vorzeichen bei SIN, COS und TAN
                      2. Flagge bei Vergleich
                      
                      Zuerst kommt das Vorzeichen der trigonometrischen Funktionen an die Reihe.
 
-                     Die Routinen des Basic-Übersetzers (Interpreter), welche die drei trigonometrischen Funktionen SIN, COS und TAN berechnen, verwenden die Speicherzelle 18 zur Bestimmung des Vorzeichens.
+                     Die Routinen des Basic-Übersetzers (Interpreter), welche die drei 
+                     trigonometrischen Funktionen SIN, COS und TAN berechnen, verwenden die 
+                     Speicherzelle 18 zur Bestimmung des Vorzeichens.
 
-                     Zur Erinnerung: Die trigonometrischen Funktionen haben in den vier »Quadranten« des Kreises (0-90, 90-180, 180-270, 270-360 Grad) nicht unbedingt dieselben Vorzeichen. Die Vorzeichen ändern sich allerdings nur an den Grenzen der Quadranten, wie in Bild 2 zu sehen ist. Die Flagge in Zelle 18 gibt das Vorzeichen nicht direkt an, sondern auf Umwegen. Die Darstellung ist in der folgenden Tabelle zusammengefaßt.
+                     Zur Erinnerung: Die trigonometrischen Funktionen haben in den vier »Quadranten« 
+                     des Kreises (0-90, 90-180, 180-270, 270-360 Grad) nicht unbedingt dieselben 
+                     Vorzeichen. Die Vorzeichen ändern sich allerdings nur an den Grenzen der 
+                     Quadranten, wie in Bild 2 zu sehen ist. Die Flagge in Zelle 18 gibt das 
+                     Vorzeichen nicht direkt an, sondern auf Umwegen. Die Darstellung ist in der 
+                     folgenden Tabelle zusammengefaßt.
 
-                     Dabei bedeutet »gleich«: 0-0-0-0 oder 255-255-255 »Wechsel«: 0-255-0-255 Da die Erklärung mit »gleich« beziehungsweise »Wechsel« nicht gerade einleuchtend ist, schlage ich vor, daß Sie sich das Ganze mit dem folgenden kleinen Programm selbst anschauen, welches für viele Werte des Winkels im Bogenmaß - und in kleinen Schritten - den Wert der Flagge, daneben den Winkel I und den Wert der Funktion mit Vorzeichen ausdruckt.
+                     Dabei bedeutet »gleich«: 0-0-0-0 oder 255-255-255 »Wechsel«: 0-255-0-255 Da die 
+                     Erklärung mit »gleich« beziehungsweise »Wechsel« nicht gerade einleuchtend ist, 
+                     schlage ich vor, daß Sie sich das Ganze mit dem folgenden kleinen Programm 
+                     selbst anschauen, welches für viele Werte des Winkels im Bogenmaß - und in 
+                     kleinen Schritten - den Wert der Flagge, daneben den Winkel I und den Wert der 
+                     Funktion mit Vorzeichen ausdruckt.
 
                          10 FOR I=0 TO 10 STEP 0.01
                          20 PRINT PEEK(18);INT (I*100)/100;SIN(I):NEXT 
 
-                     Diese etwas umständliche Art, den Wert von I auszudrucken, vermeidet Rundungsfehler und begrenzt den Ausdruck auf zwei Dezimalstellen. Wenn Sie die Winkelwerte von I in Graden ausgedruckt haben wollen, können Sie eine ändere Zeile 20 verwenden, welche die Umrechnungsformel vom Bogenmaß in Grade verwendet: Winkel in Grad = Winkel im Bogenmaß * 180/π
+                     Diese etwas umständliche Art, den Wert von I auszudrucken, vermeidet 
+                     Rundungsfehler und begrenzt den Ausdruck auf zwei Dezimalstellen. Wenn Sie die 
+                     Winkelwerte von I in Graden ausgedruckt haben wollen, können Sie eine ändere 
+                     Zeile 20 verwenden, welche die Umrechnungsformel vom Bogenmaß in Grade 
+                     verwendet: Winkel in Grad = Winkel im Bogenmaß * 180/π
                      
                          20 PRINT PEEK(18);INT(I*180/π);SIN(I):NEXT
                          
                      Statt SIN können Sie genauso gut COS und TAN einsetzen.
 
-                     In Bild 2 sind nicht nur die Kurven und die Bereiche der Vorzeichen, sondern auch die Winkelbereiche sowohl im Bogenmaß als auch in Graden dargestellt.
+                     In Bild 2 sind nicht nur die Kurven und die Bereiche der Vorzeichen, sondern 
+                     auch die Winkelbereiche sowohl im Bogenmaß als auch in Graden dargestellt.
 
-                     Die Speicherzelle 18 wird auch noch von anderen Routinen des Basic-Interpreters beansprucht und zwar von allen, die einen Vergleich wie <, >, >= und so weiter durchführen. Entsprechend der Art des Vergleichs steht dann in der Zelle 18 eine Ziffer von 0 bis 6.
+                     Die Speicherzelle 18 wird auch noch von anderen Routinen des Basic-Interpreters 
+                     beansprucht und zwar von allen, die einen Vergleich wie <, >, >= und so weiter 
+                     durchführen. Entsprechend der Art des Vergleichs steht dann in der Zelle 18 
+                     eine Ziffer von 0 bis 6.
 
                      Das folgende Programm macht das deutlich.
 
@@ -305,7 +491,12 @@ $0012                1. Flagge für Vorzeichen bei SIN, COS und TAN
                          90 IF I<A OR I=A THEN PRINT I; PEEK(18); "< OR =" 
                          100 NEXT I
 
-                     Kurz zur Erklärung dieser Zeilen: In der FOR..NEXT-Schleife wird die Variable I mit der Konstanten A=2 verglichen. In den Zeilen 30 bis 90 werden alle möglichen Vergleichsoperatoren durchgeprüft. Jeder der zutrifft, druckt den Wert von I, den Wert der dann in Zelle 18 stehenden Flagge und schließlich den Vergleichsoperator aus. Aus dem Resultat dieses Programms läßt sich folgende Tabelle zusammenstellen:
+                     Kurz zur Erklärung dieser Zeilen: In der FOR..NEXT-Schleife wird die Variable I 
+                     mit der Konstanten A=2 verglichen. In den Zeilen 30 bis 90 werden alle 
+                     möglichen Vergleichsoperatoren durchgeprüft. Jeder der zutrifft, druckt den 
+                     Wert von I, den Wert der dann in Zelle 18 stehenden Flagge und schließlich den 
+                     Vergleichsoperator aus. Aus dem Resultat dieses Programms läßt sich folgende 
+                     Tabelle zusammenstellen:
 
                      | Vergleich | Flagge in 18 |
                      |-----------|--------------|
@@ -318,77 +509,137 @@ $0012                1. Flagge für Vorzeichen bei SIN, COS und TAN
                      | <>        | 5            |
                      | <=        | 6            |
 
-                     Sie sehen, die Flagge für die kombinierten Verglelchsoperatoren entspricht der Summe ihrer Einzelwerte. Nur die Verknüpfung über OR nicht, denn die ergibt 0.
+                     Sie sehen, die Flagge für die kombinierten Verglelchsoperatoren entspricht der 
+                     Summe ihrer Einzelwerte. Nur die Verknüpfung über OR nicht, denn die ergibt 0.
 
 $0013                Flagge zur Kennzeichnung des laufenden Ein-/Ausgabegerätes                       
 
-                     Immer dann, wenn von Basic Daten ein- oder ausgegeben werden, schaut die entsprechende Routine des Übersetzers in Zelle 19 nach, um welches Peripheriegerät es sich handelt. Zur Debatte stehen Tastatur, Datasette, RS232-User-Port, Bildschirm, Drucker und Floppy-Laufwerk.
+                     Immer dann, wenn von Basic Daten ein- oder ausgegeben werden, schaut die 
+                     entsprechende Routine des Übersetzers in Zelle 19 nach, um welches 
+                     Peripheriegerät es sich handelt. Zur Debatte stehen Tastatur, Datasette, RS232-
+                     User-Port, Bildschirm, Drucker und Floppy-Laufwerk.
 
-                     Die Flagge ihrerseits ist ausschlaggebend für die feinen Unterschiede, wie zum Beispiel das Fragezeichen, bei Eingabe von der Tastatur (INPUT) oder die Anweisung »Press Play on Tape« bei Eingabe von der Datasette.
+                     Die Flagge ihrerseits ist ausschlaggebend für die feinen Unterschiede, wie zum 
+                     Beispiel das Fragezeichen, bei Eingabe von der Tastatur (INPUT) oder die 
+                     Anweisung »Press Play on Tape« bei Eingabe von der Datasette.
 
-                     Beim Einschalten des Rechners setzt die Initialisierungsroutine des Betriebssystems, die beim VC 20 ab Adresse 58276 ($E3A4), beim C 64 ab 58303 ($E3BF) beginnt, die Flagge in Zelle 19auf 0. Die Null bedeutet Eingabe über Tastatur und Ausgabe über Bildschirm.
+                     Beim Einschalten des Rechners setzt die Initialisierungsroutine des 
+                     Betriebssystems, die beim VC 20 ab Adresse 58276 ($E3A4), beim C 64 ab 58303 
+                     ($E3BF) beginnt, die Flagge in Zelle 19auf 0. Die Null bedeutet Eingabe über 
+                     Tastatur und Ausgabe über Bildschirm.
 
-                     Wenn Sie einen Disassembler haben, drucken Sie doch einmal das Assemblerlisting aus. Sie werden in Adresse 58324/ 58325 ($E3D4/$E3D5), beim C 64 in 58354/58355 ($E3F2/$E3F3) den Befehl finden, der eine Null nach Zelle 19 ($13) bringt.
+                     Wenn Sie einen Disassembler haben, drucken Sie doch einmal das Assemblerlisting 
+                     aus. Sie werden in Adresse 58324/58325 ($E3D4/$E3D5), beim C 64 in 58354/58355 
+                     ($E3F2/$E3F3) den Befehl finden, der eine Null nach Zelle 19 ($13) bringt.
 
-                     Immer dann, wenn ein Programm nicht Tastatur und Bildschirm, sondern eines der oben genannten anderen Peripheriegeräte anspricht (indem mit OPEN.... eine Datei = Logical File eröffnet wird), wird in Zelle 19 die Nummer der gerade bearbeiteten Datei eingetragen, mit den bereits beschriebenen Konsequenzen.
+                     Immer dann, wenn ein Programm nicht Tastatur und Bildschirm, sondern eines der 
+                     oben genannten anderen Peripheriegeräte anspricht (indem mit OPEN.... eine 
+                     Datei = Logical File eröffnet wird), wird in Zelle 19 die Nummer der gerade 
+                     bearbeiteten Datei eingetragen, mit den bereits beschriebenen Konsequenzen.
 
-                     Ich will hier nicht weiter darauf eingehen, da wir den Inhalt von Zelle 19 selbst nicht auslesen können. Er wird nämlich immer gleich wieder auf Null gesetzt.
+                     Ich will hier nicht weiter darauf eingehen, da wir den Inhalt von Zelle 19 
+                     selbst nicht auslesen können. Er wird nämlich immer gleich wieder auf Null 
+                     gesetzt.
 
-                     Wir können ihn aber durch POKE verändern. Durch POKE 19,1 gaukeln wir dem Rechner vor, daß Ein- und Ausgabe über »externe« Geräte läuft, selbst wenn nur die Tastatur und der Bildschirm betrieben werden.
+                     Wir können ihn aber durch POKE verändern. Durch POKE 19,1 gaukeln wir dem 
+                     Rechner vor, daß Ein- und Ausgabe über »externe« Geräte läuft, selbst wenn nur 
+                     die Tastatur und der Bildschirm betrieben werden.
 
-                     Wenn zum Beispiel der Rechner der Meinung ist, daß ein INPUT von der Datasette kommt, druckt er kein Fragezeichen aus; auch kein EXTRA IGNORED als Fehlermeldung bei zu zahlreicher Eingabe und das alleinige Drücken der RETURN-Taste ignoriert er auch, im Gegensatz zum »normalen« INPUT Probieren Sie es aus:
+                     Wenn zum Beispiel der Rechner der Meinung ist, daß ein INPUT von der Datasette 
+                     kommt, druckt er kein Fragezeichen aus; auch kein EXTRA IGNORED als 
+                     Fehlermeldung bei zu zahlreicher Eingabe und das alleinige Drücken der RETURN-
+                     Taste ignoriert er auch, im Gegensatz zum »normalen« INPUT Probieren Sie es 
+                     aus:
 
                          10 INPUT "TEST"; A$
                          20 PRINT A$
 
                      In diesem Normalfall erscheint nach RUN darunter die Aufforderung TEST?
 
-                     Eine Eingabe, zum Beispiel XX, erscheint mit einem Abstand daneben, und nach RETURN wird XX an den Anfang der nächsten Zeile gedruckt. Alle falschen Eingaben werden mit den üblichen Fehlermeldungen quittiert.
+                     Eine Eingabe, zum Beispiel XX, erscheint mit einem Abstand daneben, und nach 
+                     RETURN wird XX an den Anfang der nächsten Zeile gedruckt. Alle falschen 
+                     Eingaben werden mit den üblichen Fehlermeldungen quittiert.
 
                      Jetzt fügen wir ein:
 
                          5 POKE 19,1
 
-                     Nach RUN erscheint wieder die Aufforderung TEST, aber ohne Fragezeichen. Die Eingabe XX wird ohne Abstand daneben gesetzt und nach RETURN mit einem Abstand in derselben Zeile weitergeschrieben.
+                     Nach RUN erscheint wieder die Aufforderung TEST, aber ohne Fragezeichen. Die 
+                     Eingabe XX wird ohne Abstand daneben gesetzt und nach RETURN mit einem Abstand 
+                     in derselben Zeile weitergeschrieben.
 
-                     Das Drücken der RETURN-Taste setzt den Cursor nicht wie üblich in die nächste Zeile, sondern schiebt ihn in derselben Zeile weiter.
+                     Das Drücken der RETURN-Taste setzt den Cursor nicht wie üblich in die nächste 
+                     Zeile, sondern schiebt ihn in derselben Zeile weiter.
 
-                     Diesen zusätzlichen Effekt muß man beachten, da er sehr störend für den Verlauf eines Programms sein kann.
+                     Diesen zusätzlichen Effekt muß man beachten, da er sehr störend für den Verlauf 
+                     eines Programms sein kann.
 
-                     Man kann ihn natürlich auch nutzbringend einsetzen, hat er doch die Eigenschaft eines automatischen »Cursor UP«. Eine pfiffige Anwendung dieser Art wurde von Brad Templeton für den PET erfunden und ist von Jim Butterfield für eine MERGE-Routine mit dem Namen »Magic Merge« veröffentlicht worden.
+                     Man kann ihn natürlich auch nutzbringend einsetzen, hat er doch die Eigenschaft 
+                     eines automatischen »Cursor UP«. Eine pfiffige Anwendung dieser Art wurde von 
+                     Brad Templeton für den PET erfunden und ist von Jim Butterfield für eine MERGE-
+                     Routine mit dem Namen »Magic Merge« veröffentlicht worden.
 
-                     Da diese Routine aber primär auf der Eigenschaft der Speicherzelle 153 basiert, werde ich sie dann erläutern, sobald wir bei der Zelle 153 angelangt sind.
+                     Da diese Routine aber primär auf der Eigenschaft der Speicherzelle 153 basiert, 
+                     werde ich sie dann erläutern, sobald wir bei der Zelle 153 angelangt sind.
 
                      Zurück zur Flagge in Zelle 19.
 
-                     Umgekehrt können wir POKE 19,0 leider nicht nutzen, da die betroffenen Befehle GET, GET#, INPUT, INPUT# und PRINT # die Flagge sofort auf den richtigen Wert setzen. Nur PRINT und LIST tun das nicht, wie wir bei dem PRINT-Befehl oben ja gesehen haben.
+                     Umgekehrt können wir POKE 19,0 leider nicht nutzen, da die betroffenen Befehle 
+                     GET, GET#, INPUT, INPUT# und PRINT # die Flagge sofort auf den richtigen Wert 
+                     setzen. Nur PRINT und LIST tun das nicht, wie wir bei dem PRINT-Befehl oben ja 
+                     gesehen haben.
 
                          
-$0014-$0015          Zeilennummer für LIST, GOTO, GOSUB und ON, Zeiger der Adresse bei PEEK, POKE, SYS und WAIT
+$0014-$0015          Zeilennummer für LIST, GOTO, GOSUB und ON, Zeiger der Adresse bei PEEK, POKE, 
+                     SYS und WAIT
 
-                     In diesen Speicherzellen wird die Zeilennummer der Sprungbefehle GOTO, ON..GOTO und GOSUB sowie die Zeilenangabe beim LIST-Befehl gespeichert. Da die Werte bis maximal 65535 gehen können, braucht der Computer 2 Byte zur High-/Low-Byte-Darstellung.
+                     In diesen Speicherzellen wird die Zeilennummer der Sprungbefehle GOTO, ON..GOTO 
+                     und GOSUB sowie die Zeilenangabe beim LIST-Befehl gespeichert. Da die Werte bis 
+                     maximal 65535 gehen können, braucht der Computer 2 Byte zur High-/Low-Byte-
+                     Darstellung.
 
-                     Die GOTO-Routine (im VC 20 ab 51360 = $C8A0, im C 64 ab 43168 = $A8A0) vergleicht die Zahl in 20 und 21 mit der laufenden Zeilenzahl. Wenn sie kleiner ist, wird ab der ersten Zeile des Programms gesucht. Ist sie aber größer, dann beginnt die Suche ab der laufenden Zeilenzahl. Die Suche geht solange, bis die in 20 und 21 angegebene Zeilenzahl gefunden ist. Dann fährt das Programm mit dieser Zeile fort.
+                     Die GOTO-Routine (im VC 20 ab 51360 = $C8A0, im C 64 ab 43168 = $A8A0) 
+                     vergleicht die Zahl in 20 und 21 mit der laufenden Zeilenzahl. Wenn sie kleiner 
+                     ist, wird ab der ersten Zeile des Programms gesucht. Ist sie aber größer, dann 
+                     beginnt die Suche ab der laufenden Zeilenzahl. Die Suche geht solange, bis die 
+                     in 20 und 21 angegebene Zeilenzahl gefunden ist. Dann fährt das Programm mit 
+                     dieser Zeile fort.
 
-                     LIST speichert in 20 und 21 die höchste auszulistende Zeilennummer ab, falls keine Angabe beim LISTen gegeben worden ist, den Wert 65535 ($FFFF).
+                     LIST speichert in 20 und 21 die höchste auszulistende Zeilennummer ab, falls 
+                     keine Angabe beim LISTen gegeben worden ist, den Wert 65535 ($FFFF).
 
-                     Die Befehle PEEK, POKE, SYS und WAIT verwenden diese Speicherzellen zur Angabe der Adressen, die dem Befehl immer folgen müssen.
+                     Die Befehle PEEK, POKE, SYS und WAIT verwenden diese Speicherzellen zur Angabe 
+                     der Adressen, die dem Befehl immer folgen müssen.
 
-                     Leider können wir die Speicherzellen 20 und 21 mit Basic-Programmen nicht bearbeiten; ihr Inhalt wird immer gleich auf 20 zurückgesetzt.
+                     Leider können wir die Speicherzellen 20 und 21 mit Basic-Programmen nicht 
+                     bearbeiten; ihr Inhalt wird immer gleich auf 20 zurückgesetzt.
                          
-$0016                Zeiger auf den nächsten freien Speicherplatz im »Temporary String Descriptor Stack«
+$0016                Zeiger auf den nächsten freien Speicherplatz im »Temporary String Descriptor 
+                     Stack«
 
-                     Dieser Zeiger bezieht sich in seiner Wirkung auf die übernächsten Speicherzellen 25 bis 33 ($19 bis $21).
+                     Dieser Zeiger bezieht sich in seiner Wirkung auf die übernächsten 
+                     Speicherzellen 25 bis 33 ($19 bis $21).
 
-                     Diese werden als Stapelspeicher (Stack) für Angaben über vorläufige Zeichenketten - auf englisch »Temporary String Descriptor« - verwendet.
+                     Diese werden als Stapelspeicher (Stack) für Angaben über vorläufige 
+                     Zeichenketten - auf englisch »Temporary String Descriptor« - verwendet.
 
-                     Die Speicherzelle 22 ($16) ihrerseits enthält einen Zeiger auf den jeweils nächsten verfügbaren Platz in diesem Speicher ab Zelle 25. Da er eine Kapazität von 3 * 3 Byte hat, zeigt der Zeiger auf die Zelle 25 ($19), wenn er leer ist. Bei einem Eintrag zeigt er auf 28 ($1C), bei zwei Einträgen auf 31 ($1F) und schließlich auf 34 ($22), wenn der Speicher voll ist.
+                     Die Speicherzelle 22 ($16) ihrerseits enthält einen Zeiger auf den jeweils 
+                     nächsten verfügbaren Platz in diesem Speicher ab Zelle 25. Da er eine Kapazität 
+                     von 3 * 3 Byte hat, zeigt der Zeiger auf die Zelle 25 ($19), wenn er leer ist. 
+                     Bei einem Eintrag zeigt er auf 28 ($1C), bei zwei Einträgen auf 31 ($1F) und 
+                     schließlich auf 34 ($22), wenn der Speicher voll ist.
 
-                     Eine Zeichenkette ist dann »vorläufig«, wenn sie noch nicht einer Stringvariablen zugeordnet worden ist, zum Beispiel »Mahlzeit« in dem Basic-Befehl 
+                     Eine Zeichenkette ist dann »vorläufig«, wenn sie noch nicht einer 
+                     Stringvariablen zugeordnet worden ist, zum Beispiel »Mahlzeit« in dem Basic-
+                     Befehl 
 
                          PRINT "MAHLZEIT".
 
-                     Beim Einschalten setzt das Betriebssystem mit der Einschaltroutine ab Adresse 58303 ($E3BF) im C 64, beim VC 20 ab 58276 ($E3A4) den Zeigerauf 25. Die Stringverwältungsroutine ab 46215 ($B487) im C 64 beziehungsweise ab 54407 ($D487) im VC 20 fragt bei String-Eingaben die Flagge ab. Nach jeder Eintragung in den Speicherab Zelle 25 wird der Zeiger um 3 weitergesetzt.
+                     Beim Einschalten setzt das Betriebssystem mit der Einschaltroutine ab Adresse 
+                     58303 ($E3BF) im C 64, beim VC 20 ab 58276 ($E3A4) den Zeigerauf 25. Die 
+                     Stringverwältungsroutine ab 46215 ($B487) im C 64 beziehungsweise ab 54407 
+                     ($D487) im VC 20 fragt bei String-Eingaben die Flagge ab. Nach jeder Eintragung 
+                     in den Speicherab Zelle 25 wird der Zeiger um 3 weitergesetzt.
 
                      Sie können die Leerflagge 25 mit
 
@@ -396,26 +647,37 @@ $0016                Zeiger auf den nächsten freien Speicherplatz im »Temporar
 
                      leicht nachprüfen.
 
-                     Die anderen Eintragungen können nicht nachgeprüft werden, weil sie sofort auf 25 zurückgesetzt werden.
+                     Die anderen Eintragungen können nicht nachgeprüft werden, weil sie sofort auf 
+                     25 zurückgesetzt werden.
 
-                     Wir können sie aber durch POKE beeinflussen; ob das sinnvoll ist, ist eine andere Frage.
+                     Wir können sie aber durch POKE beeinflussen; ob das sinnvoll ist, ist eine 
+                     andere Frage.
 
                          10 POKE 22,34
                          20 PRINT "MAHLZEIT"
 
-                     Die Zahl 34 in Zelle 22 sagt dem Programm, daß der Speicher ab Zelle 25 voll ist. Wir bekommen statt der MAHLZEIT eine Fehlermeldung serviert.
+                     Die Zahl 34 in Zelle 22 sagt dem Programm, daß der Speicher ab Zelle 25 voll 
+                     ist. Wir bekommen statt der MAHLZEIT eine Fehlermeldung serviert.
 
-                     Mit einem POKE-Befehl, der als Argument die für den vorgesehenen Zweck ungültige Zahl 35 verwendet:
+                     Mit einem POKE-Befehl, der als Argument die für den vorgesehenen Zweck 
+                     ungültige Zahl 35 verwendet:
 
                          POKE 22,35
 
-                     erreichen wir allerdings zwei interessante »Dreckeffekte«. Zum einen unterdrückt der Befehl die Ausgabe des READY, zum anderen aber bewirkt er, daß bei LIST ein Listing ohne Zeilennummern ausgedruckt wird, sowohl auf dem Bildschirm als auch mit dem Drucker.
+                     erreichen wir allerdings zwei interessante »Dreckeffekte«. Zum einen 
+                     unterdrückt der Befehl die Ausgabe des READY, zum anderen aber bewirkt er, daß 
+                     bei LIST ein Listing ohne Zeilennummern ausgedruckt wird, sowohl auf dem 
+                     Bildschirm als auch mit dem Drucker.
 
                      #### Das billigste editierfähige Textverarbeitungssystem
 
-                     Die Idee dazu habe ich von Mike Apsey’s Hinweis in »Commodore User« Juli 1984. Mit Zeilennummern versehen, läßt sich jeder beliebige Text schreiben, verbessern, verschieben, abspeichern, aber nicht RUNen!!
+                     Die Idee dazu habe ich von Mike Apsey’s Hinweis in »Commodore User« Juli 1984. 
+                     Mit Zeilennummern versehen, läßt sich jeder beliebige Text schreiben, 
+                     verbessern, verschieben, abspeichern, aber nicht RUNen!!
 
-                     Der POKE-Befehl von oben (POKE 22,35) gefolgt von einem CMD und LIST, druckt dann alles brav als reinen Text aus. Die maximale Zeilenlänge entspricht der Zeilenlänge des jeweiligen Computers.
+                     Der POKE-Befehl von oben (POKE 22,35) gefolgt von einem CMD und LIST, druckt 
+                     dann alles brav als reinen Text aus. Die maximale Zeilenlänge entspricht der 
+                     Zeilenlänge des jeweiligen Computers.
 
                      Probieren Sie es aus:
 
@@ -426,40 +688,60 @@ $0016                Zeiger auf den nächsten freien Speicherplatz im »Temporar
                          50 USW. USW.
                          60:
 
-                     Jede Zeile wird mit der RETURN-Taste abgeschlossen. Damit auch alles gedruckt wird,
-
-                     muß - zumindest bei meinem Drucker (1526) - eine »Leerzeile« folgen (Zeile 60). Mit
+                     Jede Zeile wird mit der RETURN-Taste abgeschlossen. Damit auch alles gedruckt 
+                     wird, muß - zumindest bei meinem Drucker (1526) - eine »Leerzeile« folgen 
+                     (Zeile 60). Mit
 
                          POKE 22,35:OPEN 1,4:CMD 1:LIST
 
-                     wird der Text ohne Zeilennummern ausgedruckt. Sie können ihn vorher nach Belieben verändern.
+                     wird der Text ohne Zeilennummern ausgedruckt. Sie können ihn vorher nach 
+                     Belieben verändern.
 
-                     Wie gesagt, nur nicht mit RUN starten, denn das bringt unweigerlich eine Fehlermeldung.
+                     Wie gesagt, nur nicht mit RUN starten, denn das bringt unweigerlich eine 
+                     Fehlermeldung.
 
 $0017-$0018          Zeiger auf die Adresse der letzten Zeichenkette im »Temporary String Stack«
 
-                     Der Inhalt dieser 2 Byte zeigt auf den zuletzt benutzten Speicherplatz Innerhalb der Adresse 22 bis 33. Das heißt, daß der Wert in 23 ($17) immer um 3 kleiner ist als der in 22 ($16), während der Wert in 24 ($18) eine Null ist.
+                     Der Inhalt dieser 2 Byte zeigt auf den zuletzt benutzten Speicherplatz 
+                     Innerhalb der Adresse 22 bis 33. Das heißt, daß der Wert in 23 ($17) immer um 3 
+                     kleiner ist als der in 22 ($16), während der Wert in 24 ($18) eine Null ist.
 
 
 $0019-$0021          Stapelspeicher für Angaben über vorläufige Zeichenketten
 
-                     Das ist also der Speicherbereich, von dem in den beiden vorigen Abschnitten dauernd die Rede war. Ich gebe zu, »Descriptor Stack for Temporary Strings« drückt die Sache präziser aus als der deutsche Text.
+                     Das ist also der Speicherbereich, von dem in den beiden vorigen Abschnitten 
+                     dauernd die Rede war. Ich gebe zu, »Descriptor Stack for Temporary Strings« 
+                     drückt die Sache präziser aus als der deutsche Text.
 
-                     Die Bedeutung eines »vorläufigen« Strings habe ich oben in der Beschreibung der Speicherzelle 22 erklärt.
+                     Die Bedeutung eines »vorläufigen« Strings habe ich oben in der Beschreibung der 
+                     Speicherzelle 22 erklärt.
 
-                     Was ein Stapelspeicher (Stack) ist, entnehmen Sie bitte dem Texteinschub 6. Jeder der 3 Byte langen Angaben im Stack von 22 bis 33 enthält die Länge sowie die Anfangs- und Endadressen eines vorläufigen Strings, ausgedruckt als Verschiebung im Basic-Speicherbereich.
+                     Was ein Stapelspeicher (Stack) ist, entnehmen Sie bitte dem Texteinschub 6. 
+                     Jeder der 3 Byte langen Angaben im Stack von 22 bis 33 enthält die Länge sowie 
+                     die Anfangs- und Endadressen eines vorläufigen Strings, ausgedruckt als 
+                     Verschiebung im Basic-Speicherbereich.
 
 $0022-$0025          Verschiedene Zwischenspeicher
 
-                     Diese vier Speicherzellen werden vom Basic-Übersetzer (Interpreter) für verschiedene Zwischenergebnisse und Flaggen benutzt, die aber dem Programmierer nichts nutzen.
+                     Diese vier Speicherzellen werden vom Basic-Übersetzer (Interpreter) für 
+                     verschiedene Zwischenergebnisse und Flaggen benutzt, die aber dem Programmierer 
+                     nichts nutzen.
 
 $0026-$002A          Arbeitsspeicher für arithmetische Operationen
 
-                     Diese Speicherzellen werden von den Basic-Routinen bei der Multiplikation und Division als »Notizblatt« verwendet. Auch die Routinen, welche die erforderliche Speichergröße beim Definieren eines Zahlenfeldes (Array) ausrechnen, benutzen diesen Bereich.
+                     Diese Speicherzellen werden von den Basic-Routinen bei der Multiplikation und 
+                     Division als »Notizblatt« verwendet. Auch die Routinen, welche die 
+                     erforderliche Speichergröße beim Definieren eines Zahlenfeldes (Array) 
+                     ausrechnen, benutzen diesen Bereich.
 
 $002B-$002C          Zeiger auf den Anfang der Basic-Programme im Speicher
 
-                     Dieser Zeiger, in der Low-/High-Byte-Darstellung, gibt dem Basic-Übersetzer an, ab welcher Speicherzelle das Basic-Programm beginnt. Normalerweise ist diese Adresse fest vorgegeben. Beim C 64 zum Beispiel zeigt der Zeiger auf 2049 ($801). Beim VC 20 ist die Lage schon schwieriger, denn der Speicherbeginn hängt davon ab, welche Speichererweiterung eingesetzt ist. Die folgende Tabelle 3 gibt darüber Auskunft.
+                     Dieser Zeiger, in der Low-/High-Byte-Darstellung, gibt dem Basic-Übersetzer an, 
+                     ab welcher Speicherzelle das Basic-Programm beginnt. Normalerweise ist diese 
+                     Adresse fest vorgegeben. Beim C 64 zum Beispiel zeigt der Zeiger auf 2049 
+                     ($801). Beim VC 20 ist die Lage schon schwieriger, denn der Speicherbeginn 
+                     hängt davon ab, welche Speichererweiterung eingesetzt ist. Die folgende Tabelle 
+                     3 gibt darüber Auskunft.
 
                      Tabelle 3: Beginn des Programmspeichers
 
@@ -473,108 +755,223 @@ $002B-$002C          Zeiger auf den Anfang der Basic-Programme im Speicher
 
                          PRINT PEEK (43) + PEEK (44)*256 
 
-                     läßt sich der jeweilige Beginn des Programmspeichers leicht feststellen. Mit einem POKE-Befehl kann der Programmierer diese Anfangsadresse verändern. Wozu das gut ist, fragen Sie?
+                     läßt sich der jeweilige Beginn des Programmspeichers leicht feststellen. Mit
+                     einem POKE-Befehl kann der Programmierer diese Anfangsadresse verändern. Wozu 
+                     das gut ist, fragen Sie?
 
                      ##### Anwendung #1:
 
-                     Nun, wenn Sie zum Beispiel ein Maschinenprogramm mit einem Basic-Programm gemeinsam betreiben wollen, brauchen Sie einen Speicherbereich für das Maschinenprogramm, der vom Basic-Programm nicht belegt wird. Wir sprechen vom »Schützen des Maschinenprogramms vor dem Überschreiben durch das Basic«. Der Speicherbereich eines Maschinenprogramms ist immer bekannt. Nach seinem letzten Speicherplatz kann das Basic-Programm beginnen.
+                     Nun, wenn Sie zum Beispiel ein Maschinenprogramm mit einem Basic-Programm 
+                     gemeinsam betreiben wollen, brauchen Sie einen Speicherbereich für das 
+                     Maschinenprogramm, der vom Basic-Programm nicht belegt wird. Wir sprechen vom 
+                     »Schützen des Maschinenprogramms vor dem Überschreiben durch das Basic«. Der 
+                     Speicherbereich eines Maschinenprogramms ist immer bekannt. Nach seinem letzten 
+                     Speicherplatz kann das Basic-Programm beginnen.
 
                      Die Verschiebung der Anfangsadresse erfolgt In vier Schritten:
 
-                     1. Schritt: In den Speicherplatz vor dem neuen Basic-Bereich muß eine Null gePOKEt werden. Die Null dient zum Abgrenzen.
-                     2. Schritt: Die Adresse der ersten Speicherzelle wird in die Low-/High-Byte-Darstellung umgerechnet. Ich verweise dazu auf die Erklärung dieses Vorgangs im Texteinschub Nr. 1.
-                     3. Schritt: Das Low-Byte wird in die Speicherzelle 43, das High-Byte In die Zelle 44 gePOKEt.
-                     4. Schritt: Die Operation muß unbedingt mit dem Befehl NEW abgeschlossen werden, um sicherzustellen, daß auch alle anderen Zeiger auf ihren Anfangszustand gesetzt werden.
+                     1. Schritt: In den Speicherplatz vor dem neuen Basic-Bereich muß eine Null 
+                        gePOKEt werden. Die Null dient zum Abgrenzen.
+                     2. Schritt: Die Adresse der ersten Speicherzelle wird in die Low-/High-Byte-
+                        Darstellung umgerechnet. Ich verweise dazu auf die Erklärung dieses Vorgangs 
+                        im Texteinschub Nr. 1.
+                     3. Schritt: Das Low-Byte wird in die Speicherzelle 43, das High-Byte In die 
+                        Zelle 44 gePOKEt.
+                     4. Schritt: Die Operation muß unbedingt mit dem Befehl NEW abgeschlossen 
+                        werden, um sicherzustellen, daß auch alle anderen Zeiger auf ihren 
+                        Anfangszustand gesetzt werden.
 
-                     Im folgenden kleinen Programm wird angenommen, daß der Speicher bis zur Adresse 6000 ($1388) durch ein Maschinenprogramm belegt ist. Das Basic-Programm kann daher ab 5002 ($138A) anfangen, denn in 5001 muß ja eine Null stehen. Die Adresse 5002 teilt sich auf in ein High-Byte von INT (5002/256) = 19 und ein Low-Byte von 5002-(19*256) = 138.
+                     Im folgenden kleinen Programm wird angenommen, daß der Speicher bis zur Adresse 
+                     6000 ($1388) durch ein Maschinenprogramm belegt ist. Das Basic-Programm kann 
+                     daher ab 5002 ($138A) anfangen, denn in 5001 muß ja eine Null stehen. Die 
+                     Adresse 5002 teilt sich auf in ein High-Byte von INT (5002/256) = 19 und ein 
+                     Low-Byte von 5002-(19*256) = 138.
 
                          10 POKE 5001,0
                          20 POKE 43,138
                          30 POKE 44,19
                          40 NEW
 
-                     Der Effekt einer solchen »Verbiegung« des Zeigers in 43 und 44 wird im Texteinschub Nr. 7 »Der sichtbare Basic-Speicher« demonstriert.
+                     Der Effekt einer solchen »Verbiegung« des Zeigers in 43 und 44 wird im 
+                     Texteinschub Nr. 7 »Der sichtbare Basic-Speicher« demonstriert.
 
-                     Neben der oben erwähnten Anwendung der Zeigerverbiegung gibt es noch andere Möglichkeiten:
+                     Neben der oben erwähnten Anwendung der Zeigerverbiegung gibt es noch andere 
+                     Möglichkeiten:
 
                      ##### Anwendung #2:
 
-                     Christoph Sauer hat in seinem Kurs »Der gläserne VC 20« in Ausgabe 10/84 auf Seite 158 gezeigt, wie man mehrere Programme gleichzeitig im Speicher unterbringen und zwischen ihnen umschalten kann. 
+                     Christoph Sauer hat in seinem Kurs »Der gläserne VC 20« in Ausgabe 10/84 auf 
+                     Seite 158 gezeigt, wie man mehrere Programme gleichzeitig im Speicher 
+                     unterbringen und zwischen ihnen umschalten kann. 
 
                      ##### Anwendung #3:
 
-                     Man kann zwei oder mehrere unabhängige Programme genau hintereinander in den Speicher bringen, um sie aneinander zu hängen, was dem im Commodore-Basic fehlenden Befehl MERGE entspricht. Dabei dürfen die Zeilennummern sich allerdings nicht überschneiden.
+                     Man kann zwei oder mehrere unabhängige Programme genau hintereinander in den 
+                     Speicher bringen, um sie aneinander zu hängen, was dem im Commodore-Basic 
+                     fehlenden Befehl MERGE entspricht. Dabei dürfen die Zeilennummern sich 
+                     allerdings nicht überschneiden.
                      
                      ##### Anwendung #4:
 
-                     Durch Hinaufschieben des Basic-Bereichs kann Platz geschaffen werden für selbstdefinierte Zeichen oder hochauflösende Grafik.
+                     Durch Hinaufschieben des Basic-Bereichs kann Platz geschaffen werden für 
+                     selbstdefinierte Zeichen oder hochauflösende Grafik.
 
-                     Die Speicherzellen-Paare von 45, 46 bis 55, 56 ($37 bis $38) zeigen auf weitere für Basic-Programme wichtige Speicherbereiche, die deswegen gemeinsam betrachtet werden sollten. Bild 5 stellt den Zusammenhang grafisch dar. In diesem Bereich werden alle Variablen eines Programms gespeichert. Zur Erinnerung:
+                     Die Speicherzellen-Paare von 45, 46 bis 55, 56 ($37 bis $38) zeigen auf weitere 
+                     für Basic-Programme wichtige Speicherbereiche, die deswegen gemeinsam 
+                     betrachtet werden sollten. Bild 5 stellt den Zusammenhang grafisch dar. In 
+                     diesem Bereich werden alle Variablen eines Programms gespeichert. Zur 
+                     Erinnerung:
 
-                     Wir unterscheiden zwischen »normalen« Variablen (numerische und String-Variable) und Feld-Variablen (Arrays). Dabei ist wichtig zu wissen, daß ein Basic-Programm während des Eintippens oder Einladens von Disk beziehungsweise Kassette in den 1. Block kommt. Während des Programmlaufs werden alle normalen Variablen in den 2. Block geschrieben, alle Felder (Arrays) In den 3. Block und schließlich der Text der Zeichenketten (Strings) sozusagen rückwärts vom Ende des Arbeitsspeichers in den 4 . Block. Je nach Größe des Programms und nach Anzahl der Variablen wandern die Blockgrenzen nach oben beziehungsweise die von Block 4 nach unten. Wenn sie sich treffen beziehungsweise überschneiden, gibt es »OUT OF MEMORY«.
+                     Wir unterscheiden zwischen »normalen« Variablen (numerische und String-
+                     Variable) und Feld-Variablen (Arrays). Dabei ist wichtig zu wissen, daß ein 
+                     Basic-Programm während des Eintippens oder Einladens von Disk beziehungsweise 
+                     Kassette in den 1. Block kommt. Während des Programmlaufs werden alle normalen 
+                     Variablen in den 2. Block geschrieben, alle Felder (Arrays) In den 3. Block und 
+                     schließlich der Text der Zeichenketten (Strings) sozusagen rückwärts vom Ende 
+                     des Arbeitsspeichers in den 4 . Block. Je nach Größe des Programms und nach 
+                     Anzahl der Variablen wandern die Blockgrenzen nach oben beziehungsweise die von 
+                     Block 4 nach unten. Wenn sie sich treffen beziehungsweise überschneiden, gibt 
+                     es »OUT OF MEMORY«.
 
                      Diese Blockbewegung ist in Bild 5 durch die Pfeile dargestellt.
 
 $002D-$002E          Zeiger auf die Anfangsadresse des Speicherbereichs für Variable
 
-                     Dieser Zeiger, in der Low/ High-Byte-Darstellung, gibt dem Basic-Interpreter an, ab welcher Speicherzelle die Variablen eines Basic-Programms gespeichert sind. Da die Variablen direkt an das Basic-Programm anschließen, zeigt dieser Zeiger natürlich gleichzeitig auf das Ende des Basic-Programms.
+                     Dieser Zeiger, in der Low/High-Byte-Darstellung, gibt dem Basic-Interpreter 
+                     an, ab welcher Speicherzelle die Variablen eines Basic-Programms gespeichert 
+                     sind. Da die Variablen direkt an das Basic-Programm anschließen, zeigt dieser 
+                     Zeiger natürlich gleichzeitig auf das Ende des Basic-Programms.
 
-                     Es muß betont werden, daß es sich nur um den Bereich der »normalen« Variablen handelt, also nicht um Felder (Arrays). Anders als der Zeiger in 43 und 44, der auf fest definierte Speicherzellen zeigt, liegt derZeiger für den Variablen-Beginn nicht fest. Je nach Länge des Programms wandert er nach oben.
+                     Es muß betont werden, daß es sich nur um den Bereich der »normalen« Variablen 
+                     handelt, also nicht um Felder (Arrays). Anders als der Zeiger in 43 und 44, der 
+                     auf fest definierte Speicherzellen zeigt, liegt derZeiger für den Variablen-
+                     Beginn nicht fest. Je nach Länge des Programms wandert er nach oben.
 
-                     Sobald ein Programm eingetippt oder aus einem externen Speicher (Diskette, Kassette) eingelesen ist, wird der Zeiger in 45 und 46 durch RUN auf ein Byte hinter das Programmende gesetzt und alle Variablen werden in der Reihenfolge ihres Auftretens gespeichert. Da normalerweise die Länge eines Basic-Programms während des Ablaufs konstant bleibt, werden die Variablen in ihrer Position auch nicht gestört.
+                     Sobald ein Programm eingetippt oder aus einem externen Speicher (Diskette, 
+                     Kassette) eingelesen ist, wird der Zeiger in 45 und 46 durch RUN auf ein Byte 
+                     hinter das Programmende gesetzt und alle Variablen werden in der Reihenfolge 
+                     ihres Auftretens gespeichert. Da normalerweise die Länge eines Basic-Programms 
+                     während des Ablaufs konstant bleibt, werden die Variablen in ihrer Position 
+                     auch nicht gestört.
 
-                     Das bedeutet, daß sie sowohl vom Programm als auch vom Programmierer nach einer Unterbrechung abgefragt werden können. Nur wenn das Programm modifiziert wird, wandert der Zeiger zusammen mit den Variablen entsprechend weiter.
+                     Das bedeutet, daß sie sowohl vom Programm als auch vom Programmierer nach einer 
+                     Unterbrechung abgefragt werden können. Nur wenn das Programm modifiziert wird, 
+                     wandert der Zeiger zusammen mit den Variablen entsprechend weiter.
 
-                     Denselben Effekt wie das oben erwähnte RUN haben übrigens auch die Befehle NEW, CLR und LOAD. Eine Ausnahme bildet das LOAD innerhalb eines Programms, welches den Zeiger nicht zurücksetzt. Dadurch wird ein Aneinanderhängen von mehreren Programmen samt Variablen-Weiterverwendung unter bestimmten Voraussetzungen ermöglicht.
+                     Denselben Effekt wie das oben erwähnte RUN haben übrigens auch die Befehle NEW, 
+                     CLR und LOAD. Eine Ausnahme bildet das LOAD innerhalb eines Programms, welches 
+                     den Zeiger nicht zurücksetzt. Dadurch wird ein Aneinanderhängen von mehreren 
+                     Programmen samt Variablen-Weiterverwendung unter bestimmten Voraussetzungen 
+                     ermöglicht.
 
-                     Die Bearbeitung der Variablen durch das Basic-Programm und die daraus resultierenden Kochrezepte für den Programmierer sind im Texteinschub Nr. 8 »Normale Variable in BASIC« separat erläutert.
+                     Die Bearbeitung der Variablen durch das Basic-Programm und die daraus 
+                     resultierenden Kochrezepte für den Programmierer sind im Texteinschub Nr. 8 
+                     »Normale Variable in BASIC« separat erläutert.
 
-                     Die verschiedenen Typen der Variablen und ihre Darstellung im Speicher finden Sie im 64’er, Ausgabe 10/84, Seite 157 und noch ausführlicher in Ausgabe 11/84, Seite 124, dargestellt und erklärt.
+                     Die verschiedenen Typen der Variablen und ihre Darstellung im Speicher finden 
+                     Sie im 64’er, Ausgabe 10/84, Seite 157 und noch ausführlicher in Ausgabe 11/84, 
+                     Seite 124, dargestellt und erklärt.
 
-                     Für diejenigen Leser, welche kein Monitor- beziehungsweise Disassembler-Programm haben oder benutzen können, ist im Texteinschub Nr. 9 »Darstellung der normalen Variablen im Speicher« eine kleine Anleitung gegeben, wie sie die Variablendarstellung mittels Basic anschauen können.
+                     Für diejenigen Leser, welche kein Monitor- beziehungsweise Disassembler-
+                     Programm haben oder benutzen können, ist im Texteinschub Nr. 9 »Darstellung der 
+                     normalen Variablen im Speicher« eine kleine Anleitung gegeben, wie sie die 
+                     Variablendarstellung mittels Basic anschauen können.
 
 $002F-$0030          Zeiger auf die Anfangsadresse des Speicherbereichs für Felder (Arrays)
 
-                     Dieser Zeiger, in der Low-/High-Byte-Darstellung, gibt dem Basic-Übersetzer (Interpreter) an, ab welcher Speicherzelle die Felder (Arrays) eines Basic-Programms gespeichert sind. Was Felder sind und wozu sie gebraucht werden, ist im Texteinschub Nr. 10 kurz erläutert. Da die Felder direkt nach den normalen Variablen gespeichert werden, zeigt dieser Zeiger natürlich gleichzeitig auf das Ende des Speichers für normale Variablen.
+                     Dieser Zeiger, in der Low-/High-Byte-Darstellung, gibt dem Basic-Übersetzer 
+                     (Interpreter) an, ab welcher Speicherzelle die Felder (Arrays) eines Basic-
+                     Programms gespeichert sind. Was Felder sind und wozu sie gebraucht werden, ist 
+                     im Texteinschub Nr. 10 kurz erläutert. Da die Felder direkt nach den normalen 
+                     Variablen gespeichert werden, zeigt dieser Zeiger natürlich gleichzeitig auf 
+                     das Ende des Speichers für normale Variablen.
 
-                     Durch POKEn einer Adresse in die Speicherzellen 47 und 48 kann der Speicherbereich am Anfang eines Programms beinahe beliebig verschoben werden. Beinahe deswegen, weil die Verschiebung im Zusammenhang mit den anderen Bereichen (siehe Bild 5) einen Sinn haben muß. Im übrigen gilt für diesen Zeiger dasselbe, was schon für den Zeiger in 45 und 46 gesagt worden ist. Die Darstellung der Feld-Variablen selbst kann mit der Methode angesehen werden, die im Texteinschub Nr. 11 erklärt ist.
+                     Durch POKEn einer Adresse in die Speicherzellen 47 und 48 kann der 
+                     Speicherbereich am Anfang eines Programms beinahe beliebig verschoben werden. 
+                     Beinahe deswegen, weil die Verschiebung im Zusammenhang mit den anderen 
+                     Bereichen (siehe Bild 5) einen Sinn haben muß. Im übrigen gilt für diesen 
+                     Zeiger dasselbe, was schon für den Zeiger in 45 und 46 gesagt worden ist. Die 
+                     Darstellung der Feld-Variablen selbst kann mit der Methode angesehen werden, 
+                     die im Texteinschub Nr. 11 erklärt ist.
 
-                     Wie aus den Erklärungen hervorgeht, wird bei Feldern mit Zeichenketten (Strings) in dem von Zeiger 47 und 48 bezeichneten Speicherbereich nur die Definition beziehungsweise die Dimensionierung gespeichert. Die eigentlichen Zeichenketten stehen wie bei den normalen Variablen im vierten Block, vorn Speicherende rückwärts angeordnet.
+                     Wie aus den Erklärungen hervorgeht, wird bei Feldern mit Zeichenketten 
+                     (Strings) in dem von Zeiger 47 und 48 bezeichneten Speicherbereich nur die 
+                     Definition beziehungsweise die Dimensionierung gespeichert. Die eigentlichen 
+                     Zeichenketten stehen wie bei den normalen Variablen im vierten Block, vorn 
+                     Speicherende rückwärts angeordnet.
 
 $0031-$0032          Zeiger auf die Endadresse (+1) des Speicherbereichs für Felder (Arrays)
 
-                     Der Inhalt dieser Speicherzellen zeigt auf die Adresse, wo der Speicherbereich für Felder auf· hört. Wie aus Bild 5 hervorgeht, werden die Zeichenketten vorn Ende des verfügbaren RAM· Speichers rückwärts gespeichert. Man kann also auch sagen, daß der Zeiger in 49 und 50 die letzte mögliche Adresse für Zeichenketten angibt. Wenn in einem Programm neue Variablen definiert werden, rutscht diese Adresse weiter nach oben und nähert sich dem Ende der Zeichenketten, die durch den Zeiger in 51 und 52 angegeben wird.
+                     Der Inhalt dieser Speicherzellen zeigt auf die Adresse, wo der Speicherbereich 
+                     für Felder auf· hört. Wie aus Bild 5 hervorgeht, werden die Zeichenketten vorn 
+                     Ende des verfügbaren RAM· Speichers rückwärts gespeichert. Man kann also auch 
+                     sagen, daß der Zeiger in 49 und 50 die letzte mögliche Adresse für 
+                     Zeichenketten angibt. Wenn in einem Programm neue Variablen definiert werden, 
+                     rutscht diese Adresse weiter nach oben und nähert sich dem Ende der 
+                     Zeichenketten, die durch den Zeiger in 51 und 52 angegeben wird.
 
-                     Wenn sich die Speicherbereiche der Felder und Zeichenketten berühren, bleibt der Computer stehen und führt die »Garbage Collection« (Müllabfuhr) durch - ein Prozeß, in dem nicht mehr gebrauchte Zeichenketten entfernt und der Zeichenketten-Speicher reduziert wird. Ist danach immer noch kein Platz, wird OUT OF MEMORY gegeben.
+                     Wenn sich die Speicherbereiche der Felder und Zeichenketten berühren, bleibt 
+                     der Computer stehen und führt die »Garbage Collection« (Müllabfuhr) durch - ein 
+                     Prozeß, in dem nicht mehr gebrauchte Zeichenketten entfernt und der 
+                     Zeichenketten-Speicher reduziert wird. Ist danach immer noch kein Platz, wird 
+                     OUT OF MEMORY gegeben.
 
-                     Der Befehl FRE löst immer eine solche Garbage Collection aus und gibt dann die Differenz zwischen den Adressen in den Zeigern 49 und 50 und 51 und 52 als verbleibenden, noch verfügbaren, Speicherbereich aus.
+                     Der Befehl FRE löst immer eine solche Garbage Collection aus und gibt dann die 
+                     Differenz zwischen den Adressen in den Zeigern 49 und 50 und 51 und 52 als 
+                     verbleibenden, noch verfügbaren, Speicherbereich aus.
 
-$0033-$0034          Zeiger auf die untere Grenze des Speicherbereichs für den Text der Zeichenketten-Variablen
+$0033-$0034          Zeiger auf die untere Grenze des Speicherbereichs für den Text der 
+                     Zeichenketten-Variablen
 
-                     Der Inhalt dieser Speicherzellen zeigt in Low-/High-Byte-Darstellung auf das jeweilige untere Ende (siehe Bild 5) des Textspeichers von Zeichenketten. Er bezeichnet aber zugleich auch das obere Ende des frei verfügbaren RAM-Bereichs. Das entsteht dadurch, daß der Text der Zeichenketten vom Ende des RAM-Bereichs nach unten gespeichert wird. In Bild 5 ist das durch den Pfeil dargestellt.
+                     Der Inhalt dieser Speicherzellen zeigt in Low-/High-Byte-Darstellung auf das 
+                     jeweilige untere Ende (siehe Bild 5) des Textspeichers von Zeichenketten. Er 
+                     bezeichnet aber zugleich auch das obere Ende des frei verfügbaren RAM-Bereichs. 
+                     Das entsteht dadurch, daß der Text der Zeichenketten vom Ende des RAM-Bereichs 
+                     nach unten gespeichert wird. In Bild 5 ist das durch den Pfeil dargestellt.
 
-                     Beim Einschalten des Computers und nach einem RESET wird dieser Zeiger auf das oberste Ende des RAM-Bereichs gesetzt. Beim C 64 ist das 40960 ($A000). Beim VC 20 hängt es von den eingesetzten Speichererweiterungen ab, ohne Erweiterung ist die Adresse 7680 ($1E00).
+                     Beim Einschalten des Computers und nach einem RESET wird dieser Zeiger auf das 
+                     oberste Ende des RAM-Bereichs gesetzt. Beim C 64 ist das 40960 ($A000). Beim VC 
+                     20 hängt es von den eingesetzten Speichererweiterungen ab, ohne Erweiterung ist 
+                     die Adresse 7680 ($1E00).
 
-                     Der Befehl CLR setzt den Zeiger auf die Adresse, welche durch den Zeiger in den Speicherzellen 55 und 56 als das Ende des Basic-Speichers angegeben wird. Wozu das dient, erkläre ich Ihnen bei der Beschreibung dieses Zeigers weiter unten.
+                     Der Befehl CLR setzt den Zeiger auf die Adresse, welche durch den Zeiger in den 
+                     Speicherzellen 55 und 56 als das Ende des Basic-Speichers angegeben wird. Wozu 
+                     das dient, erkläre ich Ihnen bei der Beschreibung dieses Zeigers weiter unten.
 
 $0035-$0036          Zeiger auf die Adresse der zuletzt eingegebenen Zeichenkette
 
-                     In diesen Speicherplätzen steht die Adresse (im vierten Block, siehe Bild 5) der Zeichenkette, die als letzte von Routinen (Programme, Direkteingabe) zur String-Manipulation abgespeichert worden ist. Mit dem folgenden kleinen Programm können Sie das genau sehen:
+                     In diesen Speicherplätzen steht die Adresse (im vierten Block, siehe Bild 5) 
+                     der Zeichenkette, die als letzte von Routinen (Programme, Direkteingabe) zur 
+                     String-Manipulation abgespeichert worden ist. Mit dem folgenden kleinen 
+                     Programm können Sie das genau sehen:
 
                          10 PRINT PEEK(53)+256*PEEK(54),
                          20 PRINT PEEK(51)+256*PEEK(52)
                          30 INPUT A$
                          40 GOTO 10
 
-                     Zeile 10 druckt uns zuerst (links) den Zeiger auf die zuletzt eingegebene Zeichenkette aus, Zeile 20 rechts daneben den Zeiger auf die untere Speichergrenze derZeichenketten. Zeile 30 fordert zur Eingabe einer Zeichenkette auf.
+                     Zeile 10 druckt uns zuerst (links) den Zeiger auf die zuletzt eingegebene 
+                     Zeichenkette aus, Zeile 20 rechts daneben den Zeiger auf die untere 
+                     Speichergrenze der Zeichenketten. Zeile 30 fordert zur Eingabe einer 
+                     Zeichenkette auf.
 
-                     Wenn Sie bei frisch eingeschaltetem Computer das Programm starten, sehen Sie eine 0 (=vorher noch kein String eingeben) und daneben die Adresse dezimal 40960 (C 64) beziehungsweise dezimal 7680 (VC 20 ohne Erweiterung). Wenn Sie auf das Fragezeichen des INPUT hin zum Beispiel ein A eintippen, erhalten Sie links den vorigen Wert von rechts und rechts jetzt eine um 1 kleinere Zahl. Eine weitere Eingabe von zum Beispiel XXXXX schiebt die alte rechte Zahl nach links und die neue wird um die Anzahl der Zeichen, also 5, verringert.
+                     Wenn Sie bei frisch eingeschaltetem Computer das Programm starten, sehen Sie 
+                     eine 0 (=vorher noch kein String eingeben) und daneben die Adresse dezimal 
+                     40960 (C 64) beziehungsweise dezimal 7680 (VC 20 ohne Erweiterung). Wenn Sie 
+                     auf das Fragezeichen des INPUT hin zum Beispiel ein A eintippen, erhalten Sie 
+                     links den vorigen Wert von rechts und rechts jetzt eine um 1 kleinere Zahl. 
+                     Eine weitere Eingabe von zum Beispiel XXXXX schiebt die alte rechte Zahl nach 
+                     links und die neue wird um die Anzahl der Zeichen, also 5, verringert.
 
 $0037-$0038          Zeiger auf das Ende des für Basic-Programme verfügbaren Speichers
 
-                     Dieser Zeiger, in der Low-/High-Byte-Darstellung, gibt dem Basic-Übersetzer an, welches die höchste von Basic verwendbare Speicheradresse ist. Wie aus Bild 5 ersichtlich, ist diese Adresse zugleich der Anfang der als Variable abgespeicherten Zeichenkette (Strings).
+                     Dieser Zeiger, in der Low-/High-Byte-Darstellung, gibt dem Basic-Übersetzer an, 
+                     welches die höchste von Basic verwendbare Speicheradresse ist. Wie aus Bild 5 
+                     ersichtlich, ist diese Adresse zugleich der Anfang der als Variable 
+                     abgespeicherten Zeichenkette (Strings).
 
-                     Normalerweise ist diese Adresse fest vorgegeben. Die folgende Tabelle 4 gibt darüber Auskunft:
+                     Normalerweise ist diese Adresse fest vorgegeben. Die folgende Tabelle 4 gibt 
+                     darüber Auskunft:
 
                      Tabelle 4: Ende des Programmspeichers
 
@@ -587,35 +984,66 @@ $0037-$0038          Zeiger auf das Ende des für Basic-Programme verfügbaren S
                      | VC 20 (+16 KByte) | 24576   | 096             |
                      | VC 20 (+24 KByte) | 32768   | 0128            |
 
-                     Beim Einschalten des Computers überprüft das Betriebssystem den gesamten RAM-Speicher, bis es zur ersten ROM-Speicherzelle kommt, setzt den Zeiger in 55 und 56 auf diese Adresse und druckt den bekannten Kopf mit der verfügbaren Speicherangabe auf den Bildschirm.
+                     Beim Einschalten des Computers überprüft das Betriebssystem den gesamten RAM-
+                     Speicher, bis es zur ersten ROM-Speicherzelle kommt, setzt den Zeiger in 55 und 
+                     56 auf diese Adresse und druckt den bekannten Kopf mit der verfügbaren 
+                     Speicherangabe auf den Bildschirm.
 
                      Normalerweise wird dieser Zeiger nicht geändert.
 
-                     Es gibt aber zwei Gelegenheiten, bei denen eine Änderung dieses Zeigers sinnvoll beziehungsweise notwendig ist.
+                     Es gibt aber zwei Gelegenheiten, bei denen eine Änderung dieses Zeigers 
+                     sinnvoll beziehungsweise notwendig ist.
 
                      ##### Anwendung 1:
 
-                     Es kommt oft vor, daß der gesamte Speicher nicht ausschließlich für Basic benötigt wird, sondern daß ein freier Speicherbereich geschaffen wird, um zum Beispiel Maschinenprogramme, selbst definierte Zeichen oder hochaufgelöste Grafik unterzubringen, die aber nicht vom Basic-Programm überschrieben werden können.
+                     Es kommt oft vor, daß der gesamte Speicher nicht ausschließlich für Basic 
+                     benötigt wird, sondern daß ein freier Speicherbereich geschaffen wird, um zum 
+                     Beispiel Maschinenprogramme, selbst definierte Zeichen oder hochaufgelöste 
+                     Grafik unterzubringen, die aber nicht vom Basic-Programm überschrieben werden 
+                     können.
 
-                     Bei der Besprechung der Zeiger in 43 und 44 haben wir das auch schon gemacht, allerdings durch »Hochschieben« des Speicheranfangs. Mit dem Zeiger in 55 und 56 erreichen wir denselben Effekt, diesmal durch »Herunterdrücken« des Speicherendes. Gegenüber den vier Schritten beim Hochschieben ist das Herunterdrücken einfacher. Mit dem Befehl: 
+                     Bei der Besprechung der Zeiger in 43 und 44 haben wir das auch schon gemacht, 
+                     allerdings durch »Hochschieben« des Speicheranfangs. Mit dem Zeiger in 55 und 
+                     56 erreichen wir denselben Effekt, diesmal durch »Herunterdrücken« des 
+                     Speicherendes. Gegenüber den vier Schritten beim Hochschieben ist das 
+                     Herunterdrücken einfacher. Mit dem Befehl: 
 
                          POKE 56,PEEK(56)-1:CLR
 
-                     schieben wir das Speicherende um 256 Byte nach unten, egal für welchen Computer und welche Speichererweiterung. Mit -2 verschiebt sich das Ende um 512, mit-4 um 1024 Byte (also 1 KByte) nach unten. Wenn Sie eine feinere Verschiebung als Vielfache von 256 benötigen, kommen Sie mit dem High-Byte in 56 allein nicht aus, sondern Sie müssen auch einen entsprechenden Wert in 55 hineinPOKEn.
+                     schieben wir das Speicherende um 256 Byte nach unten, egal für welchen Computer 
+                     und welche Speichererweiterung. Mit -2 verschiebt sich das Ende um 512, mit-4 
+                     um 1024 Byte (also 1 KByte) nach unten. Wenn Sie eine feinere Verschiebung als 
+                     Vielfache von 256 benötigen, kommen Sie mit dem High-Byte in 56 allein nicht 
+                     aus, sondern Sie müssen auch einen entsprechenden Wert in 55 hineinPOKEn.
 
-                     Der Befehl CLR ist notwendig, denn er setzt den Zeiger der Zellen 51 und 52 (siehe dort), das heißt das untere Ende des Speicherbereichs für Zeichenketten auf dieselbe Adresse wie Zeiger 55 und 56. Dadurch wird erzwungen, daß die Zeichenkette sozusagen als Ausgangslage unterhalb des heruntergedrückten Speicherendes abgelegt wird.
+                     Der Befehl CLR ist notwendig, denn er setzt den Zeiger der Zellen 51 und 52 
+                     (siehe dort), das heißt das untere Ende des Speicherbereichs für Zeichenketten 
+                     auf dieselbe Adresse wie Zeiger 55 und 56. Dadurch wird erzwungen, daß die 
+                     Zeichenkette sozusagen als Ausgangslage unterhalb des heruntergedrückten 
+                     Speicherendes abgelegt wird.
 
                      ##### Anwendung 2:
 
-                     Über den User-Port (Steckerleiste an der Rückseite, neben dem Datasetten-Anschluß) können VC 20 und C 64 mit anderen Geräten verbunden werden. Der Datentransfer über diese Verbindung - sie heißt RS232-Schnittstelle - muß allerdings programmiert werden. Diese RS232-Schnittstelle hat die Gerätenummer 2 (so wie der Drucker Nummer 4 und das Diskettengerät die Nummer 8 hat).
+                     Über den User-Port (Steckerleiste an der Rückseite, neben dem Datasetten-
+                     Anschluß) können VC 20 und C 64 mit anderen Geräten verbunden werden. Der 
+                     Datentransfer über diese Verbindung - sie heißt RS232-Schnittstelle - muß 
+                     allerdings programmiert werden. Diese RS232-Schnittstelle hat die Gerätenummer 
+                     2 (so wie der Drucker Nummer 4 und das Diskettengerät die Nummer 8 hat).
 
-                     Wenn nun ein Gerät Nummer 2 mit einem OPEN-Befehl angewählt wird, wird automatisch der Zeiger in 55 und 56 und der Zeiger in 643 um 512 Byte heruntergedrückt, um je einen Eingangs- und Ausgangspufferspeicher zu erzeugen. Da der Inhalt dieser Pufferspeicher alle Variable in diesen 512 Byte überschreiben würde, wird auch der CLR-Befehl automatisch gegeben.
+                     Wenn nun ein Gerät Nummer 2 mit einem OPEN-Befehl angewählt wird, wird 
+                     automatisch der Zeiger in 55 und 56 und der Zeiger in 643 um 512 Byte 
+                     heruntergedrückt, um je einen Eingangs- und Ausgangspufferspeicher zu erzeugen. 
+                     Da der Inhalt dieser Pufferspeicher alle Variable in diesen 512 Byte 
+                     überschreiben würde, wird auch der CLR-Befehl automatisch gegeben.
 
-                     Es gilt daher als Vorschrift, daß bei RS232-Verbindungen zuerst der Datenkanal durch OPEN eröffnet werden muß, bevor Variable, Felder und Zeichenketten definiert werden.
+                     Es gilt daher als Vorschrift, daß bei RS232-Verbindungen zuerst der Datenkanal 
+                     durch OPEN eröffnet werden muß, bevor Variable, Felder und Zeichenketten 
+                     definiert werden.
 
 $0039-$003A          Nummer der laufenden Basic-Programmzeile
 
-                     Diese Speicherzellen enthalten die Zeilennummer in Low-/High-Byte-Darstellung derjenigen Basic-Anweisung, welche gerade ausgeführt wird.
+                     Diese Speicherzellen enthalten die Zeilennummer in Low-/High-Byte-Darstellung 
+                     derjenigen Basic-Anweisung, welche gerade ausgeführt wird.
 
                      Ein kurzes Programm macht das deutlich:
 
@@ -624,52 +1052,111 @@ $0039-$003A          Nummer der laufenden Basic-Programmzeile
                          30 B=5:PRINT B,PEEK(57)+ 256*PEEK(58)
                          40 PRINT A*B,PEEK(57)+ 256*PEEK(58)
 
-                     In jeder Zeile wird zuerst etwas gePRINTet, nämlich Text, Variable und ein Rechenresultat. Durch das Komma getrennt wird in der 2. Bildschirmhälfte (VC 20) beziehungsweise Bildschirmviertel (C 64) der Inhalt der Speicherzellen 57 und 58 ausgedruckt. Das Resultat zeigt in der Tat die jeweilige Zeilennummer an.
+                     In jeder Zeile wird zuerst etwas gePRINTet, nämlich Text, Variable und ein 
+                     Rechenresultat. Durch das Komma getrennt wird in der 2. Bildschirmhälfte (VC 
+                     20) beziehungsweise Bildschirmviertel (C 64) der Inhalt der Speicherzellen 57 
+                     und 58 ausgedruckt. Das Resultat zeigt in der Tat die jeweilige Zeilennummer 
+                     an.
 
-                     Die Basic-Befehle GOTO, GOSUB-RETURN, FOR-NEXT, END, STOP, CONT und die Betätigung der STOP-Taste während eines Programmlaufes verwenden alle den Inhalt dieser Speicherzellen, um entweder zu der laufenden Zeile zurückzufinden oder um die Unterbrechung mit BREAK IN... anzuzeigen. Auch die meisten Fehlermeldungen verwenden diese Zellen.
+                     Die Basic-Befehle GOTO, GOSUB-RETURN, FOR-NEXT, END, STOP, CONT und die 
+                     Betätigung der STOP-Taste während eines Programmlaufes verwenden alle den 
+                     Inhalt dieser Speicherzellen, um entweder zu der laufenden Zeile zurückzufinden 
+                     oder um die Unterbrechung mit BREAK IN... anzuzeigen. Auch die meisten 
+                     Fehlermeldungen verwenden diese Zellen.
 
-                     In vielen Basic-Erweiterungen und Programmierhilfen wird ein Befehl TRACE oder STEP angeboten, welcher ein schrittweises Abarbeiten eines Programms bei gleichzeitiger Anzeige der gerade aktiven Zeilennummer erlaubt. Dieses TRACE verwendet natürlich auch den Inhalt der Zellen 57 und 58.
+                     In vielen Basic-Erweiterungen und Programmierhilfen wird ein Befehl TRACE oder 
+                     STEP angeboten, welcher ein schrittweises Abarbeiten eines Programms bei 
+                     gleichzeitiger Anzeige der gerade aktiven Zeilennummer erlaubt. Dieses TRACE 
+                     verwendet natürlich auch den Inhalt der Zellen 57 und 58.
 
-                     Schließlich sei noch erwähnt, daß im direkten Modus, also bei direkt eingetippten Aktionen des Computers ohne Programmzeilen, in der Zelle 58 immer die Zahl 255 steht. Diejenigen Basic-Befehle, welche im direkten Modus nicht erlaubt sind (INPUT, GET, DEF), prüfen in Zelle 58, ob sie im direkten Modus oder während eines Programmlaufes aufgetreten sind.
+                     Schließlich sei noch erwähnt, daß im direkten Modus, also bei direkt 
+                     eingetippten Aktionen des Computers ohne Programmzeilen, in der Zelle 58 immer 
+                     die Zahl 255 steht. Diejenigen Basic-Befehle, welche im direkten Modus nicht 
+                     erlaubt sind (INPUT, GET, DEF), prüfen in Zelle 58, ob sie im direkten Modus 
+                     oder während eines Programmlaufes aufgetreten sind.
 
 $003B-$003C          Zeilennummer der letzten Programmunterbrechung
 
-                     Immer dann, wenn ein Programmablauf durch die Befehle END oder STOP oder aber mit der STOP-Taste abgebrochen wird, wird die Nummer der gerade ausgeführten Programmzeile nach 59 und 60 gebracht und bleibt dort solange, bis eine neue Unterbrechung erfolgt.
+                     Immer dann, wenn ein Programmablauf durch die Befehle END oder STOP oder aber 
+                     mit der STOP-Taste abgebrochen wird, wird die Nummer der gerade ausgeführten 
+                     Programmzeile nach 59 und 60 gebracht und bleibt dort solange, bis eine neue 
+                     Unterbrechung erfolgt.
 
-                     Das läßt sich am besten mit der STOP-Taste und nachfolgendem CONT zeigen. Nehmen Sie bitte dazu das kleine Demo-Programm derZellen 57 und 58 und ändern Sie alle PEEK-Adressen in 59 und 60 um. Fügen Sie außerdem noch eine Zeile 50 hinzu:
+                     Das läßt sich am besten mit der STOP-Taste und nachfolgendem CONT zeigen. 
+                     Nehmen Sie bitte dazu das kleine Demo-Programm derZellen 57 und 58 und ändern 
+                     Sie alle PEEK-Adressen in 59 und 60 um. Fügen Sie außerdem noch eine Zeile 50 
+                     hinzu:
 
                          50 GOTO 10
 
-                     Den dadurch erzeugten kontinuierlichen Laufdes Programms bremsen Sie dann mit der STOP-Taste und lassen ihn danach mit CONT weiterlaufen.
+                     Den dadurch erzeugten kontinuierlichen Laufdes Programms bremsen Sie dann mit 
+                     der STOP-Taste und lassen ihn danach mit CONT weiterlaufen.
 
-                     Auf der rechten Seite erscheint jetzt die Zeilennummer, bei der das Programm vorher unterbrochen worden ist.
+                     Auf der rechten Seite erscheint jetzt die Zeilennummer, bei der das Programm 
+                     vorher unterbrochen worden ist.
 
-$003D-$003E          Zeiger auf die Adresse, ab weicher der Text der laufenden Basic-Zeile gespeichert ist.
+$003D-$003E          Zeiger auf die Adresse, ab weicher der Text der laufenden Basic-Zeile 
+                     gespeichert ist.
 
-                     Die Abarbeitung der einzelnen Basic-Zeilen während eines Programmlaufs wird von einem kleinen Maschinencode-Programm, welches in den Speicherzellen 115 bis 138 steht (wir kommen noch dahin), gesteuert. In den Zellen 122 und 123 enthält es die Adresse des letzten Bytes des gerade ausgeführten Basic-Befehls.
+                     Die Abarbeitung der einzelnen Basic-Zeilen während eines Programmlaufs wird von 
+                     einem kleinen Maschinencode-Programm, welches in den Speicherzellen 115 bis 138 
+                     steht (wir kommen noch dahin), gesteuert. In den Zellen 122 und 123 enthält es 
+                     die Adresse des letzten Bytes des gerade ausgeführten Basic-Befehls.
 
-                     Sobald eine neue Basic-Zeile verarbeitet wird, holt das Betriebssystem diese Adresse aus 122 und 123 und speichert sie in den hier zur Diskussion stehenden Speicherzellen 61 und 62 ab, wie üblich als Low-/High-Byte.
+                     Sobald eine neue Basic-Zeile verarbeitet wird, holt das Betriebssystem diese 
+                     Adresse aus 122 und 123 und speichert sie in den hier zur Diskussion stehenden 
+                     Speicherzellen 61 und 62 ab, wie üblich als Low-/High-Byte.
 
-                     Dasselbe geschieht bei jedem Befehl END, STOP, bei Fehlern mit dem Befehl INPUT und durch das Drücken der STOP-Taste. Der Befehl CONT hingegen schaut in 61 und 62 nach und bringt die darin befindliche Adresse zurück in die Speicherzellen 122 und 123 zur Fortsetzung des Programms. Wenn aber in Zelle 62 inzwischen eine 0 steht - und das geschieht bei einem LOAD-Befehl, durch Programm-Abbruch mit Fehlermeldung und durch Eingabe neuer Basic-Zeilen beziehungsweise deren Veränderungen mit abschließender RETURN-Taste - dann wird der CONT-Befehl nicht ausgeführt.
+                     Dasselbe geschieht bei jedem Befehl END, STOP, bei Fehlern mit dem Befehl INPUT 
+                     und durch das Drücken der STOP-Taste. Der Befehl CONT hingegen schaut in 61 und 
+                     62 nach und bringt die darin befindliche Adresse zurück in die Speicherzellen 
+                     122 und 123 zur Fortsetzung des Programms. Wenn aber in Zelle 62 inzwischen 
+                     eine 0 steht - und das geschieht bei einem LOAD-Befehl, durch Programm-Abbruch 
+                     mit Fehlermeldung und durch Eingabe neuer Basic-Zeilen beziehungsweise deren 
+                     Veränderungen mit abschließender RETURN-Taste - dann wird der CONT-Befehl nicht 
+                     ausgeführt.
 
-                     Zur besseren Erklärung dieser in 61 und 62 als Zeiger stehenden Adresse einer Basic-Zeile möchte ich Sie an den Texteinschub Nr. 7 erinnern, in dem ich den Basic-Programmspeicher »sichtbar« gemacht habe, um die Wirkung der Verschiebung des Zeigers in den Zellen 43 und 44 zu demonstrieren.
+                     Zur besseren Erklärung dieser in 61 und 62 als Zeiger stehenden Adresse einer 
+                     Basic-Zeile möchte ich Sie an den Texteinschub Nr. 7 erinnern, in dem ich den 
+                     Basic-Programmspeicher »sichtbar« gemacht habe, um die Wirkung der Verschiebung 
+                     des Zeigers in den Zellen 43 und 44 zu demonstrieren.
 
-                     Wir nehmen dazu bitte noch einmal das kleine Demo-Programm für die Adressen 57 und 58 oben her und ersetzen die PEEK-Werte durch 61 und 62. Das Ausdrucken des Inhalts von 61 und 62 legen wir aber an den Anfang jeder Zeile. Das Programm sieht dann so aus:
+                     Wir nehmen dazu bitte noch einmal das kleine Demo-Programm für die Adressen 57 
+                     und 58 oben her und ersetzen die PEEK-Werte durch 61 und 62. Das Ausdrucken des 
+                     Inhalts von 61 und 62 legen wir aber an den Anfang jeder Zeile. Das Programm 
+                     sieht dann so aus:
 
                          10 PRINT PEEK(61)+256*PEEK(62),"ZEILE 10"
                          20 PRINT PEEK(61)+256*PEEK(62),:A=3:PRINT A
                          30 PRINT PEEK(61)+256*PEEK(62),:B=5:PRINT B 
                          40 PRINT PEEK(61)+256*PEEK(62),A*B
 
-                     Nach RUN erhalten wir jetzt auf der linken Seite Zahlen, die den jeweiligen Basic-Speicher angeben, ab dem diese Zeile gespeichert ist. Wenn Sie ab diesen Adressen mit der gerade erwähnten Methode aus Texteinschub Nr. 7 nachschauen, finden Sie genau die Zeilen des kleinen Demo-Programms wieder.
+                     Nach RUN erhalten wir jetzt auf der linken Seite Zahlen, die den jeweiligen 
+                     Basic-Speicher angeben, ab dem diese Zeile gespeichert ist. Wenn Sie ab diesen 
+                     Adressen mit der gerade erwähnten Methode aus Texteinschub Nr. 7 nachschauen, 
+                     finden Sie genau die Zeilen des kleinen Demo-Programms wieder.
 
-                     Zur Anwendung dieses Zeigers kann ich wenig sagen. Ihn durch POKE zu verändern, geht in Basic nicht, weil das Betriebssystem die richtigen Werte immer neu eingibt. Man kann ihn allerdings abfragen, wenn man sich für die Speicheradressen der Basic-Zeilen interessiert. Die einzige Anwendung dafür kenne ich von S. Leemon, welche bei den Adressen 65 und 66 eingesetzt wird.
+                     Zur Anwendung dieses Zeigers kann ich wenig sagen. Ihn durch POKE zu verändern, 
+                     geht in Basic nicht, weil das Betriebssystem die richtigen Werte immer neu 
+                     eingibt. Man kann ihn allerdings abfragen, wenn man sich für die 
+                     Speicheradressen der Basic-Zeilen interessiert. Die einzige Anwendung dafür 
+                     kenne ich von S. Leemon, welche bei den Adressen 65 und 66 eingesetzt wird.
 
 $003F-$0040          Zellennummer eines gerade laufenden DATA-Befehls
 
-                     Diese Speicherzellen enthalten die Nummer der Basic-Zeile, in der gerade ein DATA-Befehl mit READ gelesen wird. Sobald in einer DATA-Zeile ein Fehler gefunden wird, kommt diese Zeilennummer aus 63 und 64 in die Speicherzellen 57 und 58, um in der Fehlermeldung die fehlerhafte DATA-Zeile und nicht die laufende READ-Zeile anzuzeigen. Auf diese Weise werden Syntax-Fehler in einer DATA-Zeile angezeigt. Um andere Fehler, wie zum Beispiel ein fehlendes Komma zwischen zwei DATA-Angaben anzuzeigen, können die Speicherzellen 63 und 64 eingesetzt werden.
+                     Diese Speicherzellen enthalten die Nummer der Basic-Zeile, in der gerade ein 
+                     DATA-Befehl mit READ gelesen wird. Sobald in einer DATA-Zeile ein Fehler 
+                     gefunden wird, kommt diese Zeilennummer aus 63 und 64 in die Speicherzellen 57 
+                     und 58, um in der Fehlermeldung die fehlerhafte DATA-Zeile und nicht die 
+                     laufende READ-Zeile anzuzeigen. Auf diese Weise werden Syntax-Fehler in einer 
+                     DATA-Zeile angezeigt. Um andere Fehler, wie zum Beispiel ein fehlendes Komma 
+                     zwischen zwei DATA-Angaben anzuzeigen, können die Speicherzellen 63 und 64 
+                     eingesetzt werden.
 
-                     In dem folgenden Programm wird in Zeile 20 geprüft, ob die DATA-Angaben größer als 255 sind. Da bei einem fehlenden Komma die beiden Zahlen als eine Zahl gelesen werden, wird dieser Fall erkannt und mit einem F versehen die Nummer der DATA-Zeile ausgedruckt, in der das Komma fehlt.
+                     In dem folgenden Programm wird in Zeile 20 geprüft, ob die DATA-Angaben größer 
+                     als 255 sind. Da bei einem fehlenden Komma die beiden Zahlen als eine Zahl 
+                     gelesen werden, wird dieser Fall erkannt und mit einem F versehen die Nummer 
+                     der DATA-Zeile ausgedruckt, in der das Komma fehlt.
 
                          10 FOR X=1 T0 10:READ A:PRINTA
                          20 IF A>255 THEN PRINT "F" PEEK(63) + 256*PEEK(64)
@@ -678,13 +1165,22 @@ $003F-$0040          Zellennummer eines gerade laufenden DATA-Befehls
                          50 DATA 40,50,60 
                          60 DATA 70,80,90,100
 
-                     Sie können jetzt in den DATA-Zeilen Kommafehler einbauen, die vom Programm angezeigt werden. Ein anderer häufiger Fehler, nämlich ein Komma am Ende einer DATA-Zeile, kann damit leider nicht erkannt werden. Aber vielleicht fällt Ihnen eine Prüfformel dazu ein.
+                     Sie können jetzt in den DATA-Zeilen Kommafehler einbauen, die vom Programm 
+                     angezeigt werden. Ein anderer häufiger Fehler, nämlich ein Komma am Ende einer 
+                     DATA-Zeile, kann damit leider nicht erkannt werden. Aber vielleicht fällt Ihnen 
+                     eine Prüfformel dazu ein.
 
 $0041-$0042          Zeiger auf die Adresse, ab der die laufende DATA-Angabe gespeichert ist
 
-                     Diese Speicherzellen enthalten in der Low-/High-Byte-Darstellung die Adresse im Basic-Programmspeicher, ab welcher der READ-Befehl nach der nächsten DATA-Zeile sucht.
+                     Diese Speicherzellen enthalten in der Low-/High-Byte-Darstellung die Adresse im 
+                     Basic-Programmspeicher, ab welcher der READ-Befehl nach der nächsten DATA-Zeile 
+                     sucht.
 
-                     Zu Beginn eines Programms steht in 65 und 66 als Adresse der Beginn des Basic-Speichers, also derselbe Wert wie in den Speicherzellen 43 und 44. Der Befehl RESTORE setzt den Zeiger immer auf diesen Anfangswert zurück. Ein Demo-Programm zeigt uns das an (die Kommata sind wichtig für das Format der Darstellung auf dem Bildschirm!):
+                     Zu Beginn eines Programms steht in 65 und 66 als Adresse der Beginn des Basic-
+                     Speichers, also derselbe Wert wie in den Speicherzellen 43 und 44. Der Befehl 
+                     RESTORE setzt den Zeiger immer auf diesen Anfangswert zurück. Ein Demo-Programm 
+                     zeigt uns das an (die Kommata sind wichtig für das Format der Darstellung auf 
+                     dem Bildschirm!):
 
                          10 PRINT, PEEK(65)+256* PEEK(66)
                          20 FOR X=1 TO 10:READ A
@@ -694,9 +1190,16 @@ $0041-$0042          Zeiger auf die Adresse, ab der die laufende DATA-Angabe ges
                          60 RESTORE
                          70 PRINT,PEEK(65)+256*PEEK(66)
 
-                     Durch Verändern dieses Zeigers in 65 und 66 kann die Reihenfolge, mit der DATA-Angaben gelesen werden, verändert werden, allerdings nur zeilenweise.
+                     Durch Verändern dieses Zeigers in 65 und 66 kann die Reihenfolge, mit der DATA-
+                     Angaben gelesen werden, verändert werden, allerdings nur zeilenweise.
 
-                     Wir brauchen dazu die oben beschriebenen Speicherzellen 61 und 62, deren jeweiligen Inhalt wir ja mit PEEK abfragen können. Wenn wir das vor jeder DATA-Zeile machen und diesen Wert einer Variablen zuweisen, haben wir die Adresse gespeichert, hinter welcher die DATA-Zeile kommt. Durch POKEn dieser Adressen in die Speicherzellen 65 und 66 vor einem READ-Befehl, wird diesem READ die nächste DATA-Zeile vorgegeben und wir können so die Reihenfolge der DATA-Zeilen ändern.
+                     Wir brauchen dazu die oben beschriebenen Speicherzellen 61 und 62, deren 
+                     jeweiligen Inhalt wir ja mit PEEK abfragen können. Wenn wir das vor jeder DATA-
+                     Zeile machen und diesen Wert einer Variablen zuweisen, haben wir die Adresse 
+                     gespeichert, hinter welcher die DATA-Zeile kommt. Durch POKEn dieser Adressen 
+                     in die Speicherzellen 65 und 66 vor einem READ-Befehl, wird diesem READ die 
+                     nächste DATA-Zeile vorgegeben und wir können so die Reihenfolge der DATA-Zeilen 
+                     ändern.
 
                          10 A1=PEEK(61)+PEEK(62)*256
                          20 DATA DAS IST DIE 1. ZEILE
@@ -708,204 +1211,390 @@ $0041-$0042          Zeiger auf die Adresse, ab der die laufende DATA-Angabe ges
                          80 POKE 65,A1 AND255:POKE 66,A1/256:READ A$:PRINT A$
                          90 POKE 65,A2AND 255:POKE 66,A2/256:READ A$:PRINT A$
 
-                     Mit den Zeilen 70 bis 90 werden für jede DATA-Zeile eigene READ-Anweisungen gegeben. Welche DATA-Zeile gelesen werden soll, wird durch die Variablen Ax und Bx (x=1,2,3) bestimmt, mit denen der Zeiger in 65 und 66 »verbogen« wird. Auf ein Detail will ich hier hinweisen:
+                     Mit den Zeilen 70 bis 90 werden für jede DATA-Zeile eigene READ-Anweisungen 
+                     gegeben. Welche DATA-Zeile gelesen werden soll, wird durch die Variablen Ax und 
+                     Bx (x=1,2,3) bestimmt, mit denen der Zeiger in 65 und 66 »verbogen« wird. Auf 
+                     ein Detail will ich hier hinweisen:
 
-                     Die Adresse 61 und 62 darf nicht mit zwei Befehlen, sondern muß mit einem Befehl ausgelesen werden, da bei einem möglichen Page-Wechsel zwischen den zwei Befehlen der Zeiger nicht verbogen, sondern abgeknickt wird.
+                     Die Adresse 61 und 62 darf nicht mit zwei Befehlen, sondern muß mit einem 
+                     Befehl ausgelesen werden, da bei einem möglichen Page-Wechsel zwischen den zwei 
+                     Befehlen der Zeiger nicht verbogen, sondern abgeknickt wird.
 
                      Was passiert in der ersten Zeile des Demo-Programms?
 
                          10 A1=PEEK(61):B1=PEEK(62) 
 
-                     Mit »A1=PEEK(61)« wird der Variablen A1 der Wert des Low-Bytes des Zeigers 61 und 62 zugewiesen. Dieser zeigt am Anfang einer Zeile auf das Null-Byte vor der Linkadresse (hier 2048), so daß A1 den Wert (2048 AND 255)=0 erhält. Mit »B1=PEEK(62)« wird der Variablen B1 der Wert des High-Bytes des Zeigers 61 und 62 zugewiesen. Dieser zeigt aber inzwischen auf das Trennzeichen (»:«) zwischen den beiden Befehlen (hier 2061), so daß B1 den Wert (INT(2061/256))=8 erhält. Als Zeiger auf das aktuelle DATA-Element erhalten wir die erwartete Adresse (A1 + B1 *256)=2048.
+                     Mit »A1=PEEK(61)« wird der Variablen A1 der Wert des Low-Bytes des Zeigers 61 
+                     und 62 zugewiesen. Dieser zeigt am Anfang einer Zeile auf das Null-Byte vor der 
+                     Linkadresse (hier 2048), so daß A1 den Wert (2048 AND 255)=0 erhält. Mit 
+                     »B1=PEEK(62)« wird der Variablen B1 der Wert des High-Bytes des Zeigers 61 und 
+                     62 zugewiesen. Dieser zeigt aber inzwischen auf das Trennzeichen (»:«) zwischen 
+                     den beiden Befehlen (hier 2061), so daß B1 den Wert (INT(2061/256)) = 8 erhält. 
+                     Als Zeiger auf das aktuelle DATA-Element erhalten wir die erwartete Adresse (A1 
+                     + B1 * 256) = 2048.
 
-                     Was aber, wenn Zeilenanfang und Trennzeichen nicht in derselben Page liegen? Dazu setzen Sie bitte den Basic-Anfang um eine Stelle zurück:
+                     Was aber, wenn Zeilenanfang und Trennzeichen nicht in derselben Page liegen? 
+                     Dazu setzen Sie bitte den Basic-Anfang um eine Stelle zurück:
 
                          POKE43,0:POKE 2047,0:NEW
 
-                     Die Zeiger auf den Zeilenanfang und das Trennzeichen werden dadurch ja ebenfalls verändert, so daß A1 jetzt den Wert (2047 AND 255)=255 und B1 den Wert (INT(2060/256))=8 erhält. Als Zeiger auf das aktuelle DATA-Element erhalten wir nun die völlig unbrauchbare Adresse (A1+B1 * 256)=2303.
+                     Die Zeiger auf den Zeilenanfang und das Trennzeichen werden dadurch ja 
+                     ebenfalls verändert, so daß A1 jetzt den Wert (2047 AND 255)=255 und B1 den 
+                     Wert (INT(2060/256))=8 erhält. Als Zeiger auf das aktuelle DATA-Element 
+                     erhalten wir nun die völlig unbrauchbare Adresse (A1+B1 * 256)=2303.
 
-$0043-$0044          Zeiger auf die Adresse, aus welcher die Befehle INPUT, GET und READ die Zeichen/Zahlen holen
+$0043-$0044          Zeiger auf die Adresse, aus welcher die Befehle INPUT, GET und READ die 
+                     Zeichen/Zahlen holen
 
-                     INPUT und GET verlangen Angaben, die per Tastatur eingegeben werden. Tastatur-Eingaben im direkten Modus, also wenn kein Programm läuft, werden im Eingabe-Pufferspeicher des Editors (der Teil des Betriebssystems, welcher für die Zeilendarstellung auf dem Bildschirm verantwortlich ist) ab Speicherzelle 512 bis 600 zwischengespeichert.
+                     INPUT und GET verlangen Angaben, die per Tastatur eingegeben werden. Tastatur-
+                     Eingaben im direkten Modus, also wenn kein Programm läuft, werden im Eingabe-
+                     Pufferspeicher des Editors (der Teil des Betriebssystems, welcher für die 
+                     Zeilendarstellung auf dem Bildschirm verantwortlich ist) ab Speicherzelle 512 
+                     bis 600 zwischengespeichert.
 
-                     Der Zeiger in 67 und 68 zeigt auf die jeweilige Adresse in diesem Eingabe-Pufferspeicher. Bei READ ist 67 und 68 identisch mit 65 und 66. Der Inhalt dieser Speicherzellen kann mit PEEK ausgelesen werden.
+                     Der Zeiger in 67 und 68 zeigt auf die jeweilige Adresse in diesem Eingabe-
+                     Pufferspeicher. Bei READ ist 67 und 68 identisch mit 65 und 66. Der Inhalt 
+                     dieser Speicherzellen kann mit PEEK ausgelesen werden.
 
 $0045-$0046          Name der gerade aufgerufenen Basic-Variablen
 
-                     Wenn beim Ablauf eines Programms eine Variable auftaucht, muß ihr derzeitiger Wert im Variablen-Speicher gesucht werden. Während dieses Suchvorgangs wird der Name der Variablen in 69 und 70 zwischengespeichert. Die Form der Zwischenspeicherung ist dieselbe 2-Byte-Darstellung wie im Variablenspeicher, beschrieben bei der Behandlung der Speicherzellen 45 und 46.
+                     Wenn beim Ablauf eines Programms eine Variable auftaucht, muß ihr derzeitiger 
+                     Wert im Variablen-Speicher gesucht werden. Während dieses Suchvorgangs wird der 
+                     Name der Variablen in 69 und 70 zwischengespeichert. Die Form der 
+                     Zwischenspeicherung ist dieselbe 2-Byte-Darstellung wie im Variablenspeicher, 
+                     beschrieben bei der Behandlung der Speicherzellen 45 und 46.
 
 $0047-$0048          Zeiger auf die Adresse des Wertes der gerade aufgerufenen Basic-Variablen
 
-                     Ähnlich wie bei 69 und 70 wird hier während des Anrufes einer Variablen durch ein Programm ein Wert zwischengespeichert, diesmal aber nicht der Name der Variablen, sondern der 2-Byte-Wert, welcher direkt hinter dem Variablennamen steht. Nähere Einzelheiten sind im Text der Speicherzellen 45 und 46 beschrieben.
+                     Ähnlich wie bei 69 und 70 wird hier während des Anrufes einer Variablen durch 
+                     ein Programm ein Wert zwischengespeichert, diesmal aber nicht der Name der 
+                     Variablen, sondern der 2-Byte-Wert, welcher direkt hinter dem Variablennamen 
+                     steht. Nähere Einzelheiten sind im Text der Speicherzellen 45 und 46 
+                     beschrieben.
 
-                     Davon ausgenommen sind selbstdefinierte Funktionen. Wie im Texteinschub Nr. 12 »Darstellung der Variablen einer selbstdefinierten Funktion« gezeigt ist, erscheinen diese ebenfalls lm Variablenspeicher in einer Darstellung, welche den normalen Variablen sehr ähnlich ist.
+                     Davon ausgenommen sind selbstdefinierte Funktionen. Wie im Texteinschub Nr. 12 
+                     »Darstellung der Variablen einer selbstdefinierten Funktion« gezeigt ist, 
+                     erscheinen diese ebenfalls lm Variablenspeicher in einer Darstellung, welche 
+                     den normalen Variablen sehr ähnlich ist.
 
-                     Damit nun eine normale oder Feld-Variable denselben Namen haben kann wie eine Funktion, wird die oben genannte Zwischenspeicherung in 69 und 70 bei Funktionen unterdrückt.
+                     Damit nun eine normale oder Feld-Variable denselben Namen haben kann wie eine 
+                     Funktion, wird die oben genannte Zwischenspeicherung in 69 und 70 bei 
+                     Funktionen unterdrückt.
 
-$0049-$004A          Zwischenspeicher für Variable einer FOR-NEXT-Schleife und für diverse Basic-Befehle
+$0049-$004A          Zwischenspeicher für Variable einer FOR-NEXT-Schleife und für diverse Basic-
+                     Befehle
 
-                     Die Adresse einer Schleifenvariablen wird zuerst hier gespeichert, bevor sie auf den Stapelspeicher ab Speicherzelle 256 ($100) gebracht wird. Die Funktion und Arbeitsweise des Stapelspeichers werden wir bei diesen Adressen behandeln. Etliche Basic-Befehle, wie LIST, WAIT, GET, INPUT, OPEN, CLOSE und andere, verwenden die Speicherzellen 73 und 74 für Zwischenspeicherungen. Diese Adressen sind für den Basic-Programmierer daher nicht verwendbar.
+                     Die Adresse einer Schleifenvariablen wird zuerst hier gespeichert, bevor sie 
+                     auf den Stapelspeicher ab Speicherzelle 256 ($100) gebracht wird. Die Funktion 
+                     und Arbeitsweise des Stapelspeichers werden wir bei diesen Adressen behandeln. 
+                     Etliche Basic-Befehle, wie LIST, WAIT, GET, INPUT, OPEN, CLOSE und andere, 
+                     verwenden die Speicherzellen 73 und 74 für Zwischenspeicherungen. Diese 
+                     Adressen sind für den Basic-Programmierer daher nicht verwendbar.
 
 $004B-$004C          Zwischenspeicher für Zeiger bei READ und mathematischen Operationen
 
-                     Während der Auswertung eines mathematischen Ausdrucks durch die Routine FRMEVL des Basic-Übersetzers, wird der Platz des betroffenen mathematischen Operators in einer Tabelle, hier in 75 und 76, zwischengespeichert. Dieser Platz wird dabei als Abstand zum Beginn der Tabelle dargestellt. Außerdem verwendet der READ-Befehl diese Adressen als Zwischenspeicher für einen Programmzeiger. Die Speicherzeilen 75 und 76 sind in Basic nicht verwendbar.
+                     Während der Auswertung eines mathematischen Ausdrucks durch die Routine FRMEVL 
+                     des Basic-Übersetzers, wird der Platz des betroffenen mathematischen Operators 
+                     in einer Tabelle, hier in 75 und 76, zwischengespeichert. Dieser Platz wird 
+                     dabei als Abstand zum Beginn der Tabelle dargestellt. Außerdem verwendet der 
+                     READ-Befehl diese Adressen als Zwischenspeicher für einen Programmzeiger. Die 
+                     Speicherzeilen 75 und 76 sind in Basic nicht verwendbar.
 
 $004D                Hilfsspeicher für Vergleichs-Operationen
 
-                     Die bei 75 und 76 schon erwähnte Auswertungs-Routine FRMEVL erzeugt in der Speicherzelle 77 einen Wert, der angibt, ob es sich bei einer Vergleichsoperation um den Fall »kleiner als« (<), »gleich wie« (=) oder »größer als« (>) handelt. Diese Speicherzelle ist nur im Maschinencode erreichbar.
+                     Die bei 75 und 76 schon erwähnte Auswertungs-Routine FRMEVL erzeugt in der 
+                     Speicherzelle 77 einen Wert, der angibt, ob es sich bei einer 
+                     Vergleichsoperation um den Fall »kleiner als« (<), »gleich wie« (=) oder 
+                     »größer als« (>) handelt. Diese Speicherzelle ist nur im Maschinencode 
+                     erreichbar.
 
-$004E-$004F          Zeiger auf Adresse, ab welcher der Wert der Variablen einer selbstdefinierten Funktion gespeichert ist
+$004E-$004F          Zeiger auf Adresse, ab welcher der Wert der Variablen einer selbstdefinierten 
+                     Funktion gespeichert ist
 
-                     Basic erlaubt es bekanntlich, mit dem Befehl DEF selbst erfundene Funktionen zu definieren, welche die Form FN gefolgt von einem Variablennamen haben, zum Beispiel
+                     Basic erlaubt es bekanntlich, mit dem Befehl DEF selbst erfundene Funktionen zu 
+                     definieren, welche die Form FN gefolgt von einem Variablennamen haben, zum 
+                     Beispiel
 
                          DEF FNAA(X).
 
-                     Im Texteinschub Nr. 12 »Darstellung von Variablen selbstdefinierter Funktionen« wird gezeigt beziehungsweise sichtbar gemacht, wie derartige Funktionen und ihre Variablen gespeichert werden. Während der Definition einer Funktion steht in 78 und 79 die Adresse, ab welcher die Funktion und der Wert ihrer Variablen gespeichert ist. Der Inhalt dieser Adressen ist identisch mit den Zeichen hinter dem Namen der Funktion (1. Gruppe im nebenstehenden Beispiel).
+                     Im Texteinschub Nr. 12 »Darstellung von Variablen selbstdefinierter Funktionen« 
+                     wird gezeigt beziehungsweise sichtbar gemacht, wie derartige Funktionen und 
+                     ihre Variablen gespeichert werden. Während der Definition einer Funktion steht 
+                     in 78 und 79 die Adresse, ab welcher die Funktion und der Wert ihrer Variablen 
+                     gespeichert ist. Der Inhalt dieser Adressen ist identisch mit den Zeichen 
+                     hinter dem Namen der Funktion (1. Gruppe im nebenstehenden Beispiel).
 
-                     Nach der Ausführung der Funktion steht in 78 und 79 allerdings die Adresse, ab weiche der Zahlenwert der Funktion selbst gespeichert ist. Er ist identisch mit den Zeichen der 2. Gruppe.
+                     Nach der Ausführung der Funktion steht in 78 und 79 allerdings die Adresse, ab 
+                     weiche der Zahlenwert der Funktion selbst gespeichert ist. Er ist identisch mit 
+                     den Zeichen der 2. Gruppe.
 
-                     Diesen Zusammenhang können Sie überprüfen, indem Sie im Programm des Texteinschubes folgende Zeilen hinzufügen:
+                     Diesen Zusammenhang können Sie überprüfen, indem Sie im Programm des 
+                     Texteinschubes folgende Zeilen hinzufügen:
 
                          25 PRINT PEEK(78)+256*PEEK(79)
                          35 PRINT PEEK(78)+256*PEEK(79)
 
                      Nach RUN erhalten Sie zwei Adressen, die Sie mit direkter Eingabe abfragen:
 
-                         FOR I=0 T0 4:PRINT PEEK (1.Adresse+I);:NEXT I:FOR J=0 TO 4:PRINT PEEK (2.Adresse+J);:NEXT J
+                         FOR I=0 T0 4:PRINT PEEK (1.Adresse+I);:NEXT I:
+                         FOR J=0 TO 4:PRINT PEEK (2.Adresse+J);:NEXT J
 
-                     Sie werden sehen, daß der Inhalt der beiden Adressen genau den Werten der Zeichen 3 bis 7 der beiden Gruppen entspricht, allerdings im Bildschirmcode.
+                     Sie werden sehen, daß der Inhalt der beiden Adressen genau den Werten der 
+                     Zeichen 3 bis 7 der beiden Gruppen entspricht, allerdings im Bildschirmcode.
 
-$0050-$0052          Zeiger auf einen provisorischen Speicherplatz einer Zeichenkette, die gerade bearbeitet wird
+$0050-$0052          Zeiger auf einen provisorischen Speicherplatz einer Zeichenkette, die gerade 
+                     bearbeitet wird
 
-                     Die Teilprogramme (von Programmierern »Routinen« genannt) des Basic-Übersetzers im ROM des Computers, welche Zeichenketten (Strings) behandeln, verwenden die ersten beiden Bytes dieser drei Speicherzellen, nämlich 80 und 81, um in Low-/High-Byte-Darstellung diejenige Speicheradresse anzugeben, ab der die Zeichenkette im Programmspeicher zu finden ist.
+                     Die Teilprogramme (von Programmierern »Routinen« genannt) des Basic-Übersetzers 
+                     im ROM des Computers, welche Zeichenketten (Strings) behandeln, verwenden die 
+                     ersten beiden Bytes dieser drei Speicherzellen, nämlich 80 und 81, um in Low-/
+                     High-Byte-Darstellung diejenige Speicheradresse anzugeben, ab der die 
+                     Zeichenkette im Programmspeicher zu finden ist.
 
-                     Das dritte Byte (82) enthält die Länge der Zeichenkette. Wegen der provisorischen Natur dieses Zeigers ist er für Basic-Programme nicht geeignet.
+                     Das dritte Byte (82) enthält die Länge der Zeichenkette. Wegen der 
+                     provisorischen Natur dieses Zeigers ist er für Basic-Programme nicht geeignet.
 
 $0053                Flagge für die Garbage Collection
 
-                     In dieser Speicherzelle steht während der sogenannten Garbage Collection (Müllabfuhr) eine Zahl, die angibt, ob die Variable der zur Überprüfung anstehenden Zeichenkette eine Länge von 3 oder 7 Byte hat.
+                     In dieser Speicherzelle steht während der sogenannten Garbage Collection 
+                     (Müllabfuhr) eine Zahl, die angibt, ob die Variable der zur Überprüfung 
+                     anstehenden Zeichenkette eine Länge von 3 oder 7 Byte hat.
 
-                     Der Vorgang der Garbage Collection ist von B. Schneider, 64’er-Ausgabe 1/85, ausführlich beschrieben worden. Angaben über die Bedeutung der Variablen einer Zeichenkette finden Sie in den Texteinschüben Nr. 9 und Nr. 11.
+                     Der Vorgang der Garbage Collection ist von B. Schneider, 64’er-Ausgabe 1/85, 
+                     ausführlich beschrieben worden. Angaben über die Bedeutung der Variablen einer 
+                     Zeichenkette finden Sie in den Texteinschüben Nr. 9 und Nr. 11.
 
 $0054-$0056          Sprungbefehl auf die Adressen der Basic-Funktionen
 
-                     Jede Basic-Funktion, wie zum Beispiel SGN, INT, ABS, USR und so weiter, wird durch ein spezielles Teilprogramm (Routine) des Basic-Übersetzers ausgeführt. Die Anfangsadresse jeder dieser Routinen sind in einer Tabelle im ROM fest eingespeichert. Im VC 20 steht diese Tabelle von 49234 bis 49279 ($C052 bis $C07F), im C 64 von 41042 bis 41087 ($A052 bis $A07F).
+                     Jede Basic-Funktion, wie zum Beispiel SGN, INT, ABS, USR und so weiter, wird 
+                     durch ein spezielles Teilprogramm (Routine) des Basic-Übersetzers ausgeführt. 
+                     Die Anfangsadresse jeder dieser Routinen sind in einer Tabelle im ROM fest 
+                     eingespeichert. Im VC 20 steht diese Tabelle von 49234 bis 49279 ($C052 bis 
+                     $C07F), im C 64 von 41042 bis 41087 ($A052 bis $A07F).
 
-                     In der Speicherzelle 84 steht der Sprungbefehl JMP in Maschinencode, dargestellt durch die Zahl 75 ($4C). In den beiden anderen Zellen 85 und 86 steht dann in Low-/High-Byte-Darstellung die jeweilige Adresse in der Tabelle, welche der vom Programm gerade gebrauchten Basic-Funktion entspricht. Dieser gesamte Befehl JMP plus Adresse entspricht in Basic der GOSUB-Zeilennummer.
+                     In der Speicherzelle 84 steht der Sprungbefehl JMP in Maschinencode, 
+                     dargestellt durch die Zahl 75 ($4C). In den beiden anderen Zellen 85 und 86 
+                     steht dann in Low-/High-Byte-Darstellung die jeweilige Adresse in der Tabelle, 
+                     welche der vom Programm gerade gebrauchten Basic-Funktion entspricht. Dieser 
+                     gesamte Befehl JMP plus Adresse entspricht in Basic der GOSUB-Zeilennummer.
 
-                     Ein Beispiel soll das verdeutlichen. Geben Sie direkt ein: PRINT PEEK(84) ;PEEK(85); PEEK(86)
+                     Ein Beispiel soll das verdeutlichen. Geben Sie direkt ein:
+                     
+                         PRINT PEEK(84) ;PEEK(85); PEEK(86)
 
                      Wir erhalten
 
                      * beim C 64: 76 13 184
                      * beim VC 20: 76 13 216
 
-                     Die erste Zahl ist genauso wie oben beschrieben. Die beiden anderen Zahlen ergeben zusammen die Adresse 47117 ($B80D) beziehungsweise 55309 ($D80D). Wenn Sie ein Buch mit ROM-Listing haben, werden Sie unter dieser Adresse die Routine für die Funktion »PEEK« finden. Das ist natürlich nicht erstaunlich, haben wir doch gerade vorher als letzten Befehl genau diese Funktion eingegeben.
+                     Die erste Zahl ist genauso wie oben beschrieben. Die beiden anderen Zahlen 
+                     ergeben zusammen die Adresse 47117 ($B80D) beziehungsweise 55309 ($D80D). Wenn 
+                     Sie ein Buch mit ROM-Listing haben, werden Sie unter dieser Adresse die Routine 
+                     für die Funktion »PEEK« finden. Das ist natürlich nicht erstaunlich, haben wir 
+                     doch gerade vorher als letzten Befehl genau diese Funktion eingegeben.
 
-                     Leider ist das auch die einzige Funktion, die ich Ihnen vorführen kann, denn zum Vorführen muß ich eben immer PEEKen, so daß beim besten Willen immer nur die oben angegebenen Zahlen erscheinen können.
+                     Leider ist das auch die einzige Funktion, die ich Ihnen vorführen kann, denn 
+                     zum Vorführen muß ich eben immer PEEKen, so daß beim besten Willen immer nur 
+                     die oben angegebenen Zahlen erscheinen können.
 
 $0057-$0060          Arbeitsspeicher für diverse Arithmetik-Routinen des Basic-Übersetzers
 
-                     Diese zehn Speicherplätze werden von verschiedenen Teilprogrammen (Routinen), besonders bei arithmetischen Operationen, als Zwischenspeicher verschiedener Werte, Flaggen und Zeiger benutzt.
+                     Diese zehn Speicherplätze werden von verschiedenen Teilprogrammen (Routinen), 
+                     besonders bei arithmetischen Operationen, als Zwischenspeicher verschiedener 
+                     Werte, Flaggen und Zeiger benutzt.
 
 $0061-$0066          Gleitkomma-Akkumulator Nr.1
 
-                     »Akkumulator« heißt seit der Zeit der mechanischen Rechenmaschinen eine Speicherzelle, welche bei Rechenoperationen dadurch im Mittelpunkt steht, daß laufend Daten in sie hineingeschrieben beziehungsweise aus ihr herausgelesen werden.
+                     »Akkumulator« heißt seit der Zeit der mechanischen Rechenmaschinen eine 
+                     Speicherzelle, welche bei Rechenoperationen dadurch im Mittelpunkt steht, daß 
+                     laufend Daten in sie hineingeschrieben beziehungsweise aus ihr herausgelesen 
+                     werden.
 
-                     Normalerweise trägt diesen Namen das zentrale Rechenregister des Mikroprozessors. Leser des Assembler-Kurses kennen diesen Akkumulator inzwischen zur Genüge.
+                     Normalerweise trägt diesen Namen das zentrale Rechenregister des 
+                     Mikroprozessors. Leser des Assembler-Kurses kennen diesen Akkumulator 
+                     inzwischen zur Genüge.
 
-                     Die Speicherzellen 97 bis 102 werden deswegen ebenfalls Akkumulator genannt, weil sie bei der Verarbeitung von Gleitkommazahlen eine ähnliche zentrale Rolle spielen.
+                     Die Speicherzellen 97 bis 102 werden deswegen ebenfalls Akkumulator genannt, 
+                     weil sie bei der Verarbeitung von Gleitkommazahlen eine ähnliche zentrale Rolle 
+                     spielen.
 
                      Zelle 97 enthält den Exponenten. Die Zellen 98 bis 101 enthalten die Mantisse.
 
-                     Zelle 102 enthält das Vorzeichen der Gleitkommazahl. Eine 0 bedeutet ein positives, die Zahl 255 ein negatives Vorzeichen.
+                     Zelle 102 enthält das Vorzeichen der Gleitkommazahl. Eine 0 bedeutet ein 
+                     positives, die Zahl 255 ein negatives Vorzeichen.
 
-                     Mit dem Gleitkomma-Akkumulator Nr. 1 sind zwei weitere Speicherzellen eng verbunden, nämlich 104 ($68) und 112 ($70).
+                     Mit dem Gleitkomma-Akkumulator Nr. 1 sind zwei weitere Speicherzellen eng 
+                     verbunden, nämlich 104 ($68) und 112 ($70).
 
-                     Ganz zum Schluß ist noch erwähnenswert, daß nach der Umwandlung einer Gleitkommazahl in eine ganze Zahl diese als Low-/High-Byte in den beiden Speicherzellen 98 und 99 steht, was für Maschinenprogramme vielleicht recht nützlich sein kann.
+                     Ganz zum Schluß ist noch erwähnenswert, daß nach der Umwandlung einer 
+                     Gleitkommazahl in eine ganze Zahl diese als Low-/High-Byte in den beiden 
+                     Speicherzellen 98 und 99 steht, was für Maschinenprogramme vielleicht recht 
+                     nützlich sein kann.
 
 $0067                Zwischenspeicher beziehungsweise Zählregister
 
-                     Diese Adresse wird von zwei Routinen verwendet. Der Basic-Übersetzer benutzt sie als Vorzeichenspeicher bei der Umwandlung von Zahlen aus dem ASCII-Format in Gleitkommazahlen. Das Betriebssystem verwendet diese Adresse als Zähler der Abarbeitungsschritte bei der Berechnung eines Polynoms der Form y=a0+a1*x+a2*x^2+a3*x^3+...
+                     Diese Adresse wird von zwei Routinen verwendet. Der Basic-Übersetzer benutzt 
+                     sie als Vorzeichenspeicher bei der Umwandlung von Zahlen aus dem ASCII-Format 
+                     in Gleitkommazahlen. Das Betriebssystem verwendet diese Adresse als Zähler der 
+                     Abarbeitungsschritte bei der Berechnung eines Polynoms der Form 
+                     y=a0+a1*x+a2*x^2+a3*x^3+...
 
 $0068                Überlauf-Speicher des Gleitkomma-Akkumulators Nr. 1
 
-                     Wenn eine Zahl so groß wird, daß sie mit den zur Verfügung stehenden Stellen nicht mehr dargestellt werden kann, sprechen wir von einem »Überlauf«.
+                     Wenn eine Zahl so groß wird, daß sie mit den zur Verfügung stehenden Stellen 
+                     nicht mehr dargestellt werden kann, sprechen wir von einem »Überlauf«.
 
                      Bei Gleitkommazahlen liegt diese Überlaufgrenze bei 1,70141183 * 10^38.
 
-                     Während einer mathematischen Berechnung kann es intern im Computer vorkommen, daß ein Überlauf eintritt, der aber am Ende der Operation wieder verschwinden würde. Der Akkumulator Nr. 1 benutzt in einem derartigen Fall die Speicherzelle 104, um die verfügbare Stellenzahl um 8 Bit zu vergrößern. Für endgültige Resultate steht diese Erweiterung natürlich nicht zur Verfügung.
+                     Während einer mathematischen Berechnung kann es intern im Computer vorkommen, 
+                     daß ein Überlauf eintritt, der aber am Ende der Operation wieder verschwinden 
+                     würde. Der Akkumulator Nr. 1 benutzt in einem derartigen Fall die Speicherzelle 
+                     104, um die verfügbare Stellenzahl um 8 Bit zu vergrößern. Für endgültige 
+                     Resultate steht diese Erweiterung natürlich nicht zur Verfügung.
 
-                     Dieser Vorgang tritt besonders häufig bei der Umwandlung von ganzen Zahlen oder Zeichenketten in Gleitkommazahlen auf.
+                     Dieser Vorgang tritt besonders häufig bei der Umwandlung von ganzen Zahlen oder 
+                     Zeichenketten in Gleitkommazahlen auf.
 
 $0069-$006E          Gleitkomma-Akkumulator Nr. 2
 
-                     Spätestens jetzt verstehen Sie, warum der Akkumulator der Speicherzellen 97 bis 102 die Nr. 1 hat. Es gibt hier noch einen zweiten Gleitkomma-Akkumulator, der ein identischer Zwilling ist. Zwei Akkumulatoren sind immer dann notwendig, wenn mathematische Operationen ablaufen, welche mehr als einen Operanden verarbeiten, wie zum Beispiel Multiplikation, Division und so weiter.
+                     Spätestens jetzt verstehen Sie, warum der Akkumulator der Speicherzellen 97 bis 
+                     102 die Nr. 1 hat. Es gibt hier noch einen zweiten Gleitkomma-Akkumulator, der 
+                     ein identischer Zwilling ist. Zwei Akkumulatoren sind immer dann notwendig, 
+                     wenn mathematische Operationen ablaufen, welche mehr als einen Operanden 
+                     verarbeiten, wie zum Beispiel Multiplikation, Division und so weiter.
 
-                     Aufgrund der Identität der beiden Akkumulatoren kann ich mir eine weitere Beschreibung ersparen.
+                     Aufgrund der Identität der beiden Akkumulatoren kann ich mir eine weitere 
+                     Beschreibung ersparen.
 
 
 $006F                Flagge für Vorzeichenvergleich der Gleitkomma-Akkumulatoren Nr. 1 und Nr. 2
 
-                     Wenn die Zahl in beiden Akkumulatoren gleiche Vorzeichen hat, steht in Speicherzelle 111 eine 0, bei verschiedenen Vorzeichen eine 255.
+                     Wenn die Zahl in beiden Akkumulatoren gleiche Vorzeichen hat, steht in 
+                     Speicherzelle 111 eine 0, bei verschiedenen Vorzeichen eine 255.
 
 $0070                Rundungsspeicher des Gleitkomma-Akkumulators Nr. 1
 
-                     Es kann vorkommen, daß die Mantisse einer Gleitkommazahl mehr Stellen hat, als mit den vier Mantissen-Bytes des Akkumulators Nr. 1 (Zelle 97 bis 102) dargestellt werden können. In diesem Fall werden die hintersten, das heißt die unwichtigsten Stellen hinter dem Komma in der Zelle 112 abgelegt. Von dort werden sie geholt, um die Genauigkeit von mathematischen Operationen zu erhöhen und auch um Endresultate abrunden zu können.
+                     Es kann vorkommen, daß die Mantisse einer Gleitkommazahl mehr Stellen hat, als 
+                     mit den vier Mantissen-Bytes des Akkumulators Nr. 1 (Zelle 97 bis 102) 
+                     dargestellt werden können. In diesem Fall werden die hintersten, das heißt die 
+                     unwichtigsten Stellen hinter dem Komma in der Zelle 112 abgelegt. Von dort 
+                     werden sie geholt, um die Genauigkeit von mathematischen Operationen zu erhöhen 
+                     und auch um Endresultate abrunden zu können.
 
 $0071-$0072          Zwischenspeicher für verschiedene Routinen
 
-                     Diese Speicherzellen werden von sehr vielen Routinen des Übersetzers und des Betriebssystems, wie zum Beispiel Zeichenkettenverarbeitung, interne Uhr (Tl$), Bestimmung der Größe von Feldern (Arrays) und etlichen anderen verwendet.
+                     Diese Speicherzellen werden von sehr vielen Routinen des Übersetzers und des 
+                     Betriebssystems, wie zum Beispiel Zeichenkettenverarbeitung, interne Uhr (Tl$), 
+                     Bestimmung der Größe von Feldern (Arrays) und etlichen anderen verwendet.
 
 $0073-$008A          Teilprogramm »Nächstes Zeichen eines Basic-Textes holen« (CHRGET-Routine)
 
-                     Die Problematik der Übersetzung von Basic-Befehlen und Anweisungen besteht darin, daß die Übersetzungsschritte durch entsprechende Programmteile des Basic-Über- setzers im Computer fest vorprogrammiert sein müssen, was bedeutet, daß diese Programme natürlich im - nicht veränderbaren - ROM stehen.
+                     Die Problematik der Übersetzung von Basic-Befehlen und Anweisungen besteht 
+                     darin, daß die Übersetzungsschritte durch entsprechende Programmteile des 
+                     Basic-Übersetzers im Computer fest vorprogrammiert sein müssen, was bedeutet, 
+                     daß diese Programme natürlich im - nicht veränderbaren - ROM stehen.
 
-                     Auf der anderen Seite verlangt aber der Übersetzungsvorgang, daß gewisse Teile dieser Programme sich laufend verändern. Als Beispiel soll der Zeiger herhalten, der angibt, in welcher Speicherzelle das nächste zu bearbeitende Zeichen steht. Dieser Zeiger und die zusammengehörigen Programmschritte dürfen natürlich nicht im ROM stehen, denn da sind sie ja nicht änderbar.
+                     Auf der anderen Seite verlangt aber der Übersetzungsvorgang, daß gewisse Teile 
+                     dieser Programme sich laufend verändern. Als Beispiel soll der Zeiger 
+                     herhalten, der angibt, in welcher Speicherzelle das nächste zu bearbeitende 
+                     Zeichen steht. Dieser Zeiger und die zusammengehörigen Programmschritte dürfen 
+                     natürlich nicht im ROM stehen, denn da sind sie ja nicht änderbar.
 
-                     Dieser Konflikt wird dadurch gelöst, daß dieses »variable« Teilprogramm des Übersetzers zwar im ROM steht (im C 64 ab 58274 oder $E3A2, im VC 20 ab 58247 oder $E387), von wo es aber direkt nach dem Einschalten des Computers in das RAM, und zwar in die Speicherzellen 115 bis 138, umgeladen wird.
+                     Dieser Konflikt wird dadurch gelöst, daß dieses »variable« Teilprogramm des 
+                     Übersetzers zwar im ROM steht (im C 64 ab 58274 oder $E3A2, im VC 20 ab 58247 
+                     oder $E387), von wo es aber direkt nach dem Einschalten des Computers in das 
+                     RAM, und zwar in die Speicherzellen 115 bis 138, umgeladen wird.
 
-                     Dieses Teilprogramm, welches die Zeichen zur Übersetzung herbeiholt und deswegen »Character-Get« oder kurz CHARGET-Routine genannt wird, istwegen seinerVeränder- barkeit natürlich ein beliebtes Objekt aller möglichen Manipulationen. Es ist deshalb im As- sembler-Kurs, Teil 5, im 64’er, Ausgabe 1/85, im Detail beschrieben worden, allerdings mit Schwerpunkt auf Assembler- Maschinensprache.
+                     Dieses Teilprogramm, welches die Zeichen zur Übersetzung herbeiholt und 
+                     deswegen »Character-Get« oder kurz CHARGET-Routine genannt wird, ist wegen 
+                     seiner Veränderbarkeit natürlich ein beliebtes Objekt aller möglichen 
+                     Manipulationen. Es ist deshalb im Assembler-Kurs, Teil 5, im 64’er, Ausgabe 
+                     1/85, im Detail beschrieben worden, allerdings mit Schwerpunkt auf Assembler-
+                     Maschinensprache.
 
-                     Für Basic-Programmierer möchte ich hier deshalb eine kurze Beschreibung der CHAR- GET-Routine einfügen.
+                     Für Basic-Programmierer möchte ich hier deshalb eine kurze Beschreibung der 
+                     CHARGET-Routine einfügen.
 
-                     Die Routine beginnt mit einem Sprung auf den oben schon erwähnten Zeiger in Adresse 122 und 123, welcher seinerseits auf die Adresse zeigt, in welcher das nächste zu übersetzende Zeichen steht. Das Zeichen wird entsprechend dem Hinweis des Zeigers geholt, in den Akkumulator des Mikroprozessors geladen und dort verschiedenen Prüfungen unterzogen. Ist das Zeichen ein Gänsefuß, erkennt das Programm, wie es das nächste Zeichen interpretieren und behandeln muß. Ein Doppelpunkt leitet einen neuen Befehl ein, eine Leerstelle wird unterdrückt und so weiter.
+                     Die Routine beginnt mit einem Sprung auf den oben schon erwähnten Zeiger in 
+                     Adresse 122 und 123, welcher seinerseits auf die Adresse zeigt, in welcher das 
+                     nächste zu übersetzende Zeichen steht. Das Zeichen wird entsprechend dem 
+                     Hinweis des Zeigers geholt, in den Akkumulator des Mikroprozessors geladen und 
+                     dort verschiedenen Prüfungen unterzogen. Ist das Zeichen ein Gänsefuß, erkennt 
+                     das Programm, wie es das nächste Zeichen interpretieren und behandeln muß. Ein 
+                     Doppelpunkt leitet einen neuen Befehl ein, eine Leerstelle wird unterdrückt und 
+                     so weiter.
 
                      Mit dem Befehl
 
                          PRINT PEEK(122)+256*PEEK(123)
 
-                     können wir innerhalb eines Programms ausdrucken, wohin der Zeiger nach dem letzten Basic- Zeichen deutet. Eine Überprüfung mit den Methoden, die ich bei der Besprechung der Speicherzellen 43 bis 56 genannt habe, zeigt Ihnen den Zusammenhang.
+                     können wir innerhalb eines Programms ausdrucken, wohin der Zeiger nach dem 
+                     letzten Basic-Zeichen deutet. Eine Überprüfung mit den Methoden, die ich bei 
+                     der Besprechung der Speicherzellen 43 bis 56 genannt habe, zeigt Ihnen den 
+                     Zusammenhang.
 
-                     Normalerweise wird der Zeiger in 122 und 123 nach jedem Zeichen um 1 erhöht, da ja die Zeichen einer Basic-Zeile hintereinander im Speicher stehen. Ein GOTO- oder GOSUB-Befehl kann diese Folge natürlich unterbrechen, ebenso wie eine willkürliche Änderung durch einen Eingriff von außen.
+                     Normalerweise wird der Zeiger in 122 und 123 nach jedem Zeichen um 1 erhöht, da 
+                     ja die Zeichen einer Basic-Zeile hintereinander im Speicher stehen. Ein GOTO- 
+                     oder GOSUB-Befehl kann diese Folge natürlich unterbrechen, ebenso wie eine 
+                     willkürliche Änderung durch einen Eingriff von außen.
 
-                     Ein derartiger Eingriff, auch »wedge« (Keil) genannt, öffnet natürlich Tür und Tor für Programmiertricks, insbesondere für Einbau von neuen, selbsterfundenen Befehlen. Man kann entweder den allerersten Sprungbefehl auf den Zeiger so umlenken, daß er auf ein eigenes Maschinenprogramm springt, oder man kann den Zeiger selbst »verbiegen«, so daß er auf eine andere Adresse und damit auf ein anderes Zeichen zeigt. Es gibt dafür viele Möglichkeiten, die aber alle nur in Maschinencode funktionieren. Theoretisch können wir natür-lich den Inhalt des Zeigers in 122 und 123 durch POKE verändern. Aber was dann? Jeder nachfolgende Basic-Befehl löst natürlich wieder die normale Übersetzungsroutine aus und unser schöner POKE ist für die Katz.
+                     Ein derartiger Eingriff, auch »wedge« (Keil) genannt, öffnet natürlich Tür und 
+                     Tor für Programmiertricks, insbesondere für Einbau von neuen, selbsterfundenen 
+                     Befehlen. Man kann entweder den allerersten Sprungbefehl auf den Zeiger so 
+                     umlenken, daß er auf ein eigenes Maschinenprogramm springt, oder man kann den 
+                     Zeiger selbst »verbiegen«, so daß er auf eine andere Adresse und damit auf ein 
+                     anderes Zeichen zeigt. Es gibt dafür viele Möglichkeiten, die aber alle nur in 
+                     Maschinencode funktionieren. Theoretisch können wir natür-lich den Inhalt des 
+                     Zeigers in 122 und 123 durch POKE verändern. Aber was dann? Jeder nachfolgende 
+                     Basic-Befehl löst natürlich wieder die normale Übersetzungsroutine aus und 
+                     unser schöner POKE ist für die Katz.
 
-                     Wie ein Wedge in Maschinensprache gemacht wird, hat Christoph Sauer im VC 20-Kurs - 64’er, Ausgabe 9/84 beschrieben. Allerdings ist das Beispiel für Anfänger nicht verständlich, was mich zu der Überzeugung bringt, daß die CHARGET-Routine und ihre Anwendung einen eigenen Aufsatz wert wäre.
+                     Wie ein Wedge in Maschinensprache gemacht wird, hat Christoph Sauer im VC 20-
+                     Kurs - 64’er, Ausgabe 9/84 beschrieben. Allerdings ist das Beispiel für 
+                     Anfänger nicht verständlich, was mich zu der Überzeugung bringt, daß die 
+                     CHARGET-Routine und ihre Anwendung einen eigenen Aufsatz wert wäre.
 
 $008B-$008F          Wert der RND-Funktion als Gleitkommazahl
 
-                     Mit dem Befehl RND(X) kann bekanntlich eine Zufallszahl erzeugt werden. Was das bedeutet und wie »zufällig« diese Zahlen sind, können Sie dem Texteinschub Nr. 13 »Wie zufällig sind Zufallszahlen?« entnehmen.
+                     Mit dem Befehl RND(X) kann bekanntlich eine Zufallszahl erzeugt werden. Was das 
+                     bedeutet und wie »zufällig« diese Zahlen sind, können Sie dem Texteinschub Nr. 
+                     13 »Wie zufällig sind Zufallszahlen?« entnehmen.
 
-                     Beim Einschalten des Computers werden die Zahlen 128, 79, 199, 82 und 88 in diese Speicherzellen geschrieben. Mit der folgenden Zeile können Sie das gleich nach dem Einschalten des Computers leicht überprüfen.
+                     Beim Einschalten des Computers werden die Zahlen 128, 79, 199, 82 und 88 in 
+                     diese Speicherzellen geschrieben. Mit der folgenden Zeile können Sie das gleich 
+                     nach dem Einschalten des Computers leicht überprüfen.
 
                          FOR X=139 TO 143:PRINT PEEK(X):NEXT
 
-                     Nach den Manipulationen des RND-Befehls wird das Resultat wieder in die Zellen 139 bis 143 als neuer Ausgangswert (seed) für den nächsten RND-Befehl gebracht.
+                     Nach den Manipulationen des RND-Befehls wird das Resultat wieder in die Zellen 
+                     139 bis 143 als neuer Ausgangswert (seed) für den nächsten RND-Befehl gebracht.
 
-                     Diese fünf Zahlen stellen eine Gleitkommazahl dar. Ihre Form entspricht dabei der Aufteilung, wie sie auch im Gleitkomma- Akkumulator (97 bis 101) verwendet wird.
+                     Diese fünf Zahlen stellen eine Gleitkommazahl dar. Ihre Form entspricht dabei 
+                     der Aufteilung, wie sie auch im Gleitkomma-Akkumulator (97 bis 101) verwendet 
+                     wird.
 
-                     Eine Abfrage dieser Zahlen aus den Zellen 139 bis 143 ist natürlich möglich, aber nicht ergiebig, weil das Resultat von RND(X) direkt als Zahl verfügbar ist, während die 5 Byte erst in eine brauchbare Zahl umgerechnet werden müßten. Eine Änderung durch POKEn neuer Werte in diese Speicherzellen geht leider nicht.
+                     Eine Abfrage dieser Zahlen aus den Zellen 139 bis 143 ist natürlich möglich, 
+                     aber nicht ergiebig, weil das Resultat von RND(X) direkt als Zahl verfügbar 
+                     ist, während die 5 Byte erst in eine brauchbare Zahl umgerechnet werden müßten. 
+                     Eine Änderung durch POKEn neuer Werte in diese Speicherzellen geht leider 
+                     nicht.
 
 $0090                Statusvariable ST
 
-                     Diese Adresse enthält ein Byte, welches mit der Statusvariablen ST von Basic identisch ist. Diese reservierte Variable ist im Texteinschub Nr. 14 »ST-atus« näher beschrieben.
+                     Diese Adresse enthält ein Byte, welches mit der Statusvariablen ST von Basic 
+                     identisch ist. Diese reservierte Variable ist im Texteinschub Nr. 14 »ST-atus« 
+                     näher beschrieben.
 
-                     Alle Routinen des Betriebssystems, die mit Ein- und Ausgabe zu tun haben, benutzen diese Speicherzelle zum Abspeichern und Abfragen des Status der Ein-/Ausgabeoperationen.
+                     Alle Routinen des Betriebssystems, die mit Ein- und Ausgabe zu tun haben, 
+                     benutzen diese Speicherzelle zum Abspeichern und Abfragen des Status der Ein-/
+                     Ausgabeoperationen.
 
-                     Genauer gesagt, alle Ein-/Ausgabeoperationen, die mit der Datasette und mit dem Floppy-Gerät beziehungsweise dem Drucker zu tun haben, benutzen die Adresse 144. Im Fachjargon sprechen wir vom Kassetten-Port und vom seriellen Port.
+                     Genauer gesagt, alle Ein-/Ausgabeoperationen, die mit der Datasette und mit dem 
+                     Floppy-Gerät beziehungsweise dem Drucker zu tun haben, benutzen die Adresse 
+                     144. Im Fachjargon sprechen wir vom Kassetten-Port und vom seriellen Port.
 
-                     Der dritte Anschluß des Computers, nämlich der RS232 oder User-Port, benutzt für den Status die Speicherzelle 663.
+                     Der dritte Anschluß des Computers, nämlich der RS232 oder User-Port, benutzt 
+                     für den Status die Speicherzelle 663.
 
                      Jedes Bit der Zelle 144 hat eine eigene Bedeutung wie folgt.
 
@@ -927,103 +1616,164 @@ $0090                Statusvariable ST
 
                      Alle nicht aufgeführten Bits sind nicht benutzt.
 
-                     Diese Speicherzelle beziehungsweise die Statusvariable ST kann recht nützlich sein. Einige Kochrezepte dafür werden im Texteinschub Nr. 14 behandelt.
+                     Diese Speicherzelle beziehungsweise die Statusvariable ST kann recht nützlich 
+                     sein. Einige Kochrezepte dafür werden im Texteinschub Nr. 14 behandelt.
 
 $0091                Zwischenspeicher für Abfrage der STOP-Taste
 
-                     In den Bildern 13 und 14 ist dargestellt, wie die Tasten des VC 20 und des C 64 miteinander über eine Matrix verbunden sind.
+                     In den Bildern 13 und 14 ist dargestellt, wie die Tasten des VC 20 und des C 64 
+                     miteinander über eine Matrix verbunden sind.
 
-                     60mal in der Sekunde unterbricht der Computer seine Arbeit, merkt sich, wo er gerade ist und fragt dann unter anderem, ob die STOP-Taste gedrückt worden ist. Dadurch wird erreicht, daß die STOP-Taste jederzeit Priorität hat.
+                     60mal in der Sekunde unterbricht der Computer seine Arbeit, merkt sich, wo er 
+                     gerade ist und fragt dann unter anderem, ob die STOP-Taste gedrückt worden ist. 
+                     Dadurch wird erreicht, daß die STOP-Taste jederzeit Priorität hat.
 
-                     Die Abfrage geht so vonstatten, daß das Betriebssystem über das im Bild 13 und 14 gezeigte Spaltenregister 56320 (beim VC 20: 37152) diejenige Tastenspalte anwählt, in welcher sich die STOP-Taste befindet. Aus Bild 13 und 14 sehen wir, daß dies die Spalte mit der Codenummer 127 beziehungsweise 247 ist. Ist in dieser Spalte eine Taste gedrückt, wird an ihrer Stelle eine Null in das Auslese-Register 56321 (VC 20: 37153) geschrieben. Die dadurch entstandene Dualzahl wird in die Speicherzelle 145 gebracht.
+                     Die Abfrage geht so vonstatten, daß das Betriebssystem über das im Bild 13 und 
+                     14 gezeigte Spaltenregister 56320 (beim VC 20: 37152) diejenige Tastenspalte 
+                     anwählt, in welcher sich die STOP-Taste befindet. Aus Bild 13 und 14 sehen wir, 
+                     daß dies die Spalte mit der Codenummer 127 beziehungsweise 247 ist. Ist in 
+                     dieser Spalte eine Taste gedrückt, wird an ihrer Stelle eine Null in das 
+                     Auslese-Register 56321 (VC 20: 37153) geschrieben. Die dadurch entstandene 
+                     Dualzahl wird in die Speicherzelle 145 gebracht.
 
-                     Es ist sicher verständlich, daß auf diese Weise nicht nur die STOP-Taste, sondern alle Tasten der Spalte 127 (247) abgefragt werden können. Ein kleines Demonstrationsprogramm kann das beweisen:
+                     Es ist sicher verständlich, daß auf diese Weise nicht nur die STOP-Taste, 
+                     sondern alle Tasten der Spalte 127 (247) abgefragt werden können. Ein kleines 
+                     Demonstrationsprogramm kann das beweisen:
 
                          10 PRINT PEEK (656321);PEEK (145)
                          20 GOT0 10
 
                      Beim VC 20 ist statt 56321 natürlich 37153 einzusetzen.
 
-                     Das Zahlenband kann durch die Tasten der genannten Spalte - und nur durch diese - beeinflußt werden.
+                     Das Zahlenband kann durch die Tasten der genannten Spalte - und nur durch diese 
+                     - beeinflußt werden.
 
 $0092                Zeltkonstante beim Lesen vom Band
 
-                     Die Speicherzelle enthält eine vom Betriebssystem einstellbare Zahl, welche die kleinen Unterschiede in der Aufnahmegeschwindigkeit ausgleicht, die bei verschiedenen Datasetten vorkommen können.
+                     Die Speicherzelle enthält eine vom Betriebssystem einstellbare Zahl, welche die 
+                     kleinen Unterschiede in der Aufnahmegeschwindigkeit ausgleicht, die bei 
+                     verschiedenen Datasetten vorkommen können.
 
-                     Diese Zeitkonstante steht im Zusammenhang mit der Zahl, die in den Speicherzellen 176 und 177 steht.
+                     Diese Zeitkonstante steht im Zusammenhang mit der Zahl, die in den 
+                     Speicherzellen 176 und 177 steht.
 
                      Eine Veränderung der Konstante in Basic ist nicht möglich.
 
 $0093                Flagge für LOAD oder VERIFY
 
-                     Diese Flagge dient dem Betriebssystem, um zu unterscheiden, ob eine LOAD- Operation nur LOADen oder aber VERIFYen soll.
+                     Diese Flagge dient dem Betriebssystem, um zu unterscheiden, ob eine LOAD-
+                     Operation nur LOADen oder aber VERIFYen soll.
 
-                     Sie ist identisch mit der Flagge des Basic-Übersetzers in Speicherzelle 10. Genauere Hinweise bitte ich der Beschreibung von Zelle 10 zu entnehmen.
+                     Sie ist identisch mit der Flagge des Basic-Übersetzers in Speicherzelle 10. 
+                     Genauere Hinweise bitte ich der Beschreibung von Zelle 10 zu entnehmen.
 
 $0094                Flagge für Floppy/Drucker-Ausgang
 
-                     Das Betriebssystem benutzt diese Speicherzelle, um anzuzeigen, daß ein Zeichen im Ausgabepuffer steht, welches zum Floppy-Gerät oder zum Drucker geleitet werden soll. Diese Flagge setzt alle am seriellen Port angeschlossenen Geräte in den Zustand »Listen«, das heißt bereit zu sein, Daten aufzunehmen.
+                     Das Betriebssystem benutzt diese Speicherzelle, um anzuzeigen, daß ein Zeichen 
+                     im Ausgabepuffer steht, welches zum Floppy-Gerät oder zum Drucker geleitet 
+                     werden soll. Diese Flagge setzt alle am seriellen Port angeschlossenen Geräte 
+                     in den Zustand »Listen«, das heißt bereit zu sein, Daten aufzunehmen.
 
 $0095                Zeichen im Ausgabepuffer
 
-                     In dieser Speicherzelle wird das Zeichen abgelegt, welches als nächstes über den Serial- Port zum Floppy-Gerät oder zum Drucker transportiert wird, sobald die Flagge in 148 die Bereitschaft anzeigt.
+                     In dieser Speicherzelle wird das Zeichen abgelegt, welches als nächstes über 
+                     den Serial-Port zum Floppy-Gerät oder zum Drucker transportiert wird, sobald 
+                     die Flagge in 148 die Bereitschaft anzeigt.
 
 $0096                Arbeitsspeicher für die Band-Leseroutine
 
-                     Diese Speicherzelle wird zur Zwischenspeicherung von Daten beim Lesen einer Kassette benutzt.
+                     Diese Speicherzelle wird zur Zwischenspeicherung von Daten beim Lesen einer 
+                     Kassette benutzt.
 
 $0097                Zwischenspeicher des X-Registers
 
-                     Maschinen-Programmierer kennen das X-Register des Mikroprozessors. Beim Lesen eines Zeichens von der Datasette wird der Inhalt des X- Registers in dieser Adresse zwischengespeichert.
+                     Maschinen-Programmierer kennen das X-Register des Mikroprozessors. Beim Lesen 
+                     eines Zeichens von der Datasette wird der Inhalt des X-Registers in dieser 
+                     Adresse zwischengespeichert.
 
 $0098                Anzahl der offenen Files
 
-                     Ein File, oder auf Deutsch gesagt, eine Datei, wird mit dem Befehl OPEN eröffnet. Nach OPEN folgt die Nummer der Datei; sie ist beliebig wählbar bis maximal 255. Als zweites folgt die Nummer des Gerätes, mit dem die Verbindung hergestellt werden soll.
+                     Ein File, oder auf Deutsch gesagt, eine Datei, wird mit dem Befehl OPEN 
+                     eröffnet. Nach OPEN folgt die Nummer der Datei; sie ist beliebig wählbar bis 
+                     maximal 255. Als zweites folgt die Nummer des Gerätes, mit dem die Verbindung 
+                     hergestellt werden soll.
 
-                     Es ist erlaubt, mehrere Dateien gleichzeitig geöffnet zu halten, vorausgesetzt die Nummern der Dateien sind verschieden.
+                     Es ist erlaubt, mehrere Dateien gleichzeitig geöffnet zu halten, vorausgesetzt 
+                     die Nummern der Dateien sind verschieden.
 
-                     In Speicherzelle 152 wird festgehalten, wieviel Dateien gleichzeitig geöffnet sind. Dieses kleine Programm zeigt es uns deutlich:
+                     In Speicherzelle 152 wird festgehalten, wieviel Dateien gleichzeitig geöffnet 
+                     sind. Dieses kleine Programm zeigt es uns deutlich:
 
                          10 FOR K=10 T0 22
                          20 PRINT PEEK (l52),K
                          30 OPEN K,0
                          40 NEXT K
 
-                     Mit der FOR...NEXT-Schleife der Zeilen 10 und 40 eröffnen wir 13 Dateien hintereinander, und zwar - wie Zeile 30 uns deutlich macht - mit der Tastatur. Die Tastatur hat die Nummer 0, der Drucker die Nummer 4, das Floppy-Gerät die Nummer 8 und die Datasette die Nummer 1. Ich habe die Tastatur gewählt, obwohl es keinen Sinn ergibt, weil sie die vielen Eröffnungen ohne zu unterbrechen akzeptiert.
+                     Mit der FOR...NEXT-Schleife der Zeilen 10 und 40 eröffnen wir 13 Dateien 
+                     hintereinander, und zwar - wie Zeile 30 uns deutlich macht - mit der Tastatur. 
+                     Die Tastatur hat die Nummer 0, der Drucker die Nummer 4, das Floppy-Gerät die 
+                     Nummer 8 und die Datasette die Nummer 1. Ich habe die Tastatur gewählt, obwohl 
+                     es keinen Sinn ergibt, weil sie die vielen Eröffnungen ohne zu unterbrechen 
+                     akzeptiert.
 
-                     Nach RUN sehen wir links untereinander den Inhalt von 152, also die Anzahl der eröffneten Dateien. Rechts steht jeweils die Nummer der eröffne-
+                     Nach RUN sehen wir links untereinander den Inhalt von 152, also die Anzahl der 
+                     eröffneten Dateien. Rechts steht jeweils die Nummer der eröffne-
 
-                     In der 10. Zeile sehen wir jetzt die 10 als Inhalt von 152 und als neue Dateinummer (Schleifenvariable K) wieder die 10. Das Programm bleibt aber stehen und meldet FILE OPEN. Es hat recht, denn die Datei 10 ist bereits als erste eröffnet, aber nicht wieder geschlossen worden.
+                     In der 10. Zeile sehen wir jetzt die 10 als Inhalt von 152 und als neue 
+                     Dateinummer (Schleifenvariable K) wieder die 10. Das Programm bleibt aber 
+                     stehen und meldet FILE OPEN. Es hat recht, denn die Datei 10 ist bereits als 
+                     erste eröffnet, aber nicht wieder geschlossen worden.
 
-                     Das Betriebssystem macht das so, daß jede der Dateinummern in eine Tabelle geschrieben wird, die in den Speicherzellen 601 bis 610 stehen. Bei jedem OPEN-Befehl wird dort nachgeschaut, ob die Filenummer existiert. Wenn ja, wird die Fehlermeldung FILE OPEN ERROR ausgegeben. Bei jedem CLOSE-Befehl wird die entsprechende Nummer aus der Tabelle gelöscht.
+                     Das Betriebssystem macht das so, daß jede der Dateinummern in eine Tabelle 
+                     geschrieben wird, die in den Speicherzellen 601 bis 610 stehen. Bei jedem OPEN-
+                     Befehl wird dort nachgeschaut, ob die Filenummer existiert. Wenn ja, wird die 
+                     Fehlermeldung FILE OPEN ERROR ausgegeben. Bei jedem CLOSE-Befehl wird die 
+                     entsprechende Nummer aus der Tabelle gelöscht.
 
-                     Wir können aber auch eine 0 in die Speicherzelle 152 POKEn, wodurch dem Betriebssystem vorgegaukelt wird, daß keine Datei eröffnet ist. Schieben Sie im Programm einfach die Zeile ein:
+                     Wir können aber auch eine 0 in die Speicherzelle 152 POKEn, wodurch dem 
+                     Betriebssystem vorgegaukelt wird, daß keine Datei eröffnet ist. Schieben Sie im 
+                     Programm einfach die Zeile ein:
 
                          45 POKE 152,0 
 
                      und das Programm läuft ewig weiter.
 
-                     Die Speicherzelle 152 ist also der Wächter über die Anzahl der eröffneten Dateien. Steht sie auf 0, dann wird eine Neueröffnung am Anfang der Tabelle ab 601 eingetragen. Die Tabelle ihrerseits ist der Wächter über Exklusivität der Dateinummern. Ich zeige Ihnen das noch genauer, wenn wir zu 601 kommen.
+                     Die Speicherzelle 152 ist also der Wächter über die Anzahl der eröffneten 
+                     Dateien. Steht sie auf 0, dann wird eine Neueröffnung am Anfang der Tabelle ab 
+                     601 eingetragen. Die Tabelle ihrerseits ist der Wächter über Exklusivität der 
+                     Dateinummern. Ich zeige Ihnen das noch genauer, wenn wir zu 601 kommen.
 
-                     Sie werden vielleicht fragen, warum ich das so ausführlich beschreibe. Nun, in einem Programm kann es sicher sehr nützlich sein, dieZelle 152 mit PEEK nach der Datei-Lage abzufragen und entsprechend Maßnahmen zu treffen, ehe die Fehlermeldung das Programm abbricht.
+                     Sie werden vielleicht fragen, warum ich das so ausführlich beschreibe. Nun, in 
+                     einem Programm kann es sicher sehr nützlich sein, dieZelle 152 mit PEEK nach 
+                     der Datei-Lage abzufragen und entsprechend Maßnahmen zu treffen, ehe die 
+                     Fehlermeldung das Programm abbricht.
 
-                     Mit POKE 152,0 aber müssen Sie aufpassen. Es ersetzt nämlich nicht (!!) den CLOSE-Befehl. Probieren Sie es aus: Um das kleine Programm oben per Drucker auszudrucken, brauchen wir:
+                     Mit POKE 152,0 aber müssen Sie aufpassen. Es ersetzt nämlich nicht (!!) den 
+                     CLOSE-Befehl. Probieren Sie es aus: Um das kleine Programm oben per Drucker 
+                     auszudrucken, brauchen wir:
 
                          OPEN 1,4: CMD 1: LIST
 
-                     Wenn Sie jetzt die Zeile 152 auf 0 POKEn und dann LIST eintippen, wird trotzdem wieder auf dem Drucker gelistet und nicht auf dem Bildschirm. Die vorgeschriebene Schließmethode mit
+                     Wenn Sie jetzt die Zeile 152 auf 0 POKEn und dann LIST eintippen, wird trotzdem 
+                     wieder auf dem Drucker gelistet und nicht auf dem Bildschirm. Die 
+                     vorgeschriebene Schließmethode mit
 
                          PRINT #1:CL0SE1
 
-                     geht jetzt aber auch nicht mehr, denn das Betriebssystem ist ja im Glauben, daß keine Datei eröffnet ist - schöner Schlamassel!
+                     geht jetzt aber auch nicht mehr, denn das Betriebssystem ist ja im Glauben, daß 
+                     keine Datei eröffnet ist - schöner Schlamassel!
 
-                     Erst eine Neueröffnung bringt alles wieder in die Reihe. Also Vorsicht mit der Anwendung der Speicherzelle 152. Eine Möglichkeit, alle Dateien auf einen Schlag zu schließen, gibt es aber doch.
+                     Erst eine Neueröffnung bringt alles wieder in die Reihe. Also Vorsicht mit der 
+                     Anwendung der Speicherzelle 152. Eine Möglichkeit, alle Dateien auf einen 
+                     Schlag zu schließen, gibt es aber doch.
 
                      SYS 65511 besorgt das sowohl beim C 64 als auch beim VC 20.
 
 $0099                Nummer des Eingabe-Gerätes
 
-                     Das Betriebssystem verwendet diese Speicherzelle, um festzuhalten, welches Gerät zur Eingabe verwendet werden soll.
+                     Das Betriebssystem verwendet diese Speicherzelle, um festzuhalten, welches 
+                     Gerät zur Eingabe verwendet werden soll.
+
                      Die Nummern sind wie folgt festgelegt:
 
                      |      |                   |
@@ -1035,17 +1785,35 @@ $0099                Nummer des Eingabe-Gerätes
                      | 4,5  | Drucker           |
                      | 8-11 | Floppy-Laufwerke  |
 
-                     Nach dem Einschalten oder nach RESET des Computers steht in 153 eine 0 (Tastatur). Nachjedem Einsatz eines anderen Gerätes wird diese Speicherzelle wieder auf 0 gesetzt, so daß wir immer die Tastatur zur Verfügung haben.
+                     Nach dem Einschalten oder nach RESET des Computers steht in 153 eine 0 
+                     (Tastatur). Nachjedem Einsatz eines anderen Gerätes wird diese Speicherzelle 
+                     wieder auf 0 gesetzt, so daß wir immer die Tastatur zur Verfügung haben.
 
-                     Für Maschinenprogrammierer ist diese Adresse sicherlich wertvoll. Die Routine, welche die Eingabegeräte festlegt, sobald der Befehl INPUT# beziehungsweise GET# ausgeführt wird, heißt CHKIN und beginnt beim C 64 ab Adresse 61966 ($F20E), beim VC 20 ab 62151 ($F2C7).
+                     Für Maschinenprogrammierer ist diese Adresse sicherlich wertvoll. Die Routine, 
+                     welche die Eingabegeräte festlegt, sobald der Befehl INPUT# beziehungsweise 
+                     GET# ausgeführt wird, heißt CHKIN und beginnt beim C 64 ab Adresse 61966 
+                     ($F20E), beim VC 20 ab 62151 ($F2C7).
 
-                     Für Basic-Programmierer habe ich in der Literatur nur eine Anwendung gefunden, und die wurde bereits bei der Besprechung der Speicherzelle 19 angekündigt.
+                     Für Basic-Programmierer habe ich in der Literatur nur eine Anwendung gefunden, 
+                     und die wurde bereits bei der Besprechung der Speicherzelle 19 angekündigt.
 
-                     Es ist dies eine MERGE-Routine. Leider funktioniert dieses Verfahren nicht bei dem 1541- Floppy-Laufwerk. Erfunden wurde die Routine von Brad Templeton und ist von Jim Butterfield unter dem Namen »Magic Merge« für den VC 20/
+                     Es ist dies eine MERGE-Routine. Leider funktioniert dieses Verfahren nicht bei 
+                     dem 1541-Floppy-Laufwerk. Erfunden wurde die Routine von Brad Templeton und ist 
+                     von Jim Butterfield unter dem Namen »Magic Merge« für den VC 20/
 
-                     C 64 adaptiert worden. Ich gebe zu, in der Zwischenzeit sind noch andere, vielleicht auch kürzere MERGE-Routinen veröffentlicht worden. Aber diese hier verwendet gleich drei interessante Ingredienzen, nämlich die Speicherzellen 19 und 153 und außerdem die sogenannte »Dynamische Tastenabfrage«. Wer die letztere nicht kennt, sollte sich zum Verständnis den Texteinschub Nr. 15 gleichen Namens ansehen.
+                     C 64 adaptiert worden. Ich gebe zu, in der Zwischenzeit sind noch andere, 
+                     vielleicht auch kürzere MERGE-Routinen veröffentlicht worden. Aber diese hier 
+                     verwendet gleich drei interessante Ingredienzen, nämlich die Speicherzellen 19 
+                     und 153 und außerdem die sogenannte »Dynamische Tastenabfrage«. Wer die 
+                     letztere nicht kennt, sollte sich zum Verständnis den Texteinschub Nr. 15 
+                     gleichen Namens ansehen.
 
-                     Ein MERGE (deutsch: zusammenführen, verschmelzen) besteht darin, ein auf Band gespeichertes Programm zu einem im Computer stehenden anderen Programm so dazuzuladen, daß dieses nicht überschrieben, sondern ergänzt wird. Wichtig ist dabei, daß das Programm vom Band höhere Zeilennummern hat als das Programm im Computer. Außerdem muß das Programm auf dem Band als Datei gespeichert sein. Das wird so erreicht:
+                     Ein MERGE (deutsch: zusammenführen, verschmelzen) besteht darin, ein auf Band 
+                     gespeichertes Programm zu einem im Computer stehenden anderen Programm so 
+                     dazuzuladen, daß dieses nicht überschrieben, sondern ergänzt wird. Wichtig ist 
+                     dabei, daß das Programm vom Band höhere Zeilennummern hat als das Programm im 
+                     Computer. Außerdem muß das Programm auf dem Band als Datei gespeichert sein. 
+                     Das wird so erreicht:
 
                      1. Programm eintippen
                      2. Direkt eingeben:
@@ -1054,7 +1822,8 @@ $0099                Nummer des Eingabe-Gerätes
 
                      3. Erst wenn READY kommt, direkt eingeben PRINT #1:CLOSE1
 
-                     Damit ist das Programm auf dem Band gespeichert. Nun kommt der eigentliche MERGE- Vorgang.
+                     Damit ist das Programm auf dem Band gespeichert. Nun kommt der eigentliche 
+                     MERGE-Vorgang.
 
                      4. Es steht ein Programm im Computer
                      5. Band mit dem Programm »Name« einlegen
@@ -1068,7 +1837,11 @@ $0099                Nummer des Eingabe-Gerätes
 
                          PRINT CHR$(19):POKE 198,1:POKE 631,13:POKE 153,1
 
-                     10. Das Band beendet den Ladevorgang mit einer Fehlermeldung, die wir ignorieren.
+                     10. Das Band beendet den Ladevorgang mit einer Fehlermeldung, die wir 
+                         ignorieren.
                      11. Nach CLOSE 1 sind beide Programme zusammengefügt.
 
-                     Wie gesagt, Schritt 6 verwendet Zeile 19 (bitte dort nachlesen), Schritte 8 und 9 sind die »Dynamische Tastenabfrage«, und Schritt 9 verwendet zusätzlich die hier zur Diskussion stehende Speicherzelle 153, um die Datasette als Eingabegerät zu definieren.
+                     Wie gesagt, Schritt 6 verwendet Zeile 19 (bitte dort nachlesen), Schritte 8 und 
+                     9 sind die »Dynamische Tastenabfrage«, und Schritt 9 verwendet zusätzlich die 
+                     hier zur Diskussion stehende Speicherzelle 153, um die Datasette als 
+                     Eingabegerät zu definieren.
