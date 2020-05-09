@@ -793,9 +793,8 @@ $0054-$0056          Sprungbefehl auf die Adressen der Basic-Funktionen
 
                      Wir erhalten
 
-                     beim C 64: 76 13 184
-
-                     beim VC 20: 76 13 216
+                     * beim C 64: 76 13 184
+                     * beim VC 20: 76 13 216
 
                      Die erste Zahl ist genauso wie oben beschrieben. Die beiden anderen Zahlen ergeben zusammen die Adresse 47117 ($B80D) beziehungsweise 55309 ($D80D). Wenn Sie ein Buch mit ROM-Listing haben, werden Sie unter dieser Adresse die Routine für die Funktion »PEEK« finden. Das ist natürlich nicht erstaunlich, haben wir doch gerade vorher als letzten Befehl genau diese Funktion eingegeben.
 
@@ -906,6 +905,22 @@ $0090                Statusvariable ST
 
                      Jedes Bit der Zelle 144 hat eine eigene Bedeutung wie folgt.
 
+                     |       |            | Kassette                        |
+                     |-------|------------|---------------------------------|
+                     | Bit 2 | (Wert 4)   | Kurzer Block                    |
+                     | Bit 3 | (Wert 8)   | Langer Block                    |
+                     | Bit 4 | (Wert 16)  | Lesefehler (nicht korribierbar) |
+                     | Bit 5 | (Wert 32)  | Prüfsummenfehler                |
+                     | Bit 6 | (Wert 64)  | File-Ende                       |
+                     | Bit 7 | (Wert 128) | Band-Ende                       |
+                     
+                     |       |            | Floppy/Drucker                  |
+                     |-------|------------|---------------------------------|
+                     | Bit 0 | (Wert 1)   | Fehler beim Schreiben           |
+                     | Bit 1 | (Wert 2)   | Fehler beim Lesen               |
+                     | Bit 6 | (Wert 64)  | Daten-Ende                      |
+                     | Bit 7 | (Wert 128) | »Device Not Present«-Fehler     |
+
                      Alle nicht aufgeführten Bits sind nicht benutzt.
 
                      Diese Speicherzelle beziehungsweise die Statusvariable ST kann recht nützlich sein. Einige Kochrezepte dafür werden im Texteinschub Nr. 14 behandelt.
@@ -1007,17 +1022,14 @@ $0099                Nummer des Eingabe-Gerätes
                      Das Betriebssystem verwendet diese Speicherzelle, um festzuhalten, welches Gerät zur Eingabe verwendet werden soll.
                      Die Nummern sind wie folgt festgelegt:
 
-                     0 = Tastatur
-
-                     1 = Datasette
-
-                     2 = RS232 (User-)Port
-
-                     3 = Bildschirm
-
-                     4,5 = Drucker
-
-                     8-11 = Floppy-Laufwerke
+                     |      |                   |
+                     |------|-------------------|
+                     | 0    | Tastatur          |
+                     | 1    | Datasette         |
+                     | 2    | RS232 (User-)Port |
+                     | 3    | Bildschirm        |
+                     | 4,5  | Drucker           |
+                     | 8-11 | Floppy-Laufwerke  |
 
                      Nach dem Einschalten oder nach RESET des Computers steht in 153 eine 0 (Tastatur). Nachjedem Einsatz eines anderen Gerätes wird diese Speicherzelle wieder auf 0 gesetzt, so daß wir immer die Tastatur zur Verfügung haben.
 
