@@ -1,0 +1,156 @@
+- C64 RAM Map (64'er)
+-
+- 64'er Sonderheft 1986/07
+-
+------------------------------------------------------------
+-
+# [...]
+
+$0000        D6510   Datenrichtungsregister für Ein-/Ausgabe-Port des 6510-Mikroprozessors
+
+$0001                Datenregister für Ein-/Ausgabe-Port des 6510-Mikroprozessors
+                     
+                     Im Gegensatz zum Mikroprozessor des VC 20 hat der des C 64 sechs Ein-/Ausgabe-Leitungen, die einzeln programmierbar sind und so eine direkte Verbindung zwischen dem Mikroprozessor und der Außenwelt herstellen. Warum nur sechs Leitungen und nicht wie üblich acht? Auf dem Chip selbst könnten acht Bit verkraftet werden, aber es stehen nur sechs Anschlußbeine zur Verfügung.
+                     Um trotzdem flexibel zu bleiben, ist dieses Tor zum Prozessor - zutreffend auch »Port« genannt - in beiden Richtungen begehbar. Jede einzelne der sechs Leitungen kann vom Programmierer auf »Eingang« oder auf »Ausgang« geschaltet werden. Dazu dient das Datenrichtungsregister in der Speicherzelle 0.
+                     Datenrichtungsreglster In Zelle 0
+                     Wenn zum Beispiel in das Bit 4 der Zelle 0 eine 0 hineingePOKEt wird, ist die Leitung Nummer 4 des Ports auf »Eingang« geschaltet. Es gilt für alle 6 Bit (Nummer 0 bis 5):
+                     * Bit auf 0 = Eingang
+                     * Bit auf 1 = Ausgang
+                     Beim Einschalten schreibt das Betriebssystem in dieses Register die Dualzahl ..101111 (dezimal=47). Das heißt also, daß nur die Leitung Nummer 4 als Eingang verwendet wird, alle anderen aber als Ausgang. Warum das so ist, sehen wir gleich. Vorher will ich aber noch erwähnen, daß im C 64 von dieser Flexibilität des Mikroprozes- sor-Ports kein Gebrauch gemacht wird. Ich habe das ganze Betriebssystem durchgesehen, aber das einzige Mal, wo die Speicherzelle 0 angesprochen wird, ist eben bei der Einschaltroutine.
+                     Das heißt aber nicht, daß Sie, lieber Hobby-Programmierer, darauf verzichten müssen. Ich kann mir vorstellen, daß besonders Ausgefuchste unter Ihnen durch POKEn eines anderen Bitmusters in die Speicherzelle 0 vielseitige Befehle erzeugen und einsetzen können.
+                     Das wird besonders deutlich, wenn Sie jetzt sehen, mit welchen Teilen des Computers diese sechs Leitungen verbunden sind.
+
+                     Datenregister in Speicherzelle 1
+                     Mit diesem Register steuert der Mikroprozessor (und damit natürlich das Betriebssystem) die Auswahl von Speicherblöcken und den Betrieb mit dem Kassettenrecorder. Dem Programmierer steht diese Möglichkeit über POKEn auch zur Verfügung.
+                     Bit 0
+                     schaltet den Speicherbereich 40960 bis 49151 ($A000 bis $BFFF) zwischen dem Basic- Übersetzer (Interpreter) im ROM und freiem RAM um (Normalzustand^).
+                     Bit 1
+                     schaltet den Speicherbereich 57344 bis 65535 ($E000 bis $FFFF) zwischen dem Betriebssystem (Kernel) im ROM und freiem RAM um (Normalzustand =1).
+                     Bit 2
+                     schaltet den Speicherbereich 53248 bis 57343 ($D000 bis $DFFF) zwischen Zeichen- ROM und Ein-/Ausgabe-ROM um (Normalzustand = 1).
+                     Bit 3
+                     sendet serielle Daten zum Kassettenrecorder (Normalzustand =0).
+                     Bit 4
+                     prüft, ob eine der Tasten des Recorders gedrückt ist, welche den Motor einschalten (Normalzustand = 1).
+                     Bit 5
+                     schaltet den Motor des Recorders ein und aus (Normalzustand = 1).
+
+                     Die RAM-ROM-Umschaltung
+                     Sie wissen, daß Ihr C 64 deswegen so heißt, weil er 64 KByte Speicherplätze hat. Nur stimmt das nicht! Er hat nämlich 88 KByte und müßte eigentlich C 88 heißen.
+                     Da mit den 16 Bit der High-/ Low-Byte-Methode (siehe Texteinschub Nr. 2) nur 64 KByte adressierbar sind, müssen die restlichen 22 KByte bei Bedarf eingeschoben werden - und das machen die oben erwähnten Bit 0 bis 2 des Datenregisters.
+                     In Bild 1 sehen Sie die drei oben erwähnten Speicherblöcke, die sowohl mit RAM als auch mit ROM belegt sind, einer davon gleich doppelt. Ich habe ihnen folgende Namen gegeben:
+                     * 40960 bis 49151 ($A000 bis $BFFF) = BLOCK A
+                     * 53248 bis 57343 ($D000 bis $DFFF) = BLOCK D
+                     * 57344 bis 65535 ($E000 bis $FFFF) = BLOCK E
+                     Tabelle 2 gibt Ihnen die Übersicht über die gemeinsame Wirkung der Bit 0, 1 und 2 des Datenregisters auf den jeweiligen Inhalt der Speicherblöcke.
+                     Der Vollständigkeit halber muß ich hier noch erwähnen, daß neben den drei ersten Bits der Speicherzelle 1 noch zwei weitere Signale die RAM/ROM- Umschaltung beeinflussen. Es sind das die Leitungen auf Pin 8 und 9 des Erweiterungssteckers (GAME und EXROM), welche durch Spiel- und Programmodule benutzt werden. Eine genaue Beschreibung der dadurch erzeugten sinnvollen Speicherkombinationen finden Sie in dem Buch »64 Intern« von Data Becker ab Seite 14. Zwei Anwendungsbeispiele dieser Umschaltung finden Sie im Texteinschub Nr. 3 »Manipuliertes Basic«.
+                     Betrieb des Kassettenrecorders
+                     Bit 3, 4 und 5 regeln, wie schon gesagt, den Betrieb des Kassettenrecorders.
+                     Zu Bit 3 ist oben schon das Notwendige gesagt.
+                     Bit 4 ist im Normalzustand auf 1, »normal« heißt hier, solange keine der Motor-Tasten der Datasette (PLAY, REWIND, FAST FORWARD) gedrückt ist. Zur Probe:
+                         10 X=PEEK(l)
+                     funktioniert das alles nur, wenn - wie im »Normalfall« - das Blt 4 des Datenrichtungsregisters (Speicherzelle 0) auf 0 (Eingang) steht.
+                     Bit 5 schaltet den Motor der Datasette ein und aus. Es bietet sich an, damit per Programm die Datasette zu schalten - wenn so etwas nützlich ist. Leider ist dieses Bit etwas schwieriger zu handhaben, da es in der Interrupt-Routine des Betriebssystems eine Rolle spielt.
+                     Die Tasten der Datasette werden nämlich 60mal in der Sekunde abgefragt. Wenn keine Taste gedrückt ist, setzt das Betriebssystem sowohl das sogenannte »lnterlock«-Register in Speicherzelle 192 auf 0 als auch Bit 5 der Zelle 1 auf 1, wodurch der Motor ausgeschaltet wird beziehungsweise bleibt. Da kann man nicht dagegen an. Wir haben nur eine Chance, wenn eine Taste bereits gedrückt ist und der Kassettenmotor schon läuft.
+                     Dann nämlich können wir zuerst das lnterlock-Register mit einem Wert größer als 0 lahmlegen:
+                         POKE 192,255
+                     Jetzt läßt sich der Motor der Datasette mit Bit 5 steuern: POKE 1,39 beziehungsweise POKE 1,PEEK(1) 0R 32 schaltet den Motor aus,
+                     POKE 1,7 beziehungsweise POKE l,PEEK(l) AND 31 schaltet den Motor ein.
+                     Das Interlock-Register in Speicherzelle 192 werde ich später noch einmal erwähnen, da es seine Funktion auch beim VC 20 ausübt, allerdings mit anderen Ein-/Ausgangs-Ports. Das ist alles, was zur Speicherzelle 1 zu sagen ist.
+                     Ab Speicherzelle 3 bis zur Speicherzelle 672 gelten alleAngaben sowohl für den C 64 als auch für den VC 20, zumindest was die Bedeutung der Zellen betrifft. Ihr Inhalt kann entsprechend der verschiedenen Adressen der Betriebssysteme voneinander abweichen. Wie üblich werde ich natürlich jeweils darauf aufmerksam machen.
+
+
+$0002                unbenutzt
+
+$0003-$0004          Vektor auf die Routine zur Umwandlung einer Gleitkommazahl in eine ganze Zahl mit Vorzeichen
+
+                     In diesen beiden Speicherzellen steht also ein Vektor. Was das ist, wird im Texteinschub Nr. 4 näher erläutert. Beim VC 20 deutet dieser Vektor auf die Adresse 63674 ($D1AA), beim C 64 auf 45482 ($B1AA). Sie können das mit
+                         PRINT PEEK (3)+256*PEEK (4)
+                     leicht nachprüfen. Ab diesen Adressen beginnt im Basic- Übersetzer (Interpreter) ein Programm, welches - natürlich in Maschinensprache - eine Gleitkommazahl in eine ganze Zahl umwandelt.
+                     Diejenigen Leser, die mit Gleitkommazahlen nicht so vertraut sind, möchte ich auf den Texteinschub Nr. 6 verweisen. Er ist nur eine kleine Einführung. Eine detaillierte Beschreibung finden Sie im Assemblerkurs (Teil 8) von Heimo Ponnath (Ausgabe 4/85) beziehungsweise im 64er-Sonderheft 8/85, ab Seite 42.
+                     Dieses Umwandlungsprogramm steht nicht nur den Maschinen, sondern auch den Basic-Programmierern zur Verfügung, allerdings nur über den USR-Befehl und da auch nur, wenn der »Floating Point Accumulator« #1 (FAC1) in den besagten Adressen 97 bis 102 mitbenutzt wird. Ich verschiebe daher alle weiteren Details auf unsere Ankunft bei diesen Speicherzellen.
+
+
+$0005-$0006          Vektor auf die Routine zur Umwandlung einer ganzen Zahl in eine Gleitkommazahl
+
+                     Dieses Programm ist die Umkehrung der oberen Routine. Sie beginnt beim VC 20 ab Speicherzelle 54161 ($D391), beim C 64 ab 45969 ($B391). Da hier prinzipiell dasselbe gilt wie oben, möchte ich nur kurz den Vorteil beleuchten, den derartige Vektoren haben. Eigentlich könnten wir direkt auf die im Vektor enthaltenen Adressen springen - wenn wir sie kennen.
+                     Ein Sprung auf die Adresse des Vektors erlaubt uns jedoch immer die völlige Ignoranz seines Inhalts - und Commodore erlaubt die Änderung der Adressen im Basic-Übersetzer, wie es ja beim C 64 gegenüber dem VC 20 auch gemacht worden ist, ohne daß vorhandene Programme umgeschrieben werden müssen.
+
+$0007                Suchzeichen zur Prüfung von Texteingaben in Basic
+
+                     Diese Speicherzelle wird viel von denjenigen Basic-Routinen als Zwischenspeicher benutzt, die den direkt eingegebenen Text absuchen, um Steuerzeichen (Gänsefüße, Kommata, Doppelpunkte und die Zeilenbeendigung durch die RETURN-Taste) rechtzeitig zu erkennen. Normalerweise wird in der Zelle 7 der ASCII-Wert dieser Zeichen abgelegt. Die Speicherzelle 7 wird aber auch von anderen Basic-Routinen benutzt. Sie ist daher für den Programmierer praktisch nicht zu verwerten.
+
+$0008                Suchzeichen speziell für Befehlsende und Gänsefüße
+
+                     Wie Speicherzelle 7 dient auch die Zelle 8 als Zwischenspeicher für Basic-Texteingabe und zwar während der Umwandlung von Basic-Befehlen in den vom Computer verwendeten Befehlscode (Tokens). Die Speicherzelle 8 ist in Basic nicht verwertbar.
+
+$0009                Spaltenposition des Cursors vor dem letzten TAB- oder SPC-Befehl
+
+                     Speicherzelle 9 wird von den Basic-Befehlen TAB und SPC verwendet. Vor ihrer Ausführung wird die Nummer der Spalte, in der sich der Cursor befindet, aus der Speicherzelle 211 ($D3)nach9gebracht,von wo sie geholt wird, um die Position des Cursors nach der Ausführung von TAB und SPC auszurechnen.
+                     Diese komplizierte Erklärung können wir durch Ausprobieren deutlicher machen. Dazu PRINTen wir 16mal den Buchstaben X hintereinander (Semikolon!), allerdings mit SPC (2) jeweils um 2 Spalten versetzt.
+                         10 FOR I=0 TO 15
+                         20 PRINT SPC (2) "X";
+                         30 PRINT PEEK (9);
+                         40 NEXT I
+                     Nach jedem X wird durch Zeile 30 die »alte« Cursor-Spaltenposition ausgedruckt und zwar in derselben Zeile, ausgelöst durch das Semikolon. Dadurch erhöht sich laufend die in Speicherzelle 9 stehende Positionsangabe des Cursors. Wir erhalten folgenden Ausdruck:
+                     ..X.0...X.6...X.12...X.19...X.26...X.33...X.40...X.47...X.54...X.61...X.68...X.75...X.82...X.1...X.7...X.13
+                     Sie können die Positionsnummer nachrechnen. Berücksichtigen Sie aber dabei, daß bei PRINT vor und nach jeder Zahl eine Stelle frei bleibt, die erste für das Vorzeichen, die zweite wegen des Abstandes.
+                     Wichtig ist außerdem, daß die maximal mögliche Spaltenzahl nicht die Bildschirmspaltenzahl, sondern die »logische« Spaltenzahl ist, also 88 beim VC 20 und 80 beim C 64.
+                     Wir können die Cursorposition in Adresse 9 auch abfragen und ein Programm damit steuern. Fügen Sie einfach in das obige Programm die folgende Zeile 35 ein:
+                         35 IF PEEK (9)=33 THEN PRINT "END": END
+                     Sobald Position 33 erreicht ist, bleibt das Programm stehen.
+
+$000A                Flagge für LOAD oder VERIFY
+
+                     In Zelle 10 steht eine 0, wenn geladen wird und eine 1 bei einem VERIFY. Warum das so ist, will ich kurz erläutern:
+                     Die Basic-Routinen für LOAD beziehungsweise für VERIFY sind völlig identisch. Was das Betriebssystem hinterher daraus machen muß, ist natürlich unterschiedlich. Das Basic erspart sich eine doppelte Routine, zeigt aber mit der Flagge in Speicherzelle 10 den Unterschied an.
+                     Erwähnenswert ist noch, daß das Betriebssystem in einer Art Nationalismus seine eigene Flagge aufzieht: Den Unterschied zwischen LOAD und VERIFY speichert es seinerseits in Zelle 147 ($93) ab. Soweit ich es sehen kann, sind Inhalt und Bedeutung beider Speicherzellen völlig identisch.
+                     Ich habe für Sie zwar kein Kochrezept zur Anwendung der
+                     LOAD-VERIFY-Flagge in einem Programm vorrätig, möchte Sie aber trotzdem ein bißchen zum Spielen anregen. Um meine Erklärung nachzuvollziehen, tippen Sie bitte direkt LOAD ein.
+                     Den Ladevorgang brechen Sie mit der STOP-Taste ab und fragen dann den Inhalt der Zelle 10 ab mit 
+                         PRINT PEEK (10)
+                     Wir erhalten eine 0.
+                     Wiederholen Sie bitte diesen Vorgang, aber mit VERIFY. Wir erhalten jetzt eine 1 - Quod erat demonstrandum.
+                     Wir können auch in die Zelle 10 hineinPOKEn. Die »Wachablösung« zwischen Basic und Betriebssystem unter Hissen der Flagge in Zelle 10 findet beim VC 20 in der Speicherzelle 57705, beim C 64 in 57708 statt. Bevor wir diese Maschinenroutine mit SYS 57705 (SYS 57708) starten, geben wir mit dem Inhalt der Speicherzelle 10 an, ob es ein LOAD oder ein VERIFY sein soll.
+                     Legen Sie ein Band mit Programm in die Datasette. Um ein LOAD zu erzeugen, geben wir direkt ein:
+                         POKE 10,0:SYS 57705 
+                         (POKE 10,0:SYS 57708) 
+                     Entsprechend der Anweisung auf dem Bildschirm drücken Sie PLAY, und das Auffinden des ersten Programms wird mit LOAD gemeldet. Machen Sie das Ganze noch einmal, diesmal aber POKEn Sie bitte eine 1 in die Zelle 10. Jetzt meldet das Betriebssystem das Auffinden des Programms mit VERIFY.
+                     Wie gesagt, vielleicht fällt Ihnen eine Anwendung dafür ein.
+
+
+$000B                Flagge für den Eingabepuffer/Anzahl der Dimensionen von Zahlenfeldern (Arrays)
+
+                     Alle Buchstaben und Zeichen, die mit der Tastatur direkt eingetippt werden, kommen in einen Eingabe-Pufferspeicher.
+                     Er beginnt ab Speicherzelle 512 ($200). Sobald die RETURN- Taste gedrückt wird, wandelt eine Routine des Basic-Übersetzers den Text in Codezahlen (Tokens) um. Diese Routine und eine andere, welche die Zeilen eines Programms aneinanderhängt, verwenden die Zelle 11 als Zwischenspeicher.
+                     Sobald die Textumwandlung beendet ist, steht in Zelle 11 eine Zahl, die die Länge der Token-Zeile angibt.
+                     Die Zelle 11 wird außerdem noch von den Basic-Routinen benutzt, die ein Feld (Array) aufbauen oder ein bestimmtes Element in einem Array suchen. Was ein Feld oder Array ist, finden Sie in den Commodore- Handbüchern gut beschrieben. Außerdem gehe ich bei der Behandlung der Speicherzellen 47 bis 50 näher darauf ein.
+                     Diese Routinen also verwenden die Speicherzelle 11, um die Anzahl der verlangten DIMensionen und den für ein neu aufgebautes Feld nötigen Speicherbedarf zu berechnen.
+
+
+$000C                Flagge für Basic-Routlnen, die ein Feld (Array) suchen beziehungsweise aufbauen
+
+                     Diese Speicherzelle wird von den Basic-Routinen als Zwischenspeicher benutzt, die feststellen, ob eine Variable ein Feld (Array) ist, ob das Feld bereits DIMensioniert worden ist, oder ob ein neues Feld die unDIMensionierte Zahl von 11 Elementen hat.
+
+
+$000D                
+
+$000E                
+
+$000F                
+
+$0010                
+
+$0011                
+
+$0012                
+
+$0013                
+
+$0014-$0015          
+
+$0016                
+
+$0017-$0018          
+
+$0019-$0021          
