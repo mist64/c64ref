@@ -282,7 +282,11 @@ $0012                1. Flagge für Vorzeichen bei SIN, COS und TAN
                          10 FOR I=0 TO 10 STEP 0.01
                          20 PRINT PEEK(18);INT (I*100)/100;SIN(I):NEXT 
 
-                     Diese etwas umständliche Art, den Wert von I auszudrucken, vermeidet Rundungsfehler und begrenzt den Ausdruck auf zwei Dezimalstellen. Wenn Sie die Winkelwerte von I in Graden ausgedruckt haben wollen, können Sie eine ändere Zeile 20 verwenden, welche die Umrechnungsformel vom Bogenmaß in Grade verwendet: Winkel in Grad = Winkel im Bogenmaß * l8O/7r 20 Print PEEK(l8);INT (I*l8O/7r);SIN(I):NEXT Statt SIN können Sie genauso gut COS und TAN einsetzen.
+                     Diese etwas umständliche Art, den Wert von I auszudrucken, vermeidet Rundungsfehler und begrenzt den Ausdruck auf zwei Dezimalstellen. Wenn Sie die Winkelwerte von I in Graden ausgedruckt haben wollen, können Sie eine ändere Zeile 20 verwenden, welche die Umrechnungsformel vom Bogenmaß in Grade verwendet: Winkel in Grad = Winkel im Bogenmaß * 180/π
+                     
+                         20 PRINT PEEK(18);INT(I*180/π);SIN(I):NEXT
+                         
+                     Statt SIN können Sie genauso gut COS und TAN einsetzen.
 
                      In Bild 2 sind nicht nur die Kurven und die Bereiche der Vorzeichen, sondern auch die Winkelbereiche sowohl im Bogenmaß als auch in Graden dargestellt.
 

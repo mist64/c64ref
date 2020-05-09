@@ -323,15 +323,17 @@ while(True):
 
 		if len(headings):
 			print('<b>')
+			all_text = ''
 			for heading in headings:
-				print(heading)
+				all_text += heading
+			print(markdown.markdown(all_text))
 			print('</b><br/>')
 
 		if len(comments):
-			complete_comment = ''
+			all_text = ''
 			for comment in comments:
-				complete_comment += comment
-			print(markdown.markdown(complete_comment, extensions=['tables']))
+				all_text += comment
+			print(markdown.markdown(all_text, extensions=['tables']))
 		else:
 			print('&nbsp;')
 
