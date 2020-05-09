@@ -1560,7 +1560,7 @@ $0073-$008A          Teilprogramm »Nächstes Zeichen eines Basic-Textes holen«
                      umlenken, daß er auf ein eigenes Maschinenprogramm springt, oder man kann den 
                      Zeiger selbst »verbiegen«, so daß er auf eine andere Adresse und damit auf ein 
                      anderes Zeichen zeigt. Es gibt dafür viele Möglichkeiten, die aber alle nur in 
-                     Maschinencode funktionieren. Theoretisch können wir natür-lich den Inhalt des 
+                     Maschinencode funktionieren. Theoretisch können wir natürlich den Inhalt des 
                      Zeigers in 122 und 123 durch POKE verändern. Aber was dann? Jeder nachfolgende 
                      Basic-Befehl löst natürlich wieder die normale Übersetzungsroutine aus und 
                      unser schöner POKE ist für die Katz.
@@ -2720,8 +2720,8 @@ $00D1-$00A2          Zeiger auf den Anfang der Bildschirmzeile, auf welcher der 
 
                      Das Resultat ist jetzt:
 
-                         0	4	1024
-                         40	4	1104
+                         0      4       1024
+                         40     4       1104
 
                      Einen entsprechenden Zeiger für die Adresse der dazugehörigen Zeile im 
                      Farbspeicher werden wir in den Speicherzellen 243 und 244 antreffen. Durch 
@@ -2951,4 +2951,627 @@ $00FF                Zwischenspeicher für Daten bei der Umwandlung von Gleitkom
                      Seiteneinteilung bedeutungslos, und wir werden deshalb unbeirrt als nächstes 
                      mit einem größeren Speicherblock, nämlich von 256 bis 511 weitermachen.
 
+$0100-$010A          Arbeitsspeicher für Umwandlung von Gleitkomma-Zahlen in ASCII-Werte, auch FAC (Fließkomma-Akku) genannt
 
+                     Diese 11 Byte werden von einer Routine des Betriebssystems verwendet, um Werte zwischenzuspeichern, die bei der Umwandlung von Gleitkomma-Zahlen in ASCII-Werte oder in Werte der Funktion TI$ anfallen. Eine andere Routine verwendet den Bereich, um Zeichenketten (Strings) zu untersuchen.
+
+$0100-$013E          Arbeitsspeicher für Fehler bei der Eingabe vom Band
+
+                     Alle Daten, die auf Band gespeichert werden, stehen dort doppelt in zwei identischen Blöcken hintereinander. Beim Laden in den Computer werden beide Blöcke miteinander verglichen, um Fehler zu finden und, wo möglich, sie zu korrigieren.
+
+                     In diesem Bereich, der übrigens auch bei der Speicherzelle 256 anfängt, aber 63 Byte in Anspruch nimmt, werden beim Laden Angaben gespeichert, aus denen das Betriebssystem erkennen kann, welche Bytes fehlerhaft sind.
+
+$013F-$01FF          Stapelspeicher (Stack) des Mikroprozessors
+
+                     Die Funktionsweise eines Stapelspeichers, auf englisch »stack«, ist im Texteinschub Nr. 24 erklärt.
+
+                     Der Stapelspeicher hat prinzipiell die Aufgabe, bei allen Sprüngen oder Unterbrechungen innerhalb eines normalen Programmablaufs alle Adressen und Daten so zu speichern, daß am Ende der Unterbrechung das Programm wieder fortgesetzt werden kann.
+
+                     Derartige Unterbrechungen und Sprünge treten in Basic bei den Befehlen GOSUB-RETURN und FOR-NEXT auf, genauso wie bei vielen Routinen des Betriebssystems. In Maschinensprache gibt es dafür sogar eigene Befehle. Heimo Ponnath hat sie alle in seinem Assemblerkurs (Folge 7 und 8 im 64’er, Ausgabe 2/85 und 3/85) sehr ausführlich beschrieben.
+
+                     Da uns hier Basic mehr interessiert, gebe ich Ihnen nur kurz an, was im Stapel gespeichert wird, da der Stapelspeicher nur in Maschinensprache manipuliert werden kann.
+
+                     Jeder FOR-TO-NEXT-Befehl belegt 18 Byte im Stapelspeicher.
+
+                     Im ersten Byte steht als Kennung dieZahl 129. Byte 2 und 3 enthalten in Low/High-Byte-Darstellung einen Zeiger auf die Adresse, in der die durch das FOR definierte Schleifen-Variable (zum Beispiel K in FOR K=0 TO 3) gespeichert ist. Die nächsten 5 Byte sind für den Gleitkommawert von STEP reserviert, das Byte danach für das Vorzeichen von STEP. Danach folgt der Gleitkommawert von TO mit 5 Byte und in zwei weiteren Byte die Nummer derjenigen Zeile, auf die nach dem NEXT zurückgesprungen wird. In den letzten beiden Bytes schließlich steht ein Zeiger auf der Adresse, in der das nächste Zeichen steht, welches nach Beendigung der FOR-TO-NEXT-Schleife gelesen werden muß.
+
+                     Ein GOSUB-Befehl belegt 5 Byte im Stapelspeicher. Byte 1 enthält die Kennzahl 141. Ihr folgen zwei Byte für die Nummer der Zeile, auf die nach RETURN zurückgesprungen wird. Die letzten beiden Byte enthalten wieder einen Zeiger auf die Adresse, in der das nächste Zeichen steht, mit dem nach RETURN das Programm fortgesetzt wird.
+
+                     Der Basic-Befehl DEF zur freien Definition von Funktionen belegt ebenfalls 5 Byte im Stapelspeicher. Ihre Verteilung ist dieselbe wie von GOSUB, mit dem einzigen Unterschied, daß statt der ersten Kennzahl irgendein anderer Wert verwendet wird, der aber keine Bedeutung hat.
+
+                     Wenn so viele FOR...NEXT-Schleifen oder GOSUB-Sprünge gleichzeitig im Programm vorkommen, daß der Stapelspeicher voll wird, steigt das Programm mit OUT OF MEMORY aus.
+
+$0200-$0258          Eingabespeicher von Basic
+
+                     Wenn Sie Zeichen, zum Beispiel einen Befehl oder eine Programmzeile, eingeben und mit der RETURN-Taste abschließen, werden diese Zeichen in diesen Speicherbereich von 512 bis 600 gebracht. Seine Länge von 89 Byte entspricht der Länge einer logischen Zeile des VC 20 (88 Zeichen) plus einer Abschluß-Null. Die logische Zeilenlänge des C 64 von 80 Zeichen füllt den Speicherbereich nicht ganz aus, aber das Betriebssystem des C 64 ist gegenüber dem des VC 20 nicht geändert worden.
+
+                     Nach RETURN sucht der Computer diesen Eingabespeicher nach Gänsefüßen, Komma und nach der Zahl für Zellenende ab. Dann wandelt der Computer die gespeicherten Zeichen in für ihn lesbare Zahlen (Token und ASCII-Werte) um und fügt am Anhang die Zeilennummer und die Anschluß-Adresse (Link) der nächsten Zeile, am Ende die Abschluß-Null hinzu. Wenn eine Zeilennummer vorhanden ist, kommt alles in den Programmspeicher. Fehlt sie jedoch, dann wird die ganze Anweisung sofort ausgeführt (Direktmodus).
+
+                     Eine detaillierte Beschreibung dieses Eingabe- und Umwandlungsvorganges gab Christoph Sauer im 3. Teil seines Kurses »Der gläserne VC 20« im 64’er, Ausgabe 11/84 ab Seite 126.
+
+                     Dieser Speicherbereich wird auch von den Befehlen INPUT und GET benutzt, um die Eingabedaten aufzunehmen. Das erklärt übrigens, warum diese beiden Befehle nur innerhalb einer Programmzeile und nicht im Direktmodus verwendet werden können. Sie verwenden ja denselben Speicherplatz, der vom Direkt-(Eingabe-)Modus verwendet wird.
+
+                     Es erklärt außerdem, warum eine von INPUT geforderte Eingabe maximal 88 Zeichen lang sein darf.
+
+$0259-$0276          Tabellen für File-Nummern, Geräte-Nummern und Sekundär-Adressen von eröffneten Dateien
+
+                     Bei der Besprechung der Speicherzelle 152 habe ich diesen Speicherbereich bereits erwähnt. Ich habe damals gesagt und gezeigt, daß die Zelle 152 über die Anzahl der eröffneten Dateien (Files) Buch führt, die Tabellen in 601 bis 630 dagegen darüber, welche File-Nummern, Geräte-Nummern und Sekundär-Adressen jeder eröffneten Datei zugeordnet sind. Wer sich nochmals über diese Begriffe orientieren will, den verweise ich auf die Beschreibung im Texteinschub Nr. 19.
+
+                     Der Speicherbereich von 601 bis 630 ist in drei Blöcke unterteilt.
+
+                     |             |                               |
+                     |-------------|-------------------------------|
+                     | 601 bis 610 | Tabelle der File-Nummern      |
+                     | 611 bis 620 | Tabelle der Geräte-Nummern    |
+                     | 621 bis 630 | Tabelle der Sekundär-Adressen |
+
+                     In jeder Tabelle können also maximal 10 Byte stehen. Sie haben folgende Zusammensetzung:
+
+                     Die drei Angaben über eine eröffnete Datei stehen in den Tabellen jeweils am gleichen Platz. Wenn also die Datei Nummer 5 als dritte Datei eröffnet worden ist, steht eine 5 in Zelle 603, ihre Gerätenummer in Zelle 613, die Sekundär-Adresse entsprechend in Zelle 623.
+
+                     Immer wenn eine neue Datei eröffnet wird, kommen diese Angaben auf die nächsten Plätze der Tabellen, und der Inhalt der Speicherzelle 152 wird um 1 erhöht. Wird dagegen eine Datei geschlossen, dann rücken alle Angaben dahinter um eine Stelle zurück.
+
+                     In diesen Tabellen kann nachgesehen werden, mit welchen Parametern Dateien eröffnet worden sind. Eine sehr interessante Anwendung, die Eintragung in den Tabellen durch POKE zu verändern, wurde von Rügheimer und Spanik veröffentlicht, welche ich hier zitieren möchte.
+
+                     Eine Änderung der Filenummern in Tabelle 601 bis 610 ist nicht empfehlenswert, um Verwechslungen zu vermeiden.
+
+                     Mit dem folgenden kleinen Programm, welches bei einer eröffneten Datei die Geräte-Nummer in Tabelle 611 bls 620 ändert, kann zwischen einem Drucker mit Geräte-Nummer 4 und einem Plotter mit Geräte-Nummer 6 umgeschaltet werden.
+
+                         10 OPEN 4,4,0
+                         20 POKE 611,6: PRINT#4,"PLOTTER"
+                         30 POKE 611,4: PRINT#4,"DRUCKER"
+
+                     Ähnliches ist mit den Sekundär-Adressen möglich. Dabei muß man allerdings wissen, daß die Sekundär-Adressen nicht so wie sie sind in der Tabelle 621 bis 630 gespeichert werden, sondern mit »OR 96« verknüpft. Dasselbe müssen wir auch machen:
+
+                         10 OPEN 3,4,0
+                         20 POKE 621,0 OR 96:PRINT#3, "GRAFIKMODUS"
+                         30 POKE 621,7 OR 96:PRINT#3, "TEXTMODUS"
+
+                     Mit dieser Methode können Sie sich das öffnen und Schließen vieler Dateien ersparen.
+
+$0277-$0280          Tastaturpuffer
+
+                     Bei der Behandlung der Speicherzelle 203 habe ich die Codezahlen beschrieben, die beim Drücken einer der 64 Tasten erzeugt werden. Bei den Speicherzellen 245 und 246 haben wir gesehen, wie aus diesen Tastencodes der ASCII-Code für die verschiedenen Zeichen einer Taste umgerechnet wird.
+
+                     Hier nun im Tastaturpuffer landen diese umgerechneten ASCII-Werte. Wenn Sie den Kurs schon länger verfolgen, ist Ihnen das auch nicht neu, denn ich habe die Wirkungsweise des Tastaturpuffers bei der »Dynamischen Tastenabfrage« (Texteinschub Nr. 15) sozusagen im Vorgriff, ausführlich erklärt.
+
+                     Zur Erinnerung sei gesagt, daß im Tastaturpuffer alle Zeichen zwischengespeichert werden, die während eines Programmlaufes eingegeben und nicht sofort vom Betriebssystem verarbeitet werden können. Sobald der Computer sich im Eingabe-Modus befindet — nach Programmende oder bei INPUT- und GET-Befehlen, werden die Zeichen in der Reihenfolge ihrer Eingabe herausgeholt und verwendet.
+
+                     Der Tastaturpuffer ist 10 Byte lang. In Speicherzelle 198 steht, wieviele Zeichen sich im Puffer befinden.
+
+                     Als Ergänzung zu den Beispielen der dynamischen Tastenabfrage zeige ich Ihnen im Texteinschub Nr. 25 »Programme, die sich selbst verändern« noch ein paar andere Anwendungen.
+
+$0281-$0282          Zeiger auf den Anfang des Programmspeichers
+
+                     Wenn der Computer eingeschaltet wird oder wenn mit einer Reset-Taste beziehungsweise mit SYS58260 (VC 20: SYS 58232) ein Kaltstart ausgelöst wird, setzt das Betriebssystem diesen Zeiger auf die Adresse des ersten freien RAM-Speicherplatzes.
+
+                     Beim C 64 ist dies die Adresse 2048. Beim VC 20 hängt sie von der Speichererweiterung ab; ohne Erweiterung ist es 4096, mit einer 3-KByte-Erweiterung dagegen 1024, mit 8 KByte oder mehr ist die Adresse 4608.
+
+                     Dieser Zeiger wird vom Basic-Übersetzer in die Speicherzelle 43 übernommen und nur von dort weiterverwendet.
+
+$0283-$0284          Zeiger auf das Ende des Programmspeichers
+
+                     Dieser Zeiger ist der Zwilling zu dem anderen Zeiger in 641 und 642. Er wird vom Betriebssystem auf die Adresse gesetzt, welche beim Kaltstart beziehungsweise der dabei durchgeführten Prüfung des Speichers den letzten verfügbaren RAM-Speicherplatz angibt. Beim C 64 ist diese Adresse normalerweise 40960 ($A000), beim VC 20 ohne Erweiterung 7680.
+
+                     Dieser Zeiger wird vom Basic-Übersetzer in die Speicherzelle 55 übernommen.
+
+$0285                Flagge für Ein- und Ausschalten der IEEE-488-Karte
+
+                     Diese Speicherzelle ist etwas mysteriös. Sie kommt im ganzen Betriebssystem nur ein einziges Mal zum Einsatz, und zwar als Flagge beim Betrieb der sogenannten IEEE-488-lnterface-Karte. Wenn diese Flagge gesetzt ist, wartet der Computer 64 Millisekunden lang, ob er von einem angeschlossenen Gerät angesprochen wird. Wenn kein Signal kommt, gibt er ein Fehlersignal aus.
+
+                     Zahlen in der Zelle 645, die kleiner als 128 sind, bedeuten Flagge gesetzt, größer als 128 löschen sie die Flagge.
+
+$0286                Aktuelle Farbe der Zeichen (Vordergrundfarbe)
+
+                     Um ein bestimmtes Zeichen auf den Bildschirm zu drucken, muß vom Betriebssystem erstens der Bildschirmcode des Zeichens in den Bildschirmspeicher und zweitens der Codewert der gewünschten Farbe in den Farbspeicher gebracht werden.
+
+                     In der Speicherzelle 646 steht immer der Codewert derjenigen Farbe, die gerade eingestellt ist. Immer wenn ein PRINT-Befehl gegeben wird, holt das Betriebssystem den Farbwert aus der Zelle 646 und bringt ihn in den Farbspeicher, und zwar an den entsprechenden Platz, wo gerade gePRINTet werden soll. Der Codewert in der Zelle 646 kann auf drei Arten eingestellt werden:
+
+                     * Drücken der CTRL-Taste gleichzeitig mit einer der Farbtasten 1 bis 8. Beim C 64 kommen noch weitere acht Farben dazu durch Drücken der Commodore-Taste anstelle der CTRL-Taste.
+                     * PRINT-Befehl gefolgt vom ASCII-Codewert der Farbe Innerhalb von Gänsefüßen.
+                     * POKEn der Farbcodes 0 bis 7 (beim C 64 0 bis 15) direkt in die Speicherzelle.
+
+                     Innerhalb eines Programms Ist das POKEn in Zelle 646 wohl die eleganteste Methode (Tabelle 10).
+
+                     Als Beispiel möge dieses kleine Programm dienen:
+
+                         10 FOR X=0 TO 7 
+                         20 POKE 646,X 
+                         30 PRINT "A";
+                         40 NEXT X
+                         50 GOTO 10
+
+                     Wer mehr über Vordergrund- und Hintergrundfarben erfahren will, der lese den Texteinschub Nr. 26 »Bunte Zeichen und bunter Hintergrund«.
+
+$0287                Zeichenfarbe unter dem Cursor
+
+                     Das Blinken des Cursors wird dadurch erzeugt, daß das Zeichen auf der Stelle des Bildschirms, auf der er gerade steht (meistens ist es eine Leerstelle), dauernd von »normal« auf »revers« (oder »invertiert«) und zurück geschaltet wird. Die reverse Darstellung benutzt dabei die Farbe des Zeichens.
+
+                     Genauso, wie sich der Computer in der Speicherzelle 206 das Zeichen merkt, mit dem er gerade blinkt, um beim Weiterwandern dieses Zeichen in seiner »normalen« Form auf dem Bildschirm zurückzulassen, merkt er sich die Farbe dieses Zeichens in der Speicherzelle 647.
+
+$0288                Beginn des Bildschirmspeichers
+
+                     In dieser Speicherzelle steht eine Zahl, die als High-Byte dem Betriebssystem angibt, ab welcher Speicherzelle der Bildschirmspeicher beginnt.
+
+                     Nach einem Kaltstart (nach dem Einschalten oder nach dem Drücken der RESETTaste) steht hier eine 4, das ergibt als Anfangsadresse 1024 (= 4*256). Beim VC 20 ohne Erweiterung steht dort eine 30. Daraus folgt, daß die Anfangsadresse bei 7680 (= 30*256) liegt.
+
+                     Der Bildschirmspeicher hat keinen absolut festen Platz. Innerhalb gewisser Grenzen kann er durch Verändern des Inhalts der Speicherzelle 53272 (36869 beim VC 20) verschoben werden. Die Methode dazu ist im Texteinschub näher beschrieben. Wichtig dabei ist, daß nach dem Verschieben der Inhalt der Speicherzelle 648 entsprechend geändert wird, damit auch das Betriebssystem die Verschiebung berücksichtigt.
+
+                     Umgekehrt kann aber dem Betriebssystem durch Ändern der Zahl in der Speicherzelle 648 mitgeteilt werden, daß es Zeichen in einen Speicherbereich bringen soll, der außerhalb des »offiziellen«, durch die Speicherzelle 53272 (36869) festgelegten Bildschirmspeichers liegt.
+
+                     Zwei Beispiele sollen das verdeutlichen. Der PRINT-Befehl macht letztlich nichts anderes, als viele Zahlen in den Bildschirm- und den Farbspeicher zu POKEn. Wenn nun der Zeiger in Zelle 648 verschoben wird, kann man mit einem
+
+                     PRINT-Befehl eine beliebige Zeichenkette außerhalb des Bildschirmspeichers speichern. Auf die gleiche Weise kann man beim C 64 Sprites mit einem PRINT-Befehl speichern, ohne mit READ viele lästige DATA-Zeilen lesen zu müssen.
+
+$0289                Maximale Länge des Tastaturpuffers
+
+                     Der Tastaturpuffer belegt, wie schon besprochen, die Speicherzellen 631 bis 640. Er kann darin maximal 10 Zeichen Zwischenspeichern.
+
+                     Der Inhalt der Speicherzelle 649 legt fest, wieviele Zellen des Tastaturpuffers verwendet werden sollen, eine Zahl also, die normalerweise zwischen 0 und 10 liegen sollte. Die 10 ist übrigens der Wert, welcher nach dem Einschalten vom Betriebssystem in die Zelle 649 gebracht wird.
+
+                     Diese Zahl wird immer mit dem Inhalt der Speicherzelle 198 verglichen, der die aktuelle Anzahl der Zeichen im Tastaturpuffer angibt. Ist die Differenz der beiden Zahlen gleich Null, dann können keine weiteren Zeichen eingegeben werden.
+
+                     Es ist naheliegend, daß durch Verändern der Zahl in Zelle 649 die Länge des Tastaturpuffers verändert werden kann. Der eine Extremfall ist 0:
+
+                     POKE 649,0 schaltet die Tastatur aus. Nichts geht mehr.
+
+                     Das kann bei Programmen oder Spielen, die durch falsches oder zeitlich unpassendes Drücken von Tasten gestört werden, recht nützlich sein. Einschalten kann man dann die Tastatur nur mit RUN/STOP und RESTORE.
+
+                     Auch eine Erhöhung der Zahl in 649 über 10 hinaus ist möglich. Die Zeichen werden halt nur über die dafür reservierten Speicherzellen 631 bis 640 hinaus in Zellen geschrieben, die eigentlich eine andere Funktion haben. Bis zur Speicherzelle 645 geht das normalerweise ohne Probleme, da die betroffenen »fremden« Adressen nur direkt nach dem Einschalten des Computers gebraucht werden.
+
+                     Probieren Sie es aus, indem Sie zuerst eine Zeitschleife laufen lassen und in dieser Zeit etwa 20 Tasten drücken. Am Ende der Zeitschleife wird der Inhalt des Tastaturpuffers ausgedruckt, und Sie sehen in der Tat 15 der eingegebenen Zeichen:
+
+                         POKE 649,15
+                         FOR X=0 TO 10000:NEXT X
+                         QWERTYUIOPASDFGHJKL
+
+                     Auf dem Bildschirm erscheinen die Zeichen Q bis G.
+
+                     Wenn Sie die Zahl in 649 noch weiter erhöhen, dringen Sie in die Zellen 646 und 647 ein und diese bestimmen bekanntlich die Zeichenfarbe. Wenn Sie aber eine unbeabsichtigte und unkontrollierbare Farbänderung nicht stört, können Sie den Tastaturpuffer auf 17 Zeichen vergrößern. Ab 18 Zeichen stürzt der Computer ab.
+
+$028A                Flagge für Tastenwiederholung
+
+                     Normalerweise steht in dieser Speicherzelle eine 0. Das bedeutet, daß die Funktion der Cursor-Tasten, der Leertaste und der INST/DEL-Taste wiederholt wird, solange die entsprechende Taste gedrückt wird.
+
+                     Durch Verändern der Zahl in der Speicherzelle 650 kann diese Wiederholfunktion sowohl auf alle Tasten ausgedehnt als auch für alle Tasten gesperrt werden.
+
+                         POKE 650,0
+
+                     ist der Normalzustand, Wiederholfunktion für Cursor-, Leer- und INST/DEL-Taste
+
+                         POKE 650,64
+
+                     schaltet Wiederholfunktion für alle Tasten aus.
+
+                         POKE 650,128
+
+                     erweitert Wiederholfunktion auf alle Tasten.
+
+$028B                Zähler für Wiederholgeschwindigkeit der Tasten
+
+                     Das Betriebssystem verwendet diese Speicherzelle als Zähler, der die Geschwindigkeit bestimmt, mit der eine Taste wiederholt wird, wenn sie länger gedrückt wird. Voraussetzung ist die durch Zelle 650 festgelegte Wiederholbarkeit der Taste. Am Anfang steht in der Zelle 651 die Zahl 6. Sobald eine wiederholbare Taste gedrückt wird, zählt das Betriebssystem diese Zahl alle 0,0167 Sekunden (60mal in der Sekunde) um 1 zurück, bis die Zahl 1 erreicht ist. Dann erst wird das Zeichen der gedrückten Taste wieder auf den Bildschirm gedruckt oder ihre Funktion wiederholt.
+
+                     Bei jedem folgenden Lauf steht in Zelle 651 die Zahl 4. Entsprechend verkürzt sich der Zählvorgang.
+
+                     Am schnellsten würde die Wiederholung natürlich mit dem Wert 1 in der Speicherzelle 651 sein. Von Basic aus mit POKE 651,1 geht das leider nicht.
+
+                     Im Texteinschub Nr. 27 »Turbo-Tasten« wird ein Maschinenprogramm beschrieben, welches dies kann.
+
+$028C                Zähler für die Ansprechzeit der Wiederholfunktion von Tasten
+
+                     Diese Speicherzelle wird vom Betriebssystem als Zähler verwendet, der festlegt, wie lange eine wiederholbare Taste gedrückt sein muß, bis die Wiederholfunktion einsetzt.
+
+                     Am Anfang steht in der Zelle 652 die Zahl 16. Diese Zahl wird alle 0,0167 Sekunden um 1 reduziert, bis die Zahl 0 erreicht ist. Dann wird das Zeichen der Taste auf den Bildschirm gebracht oder ihre Funktion wiederholt. Anschließend wird die Zahl 4 in die Speicherzelle 651 geschrieben (siehe dort), während die Zelle 652 so lange auf 0 stehen bleibt, bis eine andere Taste gedrückt wird. Wie diese anfängliche Verzögerung reduziert werden kann, steht im Texteinschub Nr. 27 »Turbo-Tasten«.
+
+$028D                Tastencode der SHIFT-, CTRL- und Commodore-Taste
+
+                     In der Speicherzelle 203 stehen die Codes aller Tasten, die gedrückt werden, außer die der drei Steuertasten SHIFT, CTRL und Commodore (oft auch CBM-, Logo- oder C=-Taste genannt). Diese drei Ausnahmen haben ihr eigenes Code-Register, eben 653.
+
+                     Der Grund dafür liegt in der Bedeutung der drei Tasten. Sie können ja bekanntlich verschiedene Zeichensätze einschalten:
+
+                     * SHIFT schaltet das Zeichen vorne rechts auf einerTaste ein
+                     * C= schaltet das Zeichen vorne links auf einer Taste ein
+                     * CTRL schaltet die Farben vorn auf den Zahlentasten ein -SHIFT + C= schaltet von dem normalen Zeichensatz auf die Groß-/Kleinschreibung um.
+
+                     Ich habe diese Zusammenhänge auch bei der Behandlung der Speicherzellen 245 und 246 erwähnt.
+
+                     Die Codezahlen selbst sind auch in der Tabelle 9 enthalten. Der Vollständigkeit halber sind sie hier noch einmal angegeben:
+
+                     |                       |   |
+                     |-----------------------|---|
+                     | SHIFT                 | 1 |
+                     | C=                    | 2 |
+                     | CTRL                  | 4 |
+                     | SHIFT und C=          | 3 |
+                     | SHIFT und CTRL        | 5 |
+                     | C= und CTRL           | 6 |
+                     | SHIFT und C= und CTRL | 7 |
+
+                     Mit dem folgenden kleinen Programm und mit ein wenig Fingerfertigkeit können Sie diese Codewerte nachvollziehen:
+
+                         10 PRINT PEEK(653)
+                         20 GOTO 10
+
+                     Eine interessante Anwendung habe ich im Texteinschub Nr. 21 »Abfrage der Tastencodes oder 476 Funktionstasten« gegeben.
+
+$028E                Tastencode der zuletzt gedrückten SHIFT-, CTRL-oder C=-Taste
+
+                     Diese Speicherzelle wird zusammen mit der Zelle 653 verwendet, um zu verhindern, daß ein schlechter Tastendruck als mehrfaches Drücken derselben Taste gedeutet wird. Im Fachdeutsch nennt man das »Entprellen« einer Taste oder eines Kontaktes. Die Funktion ist vergleichbar mit der der Zelle 197 gegenüber der Zelle 203 für alle anderen Tasten.
+
+$028F-$0290          Vektor auf die Routine der Tastencode-Tabellen
+
+                     Das Betriebssystem hat eine Routine ab Adresse 60232 (60380 beim VC 20), auf die der Vektor in 655 und 656 zeigt. Sie liest den Codewert derSHIFT-, CTRL- und C=-Taste in der Speicherzelle 653 aus und verändert entsprechend den Vektor der Zellen 245 und 246, so daß er auf die richtige Codetabelle zeigt.
+                     Es gibt Anwenderprogramme, die diesen Vektor so verbiegen, daß die Decodierung der Tasten umgangen und durch eine andere, selbstgebaute Routine ersetzt wird. So kann zum Beispiel das Drücken einer bestimmten Taste umgemünzt werden in Ausdrucken von Basic-Befehlen auf dem Bildschirm.
+
+$0291                Flagge für Verriegelung der Zeichensatz-Umschaltung
+
+                     Durch gleichzeitiges Drücken der SHIFT- und der Commodore-Taste wird bekanntlich der Zeichensatz 1 (Großbuchstaben und Grafik-Zeichen) umgeschaltet auf den Zeichensatz 2 (Groß- und Kleinbuchstaben), ein zweites Drücken der beiden Tasten schaltet den Zeichensatz zurück.
+
+                     Diese Umschaltung wird verriegelt, wenn in der Speicherzelle 657 eine 128 steht. Eine 0 läßt die Umschaltung zu.
+
+                     Dieser Effekt kann auf zwei, beim C 64 sogar auf drei Arten erzielt werden:
+
+                     * Umschaltung des Zeichensatzes zulassen
+
+                         POKE 657,0
+                         PRINT CHR$(9)
+                         CTRL und I (nur C 64)
+
+                     * Umschaltung des Zeichensatzes verriegeln
+
+                         POKE 657,128
+                         PRINT CHR$(8)
+                         CTRL und H (nur C 64)
+
+$0292                Flagge für Scrollen
+
+                     Die Flagge in dieser Speicherzelle legt fest, ob eine weitere echte Zeile zu einer logischen Zeile hinzugefügt wird, sobald der Cursor über das 40ste Zeichen der Zeile (22ste Zeichen beim VC 20) hinausläuft.
+
+                     Steht in 658 eine 0, dann werden alle Zeilen hochgeschoben (man nennt das »scrollen«), um der neuen Zeile Platz zu machen.
+
+                     Wenn in der Zeile irgendein Wert größer als Null steht, unterbleibt dieses Scrollen. Die Flagge wird immer dann auf den höheren Wert gesetzt, wenn Zeichen im Tastaturpuffer (631 bis 640) stehen und darauf warten, am Ende des Programms ausgedruckt beziehungsweise ausgeführt zu werden. Diese Verriegelung wird deshalb eingesetzt, weil im Tastaturpuffer Zeichen wie zum Beispiel Cursor-Bewegungen stehen können.
+
+                     Von Basic aus kann diese Speicherzelle nicht beeinflußt werden.
+
+$0293                RS232-Steuerregister
+
+                     Jeder OPEN-Befehl, mit dem bekanntlich eine Datei (File) eröffnet wird, kann neben File-Nummer und Geräte-Nummer auch einen File-Namen haben. Der File-Namen einer RS232-Schnittstelle hat maximal nur vierZeichen. Das erste Zeichen wird in diese Speicherzelle 659 gebracht und steuert dort Übertragungsgeschwindigkeit, die Wortlänge und die Anzahl der Stopp-Bits. Die nähere Bedeutung dieser Fachwörter können Sie dem Texteinschub Nr. 29 »Die Elemente der RS232-Schnittstelle« entnehmen. Tabelle 11 zeigt die Bedeutung jedes einzelnen Bits dieser Speicherzelle.
+
+                     Die praktische Anwendung dieser Bit-Werte innerhalb eines OPEN-Befehls ist ausführlich im Texteinschub Nr. 30 »Die Programmierung der RS232-Schnittstelle« beschrieben.
+
+$0294                RS232-Befehlsregister
+
+                     In diese Speicherzelle wird, ähnlich wie bei der Zelle 659, das zweite Zeichen des File-Namens gebracht. Die einzelnen Bits steuern das Handshake-Protokoll (37X-Leitung), den Duplex-Modus (Halb-Voll-Duplex) und die Parity-Prüfung (keine, gerade, ungerade). Die nähere Bedeutung dieser Fachwörter können Sie dem Texteinschub Nr. 11 »Die Elemente der RS232-Schnittstelle« entnehmen. Tabelle 12 zeigt die Bedeutungjedes einzelnen Bits dieser Speicherzelle.
+
+                     Wenn Sie sich für die praktische Anwendung dieser Bit-Werte innerhalb eines OPEN-Befehls interessieren, dann verweise ich an dieser Stelle auf den Texteinschub Nr. 30 »Die Programmierung der RS232-Schnittstelle«.
+
+$0295-$0296          RS232 frei wählbare Übertragungsgeschwlndigkeit
+
+                     Es war ursprünglich vorgesehen, durch entsprechendeWahl des dritten und vierten Zeichens im File-Namen beliebige Übertragungsgeschwindigkeiten einzustellen. Die jeweiligen Werte sollten die Speicherzellen 661 und 662 enthalten. Diese Möglichkeit wurde aber nicht eingebaut. Der Grund dafür dürfte wohl der sein, daß die wählbaren Übertragungsgeschwindigkeiten aller Geräte auf bestimmte Werte normiert sind.
+
+$0297                RS232-Statusregister
+
+                     Genauso wie in der Speicherzelle 144 der Status aller Ein- und Ausgabe-Operationen angezeigt wird, werden alle Fehler der RS232-Schnittstelle in der Speicherzelle 663 angezeigt. Die Bedeutung der einzelnen Bits, wenn sie auf 1 gesetzt sind, zeigt Tabelle 14.
+
+                     Der Status wird nicht automatisch angezeigt, sondern muß vom Programm abgefragt werden. Abfragen können Sie sowohl durch PEEKen der Speicherzelle 663 als auch durch Aufrufen derStatusvariablen ST. Die Variable ST, die normalerweise den Inhalt der Zelle 144 wiedergibt, schaltet nach dem Eröffnen eines RS232-Kanals durch OPEN 1,2 auf die Speicherzelle 663 um. Jedoch ist Vorsicht geboten, da durch Aufruf von ST der Inhalt von 663 gelöscht wird.
+
+                     Es ist ratsam, den Wert von ST erst einer anderen Variablen zuzuordnen, wenn sie mehrfach verwendet werden soll.
+
+                     Falls das Status-Register einen Fehler anzeigt, muß das Programm entsprechende Konsequenzen ziehen. Wenn zum Beispiel Bit 0 oder Bit 1 gesetzt sind, ist es angebracht, das letzte Daten-Byte noch einmal zu übertragen. Wenn Bit 2 gesetzt ist, heißt dies, daß der GET #-Befehl den Eingabepufferspeicher nicht schnell genug entleert. Falls die Übertragungsgeschwindigkeit von 300 Bit/s, die maximal mit einem Basic-Programm erreichbar ist, nicht ausreicht, muß entweder der Sender langsamer eingestellt werden, oder Sie schreiben das Programm in Maschinensprache.
+
+$0298                RS232 - Anzahl der zu übertragenden Bits
+
+                     Diese Speicherzelle wird verwendet, um festzustellen, mit wievielen Nullen das zu übertragende Zeichen aufgefüllt werden muß, um die in Speicherzelle 659 (Bit 5 und 6) ausgewählte Wortlänge herzustellen (s. Speicherzellen 168 und 180).
+
+$0299-$029A          RS232 - Zelt, die zum Übertragen eines Bits gebraucht wird
+
+                     Sobald ein RS232-Kanal eröffnet worden ist, berechnet das Betriebssystem einen Wert, der die Zeitdauer eines Bits festlegt. Da die Übertragungsrate in Speicherzelle 659 einstellbar ist, hängt diese Bit-Dauer von der gewählten Übertragungsgeschwindigkeit ab. Die Bit-Dauer errechnet sich aus der Systemfrequenz (985,25 kHz) geteilt durch die Übertragungsgeschwindigkeit. Dieser Wert steht in Low-/High-Byte-Darstellung in diesen beiden Speicherzellen, von wo aus er vom Betriebssystem abgerufen wird.
+
+$029B                RS232-lndex auf das Ende des Eingabepufferspeichers
+
+                     Dieser Index wird verwendet, um Daten in den Eingabepufferspeicher zu schreiben. Wenn man ihn nämlich zum Inhalt der Speicherzelle 247/248 addiert, erhält man die Adresse des zuletzt in den Eingabepufferspeicher eingegebenen Bytes.
+
+$029C                RS232-lndex auf den Anfang des Eingabepufferspeichers
+
+                     Dieser Index wird verwendet, um Daten aus dem Eingabepufferspeicher auszulesen. Wenn man ihn nämlich zum Inhalt der Speicherzelle 247 und 248 addiert, erhält man die Adresse des ersten in den Eingabepufferspeicher eingegebenen Bytes.
+
+$029D                RS232-lndex auf den Anfang des Ausgabepufferspeichers
+
+                     Dieser Index wird verwendet, um Daten aus dem Ausgabepufferspeicher auszulesen. Wenn man ihn nämlich zum Inhalt der Speicherzelle 249 und 250 addiert, erhält man die Adresse des ersten in den Ausgabepufferspeicher eingegebenen Bytes.
+
+$029E                RS232-lndex auf das Ende des Ausgabepufferspeichers
+
+                     Dieser Index wird verwendet, um Daten in den Ausgabepufferspeicher zu schreiben. Wenn man ihn nämlich zum lnhalt der Speicherzelle 249 und 250 addiert, erhält man die Adresse des zuletzt in den Ausgabepufferspeicher eingegebenen Bytes.
+
+$029F-$02A0          Zwischenspeicher für den IRQ-Vektor während Kassetten-Ein-/Ausgabe
+
+                     Die Routinen des Betriebssystems, die Daten auf, beziehungsweise von Kassette ein- und ausgeben, werden durch die Interrupt-Routine gesteuert. Diese Routine unterbricht normalerweise 60mal in der Sekunde alle Aktivitäten des Computers, um diverse »Hausaufgaben« (Uhr weiterschalten, STOP-Taste abfragen und so weiter) auszuführen. Bei Kassetten-Ein-/Ausgaben ist diese Interrupt-Routine jedoch abgeschaltet. Dies wird dadurch erreicht, daß der Vektor in Speicherzelle 788 und 789, der auf die Anfangsadresse der Interrupt-Routine zeigt, auf eine Adresse der Kassetten-Routine gesetzt wird. Um nach der Kassettenoperation weitermachen zu können, wird der »alte« Interrupt-Vektor in dieser Speicherzelle 671 und 672 gespeichert.
+
+$02A1                bei C 64: Flagge für RS232-lnterrupt bei VC 20: frei verfügbar
+
+                     Diese Speicherzelle enthält den Wert des Interrupt-Steuerregisters 56589, das die RS232-Schnittstelle steuert. Die Bedeutung der einzelnen Bits, wenn sie auf 1 gesetzt sind, zeigt Tabelle 15. Diese Flagge kann zu Steuerzwecken abgefragt werden. Um beispielsweise ein Programm warten zu lassen, bis der Ausgabepufferspeicher geleert ist, gibt man die Anweisung
+
+                         100 IF (PEEK(673) AND 1) THEN 100
+
+                     die das Programm so lange aufhält, bis die Übertragung abgeschlossen und Bit O der Flagge gelöscht ist.
+
+                     Die folgenden 4 Speicherzellen, nämlich 674 bis 678, werden nur vom C 64 benutzt. Beim VC 20 sind sie nicht belegt und können frei verwendet werden.
+
+$02A2                Indikator für das Steuerregister A des CIA #1
+
+                     Mit CIA werden die beiden »Complex Interface Adapter« des C 64 bezeichnet. Das sind integrierte Schaltkreise, die Ein- und Ausgabeoperationen steuern. Jeder der beiden CIAs hat mehrere Register. Das Steuerregister A (Adresse 56334 beziehungsweise $DCOE) beeinflußt die Zählregister des CIA, die ihrerseits die Ein- und Ausgabe von Daten auf beziehungsweise von Kassetten steuern. Das Betriebssystem speichert zu diesem Zweck geeignete Bitmuster in der Speicherzelle 674 ab, die von da in das Steuerregister transferiert werden.
+
+$02A3                Speicher für das Interrupt- Steuerregister B des CIA #1
+
+                     Ein weiteres Register (Adresse 56333 beziehungsweise $DC0D) ist für die Unterbrechungen (Interrupt) des Computers bei Ein- und Ausgaben zuständig.
+
+                     In der Speicherzelle 675 werden Werte dieses Interruptregisters beim Lesen von der Kassette zwischengespeichert.
+
+$02A4                Zusatzspeicher für Steuerregister B des CIA #1
+
+                     Derselbe Wert, der bei der Vorbereitung des Lesevorganges von der Kassette in die Speicherzelle 674 kommt, gelangt auch nach 676, von wo er zu einem späteren Zeitpunkt beim Lesen zu Vergleichszwecken herangezogen wird.
+
+$02A5                Zwischenspeicher für das Link-Byte während des Bildschirm-Scrollens
+
+                     Das Betriebssystem enthält eine Routine, welche den Bildschirminhalt hochschiebt (scrollt), sobald eine leere Zeile eingeschoben wird. Das bedeutet, daß jedesmal die Angaben in den Link-Tabellen der Speicherzellen 217 bis 241 geändert werden müssen. In der Speicherzelle 677 wird nun das Link-Byte zwischengespeichert, während der obere Teil des Bildschirms hochgeschoben wird. Beim VC 20 gibt es diese Funktion übrigens auch. Sie wird durch die Speicherzelle 242 ausgefüllt.
+
+$02A6                Flagge für PAL oder NTSC
+
+                     Im Gegensatz zum VC 20, der entweder fest auf die deutsche Fernsehnorm PAL oder aber auf die amerikanische Norm NTSC eingestellt ist, kann der C 64 beide Normen verkraften. Diese beiden Normen beziehen sich unter anderem auf die Anzahl der Zeilen und auf die Abtast-Geschwindigkeit des Lichtstrahls im Fernsehgerät oder im Monitor. Das Betriebssystem des C 64 überprüft gleich beim Einschalten, ob eine Rasterzeile 311 im angeschlossenen Sichtgerät vorhanden ist. Ist sie nicht vorhanden, muß alles auf die NTSC-Norm eingestellt werden, da diese nur 262 Rasterzeilen hat und mit einer internen Taktfrequenz von 14,3 MHz läuft. Ist eine Rasterzeile 311 vorhanden, wird auf PAL-Norm eingestellt mit einer Taktfrequenz von 17,7 MHz. Das Resultat dieses Tests wird in der Speicherzelle 678 gespeichert: als 0 für NTSC und 1 für PAL.
+
+$02A7-$02FF          nicht belegt
+
+                     Diese 89 Byte sind frei und können für alle möglichen Programme und Anwendungen verwendet werden. Beim VC 20 stehen sogar 95 Byte zur Verfügung, da der freie Bereich ja schon ab Speicherzelle 673 beginnt. Dieser Speicherbereich hat den Vorteil, daß er - wie der Kassettenpuffer ja auch - von Basic nicht gestört wird. Er kann also für kleinere Maschinenprogramme oder auch für Sprite-Blöcke verwendet werden. Gegenüber dem Kassettenpuffer hat dieser Bereich den Vorteil, daß er durch Kassettenoperationen nicht gestört wird.
+
+$0300-$0301          Vektor auf die Ausgabe von Fehler-Meldungen (ERROR)
+
+                     Dieser Vektor zeigt auf die Anfangsadresse der Basic-Routine, welche für die leidigen Fehlermeldungen zuständig ist. Beim C 64 zeigt der Vektor auf 58251 ($E38B), beim VC 20 auf 50234 ($C438).
+
+                     Diese Routine verwendet eine Tabelle im Basic-Übersetzer, in der alle Fehlermeldungen gespeichert sind. Sie liegt im Speicherbereich 41374 bis 41767 (beim VC 20 49566 bis 49959). Die Routine verwendet den Inhalt des X-Registers (siehe Speicherzelle 781), um die entsprechende Fehlermeldung ganz einfach durch Abzählen der Reihenfolge aus der Tabelle auszulesen und auf dem Bildschirm anzuzeigen.
+
+                     Ein Verbiegen dieses Vektors ist für zwei Anwendungsfälle sinnvoll. Man kann die Fehlermeldung abschalten, um zu prüfen, ob ein bestimmtes Peripherie-Gerät, zum Beispiel das Floppylaufwerk, angeschlossen beziehungsweise eingeschaltet ist. Die Fehlermeldung ist abschaltbar mit POKE 768,61. Wieder eingeschaltet wird sie mit POKE 768,139. Ein Anwendungsbeispiel habe ich bereits im Texteinschub Nr. 14 »ST-atus« gebracht.
+
+                     Die zweite Anwendung einer Verbiegung zielt auf eine Übersetzung der Fehlermeldungen. Wem der vorgegebene englische - und manchmal nicht gerade einleuchtende - Text der Fehlermeldungen nicht gefällt, kann den Vektor auf einen Speicherbereich legen, in dem er seine speziellen deutschen Fehlermeldungen speichert. Eine genaue Kenntnis der Fehlermeldungsroutine ist dazu allerdings erforderlich.
+
+                     (Die nächsten 12 Speicherzellen enthalten 6 Vektoren, deren Bedeutung bei der Übersetzung von Basic-Programmen im Texteinschub Nr. 31 »Indirekte Sprung-Vektoren« näher erklärt wird.)
+
+$0302-$0303          Vektor auf die Hauptroutine zur Ausführung von Basic-Befehlen
+
+                     Dieser Vektor zeigt auf die Adresse 42115 ($A483), beim VC 20 auf 50307 ($C483). Die dort beginnende Routine steuert den Direkt-Modus, indem sie entweder direkt eingegebene Befehle ausführt oder mit Zeilennummer eingegebene Anweisungen speichert.
+
+$0304-$0305          Vektor auf die Basic-Routine, die ASCII-Text In Token umwandelt
+
+                     Dieser Vektor zeigt auf 42364 ($A57C), beim VC 20 auf 50556 ($C57C). Dort beginnt eine Routine, die nach dem Drücken der RETURN-Taste alle Anweisungen der damit eingegebenen Zeile absucht und Text beziehungsweise Wörter, die nicht zwischen Gänsefüßen stehen, als Basic-Befehle interpretiert und sie dann in sogenannte »Token« umwandelt. Token sind Codezahlen, die im Computer anstelle von Textbefehlen verwendet werden. Sie sind im Texteinschub Nr. 32 »Die Kurzschrift von Basic« näher beschrieben.
+
+                     Dieser Vektor kann verbogen werden, um zusätzliche Basic-Befehle zu erfinden und in das Betriebssystem einzubauen.
+
+$0306-$0307          Vektor auf die Basic-Routine, die Token in ASCII-Werte zurückwandelt (LIST)
+
+                     Dieser Vektor zeigt auf die Adresse 42778 ($A71A), beim VC 20 auf 50970 ($C71A). Dort beginnt eine Routine, die Token wieder in LISTbaren Text umwandelt. Sie steht nicht allein, sondern wird als Unterprogramm von der LIST-Routine verwendet.
+
+                     Falls ein Programmierer spezielle zusätzliche Basic-Befehle erfunden hat, kann er durch Verbiegen dieses Vektors seine eigenen Token lesbar ausLISTen.
+
+                     Man kann auch durch eine entsprechende Verbiegung erreichen, daß die LIST-Routine nicht angesprungen werden kann, was gleichbedeutend ist mit einer LIST-Sperre. Das ist aber wohl nur sinnvoll bei einem Autostart-Programm.
+
+                     Besser finde ich da ein kleines Programm, das J. Pellechi in der Zeitschrift RUN, Ausgabe 6/85 (Seite 10), angegeben hat:
+
+                         10 FOR J=679 T0 688
+                         20 READ K
+                         30 POKE J,K
+                         40 NEXT J
+                         50 POKE 774,l67:POKE 775,2
+                         60 NEW
+                         70 DATA 72,173,141
+                         80 DATA 2,208,251,104
+                         90 DATA 76,26,167
+
+                     Beim VC 20 ist nur die Zeile 90 verschieden:
+
+                         90 DATA 76,26,199
+
+                     In den freien Speicherbereich ab Speicherzelle 679 wird ein kleines Maschinenprogramm gePOKEt, das in den DATA-Zeilen 70 bis 90 steht. In Zeile 50 steht der für unser Beispiel entscheidende Befehl: Der Vektor in 774 und 775 wird nach der Adresse 679 verbogen. Dadurch springt die LIST-Routine immer zuerst auf die Adresse 679, in der sie das kleine Maschinenprogramm findet.
+
+                     Disassembliert schaut das so aus:
+
+                         02A7 48	PHA
+                         02A8 AD 8D 02  LDA 028D
+                         02AB D0 FB     BNE 02A8
+                         02AD 68	PLA
+                         02AE 4C 1A A7  JMP A71A
+
+                     Zuerst wird der Akkumulator mit dem Inhalt der Speicherzelle 653 ($28D) geladen. Dort steht bekanntlich eine Zahl von 1 bis 7, je nachdem, ob die SHIFT-, CTRL- oder Commodore-Taste gedrückt ist. Ist dies der Fall, springt das Programm auf die Adresse 680 zurück und bildet so eine Dauerschleife, bis die Taste wieder losgelassen wird. Erst dann geht es weiter mit der ursprünglichen Zieladresse des Vektors in 774 und 775, nämlich $A71A (42778) beziehungsweise $C71A (50970) beim VC 20.
+
+                     Auf diese Weise können Sie das LISTen eines Programms mit einer der drei genannten Tasten anhalten.
+
+$0308-$0309          Vektor auf die Basic-Routine, die den nächsten Befehl liest und ausführt
+
+                     Dieser Vektor zeigt auf die Adresse 42980 ($A7E4), beim VC 20 auf 51172 ($C7E4). Diese Routine prüft das nächste Token, ob es gültig ist. Wenn der ASCII-Wert des Token kleiner als 128 ist, wird er als Zeichen einerVariablen angesehen, und das System springt auf die LET-Routine. Das erklärt, warum zur Definition einer Variablen der LET-Befehl auch weggelassen werden kann.
+
+                     Durch Verbiegen dieses Vektors kann zum Beispiel eine Trace-Routine gebaut werden, welche zuerst die Nummer der Zeile ausdruckt, die gerade ausgeführt wird, bevor sie auf die ursprüngliche Zieladresse des Vektors zurückkehrt.
+
+$030A-$030B          Vektor auf die Basic-Routine, die einen numerischen Ausdruck in eine Gleitkommazahl umwandelt
+
+                     Dieser Vektor zeigt auf 44675 ($AE83), beim VC 20 auf 52867 ($CE83). Hier beginnt eine Routine, die einen einzelnen numerischen Wert, wenn er Teil eines Ausdrucks ist, von seinem ASCII-Wert in eine Gleitkomma-Zahl umwandelt.
+
+                     Ist der Ausdruck eine Konstante, wird diese Umwandlung durchgeführt.
+
+                     Ist der Ausdruck eine Variable, wird ihr Zahlenwert aus dem Variablenspeicher geholt.
+
+                     Ist der Ausdruck die Zahl »pi«, wird der Zahlenwert für »pi« in den Gleitkomma-Akkumulator gebracht.
+
+$030C                Speicher für den Akkumulator
+
+                     Der SYS-Befehl holt aus den nächsten vier Speicherzellen alle notwendigen Parameter, die für ein mit SYS zu startendes Maschinenprogramm notwendig sind. Er speichert sie in die vier Register des Mikroprozessors 6510 (beim VC 20 heißt er 6502). Es sind dies:
+
+                     * der Akkumulator
+                     * das X-Register
+                     * das Y-Register
+                     * das P-(Status-)Register
+
+                     Die Bedeutung der Register ist im Assembler-Kurs erklärt worden.
+
+                     Normalerweise funktioniert der SYS-Befehl nur, wenn vorher schon alle Parameter des aufgerufenen Maschinenprogramms richtig vorhanden sind, was meistens nicht der Fall ist.
+
+                     So können Sie zum Beispiel mit Aufrufen der Load-Routine durch SYS 62622 nichts ausrichten, weil die für LOAD erforderlichen Parameter, nämlich Gerätenummer, File-Namen, Anfangs- und Endadresse, nicht festgelegt sind.
+
+                     Wie dies mit Hilfe der vier folgenden Register-Speicherzellen erreichbar ist, hat Rolf Zweifel schon in der Ausgabe 7/84, Seite 131 erklärt. Weil das aber schon lange her ist und weil es hier so schön in den Kurs paßt, wiederhole ich dieses Thema im Texteinschub Nr. 33 »Der vorbereitete SYS-Befehl«.
+
+$030D                Speicher für das X-Register
+
+$030E                Speicher für das Y-Register
+
+$030F                Speicher für das Statusregister
+
+$0310-$0312          Sprungbefehl und wählbare Sprungadresse des USR-Befehls
+
+                     Mit dem Basic-Befehl USR wird bekanntlich ein Maschinenprogramm gestartet. Diese drei Speicherzellen werden bei der Abwicklung von USR verwendet. In ihnen muß der Anwender des USR-Befehls die Zieladresse in Low-/High-Byte-Darstellung angeben, ab der das Maschinenprogramm im Speicher steht.
+
+                     Dieser Vorgang ist bereits behandelt worden bei den Speicherzellen 0 bis 2 des VC 20, die ja genau den Speicherzellen 784 bis 786 des C 64 entsprechen.
+
+                     Speziell für den C 64 ist der USR-Befehl noch einmal behandelt, und zwar im Texteinschub Nr. 34 »Das Mauerblümchen USR«.
+
+                     (Diese drei Speicherzellen 784 bis 786 sind beim VC 20 nicht belegt. Beim C 64 entsprechen sie den Adressen 0 bis 2 des VC 20.)
+
+$0313                beim C 64 und VC 20 nicht belegt
+
+                     Während dieses freie Byte des C 64 nicht viel nutzt, haben VC 20-Besitzer immerhin vier aufeinanderfolgende freie Byte für eigene Vektoren und andere zwischenzuspeichernde Werte zur Verfügung, die nie in Gefahr geraten, von einem Basic-Programm überschrieben zu werden.
+
+$0314-$0315          Vektor auf die IRQ-Interrupt-Routine des Betriebssystems
+
+                     Dieser Vektor zeigt auf die Adresse 59953 ($EA31) - beim VC 20 auf 60095 ($EABF). Ab hier beginnt die Routine des Betriebssystems, die den IRQ-Interrupt ausführt. Die Bedeutung der verschiedenen Interrupts (Unterbrechungen), ihre Auslöser und Abläufe sind als Übersicht im Texteinschub Nr. 35 »Dem Computer ins Wort fallen« dargestellt.
+
+                     Die IRQ-Routine wird vom Timer A des Ein-/Ausgabe-Bausteins CIA #1 - beim VC 20 vom Timer 1 des Ein-/Ausgabe-Bausteins VIA #2 - ausgelöst, und zwar periodisch 60mal in jeder Sekunde. In der Programmpause werden die im Texteinschub beschriebenen »Haushaltsarbeiten« durchgeführt.
+
+                     Dieser Vektor eignet sich hervorragend für eigene Programmierzwecke, da er durch das Verbiegen auf eine andere Adresse seine gleichmäßige und hochfrequente Wiederkehr nicht verliert. Mit seiner Hilfe können also eigene Maschinenprogramme 60mal in der Sekunde in ein Programm eingeschoben werden - eine Methode, die deswegen den englischen Namen »Wedge« = Keil, erhalten hat. Zwei Vorbedingungen sind allerdings dabei zu erfüllen.
+
+                     1. Da ein IRQ mit Sicherheit während des Verbiegens auftritt, muß er vorher abgeschaltet werden. Den Schlüssel dazu bietet die Speicherzelle 56334, die mit 0 gePOKEt den Interrupt abschaltet und mit POKE 56334,1 ihn wieder zuläßt. Beim VC 20 ist dies POKE 37116,127 beziehungsweise POKE 37116,192. Aber Vorsicht!! Da während eines IRQ-lnterrupts auch die Tastatur abgefragt wird, kann das Abschalten nur innerhalb eines Programms erfolgen - während der Abschaltung ist die Tastatur tot.
+                     2. Am Ende eines »Wedge« muß der Sprung auf die alte IRQ-Adresse erfolgen, die ursprünglich in den Speicherzellen 788 bis 789 stand, damit - etwas verspätet zwar - die normalen Haushaltsarbeiten des IRQ nachgeholt werden können. Bei längeren Wedges wird daher die interne Uhr TI und Tl$ etwas nachaehen.
+
+                     Ich habe lange nach einem Beispiel gesucht. Ich kenne viele: Abfrage der Joysticks, Lautstärke von Tönen mit Funktionstasten steuern, von Basic unabhängige Laufschrift, um ein paar zu nennen. Aber alle haben einen ziemlich langen Maschinensprache-Teil. Ich bringe daher hier das kürzeste Beispiel, das ich kenne. Es stammt von Rügheimer und Spanik.
+
+                     Das Programm verändert dauernd die Farbe des Bildschirmrahmens:
+
+                         10 FOR K=679 TO 699
+                         20 READ A
+                         30 POKE K,A:NEXT
+                         40 DATA 166,162,224,0,224,128,240
+                         50 DATA 3,76,49,234,174,32,208
+                         60 DATA 202,142,32,208,76,175,02
+                         70 POKE 56334,0 80 P0KE 788,167:POKE 789,2 90 POKE 56334,1
+
+                     Dieses Programm gilt nur für den C 64; für den VC 20 müßte es entsprechend umgeschrieben werden.
+
+                     Die Zeilen 10 bis 30 lesen das Maschinenprogramm, das in den DATA-Zeilen 40 bis 60 steht, in die Speicherzellen 679 bis 699. Diese stehen, wie wir das letzte Mal gesehen haben, zur freien Verfügung - und sind daher ideal geeignet, ein kleines Maschinenprogramm ungestört aufzunehmen.
+
+                     In Zeile 70 wird der IRQ-Interrupt unterbrochen. Jetzt kommt der wichtige Teil: Zeile 80 verbiegt den IRQ-Vektor zur Speicherzelle 176 + 256 * 2 = 679. Zeile 90 schaltet schließlich den IRQ-Interrupt wieder ein.
+
+                     Jetzt passiert also folgendes: Jedesmal, wenn der Timer A den Haushalt-IRQ auslöst, springt der Computer zuerst einmal auf das Maschinenprogramm ab Speicherzelle 679 und schaltet die Rahmenfarbe um. Dann erst springt der letzte Befehl des Maschinenprogramms auf die ursprüngliche IRQ-Adresse 59953 ($EA31), von der aus das Betriebssystem weitermacht, als sei nichts geschehen.
+
+                     Für Kenner gebe ich noch das Assembler-Listing des Maschinenprogramms an:
+
+                         ,02A7 A6 A2     LDX A2
+                         ,02A9 E0 00     CPX #00
+                         ,02AB E0 80     CPX #80
+                         ,02AD F0 03     BEQ 02B2
+                         ,02AF 4C 31 EA  JMP EA31
+                         ,02B2 AE 20 D0  LDX D020
+                         ,02B5 CA        DEX
+                         ,02B6 8E 20 D0  STX D020
+                         ,02B9 4C Af 02  JMP 02AF
+
+                     Es gibt noch eine kleine, erwähnenswerte Anwendung. Wenn der Vektor nicht auf den Anfang der IRQ-Routine bei 59953, sondern auf 59956 - also drei Stellen weiter - zeigt, übergeht die IRQ-Routine den Teil, welcher die STOP-Taste abfragt und die TI/TI$-Uhr weiterschaltet, wodurch effektiv die STOP-Taste ausgeschaltet wird. Das geht ganz schnell mit POKE 788,52. Mit POKE 788,49 wird das wieder rückgängig gemacht. Beim VC 20 sind es die Werte POKE 788,194 oder POKE 788,191.
+
+$0316-$0317          Vektor auf die BREAK-Interrupt-Routine des Betriebssystems
+
+                     Diese Routine ist im Texteinschub Nr. 35 nicht erwähnt, weil sie ein Teil der NMI-Routine ist. Dieser Vektor zeigt auf die Adresse 65126 ($FE66) - beim VC 20 auf 65234 ($FED2). Die da beginnende Routine des Betriebssystems wird aufgerufen, wenn der Maschinenbefehl BRK ausgeführt wird. Er führt letztlich zu einem Warmstart, das heißt der Bildschirm wird gelöscht und der Cursor meldet sich mit READY. Diese Routine wird auch durch das gleichzeitige Drücken der STOP- und der RESTORE-Taste angestoßen.
+
+$0318-$0319          Vektor auf die NMI-Routine des Betriebssystems.
+
+                     Der NMI-Interrupt ist im Texteinschub Nr. 35 »Dem Computer ins Wort fallen« näher beschrieben. Der Vektor zeigt auf den Beginn dieser Routine ab Speicherzelle 65095 ($FE47) - beim VC 20 ab 65197 ($FEAD).
+
+                     Sobald ein NMI-Interrupt auftritt, wird zuerst durch Setzen der lnterrupt-Abschalt-Flagge (Interrupt Disable Flag) jede Unterbrechung durch den IRQ-Interrupt unterbunden. Dann wird geprüft, wer den NMI-Interrupt ausgelöst hat, und zwar in der Reihenfolge: RS232-Schnittstelle, RESTORE-Taste; eingestecktes Modul und schließlich die STOP-Taste. Die letztere dient zum Sichem der RESTORE-Taste. Nur wenn beide gemeinsam gedrückt werden, kommt die NMI-Unterbrechung durch die RESTORE-Taste zur Auswirkung.
+
+                     Da die RESTORE-Taste fast als erste abgefragt wird, kann sie und ihre Kombination mit der STOP-Taste durch Verbiegen des Vektors in Speicherzelle 792 bis 793 abgeschaltet werden. Beim C 64 geht das mit POKE 792,193 - Wieder eingeschaltet wird mit POKE 792,71. Beim VC 20 geht das mit POKE 792,91 beziehungsweise POKE 792,173 - Natürlich können Spezialisten durch Verbiegen des Vektors auf andere Adressen ihre eigenen NMI-Routinen bauen.
+
+$031A-$031B          Vektor auf die OPEN-Routine des Betriebssystems
+
+                     Die Routine beginnt ab Adresse 62282 ($F34A) - beim VC 20 ab 62474 ($FEAD). Diese Routine prüft, ob eine Datei (File) eröffnet werden kann. Das geht immer dann, wenn die File-Nummer nicht 0 ist und wenn weniger als 10 andere Dateien bereits eröffnet sind. Für die serielle Schnittstelle (Geräte-Nummer 4, 5, 8 bis 11) wird an das angewählte Gerät zuerst der Befehl »Listen« gegeben und dann die Sekundär-Adresse des OPEN-Befehls.
+
+                     Beim Bandgerät (Geräte-Nummer 1) prüft die Routine den Tape Header einer sequentiellen Datei beziehungsweise schreibt einen Tape Header auf das Band.
+
+                     Bei Anwahl der RS232-Schnittstelle (Geräte-Nummer 2) aktiviert die Routine einige Leitungen und reserviert je einen Ein- und Ausgabe-Pufferspeicheram oberen Ende des Basic-Programmspeichers.
+
+$031C-$031D          Vektor auf die CLOSE-Routine des Betriebssystems
+
+                     Dieser Vektor zeigt auf die Adresse 62097 ($F291) - beim VC 20 auf 62282 ($F34A). Ab hier beginnt eine Routine, die beim CLOSE-Befehl zuerst prüft, ob die Datei-Nummer in der Tabelle der eröffneten Datei enthalten ist. Dann holt sie die dazugehörige Geräte-Nummer und Sekundär-Adresse und schließt den Kanal und die Datei.
+
+$031E-$031F          Vektor auf die CHKIN-Routine des Betriebssystems
+
+                     Diese Routine beginnt ab Adresse 61966 ($F20E) - beim VC 20 ab 62161 ($F2C7). Sie eröffnet einen Datenkanal zur Übernahme von Daten von dem Gerät, das durch den OPEN-Befehl angegeben worden ist.
+
+$0320-$0321          Vektor auf die CKOUT-Routine des Betriebssystems
+
+                     Dieser Vektor zeigt auf die Adresse 62032 ($F250) - beim VC 20 auf 62217 ($F309). Dort beginnt die Routine, welche einen Datenkanal zur Abgabe von Daten an das im OPEN-Befehl angegebene Gerät aufmacht.
+
+$0322-$0323          Vektor auf die CLRCHN-Routine des Betriebssystems
+
+                     Der Name dieser Routine ist die Abkürzung für »clear channel«. Diese Routine, die ab Adresse 62259 ($F333) - beim VC 20 ab 62461 ($F3F3) - beginnt, setzt alle Kanäle in den Einschaltzustand zurück. Das heißt, das Eingabegerät ist die Tastatur, das Ausgabegerät ist der Bildschirm.
+
+$0324-$0325          Vektor auf die CHRIN-Routine des Betriebssystems
+
+                     Dieser Vektor zeigt auf die Adresse 61783 ($F157) - beim VC 20 auf 61966 ($F20E). Die hier beginnende Routine, deren Abkürzung »Character Input« bedeutet, holt das jeweils nächste Byte vom Eingabepuffer des angewählten Gerätes, sofern ein solcher eingerichtet ist (zum Beispiel Kassettenpuffer, RS232-Puffer).
+
+                     Bei Eingabe von der Tastatur holt diese Routine so lange Bytes aus dem Tastaturpuffer und zeigt sie auf dem Bildschirm an, bis das Zeichen für ein ungeSHIFTetes RETURN auftritt. Erst dann gibt die Routine das erste Zeichen der logischen Zeile auf dem Bildschirm an den Basic-Übersetzer weiter.
+
+$0326-$0327          Vektor auf die CHROUT-Routlne des Betriebssystems
+
+                     Die CHROUT-Routine entspricht der CHRIN-Routine in der anderen Richtung. Sie bedeutet »Character Output« und transferiert ein Byte, das im Akkumulator steht, in den Puffer des angewählten Ausgabegerätes. Sie beginnt ab Adresse 62898 ($F1CA), - beim VC 20 ab 62074 ($F27A).
+
+$0328-$0329          Vektor auf die STOP-Routine des Betriebssystems
+
+                     Der Vektor zeigt auf die Adresse 63213 ($F6ED) - beim VC 20 auf 63344 ($F770). Die dort beginnende Routine prüft, ob die STOP-Taste gedrückt ist. Durch Verbiegen dieses Vektors kann die STOP-Taste abgeschaltet werden. Beim C 64 geht dies mit P0KE 808,239; wieder eingeschaltet wird die STOP-Taste mit P0KE 808,237. Beim VC 20 sind die Werte P0KE 808,100 beziehungsweise P0KE 808,112.
+
+$032A-$032B          Vektor auf die GETIN-Routine des Betriebssystems
+
+                     Diese Routine ist fast identisch mit der CHRiN-Routine (siehe Speicherzellen 804 bis 805). Sie holt genauso Zeichen von angewählten Geräten in die Eingabepuffer. Der einzige und damit wichtigste Unterschied liegt in der Behandlung der Tastatur-Eingabe. Im Gegensatz zu CHRIN holt sie ein Byte aus dem Tastaturpuffer sofort in den Akkumulator. Der Vektor zeigt auf den Anfang der Routine ab Speicherzelle 61785 ($F13E) - beim VC 20 ab 61941 ($F1F5).
+
+$032C-$032D          Vektor auf die CLALL-Routine des Betriebssystems
+
+                     CLALL ist die Abkürzung für Close ALL (Channels and Files). Diese Routine, die ab Adresse 62255 ($F32F) - beim VC 20 ab 62447 ($F3EF) - beginnt, setzt die Speicherzelle 152 auf 0 und schließt so zwangsläufig alle Dateien und Kanäle.
+
+$032E-$032F          Freier Vektor
+
+                     Nach dem Einschalten zeigt dieser Vektor auf die BREAK-Routine, genauso wie der Vektor in Speicherzelle 790 und 791. Er ist ein Überbleibsel aus dem PET-Betriebssystem, das aber beim VC 20 und C 64 keine Rolle spielt. Hier können also eigene Vektoren definiert und eingesetzt werden.
+
+$0330-$0331          Vektor auf die LOAD-Routine des Betriebssystems
+
+                     Dieser Vektor zeigt auf die Adresse 62622 ($F49E) - beim VC 20 auf 62793 ($F549). Die dort beginnende Routine transferiert Daten von einem Eingabegerät direkt in den RAM-Speicher. Sie kann auch zum VERIFYen durch Vergleich der geladen mit den gespeicherten Daten verwendet werden.
+
+$0332-$0333          Vektor auf die SAVE-Routine des Betriebssystems
+
+                     Diese Routine ist das Gegenstück zur LOAD-Routine. Sie beginnt ab Adresse 62941 ($F5DD) - beim VC 20 ab 63103 ($F685).
+
+$0334-$033B          Freier Speicherbereich
+
+                     Diese 8 Byte stehen zur freien Verfügung.
+
+$033C-$03FB          Kassettenpuffer
+
+                     Diese 192 Byte beherbergen den Kassettenpuffer. Der Name kennzeichnet diesen Speicherbereich als Zwischenspeicher für Ein- und Ausgabe-Operationen von und auf Band.
+
+                     Dabei unterscheiden sich die normalen LOAD-, SAVE- und VERIFY-Befehle von den Datei-Befehlen INPUT #, GET # und PRINT#.
+
+                     Bei LOAD, SAVE und VERIFY steht im Kassettenpuffer lediglich der Vorspann, der auf englisch »Tape Header« heißt. Die Funktion und Zusammensetzung des Tape Headers habe ich schon bei den Speicherzellen 183 bis 187 und im Texteinschub Nr. 20 »Tape Header« detailliert beschrieben. Die eigentlichen Daten berühren den Kassettenpuffer nicht, sondern werden direkt von und in den RAM-Speicher transferiert.
+
+                     Bei GET #, INPUT # und PRINT # werden nicht nur der Tape Header, sondern auch alle Daten im Kassettenpuffer zwischengespeichert. Dieser blockweise Transport ist an den charakteristischen Unterbrechungen des Datasettenmotors leicht zu erkennen.
+
+                     Der Kassettenpuffer kann durch Verbiegen der Zeiger in Speicherzelle 178 und 179 auf beliebige Plätze des Speichers, aber nicht unterhalb 512, geschoben werden. Normalerweise gibt das keinen Sinn, es sei denn, der Speicherbereich 828 bis 1019 wurde mit einem eigenen Maschinenprogramm belegt, und durch das Verschieben des Kassettenpuffers in höhere Regionen möchte man das Maschinenprogramm vor der Zerstörung durch ungeplante Datasetten-Operationen schützen.
+
+                     Die Kenntnis der Inhalte der Speicherzellen des Kassettenpuffers kann man ausnutzen, um die ärgerlichen LOAD ERROR-Probleme zu lösen. Die Methode dazu ist im Texteinschub Nr. 36 »Reparatur von LOAD ERROR« beschrieben.
+
+                     Ist die Datasette nicht angeschlossen, oder wird sie nicht eingesetzt, kann der Speicherbereich des Kassettenpuffers als freier Speicher benutzt werden.
+
+          
+$03FC-$03FF          Freie Speicherplätze
+
+                     Auch diese 4 Byte stehen zur freien Verfügung.
