@@ -76,7 +76,7 @@ $0007        CHARAC  Suchzeichen
 
 $0008        ENDCHR  Hochkomma-Flag
 
-                     Wärend der Umwandlung von
+                     Während der Umwandlung von
                      BASIC-Befehlen in Tokens wird die
                      Speicherzelle $08 als Zwischenspeicher
                      für BASIC-Texteingaben verwendet.
@@ -103,7 +103,7 @@ $000B        COUNT   Zeiger im Eingabepuffer, Anzahl der
                      zu berechnen. Außerdem wird noch die
                      Länge der Tokenzeile hier angegeben.
 
-$000C        DIMFLG  FLag für DIM
+$000C        DIMFLG  Flag für DIM
 
                      Diese Speicherzelle wird benutzt, um
                      festzustellen, ob die Variable ein
@@ -116,7 +116,7 @@ $000D                Typflag $00= numerisch, $FF= String
                      an, ob es sich um Zahlenwerte oder um
                      einen String handelt.
 
-$000E        INTFLG  $80= Interger, $00= Real
+$000E        INTFLG  $80= Integer, $00= Real
 
                      Wenn eine Gleitkommazahl auftritt,
                      steht in der Speicherzelle $00, bei
@@ -124,8 +124,8 @@ $000E        INTFLG  $80= Interger, $00= Real
 
 $000F        GARBFL  Hochkommaflag bei LIST
 
-                     Duch diese Speicherzelle wird beim
-                     LIST-Befehl duch ein Hochkomma
+                     Durch diese Speicherzelle wird beim
+                     LIST-Befehl durch ein Hochkomma
                      erkannt, ob eine Textkette folgt.
                      Zusätzlich wird in dieser
                      Speicherzelle markiert, ob eine
@@ -262,7 +262,7 @@ $0039-$003A  CURLIN  augenblickliche BASIC-Zeilennummer
 $003B-$003C  OLDLIN  Zeilennummer für CONT
 
                      Falls eine Unterbrechung des
-                     Programmablaufs duch den Befehl STOP
+                     Programmablaufs durch den Befehl STOP
                      oder über die STOP-Taste erfolgt,
                      wird in den Speicheradressen $3B-$3C
                      die Zeilennummer gespeichert, die
@@ -386,7 +386,7 @@ $0068        BITS    Rundungsbyte für FAC
                      im FAC steht, auf- oder abgerundet
                      werden soll.
 
-$0069-$006D  ARGEXP  FlieBkommaakku#2, ARG
+$0069-$006D  ARGEXP  Fließkommaakku#2, ARG
 
                      Diese Register werden für die
                      Berechnung von Fließkommazahlen
@@ -563,7 +563,7 @@ $009E        PTR1    Bandpass 1 Checksumme
 
 $009F        PTR2    Bandpass 2 Fehlerkorrektur
 
-                     Hier werden die Fehler korrrigiert,
+                     Hier werden die Fehler korrigiert,
                      die bei Kassettenoperationen aufgetreten
                      sind.
 
@@ -610,7 +610,7 @@ $00AC-$00AD  SAL     Zeiger für Bandpuffer und Scrolling
                      welcher ein Programm geladen oder
                      gespeichert werden soll. Zweitens
                      dienen sie auch als Zwischenspeicher
-                     während des Scroltings des Video-RAM
+                     während des Scrollings des Video-RAM
                      und beim Einfügen zusätzlicher Zeilen.
 
 $00AE-$00AF  EAL     Zeiger auf Programmende bei LOAD/SAVE
@@ -1094,7 +1094,7 @@ $0294        M51CDR  RS-232 Befehlswort
 $0295-$0296  M51AJB  Bit-Timing
 
                      Die Möglichkeit, eine freiwählbare
-                     Übertragungsgeschwindikeit einzustellen,
+                     Übertragungsgeschwindigkeit einzustellen,
                      wurde vorgesehen, aber nicht
                      eingebaut.
 
@@ -1117,7 +1117,7 @@ $0297        RSSTAT  RS-232 Status
 $0298        BITNUM  Anzahl der Datenbits für RS-232
 
                      Diese Speicherzelle wird verwendet,
-                     um die Uortlänge festzustellen.
+                     um die Wortlänge festzustellen.
 
 $0299-$029A  BAUDOF  RS-232 Baud-Rate
 
@@ -1165,7 +1165,7 @@ $029F-$02A0  IRQTMP  Speicher für IRQ während Bandbetrieb
                      Vektor für die Interruptroutine
                      gespeichert.
 
-$02A1        ENABL   CIA 2 NMI-Ftag
+$02A1        ENABL   CIA 2 NMI-Flag
 
                      Diese Speicherzelle erhält den Wert
                      des Interruptsteuerregisters, das die
@@ -1206,7 +1206,7 @@ $0304-$0305  ICRNCH  $A57C Vektor für Umwandlung in Interpretercode
 
 $0306-$0307  IQPLOP  $A71A Vektor für Umwandlung in Klartext (LIST)
 
-$0308-$0309  IGONE   $A7E4 Vektor für BASIC-BefehLsadresse
+$0308-$0309  IGONE   $A7E4 Vektor für BASIC-Befehlsadresse
                            holen
 
 $030A-$030B  IEVAL   $AE86 Vektor für Ausdruck auswerten

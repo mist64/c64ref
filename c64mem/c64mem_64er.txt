@@ -2617,10 +2617,10 @@ $00CC                Schalter für Cursor blinken
                      trotzdem blinkt. Das kann für selbstgeschriebene Eingabe-Routinen interessant 
                      sein.
 
-                     10 PRINT"JA/NEIN?";
-                     20 POKE 204,0
-                     30 GET A$: IF A$=""THEN 30
-                     40 PRINT A$
+                         10 PRINT"JA/NEIN?";
+                         20 POKE 204,0
+                         30 GET A$: IF A$=""THEN 30
+                         40 PRINT A$
 
                      Umgekehrt kann man durch POKE 204,1 das Blinken des Cursors abschalten. Es 
                      bleibt dabei allerdings dem Zufall überlassen, ob er in der Einoder Aus-Phase 
@@ -2652,7 +2652,7 @@ $00CE                Bildschirmcode des Zeichens unter dem Cursor
                      direkt ein, fahren aber noch vor dem Drücken der RETURN-Taste mit dem Cursor 
                      zurück auf eines der Zeichen, zum Beispiel auf ein P:
 
-                     PRINT PEEK(206)
+                         PRINT PEEK(206)
 
                      Nach RETURN erscheint die Zahl 16. Das ist also der Bildschirmcode des 
                      Zeichens, auf dem der Cursor saß, als die RETURN-Taste gedrückt wurde. Sie 

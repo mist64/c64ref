@@ -406,8 +406,8 @@ while(True):
 		is_collapsible = len(headings) and len(comments)
 		if is_collapsible:
 			print('<details>')
-		else:
-			print('<div>')
+#		else:
+#			print('<div>')
 		
 		if len(headings):
 			print('<b>')
@@ -434,8 +434,8 @@ while(True):
 
 		if is_collapsible:
 			print('</details>')
-		else:
-			print('</div>')
+#		else:
+#			print('</div>')
 
 		print('</td>')
 	print('</tr>')
