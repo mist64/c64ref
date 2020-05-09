@@ -369,13 +369,26 @@ while(True):
 
 			linenumber[i] += 1
 
+		is_collapsible = len(headings) and len(comments)
+		if is_collapsible:
+			print('<details>')
+		else:
+			print('<div>')
+		
 		if len(headings):
 			print('<b>')
 			all_text = ''
+			if is_collapsible:
+				print('<summary>')
 			for heading in headings:
 				all_text += heading + ' '
-			print(markdown.markdown(all_text))
+#			print(markdown.markdown(all_text)) # todo
+			print(all_text)
 			print('</b>')
+			if is_collapsible:
+				print('</summary>')
+		else:
+			print('&nbsp;')
 
 		if len(comments):
 			all_text = ''
@@ -384,6 +397,11 @@ while(True):
 			print(markdown.markdown(all_text, extensions=['tables']))
 		else:
 			print('&nbsp;')
+
+		if is_collapsible:
+			print('</details>')
+		else:
+			print('</div>')
 
 		print('</td>')
 	print('</tr>')
