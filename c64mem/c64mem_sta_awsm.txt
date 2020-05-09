@@ -11,22 +11,26 @@
 $0000        D6510   Processor port data direction register
 
                      Bits:
+
                      * Bit #x: 0 = Bit #x in processor port can only be read; 1 = Bit #x in processor port can be read and written.
+
                      Default: $2F, %00101111.
 
 $0001        R6510   Processor port
 
                      Bits:
+
                      * Bits #0-#2: Configuration for memory areas $A000-$BFFF, $D000-$DFFF and $E000-$FFFF. Values:
-                       * %x00: RAM visible in all three areas.
-                       * %x01: RAM visible at $A000-$BFFF and $E000-$FFFF.
-                       * %x10: RAM visible at $A000-$BFFF; KERNAL ROM visible at $E000-$FFFF.
-                       * %x11: BASIC ROM visible at $A000-$BFFF; KERNAL ROM visible at $E000-$FFFF.
-                       * %0xx: Character ROM visible at $D000-$DFFF. (Except for the value %000, see above.)
-                       * %1xx: I/O area visible at $D000-$DFFF. (Except for the value %100, see above.)
+                     * %x00: RAM visible in all three areas.
+                         * %x01: RAM visible at $A000-$BFFF and $E000-$FFFF.
+                         * %x10: RAM visible at $A000-$BFFF; KERNAL ROM visible at $E000-$FFFF.
+                         * %x11: BASIC ROM visible at $A000-$BFFF; KERNAL ROM visible at $E000-$FFFF.
+                         * %0xx: Character ROM visible at $D000-$DFFF. (Except for the value %000, see above.)
+                         * %1xx: I/O area visible at $D000-$DFFF. (Except for the value %100, see above.)
                      * Bit #3: Datasette output signal level.
                      * Bit #4: Datasette button status; 0 = One or more of PLAY, RECORD, F.FWD or REW pressed; 1 = No button is pressed.
                      * Bit #5: Datasette motor control; 0 = On; 1 = Off.
+
                      Default: $37, %00110111.
 
 $0002                Unused
@@ -53,6 +57,7 @@ $0009        TRMPOS  Current column number during SPC() and TAB().
 $000A        VERCK   LOAD/VERIFY switch
 
                      Values:
+
                      * $00: LOAD.
                      * $01-$FF: VERIFY.
 
@@ -64,18 +69,21 @@ $000B        COUNT   Current token during tokenization.
 $000C        DIMFLG  Switch for array operations
 
                      Values:
+
                      * $00: Operation was not called by DIM.
                      * $40-$7F: Operation was called by DIM.
 
 $000D        VALTYP  Current expression type
 
                      Values:
+
                      * $00: Numerical.
                      * $FF: String.
 
 $000E        INTFLG  Current numerical expression type
 
                      Bits:
+
                      * Bit #7: 0 = Floating point; 1 = Integer.
 
 $000F        GARBFL  Quotation mode switch during tokenization; Bit #6: 0 = Normal mode; 1 = Quotation mode.
@@ -85,12 +93,14 @@ $000F        GARBFL  Quotation mode switch during tokenization; Bit #6: 0 = Norm
 $0010        SUBFLG  Switch during fetch of variable name
 
                      Values:
+
                      * $00: Integer variables are accepted.
                      * $01-$FF: Integer variables are not accepted.
 
 $0011        INPFLG  GET/INPUT/READ switch
 
                      Values:
+
                      * $00: INPUT.
                      * $40: GET.
                      * $98: READ.
@@ -98,6 +108,7 @@ $0011        INPFLG  GET/INPUT/READ switch
 $0012        TANSGN  Sign during SIN() and TAN()
 
                      Values:
+
                      * $00: Positive.
                      * $FF: Negative.
 
@@ -112,6 +123,7 @@ $0014-$0015  LINNUM  Line number during GOSUB, GOTO and RUN.
 $0016        TEMPPT  Pointer to next expression in string stack
 
                      Values: $19; $1C; $1F; $22.
+
                      Default: $19.
 
 $0017-$0018  LASTPT  Pointer to previous expression in string stack.
@@ -149,6 +161,7 @@ $0037-$0038  MEMSIZ  Pointer to end of BASIC area.
 $0039-$003A  CURLIN  Current BASIC line number
 
                      Values:
+
                      * $0000-$F9FF, 0-63999: Line number.
                      * $FF00-$FFFF: Direct mode, no BASIC program is being executed.
 
@@ -157,6 +170,7 @@ $003B-$003C  OLDLIN  Current BASIC line number for CONT.
 $003D-$003E  OLDTXT  Pointer to next BASIC instruction for CONT
 
                      Values:
+
                      * $0000-$00FF: CONT'ing is not possible.
                      * $0100-$FFFF: Pointer to next BASIC instruction.
 
@@ -169,13 +183,14 @@ $0043-$0044  INPPTR  Pointer to input result during GET, INPUT and READ.
 $0045-$0046  VARNAM  Name and type of current variable
 
                      Bits:
+
                      * $0045 bits #0-#6: First character of variable name.
                      * $0046 bits #0-#6: Second character of variable name; $00 = Variable name consists of only one character.
                      * $0045 bit #7 and $0046 bit #7:
-                       * %00: Floating-point variable.
-                       * %01: String variable.
-                       * %10: FN function, created with DEF FN.
-                       * %11: Integer variable.
+                         * %00: Floating-point variable.
+                         * %01: String variable.
+                         * %10: FN function, created with DEF FN.
+                         * %11: Integer variable.
 
 $0047-$0048  VARPNT  Pointer to value of current variable or FN function.
 
@@ -190,9 +205,10 @@ $004B-$004C  VARTXT  Temporary area for saving original pointer to current BASIC
 $004D        OPMASK  Comparison operator indicator
 
                      Bits:
-                     * Bit #1: 1 = "&gt;" (greater than) is present in expression.
+
+                     * Bit #1: 1 = ">" (greater than) is present in expression.
                      * Bit #2: 1 = "=" (equal to) is present in expression.
-                     * Bit #3: 1 = "&lt;" (less than) is present in expression.
+                     * Bit #3: 1 = "<" (less than) is present in expression.
 
 $004E-$004F  TEMPF3  Pointer to current FN function.
 
@@ -217,6 +233,7 @@ $0061-$0065  FACEXP  FAC, arithmetic register #1 (5 bytes).
 $0066        FACSGN  Sign of FAC
 
                      Bits:
+
                      * Bit #7: 0 = Positive; 1 = Negative.
 
 $0067        SGNFLG  Number of degrees during polynomial evaluation.
@@ -228,6 +245,7 @@ $0069-$006D  ARGEXP  ARG, arithmetic register #2 (5 bytes).
 $006E        ARGSGN  Sign of ARG
 
                      Bits:
+
                      * Bit #7: 0 = Positive; 1 = Negative.
 
 $006F-$0070  ARISGN  Pointer to first string expression during string comparison.
@@ -247,6 +265,7 @@ $008B-$008F  RNDX    Previous result of RND().
 $0090        STATUS  Value of ST variable, device status for serial bus and datasette input/output
 
                      Serial bus bits:
+
                      * Bit #0: Transfer direction during which the timeout occured; 0 = Input; 1 = Output.
                      * Bit #1: 1 = Timeout occurred.
                      * Bit #4: 1 = VERIFY error occurred (only during VERIFY), the file read from the device did not match that in the memory.
@@ -262,6 +281,7 @@ $0090        STATUS  Value of ST variable, device status for serial bus and data
 $0091        STKEY   Stop key indicator
 
                      Values:
+
                      * $7F: Stop key is pressed.
                      * $FF: Stop key is not pressed.
 
@@ -270,12 +290,14 @@ $0092        SVXT    Unknown. (Timing constant during datasette input.)
 $0093        VERCK   LOAD/VERIFY switch
 
                      Values:
+
                      * $00: LOAD.
                      * $01-$FF: VERIFY.
 
 $0094        C3P0    Serial bus output cache status
 
                      Bits:
+
                      * Bit #7: 1 = Output cache dirty, must transfer cache contents upon next output to serial bus.
 
 $0095        BSOUR   Serial bus output cache, previous byte to be sent to serial bus.
@@ -304,6 +326,7 @@ $009C        DPSW    Unknown. (Byte ready indicator during datasette input/outpu
 $009D        MSGFLG  System error display switch
 
                      Bits:
+
                      * Bit #6: 0 = Suppress I/O error messages; 1 = Display them.
                      * Bit #7: 0 = Suppress system messages; 1 = Display them.
 
@@ -323,7 +346,9 @@ $00A0-$00A2  TIME    Value of TI variable, time of day, increased by 1 every 1/6
 $00A3        R2D2    EOI switch during serial bus output
 
                      Bits:
+
                      * Bit #7: 0 = Send byte right after handshake; 1 = Do EOI delay first.
+
                      Bit counter during datasette output.
 
 $00A4        FIRT    Byte buffer during serial bus input.
@@ -341,6 +366,7 @@ $00A8        BITCI   Bit counter during RS232 input.
 $00A9        RINONE  Stop bit switch during RS232 input
 
                      Values:
+
                      * $00: Data bit.
                      * $01-$FF: Stop bit.
 
@@ -367,8 +393,10 @@ $00B2-$00B3  TAPE1   Pointer to datasette buffer.
 $00B4        BITTS   Bit counter and stop bit switch during RS232 output
 
                      Bits:
+
                      * Bits #0-#6: Bit count.
                      * Bit #7: 0 = Data bit; 1 = Stop bit.
+
                      Bit counter during datasette input/output.
 
 $00B5        NXTBIT  Bit buffer (in bit #2) during RS232 output.
@@ -378,6 +406,7 @@ $00B6        RODATA  Byte buffer during RS232 output.
 $00B7        FNLEN   Length of file name or disk command; first parameter of LOAD, SAVE and VERIFY or fourth parameter of OPEN
 
                      Values:
+
                      * $00: No parameter.
                      * $01-$FF: Parameter length.
 
@@ -399,6 +428,7 @@ $00BF        MYCH    Unknown.
 $00C0        CAS1    Datasette motor switch
 
                      Values:
+
                      * $00: No button was pressed, motor has been switched off. If a button is pressed on the datasette, must switch motor on.
                      * $01-$FF: Motor is on.
 
@@ -411,18 +441,21 @@ $00C3-$00C4  MEMUSS  Start address for a secondary address of 0 for LOAD and VER
 $00C5        LSTX    Matrix code of key previously pressed
 
                      Values:
+
                      * $00-$3F: Keyboard matrix code.
                      * $40: No key was pressed at the time of previous check.
 
 $00C6        NDX     Length of keyboard buffer
 
                      Values:
+
                      * $00, 0: Buffer is empty.
                      * $01-$0A, 1-10: Buffer length.
 
 $00C7        RVS     Reverse mode switch
 
                      Values:
+
                      * $00: Normal mode.
                      * $12: Reverse mode.
 
@@ -436,18 +469,21 @@ $00CA                Cursor column during screen input. Values: $00-$27, 0-39.
 $00CB        SFDX    Matrix code of key currently being pressed
 
                      Values:
+
                      * $00-$3F: Keyboard matrix code.
                      * $40: No key is currently pressed.
 
 $00CC        BLNSW   Cursor visibility switch
 
                      Values:
+
                      * $00: Cursor is on.
                      * $01-$FF: Cursor is off.
 
 $00CD        BLNCT   Delay counter for changing cursor phase
 
                      Values:
+
                      * $00, 0: Must change cursor phase.
                      * $01-$14, 1-20: Delay.
 
@@ -456,12 +492,14 @@ $00CE        GDBLN   Screen code of character under cursor.
 $00CF        BLNON   Cursor phase switch
 
                      Values:
+
                      * $00: Cursor off phase, original character visible.
                      * $01: Cursor on phase, reverse character visible.
 
 $00D0        CRSW    End of line switch during screen input
 
                      Values:
+
                      * $00: Return character reached, end of line.
                      * $01-$FF: Still reading characters from line.
 
@@ -472,6 +510,7 @@ $00D3        PNTR    Current cursor column. Values: $00-$27, 0-39.
 $00D4        QTSW    Quotation mode switch
 
                      Values:
+
                      * $00: Normal mode.
                      * $01: Quotation mode.
 
@@ -486,12 +525,14 @@ $00D7        DATA    PETSCII code of character during screen input/output.
 $00D8        INSRT   Number of insertions
 
                      Values:
+
                      * $00: No insertions made, normal mode, control codes change screen layout or behavior.
                      * $01-$FF: Number of insertions, when inputting this many character next, those must be turned into control codes, similarly to quotation mode.
 
 $00D9-$00F1  LDTB1   High byte of pointers to each line in screen memory (25 bytes)
 
                      Values:
+
                      * $00-$7F: Pointer high byte.
                      * $80-$FF: No pointer, line is an extension of previous line on screen.
 
@@ -504,12 +545,14 @@ $00F5-$00F6  KEYTAB  Pointer to current conversion table during conversion from 
 $00F7-$00F8  RIBUF   Pointer to RS232 input buffer
 
                      Values:
+
                      * $0000-$00FF: No buffer defined, a new buffer must be allocated upon RS232 input.
                      * $0100-$FFFF: Buffer pointer.
 
 $00F9-$00FA  ROBUF   Pointer to RS232 output buffer
 
                      Values:
+
                      * $0000-$00FF: No buffer defined, a new buffer must be allocated upon RS232 output.
                      * $0100-$FFFF: Buffer pointer.
 
@@ -556,29 +599,37 @@ $0288        HIBASE  High byte of pointer to screen memory for screen input/outp
 $0289        XMAX    Maximum length of keyboard buffer
 
                      Values:
+
                      * $00, 0: No buffer.
                      * $01-$0F, 1-15: Buffer size.
 
 $028A        RPTFLG  Keyboard repeat switch
 
                      Bits:
-                     * Bits #6-#7: %00 = Only cursor up/down, cursor left/right, Insert/Delete and Space repeat; %01 = No key repeats; %1x = All keys repeat.
+
+                     * Bits #6-#7:
+                         * %00 = Only cursor up/down, cursor left/right, Insert/Delete and Space repeat
+                         * %01 = No key repeats
+                         * %1x = All keys repeat.
 
 $028B        KOUNT   Delay counter during repeat sequence, for delaying between successive repeats
 
                      Values:
+
                      * $00, 0: Must repeat key.
                      * $01-$04, 1-4: Delay repetition.
 
 $028C        DELAY   Repeat sequence delay counter, for delaying before first repetition
 
                      Values:
+
                      * $00, 0: Must start repeat sequence.
                      * $01-$10, 1-16: Delay repeat sequence.
 
 $028D        SHFLAG  Shift key indicator
 
                      Bits:
+
                      * Bit #0: 1 = One or more of left Shift, right Shift or Shift Lock is currently being pressed or locked.
                      * Bit #1: 1 = Commodore is currently being pressed.
                      * Bit #2: 1 = Control is currently being pressed.
@@ -586,6 +637,7 @@ $028D        SHFLAG  Shift key indicator
 $028E        LSTSHF  Previous value of shift key indicator
 
                      Bits:
+
                      * Bit #0: 1 = One or more of left Shift, right Shift or Shift Lock was pressed or locked at the time of previous check.
                      * Bit #1: 1 = Commodore was pressed at the time of previous check.
                      * Bit #2: 1 = Control was pressed at the time of previous check.
@@ -597,48 +649,52 @@ $028F-$0290  KEYLOG  Execution address of routine that, based on the status of s
 $0291        MODE    Commodore-Shift switch
 
                      Bits:
+
                      * Bit #7: 0 = Commodore-Shift is disabled; 1 = Commodore-Shift is enabled, the key combination will toggle between the uppercase/graphics and lowercase/uppercase character set.
 
 $0292        AUTODN  Scroll direction switch during scrolling the screen
 
                      Values:
+
                      * $00: Insertion of line before current line, current line and all lines below it must be scrolled 1 line downwards.
                      * $01-$FF: Bottom of screen reached, complete screen must be scrolled 1 line upwards.
 
 $0293        M51CTR  RS232 control register
 
                      Bits:
+
                      * Bits #0-#3: Baud rate, transfer speed. Values:
-                       * %0000: User specified.
-                       * %0001: 50 bit/s.
-                       * %0010: 75 bit/s.
-                       * %0011: 110 bit/s.
-                       * %0100: 150 bit/s.
-                       * %0101: 300 bit/s.
-                       * %0110: 600 bit/s.
-                       * %0111: 1200 bit/s.
-                       * %1000: 2400 bit/s.
-                       * %1001: 1800 bit/s.
-                       * %1010: 2400 bit/s.
-                       * %1011: 3600 bit/s.
-                       * %1100: 4800 bit/s.
-                       * %1101: 7200 bit/s.
-                       * %1110: 9600 bit/s.
-                       * %1111: 19200 bit/s.
+                         * %0000: User specified.
+                         * %0001: 50 bit/s.
+                         * %0010: 75 bit/s.
+                         * %0011: 110 bit/s.
+                         * %0100: 150 bit/s.
+                         * %0101: 300 bit/s.
+                         * %0110: 600 bit/s.
+                         * %0111: 1200 bit/s.
+                         * %1000: 2400 bit/s.
+                         * %1001: 1800 bit/s.
+                         * %1010: 2400 bit/s.
+                         * %1011: 3600 bit/s.
+                         * %1100: 4800 bit/s.
+                         * %1101: 7200 bit/s.
+                         * %1110: 9600 bit/s.
+                         * %1111: 19200 bit/s.
                      * Bits #5-#6: Byte size, number of data bits per byte; %00 = 8; %01 = 7, %10 = 6; %11 = 5.
                      * Bit #7: Number of stop bits; 0 = 1 stop bit; 1 = 2 stop bits.
 
 $0294        M51CDR  RS232 command register
 
                      Bits:
+
                      * Bit #0: Synchronization type; 0 = 3 lines; 1 = X lines.
                      * Bit #4: Transmission type; 0 = Duplex; 1 = Half duplex.
                      * Bits #5-#7: Parity mode. Values:
-                       * %xx0: No parity check, bit #7 does not exist.
-                       * %001: Odd parity.
-                       * %011: Even parity.
-                       * %101: No parity check, bit #7 is always 1.
-                       * %111: No parity check, bit #7 is always 0.
+                         * %xx0: No parity check, bit #7 does not exist.
+                         * %001: Odd parity.
+                         * %011: Even parity.
+                         * %101: No parity check, bit #7 is always 1.
+                         * %111: No parity check, bit #7 is always 0.
 
 $0295-$0296  M51AJB  Default value of RS232 output timer, based on baud rate
 
@@ -648,13 +704,14 @@ $0295-$0296  M51AJB  Default value of RS232 output timer, based on baud rate
 $0297        RSSTAT  Value of ST variable, device status for RS232 input/output
 
                      Bits:
-                        * Bit #0: 1 = Parity error occurred.
-                        * Bit #1: 1 = Frame error, a stop bit with the value of 0, occurred.
-                        * Bit #2: 1 = Input buffer underflow occurred, too much data has arrived but it has not been read from the buffer in time.
-                        * Bit #3: 1 = Input buffer is empty, nothing to read.
-                        * Bit #4: 0 = Sender is Clear To Send; 1 = Sender is not ready to send data to receiver.
-                        * Bit #6: 0 = Receiver reports Data Set Ready; 1 = Receiver is not ready to receive data.
-                        * Bit #7: 1 = Carrier loss, a stop bit and a data byte both with the value of 0, detected.
+
+                     * Bit #0: 1 = Parity error occurred.
+                     * Bit #1: 1 = Frame error, a stop bit with the value of 0, occurred.
+                     * Bit #2: 1 = Input buffer underflow occurred, too much data has arrived but it has not been read from the buffer in time.
+                     * Bit #3: 1 = Input buffer is empty, nothing to read.
+                     * Bit #4: 0 = Sender is Clear To Send; 1 = Sender is not ready to send data to receiver.
+                     * Bit #6: 0 = Receiver reports Data Set Ready; 1 = Receiver is not ready to receive data.
+                     * Bit #7: 1 = Carrier loss, a stop bit and a data byte both with the value of 0, detected.
 
 $0298        BITNUM  RS232 byte size, number of data bits per data byte, default value for bit counters.
 
@@ -673,6 +730,7 @@ $029E        RODBE   Offset of current byte in RS232 output buffer.
 $029F-$02A0  IRQTMP  Temporary area for saving pointer to original interrupt service routine during datasette input output
 
                      Values:
+
                      * $0000-$00FF: No datasette input/output took place yet or original pointer has been already restored.
                      * $0100-$FFFF: Original pointer, datasette input/output currently in progress.
 
@@ -687,6 +745,7 @@ $02A5        LINTMP  Number of line currently being scrolled during scrolling th
 $02A6        PALNTS  PAL/NTSC switch, for selecting RS232 baud rate from the proper table
 
                      Values:
+
                      * $00: NTSC.
                      * $01: PAL.
 
@@ -827,6 +886,7 @@ $8004-$8008          Cartridge signature
 $A000-$BFFF          BASIC ROM or RAM area (8192 bytes)
 
                      depends on the value of bits #0-#2 of the processor port at memory address $0001:
+
                      * %x00, %x01 or %x10: RAM area.
                      * %x11: BASIC ROM.
 
@@ -843,5 +903,6 @@ $DF00-$DFFF          I/O Area #2, memory mapped registers or machine code routin
 $E000-$FFFF          KERNAL ROM or RAM area (8192 bytes)
 
                      depends on the value of bits #0-#2 of the processor port at memory address $0001:
+
                      * %x0x: RAM area.
                      * %x1x: KERNAL ROM.

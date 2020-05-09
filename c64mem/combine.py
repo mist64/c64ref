@@ -327,7 +327,7 @@ while(True):
 			for heading in headings:
 				all_text += heading + ' '
 			print(markdown.markdown(all_text))
-			print('</b><br/>')
+			print('</b>')
 
 		if len(comments):
 			all_text = ''
