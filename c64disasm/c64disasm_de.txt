@@ -3,7 +3,7 @@
 - CBMBASIC and KERNAL
 -
 - The comments have been taken from
--    Baloui, Said. 
+-    Baloui, Brückmann, Englisch, Felt, Gelfand, Gerits, Krsnik:
 -    Das neue Commodore-64-intern-Buch.
 -    Düsseldorf: Data-Becker, 1990.
 -    ISBN 3890113079

@@ -1,10 +1,30 @@
 - C64 RAM Map (Mapping The Commodore 64)
 -
-- MAPC6410.TXT
+- Leemon, Sheldon:
+- Mapping the Commodore 64
+- Greensboro: COMPUTE! Publications, 1984.
+- ISBN 0-942386-23-X
+-
+- MAPC6410.TXT, May 1998, etext #352#
+- typed by
+-   David Holz <david_holz@hotmail.com>
+- formatted to 71 columns and somewhat proofed by
+-   Cris Berneburg <pcgeek@compuserve.com>
 -
 ------------------------------------------------------------
 -
-# [...]
+# This plain text file is formatted so that it can be automatically
+# parsed in order to create cross-references etc.
+# * Lines starting with "-" is top-level information. The first line
+#   is the title. Lines starting with "--" are separators.
+# * Lines starting with "#" are internal comments.
+# * Hex addresses start at column 0.
+# * Symbols start at column 13.
+# * The description starts at column 21.
+# * All lines of the description until the first blank line are
+#   combined into the heading.
+# * The remaining text is in MarkDown format.
+# The encoding is UTF-8.
 
 $0000         D6510  6510 On-Chip I/O DATA Direction Register
                      

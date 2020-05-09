@@ -1,12 +1,28 @@
 - C64 RAM Map (64'er)
 -
-- Memory Map mit Wandervorschlägen
 - Dr. H. Hauck
+- Memory Map mit Wandervorschlägen
 - 64'er Sonderheft 1986/07
+-
+- OCRed and formatted by Michael Steil <mist64@mac.com>
+-
+- Corrections (typos as well as content), translations etc.
+- welcome at: https://github.com/mist64/c64disasm
 -
 ------------------------------------------------------------
 -
-# [...] »«
+# This plain text file is formatted so that it can be automatically
+# parsed in order to create cross-references etc.
+# * Lines starting with "-" is top-level information. The first line
+#   is the title. Lines starting with "--" are separators.
+# * Lines starting with "#" are internal comments.
+# * Hex addresses start at column 0.
+# * Symbols start at column 13.
+# * The description starts at column 21.
+# * All lines of the description until the first blank line are
+#   combined into the heading.
+# * The remaining text is in MarkDown format.
+# The encoding is UTF-8.
 
 $0000        D6510   Datenrichtungsregister für Ein-/Ausgabe-Port des 6510-Mikroprozessors
 
@@ -2023,7 +2039,7 @@ $00A0-$00A2          Interne Uhr für TI und TI$
 
                          5 POKE 160,79:P0KE 161,25:POKE 162,0
 
-                     Nach vier Sekunden Laufzeit schalten alle drei Zellen In der Tat auf 0 zurück.
+                     Nach vier Sekunden Laufzeit schalten alle drei Zellen in der Tat auf 0 zurück.
 
                      Die Umsetzung der Zahlen aus 160 bis 162 in die Variablen TI und Tl$ sowie 
                      deren Wirkungsweise entnehmen Sie bitte dem Texteinschub Nr. 16 »Die eingebaute 
@@ -2490,13 +2506,13 @@ $00C7                Flagge für reverse Darstellung der Zeichen
 
                      Wir vermeiden die Rücksetzung durch einen Einzeiler: 
 
-                         PRINT CHR$ (18) * AAA " PEEK (199)
+                         PRINT CHR$(18) "AAA" PEEK(199)
 
                      Wir erhalten drei reverse As und als lnhalt der Zelle 199auch die Zahl 18. 
                      Dasselbe Ergebnis erhalten wir durch POKEn einer Zahl größer als 0 in die Zelle 
                      199:
 
-                         POKE 199,4: PRINT"XX" PEEK (199)
+                         POKE 199,4: PRINT"XX" PEEK(199)
 
                      Das Ergebnis beweist, daß diese Adresse sehr nützlich sein kann, zumal ihre 
                      Abfrage beziehungsweise Beeinflussung auch innerhalb eines Programms erfolgen 
@@ -2755,9 +2771,8 @@ $00D3                Position des Cursors innerhalb einer logischen Zeile
 
 $00D4                Flagge für Gänsefuß-Modus
 
-                     Steht in dieser Speicherzelle eine 0, dann befindet sich der
-
-                     Computer im Gänsefuß-Modus, andere Zahlen bedeuten den Normal-Modus.
+                     Steht in dieser Speicherzelle eine 0, dann befindet sich der Computer im 
+                     Gänsefuß-Modus, andere Zahlen bedeuten den Normal-Modus.
 
                      Selbst Anfängern ist der Gänsefuß-Modus sehr rasch geläufig, bietet er doch die 
                      Möglichkeit, Zeichen mit der PRINT-Anweisung auszudrucken. Genauso bekannt sind 
@@ -2853,7 +2868,7 @@ $00F3-$00F4          Zeiger auf Position des Cursors im Farbspeicher
                      also in der Low-/High-Byte-Darstellung die Adresse im Farbspeicher, ab der die 
                      echte Zeile beginnt, auf welcher der Cursor gerade steht.
 
-$00F5-$00F6          Vektor auf die Decodiertabelle für ASC!l-Codewerte der Tasten
+$00F5-$00F6          Vektor auf die Decodiertabelle für ASCII-Codewerte der Tasten
 
                      Bei der Diskussion der Speicherzelle 145 habe ich Ihnen gezeigt, wie das 
                      Drücken einer der 64 Tasten entschlüsselt wird.

@@ -1,11 +1,29 @@
 - C64 RAM Map (64 intern)
 -
-- 64 intern
-- Data Becker
+-  Baloui, Brückmann, Englisch, Felt, Gelfand, Gerits, Krsnik:
+-  Das neue Commodore-64-intern-Buch.
+-  Düsseldorf: Data-Becker, 1990.
+-  ISBN 3890113079
+-
+- OCRed and formatted by Michael Steil <mist64@mac.com>
+-
+- Corrections (typos as well as content), translations etc.
+- welcome at: https://github.com/mist64/c64disasm
 -
 ------------------------------------------------------------
 -
-# [...]
+# This plain text file is formatted so that it can be automatically
+# parsed in order to create cross-references etc.
+# * Lines starting with "-" is top-level information. The first line
+#   is the title. Lines starting with "--" are separators.
+# * Lines starting with "#" are internal comments.
+# * Hex addresses start at column 0.
+# * Symbols start at column 13.
+# * The description starts at column 21.
+# * All lines of the description until the first blank line are
+#   combined into the heading.
+# * The remaining text is in MarkDown format.
+# The encoding is UTF-8.
 
 $0000        D6510   Datenrichtungsregister für Prozessor-
                      Port

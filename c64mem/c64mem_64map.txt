@@ -1,11 +1,24 @@
 - C64 RAM Map (64MAP10.TXT)
 -
-- 64MAP10.TXT/Commodore_64_Memory_Maps.txt
-- https://riff.2ix.at/c64/?dok=memory
+- Anonymous
+- Commodore_64_Memory_Maps.txt
+- in: 64MAP10.TXT, which states ftp://arnold.hiof.no/programs
+- as the original source
 -
 ------------------------------------------------------------
 -
-# [...]
+# This plain text file is formatted so that it can be automatically
+# parsed in order to create cross-references etc.
+# * Lines starting with "-" is top-level information. The first line
+#   is the title. Lines starting with "--" are separators.
+# * Lines starting with "#" are internal comments.
+# * Hex addresses start at column 0.
+# * Symbols start at column 13.
+# * The description starts at column 21.
+# * All lines of the description until the first blank line are
+#   combined into the heading.
+# * The remaining text is in MarkDown format.
+# The encoding is UTF-8.
 
 $0000        D6510   6510 On-chip Data Direction Register.
 $0001        R6510   6510 On-chip 8-bit Input/Output Register.

@@ -1,14 +1,26 @@
 - C64 RAM Map (Jim Butterfield)
 -
+- Butterfield, Jim [compiled by]:
 - COMMODORE 64 MEMORY MAP
-- Compiled by Jim Butterfield
-- Classic Computer Magazine Archive COMPUTE! ISSUE 29 / OCTOBER 1982 / PAGE 150
+- Classic Computer Magazine Archive COMPUTE! issue 29, October 1982, p.150
+-
 - https://www.atarimagazines.com/compute/issue29/394_1_COMMODORE_64_MEMORY_MAP.php
 - https://www.atariarchives.org/mlb/appendix_b.php
 -
 ------------------------------------------------------------
 -
-# [...]
+# This plain text file is formatted so that it can be automatically
+# parsed in order to create cross-references etc.
+# * Lines starting with "-" is top-level information. The first line
+#   is the title. Lines starting with "--" are separators.
+# * Lines starting with "#" are internal comments.
+# * Hex addresses start at column 0.
+# * Symbols start at column 13.
+# * The description starts at column 21.
+# * All lines of the description until the first blank line are
+#   combined into the heading.
+# * The remaining text is in MarkDown format.
+# The encoding is UTF-8.
 
 $0000        D6510   Chip directional register
 $0001        R6510   Chip I/O; memory & tape control

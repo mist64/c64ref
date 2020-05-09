@@ -1,12 +1,26 @@
-- C64 RAM Map (STA/awsm)
+- C64 RAM Map (STA)
 -
-- Commodore 64 memory map, http://www.awsm.de/mem64/
-- based on:
-- Commodore 64 memory map by Joe Forster/STA, http://sta.c64.org/cbm64mem.html
+- Joe Forster/STA:
+- Commodore 64 memory map
+- http://sta.c64.org/cbm64mem.html
+-
+- edited by awsm.de // @awsm9000
+- http://www.awsm.de/mem64/
 -
 ------------------------------------------------------------
 -
-# [...]
+# This plain text file is formatted so that it can be automatically
+# parsed in order to create cross-references etc.
+# * Lines starting with "-" is top-level information. The first line
+#   is the title. Lines starting with "--" are separators.
+# * Lines starting with "#" are internal comments.
+# * Hex addresses start at column 0.
+# * Symbols start at column 13.
+# * The description starts at column 21.
+# * All lines of the description until the first blank line are
+#   combined into the heading.
+# * The remaining text is in MarkDown format.
+# The encoding is UTF-8.
 
 $0000        D6510   Processor port data direction register
 
