@@ -123,9 +123,6 @@ print 'h3 {'
 print '    font-family: serif;'
 print '}'
 print ''
-print '.com {'
-print '    white-space: pre;'
-print '}'
 print ''
 print 'th.com {'
 print '    font-weight: bold;'
@@ -136,7 +133,7 @@ print '    padding: 1em;'
 print '}'
 print ''
 print 'div.disassembly_container {'
-print '    padding: 1em 0em 1em 11em;'
+print '    padding: 1em 0em 1em 13em;'
 print '    overflow: scroll;'
 print '}'
 print ''
@@ -161,7 +158,6 @@ print 'table.disassembly_table td, table.disassembly_table th {'
 print '    padding: 2px 4px;'
 print '    border: solid grey;'
 print '    border-width:0px 1px 0px 1px;'
-print '    font-family: monospace;'
 print '}'
 print ''
 print 'table.disassembly_table th.top_row {'
@@ -284,7 +280,7 @@ while(True):
 	print '<th class="left_column">'
 	if has_address:
 		print "<a name=\"" + hexaddress + "\"/>"
-	print '<span class="com">' + asm + '</span></th>'
+	print asm + '</th>'
 
 	for i in range(0, files):
 		print '<td>'
@@ -317,11 +313,8 @@ while(True):
 			else:
 				scomment = comment.lstrip()
 
-				if scomment.startswith(';'):
-					comment = '<b>' + comment + '</b>'
-
 				if len(comment) != 0:
-					comment = '<span class="com">' + comment + '</span><br />'
+					comment = '<p>' + comment + '</p>'
 
 				if len(comment) != 0:
 					comments.append(comment)
