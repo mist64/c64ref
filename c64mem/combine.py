@@ -325,7 +325,7 @@ while(True):
 			print('<b>')
 			all_text = ''
 			for heading in headings:
-				all_text += heading
+				all_text += heading + ' '
 			print(markdown.markdown(all_text))
 			print('</b><br/>')
 

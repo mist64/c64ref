@@ -17,14 +17,19 @@ $0001        R6510   Prozessorport
                      Im Prozessorport kann man angeben,
                      welche Speicherbereiche ein- oder
                      ausgeschaltet werden.
+
                      Bitbeschreibung:
-                     Bit 0 1 = BASIC-ROM,  0= RAM
-                     Bit 1 1 = KERNAL-ROM, 0= RAM
-                     Bit 2 1 = I/O         0= Zeichensatz
-                     Bit 3   = Datenausgabe von Datasette
-                     Bit 4 0 = Taste bei Datasette gedrückt
-                     1 = nicht gedrückt
-                     Bit 5 1 = Motor an, 0= Motor aus
+
+                     |       |                                  |
+                     |-------|----------------------------------|
+                     | Bit 0 | 1 = BASIC-ROM,  0= RAM           |
+                     | Bit 1 | 1 = KERNAL-ROM, 0= RAM           |
+                     | Bit 2 | 1 = I/O         0= Zeichensatz   |
+                     | Bit 3 | Datenausgabe von Datasette       |
+                     | Bit 4 | 0 = Taste bei Datasette gedrückt |
+                     |       | 1 = nicht gedrückt               |
+                     | Bit 5 | 1 = Motor an, 0= Motor aus       |
+
                      Die Bits 6 und 7 sind unbenutzt und
                      immer 0
 
@@ -64,8 +69,7 @@ $0009        TRMPOS  Speicher für Spalte beim TAB-Befehl
                      wird die Cursorposition in der
                      Speicherzelle 9 zwischengespeichert.
 
-$000A        VERCK   0= LOAD, 1= Verify, Flag des Interpre-
-                     ters
+$000A        VERCK   0= LOAD, 1= Verify, Flag des Interpreters
 
                      Weil die Routine von LOAD und VERIFY
                      identisch ist, wird ein Flag benötigt,
@@ -90,7 +94,7 @@ $000C        DIMFLG  FLag für DIM
 
 $000D                Typflag $00= numerisch, $FF= String
 
-                     Das FLag zeigt dem BASIC-Interpreter
+                     Das Flag zeigt dem BASIC-Interpreter
                      an, ob es sich um Zahlenwerte oder um
                      einen String handelt.
 
@@ -252,7 +256,7 @@ $003D-$003E  OLDTXT  Zeiger auf nächstes Statement für CONT
                      verarbeitet wird, holt sich das
                      Betriebssystem die aktuelle
                      Zeilennummer und speichert diese dann
-                     in S3D-$3E als LOW- und HIGH-Byte ab.
+                     in $3D-$3E als LOW- und HIGH-Byte ab.
 
 $003F-$0040  DATLIN  augenblickliche Zeilennummer für DATA
 
@@ -270,15 +274,13 @@ $0041-$0042  DATPTR  Zeiger für nächstes DATA-Element
 $0043-$0044  INPPTR  Zeiger auf Herkunft der Eingabe
 
                      Der Zeiger zeigt auf die jeweilige
-                     Adresse in diesem Eingabe-
-                     pufferspeicher.
+                     Adresse in diesem Eingabepufferspeicher.
 
 $0045-$0046  VARNAM  Variablenname
 
                      Falls während des Ablaufs eines
                      Programms eine Variable auftaucht,
-                     wird deren Name hier zwischen-
-                     gespeichert.
+                     wird deren Name hier zwischengespeichert.
 
 $0047-$0048  VARPNT  Variablenadresse
 
@@ -415,24 +417,28 @@ $0090        STATUS  Statuswort ST
                      der BASIC-Variable ST identisch ist,
                      sind die Fehlermeldungen der Datasette
                      und der Floppy verzeichnet:
-                     Datasette:
-                     Bit 0 = Unbenutzt
-                     Bit 1 = Unbenutzt
-                     Bit 2 = Kurzer Block
-                     Bit 3 = Langer Block
-                     Bit 4 = Lesefehler
-                     Bit 5 = Prüfsummenfehler
-                     Bit 6 = File-Ende
-                     Bit 7 = Band-Ende
-                     Floppy:
-                     Bit 0 = Fehler beim Schreiben
-                     Bit 1 = Fehler beim Lesen
-                     Bit 2 = Unbenutzt
-                     Bit 3 = Unbenutzt
-                     Bit 4 = Unbenutzt
-                     Bit 5 = Unbenutzt
-                     Bit 6 = Daten-Ende
-                     Bit 7 = DEVICE NOT PRESENT ERROR
+
+                     | Bit | Datasette        |
+                     |-----|------------------|
+                     | 0   | Unbenutzt        |
+                     | 1   | Unbenutzt        |
+                     | 2   | Kurzer Block     |
+                     | 3   | Langer Block     |
+                     | 4   | Lesefehler       |
+                     | 5   | Prüfsummenfehler |
+                     | 6   | File-Ende        |
+                     | 7   | Band-Ende        |
+
+                     | Bit | Floppy                   |
+                     |-----|--------------------------|
+                     | 0   | Fehler beim Schreiben    |
+                     | 1   | Fehler beim Lesen        |
+                     | 2   | Unbenutzt                |
+                     | 3   | Unbenutzt                |
+                     | 4   | Unbenutzt                |
+                     | 5   | Unbenutzt                |
+                     | 6   | Daten-Ende               |
+                     | 7   | DEVICE NOT PRESENT ERROR |
 
 $0091        STKEY   Flag für STOP-Taste
 
@@ -443,8 +449,8 @@ $0091        STKEY   Flag für STOP-Taste
 $0092        SVXT    Zeitkonstante für Band
 
                      Dieses Register hat die Aufgabe, kleine
-                     Unterschiede bei der Aufnahme-
-                     geschwindigkeit auszugleichen.
+                     Unterschiede bei der Aufnahmegeschwindigkeit
+                     auszugleichen.
 
 $0093        VERCK   Flag für LOAD  $00, oder für VERIFY $01
 
@@ -480,8 +486,8 @@ $0097        XSAV    Zwischenspeicher für Register
 $0098        LDTND   Anzahl der offenen Files
 
                      In dieser Speicherzelle wird
-                     festgehalten, wie viele Files gleich-
-                     zeitig geöffnet sind.
+                     festgehalten, wie viele Files gleichzeitig
+                     geöffnet sind.
 
 $0099        DFLTN   aktives Eingabegerät
 
@@ -490,12 +496,15 @@ $0099        DFLTN   aktives Eingabegerät
                      Eingabe verwendet werden soll.
                      Die Nummern sind folgendermaßen
                      festgelegt:
-                     0    = Tastatur
-                     1    = Datasette
-                     2    = RS232 und User-Port
-                     3    = Bildschirm
-                     4-5  = Drucker
-                     8-11 = Laufwerke
+                     
+                     |      |                     |
+                     |------|---------------------|
+                     | 0    | Tastatur            |
+                     | 1    | Datasette           |
+                     | 2    | RS232 und User-Port |
+                     | 3    | Bildschirm          |
+                     | 4-5  | Drucker             |
+                     | 8-11 | Laufwerke           |
 
 $009A        DFLTO   aktives Ausgabegerät
 
@@ -524,21 +533,21 @@ $009D        MSGFLG  Flag für Direktmodus $80, Programm $00
                      zugelassen werden und welche nicht.
                      $00 unterdrückt alle Fehlermeldungen,
                      $80 kommt dem normalen Eingabemodus
-                     gleich und $C0 läßt alle Fehler-
-                     meldungen zu. Diese Zustände können
+                     gleich und $C0 läßt alle Fehlermeldungen
+                     zu. Diese Zustände können
                      alle künstlich erzeugt werden.
 
 $009E        PTR1    Bandpass 1 Checksumme
 
                      Diese Speicherzelle wird zur
-                     Überprüfung von Bytes bei Kassetten-
-                     operationen benutzt.
+                     Überprüfung von Bytes bei Kassettenoperationen
+                     benutzt.
 
 $009F        PTR2    Bandpass 2 Fehlerkorrektur
 
                      Hier werden die Fehler korrrigiert,
-                     die bei Kassettenoperationen auf-
-                     getreten sind.
+                     die bei Kassettenoperationen aufgetreten
+                     sind.
 
 $00A0-$00A2  TIME    Time
 
@@ -548,8 +557,8 @@ $00A0-$00A2  TIME    Time
 
 $00A3        R2D2    Bitzähler für serielle Ausgabe
 
-                     Dieses Register wird als Zwischen-
-                     speicher von Ein-/Ausgaberoutinen
+                     Dieses Register wird als Zwischenspeicher
+                     von Ein-/Ausgaberoutinen
                      benutzt.
 
 $00A4        FIRT    Zähler für Band
@@ -593,7 +602,7 @@ $00AE-$00AF  EAL     Zeiger auf Programmende bei LOAD/SAVE
                      Zeigen immer auf das Byte, das gerade
                      gelesen oder gespeichert wurde.
 
-$00B0-$00B1  CMP0
+$00B0-$00B1  CMP0    Zeitkonstante beim Lesen von Band
 
                      Der Wert in den Speicherzellen wird
                      benutzt, um die Zeitkonstante beim
@@ -612,13 +621,13 @@ $00B4        BITTS   Bitzähler für Band
 $00B5        NXTBIT  nächstes Bit für RS-232
 
                      Diese Speicherzelle enthält immer das
-                     nächste Bit, das bei RS-232 Opera-
-                     tionen übertragen werden soll.
+                     nächste Bit, das bei RS-232 Operationen
+                     übertragen werden soll.
 
 $00B6        RODATA  Puffer für auszugebendes Byte
 
-                     Dieses Register wird als Ausgabe-
-                     zwischenspeicher benutzt.
+                     Dieses Register wird als Ausgabezwischenspeicher
+                     benutzt.
 
 $00B7        FNLEN   Länge des Filenamens
 
@@ -633,8 +642,7 @@ $00B8        LA      logische Filenummer
 
 $00B9        SA      Sekundäradresse
 
-                     Hier steht die jeweilige Sekundär-
-                     adresse.
+                     Hier steht die jeweilige Sekundäradresse.
 
 $00BA        FA      Gerätenummer
 
@@ -712,8 +720,8 @@ $00C8        INDX    Zeilenende für Eingabe
 $00C9        LSXP    Cursorzeile für Eingabe
 
                      Diese Speicherzelle dient dazu, um die
-                     Zeile des letzten eingegebenen Zeich-
-                     ens festzustellen.
+                     Zeile des letzten eingegebenen Zeichens
+                     festzustellen.
 
 $00CA                Cursorspalte für Eingabe
 
@@ -737,8 +745,7 @@ $00CD        BLNCT   Zähler für Cursor blinken
                      Diese Speicherzelle dient als Zähler
                      für die Cursor-Blinkphase. Wenn der
                      Wert 20 in dieser Speicherzelle
-                     abgezählt ist, wird der Cursor einge-
-                     schaltet.
+                     abgezählt ist, wird der Cursor eingeschaltet.
 
 $00CE        GDBLN   Zeichen unter dem Cursor
 
@@ -762,8 +769,8 @@ $00D1-$00D2  PNT     Zeiger auf Start der Bildschirmzeile
 
                      In diesen Speicherzellen wird in LOW-
                      und HIGH-Byte-Darstellung angezeigt,
-                     wo sich im Video-RAM die Zeile be-
-                     findet, auf der der Cursor gerade
+                     wo sich im Video-RAM die Zeile befindet,
+                     auf der der Cursor gerade
                      steht.
 
 $00D3        PNTR    Cursorspalte
@@ -833,8 +840,8 @@ $00FF-$010A  BASZPT  Puffer für Umwandlung Fließkomma nach
                      ASCII
 
                      Diese Register werden für die
-                     Zwischenspeicherung von Fließkomma-
-                     zahlen benutzt.
+                     Zwischenspeicherung von Fließkommazahlen
+                     benutzt.
 
 $0100-$013E  BAD     Speicher für Korrektur bei Bandeingabe
 
@@ -846,9 +853,9 @@ $0100-$013E  BAD     Speicher für Korrektur bei Bandeingabe
 $013F-$01FF          Prozessorstack
 
                      Der Stack ist generell ein
-                     Zwischenspeicher, in dem der Pro-
-                     grammierer Daten ablegen kann. Außer-
-                     dem wird er vom Prozessor dazu
+                     Zwischenspeicher, in dem der Programmierer
+                     Daten ablegen kann. Außerdem
+                     wird er vom Prozessor dazu
                      benutzt, bei einem Interrupt oder
                      einem Unterprogrammaufruf die
                      Adresse, von der aus verzweigt wurde,
@@ -856,17 +863,16 @@ $013F-$01FF          Prozessorstack
                      der Reihenfolge HIGH- und LOW-Byte.
                      Die Daten werden im Stack von der
                      Adresse $01FF zur Adresse $0100 hin
-                     abgelegt. Bei einem BREAK wird zu-
-                     sätzlich der Prozessorstatus im Stack
+                     abgelegt. Bei einem BREAK wird zusätzlich
+                     der Prozessorstatus im Stack
                      abgelegt.
 
 $0200-$0258  BUF     BASIC-Eingabepuffer
 
                      Nach der Eingabe eines Befehls oder
                      einer Programmzeile werden diese
-                     Daten in diesen Bereich zwischen-
-                     gespeichert, um dann wieder weiter-
-                     verarbeitet zu werden.
+                     Daten in diesen Bereich zwischengespeichert,
+                     um dann wieder weiterverarbeitet zu werden.
 
 $0259-$0262  LAT     Tabelle der logischen Filenummern
 
@@ -890,8 +896,8 @@ $026D-$0276  SAT     Tabelle der Sekundäradressen
 
 $0277-$0280  KEYD    Tastaturpuffer
 
-                     Hier werden die Tastencodes zwischen-
-                     gespeichert, die nicht sofort vom
+                     Hier werden die Tastencodes zwischengespeichert,
+                     die nicht sofort vom
                      Betriebssystem weiterverarbeitet
                      werden können.
 
@@ -920,22 +926,25 @@ $0286        COLOR   augenblickliche Farbe
 
                      Hier wird die augenblickliche
                      Zeichenfarbe festgelegt:
-                      0 = schwarz
-                      1 = weiß
-                      2 = rot
-                      3 = lila
-                      4 = purpur
-                      5 = grün
-                      6 = blau
-                      7 = gelb
-                      8 = orange
-                      9 = braun
-                     10 = hellrot
-                     11 = dunkelgrau
-                     12 = mittelgrau
-                     13 = hellgrün
-                     14 = hellblau
-                     15 = hellgrau
+                     
+                     |    |            |
+                     |----|------------|
+                     |  0 | schwarz    |
+                     |  1 | weiß       |
+                     |  2 | rot        |
+                     |  3 | lila       |
+                     |  4 | purpur     |
+                     |  5 | grün       |
+                     |  6 | blau       |
+                     |  7 | gelb       |
+                     |  8 | orange     |
+                     |  9 | braun      |
+                     | 10 | hellrot    |
+                     | 11 | dunkelgrau |
+                     | 12 | mittelgrau |
+                     | 13 | hellgrün   |
+                     | 14 | hellblau   |
+                     | 15 | hellgrau   |
 
 $0287        GDCOL   Farbe unter dem Cursor
 
@@ -962,10 +971,12 @@ $028A        RPTFLG  Flag für Repeatfunktion für alle
                      Betriebssystem angegeben, welche Tasten
                      eine Repeat-Funktion haben und welche
                      nicht:
-                       0 = nur Cursor-,Insert/Delete- und
-                           Leertaste
-                      64 = keine Taste
-                     128 = alle Tasten
+
+                     |     |                                           |
+                     |-----|-------------------------------------------|
+                     |   0 | nur Cursor-, Insert/Delete- und Leertaste |
+                     |  64 | keine Taste                               |
+                     | 128 | alle Tasten                               |
 
 $028B        KOUNT   Zähler für Repeatgeschwindigkeit
 
@@ -983,13 +994,16 @@ $0280                Flag für SHIFT, Commodore und CTRL
 
                      In diesem Register stehen die
                      Tastencodes der Steuertasten:
-                     1 = SHIFT
-                     2 = Commodore
-                     3 = SHIFT und Commodore
-                     4 = CTRL
-                     5 = SHIFT und CTRL
-                     6 = Commodore und CTRL
-                     7 = SHIFT, Commodore und CTRL
+
+                     |   |                           |
+                     |---|---------------------------|
+                     | 1 | SHIFT                     |
+                     | 2 | Commodore                 |
+                     | 3 | SHIFT und Commodore       |
+                     | 4 | CTRL                      |
+                     | 5 | SHIFT und CTRL            |
+                     | 6 | Commodore und CTRL        |
+                     | 7 | SHIFT, Commodore und CTRL |
 
 $028E        LSTSHF  SHIFT-Flag
 
@@ -1018,35 +1032,41 @@ $0292        AUTODN  Flag für Scrollen
 
 $0293        M51CTR  RS-232 Kontrollwert
 
-                     Hier wird die Übertragungs-
-                     geschwindigkeit der RS-232 Schnitt-
-                     stelle festgelegt:
-                     Bits 0-3 steuern die Übertragungs-
-                     geschwindigkeit:
-                     Bitmuster       Wert       Baudrate
-                     0000            0          50 Baud
-                     0001            1          50 Baud
-                     0010            2          75 Baud
-                     0011            3          110 Baud
-                     0100            4          134.5 Baud
-                     0101            5          150 Baud
-                     0110            6          300 Baud
-                     0111            7          600 Baud
-                     1000            8          1200 Baud
-                     1001            9          1800 Baud
-                     1010            10         2400 Baud
+                     Hier wird die Übertragungsgeschwindigkeit
+                     der RS-232 Schnittstelle festgelegt:
+                     Bits 0-3 steuern die Übertragungsgeschwindigkeit:
+
+                     | Bitmuster     | Wert     | Baudrate   |
+                     |---------------|----------|------------|
+                     | 0000          | 0        | 50 Baud    |
+                     | 0001          | 1        | 50 Baud    |
+                     | 0010          | 2        | 75 Baud    |
+                     | 0011          | 3        | 110 Baud   |
+                     | 0100          | 4        | 134.5 Baud |
+                     | 0101          | 5        | 150 Baud   |
+                     | 0110          | 6        | 300 Baud   |
+                     | 0111          | 7        | 600 Baud   |
+                     | 1000          | 8        | 1200 Baud  |
+                     | 1001          | 9        | 1800 Baud  |
+                     | 1010          | 10       | 2400 Baud  |
+
                      Bit 4 nicht belegt
                      Die Bits 5 und 6 steuern die Länge
                      der Übertragung:
-                     Bitmuster       Wert       Länge
-                     00              0          8-Bit
-                     01              32         7-Bit
-                     10              64         6-Bit
-                     11              96         5-Bit
+
+                     | Bitmuster     | Wert     | Länge |
+                     |---------------|----------|-------|
+                     | 00            | 0        | 8-Bit |
+                     | 01            | 32       | 7-Bit |
+                     | 10            | 64       | 6-Bit |
+                     | 11            | 96       | 5-Bit |
+
                      Bit 7 gibt die Anzahl der STOP-Bits an:
-                     Bitmuster       Wert       Anzahl
-                     0               0          1-STOP-Bit
-                     1               128        2-ST0P-Bits
+
+                     | Bitmuster     | Wert     | Anzahl      |
+                     |---------------|----------|-------------|
+                     | 0             | 0        | 1-STOP-Bit  |
+                     | 1             | 128      | 2-STOP-Bits |
 
 $0294        M51CDR  RS-232 Befehlswort
 
@@ -1056,24 +1076,25 @@ $0294        M51CDR  RS-232 Befehlswort
 $0295-$0296  M51AJB  Bit-Timing
 
                      Die Möglichkeit, eine freiwählbare
-                     Übertragungsgeschwindikeit einzu-
-                     stetlen, wurde vorgesehen, aber nicht
+                     Übertragungsgeschwindikeit einzustellen,
+                     wurde vorgesehen, aber nicht
                      eingebaut.
 
 $0297        RSSTAT  RS-232 Status
 
                      Hier werden die Fehlermeldungen der
                      RS-232 Schnittstelle angezeigt:
-                     Bit Wert    Bedeutung
-                      0    1     Fehler bei Parity-Prüfung
-                      1    2     Fehler in der Bitfolge
-                      2    4     Überlauf des Eingabepuffers
-                      3    8     Eingabepuffer ist leer
-                      4   16     das CTS-Signal fehlt
-                      5   32     nicht belegt
-                      6   64     Das DSR-Signal fehlt
-                      7  128     Die Übertragung ist unter-
-                                 brochen
+
+                     | Bit | Wert  | Bedeutung                        |
+                     |-----|-------|----------------------------------|
+                     |  0  |   1   | Fehler bei Parity-Prüfung        |
+                     |  1  |   2   | Fehler in der Bitfolge           |
+                     |  2  |   4   | Überlauf des Eingabepuffers      |
+                     |  3  |   8   | Eingabepuffer ist leer           |
+                     |  4  |  16   | das CTS-Signal fehlt             |
+                     |  5  |  32   | nicht belegt                     |
+                     |  6  |  64   | Das DSR-Signal fehlt             |
+                     |  7  | 128   | Die Übertragung ist unterbrochen |
 
 $0298        BITNUM  Anzahl der Datenbits für RS-232
 
@@ -1135,8 +1156,7 @@ $02A1        ENABL   CIA 2 NMI-Ftag
 $02A2        CASTON  CIA 1 Timer A
 
                      Bei Bandroutinen wird hier das
-                     HIGH-Byte von Timer A zwischen-
-                     gespeichert.
+                     HIGH-Byte von Timer A zwischengespeichert.
 
 $02A3        KIKA26  CIA 1 Interruptflag
 
@@ -1164,11 +1184,9 @@ $0300-$0301  IERROR  $E38B Vektor für BASIC-Warmstart
 
 $0302-$0303  IMAIN   $A483 Vektor für Eingabe einer Zeile
 
-$0304-$0305  ICRNCH  $A57C Vektor für Umwandlung in Inter-
-                           pretercode
+$0304-$0305  ICRNCH  $A57C Vektor für Umwandlung in Interpretercode
 
-$0306-$0307  IQPLOP  $A71A Vektor für Umwandlung in Klar-
-                           text (LIST)
+$0306-$0307  IQPLOP  $A71A Vektor für Umwandlung in Klartext (LIST)
 
 $0308-$0309  IGONE   $A7E4 Vektor für BASIC-BefehLsadresse
                            holen
