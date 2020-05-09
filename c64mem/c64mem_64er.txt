@@ -1,5 +1,7 @@
 - C64 RAM Map (64'er)
 -
+- Memory Map mit Wandervorschlägen
+- Dr. H. Hauck
 - 64'er Sonderheft 1986/07
 -
 ------------------------------------------------------------
@@ -448,7 +450,8 @@ $003F-$0040          Zellennummer eines gerade laufenden DATA-Befehls
                          30 NEXT X 
                          40 DATA 10,20,30 
                          50 DATA 40,50,60 
-                         60 DATA 70,80,90,100                     Sie können jetzt in den DATA-Zeilen Kommafehler einbauen, die vom Programm angezeigt werden. Ein anderer häufiger Fehler, nämlich ein Komma am Ende einer DATA-Zeile, kann damit leider nicht erkannt werden. Aber vielleicht fällt Ihnen eine Prüfformel dazu ein.
+                         60 DATA 70,80,90,100
+                     Sie können jetzt in den DATA-Zeilen Kommafehler einbauen, die vom Programm angezeigt werden. Ein anderer häufiger Fehler, nämlich ein Komma am Ende einer DATA-Zeile, kann damit leider nicht erkannt werden. Aber vielleicht fällt Ihnen eine Prüfformel dazu ein.
 
 $0041-$0042          Zeiger auf die Adresse, ab der die laufende DATA-Angabe gespeichert ist
 
@@ -570,4 +573,153 @@ $0069-$006E          Gleitkomma-Akkumulator Nr. 2
 
                      Spätestens jetzt verstehen Sie, warum der Akkumulator der Speicherzellen 97 bis 102 die Nr. 1 hat. Es gibt hier noch einen zweiten Gleitkomma-Akkumulator, der ein identischer Zwilling ist. Zwei Akkumulatoren sind immer dann notwendig, wenn mathematische Operationen ablaufen, welche mehr als einen Operanden verarbeiten, wie zum Beispiel Multiplikation, Division und so weiter.
                      Aufgrund der Identität der beiden Akkumulatoren kann ich mir eine weitere Beschreibung ersparen.
+
+
+$006F                Flagge für Vorzeichenvergleich der Gleitkomma-Akkumulatoren Nr. 1 und Nr. 2
+
+                     Wenn die Zahl in beiden Akkumulatoren gleiche Vorzeichen hat, steht in Speicherzelle 111 eine 0, bei verschiedenen Vorzeichen eine 255.
+
+$0070                Rundungsspeicher des Gleitkomma-Akkumulators Nr. 1
+
+                     Es kann vorkommen, daß die Mantisse einer Gleitkommazahl mehr Stellen hat, als mit den vier Mantissen-Bytes des Akkumulators Nr. 1 (Zelle 97 bis 102) dargestellt werden können. In diesem Fall werden die hintersten, das heißt die unwichtigsten Stellen hinter dem Komma in der Zelle 112 abgelegt. Von dort werden sie geholt, um die Genauigkeit von mathematischen Operationen zu erhöhen und auch um Endresultate abrunden zu können.
+
+$0071-$0072          Zwischenspeicher für verschiedene Routinen
+
+                     Diese Speicherzellen werden von sehr vielen Routinen des Übersetzers und des Betriebssystems, wie zum Beispiel Zeichenkettenverarbeitung, interne Uhr (Tl$), Bestimmung der Größe von Feldern (Arrays) und etlichen anderen verwendet.
+
+$0073-$008A          Teilprogramm »Nächstes Zeichen eines Basic-Textes holen« (CHRGET-Routine)
+
+                     Die Problematik der Übersetzung von Basic-Befehlen und Anweisungen besteht darin, daß die Übersetzungsschritte durch entsprechende Programmteile des Basic-Über- setzers im Computer fest vor- • programmiert sein müssen, was bedeutet, daß diese Programme natürlich im - nicht veränderbaren - ROM stehen.
+                     Auf der anderen Seite verlangt aber der Übersetzungsvorgang, daß gewisse Teile dieser Programme sich laufend verändern. Als Beispiel soll der Zeiger herhalten, der angibt, in welcher Speicherzelle das nächste zu bearbeitende Zeichen steht. Dieser Zeiger und die zusammengehörigen Programmschritte dürfen natürlich nicht im ROM stehen, denn da sind sie ja nicht änderbar.
+                     Dieser Konflikt wird dadurch gelöst, daß dieses »variable« Teilprogramm des Übersetzers zwar im ROM steht (im C 64 ab 58274 oder $E3A2, im VC 20 ab 58247 oder $E387), von wo es aber direkt nach dem Einschalten des Computers in das RAM, und zwar in die Speicherzellen 115 bis 138, umgeladen wird.
+                     Dieses Teilprogramm, welches die Zeichen zur Übersetzung herbeiholt und deswegen »Character-Get« oder kurz CHARGET-Routine genannt wird, istwegen seinerVeränder- barkeit natürlich ein beliebtes Objekt aller möglichen Manipulationen. Es ist deshalb im As- sembler-Kurs, Teil 5, im 64’er, Ausgabe 1/85, im Detail beschrieben worden, allerdings mit Schwerpunkt auf Assembler- Maschinensprache.
+                     Für Basic-Programmierer möchte ich hier deshalb eine kurze Beschreibung der CHAR- GET-Routine einfügen.
+                     Die Routine beginnt mit einem Sprung auf den oben schon erwähnten Zeiger in Adresse 122 und 123, welcher seinerseits auf die Adresse zeigt, in welcher das nächste zu übersetzende Zeichen steht. Das Zeichen wird entsprechend dem Hinweis des Zeigers geholt, in den Akkumulator des Mikroprozessors geladen und dort verschiedenen Prüfungen unterzogen. Ist das Zeichen ein Gänsefuß, erkennt das Programm, wie es das nächste Zeichen interpretieren und behandeln muß. Ein Doppelpunkt leitet einen neuen Befehl ein, eine Leerstelle wird unterdrückt und so weiter.
+                     Mit dem Befehl
+                         PRINT PEEK(122)+256*PEEK(123)
+                     können wir innerhalb eines Programms ausdrucken, wohin der Zeiger nach dem letzten Basic- Zeichen deutet. Eine Überprüfung mit den Methoden, die ich bei der Besprechung der Speicherzellen 43 bis 56 genannt habe, zeigt Ihnen den Zusammenhang.
+                     Normalerweise wird der Zeiger in 122 und 123 nach jedem Zeichen um 1 erhöht, da ja die Zeichen einer Basic-Zeile hintereinander im Speicher stehen. Ein GOTO- oder GOSUB-Befehl kann diese Folge natürlich unterbrechen, ebenso wie eine willkürliche Änderung durch einen Eingriff von außen.
+                     Ein derartiger Eingriff, auch »wedge« (Keil) genannt, öffnet natürlich Tür und Tor für Programmiertricks, insbesondere für Einbau von neuen, selbsterfundenen Befehlen. Man kann entweder den allerersten Sprungbefehl auf den Zeiger so umlenken, daß er auf ein eigenes Maschinenprogramm springt, oder man kann den Zeiger selbst »verbiegen«, so daß er auf eine andere Adresse und damit auf ein anderes Zeichen zeigt. Es gibt dafür viele Möglichkeiten, die aber alle nur in Maschinencode funktionieren. Theoretisch können wir natür-lich den Inhalt des Zeigers in 122 und 123 durch POKE verändern. Aber was dann? Jeder nachfolgende Basic-Befehl löst natürlich wieder die normale Übersetzungsroutine aus und unser schöner POKE ist für die Katz.
+                     Wie ein Wedge in Maschinensprache gemacht wird, hat Christoph Sauer im VC 20-Kurs - 64’er, Ausgabe 9/84 beschrieben. Allerdings ist das Beispiel für Anfänger nicht verständlich, was mich zu der Überzeugung bringt, daß die CHARGET-Routine und ihre Anwendung einen eigenen Aufsatz wert wäre.
+
+$008B-$008F          Wert der RND-Funktion als Gleitkommazahl
+
+                     Mit dem Befehl RND(X) kann bekanntlich eine Zufallszahl erzeugt werden. Was das bedeutet und wie »zufällig« diese Zahlen sind, können Sie dem Texteinschub Nr. 13 »Wie zufällig sind Zufallszahlen?« entnehmen.
+                     Beim Einschalten des Computers werden die Zahlen 128, 79, 199, 82 und 88 in diese Speicherzellen geschrieben. Mit der folgenden Zeile können Sie das gleich nach dem Einschalten des Computers leicht überprüfen.
+                         FOR X=139 TO 143:PRINT PEEK(X):NEXT
+                     Nach den Manipulationen des RND-Befehls wird das Resultat wieder in die Zellen 139 bis 143 als neuer Ausgangswert (seed) für den nächsten RND-Befehl gebracht.
+                     Diese fünf Zahlen stellen eine Gleitkommazahl dar. Ihre Form entspricht dabei der Aufteilung, wie sie auch im Gleitkomma- Akkumulator (97 bis 101) verwendet wird.
+                     Eine Abfrage dieser Zahlen aus den Zellen 139 bis 143 ist natürlich möglich, aber nicht ergiebig, weil das Resultat von RND(X) direkt als Zahl verfügbar ist, während die 5 Byte erst in eine brauchbare Zahl umgerechnet werden müßten. Eine Änderung durch POKEn neuer Werte in diese Speicherzellen geht leider nicht.
+
+$0090                Statusvariable ST
+
+                     Diese Adresse enthält ein Byte, welches mit der Statusvariablen ST von Basic identisch ist. Diese reservierte Variable ist im Texteinschub Nr. 14 »ST-atus« näher beschrieben.
+                     Alle Routinen des Betriebssystems, die mit Ein- und Ausgabe zu tun haben, benutzen diese Speicherzelle zum Abspeichern und Abfragen des Status der Ein-/Ausgabeoperationen.
+                     Genauer gesagt, alle Ein-/Ausgabeoperationen, die mit der Datasette und mit dem Floppy-Gerät beziehungsweise dem Drucker zu tun haben, benutzen die Adresse 144. Im Fachjargon sprechen wir vom Kassetten-Port und vom seriellen Port.
+                     Der dritte Anschluß des Computers, nämlich der RS232 oder User-Port, benutzt für den Status die Speicherzelle 663.
+                     Jedes Bit der Zelle 144 hat eine eigene Bedeutung wie folgt.
+                     Alle nicht aufgeführten Bits sind nicht benutzt.
+                     Diese Speicherzelle beziehungsweise die Statusvariable ST kann recht nützlich sein. Einige Kochrezepte dafür werden im Texteinschub Nr. 14 behandelt.
+
+$0091                Zwischenspeicher für Abfrage der STOP-Taste
+
+                     In den Bildern 13 und 14 ist dargestellt, wie die Tasten des VC 20 und des C 64 miteinander über eine Matrix verbunden sind.
+                     60mal in der Sekunde unterbricht der Computer seine Arbeit, merkt sich, wo er gerade ist und fragt dann unter anderem, ob die STOP-Taste gedrückt worden ist. Dadurch wird erreicht, daß die STOP-Taste jederzeit Priorität hat.
+                     Die Abfrage geht so vonstatten, daß das Betriebssystem über das im Bild 13 und 14 gezeigte Spaltenregister 56320 (beim VC 20: 37152) diejenige Tastenspalte anwählt, in welcher sich die STOP-Taste befindet. Aus Bild 13 und 14 sehen wir, daß dies die Spalte mit der Codenummer 127 beziehungsweise 247 ist. Ist in dieser Spalte eine Taste gedrückt, wird an ihrer Stelle eine Null in das Auslese-Register 56321 (VC 20: 37153) geschrieben. Die dadurch entstandene Dualzahl wird in die Speicherzelle 145 gebracht.
+                     Es ist sicher verständlich, daß auf diese Weise nicht nur die STOP-Taste, sondern alle Tasten der Spalte 127 (247) abgefragt werden können. Ein kleines Demonstrationsprogramm kann das beweisen:
+                         10 PRINT PEEK (656321);PEEK (145)
+                         20 GOT0 10
+                     Beim VC 20 ist statt 56321 natürlich 37153 einzusetzen.
+                     Das Zahlenband kann durch die Tasten der genannten Spalte - und nur durch diese - beeinflußt werden.
+
+$0092                Zeltkonstante beim Lesen vom Band
+
+                     Die Speicherzelle enthält eine vom Betriebssystem einstellbare Zahl, welche die kleinen Unterschiede in der Aufnahmegeschwindigkeit ausgleicht, die bei verschiedenen Datasetten vorkommen können.
+                     Diese Zeitkonstante steht im Zusammenhang mit der Zahl, die in den Speicherzellen 176 und 177 steht.
+                     Eine Veränderung der Konstante in Basic ist nicht möglich.
+
+$0093                Flagge für LOAD oder VERIFY
+
+                     Diese Flagge dient dem Betriebssystem, um zu unterscheiden, ob eine LOAD- Operation nur LOADen oder aber VERIFYen soll.
+                     Sie ist identisch mit der Flagge des Basic-Übersetzers in Speicherzelle 10. Genauere Hinweise bitte ich der Beschreibung von Zelle 10 zu entnehmen.
+
+$0094                Flagge für Floppy/Drucker-Ausgang
+
+                     Das Betriebssystem benutzt diese Speicherzelle, um anzuzeigen, daß ein Zeichen im Ausgabepuffer steht, welches zum Floppy-Gerät oder zum Drucker geleitet werden soll. Diese Flagge setzt alle am seriellen Port angeschlossenen Geräte in den Zustand »Listen«, das heißt bereit zu sein, Daten aufzunehmen.
+
+$0095                Zeichen im Ausgabepuffer
+
+                     In dieser Speicherzelle wird das Zeichen abgelegt, welches als nächstes über den Serial- Port zum Floppy-Gerät oder zum Drucker transportiert wird, sobald die Flagge in 148 die Bereitschaft anzeigt.
+
+$0096                Arbeitsspeicher für die Band-Leseroutine
+
+                     Diese Speicherzelle wird zur Zwischenspeicherung von Daten beim Lesen einer Kassette benutzt.
+
+$0097                Zwischenspeicher des X-Registers
+
+                     Maschinen-Programmierer kennen das X-Register des Mikroprozessors. Beim Lesen eines Zeichens von der Datasette wird der Inhalt des X- Registers in dieser Adresse zwischengespeichert.
+
+$0098                Anzahl der offenen Files
+
+                     Ein File, oder auf Deutsch gesagt, eine Datei, wird mit dem Befehl OPEN eröffnet. Nach OPEN folgt die Nummer der Datei; sie ist beliebig wählbar bis maximal 255. Als zweites folgt die Nummer des Gerätes, mit dem die Verbindung hergestellt werden soll.
+                     Es ist erlaubt, mehrere Dateien gleichzeitig geöffnet zu halten, vorausgesetzt die Nummern der Dateien sind verschieden.
+                     In Speicherzelle 152 wird festgehalten, wieviel Dateien gleichzeitig geöffnet sind. Dieses kleine Programm zeigt es uns deutlich:
+                         10 FOR K=10 T0 22
+                         20 PRINT PEEK (l52),K
+                         30 OPEN K,0
+                         40 NEXT K
+                     Mit der FOR...NEXT-Schleife der Zeilen 10 und 40 eröffnen wir 13 Dateien hintereinander, und zwar - wie Zeile 30 uns deutlich macht - mit der Tastatur. Die Tastatur hat die Nummer 0, der Drucker die Nummer 4, das Floppy-Gerät die Nummer 8 und die Datasette die Nummer 1. Ich habe die Tastatur gewählt, obwohl es keinen Sinn ergibt, weil sie die vielen Eröffnungen ohne zu unterbrechen akzeptiert.
+                     Nach RUN sehen wir links untereinander den Inhalt von 152, also die Anzahl der eröffneten Dateien. Rechts steht jeweils die Nummer der eröffne-
+                     In der 10. Zeile sehen wir jetzt die 10 als Inhalt von 152 und als neue Dateinummer (Schleifenvariable K) wieder die 10. Das Programm bleibt aber stehen und meldet FILE OPEN. Es hat recht, denn die Datei 10 ist bereits als erste eröffnet, aber nicht wieder geschlossen worden.
+                     Das Betriebssystem macht das so, daß jede der Dateinummern in eine Tabelle geschrieben wird, die in den Speicherzellen 601 bis 610 stehen. Bei jedem OPEN-Befehl wird dort nachgeschaut, ob die Filenummer existiert. Wenn ja, wird die Fehlermeldung FILE OPEN ERROR ausgegeben. Bei jedem CLOSE-Befehl wird die entsprechende Nummer aus der Tabelle gelöscht.
+                     Wir können aber auch eine 0 in die Speicherzelle 152 POKEn, wodurch dem Betriebssystem vorgegaukelt wird, daß keine Datei eröffnet ist. Schieben Sie im Programm einfach die Zeile ein:
+                         45 POKE 152,0 
+                     und das Programm läuft ewig weiter.
+                     Die Speicherzelle 152 ist also der Wächter über die Anzahl der eröffneten Dateien. Steht sie auf 0, dann wird eine Neueröffnung am Anfang der Tabelle ab 601 eingetragen. Die Tabelle ihrerseits ist der Wächter über Exklusivität der Dateinummern. Ich zeige Ihnen das noch genauer, wenn wir zu 601 kommen.
+                     Sie werden vielleicht fragen, warum ich das so ausführlich beschreibe. Nun, in einem Programm kann es sicher sehr nützlich sein, dieZelle 152 mit PEEK nach der Datei-Lage abzufragen und entsprechend Maßnahmen zu treffen, ehe die Fehlermeldung das Programm abbricht.
+                     Mit POKE 152,0 aber müssen Sie aufpassen. Es ersetzt nämlich nicht (I!) den CLOSE- Befehl. Probieren Sie es aus: Um das kleine Programm oben per Drucker auszudrucken, brauchen wir:
+                         OPEN 1,4: CMD 1: LIST
+                     Wenn Sie jetzt die Zeile 152 auf 0 POKEn und dann LIST eintippen, wird trotzdem wieder auf dem Drucker gelistet und nicht auf dem Bildschirm. Die vorgeschriebene Schließmethode mit
+                         PRINT #1:CL0SE1
+                     geht jetzt aber auch nicht mehr, denn das Betriebssystem ist ja im Glauben, daß keine Datei eröffnet ist - schöner Schlamassel!
+                     Erst eine Neueröffnung bringt alles wieder in die Reihe. Also Vorsicht mit der Anwendung der Speicherzelle 152. Eine Möglichkeit, alle Dateien auf einen Schlag zu schließen, gibt es aber doch.
+                     SYS 65511 besorgt das sowohl beim C 64 als auch beim VC 20.
+
+$0099                Nummer des Eingabe-Gerätes
+
+                     Das Betriebssystem verwendet diese Speicherzelle, um festzuhalten, welches Gerät zur Eingabe verwendet werden soll.
+                     Die Nummern sind wie folgt festgelegt:
+                     0 = Tastatur
+                     1 = Datasette
+                     2 = RS232 (User-)Port
+                     3 = Bildschirm
+                     4,5 = Drucker
+                     8-11 = Floppy-Laufwerke
+                     Nach dem Einschalten oder nach RESET des Computers steht in 153 eine 0 (Tastatur). Nachjedem Einsatz eines anderen Gerätes wird diese Speicherzelle wieder auf 0 gesetzt, so daß wir immer die Tastatur zur Verfügung haben.
+                     Für Maschinenprogrammierer ist diese Adresse sicherlich wertvoll. Die Routine, welche die Eingabegeräte festlegt, sobald der Befehl INPUT# beziehungsweise GET# ausgeführt wird, heißt CHKIN und beginnt beim C 64 ab Adresse 61966 ($F20E), beim VC 20 ab 62151 ($F2C7).
+                     Für Basic-Programmierer habe ich in der Literatur nur eine Anwendung gefunden, und die wurde bereits bei der Besprechung der Speicherzelle 19 angekündigt.
+                     Es ist dies eine MERGE-Routine. Leider funktioniert dieses Verfahren nicht bei dem 1541- Floppy-Laufwerk. Erfunden wurde die Routine von Brad Templeton und ist von Jim Butterfield unter dem Namen »Magic Merge« für den VC 20/
+                     C 64 adaptiert worden. Ich gebe zu, in der Zwischenzeit sind noch andere, vielleicht auch kürzere MERGE-Routinen veröffentlicht worden. Aber diese hier verwendet gleich drei interessante Ingredienzen, nämlich die Speicherzellen 19 und 153 und außerdem die sogenannte »Dynamische Tastenabfrage«. Wer die letztere nicht kennt, sollte sich zum Verständnis den Texteinschub Nr. 15 gleichen Namens ansehen.
+                     Ein MERGE (deutsch: zusammenführen, verschmelzen) besteht darin, ein auf Band gespeichertes Programm zu einem im Computer stehenden anderen Programm so dazuzuladen, daß dieses nicht überschrieben, sondern ergänzt wird. Wichtig ist dabei, daß das Programm vom Band höhere Zeilennummern hat als das Programm im Computer. Außerdem muß das Programm auf dem Band als Datei gespeichert sein. Das wird so erreicht:
+                     1. Programm eintippen
+                     2. Direkt eingeben:
+                         OPEN 1,1,1, "Name*: CMD1:LIST
+                     3. Erst wenn READY kommt, direkt eingeben PRINT #1:CLOSE1
+                     Damit ist das Programm auf dem Band gespeichert. Nun kommt der eigentliche MERGE- Vorgang.
+                     4. Es steht ein Programm im Computer
+                     5. Band mit dem Programm »Name« einlegen
+                     6. Direkt eingeben:
+                         POKE 19,1:OPEN 1
+                     7. Sobald READY erscheint, Bildschirm löschen (SHIFT-CLR).
+                     8. Dreimal Cursor-Down
+                     9. Direkt eingeben:
+                         PRINT CHR$(19):POKE 198,1:POKE 631,13:POKE 153,1
+                     10. Das Band beendet den Ladevorgang mit einer Fehlermeldung, die wir ignorieren.
+                     11. Nach CLOSE 1 sind beide Programme zusammengefügt.
+                     Wie gesagt, Schritt 6 verwendet Zeile 19 (bitte dort nachlesen), Schritte 8 und 9 sind die »Dynamische Tastenabfrage«, und Schritt 9 verwendet zusätzlich die hier zur Diskussion stehende Speicherzelle 153, um die Datasette als Eingabegerät zu definieren.
+
+
+
+
+
 
