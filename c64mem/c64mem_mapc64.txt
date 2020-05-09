@@ -8,14 +8,14 @@
 
 $0000         D6510  6510 On-Chip I/O DATA Direction Register
                      
-                     Bit 0: Direction of Bit 0 I/O on port at next address.  Default = 1 (output)
-                     Bit 1: Direction of Bit 1 I/O on port at next address.  Default = 1 (output)
-                     Bit 2: Direction of Bit 2 I/O on port at next address.  Default = 1 (output)
-                     Bit 3: Direction of Bit 3 I/O on port at next address.  Default = 1 (output)
-                     Bit 4: Direction of Bit 4 I/O on port at next address.  Default = 0 (input)
-                     Bit 5: Direction of Bit 5 I/O on port at next address.  Default = 1 (output)
-                     Bit 6: Direction of Bit 6 I/O on port at next address.  Not used.
-                     Bit 7: Direction of Bit 7 I/O on port at next address.  Not used.
+                     * Bit 0: Direction of Bit 0 I/O on port at next address.  Default = 1 (output)
+                     * Bit 1: Direction of Bit 1 I/O on port at next address.  Default = 1 (output)
+                     * Bit 2: Direction of Bit 2 I/O on port at next address.  Default = 1 (output)
+                     * Bit 3: Direction of Bit 3 I/O on port at next address.  Default = 1 (output)
+                     * Bit 4: Direction of Bit 4 I/O on port at next address.  Default = 0 (input)
+                     * Bit 5: Direction of Bit 5 I/O on port at next address.  Default = 1 (output)
+                     * Bit 6: Direction of Bit 6 I/O on port at next address.  Not used.
+                     * Bit 7: Direction of Bit 7 I/O on port at next address.  Not used.
                      
                      This location is the first of a number of hardware registers that we
                      will discuss.  Although they can be written to and/or read like RAM,
@@ -34,13 +34,13 @@ $0000         D6510  6510 On-Chip I/O DATA Direction Register
                      
 $0001         R6510  6510 On-Chip I/O Port
 
-                     Bit 0: LORAM signal.  Selects ROM or RAM at 40960 ($A000).  1=BASIC, 0=RAM
-                     Bit 1: HIRAM signal.  Selects ROM or RAM at 57344 ($E000).  1=Kernal, 0=RAM
-                     Bit 2: CHAREN signal.  Selects character ROM or I/O devices.  1=I/O, 0=ROM
-                     Bit 3: Cassette Data Output line.
-                     Bit 4: Cassette Switch Sense.  Reads 0 if a button is pressed, 1 if not.
-                     Bit 5: Cassette Motor Switch Control.  A 1 turns the motor on, 0 turns it off.
-                     Bits 6-7: Not connected--no function presently defined.
+                     * Bit 0: LORAM signal.  Selects ROM or RAM at 40960 ($A000).  1=BASIC, 0=RAM
+                     * Bit 1: HIRAM signal.  Selects ROM or RAM at 57344 ($E000).  1=Kernal, 0=RAM
+                     * Bit 2: CHAREN signal.  Selects character ROM or I/O devices.  1=I/O, 0=ROM
+                     * Bit 3: Cassette Data Output line.
+                     * Bit 4: Cassette Switch Sense.  Reads 0 if a button is pressed, 1 if not.
+                     * Bit 5: Cassette Motor Switch Control.  A 1 turns the motor on, 0 turns it off.
+                     * Bits 6-7: Not connected--no function presently defined.
                      
                      The chief function of this register is to determine which blocks of
                      RAM and ROM the 6510 microprocessor will address.  The Commodore 64
@@ -75,7 +75,7 @@ $0001         R6510  6510 On-Chip I/O Port
                      ordinarily fixed in ROM.  For examples, to move BASIC into RAM, just
                      type:
                      
-                     FOR I=40960 TO 49151:POKE I,PEEK(I):NEXT
+                         FOR I=40960 TO 49151:POKE I,PEEK(I):NEXT
                      
                      Though it appears that such a program would not do anything, it in
                      fact copies bytes from ROM to RAM.  This is because any data which is
@@ -83,7 +83,7 @@ $0001         R6510  6510 On-Chip I/O Port
                      same address.  So while you are PEEKing ROM, you are POKEing RAM.  To
                      switch to your RAM copy of BASIC, type in:
                      
-                     POKE 1,PEEK(1) AND 254.
+                         POKE 1,PEEK(1) AND 254.
                      
                      Now you are ready to make modifications.  Examples of simple
                      modifications include changing the text which the interpreter prints,
@@ -96,7 +96,7 @@ $0001         R6510  6510 On-Chip I/O Port
                      On the more practical side, you could change the prompt that INPUT
                      issues to a colon, rather than a question mark:
                      
-                     POKE 43846,58
+                         POKE 43846,58
                      
                      You are not limited to just cosmetic changes of text.  Jim Butterfield
                      has given an example in COMPUTE! magazine of changing the interpreter
@@ -149,8 +149,8 @@ $0001         R6510  6510 On-Chip I/O Port
                      characters in the set.  The method for reading this ROM into RAM from
                      BASIC is as follows:
                      
-                     10 POKE 56333,127:POKE1,PEEK(1) AND 251:FOR I=0 TO 2048
-                     20 POKE BASE+I,PEEK(53248+I):NEXT:POKE 1,PEEK(1) OR 4:POKE 56333,129
+                         10 POKE 56333,127:POKE1,PEEK(1) AND 251:FOR I=0 TO 2048
+                         20 POKE BASE+I,PEEK(53248+I):NEXT:POKE 1,PEEK(1) OR 4:POKE 56333,129
                      
                      The first POKE is necessary to turn off the system timer interrupt.
                      Since the I/O devices are addressed in the same space as the character
@@ -518,14 +518,14 @@ $002B-$002C  TXTTAB  Pointer to the Start of BASIC Program Text
                      can emulate this configuration with the 64 with the following short
                      program:
                      
-                     10 POKE 55,0:POKE 56,128: CLR: REM LOWER TOP OF MEMORY TO 32768
-                     20 POKE 56576,PEEK(56576) AND 253: REM ENABLE BANK 2
-                     30 POKE 53272,4: REM TEXT DISPLAY MEMORY NOW STARTS AT 32768
-                     40 POKE 648,128:REM OPERATING SYSTEM PRINTS TO SCREEN AT 32768 (128*256)
-                     50 POKE 44,4:POKE 1024,0: REM MOVE START OF BASIC TO 1025 (4*256+1)
-                     60 POKE 792,193: REM DISABLE RESTORE KEY
-                     70 PRINT CHR$(147);"NOW CONFIGURED LIKE PET":NEW
-                     80 REM ALSO SEE ENTRIES FOR LOCATION 55, 56576, AND 648
+                         10 POKE 55,0:POKE 56,128: CLR: REM LOWER TOP OF MEMORY TO 32768
+                         20 POKE 56576,PEEK(56576) AND 253: REM ENABLE BANK 2
+                         30 POKE 53272,4: REM TEXT DISPLAY MEMORY NOW STARTS AT 32768
+                         40 POKE 648,128:REM OPERATING SYSTEM PRINTS TO SCREEN AT 32768 (128*256)
+                         50 POKE 44,4:POKE 1024,0: REM MOVE START OF BASIC TO 1025 (4*256+1)
+                         60 POKE 792,193: REM DISABLE RESTORE KEY
+                         70 PRINT CHR$(147);"NOW CONFIGURED LIKE PET":NEW
+                         80 REM ALSO SEE ENTRIES FOR LOCATION 55, 56576, AND 648
                      
                      Such reconfiguring can be helpful in transferring programs from the 64
                      to the PET, or vice versa.  Since the 64 automatically relocates BASIC
@@ -554,7 +554,7 @@ $002B-$002C  TXTTAB  Pointer to the Start of BASIC Program Text
                      into screen memory.  One way around this is by moving the start of
                      basic to 16385 ($4001) by typing in direct entry mode:
                      
-                     POKE 44,64: POKE 64*256,0:NEW
+                         POKE 44,64: POKE 64*256,0:NEW
                      
                      Other uses might include setting aside a storage area for sprite shape
                      data, or user-defined character sets.
@@ -763,7 +763,7 @@ $0037-$0038  MEMSIZ  Pointer to the Highest Address Used by BASIC
                      example, to set aside a 1K area at the top of BASIC, start your
                      program with the line:
                      
-                     POKE 56,PEEK(56)-4:CLR
+                         POKE 56,PEEK(56)-4:CLR
                      
                      The CLR is necessary to insure that the string text will start below
                      your safe area.
@@ -852,15 +852,15 @@ $0041-$0042  DATPTR  Pointer to the Address of the Current DATA Item
                      the statement before the DATA statement is stored in a variable, and
                      then used to change this pointer.
                      
-                     10 A1=PEEK(61):A2=PEEK(62)
-                     20 DATA THIS DATA WILL BE USED SECOND
-                     30 B1=PEEK(61):B2=PEEK(62)
-                     40 DATA THIS DATA WILL BE USED FIRST
-                     50 C1=PEEK(61):C2=PEEK(62)
-                     60 DATA THIS DATA WILL BE USED THIRD
-                     70 POKE 65,B1:POKE 66,B2:READ A$:PRINT A$
-                     80 POKE 65,A1:POKE 66,A2:READ A$:PRINT A$
-                     90 POKE 65,C1:POKE 66,C2:READ A$:PRINT A$
+                         10 A1=PEEK(61):A2=PEEK(62)
+                         20 DATA THIS DATA WILL BE USED SECOND
+                         30 B1=PEEK(61):B2=PEEK(62)
+                         40 DATA THIS DATA WILL BE USED FIRST
+                         50 C1=PEEK(61):C2=PEEK(62)
+                         60 DATA THIS DATA WILL BE USED THIRD
+                         70 POKE 65,B1:POKE 66,B2:READ A$:PRINT A$
+                         80 POKE 65,A1:POKE 66,A2:READ A$:PRINT A$
+                         90 POKE 65,C1:POKE 66,C2:READ A$:PRINT A$
                      
 $0043-$0044  INPPTR  Pointer in the Source of GET, READ, or INPUT Information
                      
@@ -1074,35 +1074,35 @@ $0073-$008A  CHRGET  Subroutine: Get Next BASIC Text Character
                      As this is such a central routine, a disassembly listing is given
                      below to provide a better understanding of how it works.
                      
-                     115 $73   CHRGET  INC TXTPTR   ; increment low byte of TXTPTR
-                     117 $75           BNE CHRGOT   ; if low byte isn't 0, skip next
-                     119 $77           INC TXTPTR+1 ; increment high byte of TXTPTR
-                     121 $79   CHRGOT  LDA          ; load byte from where TXTPTR points
-                                                    ; entry here does not update TXTPTR,
-                                                    ; allowing you to readl the old byte again
-                     122 $7A   TXTPTR  $0207        ; pointer is really the LDA operand
-                                                    ; TXTPTR+1 points to 512-580 ($200-$250)
-                                                    ; when reading from the input buffer
-                                                    ; in direct mode
-                     124 $7C   POINTB  CMP #$3A     ; carry flag set if > ASCII numeral 9
-                     126 $7E           BCS EXIT     ; character is not a numeral--exit
-                     128 $80           CMP #$20     ; if it is an ASCI space...
-                     130 $82           BEQ CHRGET   ; ignore it and get next character
-                     132 $84           SEC          ; prepare to subtract
-                     133 $85           SBC #$30     ; ASCII 0-9 are between 48-57 ($30-$39)
-                     135 $87           SEC          ; prepare to subtract again
-                     136 $88           SBC #$D0     ; if < ASCII 0 (57, $39) then carry is set
-                     138 $8A   EXIT    RTS          ; carry is clear only for numeral on return
+                         115 $73   CHRGET  INC TXTPTR   ; increment low byte of TXTPTR
+                         117 $75           BNE CHRGOT   ; if low byte isn't 0, skip next
+                         119 $77           INC TXTPTR+1 ; increment high byte of TXTPTR
+                         121 $79   CHRGOT  LDA          ; load byte from where TXTPTR points
+                                                        ; entry here does not update TXTPTR,
+                                                        ; allowing you to readl the old byte again
+                         122 $7A   TXTPTR  $0207        ; pointer is really the LDA operand
+                                                        ; TXTPTR+1 points to 512-580 ($200-$250)
+                                                        ; when reading from the input buffer
+                                                        ; in direct mode
+                         124 $7C   POINTB  CMP #$3A     ; carry flag set if > ASCII numeral 9
+                         126 $7E           BCS EXIT     ; character is not a numeral--exit
+                         128 $80           CMP #$20     ; if it is an ASCI space...
+                         130 $82           BEQ CHRGET   ; ignore it and get next character
+                         132 $84           SEC          ; prepare to subtract
+                         133 $85           SBC #$30     ; ASCII 0-9 are between 48-57 ($30-$39)
+                         135 $87           SEC          ; prepare to subtract again
+                         136 $88           SBC #$D0     ; if < ASCII 0 (57, $39) then carry is set
+                         138 $8A   EXIT    RTS          ; carry is clear only for numeral on return
                      
                      The Accumulator (.A register) holds the character that was read on
                      exit from the routine.  Status register (.P) bits which can be tested
                      for on exit are:
                      
-                       Carry Clear if the character was an ASCII digit 0-9.
-                       Carry Set, otherwise.
-                       Zero Set only if the character was a statement terminator 0 or an
-                     ASCII colon, 58 ($3A).
-                       Zero Clear, otherwise.
+                     * Carry Clear if the character was an ASCII digit 0-9.
+                     * Carry Set, otherwise.
+                     * Zero Set only if the character was a statement terminator 0 or an
+                       ASCII colon, 58 ($3A).
+                     * Zero Clear, otherwise.
                      
                      
                      One wedge insertion technique is to change CHRGET's INC $7A to a JMP
@@ -1154,18 +1154,20 @@ $0090        STATUS  Kernal I/O Status Word (ST)
                      as ST=4.  A table of status codes for cassette and serial devices
                      follows below:
                      
-                     Cassette:
-                     Bit 2 (Bit Value of 4) = Short Block
-                     Bit 3 (Bit Value of 8) = Long Block
-                     Bit 4 (Bit Value of 16) = Unrecoverable error (Read), mismatch
-                     Bit 5 (Bit Value of 32) = Checksum error
-                     Bit 6 (Bit Value of 64) = End of file
+                     | Bit | Bit Value | Cassette                             |
+                     |-----|-----------|--------------------------------------|
+                     | 2   | 4         | Short Block                          |
+                     | 3   | 8         | Long Block                           |
+                     | 4   | 16        | Unrecoverable error (Read), mismatch |
+                     | 5   | 32        | Checksum error                       |
+                     | 6   | 64        | End of file                          |
                      
-                     Serial Devices:
-                     Bit 0 (Bit Value of 1) = Time out (Write)
-                     Bit 1 (Bit Value of 2) = Time out (Read)
-                     Bit 6 (Bit Value of 64) = EOI (End or Identify)
-                     Bit 7 (Bit Value of 128) = Device not present
+                     | Bit | Bit Value | Serial Devices                       |
+                     |-----|-----------|--------------------------------------|
+                     | 0   | 1         | Time out (Write)                     |
+                     | 1   | 2         | Time out (Read)                      |
+                     | 6   | 64        | EOI (End or Identify)                |
+                     | 7   | 128       | Device not present                   |
                      
                      Probably the most useful bit to test is Bit 6 (end of file).  When
                      using the GET statement to read in individual bytes from a file, the
@@ -1190,16 +1192,18 @@ $0091        STKEY   Flag: Was STOP Key Pressed?
                      been pressed, while a bit reset to 0 indicates that a key is pressed.
                      Therefore, the following values indicate the keystrokes detailed
                      below:
-                     
-                     255 $FF  = no key pressed
-                     254 $FE  = 1 key pressed
-                     253 $FD  = (left arrow) key pressed
-                     251 $FB  = CTRL key pressed
-                     247 $F7  = 2 key pressed
-                     239 $EF  = space bar pressed
-                     223 $DF  = Commodore logo key pressed
-                     191 $BF  = Q key pressed
-                     127 $7F  = STOP key pressed
+
+                     |     |     |                            |
+                     |-----|-----|----------------------------|                     
+                     | 255 | $FF | no key pressed             |
+                     | 254 | $FE | 1 key pressed              |
+                     | 253 | $FD | (left arrow) key pressed   |
+                     | 251 | $FB | CTRL key pressed           |
+                     | 247 | $F7 | 2 key pressed              |
+                     | 239 | $EF | space bar pressed          |
+                     | 223 | $DF | Commodore logo key pressed |
+                     | 191 | $BF | Q key pressed              |
+                     | 127 | $7F | STOP key pressed           |
                      
                      VIC owners will notice that the 64's keyboard matrix is very different
                      from the VIC's.  One of the advantages of this difference is that you
@@ -1339,9 +1343,9 @@ $00A0-$00A2  TIME    Software Jiffy Clock
                      50 minutes.  After the program has been running for one minute, all
                      these locations will be reset to 0.
                      
-                     100 TI$="235900"
-                     110 PRINT TI$,PEEK(160),PEEK(161),PEEK(162)
-                     120 GOTO 110
+                         100 TI$="235900"
+                         110 PRINT TI$,PEEK(160),PEEK(161),PEEK(162)
+                         120 GOTO 110
                      
                      Since updating is done by the IRQ interrupt that reads the keyboard,
                      anything which affects the operation of that interrupt routine will
@@ -1351,8 +1355,7 @@ $00A0-$00A2  TIME    Software Jiffy Clock
                      not send it back to the normal routine will upset software clock
                      operation as well.
                      
-                     163-164       $A3-$A4
-                     Temporary Data Storage Area
+$00A3-$A4    R2D2    Temporary Data Storage Area
                      
                      These locations are used temporarily by the tape and serial I/O
                      routines.
@@ -1535,12 +1538,14 @@ $00BA        FA      Current Device Number
                      This location holds the number of the device that is currently being
                      used.  Device number assignments are as follows:
                      
-                     0    = Keyboard
-                     1    = Datasette Recorder
-                     2    = RS-232/User Port
-                     3    = Screen
-                     4-5  = Printer
-                     8-11 = Disk
+                     |      |                    |
+                     |------|--------------------|
+                     | 0    | Keyboard           |
+                     | 1    | Datasette Recorder |
+                     | 2    | RS-232/User Port   |
+                     | 3    | Screen             |
+                     | 4-5  | Printer            |
+                     | 8-11 | Disk               |
                      
 $00BB-$00BC  FNADR   Pointer: Current Filename
                      
@@ -1654,7 +1659,7 @@ $00C6        NDX     Number of Characters in Keyboard Buffer (Queue)
                      places on the user the burder of remembering the quote marks.  One
                      solution is to use the statements:
                      
-                     POKE 198,3:POKE 631,34: POKE 632,34: POKE 633,20
+                         POKE 198,3:POKE 631,34: POKE 632,34: POKE 633,20
                      
                      before the input.  This will force two quote marks and a delete into
                      the buffer.  The first quote mark allows the comma or colon to be
@@ -1708,41 +1713,73 @@ $00CB        SFDX    Matrix Coordinate of Current Key Pressed
                      The correspondence between the key pressed and the number stored here
                      is as follows:
                      
-                     0  = INST/DEL                34 = J
-                     1  = RETURN                  35 = 0
-                     2  = CRSR RIGHT              36 = M
-                     3  = F7                      37 = K
-                     4  = F1                      38 = O
-                     5  = F3                      39 = N
-                     6  = F5                      40 = +
-                     7  = CRSR DOWN               41 = P
-                     8  = 3                       42 = L
-                     9  = W                       43 = -
-                     10 = A                       44 = .
-                     11 = 4                       45 = :
-                     12 = Z                       46 = @
-                     13 = S                       47 = ,
-                     14 = E                       48 = LIRA (BRITISH POUND SIGN)
-                     15 = NOT USED                49 = *
-                       (WOULD BE LEFT SHIFT)      50 = ;
-                     16 = 5                       51 = CLR/HOME
-                     17 = R                       52 = NOT USED
-                     18 = D                         (WOULD BE RIGHT SHIFT)
-                     19 = 6                       53 = =
-                     20 = C                       54 = UP ARROW
-                     21 = F                         (EXPONENTATION SIGN)
-                     22 = T                       55 = /
-                     23 = X                       56 = 1
-                     24 = 7                       57 = LEFT ARROW
-                     25 = Y                       58 = NOT USED
-                     26 = G                         (WOULD BE CTRL)
-                     27 = 8                       59 = 2
-                     28 = B                       60 = SPACE BAR
-                     29 = H                       61 = NOT USED
-                     30 = U                         (WOULD BE COMMODORE LOGO)
-                     31 = V                       62 = Q
-                     32 = 9                       63 = RUN/STOP
-                     33 = I                       64 = NO KEY PRESSED
+                     |    |                                    |
+                     |----|------------------------------------|
+                     | 0  | INST/DEL                           |
+                     | 1  | RETURN                             |
+                     | 2  | CRSR RIGHT                         |
+                     | 3  | F7                                 |
+                     | 4  | F1                                 |
+                     | 5  | F3                                 |
+                     | 6  | F5                                 |
+                     | 7  | CRSR DOWN                          |
+                     | 8  | 3                                  |
+                     | 9  | W                                  |
+                     | 10 | A                                  |
+                     | 11 | 4                                  |
+                     | 12 | Z                                  |
+                     | 13 | S                                  |
+                     | 14 | E                                  |
+                     | 15 | NOT USED (WOULD BE LEFT SHIFT)     |
+                     | 16 | 5                                  |
+                     | 17 | R                                  |
+                     | 18 | D                                  |
+                     | 19 | 6                                  |
+                     | 20 | C                                  |
+                     | 21 | F                                  |
+                     | 22 | T                                  |
+                     | 23 | X                                  |
+                     | 24 | 7                                  |
+                     | 25 | Y                                  |
+                     | 26 | G                                  |
+                     | 27 | 8                                  |
+                     | 28 | B                                  |
+                     | 29 | H                                  |
+                     | 30 | U                                  |
+                     | 31 | V                                  |
+                     | 32 | 9                                  |
+                     | 33 | I                                  |
+                     | 34 | J                                  |
+                     | 35 | 0                                  |
+                     | 36 | M                                  |
+                     | 37 | K                                  |
+                     | 38 | O                                  |
+                     | 39 | N                                  |
+                     | 40 | +                                  |
+                     | 41 | P                                  |
+                     | 42 | L                                  |
+                     | 43 | -                                  |
+                     | 44 | .                                  |
+                     | 45 | :                                  |
+                     | 46 | @                                  |
+                     | 47 | ,                                  |
+                     | 48 | LIRA (BRITISH POUND SIGN)          |
+                     | 49 | *                                  |
+                     | 50 | ;                                  |
+                     | 51 | CLR/HOME                           |
+                     | 52 | NOT USED (WOULD BE RIGHT SHIFT)    |
+                     | 53 | =                                  |
+                     | 54 | UP ARROW (EXPONENTATION SIGN)      |
+                     | 55 | /                                  |
+                     | 56 | 1                                  |
+                     | 57 | LEFT ARROW                         |
+                     | 58 | NOT USED (WOULD BE CTRL)           |
+                     | 59 | 2                                  |
+                     | 60 | SPACE BAR                          |
+                     | 61 | NOT USED (WOULD BE COMMODORE LOGO) |
+                     | 62 | Q                                  |
+                     | 63 | RUN/STOP                           |
+                     | 64 | NO KEY PRESSED                     |
                      
                      The RESTORE key is not accounted for, because it is not part of the
                      normal keyboard matrix.  Instead, it is connected directly to the
@@ -1829,13 +1866,13 @@ $00D4        QTSW    Flag: Editor in Quote Mode? 0=No
                      to escape quote mode by changing this flag to 0 when you press the f1
                      key:
                      
-                     10 FOR I=850 TO I+41:READ A:POKE I,A:NEXT
-                     20 PRINTCHR$(147)"PRESS F1 KEY TO ESCAPE QUOTE MODE"
-                     30 PRINT"TO RESTART AFTER RESTORE ONLY, SYS 850":SYS850:NEW
-                     40 DATA  173 , 143 , 2 , 141 , 46 , 3 , 173 , 144 , 2 , 141
-                     50 DATA 47 , 3 , 120 , 169 , 107 , 141 , 143 , 2 , 169 , 3
-                     60 DATA 141 , 144 , 2 , 88 , 96 , 165 , 203 , 201 , 4 , 208
-                     70 DATA 8 , 169 , 0 , 133 , 212 , 133 , 216 , 133 , 199 , 108 , 46 , 3
+                         10 FOR I=850 TO I+41:READ A:POKE I,A:NEXT
+                         20 PRINTCHR$(147)"PRESS F1 KEY TO ESCAPE QUOTE MODE"
+                         30 PRINT"TO RESTART AFTER RESTORE ONLY, SYS 850":SYS850:NEW
+                         40 DATA  173 , 143 , 2 , 141 , 46 , 3 , 173 , 144 , 2 , 141
+                         50 DATA 47 , 3 , 120 , 169 , 107 , 141 , 143 , 2 , 169 , 3
+                         60 DATA 141 , 144 , 2 , 88 , 96 , 165 , 203 , 201 , 4 , 208
+                         70 DATA 8 , 169 , 0 , 133 , 212 , 133 , 216 , 133 , 199 , 108 , 46 , 3
                      
 $00D5        LNMX    Maximum Length of Physical Screen Line
                      
@@ -1850,7 +1887,7 @@ $00D6        TBLX    Current Cursor Physical Line Number
                      vertically, by POKEing the target screen line (1-25) minus 1 here,
                      followed by a PRINT command.  For example,
                      
-                     POKE 214,9:PRINT:PRINT "WE'RE ON LINE ELEVEN"
+                         POKE 214,9:PRINT:PRINT "WE'RE ON LINE ELEVEN"
                      
                      prints the message on line 11.  The first PRINT statement allows the
                      system to update the other screen editor variables so that they will
@@ -1931,10 +1968,12 @@ $00F5-$00F6  KEYTAB  Vector: Keyboard Decode Table
                      
                      The addresses of the four tables are:
                      
-                     60289 ($EB81) = default uppercase/graphics characters (unshifted)
-                     60354 ($EBC2) = shifted characters
-                     60419 ($EC03) = Commodore logo key characters
-                     60536 ($EC78) = CTRL characters
+                     |       |       |                                                   |
+                     |-------|-------|---------------------------------------------------|
+                     | 60289 | $EB81 | default uppercase/graphics characters (unshifted) |
+                     | 60354 | $EBC2 | shifted characters                                |
+                     | 60419 | $EC03 | Commodore logo key characters                     |
+                     | 60536 | $EC78 | CTRL characters                                   |
                      
                      The concept of the keyboard matrix tables should not be confused with
                      changing the character sets from uppercase/graphics to
@@ -2142,13 +2181,13 @@ $0277-$0280  KEYD    Keyboard Buffer (Queue)
                      be added, modified, or deleted, while the program is running.  The
                      following example shows how this is done:
                      
-                     10 REM THIS LINE WILL BE DELETED
-                     20 REM A NEW LINE 30 WILL BE CREATED
-                     40 PRINT CHR$(147):PRINT:PRINT
-                     50 PRINT "80 LIST":PRINT"30 REM THIS LINE WASN'T HERE BEFORE"
-                     60 PRINT "10":PRINT "GOTO 80"CHR$(19)
-                     70 FOR I=631 TO 634:POKE I,13:NEXT:POKE 198,4:END
-                     80 REM THIS LINE WILL BE REPLACED
+                         10 REM THIS LINE WILL BE DELETED
+                         20 REM A NEW LINE 30 WILL BE CREATED
+                         40 PRINT CHR$(147):PRINT:PRINT
+                         50 PRINT "80 LIST":PRINT"30 REM THIS LINE WASN'T HERE BEFORE"
+                         60 PRINT "10":PRINT "GOTO 80"CHR$(19)
+                         70 FOR I=631 TO 634:POKE I,13:NEXT:POKE 198,4:END
+                         80 REM THIS LINE WILL BE REPLACED
                      
                      You can use this technique to enter numbered DATA statements
                      automatically, using values in memory.  These statements become a
@@ -2161,36 +2200,36 @@ $0277-$0280  KEYD    Keyboard Buffer (Queue)
                      program.  To create the ASCII program file, you use CMD to direct a
                      LISTing to the desired device as follows:
                      
-                     For tape: OPEN 1,1,1,"ASCII":CMD 1:LIST
-                     After the listing has ended: PRINT #1:CLOSE 1
+                     * For tape: OPEN 1,1,1,"ASCII":CMD 1:LIST
+                     * After the listing has ended: PRINT #1:CLOSE 1
                      
-                     For disk: OPEN 8,8,8,"ASCII,S,W":CMD 8:LIST
-                     After the listing has ended: PRINT #8:CLOSE 8
+                     * For disk: OPEN 8,8,8,"ASCII,S,W":CMD 8:LIST
+                     * After the listing has ended: PRINT #8:CLOSE 8
                      
                      This file can then be uploaded using a modem and appropriate terminal
                      software, entered by itself or merged with another program by using
                      the following program.  Be sure to save this program before you run
                      it, because it will erase itself when it is done.
                      
-                     60000 OPEN 1,8,8,"ASCII"
-                     60010 POKE 152,1:B=0:GOSUB 60170
-                     60020 GET #1,A$:IF A$=""THEN60020
-                     60030 IF ST AND 64 THEN 60120
-                     60040 IF A$=CHR$(13)AND B=0THEN60020
-                     60050 PRINT A$;:B=1:IF A$=CHR$(34)THEN POKE 212,0
-                     60060 IF A$<>CHR$(13) THEN 60020
-                     60070 PRINT CHR$(5);"GOTO 60010";CHR$(5):PRINT:PRINT:POKE 198,0
-                     60080 PRINT "RETURN=KEEP LINE    S=SKIP LINE":B=0
-                     60090 GET A$:IF A$=""THEN 60090
-                     60100 IF A$="S" THEN 60010
-                     60110 GOTO 60180
-                     60120 PRINT "END OF FILE--HIT RETURN TO FINISH MERGE"
-                     60130 IF PEEK(197)<>1THEN60130
-                     60140 A=60000
-                     60150 GOSUB 60170:FOR I=A TO A+60 STEP10:PRINTI:NEXT
-                     60160 PRINT "A="I":GOTO 60150":GOTO 60180
-                     60170 PRINT CHR$(147):PRINT:PRINT:RETURN
-                     60180 FOR I=631TO640:POKEI,13:NEXT:POKE198,10:PRINTCHR$(19);:END
+                         60000 OPEN 1,8,8,"ASCII"
+                         60010 POKE 152,1:B=0:GOSUB 60170
+                         60020 GET #1,A$:IF A$=""THEN60020
+                         60030 IF ST AND 64 THEN 60120
+                         60040 IF A$=CHR$(13)AND B=0THEN60020
+                         60050 PRINT A$;:B=1:IF A$=CHR$(34)THEN POKE 212,0
+                         60060 IF A$<>CHR$(13) THEN 60020
+                         60070 PRINT CHR$(5);"GOTO 60010";CHR$(5):PRINT:PRINT:POKE 198,0
+                         60080 PRINT "RETURN=KEEP LINE    S=SKIP LINE":B=0
+                         60090 GET A$:IF A$=""THEN 60090
+                         60100 IF A$="S" THEN 60010
+                         60110 GOTO 60180
+                         60120 PRINT "END OF FILE--HIT RETURN TO FINISH MERGE"
+                         60130 IF PEEK(197)<>1THEN60130
+                         60140 A=60000
+                         60150 GOSUB 60170:FOR I=A TO A+60 STEP10:PRINTI:NEXT
+                         60160 PRINT "A="I":GOTO 60150":GOTO 60180
+                         60170 PRINT CHR$(147):PRINT:PRINT:RETURN
+                         60180 FOR I=631TO640:POKEI,13:NEXT:POKE198,10:PRINTCHR$(19);:END
                      
                      If you wish to merge additional programs at the same time, when it
                      indicates that the file has ended, press the STOP key rather than
@@ -2253,23 +2292,25 @@ $0286        COLOR   Current Foreground Color for Text
                      using all three methods.
                      
                      POKE
-                     COLOR #   COLOR     CHR$   KEYS TO PRESS
-                      0        Black     144    CTRL-1
-                      1        White       5    CTRL-2
-                      2        Red        28    CTRL-3
-                      3        Cyan      159    CTRL-4
-                      4        Purple    156    CTRL-5
-                      5        Green      30    CTRL-6
-                      6        Blue       31    CTRL-7
-                      7        Yellow    158    CTRL-8
-                      8        Orange    129    Logo-1
-                      9        Brown     149    Logo-2
-                     10        Lt Red    150    Logo-3
-                     11        Dark Gray 151    Logo-4
-                     12        Med Gray  152    Logo-5
-                     13        Lt Green  153    Logo-6
-                     14        Lt Blue   154    Logo-7
-                     15        Lt Gray   155    Logo-8
+
+                     | COLOR # | COLOR     | CHR$ | KEYS TO PRESS |
+                     |---------|-----------|------|---------------|
+                     |  0      | Black     | 144  | CTRL-1        |
+                     |  1      | White     |   5  | CTRL-2        |
+                     |  2      | Red       |  28  | CTRL-3        |
+                     |  3      | Cyan      | 159  | CTRL-4        |
+                     |  4      | Purple    | 156  | CTRL-5        |
+                     |  5      | Green     |  30  | CTRL-6        |
+                     |  6      | Blue      |  31  | CTRL-7        |
+                     |  7      | Yellow    | 158  | CTRL-8        |
+                     |  8      | Orange    | 129  | Logo-1        |
+                     |  9      | Brown     | 149  | Logo-2        |
+                     | 10      | Lt Red    | 150  | Logo-3        |
+                     | 11      | Dark Gray | 151  | Logo-4        |
+                     | 12      | Med Gray  | 152  | Logo-5        |
+                     | 13      | Lt Green  | 153  | Logo-6        |
+                     | 14      | Lt Blue   | 154  | Logo-7        |
+                     | 15      | Lt Gray   | 155  | Logo-8        |
                      
 $0287        GDCOL   Color of Character under Cursor
                      
@@ -2312,27 +2353,27 @@ $0288        HIBASE  Top Page of Screen Memory
                      READ a lot of DATA statements.  The program below PRINTs different
                      sprite shapes into the sprite data area:
                      
-                     10 SP=53248:POKESP,170:POKESP+1,125:POKESP+21,1:POKE 2040,13:PRINT CHR$(147)
-                     20 A$="THIS TEXT WILL BE PRINTED TO THE SPRITE SHAPE DATA AREA AND DISPLAYED"
-                     30 GOSUB 100
-                     40 A$="THIS IS SOME DIFFERENT TEXT TO BE PRINTED TO THE SPRITE SHAPE AREA"
-                     50 GOSUB 100
-                     60 COUNT=COUNT+1:IF COUNT<15 THEN 20
-                     70 END
-                     100 POKE 648,3:PRINT CHR$(19);CHR$(17);SPC$(24);A$;:POKE 648,4:RETURN
+                         10 SP=53248:POKESP,170:POKESP+1,125:POKESP+21,1:POKE 2040,13:PRINT CHR$(147)
+                         20 A$="THIS TEXT WILL BE PRINTED TO THE SPRITE SHAPE DATA AREA AND DISPLAYED"
+                         30 GOSUB 100
+                         40 A$="THIS IS SOME DIFFERENT TEXT TO BE PRINTED TO THE SPRITE SHAPE AREA"
+                         50 GOSUB 100
+                         60 COUNT=COUNT+1:IF COUNT<15 THEN 20
+                         70 END
+                         100 POKE 648,3:PRINT CHR$(19);CHR$(17);SPC$(24);A$;:POKE 648,4:RETURN
                      
                      Since PRINTing also changes color memory, you can change the pointer
                      to print the characters harmlessly to ROM, while changing a lot of
                      screen RAM at one time, as the following program demonstrates:
                      
-                     10 D$=CHR(94):FOR I=1 TO 4:D$=D$+D$:NEXT
-                     20 PRINT CHR$(147);:FOR I=1 TO 7:PRINT TAB(10) D$:NEXT:PRINT:PRINT:PRINT:PRINT
-                     30 PRINT TAB(9);CHR$(5);"HIT ANY KEY TO STOP"
-                     40 DIM C(15):FOR I=0TO14:READ A:C(I)=A:NEXT:DATA2,8,7,5,6,4,1,2,8,7,5,6,4,1,2
-                     50 POKE 53281,0:POKE 648,212:FOR J=0 TO 6:PRINT CHR$(19);
-                     60 FOR I=J TO J+6:POKE 646,C(I):PRINT TAB(10) D$:NEXT I,J
-                     70 GET A$:IF A$="" THEN 50
-                     80 POKE 648,4:POKE 646,1
+                         10 D$=CHR(94):FOR I=1 TO 4:D$=D$+D$:NEXT
+                         20 PRINT CHR$(147);:FOR I=1 TO 7:PRINT TAB(10) D$:NEXT:PRINT:PRINT:PRINT:PRINT
+                         30 PRINT TAB(9);CHR$(5);"HIT ANY KEY TO STOP"
+                         40 DIM C(15):FOR I=0TO14:READ A:C(I)=A:NEXT:DATA2,8,7,5,6,4,1,2,8,7,5,6,4,1,2
+                         50 POKE 53281,0:POKE 648,212:FOR J=0 TO 6:PRINT CHR$(19);
+                         60 FOR I=J TO J+6:POKE 646,C(I):PRINT TAB(10) D$:NEXT I,J
+                         70 GET A$:IF A$="" THEN 50
+                         80 POKE 648,4:POKE 646,1
                      
 $0289        XMAX    Maximum Keyboard Buffer Size
                      
@@ -2449,88 +2490,89 @@ $028F-$0290  KEYLOG  Vector to Keyboard Table Setup Routine
                      the letter (A-Z) of the key that was pressed.  An adaptation of that
                      program for the 64 appears below.
                      
-                     100 IF PEEK(PEEK(56)*256)<>120THENPOKE56,PEEK(56)-1:CLR
-                     110 HI=PEEK(56):BASE=HI*256
-                     120 PRINTCHR$(147)"READING DATA"
-                     130 FOR AD=0 TO 211:READ BY
-                     140 POKE BASE+AD,BY:NEXT AD
-                     150 :
-                     200 REM RELOCATION ADJUSTMENTS
-                     210 POKE BASE+26,HI:POKE BASE+81,HI
-                     220 POKE BASE+123,HI:POKE BASE+133,HI
-                     230 :
-                     240 PRINT CHR$(147) TAB(15)"***64WORD***":PRINT
-                     250 PRINT"TO TOGGLE THE PROGRAM ON/OFF:":PRINT:PRINT:PRINT "SYS";BASE;
-                     260 PRINT CHR$(145);CHR$(145);
-                     270 DATA 120,173,143,2,201,32
-                     280 DATA 208,12,169,220,141,143
-                     290 DATA 2,169,72,141,144,2
-                     300 DATA 88,96,169,32,141,143
-                     310 DATA 2,169,0,141,144,2
-                     320 DATA 88,96,165,212,208,117
-                     330 DATA 173,141,2,201,3,176
-                     340 DATA 110,201,0,240,106,169
-                     350 DATA 194,133,245,169,235,133
-                     360 DATA 246,165,215,201,193,144
-                     370 DATA 95,201,219,176,91,56
-                     380 DATA 233,193,174,141,2,224
-                     390 DATA 2,208,3,24,105,26
-                     400 DATA 170,189,159,0,162,0
-                     410 DATA 134,198,170,160,158,132
-                     420 DATA 34,160,160,132,35,160
-                     430 DATA 0,10,240,16,202,16
-                     440 DATA 12,230,34,208,2,230
-                     450 DATA 35,177,34,16,246,48
-                     460 DATA 241,200,177,34,48,17
-                     470 DATA 8,142,211,0,230,198
-                     480 DATA 166,198,157,119,2,174
-                     490 DATA 211,0,40,208,234,230
-                     500 DATA 198,166,198,41,127,157
-                     510 DATA 199,2,230,198,169,20
-                     520 DATA 141,119,2,76,72,235
-                     530 DATA 76,224,234
-                     550 REM TOKENS FOR SHIFT KEY
-                     570 DATA 153,175,199,135,161,129
-                     580 DATA 141,164,133,137,134,147
-                     590 DATA 202,181,159,151,163,201
-                     600 DATA 196,139,192,149,150,155
-                     610 DATA 191,138
-                     630 REM TOKENS FOR COMMODORE KEY
-                     650 DATA 152,165,198,131,128,130
-                     660 DATA 142,169,132,145,140,148
-                     670 DATA 195,187,160,194,166,200
-                     680 DATA 197,167,186,157,165,184
-                     690 DATA 190,158,0
+                         100 IF PEEK(PEEK(56)*256)<>120THENPOKE56,PEEK(56)-1:CLR
+                         110 HI=PEEK(56):BASE=HI*256
+                         120 PRINTCHR$(147)"READING DATA"
+                         130 FOR AD=0 TO 211:READ BY
+                         140 POKE BASE+AD,BY:NEXT AD
+                         150 :
+                         200 REM RELOCATION ADJUSTMENTS
+                         210 POKE BASE+26,HI:POKE BASE+81,HI
+                         220 POKE BASE+123,HI:POKE BASE+133,HI
+                         230 :
+                         240 PRINT CHR$(147) TAB(15)"***64WORD***":PRINT
+                         250 PRINT"TO TOGGLE THE PROGRAM ON/OFF:":PRINT:PRINT:PRINT "SYS";BASE;
+                         260 PRINT CHR$(145);CHR$(145);
+                         270 DATA 120,173,143,2,201,32
+                         280 DATA 208,12,169,220,141,143
+                         290 DATA 2,169,72,141,144,2
+                         300 DATA 88,96,169,32,141,143
+                         310 DATA 2,169,0,141,144,2
+                         320 DATA 88,96,165,212,208,117
+                         330 DATA 173,141,2,201,3,176
+                         340 DATA 110,201,0,240,106,169
+                         350 DATA 194,133,245,169,235,133
+                         360 DATA 246,165,215,201,193,144
+                         370 DATA 95,201,219,176,91,56
+                         380 DATA 233,193,174,141,2,224
+                         390 DATA 2,208,3,24,105,26
+                         400 DATA 170,189,159,0,162,0
+                         410 DATA 134,198,170,160,158,132
+                         420 DATA 34,160,160,132,35,160
+                         430 DATA 0,10,240,16,202,16
+                         440 DATA 12,230,34,208,2,230
+                         450 DATA 35,177,34,16,246,48
+                         460 DATA 241,200,177,34,48,17
+                         470 DATA 8,142,211,0,230,198
+                         480 DATA 166,198,157,119,2,174
+                         490 DATA 211,0,40,208,234,230
+                         500 DATA 198,166,198,41,127,157
+                         510 DATA 199,2,230,198,169,20
+                         520 DATA 141,119,2,76,72,235
+                         530 DATA 76,224,234
+                         550 REM TOKENS FOR SHIFT KEY
+                         570 DATA 153,175,199,135,161,129
+                         580 DATA 141,164,133,137,134,147
+                         590 DATA 202,181,159,151,163,201
+                         600 DATA 196,139,192,149,150,155
+                         610 DATA 191,138
+                         630 REM TOKENS FOR COMMODORE KEY
+                         650 DATA 152,165,198,131,128,130
+                         660 DATA 142,169,132,145,140,148
+                         670 DATA 195,187,160,194,166,200
+                         680 DATA 197,167,186,157,165,184
+                         690 DATA 190,158,0
                      
                      Commodore 64word: Keys into BASIC Commands
                      
-                     Key   SHIFT   Commodore
-                     A     PRINT   PRINT#
-                     B     AND     OR
-                     C     CHR$    ASC
-                     D     READ    DATA
-                     E     GET     END
-                     F     FOR     NEXT
-                     G     GOSUB   RETURN
-                     H     TO      STEP
-                     I     INPUT   INPUT#
-                     J     GOTO    ON
-                     K     DIM     RESTORE
-                     L     LOAD    SAVE
-                     M     MID$    LEN
-                     N     INT     RND
-                     O     OPEN    CLOSE
-                     P     POKE    PEEK
-                     Q     TAB(    SPC(
-                     R     RIGHT$  LEFT$
-                     S     STR$    VAL
-                     T     IF      THEN
-                     U     TAN     SQR
-                     V     VERIFY  CMD
-                     W     DEF     FN
-                     X     LIST    FRE
-                     Y     SIN     COS
-                     Z     RUN     SYS
+                     | Key | SHIFT  | Commodore |
+                     |-----|--------|-----------|
+                     | A   | PRINT  | PRINT#    |
+                     | B   | AND    | OR        |
+                     | C   | CHR$   | ASC       |
+                     | D   | READ   | DATA      |
+                     | E   | GET    | END       |
+                     | F   | FOR    | NEXT      |
+                     | G   | GOSUB  | RETURN    |
+                     | H   | TO     | STEP      |
+                     | I   | INPUT  | INPUT#    |
+                     | J   | GOTO   | ON        |
+                     | K   | DIM    | RESTORE   |
+                     | L   | LOAD   | SAVE      |
+                     | M   | MID$   | LEN       |
+                     | N   | INT    | RND       |
+                     | O   | OPEN   | CLOSE     |
+                     | P   | POKE   | PEEK      |
+                     | Q   | TAB(   | SPC(      |
+                     | R   | RIGHT$ | LEFT$     |
+                     | S   | STR$   | VAL       |
+                     | T   | IF     | THEN      |
+                     | U   | TAN    | SQR       |
+                     | V   | VERIFY | CMD       |
+                     | W   | DEF    | FN        |
+                     | X   | LIST   | FRE       |
+                     | Y   | SIN    | COS       |
+                     | Z   | RUN    | SYS       |
                      
 $0291        MODE    Flag: Enable or Disable Changing Character Sets with SHIFT/Logo
                      Keypress
@@ -2595,34 +2637,43 @@ $0293        M51CTR  RS-232: Mock 6551 Control Register
                      follows:
                      
                      Bit 7: STOP Bits
-                     0    (bit value of 0)   = 1 STOP Bit
-                     1    (bit value of 128) = 0 STOP Bits
+                     
+                     | Bit  | Value|                                                  |
+                     |------|------|--------------------------------------------------|
+                     | 0    | 0    | 1 STOP Bit                                       |
+                     | 1    | 128  | 0 STOP Bits                                      |
                      
                      Bits 6-5: WORD LENGTH
-                     00   (bit value of 0)   = 8 DATA Bits
-                     01   (bit value of 32)  = 7 DATA Bits
-                     10   (bit value of 64)  = 6 DATA Bits
-                     11   (bit value of 96)  = 5 DATA Bits
+                     
+                     | Bit  | Value|                                                  |
+                     |------|------|--------------------------------------------------|
+                     | 00   | 0    | 8 DATA Bits                                      |
+                     | 01   | 32   | 7 DATA Bits                                      |
+                     | 10   | 64   | 6 DATA Bits                                      |
+                     | 11   | 96   | 5 DATA Bits                                      |
                      
                      Bit 4: Unused
                      
                      Bits 3-0: BAUD RATE
-                     0000 (bit value of 0)   = Nonstandard (User-Defined) Rate (Not Implemented)
-                     0001 (bit value of 1)   = 50 Baud
-                     0010 (bit value of 2)   = 75 Baud
-                     0011 (bit value of 3)   = 110 Baud
-                     0100 (bit value of 4)   = 134.5 Baud
-                     0101 (bit value of 5)   = 150 Baud
-                     0110 (bit value of 6)   = 300 Baud
-                     0111 (bit value of 7)   = 600 Baud
-                     1000 (bit value of 8)   = 1200 Baud
-                     1001 (bit value of 9)   = 1800 Baud
-                     1010 (bit value of 10)  = 2400 Baud
-                     1011 (bit value of 11)  = 3600 Baud (Not Implemented on the Commodore 64)
-                     1100 (bit value of 12)  = 4800 Baud (Not Implemented on the Commodore 64)
-                     1101 (bit value of 13)  = 7200 Baud (Not Implemented on the Commodore 64)
-                     1110 (bit value of 14)  = 9600 Baud (Not Implemented on the Commodore 64)
-                     1111 (bit value of 15)  = 19200 Baud (Not Implemented on the Commodore 64)
+                     
+                     | Bit  | Value|                                                  |
+                     |------|------|--------------------------------------------------|
+                     | 0000 | 0    | Nonstandard (User-Defined  Rate (Not Implemented)|
+                     | 0001 | 1    | 50 Baud                                          |
+                     | 0010 | 2    | 75 Baud                                          |
+                     | 0011 | 3    | 110 Baud                                         |
+                     | 0100 | 4    | 134.5 Baud                                       |
+                     | 0101 | 5    | 150 Baud                                         |
+                     | 0110 | 6    | 300 Baud                                         |
+                     | 0111 | 7    | 600 Baud                                         |
+                     | 1000 | 8    | 1200 Baud                                        |
+                     | 1001 | 9    | 1800 Baud                                        |
+                     | 1010 | 10   | 2400 Baud                                        |
+                     | 1011 | 11   | 3600 Baud (Not Implemented on the Commodore 64)  |
+                     | 1100 | 12   | 4800 Baud (Not Implemented on the Commodore 64)  |
+                     | 1101 | 13   | 7200 Baud (Not Implemented on the Commodore 64)  |
+                     | 1110 | 14   | 9600 Baud (Not Implemented on the Commodore 64)  |
+                     | 1111 | 15   | 19200 Baud (Not Implemented on the Commodore 64) |
                      
                      This register is the only one which must be set when opening RS-232
                      device (number 2).  The first character of the filename will be stored
@@ -2651,22 +2702,30 @@ $0294        M51CDR  RS-232: Mock 6551 Command Register
                      follows:
                      
                      Bits 7-5: Parity
-                     XX0 (bit value of
-                          0,64,128, or 192) = No Parity Generated or Received
-                     001 (bit value of 32)  = Odd Parity Transmitted and Received
-                     011 (bit value of 96)  = Even Parity Transmitted and Received
-                     101 (bit value of 160) = Mark Parity Transmitted and Received
-                     111 (bit value of 224) = Space Parity Transmitted and Received
+                     
+                     | Bit | Value |                                              |
+                     |-----|-------|----------------------------------------------|
+                     | XX0 | 0, 64, 128, or 192 | No Parity Generated or Received |
+                     | 001 | 32    | Odd Parity Transmitted and Received          |
+                     | 011 | 96    | Even Parity Transmitted and Received         |
+                     | 101 | 160   | Mark Parity Transmitted and Received         |
+                     | 111 | 224   | Space Parity Transmitted and Received        |
                      
                      Bit 4: Duplex
-                     0 (bit value of 0)  = Full Duplex
-                     1 (bit value of 16) = Half Duplex
+                     
+                     | Bit | Value |             |
+                     |-----|-------|-------------|
+                     | 0   | 0     | Full Duplex |
+                     | 1   | 16    | Half Duplex |
                      
                      Bits 3-1: Unused
                      
                      Bit 0: Handshake Protocol
-                     0 (bit value of 0) = 3 Line
-                     1 (bit value of 1) = X Line
+                     
+                     | Bit | Value |        |
+                     |-----|-------|--------|
+                     | 0   | 0     | 3 Line |
+                     | 1   | 1     | X Line |
                      
                      This register can be set at the user's option when opening RS-232
                      device (number 2).  The second character of the filename will be
@@ -2710,14 +2769,16 @@ $0297        RSSTAT  RS-232: Mock 6551 Status Register
                      won't be able to read it again.  The meaning of each bit value is
                      specified below:
                      
-                     Bit 7: 1 (bit value of 128) = Break Detected
-                     Bit 6: 1 (bit value of 64)  = DTR (Data Set Ready) Signal Missing
-                     Bit 5: Unused
-                     Bit 4: 1 (bit value of 16)  = CTS (Clear to Send) Signal Missing
-                     Bit 3: 1 (bit value of 8)   = Receiver Buffer Empty
-                     Bit 2: 1 (bit value of 4)   = Receiver Buffer Overrun
-                     Bit 1: 1 (bit value of 2)   = Framing Error
-                     Bit 0: 1 (bit value of 1)   = Parity Error
+                     |Bit|Value|                                         |
+                     |---|-----|-----------------------------------------|
+                     | 7 | 128 | 1 = Break Detected                      |
+                     | 6 | 64  | 1 = DTR (Data Set Ready) Signal Missing |
+                     | 5 |     | Unused                                  |
+                     | 4 | 16  | 1 = CTS (Clear to Send) Signal Missing  |
+                     | 3 | 8   | 1 = Receiver Buffer Empty               |
+                     | 2 | 4   | 1 = Receiver Buffer Overrun             |
+                     | 1 | 2   | 1 = Framing Error                       |
+                     | 0 | 1   | 1 = Parity Error                        |
                      
                      The user is responsible for checking these errors and taking
                      appropriate action.  If, for example, you find that Bit 0 or 1 is set
@@ -2804,9 +2865,11 @@ $02A1        ENABL   RS-232 Interrupts Enabled
                      Interrupt Control Register (56589, $DD0D).  The bit values for this
                      flag are as follows:
                      
-                     Bit 4: 1 (bit value of 16) = System is Waiting for Receiver Edge
-                     Bit 1: 1 (bit value of 2)  = System is Receiving Data
-                     Bit 0: 1 (bit value of 1)  = System is Transmitting Data
+                     |Bit|Value| |
+                     |---|-----|-|
+                     | 4 | 16  | 1 = System is Waiting for Receiver Edge |
+                     | 1 | 2   | 1 = System is Receiving Data            |
+                     | 0 | 1   | 1 = System is Transmitting Data         |
                      
 $02A2                Indicator of CIA #1 Control Register B Activity During Cassette I/O
                      
@@ -2964,7 +3027,7 @@ $030C-$030F          Register Storage Area
                      65520.  Using the register storage area, we can print the work HELLO
                      at row 10, column 5 with the following BASIC line:
                      
-                     POKE 781,10:POKE 782,5:POKE 783,0:SYS 65520:PRINT "HELLO"
+                         POKE 781,10:POKE 782,5:POKE 783,0:SYS 65520:PRINT "HELLO"
                      
                      You can also use these locations to help you take advantage of Kernal
                      routines that return information in the register.  For example, the
@@ -2986,14 +3049,16 @@ $030F        SPREG   Storage Area for .P (Status) Register
                      The Status (.P) register has seven different flags.  Their bit
                      assignments are as follows:
                      
-                     Bit 7 (bit value of 128) = Negative
-                     Bit 6 (bit value of 64)  = Overflow
-                     Bit 5 (bit value of 32)  = Not Used
-                     Bit 4 (bit value of 16)  = BREAK
-                     Bit 3 (bit value of 8)   = Decimal
-                     Bit 2 (bit value of 4)   = Interrupt Disable
-                     Bit 1 (bit value of 2)   = Zero
-                     Bit 0 (bit value of 1)   = Carry
+                     |Bit|Value|                   |
+                     |---|-----|-------------------|
+                     | 7 | 128 | Negative          |
+                     | 6 | 64  | Overflow          |
+                     | 5 | 32  | Not Used          |
+                     | 4 | 16  | BREAK             |
+                     | 3 | 8   | Decimal           |
+                     | 2 | 4   | Interrupt Disable |
+                     | 1 | 2   | Zero              |
+                     | 0 | 1   | Carry             |
                      
                      If you wish to clear any flag before a SYS, it is safe to clear them
                      all with a POKE 783,0.  The reverse is not true, however, as you must
@@ -3022,7 +3087,7 @@ $0311-$0312  USRADD  Address of USR Routine (Low Byte First)
                      the target address in low-byte, high-byte order.  You can calculate
                      these two values for any address with the formula:
                      
-                     HI=INT(AD/256):LO=AD-(HI*256)
+                         HI=INT(AD/256):LO=AD-(HI*256)
                      
                      For example, if the USR routine started at 49152 ($C000), you would
                      POKE 786, INT(49152/256):POKE 785,49152-(PEEK(786)*256 before
@@ -3331,7 +3396,7 @@ $0400-$07E7          Video Matrix: 25 Lines by 40 Columns
                      A POKE 1024,1:POKE 1024+54272,1 will put a white A in the upper-left
                      corner of the screen.  The loop
                      
-                     FOR I=0 TO 255:POKE 1024+I,I:POKE 1024+54272+I,1:NEXT
+                         FOR I=0 TO 255:POKE 1024+I,I:POKE 1024+54272+I,1:NEXT
                      
                      will display all of the characters in white at the top of the screen.
                      Another solution to the color RAM problem is to fool the Operating
@@ -3341,10 +3406,10 @@ $0400-$07E7          Video Matrix: 25 Lines by 40 Columns
                      is change the background color back to what it was.  This example will
                      show how it's done:
                      
-                     10 POKE 53281,2:REM BACKGROUND IS RED
-                     20 PRINT CHR$(147):REM CLEAR SCREEN
-                     30 POKE 53281,1:REM BACKGROUND IS WHITE
-                     40 POKE 1024,1:REM RED "A" APPEARS IN TOP LEFT CORNER
+                         10 POKE 53281,2:REM BACKGROUND IS RED
+                         20 PRINT CHR$(147):REM CLEAR SCREEN
+                         30 POKE 53281,1:REM BACKGROUND IS WHITE
+                         40 POKE 1024,1:REM RED "A" APPEARS IN TOP LEFT CORNER
                      
 $07F8-$07FF          Sprite Shape Data Pointers
                      
@@ -3396,12 +3461,12 @@ $0800-$9FFF          BASIC Program Text
                      the layout of the BASIC program area (going from lower memory
                      addresses to higher) is as follows:
                      
-                     BASIC Program Text
-                     Non-Array Variables and String Descriptors
-                     Array Variables
-                     Free Area (Reported by FRE(0))
-                     String Text Area (Strings build from top of memory down into free area)
-                     BASIC ROM
+                     * BASIC Program Text
+                     * Non-Array Variables and String Descriptors
+                     * Array Variables
+                     * Free Area (Reported by FRE(0))
+                     * String Text Area (Strings build from top of memory down into free area)
+                     * BASIC ROM
                      
                      It is interesting to note that the NEW command does not zero out the
                      text area but rather replaces the first link address in the BASIC
