@@ -1845,3 +1845,219 @@ $0099                Nummer des Eingabe-Gerätes
                      9 sind die »Dynamische Tastenabfrage«, und Schritt 9 verwendet zusätzlich die 
                      hier zur Diskussion stehende Speicherzelle 153, um die Datasette als 
                      Eingabegerät zu definieren.
+
+$009A                Nummer des Ausgabe-Gerätes
+
+                     Diese Speicherzelle entspricht der Zelle 153, nur steht hier die Nummer des Gerätes, über das die Ausgabe läuft.
+                     
+                     Nach dem Einschalten und nach Ausgabeoperationen wird der Wert immer auf 3 gesetzt. Das ist entsprechend der oben genannten Zuordnung der Bildschirm.
+
+                     Für Maschinenprogrammierer sei erwähnt, daß Basic bei den Befehlen PRINT# oder CMD die Routine CHKOUT einsetzt, welche die Adresse 154 belegt. Sie steht im C 64 ab Adresse 62032 ($F250), im VC 20 ab 62217 ($F309).
+
+$009B                Fehlerkontrolle bei Bandoperationen
+
+                     Die Commodore-Datasette ist deswegen so zuverlässig, weil sie mehrere Methoden zur Fehlererkennung beziehungsweise Korrektur von Lese- und Schreibfehlern verwendet.
+
+                     Eine der Methoden ist die sogenannte Parity-Prüfung. Sie ist nichts anderes als eine Quersummenbildung der einzelnen Stellen jedes Bytes, deren Resultat überprüft wird.
+
+                     Die Speicherzelle 155 wird bei dieser Parity-Prüfung eingesetzt.
+
+$009C                Flagge für korrektes Byte vom Band
+
+                     In dieser Speicherzelle wird zwischengespeichert, ob das vom Band gelesene Byte die Prüfungen bestanden hat, also richtig ist oder nicht.
+
+$009D                Flagge für Meldungen
+
+                     Man muß zwischen zwei Arten von Meldungen unterscheiden:
+
+                     Meldungen des Betriebssystems Meldungen des Basic-Übersetzers Die Meldungen des Betriebssystems kennen wir als Angaben zum Ablauf, wie SEARCHING FOR, FOUND, PRESS PLAY ON TAPE und so weiter. Normalerweise nicht bekannt ist die Meldung I/O ERROR #, wobei nach dem Zeichen # Zahlen von 0 bis 29 stehen können. Diese Zahlen beziehen sich auf Meldungen des Übersetzers (Interpreter), die ausschließlich Fehlermeldungen sind. Das mag verwirrend klingen, klärt sich aber sofort. Die Flagge in 157 kann vier Werte annehmen: 0,64,128 und 192.
+
+                     1. Der Wert 0 unterdrückt alle Meldungen des Betriebssystems. Dieser Modus tritt nach RUN beim Ablauf eines Programms ein.
+                     2. Der Wert 64 läßt nur Fehlermeldungen des Betriebssystems zu. Dieser Modus ist normalerweise nicht vorgesehen, kann aber künstlich erzeugt werden.
+                     3. Der Wert 128 unterdrückt die Fehlermeldung des Betriebssystems. Dieser Modus entspricht dem Normalfall.
+                     4. Der Wert 192 läßt alle Meldungen zu. Auch dieser Modus ist nur künstlich herzustellen.
+
+                     Das folgende Beispiel macht das deutlich. Geben Sie direkt ein:
+
+                         POKE 157,0:L0AD "$",9
+
+                     Wir versuchen, vom Gerät mit der Nummer 9, das ist eine zweite Floppy, die Directory zu laden. Wir erhalten entsprechend Punkt 1 nur die Meldung des Übersetzers »? DEVICE NOT PRESENT«.
+
+                     Verändern wir den POKE-Befehl für Punkt 2:
+                     
+                         POKE 157,64:L0AD"$",9
+
+                     Wir erhalten jetzt 
+                     
+                         I/O ERROR #5
+                         ?DEVICE NOT PRESENT
+
+                         POKE 157,128:L0AD"$",9
+
+                     ergibt die Meldung
+                     
+                         SEARCHING FOR $
+                         ? DEVICE NOT PRESENT
+
+                     Schließlich nehmen wir noch den letzten Fall:
+
+                         POKE 157,192: LOAD " $ ", 9
+                     
+                     Jetzt erhalten wir alles:
+                     
+                         SEARCHING FOR $
+                         I/O ERROR #5
+                         ?DEVICE NOT PRESENT
+
+                     Da die Fehlermeldung des Betriebssystems und die zugehörigen Nummern in keinem Handbuch erwähnt sind, habe ich sie interessehalber in der folgenden Tabelle zusammengefaßt.
+
+                     | #  | MELDUNG (ERROR)       |
+                     |----|-----------------------|
+                     | 1  | TOO MANY FILES        |
+                     | 2  | FILE OPEN             |
+                     | 3  | FILE NOT OPEN         |
+                     | 4  | FILE NOT FOUND        |
+                     | 5  | DEVICE NOT PRESENT    |
+                     | 6  | NOT INPUT FILE        |
+                     | 7  | NOT OUTPUT FILE       |
+                     | 8  | MISSING FILE NAME     |
+                     | 9  | ILLEGAL DEVICE NUMBER |
+                     | 10 | NEXT WITHOUT FOR      |
+                     | 11 | SYNTAX                |
+                     | 12 | RETURN WITHOUT GOSUB  |
+                     | 13 | OUT OF DATA           |
+                     | 14 | ILLEGAL QUANTITY      |
+                     | 15 | OVERFLOW              |
+                     | 16 | OUT OF MEMORY         |
+                     | 17 | UNDEF'D STATEMENT     |
+                     | 18 | BAD SUBSCRIPT         |
+                     | 19 | REDIM'D ARRAY         |
+                     | 20 | DIVISION BY ZERO      |
+                     | 21 | ILLEGAL DIRECT        |
+                     | 22 | TYPE MISMATCH         |
+                     | 23 | STRING TOO LONG       |
+                     | 24 | FILE DATA             |
+                     | 25 | FORMULA TOO COMPLEX   |
+                     | 26 | CAN'T CONTINUE        |
+                     | 27 | UNDEF'D FUNCTION      |
+                     | 28 | VERIFY                |
+                     | 29 | LOAD                  |
+
+$009E-$009F          Zwischenspeicher bei Kassettenoperationen
+
+                     Diese beiden Speicherzellen werden von Routinen des Betriebssystems verwendet, welche bei Kassettenoperationen die Zeichen überprüfen, ob sie richtig sind, und welche bei aufgetretenen Fehlern Korrekturen durchführen.
+
+$00A0-$00A2          Interne Uhr für TI und TI$
+
+                     Das Basic der Commodore-Computer kennt neben der Variablen ST (siehe Speicherzelle 144) noch zwei weitere »reservierte« Variable, nämlich TI und Tl$. Beide bieten eine interne Uhr, welche aus dem Inhalt der Speicherzellen 160 bis 162 abgeleitet wird. Diese drei Zellen funktionieren wie der Kilometerzähler eines Autos, halt nur mit drei Stellen.
+
+                     Die hinterste Stelle ist die Zelle 162. Ihr Inhalt wird beim Einschalten des Computers auf 0 gesetzt, dann aber 60mal in der Sekunde um 1 erhöht. Das erfolgt durch die automatische Interrupt-Routine, welche auch die STOP-Taste abfragt und noch andere Hausaufgaben 60mal in der Sekunde ausführt. Da i60 = 0,01667 ist, zählt also dle Zelle 162 in 0,01667 Sekunden um 1 weiter. Sie kann wie alle Speicherzellen maximal nur die Zahl 255 enthalten, danach kommt wieder eine 0. Das heißt aber, daß sie nach 256 * 0,01667 = 4,267 Sekunden einmal durchgelaufen ist.
+
+                     Nach jedem Durchlauf wird die davorliegende Speicherzelle 161 um 1 erhöht. Sie zählt also in 4,267 Sekunden um 1 weiter und ist nach 256 * 4.067           = 1 092,26 Sekunden oder besser nach 18,2044 Minuten einmal durchgelaufen. Nach dem Kilometerzähler-Prinzip wird nach jedem Durchlauf von 161 der Inhalt der davorliegenden Zelle 160 um 1 erhöht.
+
+                     Die Zelle 160 zählt also in 18,2044 Minuten um 1 weiter und ist nach 256 * 18, 2044 = 4660,34 Minuten, das sind 77.67 Stunden, einmal durchgelaufen.
+
+                     Diese Stundenzahl wird allerdings niemals erreicht, da das Betriebssystem nach Erreichen des Wertes für 24 Stunden alle drei Zellen wieder auf 0 zurücksetzt. Wir werden das gleich nachprüfen.
+
+                     Zuerst aber wollen wir uns den dreizelligen Zähler anschauen:
+
+                         10 PRINT PEEK(160);PEEK(161);PEEK(162)
+                         20 GOTO 10
+
+                     Nach RUN sehen wir den Inhalt der drei Zellen sich entsprechend der oben angegebenen Zeiten verändern. Die Zahlen sind nicht vorherbestimmbar, denn der Zähler ist ja nach dem Einschalten des Computers schon losgelaufen. Er kann aber auf 0 gesetzt werden durch Einfügen der Zeile 5: 5P0KE l60,0:POKE l6l,0: POKE 162,0
+
+                     Jetzt beginnt der Zähler immer ab 0. Ich habe gerade gesagt, daß der Zähler auf 0 gesetzt wird, wenn er 24 Stunden lang gelaufen ist. Der Inhalt in den drei Speicherzellen, der 24 Stunden entspricht, ist nach der oben angegebenen Umrechnungsart 79-26-0. Diesen Wert, oder besser noch ein Wert kurz davor, in die Zellen 160 bis 162 gePOKEt, zeigt uns den Nullsetzvorgang. Ersetzen Sie bitte die obige Zeile 5 durch eine neue Zeile:
+
+                         5 POKE 160,79:P0KE 161,25:POKE 162,0
+
+                     Nach vier Sekunden Laufzeit schalten alle drei Zellen In der Tat auf 0 zurück.
+
+                     Die Umsetzung der Zahlen aus 160 bis 162 in die Variablen TI und Tl$ sowie deren Wirkungsweise entnehmen Sie bitte dem Texteinschub Nr. 16 »Die eingebaute Uhr«.
+
+                     Abschließend muß eines noch warnend erwähnt werden. Alle Operationen, welche den Interrupt-Vektor verwenden beziehungsweise verändern, stören oder verzögern die normale Interrupt-Routine, die ja den Zähler weiterstellt. So zählt der Zähler nicht gleichmäßig und die daraus abgeleitete Uhr geht nicht mehr richtig. Ein Beispiel dafür sind alle Ein- und Ausgaben über die Datasette, welche über einen Interrupt laufen.
+
+$00A3-$00A4          Zwischenspeicher
+
+                     Diese beiden Speicherzellen werden von den Ein- und Ausgabe-Routinen des Betriebssystems für Kassetten, Floppy-Laufwerk und Drucker als Zwischenspeicher für alle möglichen Werte benutzt.
+
+$00A5                Bit-Zähler für Kassetten-Synchronisierung
+
+                     Beim Abspeichern eines Programms auf ein Band werden vor den eigentlichen Daten mehrere Bits zusätzlich gespeichert, die beim Einlesen dieses Bandes zur Synchronisierung dienen, das heißt zum Übereinstimmen der Geschwindigkeit der Datenübertragung.
+
+                     Die Speicherzelle 165 wird als Zähler dieses Synchron-Bits verwendet.
+
+$00A6                Zahler der bearbeiteten Bytes lm Kassetten-Puffer
+
+                     Diese Speicherzelle wird als Zähler benutzt, welcher angibt, wieviele Bytes gerade in den Kassetten-Puffer eingeschrieben oder aus ihm ausgelesen worden sind. Der Kassetten-Puffer besteht aus den Speicherzellen 828 bis 1 019 und kann somit 191 Byte aufnehmen, was zugleich die höchste Zahl ist, welche sinnvollerweise in der Zelle 166 stehen kann.
+
+                     Nähere Erklärungen und ein paar Experimente mit Zelle 166 finden Sie in dem Texteinschub 17 »Experimente mit dem Kassetten-Puffer«.
+
+                     Die meisten der nächsten 20 Speicherzellen werden bei Operationen mit der RS232-Schnittstelle, die über den User-Port den Computer mit anderen Geräten verbindet, eingesetzt. Da die Programmierung der RS232-Schnittstelle noch andere Speicherzellen benötigt, die später an der Reihe sind, gehe ich auf die RS232-Schnittstelle erst bei der Behandlung der Speicherzelle 659 bis 673 näher ein.
+
+$00A7                Zwischenspeicher für Kassetten-Operationen und für Eingabe über die RS232-Schnittsteile
+
+                     Diese Speicherzelle wird verwendet, um jedes Bit, welches von einem RS232-Kanal über den User-Port eingelesen wird, zwischenzuspeichern.
+
+                     Außerdem verwenden mehrere Kassetten-Routinen diese Adresse als Zwischenspeicher.
+
+$00A8                Bitzähler für RS232-Eingabe und bei Band-Ein-/Ausgabe
+
+                     Die Speicherzelle 168 wird als Zähler verwendet, der dies mal nicht die Bytes, sondern die Anzahl der Bits zählt, die sowohl über den User-Port als auch über den Kassetten-Port geleitet werden. Das dient dem Betriebssystem dazu, zu wissen, wann ein volles Wort abgearbeitet worden ist.
+
+$00A9                RS232-Flagge für Startbit-Prüfung
+
+                     Ein RS232-Datentransfer prüft, ob ein Start-Bit empfangen worden ist. Im positiven Fall steht in Zelle 169 die Zahl 144, im negativen Fall eine 0.
+
+$00AA                RS232-Eingabe- und Zwischenspeicher für Kassetten-Routinen
+
+                     Bei der Speicherzelle 165 haben wir gesehen, daß ein Band Synchronisationsbits enthält. Die Speicherzelle 170wird dabei als Flagge benutzt, die angibt, ob ein gelesenes Zeichen Synchronisierungs-Bits oder ein Datenwort darstellt.
+
+                     Die RS232-Routinen verwenden Zelle 17 0 dagegen als Speicher, in welchem die eingelesenen Bits zu einem Byte zusammengefaßt werden, bevor sie im Eingabepuffer am oberen Ende des Programmspeichers abgelegt werden (siehe auch Speicherzellen 55/56).
+
+$00AB                Quersummenprüfung und Zähler für Band-Header bei RS232- und Kassetten-Operationen
+
+                     Diese Speicherzelle wird vom Betriebssystem benutzt, um festzustellen, ob während einer RS232-Datenübertragung Bits verloren gingen. Da derartige Prüfungen mit Parity-Bits (Quersummenprüfung) des öfteren erwähnt werden, gebe ich eine kurze Beschreibung des Prüfprinzips im Texteinschub 18 »Fehlererkennung mit Parity-Bits«.
+
+                     Zusätzlich wird in 171 die Länge des Band-Vorspanns bei seiner Erzeugung gezählt.
+
+$00AC-$00AD          Zeiger auf die Anfangsadresse für Ein-/Ausgabe, Zwischenspeicher für den Bildschirmeditor
+
+                     In den Speicherzellen 193 und 194 steht ein Zeiger, der auf die Adresse im Programmspeicher zeigt, wo das Programm beginnt beziehungsweise beginnen soll, welches abgespeichert beziehungsweise geladen werden soll.
+
+                     Dieser Zeiger wird am Anfang einer Lade- oder Abspeicher-Operation in die Zellen 172 und 173 gebracht, wo er während der Operation laufend erhöht wird, bis das Ende des Programms erreicht ist; dann wird er wieder auf seinen ursprünglichen Wert gesetzt.
+
+                     Der Zeiger dient außerdem noch dem Bildschirmeditor als Zwischenspeicher während des Scrollens (Hochschieben) des Bildschirms und beim Einfügen zusätzlicher Zeilen.
+
+                     Dieser Zeiger kann sehr nützlich sein, um Programme entweder schon beim SAVEn oder aber erst beim LOADen gezielt auf andere als ursprünglich verwendete Speicherbereiche zu bringen. Dazu sind aber noch einige andere Zellen notwendig, bis hin zu dem schon erwähnten Zeiger in 193 und 194.
+
+$00AE-$00AF          Zeiger auf die Endadresse für E!n-/Ausgabe, Zwischenspeicher für den Bildschirmeditor
+
+                     Dieser Zeiger ist der Zwilling zu 172 und 173, nur zeigt er seinerseits auf die letzte Adresse des zu bewegenden Programms.
+
+$00B0-$00B1          Zeitkonstante
+
+                     Der Wert in dieser Speicherzelle wird verwendet, um die Zeitkonstante zum Lesen vom Band in der Zelle 146 einzustellen.
+
+$00B2-$00B3          Zeiger auf den Kassetten-Puffer
+
+                     Beim Einschalten des Computers werden diese Speicherzellen in Low-/High-Byte-Darstellung auf die Anfangsadresse des Kassetten-Puffers gesetzt. Beim VC 20 und C 64 ist dies die Adresse 828 ($33C).
+
+                     Durch Verbiegen dieses Zeigers kann der Kassettenpuffer auf beliebige Plätze des Speichers, aber nicht unterhalb der Adresse 512 verschoben werden. Das kann durchaus sinnvoll sein, um im Kassettenpuffer abgelegte Maschinenprogramme vor Überschreiben durch Kassettenoperationen zu schützen.
+
+$00B4                RS232-Bit-Zähler und -Zwischenspeicher für Kassetten-Operationen
+
+                     Die RS232-Routinen verwenden die Speicherzelle 180, um die Zahl der übertragenen Bits zu zählen, außerdem für Parity-Berechnung (siehe Texteinschub 18) und Stop-Bit-Bearbeitung.
+
+                     Die Lade-Routinen für Kassettenbetrieb benutzen diese Zelle als Flagge, die angibt, ob der Computer bereit ist, Daten zu übernehmen.
+
+$00B5                RS232-Anzeige für nächstes Bit, Flagge für End-of-Tape
+
+                     Bei RS232-Operationen enthält die Zelle 181 das jeweils nächste Bit, welches übertragen werden soll. Bandoperationen entnehmen dieser Speicherzelle, welcher Block gerade gelesen wird.
+
+$00B6                Ausgabe-Zwischenspeicher für RS232 und Kassette
+
+                     Bei Ausgabe von Daten über die RS232-Schnittstelle wird jedes Byte in seine Einzelteile zerlegt, bevor es über den Ausgabepuffer seriell übertragen wird. DerAusgabepufferwird im obersten Teil des Programmspeichers angelegt (siehe auch Speicherzellen 55 und 56); die genaue Anfangsadresse steht in Speicherzelle 248. Auch die Ausgabe von Daten auf die Kassette verwendet Zelle 182 als Ausgabe-Zwischenspeicher.
+
+
+
+
