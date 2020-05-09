@@ -1274,7 +1274,7 @@ $0047-$0048          Zeiger auf die Adresse des Wertes der gerade aufgerufenen B
 
                      Davon ausgenommen sind selbstdefinierte Funktionen. Wie im Texteinschub Nr. 12 
                      »Darstellung der Variablen einer selbstdefinierten Funktion« gezeigt ist, 
-                     erscheinen diese ebenfalls lm Variablenspeicher in einer Darstellung, welche 
+                     erscheinen diese ebenfalls im Variablenspeicher in einer Darstellung, welche 
                      den normalen Variablen sehr ähnlich ist.
 
                      Damit nun eine normale oder Feld-Variable denselben Namen haben kann wie eine 
@@ -2051,7 +2051,7 @@ $00A5                Bit-Zähler für Kassetten-Synchronisierung
 
                      Die Speicherzelle 165 wird als Zähler dieses Synchron-Bits verwendet.
 
-$00A6                Zahler der bearbeiteten Bytes lm Kassetten-Puffer
+$00A6                Zahler der bearbeiteten Bytes im Kassetten-Puffer
 
                      Diese Speicherzelle wird als Zähler benutzt, welcher angibt, wieviele Bytes 
                      gerade in den Kassetten-Puffer eingeschrieben oder aus ihm ausgelesen worden 
@@ -2180,6 +2180,414 @@ $00B6                Ausgabe-Zwischenspeicher für RS232 und Kassette
                      Speicherzelle 248. Auch die Ausgabe von Daten auf die Kassette verwendet Zelle 
                      182 als Ausgabe-Zwischenspeicher.
 
+$00B7                Länge des derzeitigen File-Namens
 
+                     Die LOAD-, SAVE- und VERIFY-Befehle für Disketten verlangen die Angabe eines Programm- oder Dateinamens, auf Computerdeutsch »File-Name«. Nähere Angaben dazu finden Sie im Texteinschub Nr. 19 »Files - Geräte - Namen - Nummern«.
+
+                     Auch der OPEN-Befehl kann einen File-Namen haben. Bei Kassettenoperationen kann der File-Name weggelassen werden.
+
+                     In der Speicherzelle 183 steht während und nach der Verwendung eines der oben genannten Befehle eine Zahl, die angibt, aus wie vielen Zeichen der File-Name besteht.
+
+                     Bei Disketten sind File- Namen möglich, die aus maximal 16 Zeichen bestehen.
+
+                     Bei Kassetten dagegen sind Namenslängen von maximal 187 Zeichen erlaubt. Allerdings werden vom Computer auf dem Bildschirm nur 16 Zeichen ausgedruckt (siehe dazu den Texteinschub 20 »Tape-Header«).
+
+                     Für die Längenangabe in Zelle 183 gilt dabei nur die Anzahl derjenigen Zeichen, die zwischen den Gänsefüßchen stehen.
+
+                     Diese Zahl kann nach einer Ein-/Ausgabeoperation, auch nach einer ungültigen oder abgebrochenen, durch PEEK (183) ausgelesen werden.
+
+                     Ein File-Name wird übrigens auch bei einem OPEN-Befehi der RS232-Schnittstelle angegeben. Dieser Name, der bis zu vier Zeichen lang sein kann, wird in die Speicherzellen 659 bis 662 übertragen und gibt dort die Übertragungsrate, Wortlänge und Parity-Prüfung an.
+
+$00B8                Nummer der derzeitigen Datei (File)
+
+                     Hinter jedem OPEN-Befehl steht eine Zahl, die der durch diesen Befehl angefangenen Datei zugeordnet wird. Diese Datei- oder File-Nummer gilt als Referenz für alle anderen Ein- und Ausgabebefehle derselben Datei. Nähere Angaben dazu können Sie dem Texteinschub Nr. 19 »Files - Geräte - Namen - Nummern« entnehmen.
+
+                     Ein OPEN-Befehl ruft die entsprechende Routine des Betriebssystems auf, welche die File-Nummer in die Speicherzelle 184 schreibt. Von dort kann sie mit PEEK(184) ausgelesen werden. Geben Sie die folgende Zeile direkt ein:
+
+                         A=30:OPEN A,3:PRINT PEEK(184):CLOSE A
+
+                     Um verschiedene File-Nummern auszuprobieren, definieren wir sie als Variable A. Nach dem »A« des OPEN-Befehls steht die Zahl 3. Damit wird der Bildschirm angewählt (siehe »Sekundär-Adresse« im schon erwähnten Texteinschub). Das Anwählen des Bildschirms vermeidet eine störende Meldung des Betriebssystems.
+
+                     Mit RETURN nach der obenstehenden Zeile wird der jeweilige Wert von A als Inhalt der Zelle 184 ausgedruckt.
+
+$00B9                Derzeitige Sekundär-Adresse
+                     
+                     Die Sekundär-Adresse steht als dritte Angabe hinter den Ein- und Ausgabe-Befehlen LOAD, SAVE, VERIFY und OPEN. Sie hat bei den verschiedenen Peripheriegeräten spezielle Funktionen. Diese Funktionen sind im Texteinschub 19 näher erläutert.
+
+                     Der jeweilige Wert der Sekundär-Adresse steht in der Speicherzelle 185, allerdings um 96 erhöht. Für Sekundär- Adressen stehen, über die Standardwerte der einzelnen Peripheriegeräte hinaus, die Zahlen von 0 bis 31 zur Verfügung. Ab 32 fängt in Zelle 185 wieder der Zyklus ab 0 an. Das können wir uns anschauen. Ich wähle zur Eröffnung einer Datei wieder den Bildschirm als »nicht-störendes« Empfangsgerät.
+
+                         A=15:0PEN 1,3,A:PRINT PEEK(185)-96:CLOSE 1 
+
+                     Durch Verändern des Wertes von A können Sie alle Möglichkeiten durchspielen.
+
+$00BA                Derzeitige Geräte-Nummer
+
+                     Jedes an den Computer anschließbare Gerät hat eine eigene Nummer, die zusammen mit den Ein-/Ausgabe-Befehlen LOAD, SAVE, VERIFY und OPEN angegeben werden muß. Wird keine Nummer angegeben, nimmt der Computer automatisch an, daß die Datasette gemeint ist.
+
+                     Alle von Commodore vorgegebenen Geräte-Nummern sind in der folgenden Tabelle 5 aufgelistet.
+
+                     | Geräte-Nummer | angesprochenes Gerät             |
+                     |---------------|----------------------------------|
+                     | 0             | Tastatur                         |
+                     | 1             | Datasette                        |
+                     | 2             | RS232- (User-Port) Schnittstelle |
+                     | 3             | Bildschirm                       |
+                     | 4             | Drucker (normal)                 |
+                     | 5             | Drucker (zusätzlich)             |
+                     | 8             | Disketten-Laufwerk Nr. 0         |
+                     | 9             | Disketten-Laufwerk Nr. 1         |
+                     | 10, 11        | weitere Disketten-Laufwerke      |
+
+                     Tabelle 5. Von Commodore vorgegebene Geräte- Nummern
+
+                     Die normale Geräte-Nummer eines Druckers ist 4, die eines Disketten-Laufwerks 8. Die zusätzlichen Nummern müssen gesondert am betreffenden Gerät eingestellt werden.
+
+                     Nach der Ausführung eines der oben genannten Befehle steht die entsprechende Geräte-Nummer in der Speicherzelle 186, aus der sie mit PEEK(186) ausgelesen werden kann.
+
+$00BB-$00BC          Zeiger auf Adresse des derzeitigen File-Namens
+
+                     Die Bedeutung eines Programm- oder Dateinamens - normalerweise kurz »File-Name« genannt - Ist im Texteinschub Nr. 19 »File - Geräte - Namen - Nummern« näher beschrieben. In den Speicherzellen 187 und 188 steht in der Low-/High-Byte-Darstellung ein Zeiger auf diejenige Adresse im Programm-Speicher, wo dieser Name gespeichert ist.
+
+                     Eine Ausnahme ist hier der OPEN-Befehl der RS232- Schnittstelle. Ihr File-Name wird in die Speicherzellen 659 bis 662 gebracht, wo er verschiedene Parameter dieser Schnittstelle steuert.
+
+$00BD                Zwischenspeicher für RS232-Parity-Prüfung und für Kassettenoperationen
+
+                     Die RS232-Routinen benutzen diese Speicherzellen als Zwischenspeicher für ein Prüf- Byte (Parity-Prüfung) bei der Ausgabe. Die Parity-Prüfung habe ich kurz im Texteinschub Nr. 18 erklärt.
+
+                     Auch die Kassetten-Routinen bedienen sich dieser Speicherzelle. Sie verwenden sie als Zwischenspeicher für das gerade gesendete oder empfangene Zeichen.
+
+$00BE                Blockzähler für Kassetten- Ein-/Ausgabe
+
+                     Das Betriebssystem des Computers schreibt bei SAVE ein Programm zweimal auf das Band der Datasette. Beim LOAD-Befehl wird der erste Block in den Arbeitsspeicher des Computers geladen; der zweite - identische - Block wird dann mit dem ersten Block Byte für Byte verglichen, um Datenfehler auf dem nicht immer ganz zuverlässigen Bandmaterial zu erkennen.
+
+                     In derSpeicherzelle 190 wird dem Betriebssystem angezeigt, wie viele Blockteile bei diesem Prozeß noch gelesen oder gespeichert werden müssen. Vom Basic-Programm aus ist diese Speicherzelle nicht zugänglich.
+
+$00BF                Zwischenspeicher für LOAD- Operationen vom Band
+
+                     Diese Speicherzelle wird beim Laden eines Programms vom Band dazu benutzt, um Zeichen aus einzelnen Bits zusammenzusetzen.
+
+$00C0                Motorsperre der Datasette
+
+                     Die Tasten der Datasette werden 60mal in der Sekunde von der »Interrupt-Routine« des Betriebssystem überprüft, ob eine von ihnen gedrückt worden ist. Die Speicherzelle 192 spielt dabei eine entscheidende Rolle, beim C 64 allerdings in einer anderen Weise als beim VC 20. Wie sie diese Rolle beim C 64 spielt, ist im Zusammenhang mit der Speicherstelle 1 ganz am Anfang dieses Kurses beschrieben worden. Ich habe dabei in zwei Beispielen gezeigt, wie durch Abfrage des vierten Bits von Adresse 1 geprüft werden kann, ob eine Taste der Datasette gedrückt ist und wie der Motor durch Setzen und Löschen des Bit 5 der Zelle 1 ein- und ausgeschaltet werden kann. Vorausgesetzt, der Inhalt der Speicherzelle 192 ist ungleich Null und eine Taste der Datasette ist gedrückt.
+
+                     Nun will ich, wie versprochen, denselben Vorgang für den VC 20 beschreiben.
+
+                     Wie Sie sich vielleicht noch erinnern, wird die Speicherzelle 1 beim VC 20 nicht für die Steuerung der Ein- und Ausgänge des Mikroprozessors verwendet. Diese Rolle wird beim VC 20 durch zwei Register des »Versatile Interface Adapter« (VIA 6522-A) ausgefüllt.
+
+                     Für die Abfrage der Datasetten-Tasten ist das sechste Bit des VIA-Registers 37151 zuständig. Bei gedrückter Taste steht es auf 1, sonst auf 0. Ein kleines Programm zeigt es Ihnen:
+
+                         10 X = PEEK(37151)
+                         20 PRINT X
+                         30 IF X = 62 THEN 50
+                         40 GOTO 10
+                         50 PRINT"TASTE GEDRÜCKT"
+
+                     Wenn keine Taste gedrückt ist, läuft ein Zahlenband mit 126 ab. Die entsprechende Darstellung als Dualzahl lautet 1111 1110. Bei einer gedrückten Taste steht in 37151 die Zahl 62, als Dualzahl 0011 1110. Wichtig, wie gesagt ist nur das zweithöchste Bit.
+
+                     Mit der Abfrage der Zeile 30 springt beim Drücken einer Taste das Programm auf die Zeile 50 und druckt den Text aus.
+
+                     Den Motor der Datasette können wir mit Hilfe des Registers 37184 schalten. Wie beim C 64 gilt auch jetzt, daß dazu die hier angesprochene Speicherzelle 192, auch lnterlock-Register genannt, eine Zahl größer als 0 enthält und daß außerdem eine Taste der Datasette gedrückt ist. Drücken Sie auf PLAY und geben Sie direkt ein:
+
+                         POKE 192,255
+                         POKE 37148,251: DER MOTOR BLEIBT STEHEN.
+                         POKE 37148,252: DER MOTOR LÄUFT LOS.
+
+                     Bestimmend sind hier Bit 2, 3 und 4.
+
+                     Zum Ausschalten muß lediglich Bit 2 auf 1 stehen, zum Einschalten die drei Bits auf 110. Jede Zahl, die als Dualzahl diese Bedingungen erfüllt, kann dafür hergenommen werden. Um unabhängig von den anderen Bits des Registers 37148 zu bleiben, die ja auch ganz bestimmte andere Funktionen haben, empfiehlt es sich, über Boole’sche Verknüpfungen nur die wichtigen drei Bits zu verändern. Die beiden POKE-Befehle sehen dann so aus:
+
+                     Ausschalten:
+
+                         POKE 37148,PEEK(37148) 0R 2
+
+                     Einschalten:
+
+                         POKE 37148,PEEK(37148) AND 12
+
+$00C1-$00C2          Anfangsadresse für Ein-/Ausgabe-Operationen
+
+                     In diesen Speicherzellen steht in Low-/High-Byte-Darstellung die Adresse, ab der ein Programm gerade geladen oder gespeichert wird. Diese Adresse wird übrigens von hier auch in die Speicherzellen 172 und 173gebracht, die wir schon früher besprochen haben.
+
+                     Bei LOAD und SAVE auf Band steht hier die Anfangsadresse des Bandpuffers (828). Im Bandpuffer steht allerdings nur der sogenannte Bandvorspann (auf englisch »Tape Header«), während der Hauptteil des Programms im Programmspeicher ab einer Adresse steht, auf die der Zeiger in den Speicherzellen 195 und 196 hinweist.
+
+$00C3-$00C4          Zeiger auf den Anfang des Programms hinter dem Tape Header
+
+                     Bei jedem LOAD- und SAVE- Befehl für Kassetten wird der Vorspann (Tape Header), in dem Programmtyp, Anfangs- und Endadresse aufgezeichnet sind, im Kassettenpuffer ab Adresse 828 gespeichert. Der eigentliche Teil des Programms steht dann im Programmspeicher.
+
+                     In den Speicherzellen 195 und 196 steht in der Low-/High- Byte-Darstellung diese Adresse, ab der das Programm beginnt. Ich habe für alle diejenigen, die mit der Datasette arbeiten, im Texteinschub Nr. 20 »Tape-Header« die Zusammenhänge mit einem Beispiel dargestellt.
+
+$00C5                Tasten-Code der zuletzt gedrückten Taste
+
+                     Bei der Behandlung der Speicherzelle 145 habe ich Ihnen mit Wort und Bild beschrieben, wie die Tasten des Computers abgefragt werden. Die dabei für jede Taste entstehende Dualzahl wird in eine Dezimalzahl (0 bis 63) umgewandelt und zuerst in die Speicherzellen 203 beziehungsweise 653 gebracht. Zur Umwandlung und Abfrage der Zellen 203 und 653 bringe ich bei diesen Speicherzellen mehr Details. Nach der Prüfung, welche Taste gedrückt worden ist, wird die Codezahl von 203 in die Speicherzelle 197 gebracht und dort »aufgehoben«. Diese vermeintliche Verdoppelung wird vom Betriebssystem dafür gebraucht, um zu erkennen, ob die nächste gedrückte Taste mit der vorhergehenden identisch ist. Ist sie identisch, dann entscheidet der Inhalt der Speicherzelle 650, ob das Zeichen dieser Taste mehrfach ausgedruckt wird. In 650 steht die sogenannte Wiederholfunktion. Aber ich will nicht vorgreifen. Die Codezahlen der einzelnen Tasten werde ich bei der Besprechung der Zelle 203 auflisten.
+
+$00C6                Anzahl der Zeichen im Tastaturpuffer
+
+                     Die Funktion des Tastaturpuffers, zu dem wir bei den Speicherzellen 631 und 640 noch kommen werden, habe ich bereits in diesem Kurs, und zwar im Texteinschub Nr. 15 »Dynamische Tastenabfrage« erklärt. Dabei habe ich damals schon sozusagen im Vorgriff die Zelle 198 verwendet.
+
+                     In dieser Speicherzelle steht die jeweilige Anzahl der Zeichen, die im Tastaturpuffer gespeichert sind und darauf warten, weiterverarbeitet zu werden.
+
+                     Das folgende kleine Programm zeigt es.
+
+                         10 GET A$
+                         20 PRINT PEEK (198);A$
+                         30 FOR J=1 3000:NEXT J
+                         40 GOTO 10
+
+                     Der GET-Befehl holt ein Zeichen aus dem Tastaturpuffer - sofern eines dort zu finden ist. Die Zeile 20 druckt die Anzahl derZeichen im Pufferaus, daneben das erste dieser Zeichen. Dann folgt eine Warteschleife, die uns erlaubt, ganz schnell ein paarTasten zu drücken. Danach springt das Programm an den Anfang zurück und arbeitet diese eingegebenen Zeichen ab. Es ist dabei deutlich zu sehen, wie durch den GET- Befehl bereits ein Zeichen aus dem Puffer genommen und dadurch der Inhalt der Zelle 198 sofort um 1 reduziert wird.
+
+                     Der Inhalt der Speicherzelle 198 kann mit POKE auch verändert werden.
+
+                     Eine sinnvolle Anwendung dieser Beeinflussung erlaubt der nicht gerade sehr populäre WAIT-Befehl.
+
+                     Ersetzen Sie bitte im obigen Programm die Warteschleife der Zeile 30 durch:
+
+                         30 POKE 198,0: WAIT 198,1
+
+                     Zuerst wird dem Computer vorgegaukelt, daß der Tastaturpuffer leer sei. Durch den WAIT- Befehl wartet das Programm danach so iange, bis ein Zeichen im Tastaturpuffer erscheint und springt erst dann auf die nächste Zeile 40.
+
+                     Wenn Sie nach dem WAIT-Befehl statt der 1 eine 2 eingeben, wartet diese Zeile entsprechend auf zwei Tasteneingaben. Allerdings wird in der Zeile 20 dann nur jedes zweite Zeichen ausgedruckt.
+
+$00C7                Flagge für reverse Darstellung der Zeichen
+
+                     Normalerweise steht in dieser Speicherzelle eine 0, was mit PRINT PEEK(199) leicht nach geprüft werden kann.
+
+                     Sobald In der Zelle 199 eine andere Zahl als 0 steht, werden alle Zeichen In der reversen Darstellung gedruckt. Das Betriebssystem des Computers erhöht nämlich in diesem Fall den jeweiligen Bildschirmcode der Zeichen um 128. Ein Blick in eine Tabelle der Biidschirmcodes bestätigt, daß die Codes aller reversen Zeichen um genau 128 höher sind als die der normalen Zeichen.
+
+                     Den reversen Modus können wir bekanntlich direkt mit der Kombination der CTRL- und der RVS-ON-Taste oder aber mit PRINT CHR$(18) herstellen. Wenn Sie aber versuchen sollten, das direkt einzugeben, um dann wieder mit PRINT PEEK(199) nachzuschauen, was jetzt in der Speicherzelle 199 steht, dann werden Sie Schiffbruch erleiden. Das Betriebssystem setzt den Inhalt der Zelle 199 nach einem »Wagenrücklauf«, hervorgerufen zum Beispiel durch die RETURN-Taste oder nach einem PRINT-Befehl, der nicht mit einem Komma oder Semikolon abgeschlossen ist, sogleich auf 0 zurück. Natürlich erfolgt das auch durch Drücken der CTRL- und RVS-OFF-Taste.
+
+                     Wir vermeiden die Rücksetzung durch einen Einzeiler: 
+
+                         PRINT CHR$ (18) * AAA " PEEK (199)
+
+                     Wir erhalten drei reverse As und als lnhalt der Zelle 199auch die Zahl 18. Dasselbe Ergebnis erhalten wir durch POKEn einer Zahl größer als 0 in die Zelle 199:
+
+                         POKE 199,4: PRINT"XX" PEEK (199)
+
+                     Das Ergebnis beweist, daß diese Adresse sehr nützlich sein kann, zumal ihre Abfrage beziehungsweise Beeinflussung auch innerhalb eines Programms erfolgen kann.
+
+$00C8                Zeiger auf das Ende der eingegebenen logischen Zelle
+
+                     Eine echte Zeile faßt beim C 64 maximal 40 Zeichen, beim VC 20 nur 22.
+
+                     Eine Zeile mit Anweisungen darf beim C 64 insgesamt 80 Zeichen, beim VC 20 sogar 88 Zeichen enthalten. Diese »verlängerte« Programmzeile nennt man »logische Zeile«.
+
+                     Der Zeiger in Speicherzelle 200 gibt dem Betriebssystem an, auf welcher Position das letzte Zeichen einer eingegebenen logischen Zeile sitzt. Löschen Sie den Bildschirm und geben Sie direkt irgendwo auf dem Bildschirm den Befehl ein: 
+
+                         PRINT PEEK(200)
+
+                     Sie erhalten die Zahl der Spalte des letzten Zeichens dieses Direkt-Befehls.
+
+$00C9-$00CA          Zeiger auf Zeilen- und Spaltenposltion des letzten Zeichens einer Zeile
+
+                     Diese beiden Speicherzellen werden bei GET und INPUT verwendet, um die Zeile und Spalte des letzten Zeichens einer eingegebenen Zeile festzustellen. Die Spalten (in Zelle 201 angegeben) zählen von 1 bis 40 (1 bis 22 beim VC 20). Die Zeilen (in Zelle 202 enthalten) zählen dagegen in Paaren von 0 bis 12, identisch mit der bei Zelle 200 erläuterten »logischen« Zweierzeile. Da dies nicht ganz einsichtig ist, gebe ich einen Bildschirmausschnitt wieder (Bild 20), der den Sachverhalt verdeutlichen soll.
+
+                     Der erste Direktbefehl steht in der zweiten Zeile, das letzte Zeichen in der Spalte 30. Der zweite Befehl steht in der ersten Sechserzeile. Das heißt also, daß die Zeilenangabe dieselbe ist, egal, um welchen Teil der logischen Zeile es sich handelt. Das können Sie leicht nachprüfen, indem Sie den ersten Direktbefehl eine Zeile höher schreiben. Das Resultat ist dasselbe.
+
+                     Die Unterscheidung, um welche der beiden Zeilenteile es sich handelt, wird in den Speicherzellen 217 bis 242 getroffen.
+
+                     Beim VC 20 sieht der Bildschirmausdruck etwas anders aus (Bild 21), auch die Befehlseingabe habe ich der Zeilenlänge wegen verändert. Interessant ist beim VC 20 allerdings, daß.dort trotz der Länge der logischen Zeile auch nur Zeilenpaare verwendet werden, deren Länge natürlich auf 22 Spalten reduziert ist.
+
+$00CB                Tastencode der gerade gedrückten Taste
+
+                     Bei der Speicherzelle 145 habe ich beschrieben, wie die Tasten des Computers abgefragt werden. Die dabei fürjede der 64 Tasten (mit Ausnahme der RESTORE- und der SHIFT- LOCK-Tasten) entstehende Dualzahl wird in eine Dezimalzahl (0 bis 63) umgewandelt und in der Speicherzelle 203 gespeichert, einige auch in der Zelle 653. Diese Zahl steht auch In Speicherzelle 197, um sie mit der vorher gedrückten Taste vergleichen zu können.
+
+                     Die Codezahlen jeder Taste lassen sich mit folgendem Programm abfragen:
+
+                         10 PRINT PEEK (203)
+                         20 GOTO 10
+
+                     Nach RUN sehen wir ein laufendes Zahlenband, zuerst mit der Zahl 64. Das ist die Codezahl für »keine Taste gedrückt«. Die X-Taste ergibt 23 (26 beim VC 20), die W-Taste ergibt 9. Auch die Funktionstasten haben ihren Tastencode. F1 ergib’ - 39 beim VC 20) und so weiter.
+
+                     Nur die Steuertasten CTRL, SHIFT, und C= (Commodore- Taste) zeigen keine Reaktion. Deren Tastencode steht nämlich in Speicherzelle 653. Den Grund für diesen Separatismus erfahren Sie bei der Besprechung dieser Zelle. Hier ist nur interessant, daß nicht nur jede einzelne dieser drei Tasten einen eigenen Code hat, sondern auch alle machbaren Kombinationen von gleichzeitig gedrückten Steuertasten. Um das zu sehen, ändern Sie bitte die Zeile 10 so ab:
+
+                         10 PRINT PEEK (203), PEEK(653)
+
+                     Tabelle 9 gibt Ihnen die volle Übersicht. Wenn Sie sich die Mühe machen, die Zahlenreihen der Zelle 203 auf Vollständigkeit zu prüfen, dann werden Sie feststellen, daß vier Zahlen fehlen. Es sind die Werte, die eigentlich den vier Steuertasten CTRL, C=, rechte und linke SHIFTTaste zugewiesen sind. Aber wie gesagt, sie werden gleich nach 653 umgeleitet, wobei allerdings kein Unterschied mehr zwischen der linken und rechten SHIFTTaste gemacht wird.
+
+                     Einige Anwendungsbeispiele der Tastencodes sowie der Kombinationen der drei Steuertasten finden Sie im Texteinschub Nr. 21 »Abfrage der Tastencodes«. Wie schon erwähnt, haben die RESTORE- Taste und die SHIFT-LOCK- Taste keinen eigenen Code.
+
+                     Die RESTORE-Taste ist überhaupt nicht an die Tastatur- Matrix angeschlossen, sondern ist direkt mit der RESTORE- Leitung des Computers verbunden. Dort löst sie einen sogenannten NMI-Interrupt aus. Die SHIFT-LOCK-Taste ist lediglich eine mechanische Verriegelung der SHIFT-Taste.
+
+$00CC                Schalter für Cursor blinken
+
+                     Ein Wert größer 0 in dieser Speicherzelle schaltet das Blinken des Cursors ab. Diese Abschaltung erfolgt durch das Betriebssystem immer dann, wenn sich Zeichen im Tastaturpuffer befinden und wenn ein Programm ausgeführt wird.
+
+                     Im folgenden Beispiel einer Eingabe mit dem GET-Befehl, bei dem bekannterweise der Cursor nicht blinkt, wird demonstriert, daß durch POKE 204,0 der Cursor trotzdem blinkt. Das kann für selbstgeschriebene Eingabe-Routinen interessant sein.
+
+                     10 PRINT"JA/NEIN?";
+                     20 POKE 204,0
+                     30 GET A$: IF A$=""THEN 30
+                     40 PRINT A$
+
+                     Umgekehrt kann man durch POKE 204,1 das Blinken des Cursors abschalten. Es bleibt dabei allerdings dem Zufall überlassen, ob er in der Einoder Aus-Phase abgeschaltet wird. Wenn Sie Pech haben, dann bleibt der Cursor bewegungslos stehen.
+
+$00CD                Zähler für Blinkfrequenz des Cursors
+
+                     Das Blinken des Cursors besorgt die Interrupt-Routine. 60mal In jeder Sekunde unterbricht sie den normalen Programmablauf. Während dieser Zeit führt sie mehrere »Haushalt«-Arbeiten durch. So wird hier die Tastatur abgefragt und das Cursorblinken gesteuert.
+
+                     Dazu wird die Zahl 20 In die Speicherzelle 205 geschrieben und bei jeder Unterbrechung dann um 1 reduziert. Wenn die Zahl In 205 den Wert 0 erreicht hat, wird der Cursor eingeschaltet. Nach Adam Riese erfolgt das also 60/20 = 3mal pro Sekunde. Im Texteinschub Nr. 22 »Cursor-Spiele oder der INPUT-Befehl einmal etwas anders« wird mit diesem Zähler für die Blinkfrequenz experimentiert.
+
+$00CE                Bildschirmcode des Zeichens unter dem Cursor
+
+                     Im Prinzip ist der Cursor nichts anderes als das wiederholte Drucken eines Zeichens in reverser Form, das gerade unter dem Cursor steht. Normalerweise ist dies das Leerzeichen, deshalb sehen wir meistens das ausgefüllte Viereck. Fahren Sie aber mit dem Cursor auf einen Buchstaben, dann erscheint dieser wechselweise normal und revers. In Speicherzelle 206 steht jeweils der Bildschirmcode des Zeichens unter dem Cursor. Geben Sie die folgende Anweisung direkt ein, fahren aber noch vor dem Drücken der RETURN-Taste mit dem Cursor zurück auf eines der Zeichen, zum Beispiel auf ein P:
+
+                     PRINT PEEK(206)
+
+                     Nach RETURN erscheint die Zahl 16. Das ist also der Bildschirmcode des Zeichens, auf dem der Cursor saß, als die RETURN-Taste gedrückt wurde. Sie können das mit allen anderen Zeichen dieser Zeile wiederholen.
+
+                     Ich kann mir vorstellen, daß eine derartige Abfrage in einem Programm, welches mit dem Bildschirm arbeitet, sinnvoll sein kann. Die Speicherzelle 206 wird allerdings nach jedem Blinken auf den neuesten Stand gebracht.
+$00CF                Flagge für Blinkzustand des Cursors
+
+                     In dieser Speicherzelle wird festgehalten, in welcher der beiden Blink-Phasen - normal oder revers - der Cursor sich gerade befindet. Eine 0 bedeutet reverses Zeichen, eine 1 bedeutet ein normales Zeichen.
+
+                     Die Abfrage innerhalb eines Basic-Programms funktioniert nicht. Denn die Interrupt- Routine steuert den Phasenwechsel.
+
+$00D0                Flagge für Eingabe von Tastatur oder Bildschirm
+
+                     Diese Speicherzelle wird von einer Routine des Betriebssystems verwendet, die das jeweils nächste Zeichen in den Arbeitsspeicher holt. Für sie ist wichtig zu wissen, von welchem Eingabegerät dieses Zeichen geholt werden soll.
+
+                     Wenn in der Zelle 208 eine 0 steht, wird damit die Tastatur als Eingabegerät bestimmt. Das ist der Normalfall, mit dem wir per Tastendruck Zeichen auf den Bildschirm tippen. Sobald aber statt einem Zeichen die RETURN-Taste gedrückt wird, ändert sich der Inhalt der Speicherzelle 208. Die oben genannte Routine überträgt nämlich jetzt den Inhalt der Zelle 213, in welcher die Länge der derzeitigen logischen Zeile steht, nach 208. Dann holt sie das nächste Zeichen, allerdings nicht von der Tastatur, sondern vom Bildschirm, und zwar das erste Zeichen der gerade abgeschlossenen logischen Zeile. Auf diese Weise gelangen die Anweisungen einer Zeile in den Arbeitsspeicher, wo sie im Direkt-Modus sofort ausgeführt, im Programm-Modus aber gespeichert und erst nach RUN ausgeführt werden.
+
+                     Den Unterschied zwischen »logischer« und »echter« Zeile habe ich in dem Texteinschub Nr. 23 näher beschrieben.
+
+$00D1-$00A2          Zeiger auf den Anfang der Bildschirmzeile, auf welcher der Cursor gerade steht
+
+                     Dieser Zeiger in Low-/High-Byte-Darstellung zeigt auf die Adresse im Bildschirmspeicher, in welcher diejenige Zeile beginnt, auf der der Cursor gerade steht. Das läßt sich leicht nachprüfen durch folgende Programmzeile:
+
+                         10 PRINT CHR$(147) PEEK(209) PEEK(210)
+
+                     Nach RUN wird erst der Bildschirm gelöscht, der Cursor in die HOME-Position gebracht und dann der Inhalt der beiden Zellen ausgedruckt. Da dies alles in der ersten Zeile passiert, sehen wir als Resultat eine 0 und eine 4. Die beiden Zahlen ergeben zusammen die Adresse, in der die erste Zeile des Bildschirmspeichers beginnt. Erweitern Sie die Zeile 10 um eln Komma und die Low-/High- Byte-Berechnung:
+
+                         10 PRINT CHR$(147) PEEK(209) PEEK(210), PEEK(209)+256*PEEK(210)
+
+                     Jetzt sehen wir als Resultat:
+
+                         0 4 1024
+
+                     Beim VC 20 erscheinen die der verwendeten Speichererweiterung entsprechenden Zahlen. Wir können durch einen TAB-Befehl den zweiten Teil der PRINT-Anweisung in die nächste Zeile schieben und sehen, was dann herauskommt:
+
+                         20 PRINT PEEK(209) PEEK (210),TAB(50) PEEK(209)+ 256*PEEK(210)
+
+                     Das Resultat ist jetzt:
+
+                         0	4	1024
+                         40	4	1104
+
+                     Einen entsprechenden Zeiger für die Adresse der dazugehörigen Zeile lm Farbspeicher werden wir in den Speicherzellen 243 und 244 antreffen. Durch POKEn können wir die Cursorposition leider nicht beeinflussen, aber Abfragen geht, wenn es uns interessiert.
+
+$00D3                Position des Cursors innerhalb einer logischen Zeile
+
+                     Den Inhalt der Speicherzelle 211 könnte man auch die Spaltenposition des Cursors nennen, wenn es sich nicht um die Position in der logischen Zeile handelte (siehe Texteinschub Nr. 23). Beim C 64 sind daher die Werte von 0 bis 79, beim VC 20 von 0 bis 87 möglich.
+
+                     Diese Speicherzelle zusammen mit Zelle 214 wird von den Befehlen POS, TAB, SPC und vom Komma innerhalb einer PRINT-Anweisung verwendet, um den Cursor zu positionieren. Das können wir auch. Um den Cursor auf Platz 5 in der Bildschirmzeile 18 zu bringen, geben wir folgende Programmzeile ein:
+
+                         10 POKE 214,17: PRINT: P0KE 211,5:PRINT"C64"
+
+                     Aus innerbetrieblichen Gründen muß der Wert, den wir als Zeile erzielen wollen, um 1 verringert in die Zelle 214 gePOKEt werden. Mit der Zahl 17 wird also der Cursor zuerst auf die Zeile 18 gebracht, dann in Spalte 5, ab der dann das Wort »C 64« gedruckt wird. Auf diese Weise erhalten wir einen Befehl, der in anderen Basic-Formen unter dem Namen PRINT AT sehr verbreitet ist, der bei den kleinen Commodore-Computern aber fehlt.
+
+                     Der Vorgang dabei besteht darin, daß die Inhalte von 211 und 214 in das X-Register beziehungsweise in das Y- Register des Mikroprozessors gebracht werden. Von dort können die Werte dann von einer Routine des Betriebssystems abgerufen werden. Das klingt alles sehr nach Maschinensprache. Aber wir haben Glück, denn sowohl die beiden Register als auch die besagte Routine sind von Basic aus ansprechbar. Das X-Register steht in Speicherzelle 781, das Y-Register in Speicherzelle 782, die Routine beginnt sowohl beim C 64 als auch beim VC 20 ab der Adresse 68634, wo wir sie mit dem SYS-Befehl starten können.
+
+                     Für unser Beispiel sieht das dann so aus:
+
+                         10 POKE 781,18:P0KE 782,5: SYS 58634:PRINT"C 64"
+
+                     Wir erhalten dasselbe Ergebnis, nur mit dem Unterschied, daß die Zeile jetzt wirklich die Zeile 18 ist. Mit dieser Methode ist jetzt auch die Zeile 0 erreichbar.
+
+                     Die Speicherzellen 781 und 782 bieten natürlich noch andere Anwendungen, auf die wir noch kommen werden.
+
+$00D4                Flagge für Gänsefuß-Modus
+
+                     Steht in dieser Speicherzelle eine 0, dann befindet sich der
+
+                     Computer im Gänsefuß-Modus, andere Zahlen bedeuten den Normal-Modus.
+
+                     Selbst Anfängern ist der Gänsefuß-Modus sehr rasch geläufig, bietet er doch die Möglichkeit, Zeichen mit der PRINT-Anweisung auszudrucken. Genauso bekannt sind aber auch die Tücken der Gänsefüße. Die Cursor-Tasten reagieren nicht wie gewohnt. Auch die Farbumschaltung und andere Steuertasten zeigen nicht die übliche Wirkung, sondern drucken - allzu oft unerwartet - ein reverses Zeichen auf den Bildschirm.
+
+                     Eingeschaltet wird der Gänsefuß-Modus durch Drücken der geSHIFTeten 2-Taste oder der geSHIFTeten INST/DEL- Taste. Abgeschaltet wird er nach jedem 2., 4., 6., also nach jeder geradzahligen Wiederholung der Gänsefuß-Taste innerhalb einer Zeile. Abgeschaltet wird er auch durch die RETURN-Taste. Das spezielle Verhalten der Steuertasten zwischen Gänsefüßen läßt sich für faszinierende Effekte ausnutzen.
+
+                     Leider läßt sich der Inhalt der Speicherzelle 212 und damit der Status des Gänsefuß- Modus von Basic aus nicht beeinflussen. Doch in Maschinensprache unter Verwendung der Interrupt-Routine geht es, und einige Vorschläge zum Abschalten des Gänsefuß-Modus per Tastendruck sind schon veröffentlicht worden.
+
+$00D5                Länge der Bildschirmzeile
+
+                     Im Texteinschub 23 »Logische und echte Zeilen« ist der Unterschied zwischen den beiden Zeilentypen beschrieben.
+
+                     Der Inhalt dieser Speicherzelle entscheidet, wann eine neue logische Zeile begonnen werden muß oder ob die laufende logische Zeile um eine weitere echte Zeile erweitert werden kann. Der Bildschirm- Editor verwendet diese Speicherzelle, um komplette logische Zeilen nach oben zu verschieben. Einige andere Routinen benutzen den Wert der Zelle bei der Rückwärtsüberprüfung einer Zeile, bei der die Endposition der Zeile bekannt sein muß. Schließlich bezieht noch die bereits behandelte Speicherzelle 200 Ihren Wert von der Zelle 213.
+
+$00D6                Nummer der echten Zelle, auf der sich der Cursor gerade befindet
+
+                     Diese Speicherzelle ist zusammen mit der Speicherzelle 211 beschrieben.
+
+$00D7                Zwischenspeicher für den ASCII-Codewert der zuletzt gedrückten Taste
+
+                     Bei der Tastaturabfrage werden die Tastencodes (siehe Speicherzelle 203) in ASCII- Codewerte umgewandelt und in den Tastaturpuffer gebracht. Die Speicherzelle 215 dient dabei als Zwischenspeicher. Kassettenoperationen speichern hier auch Prüfsummen ab.
+
+$00D8                Flagge für INSERT-Modus
+
+                     Immer wenn die geSHIFTete INST/DEL-Taste gedrückt wird, um in einer Zeile Platz für ein einzufügendes Zeichen zu schaffen, wird der Inhalt der Speicherzelle 216 um 1 erhöht. Dann wird die Zeile ab dem Freiplatz nach rechts verschoben, der Inhalt der Speicherzelle 213 erhöht und schließlich der entsprechende Wert der Link-Tabelle für Bildschirmzeilen ab Speicherzelle 217 bis 242 verändert.
+
+                     Bei jedem Tippen eines Zeichens in den freigewordenen Platz wird der Inhalt von 216 wieder um 1 reduziert, bis mit der 0 das Ende des INSERT- Modus angezeigt wird.
+
+$00D9-$00F2          Link-Tabellen der Bildschirm-Zeilen
+
+                     Diese 26 Speicherzellen enthalten Angaben für jede Zeile des Bildschirms. Jedes dieser Bytes hat zwei Funktionen.
+
+                     Die ersten 4 Bit, also Bit 0 bis 3, geben an, in welchem Speicherblock, man sagt auch »page« dazu, das erste Byte der betreffenden Bildschirmzeile sich befindet. Diese Angabe wird zur Berechnung des Zeigers in der Speicherzelle 209 (siehe dort) verwendet. Sie ist in dieser Form notwendig, da der Bildschirmspeicher beim C 64 überall in den Arbeitsspeicher gelegt werden kann. Um die Position eines Zeichens oder besser gesagt eines Bytes davon im Bildschirmspeicher genau positionieren zu können, braucht das Betriebssystem noch die genaue Lage innerhalb
+
+                     des Speicherblocks. Das Low- Byte dieser Zahl steht in einer Tabelle ab Speicherzelle 60656 (60952 beim VC 20). Das High- Byte wird berechnet, und zwar durch Addition des Wertes der Speicherzelle 648 mit dem Wert der ersten 4 Bit in Tabelle 217 bis 242. Der Wert in Zelle 648 gibt die Anfangsadresse des Bildschirmspeichers an.
+
+                     Der zweite Teil jedes Bytes in der Tabelle 217 bis 242 hat eine andere Funktion. Wie im Texteinschub 23 beschrieben ist, kann eine logische Zeile aus ein oder zwei (beim VC 20 sogar bis zu 4) echten Zeilen bestehen. Das Betriebssystem braucht daher eine Angabe, welche echten Zeilen zu einer logischen Zeile verbunden sind. Dieses Verbinden heißt auf englisch »link«, daher heißt der Speicherbereich 217 bis 242 »Link- Tabelle«. Diese oberen 4 Bit zeigen mit irgendeinem Wert über 0 an, daß die betreffende echte Zeile die erste oder einzige einer logischen Zeile ist. Sind die 4 Bit alle 0, dann ist sie eine 2., 3. und 4. Zeile der logischen Zeile.
+
+$00F3-$00F4          Zeiger auf Position des Cursors lm Farbspeicher
+
+                     Jedem Platz im Bildschirmspeicher, in dem der Codewert für ein Zeichen steht, entspricht ein Platz im Farbspeicher, in dem der Codewert für die Farbe dieses Zeichens steht.
+
+                     Das heißt, daß den Bild- schirm-Werten der Speicherzellen 209 bis 210 die Farbspeicher-Werte der Zellen 243 bis 244 entsprechen. Dieser Zeiger bestimmt also in der Low-/High-Byte-Darstellung die Adresse im Farbspeicher, ab der die echte Zeile beginnt, auf welcher der Cursor gerade steht.
+
+$00F5-$00F6          Vektor auf die Decodiertabelle für ASC!l-Codewerte der Tasten
+
+                     Bei der Diskussion der Speicherzelle 145 habe ich Ihnen gezeigt, wie das Drücken einer der 64 Tasten entschlüsselt wird.
+
+                     Ein entschlüsselter Wert wird in Speicherzelle 145 zwischengespeichert und gelangt dann als Tastencode In die Speicherzelle 203. Bei der Besprechung der Zelle 203 wurden die Codewerte aufgelistet. Ich habe auch darauf hingewiesen, daß die Codes der drei Steuertasten SHIFT, CTRL und COMMODORE (C=) separat in der Zelle 653 stehen.
+
+                     Diese Tastencodes sind sehr nützlich und vom Basic aus gut verwendbar. Im Verkehr mit anderen Geräten sind sie aber nicht einsetzbar, da sie keiner internationalen Norm entsprechen.
+
+                     Eine derartige Norm bietet der sogenannte ASCII-Code. Deshalb rechnet, wo notwendig, das Betriebssystem die Tastencodes in den ASCII-Code um.
+
+                     Dazu stehen im Speicher des Betriebssystems vier Tabellen (Bild 22), die die ASCII-Code- werte enthalten (in Klammern für den VC 20).
+
+                     Die Umrechnung der Tastencodes in ASCII-Code ist sehr einfach. Der Tastencode wird lediglich zu der Anfangsadresse der entsprechenden Tabelle hinzugezählt. Die Summe ergibt die Adresse in derTabelle, in der der ASCII-Code für das gedrückte Zeichen steht.
+
+                     Als Beispiel nehmen wir das normale »G«, sein Tastencode ist 26 (VC 20:19). Zur Anfangsadresse der normalen Tabelle 60289 (60510) dazugezählt, ergibt das 60315 (60529). Schauen wir in dieser Speicherzelle nach:
+
+                         PRINT PEEK(60315): REM BEIM C 64
+                         PRINT PEEK(60529): REM BEIM VC 20
+
+                     In beiden Fällen erhalten wir die Zahl 71. Ein Blick in die ASCII-Tabelle des Handbuchs bestätigt die Richtigkeit.
+
+                     Der Vektor in den vorliegenden Speicherzellen 245/246 zeigt auf den Anfang der vier Tabellen, und zwar in Abhängigkeit davon, ob und welche der drei Steuertasten zusammen mit einer anderen Taste gedrückt worden ist. Auch das kann ich Ihnen zeigen mit einer Programmzeile, welche ein Zahlenband erzeugt, dessen Zahl durch die Steuertasten verändert wird. Sie werden sehen, es sind die Anfangsadressen der vier Tabellen.
+
+                         10 PRINT PEEK(245)+256*PEEK(246):G0T0 10
+
+$00F7-$00F8          Zeiger auf den Anfang des RS232-Eingabe-Puffers
+
+                     Immer wenn ein Kanal mit der Geräte-Nummer 2 (User-Port) eröffnet wird, werden am oberen Ende des Arbeitsspeichers zwei Pufferspeicher mit je 256 Byte reserviert (siehe auch die Beschreibung der Speicherzellen 55 bis 56).
+
+                     Der Zeiger, der in Low-/High- Byte-Darstellung in 247 und 248 steht, zeigt auf die Anfangsadresse desjenigen Pufferspeichers, der die ankommenden Zeichen aufnimmt.
+
+                     Ein Programm, das den User- Port benutzen will, sollte übrigens immer zuerst die Gerätenummer 2 eröffnen, bevor irgendwelche Variable definiert werden. Dadurch wird vermieden, daß die Puffer-Reservierung eventuelle Variablenwerte überschreibt, die bereits in diesen 512 Byte angesiedelt worden sind.
+
+$00F9-$00FA          Zeiger auf den Anfang des RS232-Ausgabe-Puffers
+
+                     Dieser Zeiger ist der Zwilling zu dem in den Zellen 247/248 stehenden Zeiger, diesmal aber für den Ausgabe-Puffer.
+
+$00FB-$00FE          Vier freie Byte für Anwenderprogramme
+
+                     Diese 4 Byte sind frei, und da sie von Basic nicht gestört beziehungsweise verändert werden, eignen sie sich in idealer Weise für Flaggen, Register oder andere Zwischenspeicher.
+
+$00FF                Zwischenspeicher für Daten bei der Umwandlung von Gleitkomma-Zahlen in ASCII- Werte
+
+                     Der Titel dieser Speicherzelle sagt schon alles.
+
+                     Jetzt haben wir eine erste Etappe unserer Wanderung durch die Speicherlandschaft hinter uns, nämlich den Bereich von 0 bis 255. Man nennt ihn »Zero-Page«, und er hat in der Maschinensprache-Programmierung beziehungsweise in der Adressierung eine spezielle Bedeutung. Für Basic-Programmierer ist diese Seiteneinteilung bedeutungslos, und wir werden deshalb unbeirrt als nächstes mit einem größeren Speicherblock, nämlich von 256 bis 511 weitermachen.
 
 
