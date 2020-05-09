@@ -386,10 +386,13 @@ while(True):
 				break
 			comment = line[21:]
 
-			hex_numbers = re.findall(r'\$[0-9A-F][0-9A-F][0-9A-F][0-9A-F]', comment)
+			hex_numbers = re.findall(r'\$[0-9A-F]+', comment)
 			for hex_number in hex_numbers:
-				if (hex_number[1] == 'A' or hex_number[1] == 'B' or hex_number[1] == 'E' or hex_number[1] == 'F'):
-					comment = comment.replace(hex_number, '<a href="#' + hex_number[1:] + '">' + hex_number + '</a>')
+				dec_number = int(hex_number[1:], 16)
+				if dec_number < 0x0400:
+					comment = comment.replace(hex_number, '<a href="#' + '{:04x}'.format(dec_number) + '">' + hex_number + '</a>')
+				elif (dec_number >= 0xa000 and dec_number <= 0xbfff) or (dec_number >= 0xe000 and dec_number <= 0xffff):
+					comment = comment.replace(hex_number, '<a href="https://www.pagetable.com/c64disasm/#' + '{:04x}'.format(dec_number) + '">' + hex_number + '</a>')
 
 			if not has_seen_blank_line:
 				if len(comment.lstrip()) == 0:

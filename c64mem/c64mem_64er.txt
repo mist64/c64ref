@@ -1099,7 +1099,7 @@ $003B-$003C          Zeilennummer der letzten Programmunterbrechung
                      Unterbrechung erfolgt.
 
                      Das läßt sich am besten mit der STOP-Taste und nachfolgendem CONT zeigen. 
-                     Nehmen Sie bitte dazu das kleine Demo-Programm derZellen 57 und 58 und ändern 
+                     Nehmen Sie bitte dazu das kleine Demo-Programm der Zellen 57 und 58 und ändern 
                      Sie alle PEEK-Adressen in 59 und 60 um. Fügen Sie außerdem noch eine Zeile 50 
                      hinzu:
 
