@@ -278,11 +278,14 @@ while(True):
 		asmaddress = int(hexaddress, 16)
 		has_address = True
 
+	symbol = asm[13:19].rstrip()
+	asm = asm[:13].rstrip()
+
 	print('<tr>')
 	print('<th class="left_column">')
 	if has_address:
 		print('<a name="' + hexaddress + '"/>')
-	print(asm + '</th>')
+	print(asm + ' <tt>' + symbol + '</tt>' + '</th>')
 
 	for i in range(0, files):
 		print('<td>')
