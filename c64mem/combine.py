@@ -5,40 +5,40 @@ import pprint
 import markdown
 
 filenames = [
-	'c64mem_prg.txt',
-	'c64mem_sta_awsm.txt',
 	'c64mem_mapc64.txt',
 	'c64mem_64er.txt',
+	'c64mem_sta.txt',
 	'c64mem_64intern.txt',
+	'c64mem_prg.txt',
 	'c64mem_64map.txt',
 	'c64mem_jb.txt',
 ]
 names = [
-	'Programmer\'s Reference Guide',
-	'STA',
 	'Mapping the Commodore 64',
-	'Memory Map mit Wandervorschl&auml;gen',
+	'64\'er [German]',
 	'Data Becker [German]',
+	'Joe Forster/STA',
+	'Programmer\'s Reference Guide',
 	'64map',
 	'Jim Butterfield',
 ]
 links = [
-	'https://...',
-	'https://...',
-	'https://...',
-	'https://...',
-	'https://...',
-	'https://...',
-	'https://...',
+	'http://unusedino.de/ec64/technical/project64/mapping_c64.html',
+	'https://archive.org/details/64er_sonderheft_1986_07/page/n6/mode/2up',
+	'https://www.pagetable.com/?p=1015',
+	'http://www.awsm.de/mem64/',
+	'http://www.zimmers.net/cbmpics/cbm/c64/c64prg.txt',
+	'http://unusedino.de/ec64/technical/project64/memory_maps.html',
+	'https://www.atarimagazines.com/compute/issue29/394_1_COMMODORE_64_MEMORY_MAP.php',
 ]
 descriptions = [
-	'...',
-	'...',
-	'...',
-	'...',
-	'...',
-	'...',
-	'...',
+	'Reference from <i>Mapping the Commodore 64</i> by Sheldon Leemon, ISBN 0-942386-23-X.',
+	'German-language reference from <i>Memory Map mit Wandervorschl&auml;gen</i> by Dr. H. Hauck, in 64\'er Sonderheft 1986/07.',
+	'German-language reference from <i>Das neue Commodore-64-intern-Buch</i> by Data Becker, ISBN 3890113079. Some minor corrections have been made.',
+	'Reference by Joe Forster/STA, with awsm\'s changes applied.',
+	'Reference from <i>Commodore 64 Programmer\'s Reference Guide</i>.',
+	'Reference as found in "Commodore_64_Memory_Maps.txt" by anonymous.',
+	'Reference by Jim Butterfield in COMPUTE! #29 (October 1982).',
 ]
 
 
@@ -47,7 +47,6 @@ darkcolor = ['D8F2CB', 'C6E2FC', 'BFB7E8', 'FCF6CD', 'F4D2E3', 'D2F6F0', 'D2F6F0
 lightcolor = ['E5F2DF','E3F0FC','D5D1E8','FCFAE6','F5E4EC','E1F5F2','E1F5F2']
 
 asm_donor_index = 0
-source_index = 0 # we treat the Microsoft/Commodore source differently
 
 f = os.popen('git log -1 --pretty=format:%h .')
 revision = f.read()

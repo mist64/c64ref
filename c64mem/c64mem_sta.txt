@@ -7,6 +7,9 @@
 - edited by awsm.de // @awsm9000
 - http://www.awsm.de/mem64/
 -
+- Corrections (typos as well as content), translations etc.
+- welcome at: https://github.com/mist64/c64disasm
+-
 ------------------------------------------------------------
 -
 # This plain text file is formatted so that it can be automatically

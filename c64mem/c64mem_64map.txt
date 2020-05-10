@@ -5,6 +5,9 @@
 - in: 64MAP10.TXT, which states ftp://arnold.hiof.no/programs
 - as the original source
 -
+- Corrections (typos as well as content), translations etc.
+- welcome at: https://github.com/mist64/c64disasm
+-
 ------------------------------------------------------------
 -
 # This plain text file is formatted so that it can be automatically
