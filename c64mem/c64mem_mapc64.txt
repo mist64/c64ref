@@ -26,6 +26,8 @@
 # * The description starts at column 21.
 # * All lines of the description until the first blank line are
 #   combined into the heading.
+# * A '.' character at the end of a heading line represents a hard
+#   line break.
 # * The remaining text is in MarkDown format.
 # * All addresses are 4 digits and have a leading '$'.
 # The encoding is UTF-8.

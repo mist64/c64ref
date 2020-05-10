@@ -7,8 +7,8 @@ import markdown
 filenames = [
 	'c64mem_mapc64.txt',
 	'c64mem_64er.txt',
-	'c64mem_sta.txt',
 	'c64mem_64intern.txt',
+	'c64mem_sta.txt',
 	'c64mem_prg.txt',
 	'c64mem_64map.txt',
 	'c64mem_jb.txt',
@@ -324,13 +324,13 @@ while(True):
 	count += 1
 #	if count > 80:
 #		break
-	
+
 	for i in range(0, files):
 		if linenumber[i] >= len(data[i]):
 			continue
 		while len(data[i][linenumber[i]]) > 0 and (data[i][linenumber[i]][0] == '-' or data[i][linenumber[i]][0] == '#'):
 			linenumber[i] = linenumber[i] + 1
-	
+
 	if asmlinenumber >= len(data[asm_donor_index]):
 		break
 
@@ -341,7 +341,7 @@ while(True):
 		continue
 	if asm[0] == '#' or asm[0] == '-':
 		continue
-	
+
 	has_address = False
 	if asm[0] == '$':
 		hexaddress = asm[1:5]
@@ -422,13 +422,15 @@ while(True):
 			print('<details open>')
 #		else:
 #			print('<div>')
-		
+
 		if len(headings):
 			print('<b>')
 			all_text = ''
 			if is_collapsible:
 				print('<summary>')
 			for heading in headings:
+				if heading[-1] == '.':
+					heading += '<br/>'
 				all_text += heading + ' '
 #			print(markdown.markdown(all_text)) # todo
 			print(all_text)
