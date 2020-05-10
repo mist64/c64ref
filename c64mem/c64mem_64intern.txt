@@ -23,6 +23,7 @@
 # * All lines of the description until the first blank line are
 #   combined into the heading.
 # * The remaining text is in MarkDown format.
+# * All addresses are 4 digits and have a leading '$'.
 # The encoding is UTF-8.
 
 $0000        D6510   Datenrichtungsregister für Prozessor-
@@ -70,7 +71,7 @@ $0005-$0006  ADRAY2  Vektor für Umwandlung von Fest nach
 
 $0007        CHARAC  Suchzeichen
 
-                     Die Speicherzelle $07 wird oft von
+                     Die Speicherzelle $0007 wird oft von
                      BASIC-Programmen als Suchzeiger für
                      Texteingaben verwendet.
 
@@ -78,7 +79,7 @@ $0008        ENDCHR  Hochkomma-Flag
 
                      Während der Umwandlung von
                      BASIC-Befehlen in Tokens wird die
-                     Speicherzelle $08 als Zwischenspeicher
+                     Speicherzelle $0008 als Zwischenspeicher
                      für BASIC-Texteingaben verwendet.
 
 $0009        TRMPOS  Speicher für Spalte beim TAB-Befehl
@@ -98,7 +99,7 @@ $000A        VERCK   0= LOAD, 1= Verify, Flag des Interpreters
 $000B        COUNT   Zeiger im Eingabepuffer, Anzahl der
                      Dimensionen
 
-                     Die Speicherzelle $0B wird dazu
+                     Die Speicherzelle $000B wird dazu
                      verwendet, die Anzahl der Dimensionen
                      zu berechnen. Außerdem wird noch die
                      Länge der Tokenzeile hier angegeben.
@@ -146,16 +147,16 @@ $0011        INPFLG  $00= INPUT, $40= GET, $98= READ
 
 $0012        TANSGN  Vorzeichen bei ATN
 
-                     Die Speicherzelle $12 wird von den
+                     Die Speicherzelle $0012 wird von den
                      trigonometrischen Funktionen zur
                      Bestimmung des Vorzeichens verwendet.
-                     Zusätzlich dient die Speicherzelle $12
+                     Zusätzlich dient die Speicherzelle $0012
                      als Vergleichsoperator für
                      Vergleichsoperationen.
 
 $0013        CHANNL  aktives I/O-Gerät $00= Direkteingabe
 
-                     Die Speicherzelle $13 wird als Zeiger
+                     Die Speicherzelle $0013 wird als Zeiger
                      für die Peripheriegeräte wie Tastatur,
                      Datasette, RS232, User-Port,
                      Bildschirm, Drucker und Floppy
@@ -171,7 +172,7 @@ $0014-$0015  LINNUM  Integer-Adresse z.B. Zeilennummer
 
 $0016        TEMPPT  Zeiger auf Stringstack
 
-                     Die Speicherzelle $16 zeigt auf den
+                     Die Speicherzelle $0016 zeigt auf den
                      nächsten freien Speicherplatz im
                      Stringstack.
 
@@ -264,7 +265,7 @@ $003B-$003C  OLDLIN  Zeilennummer für CONT
                      Falls eine Unterbrechung des
                      Programmablaufs durch den Befehl STOP
                      oder über die STOP-Taste erfolgt,
-                     wird in den Speicheradressen $3B-$3C
+                     wird in den Speicheradressen $003B-$003C
                      die Zeilennummer gespeichert, die
                      gerade abgearbeitet wurde.
 
@@ -274,7 +275,7 @@ $003D-$003E  OLDTXT  Zeiger auf nächstes Statement für CONT
                      verarbeitet wird, holt sich das
                      Betriebssystem die aktuelle
                      Zeilennummer und speichert diese dann
-                     in $3D-$3E als LOW- und HIGH-Byte ab.
+                     in $003D-$003E als LOW- und HIGH-Byte ab.
 
 $003F-$0040  DATLIN  augenblickliche Zeilennummer für DATA
 
@@ -331,7 +332,7 @@ $004D        OPMASK  Maske für Vergleichsoperationen
 
 $004E-$004F  TEMPF3  Zeiger für FN
 
-                     In $4E-$4F ist die Adresse angegeben,
+                     In $004E-$004F ist die Adresse angegeben,
                      wo die Variablen und ihr Wert abgelegt
                      sind.
 
@@ -350,7 +351,7 @@ $0054        JMPER   Konstante $4C JMP für Funktionen
 
 $0055-$0056          Sprungvektor für Funktionen
 
-                     In $55-$56 werden die Sprungvektoren
+                     In $0055-$0056 werden die Sprungvektoren
                      für die Funktionen angegeben.
 
 $0057-$005B  TEMPF1  Register für Arithmetik, Akku #3
@@ -470,7 +471,7 @@ $0092        SVXT    Zeitkonstante für Band
                      Unterschiede bei der Aufnahmegeschwindigkeit
                      auszugleichen.
 
-$0093        VERCK   Flag für LOAD  $00, oder für VERIFY $01
+$0093        VERCK   Flag für LOAD $00, oder für VERIFY $01
 
                      Dieses Flag dient dem Betriebssystem
                      dazu, um zu unterscheiden, ob eine
@@ -487,12 +488,12 @@ $0095        BSOUR   Ausgabepuffer für IEC-Bus
                      Hier wird das Zeichen abgelegt,
                      welches über den seriellen Port zur
                      Floppy oder zum Drucker geschickt
-                     werden soll, sobald die Adresse $94
+                     werden soll, sobald die Adresse $0094
                      Bereitschaft zeigt.
 
 $0096        SYNO    Flag für EOT vom Band empfangen
 
-                     In $96 werden die Daten
+                     In $0096 werden die Daten
                      zwischengespeichert, die vom Band
                      gelesen werden.
 
@@ -615,7 +616,7 @@ $00AC-$00AD  SAL     Zeiger für Bandpuffer und Scrolling
 
 $00AE-$00AF  EAL     Zeiger auf Programmende bei LOAD/SAVE
 
-                     Ähnlich wie $AC-$AD funktionieren
+                     Ähnlich wie $00AC-$00AD funktionieren
                      diese beiden Speicherzellen. Sie
                      Zeigen immer auf das Byte, das gerade
                      gelesen oder gespeichert wurde.
@@ -1132,14 +1133,14 @@ $0299-$029A  BAUDOF  RS-232 Baud-Rate
 $029B        RIDBE   Zeiger für empfangenes Byte RS-232
 
                      Wenn man den Inhalt der Speicherzelle
-                     mit dem Wert in $F7-$F8 addiert,
+                     mit dem Wert in $00F7-$00F8 addiert,
                      erhält man die Adresse des zuletzt im
                      Eingabepuffer eingegebenen Bytes.
 
 $029C        RIDBS   Zeiger auf Input von RS-232
 
                      Wenn man den Inhalt der Speicherzelle
-                     mit dem Wert in $F7-$F8 addiert,
+                     mit dem Wert in $00F7-$00F8 addiert,
                      erhält man die Adresse des ersten im
                      Eingabepuffer eingegebenen Bytes.
 
@@ -1147,14 +1148,14 @@ $029D        RODBS   Zeiger auf zu Übertragendes Byte
                      RS-232
 
                      Wenn man den Inhalt der Speicherzelle
-                     mit dem Wert in $F9-$FA addiert,
+                     mit dem Wert in $00F9-$00FA addiert,
                      erhält man die Adresse des ersten im
                      Ausgabepuffer eingegebenen Bytes.
 
 $029E        RODBE   Zeiger auf Ausgabe auf RS-232
 
                      Wenn man den Inhalt der Speicherzelle
-                     mit dem Wert in $F9-$FA addiert,
+                     mit dem Wert in $00F9-$00FA addiert,
                      erhält man die Adresse des zuletzt im
                      Ausgabepuffer eingegebenen Bytes.
 

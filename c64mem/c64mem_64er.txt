@@ -22,6 +22,7 @@
 # * All lines of the description until the first blank line are
 #   combined into the heading.
 # * The remaining text is in MarkDown format.
+# * All addresses are 4 digits and have a leading '$'.
 # The encoding is UTF-8.
 
 $0000        D6510   Datenrichtungsregister für Ein-/Ausgabe-Port des 6510-Mikroprozessors
@@ -237,7 +238,7 @@ $0009                Spaltenposition des Cursors vor dem letzten TAB- oder SPC-B
 
                      Speicherzelle 9 wird von den Basic-Befehlen TAB und SPC verwendet. Vor ihrer 
                      Ausführung wird die Nummer der Spalte, in der sich der Cursor befindet, aus der 
-                     Speicherzelle 211 ($D3) nach 9 gebracht,von wo sie geholt wird, um die Position 
+                     Speicherzelle 211 ($00D3) nach 9 gebracht,von wo sie geholt wird, um die Position 
                      des Cursors nach der Ausführung von TAB und SPC auszurechnen.
 
                      Diese komplizierte Erklärung können wir durch Ausprobieren deutlicher machen. 
@@ -284,7 +285,7 @@ $000A                Flagge für LOAD oder VERIFY
 
                      Erwähnenswert ist noch, daß das Betriebssystem in einer Art Nationalismus seine 
                      eigene Flagge aufzieht: Den Unterschied zwischen LOAD und VERIFY speichert es 
-                     seinerseits in Zelle 147 ($93) ab. Soweit ich es sehen kann, sind Inhalt und 
+                     seinerseits in Zelle 147 ($0093) ab. Soweit ich es sehen kann, sind Inhalt und 
                      Bedeutung beider Speicherzellen völlig identisch.
 
                      Ich habe für Sie zwar kein Kochrezept zur Anwendung der LOAD-VERIFY-Flagge in 
@@ -325,7 +326,7 @@ $000B                Flagge für den Eingabepuffer/Anzahl der Dimensionen von Za
                      Alle Buchstaben und Zeichen, die mit der Tastatur direkt eingetippt werden, 
                      kommen in einen Eingabe-Pufferspeicher.
 
-                     Er beginnt ab Speicherzelle 512 ($200). Sobald die RETURN-Taste gedrückt wird, 
+                     Er beginnt ab Speicherzelle 512 ($0200). Sobald die RETURN-Taste gedrückt wird, 
                      wandelt eine Routine des Basic-Übersetzers den Text in Codezahlen (Tokens) um. 
                      Diese Routine und eine andere, welche die Zeilen eines Programms 
                      aneinanderhängt, verwenden die Zelle 11 als Zwischenspeicher.
@@ -546,7 +547,7 @@ $0013                Flagge zur Kennzeichnung des laufenden Ein-/Ausgabegerätes
 
                      Wenn Sie einen Disassembler haben, drucken Sie doch einmal das Assemblerlisting 
                      aus. Sie werden in Adresse 58324/58325 ($E3D4/$E3D5), beim C 64 in 58354/58355 
-                     ($E3F2/$E3F3) den Befehl finden, der eine Null nach Zelle 19 ($13) bringt.
+                     ($E3F2/$E3F3) den Befehl finden, der eine Null nach Zelle 19 ($0013) bringt.
 
                      Immer dann, wenn ein Programm nicht Tastatur und Bildschirm, sondern eines der 
                      oben genannten anderen Peripheriegeräte anspricht (indem mit OPEN.... eine 
@@ -634,12 +635,12 @@ $0016                Zeiger auf den nächsten freien Speicherplatz im »Temporar
                      Stack«
 
                      Dieser Zeiger bezieht sich in seiner Wirkung auf die übernächsten 
-                     Speicherzellen 25 bis 33 ($19 bis $21).
+                     Speicherzellen 25 bis 33 ($0019 bis $0021).
 
                      Diese werden als Stapelspeicher (Stack) für Angaben über vorläufige 
                      Zeichenketten - auf englisch »Temporary String Descriptor« - verwendet.
 
-                     Die Speicherzelle 22 ($16) ihrerseits enthält einen Zeiger auf den jeweils 
+                     Die Speicherzelle 22 ($0016) ihrerseits enthält einen Zeiger auf den jeweils 
                      nächsten verfügbaren Platz in diesem Speicher ab Zelle 25. Da er eine Kapazität 
                      von 3 * 3 Byte hat, zeigt der Zeiger auf die Zelle 25 ($19), wenn er leer ist. 
                      Bei einem Eintrag zeigt er auf 28 ($1C), bei zwei Einträgen auf 31 ($1F) und 
@@ -755,17 +756,17 @@ $002B-$002C          Zeiger auf den Anfang der Basic-Programme im Speicher
                      Dieser Zeiger, in der Low-/High-Byte-Darstellung, gibt dem Basic-Übersetzer an, 
                      ab welcher Speicherzelle das Basic-Programm beginnt. Normalerweise ist diese 
                      Adresse fest vorgegeben. Beim C 64 zum Beispiel zeigt der Zeiger auf 2049 
-                     ($801). Beim VC 20 ist die Lage schon schwieriger, denn der Speicherbeginn 
+                     ($0801). Beim VC 20 ist die Lage schon schwieriger, denn der Speicherbeginn 
                      hängt davon ab, welche Speichererweiterung eingesetzt ist. Die folgende Tabelle 
                      3 gibt darüber Auskunft.
 
                      Tabelle 3: Beginn des Programmspeichers
 
-                     | C 64          | 2049 ($801) |
-                     |---------------|-------------|
-                     | VC 20 (QV)    | 4097 ($1001)|
-                     | VC 20 (+3 K)  | 1025 ($401) |
-                     | VC 20 (+ 8 K) | 4609 ($1201)|
+                     | C 64          | 2049 ($0801) |
+                     |---------------|--------------|
+                     | VC 20 (QV)    | 4097 ($1001) |
+                     | VC 20 (+3 K)  | 1025 ($0401) |
+                     | VC 20 (+ 8 K) | 4609 ($1201) |
 
                      Mit dem Befehl
 
@@ -832,7 +833,7 @@ $002B-$002C          Zeiger auf den Anfang der Basic-Programme im Speicher
                      Durch Hinaufschieben des Basic-Bereichs kann Platz geschaffen werden für 
                      selbstdefinierte Zeichen oder hochauflösende Grafik.
 
-                     Die Speicherzellen-Paare von 45, 46 bis 55, 56 ($37 bis $38) zeigen auf weitere 
+                     Die Speicherzellen-Paare von 45, 46 bis 55, 56 ($0037 bis $0038) zeigen auf weitere 
                      für Basic-Programme wichtige Speicherbereiche, die deswegen gemeinsam 
                      betrachtet werden sollten. Bild 5 stellt den Zusammenhang grafisch dar. In 
                      diesem Bereich werden alle Variablen eines Programms gespeichert. Zur 
@@ -1301,7 +1302,7 @@ $0049-$004A          Zwischenspeicher für Variable einer FOR-NEXT-Schleife und 
                      Befehle
 
                      Die Adresse einer Schleifenvariablen wird zuerst hier gespeichert, bevor sie 
-                     auf den Stapelspeicher ab Speicherzelle 256 ($100) gebracht wird. Die Funktion 
+                     auf den Stapelspeicher ab Speicherzelle 256 ($0100) gebracht wird. Die Funktion 
                      und Arbeitsweise des Stapelspeichers werden wir bei diesen Adressen behandeln. 
                      Etliche Basic-Befehle, wie LIST, WAIT, GET, INPUT, OPEN, CLOSE und andere, 
                      verwenden die Speicherzellen 73 und 74 für Zwischenspeicherungen. Diese 
@@ -1440,7 +1441,7 @@ $0061-$0066          Gleitkomma-Akkumulator Nr.1
                      positives, die Zahl 255 ein negatives Vorzeichen.
 
                      Mit dem Gleitkomma-Akkumulator Nr. 1 sind zwei weitere Speicherzellen eng 
-                     verbunden, nämlich 104 ($68) und 112 ($70).
+                     verbunden, nämlich 104 ($0068) und 112 ($0070).
 
                      Ganz zum Schluß ist noch erwähnenswert, daß nach der Umwandlung einer 
                      Gleitkommazahl in eine ganze Zahl diese als Low-/High-Byte in den beiden 
@@ -2165,7 +2166,7 @@ $00B2-$00B3          Zeiger auf den Kassetten-Puffer
 
                      Beim Einschalten des Computers werden diese Speicherzellen in Low-/High-Byte-
                      Darstellung auf die Anfangsadresse des Kassetten-Puffers gesetzt. Beim VC 20 
-                     und C 64 ist dies die Adresse 828 ($33C).
+                     und C 64 ist dies die Adresse 828 ($033C).
 
                      Durch Verbiegen dieses Zeigers kann der Kassettenpuffer auf beliebige Plätze 
                      des Speichers, aber nicht unterhalb der Adresse 512 verschoben werden. Das kann 
@@ -3585,7 +3586,7 @@ $02A2                Indikator für das Steuerregister A des CIA #1
                      Mit CIA werden die beiden »Complex Interface Adapter« des C 64 bezeichnet. Das 
                      sind integrierte Schaltkreise, die Ein- und Ausgabeoperationen steuern. Jeder 
                      der beiden CIAs hat mehrere Register. Das Steuerregister A (Adresse 56334 
-                     beziehungsweise $DCOE) beeinflußt die Zählregister des CIA, die ihrerseits die 
+                     beziehungsweise $DC0E) beeinflußt die Zählregister des CIA, die ihrerseits die 
                      Ein- und Ausgabe von Daten auf beziehungsweise von Kassetten steuern. Das 
                      Betriebssystem speichert zu diesem Zweck geeignete Bitmuster in der 
                      Speicherzelle 674 ab, die von da in das Steuerregister transferiert werden.
@@ -3734,7 +3735,7 @@ $0306-$0307          Vektor auf die Basic-Routine, die Token in ASCII-Werte zur�
                          02AD 68	PLA
                          02AE 4C 1A A7  JMP A71A
 
-                     Zuerst wird der Akkumulator mit dem Inhalt der Speicherzelle 653 ($28D) 
+                     Zuerst wird der Akkumulator mit dem Inhalt der Speicherzelle 653 ($028D) 
                      geladen. Dort steht bekanntlich eine Zahl von 1 bis 7, je nachdem, ob die 
                      SHIFT-, CTRL- oder Commodore-Taste gedrückt ist. Ist dies der Fall, springt das 
                      Programm auf die Adresse 680 zurück und bildet so eine Dauerschleife, bis die 

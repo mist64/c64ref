@@ -386,11 +386,15 @@ while(True):
 				break
 			comment = line[21:]
 
-			hex_numbers = re.findall(r'\$[0-9A-F]+', comment)
+			hex_numbers = re.findall(r'\$[0-9A-F][0-9A-F][0-9A-F][0-9A-F]', comment)
 			for hex_number in hex_numbers:
 				dec_number = int(hex_number[1:], 16)
 				if dec_number < 0x0400:
-					comment = comment.replace(hex_number, '<a href="#' + '{:04x}'.format(dec_number) + '">' + hex_number + '</a>')
+					if dec_number < 0x100:
+						formatted_hex_number = '${:02X}'.format(dec_number)
+					else:
+						formatted_hex_number = '${:04X}'.format(dec_number)
+					comment = comment.replace(hex_number, '<a href="#' + '{:04x}'.format(dec_number) + '">' + formatted_hex_number + '</a>')
 				elif (dec_number >= 0xa000 and dec_number <= 0xbfff) or (dec_number >= 0xe000 and dec_number <= 0xffff):
 					comment = comment.replace(hex_number, '<a href="https://www.pagetable.com/c64disasm/#' + '{:04x}'.format(dec_number) + '">' + hex_number + '</a>')
 
@@ -431,7 +435,7 @@ while(True):
 			all_text = ''
 			for comment in comments:
 				all_text += comment
-			print(markdown.markdown(all_text, extensions=['tables']))
+			print(markdown.markdown(all_text, extensions=['tables', 'sane_lists']))
 		else:
 			print('&nbsp;')
 

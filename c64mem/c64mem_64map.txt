@@ -18,6 +18,7 @@
 # * All lines of the description until the first blank line are
 #   combined into the heading.
 # * The remaining text is in MarkDown format.
+# * All addresses are 4 digits and have a leading '$'.
 # The encoding is UTF-8.
 
 $0000        D6510   6510 On-chip Data Direction Register.
