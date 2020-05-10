@@ -164,7 +164,7 @@ $00FF        BASZPT  BASIC Temp Data Area
 $0100-$01FF          Micro-Processor System Stack Area
 $0100-$010A          Floating to String Work Area
 $0100-$013E  BAD     Tape Input Error Log
-$0200-$02S8  BUF     System INPUT Buffer
+$0200-$0258  BUF     System INPUT Buffer
 $0259-$0262  LAT     KERNAL Table: Active Logical File No's.
 $0263-$026C  FAT     KERNAL Table: Device No. for Each File
 $026D-$0276  SAT     KERNAL Table: Second Address Each File

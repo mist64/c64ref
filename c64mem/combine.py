@@ -160,7 +160,7 @@ print('')
 
 address_width=6.4
 label_width=4
-decimal_width=4
+decimal_width=7
 
 print('div.disassembly_container_with_dec {')
 print('    padding: 1em 0em 1em ' + str(address_width + label_width + decimal_width + 1) + 'em;')
@@ -346,7 +346,12 @@ while(True):
 	has_address = False
 	if asm[0] == '$':
 		hexaddress = asm[1:5]
+		hexaddress2 = asm[7:11]
 		asmaddress = int(hexaddress, 16)
+		if len(hexaddress2.rstrip()) != 0:
+			asmaddress2 = int(hexaddress2, 16)
+		else:
+			asmaddress2 = None
 		has_address = True
 
 	symbol = asm[13:19].rstrip()
@@ -364,7 +369,10 @@ while(True):
 		print('<th class="label_column">' + symbol + '</th>')
 
 	if has_address:
-		print('<th class="decimal_column">' + str(asmaddress) + '</th>')
+		dec_range = str(asmaddress)
+		if asmaddress2 != None:
+			dec_range += '-' + str(asmaddress2)
+		print('<th class="decimal_column">' + dec_range + '</th>')
 	else:
 		print('<th class="decimal_column" style="visibility:hidden;"></th>')
 
@@ -412,7 +420,7 @@ while(True):
 
 		is_collapsible = len(headings) and len(comments)
 		if is_collapsible:
-			print('<details>')
+			print('<details open>')
 #		else:
 #			print('<div>')
 		
