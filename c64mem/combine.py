@@ -12,6 +12,7 @@ filenames = [
 	'c64mem_prg.txt',
 	'c64mem_64map.txt',
 	'c64mem_jb.txt',
+	'c64mem_src.txt',
 ]
 names = [
 	'Mapping the Commodore 64',
@@ -21,6 +22,7 @@ names = [
 	'Programmer\'s Reference Guide',
 	'64map',
 	'Jim Butterfield',
+	'...',
 ]
 links = [
 	'http://unusedino.de/ec64/technical/project64/mapping_c64.html',
@@ -30,6 +32,7 @@ links = [
 	'http://www.zimmers.net/cbmpics/cbm/c64/c64prg.txt',
 	'http://unusedino.de/ec64/technical/project64/memory_maps.html',
 	'https://www.atarimagazines.com/compute/issue29/394_1_COMMODORE_64_MEMORY_MAP.php',
+	'https://...',
 ]
 descriptions = [
 	'Reference from <i>Mapping the Commodore 64</i> by Sheldon Leemon, ISBN 0-942386-23-X.',
@@ -39,12 +42,13 @@ descriptions = [
 	'Reference from <i>Commodore 64 Programmer\'s Reference Guide</i>.',
 	'Reference as found in "Commodore_64_Memory_Maps.txt" by anonymous.',
 	'Reference by Jim Butterfield in COMPUTE! #29 (October 1982).',
+	'...',
 ]
 
 
-titlecolor = ['017100', '004D7F', '99195E', 'F8BA00', 'B51700', '017B76', '595959']
-darkcolor = ['D8F2CB', 'C6E2FC', 'BFB7E8', 'FCF6CD', 'F4D2E3', 'D2F6F0', 'E0E0E0']
-lightcolor = ['E5F2DF', 'E3F0FC', 'D5D1E8', 'FCFAE6', 'F5E4EC', 'E1F5F2', 'EDEDED']
+titlecolor = ['017100', '004D7F', '99195E', 'F8BA00', 'B51700', '017B76', '595959', '595959']
+darkcolor = ['D8F2CB', 'C6E2FC', 'BFB7E8', 'FCF6CD', 'F4D2E3', 'D2F6F0', 'E0E0E0', 'E0E0E0']
+lightcolor = ['E5F2DF', 'E3F0FC', 'D5D1E8', 'FCFAE6', 'F5E4EC', 'E1F5F2', 'EDEDED', 'EDEDED']
 
 asm_donor_index = 0
 
