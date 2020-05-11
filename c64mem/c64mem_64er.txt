@@ -158,7 +158,7 @@ $0001                Datenregister für Ein-/Ausgabe-Port des 6510-Mikroprozesso
                      nicht dagegen an. Wir haben nur eine Chance, wenn eine Taste bereits gedrückt 
                      ist und der Kassettenmotor schon läuft.
 
-                     Dann nämlich können wir zuerst das lnterlock-Register mit einem Wert größer als 
+                     Dann nämlich können wir zuerst das Interlock-Register mit einem Wert größer als 
                      0 lahmlegen:
 
                          POKE 192,255
@@ -240,7 +240,7 @@ $0009                Spaltenposition des Cursors vor dem letzten TAB- oder SPC-B
 
                      Speicherzelle 9 wird von den Basic-Befehlen TAB und SPC verwendet. Vor ihrer 
                      Ausführung wird die Nummer der Spalte, in der sich der Cursor befindet, aus der 
-                     Speicherzelle 211 ($00D3) nach 9 gebracht,von wo sie geholt wird, um die Position 
+                     Speicherzelle 211 ($00D3) nach 9 gebracht, von wo sie geholt wird, um die Position 
                      des Cursors nach der Ausführung von TAB und SPC auszurechnen.
 
                      Diese komplizierte Erklärung können wir durch Ausprobieren deutlicher machen. 
@@ -346,7 +346,7 @@ $000B                Flagge für den Eingabepuffer/Anzahl der Dimensionen von Za
                      verlangten DIMensionen und den für ein neu aufgebautes Feld nötigen 
                      Speicherbedarf zu berechnen.
 
-$000C                Flagge für Basic-Routlnen, die ein Feld (Array) suchen beziehungsweise aufbauen
+$000C                Flagge für Basic-Routinen, die ein Feld (Array) suchen beziehungsweise aufbauen
 
                      Diese Speicherzelle wird von den Basic-Routinen als Zwischenspeicher benutzt, 
                      die feststellen, ob eine Variable ein Feld (Array) ist, ob das Feld bereits 
@@ -528,7 +528,7 @@ $0012                1. Flagge für Vorzeichen bei SIN, COS und TAN
                      | <>        | 5            |
                      | <=        | 6            |
 
-                     Sie sehen, die Flagge für die kombinierten Verglelchsoperatoren entspricht der 
+                     Sie sehen, die Flagge für die kombinierten Vergleichsoperatoren entspricht der 
                      Summe ihrer Einzelwerte. Nur die Verknüpfung über OR nicht, denn die ergibt 0.
 
 $0013                Flagge zur Kennzeichnung des laufenden Ein-/Ausgabegerätes                       
@@ -656,9 +656,9 @@ $0016                Zeiger auf den nächsten freien Speicherplatz im »Temporar
 
                      Beim Einschalten setzt das Betriebssystem mit der Einschaltroutine ab Adresse 
                      58303 ($E3BF) im C 64, beim VC 20 ab 58276 ($E3A4) den Zeigerauf 25. Die 
-                     Stringverwältungsroutine ab 46215 ($B487) im C 64 beziehungsweise ab 54407 
+                     Stringverwaltungsroutine ab 46215 ($B487) im C 64 beziehungsweise ab 54407 
                      ($D487) im VC 20 fragt bei String-Eingaben die Flagge ab. Nach jeder Eintragung 
-                     in den Speicherab Zelle 25 wird der Zeiger um 3 weitergesetzt.
+                     in den Speicher ab Zelle 25 wird der Zeiger um 3 weitergesetzt.
 
                      Sie können die Leerflagge 25 mit
 
@@ -766,7 +766,7 @@ $002B-$002C          Zeiger auf den Anfang der Basic-Programme im Speicher
 
                      | C 64          | 2049 ($0801) |
                      |---------------|--------------|
-                     | VC 20 (QV)    | 4097 ($1001) |
+                     | VC 20 (GV)    | 4097 ($1001) |
                      | VC 20 (+3 K)  | 1025 ($0401) |
                      | VC 20 (+ 8 K) | 4609 ($1201) |
 
@@ -1503,7 +1503,7 @@ $0070                Rundungsspeicher des Gleitkomma-Akkumulators Nr. 1
 $0071-$0072          Zwischenspeicher für verschiedene Routinen
 
                      Diese Speicherzellen werden von sehr vielen Routinen des Übersetzers und des 
-                     Betriebssystems, wie zum Beispiel Zeichenkettenverarbeitung, interne Uhr (Tl$), 
+                     Betriebssystems, wie zum Beispiel Zeichenkettenverarbeitung, interne Uhr (TI$), 
                      Bestimmung der Größe von Feldern (Arrays) und etlichen anderen verwendet.
 
 $0073-$008A          Teilprogramm »Nächstes Zeichen eines Basic-Textes holen« (CHRGET-Routine)
@@ -1621,7 +1621,7 @@ $0090                Statusvariable ST
                      |-------|------------|---------------------------------|
                      | Bit 2 | (Wert 4)   | Kurzer Block                    |
                      | Bit 3 | (Wert 8)   | Langer Block                    |
-                     | Bit 4 | (Wert 16)  | Lesefehler (nicht korribierbar) |
+                     | Bit 4 | (Wert 16)  | Lesefehler (nicht korrigierbar) |
                      | Bit 5 | (Wert 32)  | Prüfsummenfehler                |
                      | Bit 6 | (Wert 64)  | File-Ende                       |
                      | Bit 7 | (Wert 128) | Band-Ende                       |
@@ -1805,7 +1805,7 @@ $0099                Nummer des Eingabe-Gerätes
                      | 8-11 | Floppy-Laufwerke  |
 
                      Nach dem Einschalten oder nach RESET des Computers steht in 153 eine 0 
-                     (Tastatur). Nachjedem Einsatz eines anderen Gerätes wird diese Speicherzelle 
+                     (Tastatur). Nach jedem Einsatz eines anderen Gerätes wird diese Speicherzelle 
                      wieder auf 0 gesetzt, so daß wir immer die Tastatur zur Verfügung haben.
 
                      Für Maschinenprogrammierer ist diese Adresse sicherlich wertvoll. Die Routine, 
@@ -2044,7 +2044,7 @@ $00A0-$00A2          Interne Uhr für TI und TI$
 
                      Nach vier Sekunden Laufzeit schalten alle drei Zellen in der Tat auf 0 zurück.
 
-                     Die Umsetzung der Zahlen aus 160 bis 162 in die Variablen TI und Tl$ sowie 
+                     Die Umsetzung der Zahlen aus 160 bis 162 in die Variablen TI und TI$ sowie 
                      deren Wirkungsweise entnehmen Sie bitte dem Texteinschub Nr. 16 »Die eingebaute 
                      Uhr«.
 
@@ -2511,7 +2511,7 @@ $00C7                Flagge für reverse Darstellung der Zeichen
 
                          PRINT CHR$(18) "AAA" PEEK(199)
 
-                     Wir erhalten drei reverse As und als lnhalt der Zelle 199auch die Zahl 18. 
+                     Wir erhalten drei reverse As und als Inhalt der Zelle 199auch die Zahl 18. 
                      Dasselbe Ergebnis erhalten wir durch POKEn einer Zahl größer als 0 in die Zelle 
                      199:
 
@@ -2538,7 +2538,7 @@ $00C8                Zeiger auf das Ende der eingegebenen logischen Zelle
 
                      Sie erhalten die Zahl der Spalte des letzten Zeichens dieses Direkt-Befehls.
 
-$00C9-$00CA          Zeiger auf Zeilen- und Spaltenposltion des letzten Zeichens einer Zeile
+$00C9-$00CA          Zeiger auf Zeilen- und Spaltenposition des letzten Zeichens einer Zeile
 
                      Diese beiden Speicherzellen werden bei GET und INPUT verwendet, um die Zeile 
                      und Spalte des letzten Zeichens einer eingegebenen Zeile festzustellen. Die 
@@ -2566,7 +2566,7 @@ $00C9-$00CA          Zeiger auf Zeilen- und Spaltenposltion des letzten Zeichens
 $00CB                Tastencode der gerade gedrückten Taste
 
                      Bei der Speicherzelle 145 habe ich beschrieben, wie die Tasten des Computers 
-                     abgefragt werden. Die dabei fürjede der 64 Tasten (mit Ausnahme der RESTORE- 
+                     abgefragt werden. Die dabei für jede der 64 Tasten (mit Ausnahme der RESTORE- 
                      und der SHIFT-LOCK-Tasten) entstehende Dualzahl wird in eine Dezimalzahl (0 bis 
                      63) umgewandelt und in der Speicherzelle 203 gespeichert, einige auch in der 
                      Zelle 653. Diese Zahl steht auch In Speicherzelle 197, um sie mit der vorher 
@@ -2706,7 +2706,7 @@ $00D1-$00A2          Zeiger auf den Anfang der Bildschirmzeile, auf welcher der 
                      gebracht und dann der Inhalt der beiden Zellen ausgedruckt. Da dies alles in 
                      der ersten Zeile passiert, sehen wir als Resultat eine 0 und eine 4. Die beiden 
                      Zahlen ergeben zusammen die Adresse, in der die erste Zeile des 
-                     Bildschirmspeichers beginnt. Erweitern Sie die Zeile 10 um eln Komma und die 
+                     Bildschirmspeichers beginnt. Erweitern Sie die Zeile 10 um ein Komma und die 
                      Low-/High-Byte-Berechnung:
 
                          10 PRINT CHR$(147) PEEK(209) PEEK(210), PEEK(209)+256*PEEK(210)
@@ -3164,7 +3164,7 @@ $0285                Flagge für Ein- und Ausschalten der IEEE-488-Karte
 
                      Diese Speicherzelle ist etwas mysteriös. Sie kommt im ganzen Betriebssystem nur 
                      ein einziges Mal zum Einsatz, und zwar als Flagge beim Betrieb der sogenannten 
-                     IEEE-488-lnterface-Karte. Wenn diese Flagge gesetzt ist, wartet der Computer 64 
+                     IEEE-488-Interface-Karte. Wenn diese Flagge gesetzt ist, wartet der Computer 64 
                      Millisekunden lang, ob er von einem angeschlossenen Gerät angesprochen wird. 
                      Wenn kein Signal kommt, gibt er ein Fehlersignal aus.
 
@@ -3468,7 +3468,7 @@ $0294                RS232-Befehlsregister
 
                      In diese Speicherzelle wird, ähnlich wie bei der Zelle 659, das zweite Zeichen 
                      des File-Namens gebracht. Die einzelnen Bits steuern das Handshake-Protokoll 
-                     (3-/X-Leitung), den Duplex-Modus (Halb-Voll-Duplex) und die Parity-Prüfung 
+                     (3-/X-Leitung), den Duplex-Modus (Halb-/Voll-Duplex) und die Parity-Prüfung 
                      (keine, gerade, ungerade). Die nähere Bedeutung dieser Fachwörter können Sie 
                      dem Texteinschub Nr. 11 »Die Elemente der RS232-Schnittstelle« entnehmen. 
                      Tabelle 12 zeigt die Bedeutungjedes einzelnen Bits dieser Speicherzelle.
@@ -3477,7 +3477,7 @@ $0294                RS232-Befehlsregister
                      OPEN-Befehls interessieren, dann verweise ich an dieser Stelle auf den 
                      Texteinschub Nr. 30 »Die Programmierung der RS232-Schnittstelle«.
 
-$0295-$0296          RS232 frei wählbare Übertragungsgeschwlndigkeit
+$0295-$0296          RS232 frei wählbare Übertragungsgeschwindigkeit
 
                      Es war ursprünglich vorgesehen, durch entsprechendeWahl des dritten und vierten 
                      Zeichens im File-Namen beliebige Übertragungsgeschwindigkeiten einzustellen. 
@@ -3518,7 +3518,7 @@ $0298                RS232 - Anzahl der zu übertragenden Bits
                      zu übertragende Zeichen aufgefüllt werden muß, um die in Speicherzelle 659 (Bit 
                      5 und 6) ausgewählte Wortlänge herzustellen (s. Speicherzellen 168 und 180).
 
-$0299-$029A          RS232 - Zelt, die zum Übertragen eines Bits gebraucht wird
+$0299-$029A          RS232 - Zeit, die zum Übertragen eines Bits gebraucht wird
 
                      Sobald ein RS232-Kanal eröffnet worden ist, berechnet das Betriebssystem einen 
                      Wert, der die Zeitdauer eines Bits festlegt. Da die Übertragungsrate in 
@@ -3528,29 +3528,29 @@ $0299-$029A          RS232 - Zelt, die zum Übertragen eines Bits gebraucht wird
                      Dieser Wert steht in Low-/High-Byte-Darstellung in diesen beiden 
                      Speicherzellen, von wo aus er vom Betriebssystem abgerufen wird.
 
-$029B                RS232-lndex auf das Ende des Eingabepufferspeichers
+$029B                RS232-Index auf das Ende des Eingabepufferspeichers
 
                      Dieser Index wird verwendet, um Daten in den Eingabepufferspeicher zu 
                      schreiben. Wenn man ihn nämlich zum Inhalt der Speicherzelle 247/248 addiert, 
                      erhält man die Adresse des zuletzt in den Eingabepufferspeicher eingegebenen 
                      Bytes.
 
-$029C                RS232-lndex auf den Anfang des Eingabepufferspeichers
+$029C                RS232-Index auf den Anfang des Eingabepufferspeichers
 
                      Dieser Index wird verwendet, um Daten aus dem Eingabepufferspeicher auszulesen. 
                      Wenn man ihn nämlich zum Inhalt der Speicherzelle 247 und 248 addiert, erhält 
                      man die Adresse des ersten in den Eingabepufferspeicher eingegebenen Bytes.
 
-$029D                RS232-lndex auf den Anfang des Ausgabepufferspeichers
+$029D                RS232-Index auf den Anfang des Ausgabepufferspeichers
 
                      Dieser Index wird verwendet, um Daten aus dem Ausgabepufferspeicher auszulesen. 
                      Wenn man ihn nämlich zum Inhalt der Speicherzelle 249 und 250 addiert, erhält 
                      man die Adresse des ersten in den Ausgabepufferspeicher eingegebenen Bytes.
 
-$029E                RS232-lndex auf das Ende des Ausgabepufferspeichers
+$029E                RS232-Index auf das Ende des Ausgabepufferspeichers
 
                      Dieser Index wird verwendet, um Daten in den Ausgabepufferspeicher zu 
-                     schreiben. Wenn man ihn nämlich zum lnhalt der Speicherzelle 249 und 250 
+                     schreiben. Wenn man ihn nämlich zum Inhalt der Speicherzelle 249 und 250 
                      addiert, erhält man die Adresse des zuletzt in den Ausgabepufferspeicher 
                      eingegebenen Bytes.
 
@@ -3567,7 +3567,7 @@ $029F-$02A0          Zwischenspeicher für den IRQ-Vektor während Kassetten-Ein
                      Kassettenoperation weitermachen zu können, wird der »alte« Interrupt-Vektor in 
                      dieser Speicherzelle 671 und 672 gespeichert.
 
-$02A1                bei C 64: Flagge für RS232-lnterrupt bei VC 20: frei verfügbar
+$02A1                bei C 64: Flagge für RS232-Interrupt bei VC 20: frei verfügbar
 
                      Diese Speicherzelle enthält den Wert des Interrupt-Steuerregisters 56589, das 
                      die RS232-Schnittstelle steuert. Die Bedeutung der einzelnen Bits, wenn sie auf 
@@ -3850,16 +3850,17 @@ $0314-$0315          Vektor auf die IRQ-Interrupt-Routine des Betriebssystems
                      Zwei Vorbedingungen sind allerdings dabei zu erfüllen.
 
                      1. Da ein IRQ mit Sicherheit während des Verbiegens auftritt, muß er vorher 
-                     abgeschaltet werden. Den Schlüssel dazu bietet die Speicherzelle 56334, die mit 
-                     0 gePOKEt den Interrupt abschaltet und mit POKE 56334,1 ihn wieder zuläßt. Beim 
-                     VC 20 ist dies POKE 37116,127 beziehungsweise POKE 37116,192. Aber Vorsicht!! 
-                     Da während eines IRQ-lnterrupts auch die Tastatur abgefragt wird, kann das 
-                     Abschalten nur innerhalb eines Programms erfolgen - während der Abschaltung ist 
-                     die Tastatur tot.
+                        abgeschaltet werden. Den Schlüssel dazu bietet die Speicherzelle 56334, die 
+                        mit 0 gePOKEt den Interrupt abschaltet und mit POKE 56334,1 ihn wieder 
+                        zuläßt. Beim VC 20 ist dies POKE 37116,127 beziehungsweise POKE 37116,192. 
+                        Aber Vorsicht!! Da während eines IRQ-Interrupts auch die Tastatur abgefragt 
+                        wird, kann das Abschalten nur innerhalb eines Programms erfolgen - während 
+                        der Abschaltung ist die Tastatur tot.
                      2. Am Ende eines »Wedge« muß der Sprung auf die alte IRQ-Adresse erfolgen, die 
-                     ursprünglich in den Speicherzellen 788 bis 789 stand, damit - etwas verspätet 
-                     zwar - die normalen Haushaltsarbeiten des IRQ nachgeholt werden können. Bei 
-                     längeren Wedges wird daher die interne Uhr TI und Tl$ etwas nachaehen.
+                        ursprünglich in den Speicherzellen 788 bis 789 stand, damit - etwas 
+                        verspätet zwar - die normalen Haushaltsarbeiten des IRQ nachgeholt werden 
+                        können. Bei längeren Wedges wird daher die interne Uhr TI und TI$ etwas 
+                        nachgehen.
 
                      Ich habe lange nach einem Beispiel gesucht. Ich kenne viele: Abfrage der 
                      Joysticks, Lautstärke von Tönen mit Funktionstasten steuern, von Basic 
@@ -3933,7 +3934,7 @@ $0318-$0319          Vektor auf die NMI-Routine des Betriebssystems.
                      näher beschrieben. Der Vektor zeigt auf den Beginn dieser Routine ab 
                      Speicherzelle 65095 ($FE47) - beim VC 20 ab 65197 ($FEAD).
 
-                     Sobald ein NMI-Interrupt auftritt, wird zuerst durch Setzen der lnterrupt-
+                     Sobald ein NMI-Interrupt auftritt, wird zuerst durch Setzen der Interrupt-
                      Abschalt-Flagge (Interrupt Disable Flag) jede Unterbrechung durch den IRQ-
                      Interrupt unterbunden. Dann wird geprüft, wer den NMI-Interrupt ausgelöst hat, 
                      und zwar in der Reihenfolge: RS232-Schnittstelle, RESTORE-Taste; eingestecktes 
@@ -4004,7 +4005,7 @@ $0324-$0325          Vektor auf die CHRIN-Routine des Betriebssystems
                      ungeSHIFTetes RETURN auftritt. Erst dann gibt die Routine das erste Zeichen der 
                      logischen Zeile auf dem Bildschirm an den Basic-Übersetzer weiter.
 
-$0326-$0327          Vektor auf die CHROUT-Routlne des Betriebssystems
+$0326-$0327          Vektor auf die CHROUT-Routine des Betriebssystems
 
                      Die CHROUT-Routine entspricht der CHRIN-Routine in der anderen Richtung. Sie 
                      bedeutet »Character Output« und transferiert ein Byte, das im Akkumulator 
