@@ -1249,7 +1249,7 @@ $0093        VERCK   Flag for Load Routine: 0=LOAD, 1=VERIFY
                      on the value stored in the Accumulator (.A) on entry to the routine.
                      This location is used to determine which operation to perform.
                      
-$0094        C3PO    Flag: Serial Bus--Output Character Was Buffered
+$0094        C3P0    Flag: Serial Bus--Output Character Was Buffered
                      
                      This location is used by the serial output routines to indicate that a
                      character has been placed in the output buffer and is waiting to be
