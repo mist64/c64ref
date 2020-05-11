@@ -42,9 +42,9 @@ descriptions = [
 ]
 
 
-titlecolor = ['017100', '004D7F', '99195E', 'F8BA00', 'B51700', '017B76', '017B76']
-darkcolor = ['D8F2CB', 'C6E2FC', 'BFB7E8', 'FCF6CD', 'F4D2E3', 'D2F6F0', 'D2F6F0']
-lightcolor = ['E5F2DF','E3F0FC','D5D1E8','FCFAE6','F5E4EC','E1F5F2','E1F5F2']
+titlecolor = ['017100', '004D7F', '99195E', 'F8BA00', 'B51700', '017B76', '595959']
+darkcolor = ['D8F2CB', 'C6E2FC', 'BFB7E8', 'FCF6CD', 'F4D2E3', 'D2F6F0', 'E0E0E0']
+lightcolor = ['E5F2DF', 'E3F0FC', 'D5D1E8', 'FCFAE6', 'F5E4EC', 'E1F5F2', 'EDEDED']
 
 asm_donor_index = 0
 
