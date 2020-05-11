@@ -20,6 +20,8 @@
 # * The description starts at column 21.
 # * All lines of the description until the first blank line are
 #   combined into the heading.
+# * A '.' character at the end of a heading line represents a hard
+#   line break.
 # * The remaining text is in MarkDown format.
 # * All addresses are 4 digits and have a leading '$'.
 # The encoding is UTF-8.
@@ -103,13 +105,20 @@ $0070        FACOV   FAC low-order rounding.
 $0071-$0072  FBUFPT  Pointer: Used during CRUNCH/ASCII conversion.
 $0073-$008A  CHRGET  Subroutine: Get next Byte of BASIC Text.
 
-                     ,0073  INC $7A       ,0082  BEQ $0073
-                     ,0075  BNE $0079     ,0084  SEC
-                     ,0077  INC $7B       ,0085  SBC #$30
-                     ,0079  LDA $0801     ,0087  SEC
-                     ,007C  CMP #$3A      ,0088  SBC #$D0
-                     ,007E  BCS $008A     ,008A  RTS
-                     ,0080  CMP #$20
+                         ,0073  INC $7A
+                         ,0075  BNE $0079
+                         ,0077  INC $7B
+                         ,0079  LDA $0801
+                         ,007C  CMP #$3A
+                         ,007E  BCS $008A
+                         ,0080  CMP #$20
+                         ,0082  BEQ $0073
+                         ,0084  SEC
+                         ,0085  SBC #$30
+                         ,0087  SEC
+                         ,0088  SBC #$D0
+                         ,008A  RTS
+
 $0079        CHRGOT  Entry to Get same Byte again.
 $007A-$007B  TXTPTR  Pointer: Current Byte of BASIC Text.
 $008B-$008F  RNDX    Floating RND Function Seed Value.
@@ -262,9 +271,12 @@ $02A5        TLNIDX  Temporary for Line Index.
 $02A6        TVSFLG  Flag: TV Standard: $00 = NTSC, $01 = PAL.
 $02A7-$02FF  TEMP    Unused.
 $02C0-$02FE  SPR11   Sprite #11 Data Area.
+
                      (SCREEN + $03F8 + SPR number)
+
                      POKE 1024+1016+0,11  to use Sprite#0 DATA
                      from ($02C0-$02FE).
+
 $0300-$0301  IERROR  Vector: Indirect entry to BASIC Error
                      Message, (X) points to Message ($E38B).
 $0302-$0303  IMAIN   Vector: Indirect entry to BASIC Input Line

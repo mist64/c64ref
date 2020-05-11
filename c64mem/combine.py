@@ -48,6 +48,24 @@ lightcolor = ['E5F2DF', 'E3F0FC', 'D5D1E8', 'FCFAE6', 'F5E4EC', 'E1F5F2', 'EDEDE
 
 asm_donor_index = 0
 
+
+def cross_reference(string):
+	hex_numbers = re.findall(r'\$[0-9A-F][0-9A-F][0-9A-F][0-9A-F]', string)
+	for hex_number in hex_numbers:
+		dec_number = int(hex_number[1:], 16)
+		if dec_number < 0x0400:
+			if dec_number < 0x100:
+				formatted_hex_number = '${:02X}'.format(dec_number)
+			else:
+				formatted_hex_number = '${:04X}'.format(dec_number)
+			string = string.replace(hex_number, '<a href="#' + '{:04x}'.format(dec_number) + '">' + formatted_hex_number + '</a>')
+		elif (dec_number >= 0xa000 and dec_number <= 0xbfff) or (dec_number >= 0xe000 and dec_number <= 0xffff):
+			string = string.replace(hex_number, '<a href="https://www.pagetable.com/c64disasm/#' + '{:04x}'.format(dec_number) + '">' + hex_number + '</a>')
+
+	return string
+
+
+
 f = os.popen('git log -1 --pretty=format:%h .')
 revision = f.read()
 f = os.popen('git log -1 --date=short --pretty=format:%cd .')
@@ -397,18 +415,7 @@ while(True):
 			if address[i] > asmaddress:
 				break
 			comment = line[21:]
-
-			hex_numbers = re.findall(r'\$[0-9A-F][0-9A-F][0-9A-F][0-9A-F]', comment)
-			for hex_number in hex_numbers:
-				dec_number = int(hex_number[1:], 16)
-				if dec_number < 0x0400:
-					if dec_number < 0x100:
-						formatted_hex_number = '${:02X}'.format(dec_number)
-					else:
-						formatted_hex_number = '${:04X}'.format(dec_number)
-					comment = comment.replace(hex_number, '<a href="#' + '{:04x}'.format(dec_number) + '">' + formatted_hex_number + '</a>')
-				elif (dec_number >= 0xa000 and dec_number <= 0xbfff) or (dec_number >= 0xe000 and dec_number <= 0xffff):
-					comment = comment.replace(hex_number, '<a href="https://www.pagetable.com/c64disasm/#' + '{:04x}'.format(dec_number) + '">' + hex_number + '</a>')
+#			comment = html.escape(comment)
 
 			if not has_seen_blank_line:
 				if len(comment.lstrip()) == 0:
@@ -433,11 +440,16 @@ while(True):
 			all_text = ''
 			if is_collapsible:
 				print('<summary>')
+			previous_heading = ''
 			for heading in headings:
-				if heading[-1] == '.':
-					heading += '<br/>'
+				if previous_heading.endswith('.'):
+					heading = '<br/>' + heading
+				html_heading = markdown.markdown(heading)
+				html_heading.replace('<p>', '')
+				html_heading.replace('</p>', '')
 				all_text += heading + ' '
-#			print(markdown.markdown(all_text)) # todo
+				previous_heading = heading
+			all_text = cross_reference(all_text)
 			print(all_text)
 			print('</b>')
 			if is_collapsible:
@@ -449,7 +461,9 @@ while(True):
 			all_text = ''
 			for comment in comments:
 				all_text += comment
-			print(markdown.markdown(all_text, extensions=['tables', 'sane_lists']))
+			all_text = markdown.markdown(all_text, extensions=['tables', 'sane_lists'])
+			all_text = cross_reference(all_text)
+			print(all_text)
 		else:
 			print('&nbsp;')
 
