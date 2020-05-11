@@ -754,7 +754,7 @@ $0031-$0032  STREND  Pointer to End of the BASIC Array Storage Area (+1), and th
                      the addresses pointed to here and the address of the end of string
                      text storage pointed to by location 51 ($0033).
                      
-$0033-$0034  FREETOP Pointer to the Bottom of the String Text Storage Area
+$0033-$0034  FRETOP  Pointer to the Bottom of the String Text Storage Area
                      
                      This pointer marks the current end of the string text area, and the
                      top of free RAM (strings are built from the top of memory downward).
