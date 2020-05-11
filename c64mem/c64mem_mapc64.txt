@@ -2872,7 +2872,7 @@ $029E        RODBE   RS-232: Index to End of Transmit Buffer
                      This index points to the ending byte within the 256-byte RS-232
                      transmit buffer, and is used to add data to that buffer.
                      
-$029F-$02A0 IRQTMP   Save Area for IRQ Vector During Cassette I/O
+$029F-$02A0  IRQTMP  Save Area for IRQ Vector During Cassette I/O
                      
                      The routines that read and write tape data are driven by an IRQ
                      interrupt.  In order to hook one of these routines into the interrupt,
