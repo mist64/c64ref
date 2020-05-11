@@ -22,7 +22,7 @@ names = [
 	'Programmer\'s Reference Guide',
 	'64map',
 	'Jim Butterfield',
-	'...',
+	'Microsoft/Commodore Source',
 ]
 links = [
 	'http://unusedino.de/ec64/technical/project64/mapping_c64.html',
@@ -32,7 +32,7 @@ links = [
 	'http://www.zimmers.net/cbmpics/cbm/c64/c64prg.txt',
 	'http://unusedino.de/ec64/technical/project64/memory_maps.html',
 	'https://www.atarimagazines.com/compute/issue29/394_1_COMMODORE_64_MEMORY_MAP.php',
-	'https://...',
+	'https://github.com/mist64/cbmsrc',
 ]
 descriptions = [
 	'Reference from <i>Mapping the Commodore 64</i> by Sheldon Leemon, ISBN 0-942386-23-X.',
@@ -42,7 +42,7 @@ descriptions = [
 	'Reference from <i>Commodore 64 Programmer\'s Reference Guide</i>.',
 	'Reference as found in "Commodore_64_Memory_Maps.txt" by anonymous.',
 	'Reference by Jim Butterfield in COMPUTE! #29 (October 1982).',
-	'...',
+	'Comments from the original M6502 BASIC source by Microsoft and the original C64 KERNAL source by Commodore',
 ]
 
 
