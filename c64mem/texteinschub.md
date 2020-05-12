@@ -623,6 +623,73 @@ Als letztes zeige ich Ihnen noch die im vierten Block gespeicherten Zeichenkette
     Bild 11. Zeichenketten-Feld
 
 
+## Texteinschub Nr. 12: Darstellung der Variablen einer selbstdefinierten Funktion
+
+Ich habe Ihnen gezeigt, wie im Programmspeicher abgelegte normale Variablen und Felder-Variablen sichtbar gemacht werden können. Damit konnten wir den Aufbau und die Darstellung der einzelnen Variablenarten studieren.
+
+Heute will ich einen weiteren Variablentyp vorstellen, nämlich den der selbstdefinierten Funktionen.
+
+Sie erinnern sich vielleicht, mit dem Basic-Befehl »DEF FN (Name)(Variable)« können wir komplizierte Funktionen selbst erfinden, definieren und später als »FN (Name)(Variable)< weiter verarbeiten. Diesen Typ wollen wir uns anschauen, wie er im Speicher steht.
+
+Im Prinzip verwenden wir dieselben Methoden zur Sichtbarmachung wie die letzten Male.
+
+Aber ein Unterschied kommt noch dazu. Der Befehl DEF kann leider nicht direkt eingegeben werden, sondern muß immer als Teil einer Programmzeile mit einer Zeilennummer versehen sein.
+
+Deshalb schreiben wir zuerst ein kleines Programm zur Definition der Funktion plus Variable, bevor wir den Variablenspeicher mit dem Bildschirmspeicher zusammenlegen:
+
+    10 DEF FNAA(X)=3*SIN(X)+COS(X)
+    20 X=5
+    30 PRINT FNAA(X)
+
+Die Funktion hat also den Namen »AA«. Bevor wir weitermachen, überprüfen Sie bitte mit RUN, ob alles stimmt. Nun wird der Speicher verschoben.
+
+**Für den C 64 gilt:**
+
+1. POKE 46,4:POKE 48,4
+2. Bildschirm löschen mit CLR-Taste
+3. Cursor auf die Mitte fahren
+4. LIST (es erscheint das Programm)
+5. auf den 2. Zeichensatz umschalten (mit C= und SHIFTTaste)
+6. RUN
+
+**Für den VC 20 (ohne. Erweiterung) gilt:**
+
+Nur den Bildschirm auf 4096 zu verschieben, wie das letzte Mal, geht diesmal nicht, da wir ja für DEF ein kleines Programm schreiben müssen.
+
+Also legen wir Bild- und Variablenspeicher ab Adresse 5120 (5120/256=20).
+
+1. POKE 46,20:CLR
+2. POKE 648,20
+3. STOP/RESTORE-Tasten, bis Cursor wieder da ist
+4. Bildschirm löschen mit CLR-Taste
+5. dfe ersten vier bis sechs Zeilen mit SPACE-Taste überfahren
+6. Cursor ein paar Zeilen nach unten
+7. LIST (es erscheint das Programm)
+8. mit Commodore- und SHIFTTaste auf 2. Zeichensatz umschalten
+9. RUN
+
+Wir sehen jetzt oben zwei Gruppen mit je sieben Zeichen, wie üblich.
+
+Die erste Gruppe stellt die Funktion FNAA(x) dar. Sie ist gekennzeichnet durch das invertierte erste Zeichen des Namens, während das zweite Zeichen normal erscheint.
+
+Das dritte und vierte Zeichen gibt in Low-/High-Byte- Darstellung (im Bildschirmcode) die Adresse an, ab der die Funktion FNAA(x) im Programmspeicher abgelegt ist. Mit `PEEK (3. Zeichen)+256*PEEK (4. Zeichen)` kann das abgefragt werden.
+
+Das fünfte und sechste Zeichen nennt die Adresse, an welcher der Zahlenwert der Funktions-Variablen X anfängt. Das siebente Zeichen schließlich ist das erste Zeichen der Funktion selbst (in unserem Beispiel die 3).
+
+Die zweite Gruppe beschreibt die Variable X der Funktion. Die normale Darstellung der beiden ersten Zeichen, die den Namen darstellen, gibt uns an, daß es sich um eine Gleitkomma-Variable handelt, deren Wert als Mantisse und Exponent dargestellt ist. Der Aufbau einer Funktion ist in Bild 12 zusammengefaßt:
+
+    | 1       | 2       | 3       | 4       | 5        | 6        | 7       |
+    |---------|---------|---------|---------|----------|----------|---------|
+    | Erstes  | Zweites | Low-    | High-   | Low-     | High-    |         |
+    |-------------------|---------|---------|----------|----------|---------|
+    | Zeichen des       | Byte der Adresse, | Byte der Adresse,   | 1. Zei- |
+    | Funktionsnamens   | ab der die        | ab dem der jewei-   | chen    |
+    |---------|---------| Funktion abge-    | lige Wert der Funk- | der     |
+    | ASCII-  | ASCII-  | speichert ist     | tionsvariablen X    | Funk-   |
+    | Wert+128| Wert    |                   | abgespeichert ist   | tion    |
+
+    Bild 12. Selbstdefinierte Funktion
+
 
 
 
