@@ -5,6 +5,7 @@ import pprint
 import markdown
 
 filenames = [
+	'c64mem_src.txt',
 	'c64mem_mapc64.txt',
 	'c64mem_64er.txt',
 	'c64mem_64intern.txt',
@@ -12,9 +13,9 @@ filenames = [
 	'c64mem_prg.txt',
 	'c64mem_64map.txt',
 	'c64mem_jb.txt',
-	'c64mem_src.txt',
 ]
 names = [
+	'Microsoft/Commodore Source',
 	'Mapping the Commodore 64',
 	'64\'er [German]',
 	'Data Becker [German]',
@@ -22,9 +23,9 @@ names = [
 	'Programmer\'s Reference Guide',
 	'64map',
 	'Jim Butterfield',
-	'Microsoft/Commodore Source',
 ]
 links = [
+	'https://github.com/mist64/cbmsrc',
 	'http://unusedino.de/ec64/technical/project64/mapping_c64.html',
 	'https://archive.org/details/64er_sonderheft_1986_07/page/n6/mode/2up',
 	'https://www.pagetable.com/?p=1015',
@@ -32,9 +33,9 @@ links = [
 	'http://www.zimmers.net/cbmpics/cbm/c64/c64prg.txt',
 	'http://unusedino.de/ec64/technical/project64/memory_maps.html',
 	'https://www.atarimagazines.com/compute/issue29/394_1_COMMODORE_64_MEMORY_MAP.php',
-	'https://github.com/mist64/cbmsrc',
 ]
 descriptions = [
+	'Comments from the original M6502 BASIC source by Microsoft and the original C64 KERNAL source by Commodore',
 	'Reference from <i>Mapping the Commodore 64</i> by Sheldon Leemon, ISBN 0-942386-23-X.',
 	'German-language reference from <i>Memory Map mit Wandervorschl&auml;gen</i> by Dr. H. Hauck, in 64\'er Sonderheft 1986/07.',
 	'German-language reference from <i>Das neue Commodore-64-intern-Buch</i> by Data Becker, ISBN 3890113079. Some minor corrections have been made.',
@@ -42,7 +43,6 @@ descriptions = [
 	'Reference from <i>Commodore 64 Programmer\'s Reference Guide</i>.',
 	'Reference as found in "Commodore_64_Memory_Maps.txt" by anonymous.',
 	'Reference by Jim Butterfield in COMPUTE! #29 (October 1982).',
-	'Comments from the original M6502 BASIC source by Microsoft and the original C64 KERNAL source by Commodore',
 ]
 
 
@@ -104,7 +104,7 @@ offset = 3; # data columns start at index 3
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
 print('<html>')
 print('<head>')
-print('<title>Ultimate Commodore 64 BASIC & KERNAL ROM Disassembly</title>')
+print('<title>Ultimate Commodore 64 Memory Map</title>')
 print('')
 print('<script language="javascript">')
 print('    window.onload = init;')

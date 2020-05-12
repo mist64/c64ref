@@ -510,7 +510,19 @@ erreichen wir eine entsprechende Änderung der Bytes 17 und 18, also des zweiten
 
 In Bild 9 sind die Stellen eines Gleitkomma-Feldes grafisch dargestellt.
 
-    TODO Bild 9
+      1         2         3      4      5        6      7      /                 a         b   c   d   e
+    |---------|---------|------|------|--------|------|------|-\ |------|------|---------|---|---|---|---|-->
+    | Erstes  | Zweites | Low  | High |        | High | Low  | / | High | Low  |                         |
+    |                   |     Byte    | Anzahl |     Byte    | \ |     Byte    |Exponent      Mantisse   |
+    |    Zeichen des    |-------------| der    |-------------| / |-------------|  +125                   |
+    |    Feld-Namens    |  Länge des  | Dimen- | Anzahl der  | \ | Anzahl der  |          des 1. Elements| des 2. Elements
+    |                   |    Feldes   | sionen | Elemente    | / | Elemente    |                         |
+    |                   |             |        | der letzten | \ | der ersten  |                         |
+    |                   |             |        | Dimension   | / | Dimension   |                         |
+    |---------|---------|------|------|--------|-------------|-\-|-------------|---------|---|---|---|---|-->
+    |<-----------------------  KOPF  ----------------------->| /
+    
+    Bild 9. Gleitkomma-Feld
 
 ## Ganzzahliges Feld
 
@@ -536,7 +548,18 @@ verändert das 15. Byte in ein f.
 
 In Bild 10 ist der Inhalt eines Ganzzahl-Feldes grafisch dargestellt.
 
-    TODO
+      1   2   3   4    \    a      b      c      d
+    |---|---|---|---|--/--|------|------|------|------|-->
+    |                  \  | Low  | High | Low  | High |
+    |                  /  |    Byte     |    Byte     |
+    |      KOPF        \  |-------------|-------------|
+    | (wie in Bild 2)  /  |             |             |
+    |                  \  |     des     |     des     |     des
+    |                  /  | 1. Elements | 2. Elements | 2. Elements
+    |                  \  |             |             |
+    |---|---|---|---|--/--|------|------|------|------|->
+                       \
+
     Bild 10. Ganzzahliges Feld
     
 ## Felder mit Zeichenketten
@@ -571,7 +594,7 @@ Jetzt weisen wir dem letzten Element auch noch eine Zeichenkette zu:
 
 Die letzten drei Stellen des Feldes ändern sich ebenfalls, wobei die erste mit dem b eine Zeichenkettenlänge von 2 angibt, dementsprechend muß die Anfangsadresse um 2 niedriger sein als die vorher definierte Kette: Das Low-Byte 250 - 2 = 248, in der Codetabelle finden wir dafür das, was auch im Feld steht. Das High-Byte bleibt unverändert.
 
-Bild 11 zeigt die grafische Darstellung des Zeichenketten- Feldes.
+Bild 11 zeigt die grafische Darstellung des Zeichenketten-Feldes.
 
 Als letztes zeige ich Ihnen noch die im vierten Block gespeicherten Zeichenketten. Wir drucken einfach den CHR$-Wert der in den betreffenden Speicherzellen stehenden Codezahlen aus mit:
 
@@ -585,5 +608,30 @@ Als letztes zeige ich Ihnen noch die im vierten Block gespeicherten Zeichenkette
         
 ... und wir erhalten die beiden Zeichenketten in umgekehrter Reihenfolge, also vom Speicherende her eingespeichert. Interessant ist, daß sich vor die Felder - wenn Sie sie noch auf dem Bildschirm hatten - die neu definierte Gleitkomma-Variable l@ geschoben hat. Auch das ist eine Demonstration des Speicherverfahrens der Variablen, genauso wie ich es Ihnen in der letzten Folge erklärt habe.
 
-    TODO
+      1   2   3   4    \    a          b       c       d     e     f
+    |---|---|---|---|--/--|----------|-------|-------|-----|-----|-----|-->
+    |                  \  | Länge    | Low   | High  |                 |
+    |                  /  | der      |     Byte      |                 |
+    |      KOPF        \  | Zeichen- |---------------|                 |
+    | (wie in Bild 2)  /  | kette      der Adresse,  |                 |
+    |                  \  |            ab der der    |                 |
+    |                  /  |            String ge-    |                 |
+    |                  \  |          | speichert ist |                 |
+    |---|---|---|---|--/--|--------------------------|-----------------|-->
+                       \  |<---    1. Element    --->|<- 2. Element  ->|
+    
     Bild 11. Zeichenketten-Feld
+
+
+
+
+
+
+
+
+
+
+
+
+
+

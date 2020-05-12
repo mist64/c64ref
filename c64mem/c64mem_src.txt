@@ -317,6 +317,7 @@ $0073-$008A  CHRGET  RAM code.
                      * Z = ":" or end-of-line (a null)
 
                      [ACCA] = new char.
+                     
                      [TXTPTR]=[TXTPTR]+1
 
                      The following exists in ROM if ROM exists and is loaded
