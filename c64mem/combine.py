@@ -512,17 +512,17 @@ while(True):
 
 			linenumber[i] += 1
 
-		is_collapsible = len(headings) and len(comments)
+		is_collapsible = len(comments)
 		if is_collapsible:
 			print('<details>')
-#		else:
-#			print('<div>')
 
-		if len(headings):
+		if len(headings) or is_collapsible:
 			print('<b>')
 			all_text = ''
 			if is_collapsible:
 				print('<summary>')
+				if not len(headings):
+					print('…')
 			previous_heading = ''
 			for heading in headings:
 				if previous_heading.endswith('.'):
@@ -552,8 +552,6 @@ while(True):
 
 		if is_collapsible:
 			print('</details>')
-#		else:
-#			print('</div>')
 
 		print('</td>')
 	print('</tr>')
