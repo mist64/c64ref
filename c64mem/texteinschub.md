@@ -462,3 +462,128 @@ Felder haben den großen Vorteil, daß immer dann, wenn viele Variable in einem 
 Eine normale Variable braucht 7 Byte, eine Feld-Variable nur 5 oder bei ganzen Zahlen sogar nur 2 Byte. Zugegeben, vorher steht noch ein längerer Kopf, aber halt nur einmal. Und das zahlt sich bei vielen Variablen sehr rasch aus.
 
 Und schließlich muß ich noch darauf hinweisen, daß die »Hausnummern« oder Indizes der Elemente innerhalb eines Programms durch mathematische Operationen verändert und manipuliert werden können. Aber das ist natürlich höhere Programmierkunst und geht über diese kurze Einführung hinaus.
+
+
+# Texteinschub Nr. 11: Darstellung der Felder-(Array-)Variablen im Speicher
+
+Die Felder-Variablen kommen in drei Arten vor:
+
+* als ganze Zahlen,
+* als Gleitkomma-Zahlen,
+* als Zeichenketten.
+
+Sie sind in dem Texteinschub Nr. 10 »Felder in Basic« kurz beschrieben.
+
+Wir wollen sie uns hier mit den Methoden anschauen, welche ich für den C 64 und für den VC 20 in dem Texteinschub Nr. 9 »Darstellung der normalen Variablen im Speicher« beschrieben habe.
+
+Beim C 64 ist allerdings ein Zusatz dabei. Sie müssen, am besten gleich am Anfang, noch eingeben:
+
+    POKE 44,4:NEW
+
+Ein eventuell auftretender SYNTAX ERROR soll uns nicht weiter stören.
+
+Wenn Sie also das jeweilige Kochrezept ausgeführt und damit den Bildschirm- und den Variablenspeicher auf dieselbe Adresse gelegt haben, können wir anfangen.
+
+## Gleitkomma-Feld
+
+Geben Sie direkt ein:
+
+    DIM AB(1,2,3)
+
+Wir dimensionieren also ein Feld mit dem Namen AB, es hat drei Dimensionen, die erste Dimension hat zwei (0,1) Werte, die zweite hat drei und die dritte hat vier Werte. Sobald Sie die RETURN-Taste drücken, erscheint das Feld auf dem Bildschirm. Wir sehen folgende Zeichen: A, B, invertiertesC , @ c @ d @ c @ b plus 120 Klammeraffen @.
+
+Die ersten zwei Stellen sind der Name des Feldes in der Darstellung für Gleitkomma-Variable, wie in der letzten Folge beschrieben wurde. Die dritte und vierte Stelle geben im Bildschirmcode als Low- und High-Byte die Länge des Feldes an (das inverse C = 131, das © = 0, bitte nachzählen). Die fünfte Stelle zeigt die Anzahl der Dimensionen (c = 3) an. Ab der sechsten Stelle stehen die Anzahl der Elemente der Dimension (diesmal als High- und Low-Byte) und zwar beginnend mit der letzten Dimension. In unserem Falle ist das also in Stelle 6 und 7 ein @ und d (0 - 3 =4=d), Stelle 8 und 9 sind dasselbe für die zweite Dimension und schließlich Stelle 10 und 11 für die erste Dimension (0 - 1=2=b). Danach folgen entsprechend der Anzahl der dimensionierten Elemente (2*3*4=24) 6 Byte pro Element (24*5=120), die vorerst auf 0 = @ stehen, die aber mit den Werten der Elemente aufgefüllt werden.
+
+Dieses Auffüllen wollen wir nachvollziehen. Geben Sie bitte direkt ein:
+
+    AB(0,0,0)=5
+
+Wir weisen damit dem allerersten Element des Feldes den Wert 5 zu.
+
+In der oberen Darstellung des Feldes AB ändern sich dadurch Byte 12 und 13. Das neu erschienene inverse C und die Leerstelle mit den drei nachfolgenden @ ist die Gleitkomma- Darstellung (Mantisse und Exponent) der Zahl 5. Auf diese Darstellung werde ich später im Verlauf dieses Kurses bei der Besprechung der Speicherzelle 97 noch genauer eingehen.
+
+Wenn wir jetzt (durch Überschreiben der vorigen Anweisung) zusätzlich noch eingeben:
+
+    AB(1,0,0)=6
+
+erreichen wir eine entsprechende Änderung der Bytes 17 und 18, also des zweiten Elements des Feldes.
+
+In Bild 9 sind die Stellen eines Gleitkomma-Feldes grafisch dargestellt.
+
+    TODO Bild 9
+
+## Ganzzahliges Feld
+
+Im Vergleich zu dem Gleitkomma-Feld dimensionieren wir als nächstes ein ganzzahliges Feld:
+
+    DIM AB%(l,2,3)
+
+Jetzt erscheint auf dem Bildschirm gleich anschließend an das erste Feld eine neue Darstellung: invertiertes A, invertiertes B, ;, @, c@, d, @, c, @b plus 48 Klammeraffen @.
+
+Die ersten 11 Byte haben dieselbe Bedeutung wie beim Gleitkomma-Feld, aber nur deswegen, weil wir dieselben drei Dimensionen mit identischer Elementenzahl dimensioniert haben. Bei mehr Dimensionen wäre dieser Kopf natürlich länger. Die inverse Darstellung des Feldnamens signalisiert ein ganzzahliges Feld. Die dritte Stelle zeigt das »;« - im Bildschirmcode ist das die 59. In der Tat ist das Feld nur 59 Byte lang, also wesentlich weniger als das Gleitkomma-Feld. Die 2 * 3 * 4=24 Elemente benötigen in der Ganzzahl-Darstellung nur je 2 Byte (24*2=48+11=59). Womit bewiesen ist, daß eine Ganzzahl- Darstellung mit dem Zeichen % erheblich Speicherplatz spart - allerdings nur bei Feldern!
+
+Jetzt wollen wir noch den Inhalt des Feldes füllen, so wie vorher mit:
+
+    AB%(0,0,0)=5
+
+... und prompt ändert sich Byte Nummer 13 in ein e (e = 5).
+
+Eine Eingabe für das zweite Element:
+
+    AB$(1,0,0)=6
+
+verändert das 15. Byte in ein f.
+
+In Bild 10 ist der Inhalt eines Ganzzahl-Feldes grafisch dargestellt.
+
+    TODO
+    Bild 10. Ganzzahliges Feld
+    
+## Felder mit Zeichenketten
+
+Die Dimensionierung eines Feldes mit Zeichenketten sieht so aus:
+
+    DIM AB$(1,2,3)
+
+Auf dem Bildschirm erscheint jetzt ein Feld:
+
+Auch hier zeigen die ersten elf Stellen dieselbe Information wie bei den anderen Feldern. Zur Kennzeichnung des Zeichenketten-Feldes ist das zweite Zeichen des Feldnamens invers dargestellt. Zeichen 3 und 4 geben wieder die Länge des Feldes an. Das S hat den Bildschirmcode 83. (Vorsicht! Da wir im Groß-/Kleinbuchstaben-Modus sind, müssen wir die jeweils rechte Seite der Spalten in der Code-Tabelle nehmen). Die Länge 83 minus 11 Kopfstellen ergibt 72 Byte, geteilt durch 24 (2*3*4 = 24 Elemente) erhalten wir 3 Byte zur Darstellung eines Elements.
+
+Das erste Byte gibt die Länge der Zeichenkette an, das zweite und dritte Byte (Low-/High-Byte) die Adresse, ab der die Zeichenkette im vierten Block gespeichert ist.
+
+Die Methode ist also dieselbe wie bei den »normalen« Zeichenketten-Variablen. Das wollen wir uns auch noch ansehen. Geben Sie direkt ein:
+
+    AB$(0,0,0) = "AAAAAA"
+
+In der Darstellung des Feldes ändern sich dadurch die Stellen 12, 13 und 14 und wir sehen
+
+* beim C 64:
+* beim VC 20:
+
+Im Bildschirm steht dafür:
+
+* C 64: 6 250 159 das heißt 6 Zeichen, ab Adresse 250+159*256=40959
+* VC 20: 6 250 29 das heißt 6 Zeichen, ab Adresse 250+29*256=7674
+
+Jetzt weisen wir dem letzten Element auch noch eine Zeichenkette zu:
+
+    AB$(1,2,3)="BB"
+
+Die letzten drei Stellen des Feldes ändern sich ebenfalls, wobei die erste mit dem b eine Zeichenkettenlänge von 2 angibt, dementsprechend muß die Anfangsadresse um 2 niedriger sein als die vorher definierte Kette: Das Low-Byte 250 - 2 = 248, in der Codetabelle finden wir dafür das, was auch im Feld steht. Das High-Byte bleibt unverändert.
+
+Bild 11 zeigt die grafische Darstellung des Zeichenketten- Feldes.
+
+Als letztes zeige ich Ihnen noch die im vierten Block gespeicherten Zeichenketten. Wir drucken einfach den CHR$-Wert der in den betreffenden Speicherzellen stehenden Codezahlen aus mit:
+
+* VC 20:
+
+        FOR I=248 TO 255:PRINT CHR$(PEEK(29*256+I));:NEXT
+
+* C 64:
+
+        FOR I=248 TO 255:PRINTCHR$(PEEK(159*256+I));:NEXT
+        
+... und wir erhalten die beiden Zeichenketten in umgekehrter Reihenfolge, also vom Speicherende her eingespeichert. Interessant ist, daß sich vor die Felder - wenn Sie sie noch auf dem Bildschirm hatten - die neu definierte Gleitkomma-Variable l@ geschoben hat. Auch das ist eine Demonstration des Speicherverfahrens der Variablen, genauso wie ich es Ihnen in der letzten Folge erklärt habe.
+
+    TODO
+    Bild 11. Zeichenketten-Feld
