@@ -691,14 +691,79 @@ Die zweite Gruppe beschreibt die Variable X der Funktion. Die normale Darstellun
     Bild 12. Selbstdefinierte Funktion
 
 
+# Texteinschub Nr. 13: Wie zufällig sind Zufallszahlen?
 
+Der Befehl RND(X) ergibt eine Zufallszahl zwischen 0 und 1 - so steht es im Commodore-Handbuch.
 
+Eine Zufallszahl ist definitionsgemäß rein dem Zufall überlassen. Ihr Wert kann nicht vorhergesehen werden. Wie kann aber ein Computer, in dem alle Vorgehensweisen und Arbeitsschritte fest vorprogrammiert sind, eine zufällige Zahl erzeugen? Die Commodore-Computer machen das so:
 
+Der Befehl RND nimmt eine bestimmte Ausgangszahl (auf die ich noch näher eingehen werde), auf englisch »seed« = Samen genannt, multipliziert sie mit 11879546.4 und zählt 3.92767778 * 10^8 dazu. Die 5 Byte der resultierenden Gleitkommazahl werden miteinander vertauscht und in einen positiven Bruch umgewandelt. Diese Manipulation ergibt die »Zufallszahl«, die als neuer »Samen« in den Speicherzellen 139 bis 143 gespeichert wird.
 
+Es ist sicher einzusehen, daß die Zufälligkeit nicht sehr hoch sein kann, es sei denn, die oben genannte und noch nicht erklärte Ausgangszahl ist zufällig.
 
+Die erste Ausgangszahl hängt vom »Argument« des RND(X)-Befehls ab, das heißt vom Wert X, der in der Klammer dahinter steht. Es gibt drei Möglichkeiten für das Argument:
 
+* eine positive Zahl (egal, welcher Wert)
+* eine negative Zahl
+* die Zahl 0
 
+## Eine positive Zahl
 
+zum Beispiel RND (1) oder RND(56) nimmt als Samen die Zahl 0.811635157, die beim Einschalten des Computers als 5-Byte- Gleitkommazahl in die Speicherzellen 139 bis 143 geschrieben worden ist. In den fünf Zellen stehen die Zahlen 128, 79, 199, 82, 88.
 
+Daraus folgt aber, daß nach dem Einschalten des Computers mit RND(1) immer dieselbe Sequenz von Zufallszahlen erzeugt wird. Schalten Sie bitte den Computer aus und ein und geben Sie ein:
 
+    10 PRINT RND(1):G0T0 10
 
+Notieren Sie die ersten paar Zahlen und wiederholen Sie mit Aus-/Einschalten die Prozedur. Sie werden immer dieselben Zahlen sehen.
+
+Zum Austesten von Programmen mit bekannten Zahlensequenzen ist diese Methode sicher wichtig, aber echte Zufallszahlen sind das nicht!
+
+## Eine negative Zahl
+
+zum Beispiel RND(-1)oder RND(-95) bringt als erstes das Argument selbst (in meinem Beispiel -1 oder -95) als Gleitkommazahl in die Speicherzellen 139 bis 143, von wo sie als Samen den schon beschriebenen Manipulationen unterworfen wird. Nur - mit einem bestimmten negativen Argument erhalten Sie immer dieselbe Zufallszahl. Probieren Sie es aus: PRINT RND(-2) ergibt immer dieselbe Zahl.
+
+Es mag Fälle geben, wo die Vorgabe des allerersten Samens wünschenswert ist. Ich will aber von zufälligen Zählen sprechen. Wir können diese Methode des negativen Arguments dadurch verbessern, daß wir als Argument selbst eine Zufallszahl nehmen.
+
+Als derartige Zahl bietet sich der Wert der inneren Uhr TI an, die beim Einschalten des Computers losläuft und 60mal in der Sekunde weitergestellt wird. Da kein Mensch wissen kann, welchen Wert die UhrTI gerade hat, kommt der Befehl RND(-TI) dem absoluten Zufall schon sehr nahe.
+
+## Das Argument (0)
+
+verwendet eine andere Methode. Als Samen nimmt er eine sich ständig ändernde Zahl, die beim VC 20 aus vier Registerinhalten des VIC-lnterface-Bausteins genommen werden. Beim C 64 wird es ähnlich gemacht, nur ist der VIC-Baustein ein anderer Typ.
+
+Mit derselben Methode nach dem Einschalten wie im ersten Fall oben können Sie das leicht überprüfen.
+
+Ich habe eingangs zitiert, daß RND(X) eine Zahl zwischen 0 und 1 erzeugt; das gilt aber nur für ein positives Argument. Wenn Sie hingegen eine Zufallszahl innerhalb eines ganz bestimmten Bereiches brauchen, müssen Sie anders vorgehen.
+
+## Kochrezept Nr. 1
+
+Mit folgender Formel ist derZahlenbereich beliebig vorgebbar: `X=(RND(1)*A)+B`
+
+* Die Zahl A gibt einen Bereich von 0 bis A vor.
+* Die Zahl B legt den untersten Wert des Bereiches fest.
+
+Beispiele:
+
+* `10 PRINT (RND(1)*6)+1:GOTO 10` erzeugt Zahlen von 1 bis 6
+* `10 PRINT (RND(1)*52)+1:G0T0 10` erzeugt Zahlen von 1 bis 52
+* `10 PRINT (RND(1)*6)+10:G0T0 10` erzeugt Zahlen von 10 bis 16
+
+Mit dem Vorschalten der Funktion INT vor den Befehl RND werden die Zufallszahlen auf ganze Zahlen beschränkt.
+
+    10 PRINT INT (RND(1)*6)+10:GOTO 10
+
+Noch einmal: Zufallszahlen innerhalb bestimmter Zahlenbereiche sind gekoppelt mit einem positiven Argument. Wir haben aber gesehen, daß gerade so keine echten Zufallszahlen erzeugt werden. Deshalb brauchen wir noch ein zweites Kochrezept.
+
+## Kochrezept Nr. 2
+
+Wenn Sie in einem Programm nach dem Einschalten des Computers immer neue Zufallszahlen brauchen, ist es empfehlenswert, für die allererste Zufallszahl RND(-TI) oder RND(0) zu verwenden, dann aber mit RND(1) fortzufahren.
+
+Dasselbe gilt, wenn ein Programm wegen INPUT oder WAIT eine Pause hat. Nach der Pause sollte zuerst ein neuer Ausgangswert genommen werden.
+
+Als letztes will ich noch beschreiben, wie man Zufallszahlen innerhalb von Maschinenprogrammen erzeugen kann.
+
+Im Betriebssystem steht natürlich eine Routine für den Befehl RND. Im C 64 beginnt sie ab 57495 ($E097), im VC 20 ab 57492 ($E094).
+
+Der Ausgangswert (Samen) wird dabei aus dem Gleitkomma-Akkumulator Nr. 1 geholt, dessen Vorzeichen oder Wert 0 das weitere Vorgehen der Routine bestimmt.
+
+Sie müssen also den Samen in den Akkumulator Nr. 1 laden und dann mit JSR auf die RND-Routine springen. Als Resultat können Sie einen oder mehrere Werte der Zellen 140 bis 143 verwenden und nach Belieben weiterverarbeiten.
