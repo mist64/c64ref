@@ -45,11 +45,6 @@ descriptions = [
 	'Reference by Jim Butterfield in COMPUTE! #29 (October 1982).',
 ]
 
-
-titlecolor = ['017100', '004D7F', '99195E', 'F8BA00', 'B51700', '017B76', '595959', '595959']
-darkcolor = ['D8F2CB', 'C6E2FC', 'BFB7E8', 'FCF6CD', 'F4D2E3', 'D2F6F0', 'E0E0E0', 'E0E0E0']
-lightcolor = ['E5F2DF', 'E3F0FC', 'D5D1E8', 'FCFAE6', 'F5E4EC', 'E1F5F2', 'EDEDED', 'EDEDED']
-
 asm_donor_index = 0
 
 
@@ -97,10 +92,6 @@ for i in range(0, files):
 			break
 		linenumber[i] = linenumber[i] + 1
 
-offset = 3; # data columns start at index 3
-# address, symbol and decimal are ths and not tds though
-
-
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
 print('<html>')
 print('<head>')
@@ -141,7 +132,7 @@ print('    }')
 print('    function hideCol(col, checked) {')
 print('        var tbl = document.getElementById("disassembly_table");')
 print('        for (var i = 0; i < tbl.rows.length; i++) {')
-print('            tbl.rows[i].cells[col+' + str(offset) + '].style.display = checked ? "" : "none";')
+print('            tbl.rows[i].cells[col+3].style.display = checked ? "" : "none";') # data columns start at index 3
 print('        }')
 print('        var key = "column_" + col;')
 print('        if (checked) {')
