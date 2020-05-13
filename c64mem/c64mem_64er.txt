@@ -141,7 +141,7 @@ $0001                Datenregister für Ein-/Ausgabe-Port des 6510-Mikroprozesso
                      Bit 4 ist im Normalzustand auf 1, »normal« heißt hier, solange keine der Motor-
                      Tasten der Datasette (PLAY, REWIND, FAST FORWARD) gedrückt ist. Zur Probe:
 
-                         10 X=PEEK(l)
+                         10 X=PEEK(1)
 
                      funktioniert das alles nur, wenn - wie im »Normalfall« - das Bit 4 des 
                      Datenrichtungsregisters (Speicherzelle 0) auf 0 (Eingang) steht.
@@ -164,9 +164,9 @@ $0001                Datenregister für Ein-/Ausgabe-Port des 6510-Mikroprozesso
                          POKE 192,255
 
                      Jetzt läßt sich der Motor der Datasette mit Bit 5 steuern: POKE 1,39 
-                     beziehungsweise POKE 1,PEEK(1) 0R 32 schaltet den Motor aus,
+                     beziehungsweise POKE 1,PEEK(1) OR 32 schaltet den Motor aus,
 
-                     POKE 1,7 beziehungsweise POKE l,PEEK(l) AND 31 schaltet den Motor ein.
+                     POKE 1,7 beziehungsweise POKE 1,PEEK(1) AND 31 schaltet den Motor ein.
 
                      Das Interlock-Register in Speicherzelle 192 werde ich später noch einmal 
                      erwähnen, da es seine Funktion auch beim VC 20 ausübt, allerdings mit anderen 
@@ -787,14 +787,14 @@ $002B-$002C          Zeiger auf den Anfang der Basic-Programme im Speicher
                      Speicherbereich eines Maschinenprogramms ist immer bekannt. Nach seinem letzten 
                      Speicherplatz kann das Basic-Programm beginnen.
 
-                     Die Verschiebung der Anfangsadresse erfolgt In vier Schritten:
+                     Die Verschiebung der Anfangsadresse erfolgt in vier Schritten:
 
                      1. Schritt: In den Speicherplatz vor dem neuen Basic-Bereich muß eine Null 
                         gePOKEt werden. Die Null dient zum Abgrenzen.
                      2. Schritt: Die Adresse der ersten Speicherzelle wird in die Low-/High-Byte-
                         Darstellung umgerechnet. Ich verweise dazu auf die Erklärung dieses Vorgangs 
                         im Texteinschub Nr. 1.
-                     3. Schritt: Das Low-Byte wird in die Speicherzelle 43, das High-Byte In die 
+                     3. Schritt: Das Low-Byte wird in die Speicherzelle 43, das High-Byte in die 
                         Zelle 44 gePOKEt.
                      4. Schritt: Die Operation muß unbedingt mit dem Befehl NEW abgeschlossen 
                         werden, um sicherzustellen, daß auch alle anderen Zeiger auf ihren 
@@ -845,7 +845,7 @@ $002B-$002C          Zeiger auf den Anfang der Basic-Programme im Speicher
                      Variable) und Feld-Variablen (Arrays). Dabei ist wichtig zu wissen, daß ein 
                      Basic-Programm während des Eintippens oder Einladens von Disk beziehungsweise 
                      Kassette in den 1. Block kommt. Während des Programmlaufs werden alle normalen 
-                     Variablen in den 2. Block geschrieben, alle Felder (Arrays) In den 3. Block und 
+                     Variablen in den 2. Block geschrieben, alle Felder (Arrays) in den 3. Block und 
                      schließlich der Text der Zeichenketten (Strings) sozusagen rückwärts vom Ende 
                      des Arbeitsspeichers in den 4 . Block. Je nach Größe des Programms und nach 
                      Anzahl der Variablen wandern die Blockgrenzen nach oben beziehungsweise die von 
@@ -1067,9 +1067,9 @@ $0039-$003A          Nummer der laufenden Basic-Programmzeile
                      Ein kurzes Programm macht das deutlich:
 
                          10 PRINT "ZEILE 10", PEEK(57)+256*PEEK(58)
-                         20 A=3:PRINT A,PEEK(57)+ 256*PEEK(58)
-                         30 B=5:PRINT B,PEEK(57)+ 256*PEEK(58)
-                         40 PRINT A*B,PEEK(57)+ 256*PEEK(58)
+                         20 A=3:PRINT A,PEEK(57)+256*PEEK(58)
+                         30 B=5:PRINT B,PEEK(57)+256*PEEK(58)
+                         40 PRINT A*B,PEEK(57)+256*PEEK(58)
 
                      In jeder Zeile wird zuerst etwas gePRINTet, nämlich Text, Variable und ein 
                      Rechenresultat. Durch das Komma getrennt wird in der 2. Bildschirmhälfte (VC 
@@ -1177,7 +1177,7 @@ $003F-$0040          Zellennummer eines gerade laufenden DATA-Befehls
                      gelesen werden, wird dieser Fall erkannt und mit einem F versehen die Nummer 
                      der DATA-Zeile ausgedruckt, in der das Komma fehlt.
 
-                         10 FOR X=1 T0 10:READ A:PRINTA
+                         10 FOR X=1 TO 10:READ A:PRINTA
                          20 IF A>255 THEN PRINT "F" PEEK(63) + 256*PEEK(64)
                          30 NEXT X 
                          40 DATA 10,20,30 
@@ -1201,9 +1201,9 @@ $0041-$0042          Zeiger auf die Adresse, ab der die laufende DATA-Angabe ges
                      zeigt uns das an (die Kommata sind wichtig für das Format der Darstellung auf 
                      dem Bildschirm!):
 
-                         10 PRINT, PEEK(65)+256* PEEK(66)
+                         10 PRINT, PEEK(65)+256*PEEK(66)
                          20 FOR X=1 TO 10:READ A
-                         30 PRINT A,PEEK(65)+ 256*PEEK(66)
+                         30 PRINT A,PEEK(65)+256*PEEK(66)
                          40 NEXT X
                          50 DATA 10,20,30,40,50,60, 70,80,90,100
                          60 RESTORE
@@ -1227,8 +1227,8 @@ $0041-$0042          Zeiger auf die Adresse, ab der die laufende DATA-Angabe ges
                          50 A3=PEEK(61)+PEEK(62)*256
                          60 DATA DAS IST DIE 3.ZEILE
                          70 POKE 65,A3 AND 255:POKE 66,A3/256:READ A$:PRINT A$
-                         80 POKE 65,A1 AND255:POKE 66,A1/256:READ A$:PRINT A$
-                         90 POKE 65,A2AND 255:POKE 66,A2/256:READ A$:PRINT A$
+                         80 POKE 65,A1 AND 255:POKE 66,A1/256:READ A$:PRINT A$
+                         90 POKE 65,A2 AND 255:POKE 66,A2/256:READ A$:PRINT A$
 
                      Mit den Zeilen 70 bis 90 werden für jede DATA-Zeile eigene READ-Anweisungen 
                      gegeben. Welche DATA-Zeile gelesen werden soll, wird durch die Variablen Ax und 
@@ -1355,7 +1355,7 @@ $004E-$004F          Zeiger auf Adresse, ab welcher der Wert der Variablen einer
 
                      Nach RUN erhalten Sie zwei Adressen, die Sie mit direkter Eingabe abfragen:
 
-                         FOR I=0 T0 4:PRINT PEEK (1.Adresse+I);:NEXT I:
+                         FOR I=0 TO 4:PRINT PEEK (1.Adresse+I);:NEXT I:
                          FOR J=0 TO 4:PRINT PEEK (2.Adresse+J);:NEXT J
 
                      Sie werden sehen, daß der Inhalt der beiden Adressen genau den Werten der 
@@ -1660,7 +1660,7 @@ $0091                Zwischenspeicher für Abfrage der STOP-Taste
                      Demonstrationsprogramm kann das beweisen:
 
                          10 PRINT PEEK (656321);PEEK (145)
-                         20 GOT0 10
+                         20 GOTO 10
 
                      Beim VC 20 ist statt 56321 natürlich 37153 einzusetzen.
 
@@ -1723,8 +1723,8 @@ $0098                Anzahl der offenen Files
                      In Speicherzelle 152 wird festgehalten, wieviel Dateien gleichzeitig geöffnet 
                      sind. Dieses kleine Programm zeigt es uns deutlich:
 
-                         10 FOR K=10 T0 22
-                         20 PRINT PEEK (l52),K
+                         10 FOR K=10 TO 22
+                         20 PRINT PEEK (152),K
                          30 OPEN K,0
                          40 NEXT K
 
@@ -1941,7 +1941,7 @@ $009D                Flagge für Meldungen
 
                      Schließlich nehmen wir noch den letzten Fall:
 
-                         POKE 157,192: LOAD " $ ", 9
+                         POKE 157,192: LOAD"$",9
                      
                      Jetzt erhalten wir alles:
                      
@@ -2491,7 +2491,7 @@ $00C7                Flagge für reverse Darstellung der Zeichen
                      Normalerweise steht in dieser Speicherzelle eine 0, was mit PRINT PEEK(199) 
                      leicht nach geprüft werden kann.
 
-                     Sobald In der Zelle 199 eine andere Zahl als 0 steht, werden alle Zeichen In 
+                     Sobald in der Zelle 199 eine andere Zahl als 0 steht, werden alle Zeichen in 
                      der reversen Darstellung gedruckt. Das Betriebssystem des Computers erhöht 
                      nämlich in diesem Fall den jeweiligen Bildschirmcode der Zeichen um 128. Ein 
                      Blick in eine Tabelle der Biidschirmcodes bestätigt, daß die Codes aller 
@@ -2569,7 +2569,7 @@ $00CB                Tastencode der gerade gedrückten Taste
                      abgefragt werden. Die dabei für jede der 64 Tasten (mit Ausnahme der RESTORE- 
                      und der SHIFT-LOCK-Tasten) entstehende Dualzahl wird in eine Dezimalzahl (0 bis 
                      63) umgewandelt und in der Speicherzelle 203 gespeichert, einige auch in der 
-                     Zelle 653. Diese Zahl steht auch In Speicherzelle 197, um sie mit der vorher 
+                     Zelle 653. Diese Zahl steht auch in Speicherzelle 197, um sie mit der vorher 
                      gedrückten Taste vergleichen zu können.
 
                      Die Codezahlen jeder Taste lassen sich mit folgendem Programm abfragen:
@@ -2632,13 +2632,13 @@ $00CC                Schalter für Cursor blinken
 
 $00CD                Zähler für Blinkfrequenz des Cursors
 
-                     Das Blinken des Cursors besorgt die Interrupt-Routine. 60mal In jeder Sekunde 
+                     Das Blinken des Cursors besorgt die Interrupt-Routine. 60mal in jeder Sekunde 
                      unterbricht sie den normalen Programmablauf. Während dieser Zeit führt sie 
                      mehrere »Haushalt«-Arbeiten durch. So wird hier die Tastatur abgefragt und das 
                      Cursorblinken gesteuert.
 
-                     Dazu wird die Zahl 20 In die Speicherzelle 205 geschrieben und bei jeder 
-                     Unterbrechung dann um 1 reduziert. Wenn die Zahl In 205 den Wert 0 erreicht 
+                     Dazu wird die Zahl 20 in die Speicherzelle 205 geschrieben und bei jeder 
+                     Unterbrechung dann um 1 reduziert. Wenn die Zahl in 205 den Wert 0 erreicht 
                      hat, wird der Cursor eingeschaltet. Nach Adam Riese erfolgt das also 60/20 = 
                      3mal pro Sekunde. Im Texteinschub Nr. 22 »Cursor-Spiele oder der INPUT-Befehl 
                      einmal etwas anders« wird mit diesem Zähler für die Blinkfrequenz 
@@ -2877,7 +2877,7 @@ $00F5-$00F6          Vektor auf die Decodiertabelle für ASCII-Codewerte der Tas
                      Drücken einer der 64 Tasten entschlüsselt wird.
 
                      Ein entschlüsselter Wert wird in Speicherzelle 145 zwischengespeichert und 
-                     gelangt dann als Tastencode In die Speicherzelle 203. Bei der Besprechung der 
+                     gelangt dann als Tastencode in die Speicherzelle 203. Bei der Besprechung der 
                      Zelle 203 wurden die Codewerte aufgelistet. Ich habe auch darauf hingewiesen, 
                      daß die Codes der drei Steuertasten SHIFT, CTRL und COMMODORE (C=) separat in 
                      der Zelle 653 stehen.
@@ -2914,7 +2914,7 @@ $00F5-$00F6          Vektor auf die Decodiertabelle für ASCII-Codewerte der Tas
                      dessen Zahl durch die Steuertasten verändert wird. Sie werden sehen, es sind 
                      die Anfangsadressen der vier Tabellen.
 
-                         10 PRINT PEEK(245)+256*PEEK(246):G0T0 10
+                         10 PRINT PEEK(245)+256*PEEK(246):GOTO 10
 
 $00F7-$00F8          Zeiger auf den Anfang des RS232-Eingabe-Puffers
 
@@ -3103,8 +3103,8 @@ $0259-$0276          Tabellen für File-Nummern, Geräte-Nummern und Sekundär-A
                      630 gespeichert werden, sondern mit »OR 96« verknüpft. Dasselbe müssen wir auch machen:
 
                          10 OPEN 3,4,0
-                         20 POKE 621,0 OR 96:PRINT#3, "GRAFIKMODUS"
-                         30 POKE 621,7 OR 96:PRINT#3, "TEXTMODUS"
+                         20 POKE 621,0 OR 96: PRINT#3,"GRAFIKMODUS"
+                         30 POKE 621,7 OR 96: PRINT#3,"TEXTMODUS"
 
                      Mit dieser Methode können Sie sich das öffnen und Schließen vieler Dateien 
                      ersparen.
@@ -3679,7 +3679,7 @@ $0302-$0303          Vektor auf die Hauptroutine zur Ausführung von Basic-Befeh
                      entweder direkt eingegebene Befehle ausführt oder mit Zeilennummer eingegebene 
                      Anweisungen speichert.
 
-$0304-$0305          Vektor auf die Basic-Routine, die ASCII-Text In Token umwandelt
+$0304-$0305          Vektor auf die Basic-Routine, die ASCII-Text in Token umwandelt
 
                      Dieser Vektor zeigt auf 42364 ($A57C), beim VC 20 auf 50556 ($C57C). Dort 
                      beginnt eine Routine, die nach dem Drücken der RETURN-Taste alle Anweisungen 
@@ -3709,11 +3709,11 @@ $0306-$0307          Vektor auf die Basic-Routine, die Token in ASCII-Werte zur�
                      Besser finde ich da ein kleines Programm, das J. Pellechi in der Zeitschrift 
                      RUN, Ausgabe 6/85 (Seite 10), angegeben hat:
 
-                         10 FOR J=679 T0 688
+                         10 FOR J=679 TO 688
                          20 READ K
                          30 POKE J,K
                          40 NEXT J
-                         50 POKE 774,l67:POKE 775,2
+                         50 POKE 774,167:POKE 775,2
                          60 NEW
                          70 DATA 72,173,141
                          80 DATA 2,208,251,104
