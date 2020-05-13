@@ -477,7 +477,7 @@ while(True):
 
 			linenumber[i] += 1
 
-		is_collapsible = len(comments)
+		is_collapsible = len(comments) and not (len(comments) == 1 and comments[0].isspace())
 		if is_collapsible:
 			print('<details>')
 
