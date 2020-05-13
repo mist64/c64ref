@@ -42,10 +42,52 @@ body {
     background: var(--main-background);
     color: var(--main-color);
     font-family: Helvetica;
+    margin: 0px;
 }
 
 a {
     color: var(--border-color);
+}
+
+div {
+    padding: 1em;
+}
+
+div.body {
+    padding: 8px;
+}
+
+
+/* Navigation */
+
+.topnav {
+    background-color: #333;
+    overflow: hidden;
+}
+
+.topnav a, .topnav h1 {
+    float: left;
+    text-align: center;
+    color: white;
+    padding: 14px 16px;
+    margin: 0px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav h1 {
+    color: e0f0ff;
+    text-shadow: 0px 1px var(--main-color);
+}
+
+.topnav a:hover {
+    background-color: var(--main-background);
+    color: black;
+}
+
+.topnav a.active {
+    background-color: var(--main-color);
+    color: white;
 }
 
 
