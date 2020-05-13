@@ -32,7 +32,7 @@
 # * All addresses are 4 digits and have a leading '$'.
 # The encoding is UTF-8.
 
-$0000         D6510  6510 On-Chip I/O DATA Direction Register
+$0000        D6510   6510 On-Chip I/O DATA Direction Register
                      
                      * Bit 0: Direction of Bit 0 I/O on port at next address.  Default = 1 (output)
                      * Bit 1: Direction of Bit 1 I/O on port at next address.  Default = 1 (output)
@@ -58,7 +58,7 @@ $0000         D6510  6510 On-Chip I/O DATA Direction Register
                      set to 239 ($EF), which indicates that all bits, except for Bit 4
                      (which senses the cassette switch), are set up for Output.
                      
-$0001         R6510  6510 On-Chip I/O Port
+$0001        R6510   6510 On-Chip I/O Port
 
                      * Bit 0: LORAM signal.  Selects ROM or RAM at 40960 ($A000).  1=BASIC, 0=RAM
                      * Bit 1: HIRAM signal.  Selects ROM or RAM at 57344 ($E000).  1=Kernal, 0=RAM

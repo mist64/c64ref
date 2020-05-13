@@ -45,8 +45,6 @@ descriptions = [
 	'Reference by Jim Butterfield in COMPUTE! #29 (October 1982).',
 ]
 
-asm_donor_index = 0
-
 
 def cross_reference(string):
 	hex_numbers = re.findall(r'\$[0-9A-F][0-9A-F][0-9A-F][0-9A-F]', string)
@@ -81,9 +79,6 @@ for filename in filenames:
 	linenumber.append(0)
 	address.append(0)
 files = len(filenames)
-
-asmaddress = 0
-asmlinenumber = 0
 
 for i in range(0, files):
 	while True:
@@ -277,62 +272,83 @@ while(True):
 #	if count > 80:
 #		break
 
+	#  make linenumber[] point to next line for all files
 	for i in range(0, files):
 		if linenumber[i] >= len(data[i]):
 			continue
 		while len(data[i][linenumber[i]]) > 0 and (data[i][linenumber[i]][0] == '-' or data[i][linenumber[i]][0] == '#'):
 			linenumber[i] = linenumber[i] + 1
 
-	if asmlinenumber >= len(data[asm_donor_index]):
+	list_address1 = []
+	list_address2 = []
+	list_symbol = []
+	for i in range(0, files):
+		if linenumber[i] >= len(data[i]):
+			break
+		line = data[i][linenumber[i]]
+		address1 = line[1:5]
+		address1 = int(address1, 16)
+		address2 = line[7:11]
+		if len(address2.rstrip()) != 0:
+			address2 = int(address2, 16)
+		else:
+			address2 = None
+		symbol = line[13:19].rstrip()
+		#text = line[21:]
+		list_address1.append(address1)
+		list_address2.append(address2)
+		list_symbol.append(symbol)
+
+	# reached end of all files?
+	if len(list_address1) == 0:
 		break
 
-	asm = data[asm_donor_index][asmlinenumber][0:21].rstrip()
-	asmlinenumber = asmlinenumber + 1
+	# the next address is the lowest one from all source
+	address1 = min(list_address1)
 
-	if len(asm) == 0:
-		continue
-	if asm[0] == '#' or asm[0] == '-':
-		continue
+	# the longest range wins
+	address2 = None
+	symbol = None
+	good_symbols = []
+	for i in range(0, files):
+		if list_address1[i] == address1:
+			if address2 == None or (list_address2[i] != None and list_address2[i] > address2):
+				address2 = list_address2[i]
+				if list_symbol[i] != '':
+					good_symbols.append(list_symbol[i])
+	if len(good_symbols) != 0:
+		symbol = good_symbols[0]
+	else:
+		symbol = ''
 
-	has_address = False
-	if asm[0] == '$':
-		hexaddress = asm[1:5]
-		hexaddress2 = asm[7:11]
-		asmaddress = int(hexaddress, 16)
-		if len(hexaddress2.rstrip()) != 0:
-			asmaddress2 = int(hexaddress2, 16)
-		else:
-			asmaddress2 = None
-		has_address = True
-
-	symbol = asm[13:19].rstrip()
-	asm = asm[:13].rstrip()
-
+	# print address
 	print('<tr>')
-	print('<th class="left_column">')
-	if has_address:
-		print('<a name="' + hexaddress + '"/>')
-	print(asm)
+	anchor = '<a name="${:04X}"/>'.format(address1)
+	hex_range = '${:04X}'.format(address1)
+	if address2 != None:
+		hex_range += '-${:04X}'.format(address2)
+	print('<th class="left_column">' + anchor + hex_range + '</th>')
 
-	if len(symbol) < 1:
+	# print symbol
+	if len(symbol) == 0:
 		print('<th class="label_column" style="visibility:hidden;">' + symbol + '</th>')
 	else:
 		print('<th class="label_column">' + symbol + '</th>')
 
-	if has_address:
-		dec_range = str(asmaddress)
-		if asmaddress2 != None:
-			dec_range += '-' + str(asmaddress2)
-		print('<th class="decimal_column">' + dec_range + '</th>')
-	else:
-		print('<th class="decimal_column" style="visibility:hidden;"></th>')
+	# print decimal
+	dec_range = str(address1)
+	if address2 != None:
+		dec_range += '-' + str(address2)
+	print('<th class="decimal_column">' + dec_range + '</th>')
 
+#	exit(1)
 
 	for i in range(0, files):
 		print('<td>')
 		headings = []
 		comments = []
 		has_seen_blank_line = False
+		is_first_line = True
 		while True:
 			if linenumber[i] >= len(data[i]):
 				break
@@ -340,10 +356,24 @@ while(True):
 			line = data[i][linenumber[i]]
 
 			if line.startswith('$'):
-				address[i] = int(line[1:5], 16)
-			if address[i] > asmaddress:
-				break
+				if not is_first_line:
+					# next address; stop here
+					break
+
+				# compare whether this address matches
+				cmp_address1 = line[1:5]
+				cmp_address1 = int(cmp_address1, 16)
+				cmp_address2 = line[7:11]
+				if len(cmp_address2.rstrip()) != 0:
+					cmp_address2 = int(cmp_address2, 16)
+				else:
+					cmp_address2 = None
+				if cmp_address1 != address1 or cmp_address2 != address2:
+					break
+
+			is_first_line = False
 			comment = line[21:]
+#			print(comment)
 #			comment = html.escape(comment)
 
 			if not has_seen_blank_line:
@@ -357,6 +387,8 @@ while(True):
 				comments.append(comment)
 
 			linenumber[i] += 1
+
+#		print(headings,comments)
 
 		is_collapsible = len(comments) and not (len(comments) == 1 and comments[0].isspace())
 		if is_collapsible:
