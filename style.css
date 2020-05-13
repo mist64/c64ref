@@ -90,6 +90,24 @@ div.body {
     color: white;
 }
 
+/* Tables */
+
+table {
+    border-collapse: collapse;
+    border: solid 1px var(--border-color);
+    color: black;
+}
+
+tr, td, th {
+    margin: 0px;
+    text-align:left;
+    vertical-align: text-top;
+}
+
+th.com {
+    font-weight: bold;
+}
+
 
 /* Overview Table */
 
@@ -133,18 +151,52 @@ table.checkbox_table tr:nth-of-type(8) td:nth-of-type(2) { background: var(--tit
 
 /* Main Table */
 
+
+table.disassembly_table {
+    border: solid grey;
+    border-width:0px 0px 1px 0px;
+}
+
+table.disassembly_table td, table.disassembly_table th {
+    padding: 2px 4px;
+    border: solid grey;
+    border-width:0px 1px 0px 1px;
+}
+
+table.disassembly_table th.left_column {
+    position: absolute;
+    left: 8px;
+    z-index: 11;
+    border: 1px solid #000;
+    border-radius: 2px;
+    color: var(--main-background);
+    background: var(--border-color);
+}
+
+th.left_column a {
+    color: var(--main-background);
+}
+
+th.left_column a:target {
+    color: yellow;
+    text-shadow: 0px 1px black;
+}
+
+/*
+th.left_column a:target::before {
+    content: "▹";
+}
+*/
+
+
 table.disassembly_table th.top_row {
     color: var(--main-background);
     border-width: 1px;
 }
 
-table.disassembly_table tr {
-    background: #f0f0f0;
-}
+table.disassembly_table tr { background: #f0f0f0; }
+table.disassembly_table tr:nth-child(even) { background: #ffffff; }
 
-table.disassembly_table tr:nth-child(even) {
-    background: #ffffff;
-}
 
 /* Main Table: Multicolor */
 
