@@ -388,7 +388,6 @@ while(True):
 			is_first_line = False
 			comment = line[21:]
 #			print(comment)
-#			comment = html.escape(comment)
 
 			if not has_seen_blank_line:
 				if len(comment.lstrip()) == 0:
@@ -402,7 +401,10 @@ while(True):
 
 			linenumber[i] += 1
 
-#		print(headings,comments)
+		while len(comments) > 0 and comments[-1] == '\n':
+			comments = comments[0:-1]
+
+		#print('xxx',headings,comments)
 
 		is_collapsible = len(comments) and not (len(comments) == 1 and comments[0].isspace())
 		if is_collapsible:
