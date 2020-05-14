@@ -153,8 +153,8 @@ $00F5-$00F6  KEYTAB  Keyboard pointer
 $00F7-$00F8  RIBUF   RS-232 Rev pntr
 $00F9-$00FA  ROBUF   RS-232 Tx pntr
 $00FF-$010A  BASZPT  Floating to ASCII work area
+$0100-$01FF          Processor stack area
 $0100-$013E  BAD     Tape error log
-$0100-$01FF  BAD     Processor stack area
 $0200-$0258  BUF     Basic input buffer
 $0259-$0262  LAT     Logical file table
 $0263-$026C  FAT     Device # table

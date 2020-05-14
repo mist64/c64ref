@@ -2068,11 +2068,6 @@ $0100-$01FF          Microprocessor Stack Area
                      Microsoft BASIC uses part of the stack for a temporary work area.
                      Therefore, the stack may be broken down into the following subregions:
                      
-$0100-$010A          Work Area for Floating Point to String Conversions
-                     
-                     Used in the conversion of numbers to the equivalent ASCII digits, and
-                     in scanning strings.
-                     
 $0100-$013E  BAD     Tape Input Error Log
                      
                      Each tape block is saved twice consecutively, in order to minimize
@@ -2080,6 +2075,11 @@ $0100-$013E  BAD     Tape Input Error Log
                      indices of which bytes in the tape block were not received corectly
                      during the first transmission, so that corrections might be made on
                      the second pass.
+                     
+$0100-$010A          Work Area for Floating Point to String Conversions
+                     
+                     Used in the conversion of numbers to the equivalent ASCII digits, and
+                     in scanning strings.
                      
 $013F-$01FF
                      

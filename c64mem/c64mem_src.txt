@@ -512,7 +512,7 @@ $00FB-$00FE  FREKZP  Free KERNAL zero page 9/24/80
 
 $00FF        BASZPT  Location ($00FF) used by basic
 
-$0100        BAD
+$0100-$013E  BAD
 
 #
 # BASIC
@@ -602,6 +602,8 @@ $02A3        KIKA26  Temp storage for cassette read routine
 $02A4        STUPID  Temp D1IRQ indicator for cassette read
 
 $02A5        LINTMP  Temporary for line index
+
+$02A6        PALNTS  PAL vs NTSC flag 0=NTSC 1=PAL
 
 $0314-$0315  CINV    IRQ RAM vector
 

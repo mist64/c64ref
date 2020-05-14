@@ -167,8 +167,8 @@ $00F9-$00FA  ROBUF   RS-232 Output Buffer  Pointer
 $00FB-$00FE  FREKZP  Free 0-Page Space for User Programs
 $00FF        BASZPT  BASIC Temp Data Area
 $0100-$01FF          Micro-Processor System Stack Area
-$0100-$010A          Floating to String Work Area
 $0100-$013E  BAD     Tape Input Error Log
+$0100-$010A          Floating to String Work Area
 $0200-$0258  BUF     System INPUT Buffer
 $0259-$0262  LAT     KERNAL Table: Active Logical File No's.
 $0263-$026C  FAT     KERNAL Table: Device No. for Each File

@@ -580,9 +580,9 @@ $00FB-$00FE  FREKZP  Unused (4 bytes).
 
 $00FF-$010A  BASZPT  Buffer for conversion from floating point to string (12 bytes.)
 
-$0100-$013D  BAD     Pointers to bytes read with error during datasette input (62 bytes, 31 entries).
+$0100-$01FF          Processor stack. Also used for storing data related to FOR and GOSUB.
 
-$0100-$01FF  BAD     Processor stack. Also used for storing data related to FOR and GOSUB.
+$0100-$013D  BAD     Pointers to bytes read with error during datasette input (62 bytes, 31 entries).
 
 $0200-$0258  BUF     Input buffer, storage area for data read from screen (89 bytes).
 

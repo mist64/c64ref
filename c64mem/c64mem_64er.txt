@@ -2954,14 +2954,6 @@ $00FF                Zwischenspeicher für Daten bei der Umwandlung von Gleitkom
                      Seiteneinteilung bedeutungslos, und wir werden deshalb unbeirrt als nächstes 
                      mit einem größeren Speicherblock, nämlich von 256 bis 511 weitermachen.
 
-$0100-$010A          Arbeitsspeicher für Umwandlung von Gleitkomma-Zahlen in ASCII-Werte, auch FAC 
-                     (Fließkomma-Akku) genannt
-
-                     Diese 11 Byte werden von einer Routine des Betriebssystems verwendet, um Werte 
-                     zwischenzuspeichern, die bei der Umwandlung von Gleitkomma-Zahlen in ASCII-
-                     Werte oder in Werte der Funktion TI$ anfallen. Eine andere Routine verwendet 
-                     den Bereich, um Zeichenketten (Strings) zu untersuchen.
-
 $0100-$013E          Arbeitsspeicher für Fehler bei der Eingabe vom Band
 
                      Alle Daten, die auf Band gespeichert werden, stehen dort doppelt in zwei 
@@ -2972,6 +2964,14 @@ $0100-$013E          Arbeitsspeicher für Fehler bei der Eingabe vom Band
                      In diesem Bereich, der übrigens auch bei der Speicherzelle 256 anfängt, aber 63 
                      Byte in Anspruch nimmt, werden beim Laden Angaben gespeichert, aus denen das 
                      Betriebssystem erkennen kann, welche Bytes fehlerhaft sind.
+
+$0100-$010A          Arbeitsspeicher für Umwandlung von Gleitkomma-Zahlen in ASCII-Werte, auch FAC 
+                     (Fließkomma-Akku) genannt
+
+                     Diese 11 Byte werden von einer Routine des Betriebssystems verwendet, um Werte 
+                     zwischenzuspeichern, die bei der Umwandlung von Gleitkomma-Zahlen in ASCII-
+                     Werte oder in Werte der Funktion TI$ anfallen. Eine andere Routine verwendet 
+                     den Bereich, um Zeichenketten (Strings) zu untersuchen.
 
 $013F-$01FF          Stapelspeicher (Stack) des Mikroprozessors
 

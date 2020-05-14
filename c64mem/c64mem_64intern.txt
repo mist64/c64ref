@@ -864,7 +864,7 @@ $00FF-$010A  BASZPT  Puffer für Umwandlung Fließkomma nach
                      Zwischenspeicherung von Fließkommazahlen
                      benutzt.
 
-$0100-$013E  BAD     Speicher für Korrektur bei Bandeingabe
+$0100-$013E          Speicher für Korrektur bei Bandeingabe
 
                      Beim Laden von Band werden hier die
                      Daten zwischengespeichert, aus denen
@@ -1011,7 +1011,7 @@ $028C        DELAY   Zähler für Repeatverzögerung
                      Taste gedrückt sein muß, bis die
                      Repeat-Funktion einsetzt.
 
-$0280                Flag für SHIFT, Commodore und CTRL
+$028D        SHFLAG  Flag für SHIFT, Commodore und CTRL
 
                      In diesem Register stehen die
                      Tastencodes der Steuertasten:

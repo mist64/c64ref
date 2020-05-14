@@ -267,6 +267,8 @@ for i in range(0, files):
 print('</tr>')
 
 count = 0
+last_address1 = None
+last_address2 = None
 while(True):
 	count += 1
 #	if count > 80:
@@ -294,7 +296,6 @@ while(True):
 		else:
 			address2 = None
 		symbol = line[13:19].rstrip()
-		#text = line[21:]
 		list_address1.append(address1)
 		list_address2.append(address2)
 		list_symbol.append(symbol)
@@ -311,37 +312,49 @@ while(True):
 	symbol = None
 	good_symbols = []
 	for i in range(0, files):
-		if list_address1[i] == address1:
-			if address2 == None or (list_address2[i] != None and list_address2[i] > address2):
+		if list_address1[i] == address1 and (address2 == None or (list_address2[i] != None and list_address2[i] > address2)):
 				address2 = list_address2[i]
-				if list_symbol[i] != '':
-					good_symbols.append(list_symbol[i])
+
+	# get symbols of longest range
+	for i in range(0, files):
+		if list_address1[i] == address1 and list_address2[i] == address2 and list_symbol[i] != '':
+			good_symbols.append(list_symbol[i])
+	#print('xxx', address1, address2, good_symbols)
+
 	if len(good_symbols) != 0:
 		symbol = good_symbols[0]
 	else:
 		symbol = ''
 
-	# print address
 	print('<tr>')
-	anchor = '<a name="${:04X}"/>'.format(address1)
-	hex_range = '${:04X}'.format(address1)
-	if address2 != None:
-		hex_range += '-${:04X}'.format(address2)
-	print('<th class="left_column">' + anchor + hex_range + '</th>')
+
+	# print address
+	print('<a name="${:04X}"/>'.format(address1))
+	if address1 == last_address1 and address2 == last_address2:
+		print('<th class="left_column" style="visibility:hidden;"></th>')
+	else:
+		hex_range = '${:04X}'.format(address1)
+		if address2 != None:
+			hex_range += '-${:04X}'.format(address2)
+		print('<th class="left_column">' + hex_range + '</th>')
 
 	# print symbol
 	if len(symbol) == 0:
-		print('<th class="label_column" style="visibility:hidden;">' + symbol + '</th>')
+		print('<th class="label_column" style="visibility:hidden;"></th>')
 	else:
 		print('<th class="label_column">' + symbol + '</th>')
 
 	# print decimal
-	dec_range = str(address1)
-	if address2 != None:
-		dec_range += '-' + str(address2)
-	print('<th class="decimal_column">' + dec_range + '</th>')
+	if address1 == last_address1 and address2 == last_address2:
+		print('<th class="decimal_column" style="visibility:hidden;"></th>')
+	else:
+		dec_range = str(address1)
+		if address2 != None:
+			dec_range += '-' + str(address2)
+		print('<th class="decimal_column">' + dec_range + '</th>')
 
-#	exit(1)
+	last_address1 = address1
+	last_address2 = address2
 
 	for i in range(0, files):
 		print('<td>')
@@ -368,7 +381,8 @@ while(True):
 					cmp_address2 = int(cmp_address2, 16)
 				else:
 					cmp_address2 = None
-				if cmp_address1 != address1 or cmp_address2 != address2:
+				cmp_symbol = line[13:19].rstrip()
+				if cmp_address1 != address1 or cmp_address2 != address2 or (cmp_symbol != symbol and cmp_symbol != ''):
 					break
 
 			is_first_line = False

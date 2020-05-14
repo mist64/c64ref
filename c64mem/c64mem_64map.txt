@@ -33,9 +33,9 @@ $0003-$0004  ADRAY1  Jump Vector: Convert FAC to Integer in (A/Y)
                      ($B1AA).
 $0005-$0006  ADRAY2  Jump Vector: Convert Integer in (A/Y) to
                      Floating point in (FAC); ($B391).
+$0007-$0008  INTEGR  Temporary Integer during OR/AND.
 $0007        CHARAC  Search Character/Temporary Integer during INT.
 $0008        ENDCHR  Flag: Scan for Quote at end of String.
-$0007-$0008  INTEGR  Temporary Integer during OR/AND.
 $0009        TRMPOS  Screen Column for last TAB.
 $000A        VERCK   Flag: 0 = Load, 1 = Verify.
 $000B        COUNT   Input Buffer Pointer/Number of Subscripts.
@@ -213,11 +213,11 @@ $00F5-$00F6  KEYTAB  Vector: Current Keyboard decoding Table.
 $00F7-$00F8  RIBUF   RS232 Input Buffer Pointer.
 $00F9-$00FA  ROBUF   RS232 Output Buffer Pointer.
 $00FB-$00FE  FREKZP  Free Zero Page space for User Programs.
-$00FF        BASZPT  BASIC temporary Data Area.
-$00FF-$010A  ASCWRK  Assembly Area for Floating point to ASCII
+$00FF-$010A          Assembly Area for Floating point to ASCII
                      conversion.
-$0100-$013E  BAD     Tape Input Error log.
+$00FF        BASZPT  BASIC temporary Data Area.
 $0100-$01FF  STACK   6510 Hardware Stack Area.
+$0100-$013E  BAD     Tape Input Error log.
 $013F-$01FF  BSTACK  BASIC Stack Area.
 $0200-$0258  BUF     BASIC Input Buffer (Input Line from Screen).
 $0259-$0262  LAT     Kernal Table: Active logical File numbers.
@@ -268,7 +268,7 @@ $02A2        TODSNS  TOD sense during Tape I/O.
 $02A3        TRDTMP  Temporary storage during Tape READ.
 $02A4        TD1IRQ  Temporary D1IRQ Indicator during Tape READ.
 $02A5        TLNIDX  Temporary for Line Index.
-$02A6        TVSFLG  Flag: TV Standard: $00 = NTSC, $01 = PAL.
+$02A6        PALNTS  Flag: TV Standard: $00 = NTSC, $01 = PAL.
 $02A7-$02FF  TEMP    Unused.
 $02C0-$02FE  SPR11   Sprite #11 Data Area.
 
