@@ -336,15 +336,15 @@ $0090        STATUS  I/O operation status byte
 
 $0091        STKEY   STOP key flag
 
-$0092        SVXT    Temporary
+$0092        SVXT    Cassette: temp used to adjust software servo
 
-$0093        VERCK   LOAD or VERIFY flag
+$0093        VERCK   Cassette: verify or load flag (Z - loading)
 
 $0094        C3P0    IEEE buffered char flag
 
 $0095        BSOUR   Char buffer for IEEE
 
-$0096        SYNO    Cassette sync #
+$0096        SYNO    Cassette: flags if we have block SYNC (16 zero dipoles)
 
 $0097        XSAV    Temp for BASIN
 
@@ -354,17 +354,17 @@ $0099        DFLTN   Default input device #
 
 $009A        DFLTO   Default output device #
 
-$009B        PRTY    Cassette parity
+$009B        PRTY    Cassette: holds current calculated parity bit
 
-$009C        DPSW    Cassette dipole switch
+$009C        DPSW    Cassette: if NZ then expecting LL/L combination that ends a byte
 
 $009D        MSGFLG  OS message flag
 
-$009E        PTR1    Cassette error pass1
+$009E        PTR1    Cassette: count of read locations in error (pointer into bad, max 61)
 
 $009E        T1      Temporary 1
 
-$009F        PTR2    Cassette error pass2
+$009F        PTR2    Cassette: count of re-read locations (pointer into bad, during re-read)
 
 $009F        T2      Temporary 2
 
@@ -372,11 +372,11 @@ $00A0-$00A2  TIME    24 hour clock in 1/60th seconds
 
 $00A3        R2D2    Serial bus usage
 
-$00A3        PCNTR   Cassette stuff
+$00A3        PCNTR   Cassette: counts down from 8-0 for data then to ff for parity
 
 $00A4        BSOUR1  Temp used by serial routine
 
-$00A4        FIRT
+$00A4        FIRT    Cassette: used to indicate which half of dipole we're in
 
 $00A5        COUNT   Temp used by serial routine
 
@@ -386,25 +386,29 @@ $00A6        BUFPT   Cassette buffer pointer
 
 $00A7        INBIT   RS-232 rcvr input bit storage
 
-$00A7        SHCNL   Cassette short count
+$00A7        SHCNL   Cassette: holds FSBLK, used to direct routines, because of exit case
 
 $00A8        BITCI   RS-232 rcvr bit count in
 
-$00A8        RER     Cassette read error
+$00A8        RER     Cassette: flags errors (if Z then no error)
 
 $00A9        RINONE  RS-232 rcvr flag for start bit check
 
-$00A9        REZ     Cassete reading zeroes
+$00A9        REZ     Cassette: counts zeros (if Z then correct # of dipoles)
 
 $00AA        RIDATA  RS-232 rcvr byte buffer
 
-$00AA        RDFLG   Cassette read mode
+$00AA        RDFLG   Cassette: holds function mode
+
+                     MI - waiting for block SYNC
+                     VS - in data block reading data
+                     NE - waiting for byte SYNC
 
 $00AB        RIPRTY  RS-232 rcvr parity storage
 
-$00AB        SHCNH   Cassette short cnt
+$00AB        SHCNH   Cassette: short cnt; left over from debugging
 
-$00AC        SAL
+$00AC        SAL     Cassette: indirect to data storage area
 
 $00AD        SAH
 
@@ -412,23 +416,23 @@ $00AE        EAL
 
 $00AF        EAH
 
-$00B0        CMP0
+$00B0        CMP0    Cassette: software servo (+/- adjust to time calcs)
 
-$00B1        TEMP
+$00B1        TEMP    Cassette: used to hold dipole time during type calculations
 
 $00B2-$00B3  TAPE1   Address of tape buffer #1y.
 
 $00B4        BITTS   RS-232 trns bit count
 
-$00B4        SNSW1
+$00B4        SNSW1   Cassette: flags if we have byte SYNC (a longlong)
 
 $00B5        NXTBIT  RS-232 trns next bit to be sent
 
-$00B5        DIFF
+$00B5        DIFF    Cassette: used to preserve SYNO (outside of bit routines)
 
 $00B6        RODATA  RS-232 trns byte buffer
 
-$00B6        PRP
+$00B6        PRP     Cassette: has combined error values from bit routines
 
 $00B7        FNLEN   Length current file n str
 
@@ -444,9 +448,9 @@ $00BD        ROPRTY  RS-232 trns parity buffer
 
 $00BD        OCHAR
 
-$00BE        FSBLK   Cassette read block count
+$00BE        FSBLK   Cassette: indicate which block we're looking at (0 to exit)
 
-$00BF        MYCH
+$00BF        MYCH    Cassette: holds input byte being built
 
 $00C0        CAS1    Cassette manual/controlled switch
 
@@ -494,7 +498,7 @@ $00D5        LNMX    40/80 max positon
 
 $00D6        TBLX
 
-$00D7        DATA
+$00D7        DATA    Cassette: holds most recent dipole bit value
 
 $00D8        INSRT   Insert mode flag
 
@@ -512,7 +516,7 @@ $00FB-$00FE  FREKZP  Free KERNAL zero page 9/24/80
 
 $00FF-$010A  BASZPT  Location ($00FF) used by BASIC
 
-$0100-$013E  BAD
+$0100-$013E  BAD     Cassette: storage space for bad read locations (bottom of stack)
 
 #
 # BASIC
@@ -597,9 +601,9 @@ $02A1        ENABL   RS-232 enables (replaces ier)
 
 $02A2        CASTON  TOD sense during cassettes
 
-$02A3        KIKA26  Temp storage for cassette read routine
+$02A3        KIKA26  Cassette: holds old D1ICR after clear on read
 
-$02A4        STUPID  Temp D1IRQ indicator for cassette read
+$02A4        STUPID  Cassette: hold indicator (NZ - no T1IRQ yet) for T1IRQ
 
 $02A5        LINTMP  Temporary for line index
 
