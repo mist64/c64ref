@@ -50,8 +50,8 @@ $0014-$0015  LINNUM  Integer value
 $0016        TEMPPT  Pointer : temporary strg stack
 $0017-$0018  LASTPT  Last temp string vector
 $0019-$0021  TEMPST  Stack for temporary strings
-$0022-$0025  INDEX1  Utility pointer area
-$0026-$002A  RESHO   Product area for multiplication
+$0022-$0025  INDEX   Utility pointer area
+$0026-$002A  RES     Product area for multiplication
 $002B-$002C  TXTTAB  Pointer : Start-of-Basic
 $002D-$002E  VARTAB  Pointer : Start-of-Variables
 $002F-$0030  ARYTAB  Pointer : Start-of-Arrays
@@ -70,7 +70,7 @@ $0047-$0048  VARPNT  Current variable address
 $0049-$004A  FORPNT  Variable pointer for FOR/NEXT
 $004B-$004C  VARTXT  Y-save; op-save; Basic pointer save
 $004D        OPMASK  Comparison symbol accumulator
-$004E-$0053  TEMPF3  Misc work area, pointer, etc
+$004E-$0053          Misc work area, pointer, etc
 $0054-$0056  JMPER   Jump vector for functions
 $0057-$0060          Misc numeric work area
 $0061        FACEXP  Accum#l : Exponent

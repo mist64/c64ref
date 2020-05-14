@@ -55,7 +55,7 @@ $0019-$0021  TEMPST  Stack for Temporary Strings
 $0022-$0025  INDEX   Utility Pointer Area
 $0022-$0023  INDEX1  First Utility Pointer.
 $0024-$0025  INDEX2  Second Utility Pointer.
-$0026-$002A  RESHO   Floating-Point Product of Multiply
+$0026-$002A  RES     Floating-Point Product of Multiply
 $002B-$002C  TXTTAB  Pointer: Start of BASIC Text
 $002D-$002E  VARTAB  Pointer: Start of BASIC Variables
 $002F-$0030  ARYTAB  Pointer: Start of BASIC Arrays
@@ -165,10 +165,9 @@ $00F5-$00F6  KEYTAB  Vector Keyboard Decode Table
 $00F7-$00F8  RIBUF   RS-232 Input Buffer Pointer
 $00F9-$00FA  ROBUF   RS-232 Output Buffer  Pointer
 $00FB-$00FE  FREKZP  Free 0-Page Space for User Programs
-$00FF        BASZPT  BASIC Temp Data Area
+$00FF-$010A  BASZPT  Floating to String Work Area
 $0100-$01FF          Micro-Processor System Stack Area
 $0100-$013E  BAD     Tape Input Error Log
-$00FF-$010A          Floating to String Work Area
 $0200-$0258  BUF     System INPUT Buffer
 $0259-$0262  LAT     KERNAL Table: Active Logical File No's.
 $0263-$026C  FAT     KERNAL Table: Device No. for Each File
@@ -217,7 +216,7 @@ $030C        SAREG   Storage for 6502 .A Register
 $030D        SXREG   Storage for 5502 .X Register
 $030E        SYREG   Storage for 6502 .Y Register
 $030F        SPREG   Storage for 6502 .SP Register
-$0310        USRPOK  USR Function Jump Instr (4C)
+$0310                USR Function Jump Instr (4C)
 $0311-$0312  USRADD  USR Address Low Byte / High Byte
 $0313                Unused
 $0314-$0315  CINV    Vector: Hardware Interrupt

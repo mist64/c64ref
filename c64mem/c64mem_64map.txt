@@ -33,7 +33,7 @@ $0003-$0004  ADRAY1  Jump Vector: Convert FAC to Integer in (A/Y)
                      ($B1AA).
 $0005-$0006  ADRAY2  Jump Vector: Convert Integer in (A/Y) to
                      Floating point in (FAC); ($B391).
-$0007-$0008  INTEGR  Temporary Integer during OR/AND.
+$0007-$0008          Temporary Integer during OR/AND.
 $0007        CHARAC  Search Character/Temporary Integer during INT.
 $0008        ENDCHR  Flag: Scan for Quote at end of String.
 $0009        TRMPOS  Screen Column for last TAB.
@@ -56,7 +56,7 @@ $0019-$0021  TEMPST  Stack for temporary Strings.
 $0022-$0025  INDEX   Utility Pointer Area.
 $0022-$0023  INDEX1  First Utility Pointer.
 $0024-$0025  INDEX2  Secong Utility Pointer.
-$0026-$002A  RESHO   Floating point product of Multiply and
+$0026-$002A  RES     Floating point product of Multiply and
                      Divide.
 $002B-$002C  TXTTAB  Pointer: Start of BASIC Text Area ($0801).
 $002D-$002E  VARTAB  Pointer: Start of BASIC Variables.
@@ -215,7 +215,6 @@ $00F9-$00FA  ROBUF   RS232 Output Buffer Pointer.
 $00FB-$00FE  FREKZP  Free Zero Page space for User Programs.
 $00FF-$010A          Assembly Area for Floating point to ASCII
                      conversion.
-$00FF        BASZPT  BASIC temporary Data Area.
 $0100-$01FF  STACK   6510 Hardware Stack Area.
 $0100-$013E  BAD     Tape Input Error log.
 $013F-$01FF  BSTACK  BASIC Stack Area.
@@ -270,13 +269,6 @@ $02A4        TD1IRQ  Temporary D1IRQ Indicator during Tape READ.
 $02A5        TLNIDX  Temporary for Line Index.
 $02A6        PALNTS  Flag: TV Standard: $00 = NTSC, $01 = PAL.
 $02A7-$02FF  TEMP    Unused.
-$02C0-$02FE  SPR11   Sprite #11 Data Area.
-
-                     (SCREEN + $03F8 + SPR number)
-
-                     POKE 1024+1016+0,11  to use Sprite#0 DATA
-                     from ($02C0-$02FE).
-
 $0300-$0301  IERROR  Vector: Indirect entry to BASIC Error
                      Message, (X) points to Message ($E38B).
 $0302-$0303  IMAIN   Vector: Indirect entry to BASIC Input Line
@@ -293,7 +285,7 @@ $030C        SAREG   Storage for 6510 Accumulator during SYS.
 $030D        SXREG   Storage for 6510 X-Register during SYS.
 $030E        SYREG   Storage for 6510 Y-Register during SYS.
 $030F        SPREG   Storage for 6510 Status Register during SYS.
-$0310        USRPOK  USR Function JMP Instruction ($4C).
+$0310                USR Function JMP Instruction ($4C).
 $0311-$0312  USRADD  USR Address ($LB,$MB).
 $0313        TEMP    Unused.
 $0314-$0315  CINV    Vector: Hardware IRQ Interrupt Address ($EA31).
@@ -327,9 +319,6 @@ $0332-$0333  ISAVE   Vector: Indirect entry to Kernal SAVE
                      Routine ($F5ED).
 $0334-$033B  TEMP    Unused.
 $033C-$03FB  TBUFFR  Tape I/O Buffer.
-$0340-$037E  SPR13   Sprite #13.
-$0380-$03BE  SPR14   Sprite #14.
-$03C0-$03FE  SPR15   Sprite #15.
 $03FC-$03FF  TEMP    Unused.
 $0400-$07E7  VICSCN  Default Screen Video Matrix.
 $07E8-$07F7  TEMP    Unused.

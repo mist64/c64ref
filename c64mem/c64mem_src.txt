@@ -75,7 +75,7 @@ $000E        INTFLG  Tells if integer.
 
 $000F        DORES   Whether can or can't crunch res'd words.
 
-                     turned on when "data"
+                     Turned on when "data"
                      being scanned by crunch so unquoted
                      strings won't be crunched.
 
@@ -88,7 +88,7 @@ $0010        SUBFLG  Flag whether sub'd variable allowed.
                      this on before calling "PTRGET"
                      so arrays won't be detected.
                      "STKINI" and "PTRGET" clear it.
-                     also disallows integers there.
+                     Also disallows integers there.
 
 $0011        INPFLG  Flags whether we are doing "INPUT"
                      or "READ".
@@ -211,11 +211,11 @@ $004B        VARTXT  Pointer into list of variables.
 
 $004D        OPMASK  Mask created by current operator.
 
+$004E-$0052  TEMPF3  A third FAC temporary (4 bytes).
+
 $004E-$004F  DEFPNT  Pointer used in function definition.
 
 $004E        GRBPNT  Another used in garbage collection.
-
-$004E        TEMPF3  A third FAC temporary (4 bytes).
 
 $0050-$0052  DSCPNT  Pointer to a string descriptor.
 
@@ -606,6 +606,26 @@ $02A4        STUPID  Temp D1IRQ indicator for cassette read
 $02A5        LINTMP  Temporary for line index
 
 $02A6        PALNTS  PAL vs NTSC flag 0=NTSC 1=PAL
+
+#
+# BASIC
+#
+
+$0300-$0301  IERROR  indirect ERROR (output error in .X)
+$0302-$0303  IMAIN   indirect MAIN (system direct loop)
+$0304-$0305  ICRNCH  indirect CRUNCH (tokenization routine)
+$0306-$0307  IQPLOP  indirect LIST (char list)
+$0308-$0309  IGONE   indirect GONE (char dispatch)
+$030A-$030B  IEVAL   indirect EVAL (symbol evaluation)
+$030C        SAREG   .A reg
+$030D        SXREG   .X reg
+$030E        SYREG   .Y reg
+$030F        SPREG   .P reg
+$0310-$0312  USRPOK  user function dispatch
+
+#
+# KERNAL
+#
 
 $0314-$0315  CINV    IRQ RAM vector
 

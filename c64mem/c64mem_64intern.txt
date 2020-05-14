@@ -191,13 +191,13 @@ $0019-$0021  TEMPST  Stringstack
                      und Endadressen des vorherigen
                      Strings.
 
-$0022-$0025  INDEX1  Zeiger für diverse Zwecke
+$0022-$0025  INDEX   Zeiger für diverse Zwecke
 
                      Diese Speicherzellen benutzt der
                      Interpreter, um verschiedene
                      Zwischenergebnisse zu speichern.
 
-$0026-$002A  RESHO   Register für Funktionsauswertung und
+$0026-$002A  RES     Register für Funktionsauswertung und
                      Arithmetik
 
                      Diese Speicherzellen werden vom
@@ -332,13 +332,13 @@ $004D        OPMASK  Maske für Vergleichsoperationen
                      ob ein Wert kleiner, gleich oder
                      größer ist.
 
-$004E-$004F  TEMPF3  Zeiger für FN
+$004E-$004F          Zeiger für FN
 
                      In $004E-$004F ist die Adresse angegeben,
                      wo die Variablen und ihr Wert abgelegt
                      sind.
 
-$0050-$0053  DSCPNT  Stringdescriptor
+$0050-$0053          Stringdescriptor
 
                      In diesen Speicherzellen wird unter
                      anderem die Schrittweite für Garbage

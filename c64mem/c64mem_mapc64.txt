@@ -525,7 +525,7 @@ $0022-$0025  INDEX   Miscellaneous Temporary Pointers and Save Area
                      This area is used by many BASIC routines to hold temporary pointers
                      and calculation results.
                      
-$0026-$002A  RESHO   Floating Point Multiplication Work Area
+$0026-$002A  RES     Floating Point Multiplication Work Area
                      
                      This location is used by BASIC multiplication and division routines.
                      It is also used by the routines which compute the size of the area
@@ -2026,7 +2026,7 @@ $00F9-$00FA  ROBUF   Pointer: RS-232 Output Buffer
                      which is used for transmitting data to RS-232 devices (device number
                      2)l
                      
-$00FB-$00FE  FREEZP  Four Free Bytes of Zero Page for User Programs
+$00FB-$00FE  FREKZP  Four Free Bytes of Zero Page for User Programs
                      
                      These locations were specifically set aside for user-written ML
                      routines that require zero-page addressing.  While other zero-page
@@ -2036,7 +2036,7 @@ $00FB-$00FE  FREEZP  Four Free Bytes of Zero Page for User Programs
 $00FF-$010A  BASZPT  BASIC Temporary Data for Floating Point to ASCII Conversion
                      
                      This location is used for temporary storage in the process of
-                     converting floating point numbers to ASCII characters..
+                     converting floating point numbers to ASCII characters.
                      
 $0100-$01FF          Microprocessor Stack Area
                      
@@ -2075,12 +2075,7 @@ $0100-$013E  BAD     Tape Input Error Log
                      indices of which bytes in the tape block were not received corectly
                      during the first transmission, so that corrections might be made on
                      the second pass.
-                     
-$0100-$010A          Work Area for Floating Point to String Conversions
-                     
-                     Used in the conversion of numbers to the equivalent ASCII digits, and
-                     in scanning strings.
-                     
+
 $013F-$01FF
                      
                      This area is exclusively for the microprocessor stack.  Some BASIC
@@ -3096,7 +3091,7 @@ $030F        SPREG   Storage Area for .P (Status) Register
                      difficult to operate!  To set all flags except for Interrupt disable
                      to 1, POKE 783,247.
                      
-$0310        USRPOK  Jump Instruction for User Function ($4C)
+$0310                Jump Instruction for User Function ($4C)
                      
                      The value here (67, $4C) is first part of the 6510 machine language
                      JuMP instruction for the USR command.

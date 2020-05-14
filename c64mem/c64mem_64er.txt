@@ -2942,17 +2942,13 @@ $00FB-$00FE          Vier freie Byte für Anwenderprogramme
                      verändert werden, eignen sie sich in idealer Weise für Flaggen, Register oder 
                      andere Zwischenspeicher.
 
-$00FF                Zwischenspeicher für Daten bei der Umwandlung von Gleitkomma-Zahlen in
-                     ASCII-Werte
+$00FF-$010A          Arbeitsspeicher für Umwandlung von Gleitkomma-Zahlen in ASCII-Werte, auch FAC 
+                     (Fließkomma-Akku) genannt
 
-                     Der Titel dieser Speicherzelle sagt schon alles.
-
-                     Jetzt haben wir eine erste Etappe unserer Wanderung durch die 
-                     Speicherlandschaft hinter uns, nämlich den Bereich von 0 bis 255. Man nennt ihn 
-                     »Zero-Page«, und er hat in der Maschinensprache-Programmierung beziehungsweise 
-                     in der Adressierung eine spezielle Bedeutung. Für Basic-Programmierer ist diese 
-                     Seiteneinteilung bedeutungslos, und wir werden deshalb unbeirrt als nächstes 
-                     mit einem größeren Speicherblock, nämlich von 256 bis 511 weitermachen.
+                     Diese 12 Byte werden von einer Routine des Betriebssystems verwendet, um Werte 
+                     zwischenzuspeichern, die bei der Umwandlung von Gleitkomma-Zahlen in ASCII-
+                     Werte oder in Werte der Funktion TI$ anfallen. Eine andere Routine verwendet 
+                     den Bereich, um Zeichenketten (Strings) zu untersuchen.
 
 $0100-$013E          Arbeitsspeicher für Fehler bei der Eingabe vom Band
 
@@ -2964,14 +2960,6 @@ $0100-$013E          Arbeitsspeicher für Fehler bei der Eingabe vom Band
                      In diesem Bereich, der übrigens auch bei der Speicherzelle 256 anfängt, aber 63 
                      Byte in Anspruch nimmt, werden beim Laden Angaben gespeichert, aus denen das 
                      Betriebssystem erkennen kann, welche Bytes fehlerhaft sind.
-
-$00FF-$010A          Arbeitsspeicher für Umwandlung von Gleitkomma-Zahlen in ASCII-Werte, auch FAC 
-                     (Fließkomma-Akku) genannt
-
-                     Diese 12 Byte werden von einer Routine des Betriebssystems verwendet, um Werte 
-                     zwischenzuspeichern, die bei der Umwandlung von Gleitkomma-Zahlen in ASCII-
-                     Werte oder in Werte der Funktion TI$ anfallen. Eine andere Routine verwendet 
-                     den Bereich, um Zeichenketten (Strings) zu untersuchen.
 
 $013F-$01FF          Stapelspeicher (Stack) des Mikroprozessors
 
@@ -3773,7 +3761,7 @@ $030A-$030B          Vektor auf die Basic-Routine, die einen numerischen Ausdruc
 
                      Ist der Ausdruck die Zahl »pi«, wird der Zahlenwert für »pi« in den Gleitkomma-Akkumulator gebracht.
 
-$030C                Speicher für den Akkumulator
+$030C-$030F          Speicher für Register
 
                      Der SYS-Befehl holt aus den nächsten vier Speicherzellen alle notwendigen 
                      Parameter, die für ein mit SYS zu startendes Maschinenprogramm notwendig sind. 
@@ -3799,6 +3787,8 @@ $030C                Speicher für den Akkumulator
                      hat Rolf Zweifel schon in der Ausgabe 7/84, Seite 131 erklärt. Weil das aber 
                      schon lange her ist und weil es hier so schön in den Kurs paßt, wiederhole ich 
                      dieses Thema im Texteinschub Nr. 33 »Der vorbereitete SYS-Befehl«.
+
+$030C                Speicher für den Akkumulator
 
 $030D                Speicher für das X-Register
 

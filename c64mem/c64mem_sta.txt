@@ -150,11 +150,9 @@ $0017-$0018  LASTPT  Pointer to previous expression in string stack.
 
 $0019-$0021  TEMPST  String stack, temporary area for processing string expressions (9 bytes, 3 entries).
 
-$0022-$0025  INDEX1  Temporary area for various operations (4 bytes).
+$0022-$0025  INDEX   Temporary area for various operations (4 bytes).
 
-$0026-$0029  RESHO   Auxiliary arithmetical register for division and multiplication (4 bytes).
-
-$002A                Unused.
+$0026-$002A  RES     Auxiliary arithmetical register for division and multiplication (4 bytes).
 
 $002B-$002C  TXTTAB  Pointer to beginning of BASIC area.
 
@@ -230,11 +228,9 @@ $004D        OPMASK  Comparison operator indicator
                      * Bit #2: 1 = "=" (equal to) is present in expression.
                      * Bit #3: 1 = "<" (less than) is present in expression.
 
-$004E-$004F  TEMPF3  Pointer to current FN function.
+$004E-$004F          Pointer to current FN function.
 
-$0050-$0051  DSCPNT  Pointer to current string variable during memory allocation.
-
-$0052                Unused.
+$0050-$0052  DSCPNT  Pointer to current string variable during memory allocation.
 
 $0053        FOUR6   Step size of garbage collection
 
