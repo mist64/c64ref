@@ -346,7 +346,7 @@ $0050-$0053  DSCPNT  Stringdescriptor
                      Informationen für den Interpreter
                      festgelegt.
 
-$0054        JMPER   Konstante $4C JMP für Funktionen
+$0054                Konstante $4C JMP für Funktionen
 
                      Hier ist die Konstante für JMP ($4C)
                      festgelegt.
@@ -366,7 +366,7 @@ $005C-$0060  TEMPF2  Register für Arithmetik, Akku #4
 
                      siehe oben
 
-$0061-$0065  FACEXP  Fließkommaakku #1, FAC
+$0061-$0066  FAC     Fließkommaakku #1, FAC
 
                      Diese Register werden für die
                      Berechnung von Fließkommazahlen
@@ -389,7 +389,7 @@ $0068        BITS    Rundungsbyte für FAC
                      im FAC steht, auf- oder abgerundet
                      werden soll.
 
-$0069-$006D  ARGEXP  Fließkommaakku#2, ARG
+$0069-$006E          Fließkommaakku#2, ARG
 
                      Diese Register werden für die
                      Berechnung von Fließkommazahlen
@@ -599,14 +599,14 @@ $00A6        BUFPT   Zeiger in Bandpuffer
                      oder in den Bandpuffer geschrieben
                      worden sind.
 
-$00A7-$00AB  INBIT   Arbeitsspeicher für Ein-/Ausgabe
+$00A7-$00AB          Arbeitsspeicher für Ein-/Ausgabe
 
                      Diese Register werden häufig von
                      Kassettenoperationen und der RS-232
                      Schnittstelle als Zwischenspeicher
                      benutzt.
 
-$00AC-$00AD  SAL     Zeiger für Bandpuffer und Scrolling
+$00AC-$00AD          Zeiger für Bandpuffer und Scrolling
 
                      Diese Speicherzellen dienen in erster
                      Linie als Zeiger auf die Adresse, ab
@@ -616,14 +616,14 @@ $00AC-$00AD  SAL     Zeiger für Bandpuffer und Scrolling
                      während des Scrollings des Video-RAM
                      und beim Einfügen zusätzlicher Zeilen.
 
-$00AE-$00AF  EAL     Zeiger auf Programmende bei LOAD/SAVE
+$00AE-$00AF          Zeiger auf Programmende bei LOAD/SAVE
 
                      Ähnlich wie $00AC-$00AD funktionieren
                      diese beiden Speicherzellen. Sie
                      Zeigen immer auf das Byte, das gerade
                      gelesen oder gespeichert wurde.
 
-$00B0-$00B1  CMP0    Zeitkonstante beim Lesen von Band
+$00B0-$00B1          Zeitkonstante beim Lesen von Band
 
                      Der Wert in den Speicherzellen wird
                      benutzt, um die Zeitkonstante beim
@@ -864,7 +864,7 @@ $00FF-$010A  BASZPT  Puffer für Umwandlung Fließkomma nach
                      Zwischenspeicherung von Fließkommazahlen
                      benutzt.
 
-$0100-$013E          Speicher für Korrektur bei Bandeingabe
+$0100-$013E  BAD     Speicher für Korrektur bei Bandeingabe
 
                      Beim Laden von Band werden hier die
                      Daten zwischengespeichert, aus denen

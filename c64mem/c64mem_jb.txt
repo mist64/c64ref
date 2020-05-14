@@ -72,13 +72,13 @@ $004B-$004C  VARTXT  Y-save; op-save; Basic pointer save
 $004D        OPMASK  Comparison symbol accumulator
 $004E-$0053  TEMPF3  Misc work area, pointer, etc
 $0054-$0056  JMPER   Jump vector for functions
-$0057-$0060  TEMPF1  Misc numeric work area
+$0057-$0060          Misc numeric work area
 $0061        FACEXP  Accum#l : Exponent
 $0062-$0065  FACHO   Accum#l : Mantissa
 $0066        FACSGN  Accum#l : Sign
 $0067        SGNFLG  Series evaluation constant pointer
 $0068        BITS    Accum#l hi-order (over flow)
-$0069-$006E  ARGEXP  Accum#2 : Exponent, etc.
+$0069-$006E  ARG     Accum#2 : Exponent, etc.
 $006F        ARISGN  Sign comparison, Acc#l vs #2
 $0070        FACOV   Accum#l lo-order (rounding)
 $0071-$0072  FBUFPT  Cassette buff len/Series pointer
@@ -111,9 +111,9 @@ $00A8        BITCI   Tp Wrt new byte/Rd error/inbit cnt
 $00A9        RINONE  Wrt start bit/Rd bit err/stbit
 $00AA        RIDATA  Tp Scan; Cnt; Ld; End/byte assy
 $00AB        RIPRTY  Wr lead length/Rd checksum/parity
-$00AC-$00AD  SAL     Pointer : tape bufr, scrolling
-$00AE-$00AF  EAL     Tape end adds/End of program
-$00B0-$00B1  CMP0    Tape timing constants
+$00AC-$00AD          Pointer : tape bufr, scrolling
+$00AE-$00AF          Tape end adds/End of program
+$00B0-$00B1          Tape timing constants
 $00B2-$00B3  TAPE1   Pntr : start of tape buffer
 $00B4        BITTS   l = Tp timer enabled; bit count
 $00B5        NXTBIT  Tp EOT/RS232 next bit to send
@@ -133,7 +133,7 @@ $00C5        LSTX    Last key pressed
 $00C6        NDX     # chars in keybd buffer
 $00C7        RVS     Screen reverse flag
 $00C8        INDX    End-of-line for input pointer
-$00C9-$00CA  LSXP    Input cursor log (row, column)
+$00C9-$00CA          Input cursor log (row, column)
 $00CB        SFDX    Which key :  64 if no key
 $00CC        BLNSW   0 = flash cursor
 $00CD        BLNCT   Cursor timing countdown

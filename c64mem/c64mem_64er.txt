@@ -2694,7 +2694,7 @@ $00D0                Flagge für Eingabe von Tastatur oder Bildschirm
                      Den Unterschied zwischen »logischer« und »echter« Zeile habe ich in dem 
                      Texteinschub Nr. 23 näher beschrieben.
 
-$00D1-$00A2          Zeiger auf den Anfang der Bildschirmzeile, auf welcher der Cursor gerade steht
+$00D1-$00D2          Zeiger auf den Anfang der Bildschirmzeile, auf welcher der Cursor gerade steht
 
                      Dieser Zeiger in Low-/High-Byte-Darstellung zeigt auf die Adresse im 
                      Bildschirmspeicher, in welcher diejenige Zeile beginnt, auf der der Cursor 
@@ -2965,10 +2965,10 @@ $0100-$013E          Arbeitsspeicher für Fehler bei der Eingabe vom Band
                      Byte in Anspruch nimmt, werden beim Laden Angaben gespeichert, aus denen das 
                      Betriebssystem erkennen kann, welche Bytes fehlerhaft sind.
 
-$0100-$010A          Arbeitsspeicher für Umwandlung von Gleitkomma-Zahlen in ASCII-Werte, auch FAC 
+$00FF-$010A          Arbeitsspeicher für Umwandlung von Gleitkomma-Zahlen in ASCII-Werte, auch FAC 
                      (Fließkomma-Akku) genannt
 
-                     Diese 11 Byte werden von einer Routine des Betriebssystems verwendet, um Werte 
+                     Diese 12 Byte werden von einer Routine des Betriebssystems verwendet, um Werte 
                      zwischenzuspeichern, die bei der Umwandlung von Gleitkomma-Zahlen in ASCII-
                      Werte oder in Werte der Funktion TI$ anfallen. Eine andere Routine verwendet 
                      den Bereich, um Zeichenketten (Strings) zu untersuchen.

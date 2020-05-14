@@ -963,7 +963,7 @@ $0057-$0060          BASIC Numeric Work Area
                      
                      This is a very busy work area, used by many routines.
                      
-$0061-$0066  FAC1    Floating Point Accumulator #1
+$0061-$0066  FAC     Floating Point Accumulator #1
                      
                      The Floating Point Accumulator is central to the execution of any
                      BASIC mathematical operation.  It is used in the conversion of
@@ -1023,7 +1023,7 @@ $0068        BITS    Floating Point Accumulator #1: Overflow Digit
                      in an intermediate step of conversion from an integer or text string
                      to a floating point number.
                      
-$0069-$006E  FAC2    Floating Point Accumulator #2
+$0069-$006E  ARG     Floating Point Accumulator #2
                      
                      A second Floating Point Accumulator, used in conjunction with Floating
                      Point Accumulator #1 in the evaluation of products, sums,
@@ -1032,7 +1032,7 @@ $0069-$006E  FAC2    Floating Point Accumulator #2
                      
 $0069        ARGEXP  Floating Point Accumulator #2: Exponent
                      
-$006A-$006D  ARGHO   Floating Point Accumulator #2: Mantissa
+$006A-$006D          Floating Point Accumulator #2: Mantissa
                      
 $006E        ARGSGN  Floating Point Accumulator #2: Sign
                      
@@ -1381,7 +1381,7 @@ $00A0-$00A2  TIME    Software Jiffy Clock
                      not send it back to the normal routine will upset software clock
                      operation as well.
                      
-$00A3-$00A4  R2D2    Temporary Data Storage Area
+$00A3-$00A4          Temporary Data Storage Area
                      
                      These locations are used temporarily by the tape and serial I/O
                      routines.
@@ -1391,7 +1391,7 @@ $00A5        CNTDN   Cassette Synchronization Character Countdown
                      Used to count down the number of synchronization characters that are
                      sent before the actual data in a tape block.
                      
-$00A6        BUFPNT  Count of Characters in Tape I/O Buffer
+$00A6        BUFPT   Count of Characters in Tape I/O Buffer
                      
                      This location is used to count the number of bytes that have been read
                      in or written to the tape buffer.  Since on a tape write, no data is
@@ -1429,7 +1429,7 @@ $00AB        RIPRTY  RS-232 Input Parity/Cassete Leader Counter
                      This location is used to help detect if data was lost during RS-232
                      transmission, or if a tape leader is completed.
                      
-$00AC-$00AD  SAL     Pointer to the Starting Address of a Load/Screen Scrolling
+$00AC-$00AD          Pointer to the Starting Address of a Load/Screen Scrolling
                      
                      The pointer to the start of the RAM area to be SAVEd or LOADed at 193
                      ($00C1) is copied here.  This pointer is used as a working version, to
@@ -1437,12 +1437,12 @@ $00AC-$00AD  SAL     Pointer to the Starting Address of a Load/Screen Scrolling
                      the operation, the initial value is restored here.  Screen management
                      routines temporarily use this as a work pointer.
                      
-$00AE-$00AF  EAL     Pointer to Ending Address of Load (End of Program)
+$00AE-$00AF          Pointer to Ending Address of Load (End of Program)
                      
                      This location is set by the Kernal routine SAVE to point to the ending
                      address for SAVE, LOAD, or VERIFY.
                      
-$00B0-$00B1  CMP0    Tape Timing
+$00B0-$00B1          Tape Timing
                      
                      Location 176 ($00B0) is used to determine the value of the adjustable
                      timing constant at 146 ($0092).  Location 199 is also used in the timing
@@ -1715,7 +1715,7 @@ $00C8        INDX    Pointer: End of Logical Line for Input
                      character on the logical line that is to be input.  Since a logical
                      line can be up to 80 characters long, this number can range from 0-79.
                      
-$00C9-$00CA  LXSP    Cursor X,Y Position at Start of Input
+$00C9-$00CA          Cursor X,Y Position at Start of Input
                      
                      These locations keep track of the logical line that the cursor is on,
                      and its column position on that logical line (in line, column format).
@@ -2033,7 +2033,7 @@ $00FB-$00FE  FREEZP  Four Free Bytes of Zero Page for User Programs
                      locations can be used on a noninterference basis, it is guaranteed
                      that BASIC will not alter these locations.
                      
-$00FF        BASZPT  BASIC Temporary Data for Floating Point to ASCII Conversion
+$00FF-$010A  BASZPT  BASIC Temporary Data for Floating Point to ASCII Conversion
                      
                      This location is used for temporary storage in the process of
                      converting floating point numbers to ASCII characters..

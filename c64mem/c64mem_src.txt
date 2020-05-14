@@ -227,13 +227,13 @@ $0055        SIZE
 
 $0056        OLDOV   The old overflow.
 
-$0057        TEMPF1
+$0057-$005B  TEMPF1
 
 $0058        HIGHDS  Destination of highest element in BLT.
 
 $005A        HIGHTR  Source of highest element to move.
 
-$005C        TEMPF2
+$005C-$0060  TEMPF2
 
 $005D        LOWDS   Location of last byte transferred into.
 
@@ -275,7 +275,9 @@ $0067        DEGREE  A count used by polynomials.
 
 $0068        BITS    Something for "SHIFTR" to use.
 
-$0069        ARGEXP  The floating argument (unpacked)
+$0069-$006E          The floating argument (unpacked)
+
+$0069        ARGEXP
 
 $006A        ARGHO
 
@@ -289,19 +291,19 @@ $006E        ARGSGN
 
 $006F        ARISGN  A sign reflecting the result.
 
-$006F        STRNG1  Pointer to a string or descriptor.
+$006F-$0070  STRNG1  Pointer to a string or descriptor.
 
 $0070        FACOV   Overflow byte of the FAC.
 
 $0071-$0072  FBUFPT  Pointer into FBUFFR used by FOUT.
 
-$0071        BUFPTR  Pointer to buf used by "CRUNCH".
+$0071-$0072  BUFPTR  Pointer to buf used by "CRUNCH".
 
-$0071        STRNG2  Pointer to string or desc.
+$0071-$0072  STRNG2  Pointer to string or desc.
 
-$0071        POLYPT  Pointer into polynomial coefficients.
+$0071-$0072  POLYPT  Pointer into polynomial coefficients.
 
-$0071        CURTOL  Absolute linear index is formed here.
+$0071-$0072  CURTOL  Absolute linear index is formed here.
 
 $0073-$008A  CHRGET  RAM code.
 
@@ -456,7 +458,7 @@ $00C1        STAL
 
 $00C2        STAH
 
-$00C3        MEMUSS  Cassette load temps (2 bytes)
+$00C3-$00C4  MEMUSS  Cassette load temps (2 bytes)
 
 $00C3-$00C4  TMP2
 
@@ -510,7 +512,7 @@ $00F9-$00FA  ROBUF   RS-232 output buffer pointer
 
 $00FB-$00FE  FREKZP  Free KERNAL zero page 9/24/80
 
-$00FF        BASZPT  Location ($00FF) used by basic
+$00FF-$010A  BASZPT  Location ($00FF) used by BASIC
 
 $0100-$013E  BAD
 

@@ -96,9 +96,9 @@ $0066        FACSGN  FAC Sign.
 $0067        SGNFLG  Pointer: Series Evaluation Constant.
 $0068        BITS    Bit Overflow Area during normalisation
                      Routine.
-$0069-$006E  AFAC    Auxiliary Floating point Accumulator.
+$0069-$006E  ARG     Auxiliary Floating point Accumulator.
 $0069        ARGEXP  AFAC Exponent.
-$006A-$006D  ARGHO   AFAC Mantissa.
+$006A-$006D          AFAC Mantissa.
 $006E        ARGSGN  AFAC Sign.
 $006F        ARISGN  Sign of result of Arithmetic Evaluation.
 $0070        FACOV   FAC low-order rounding.
@@ -159,9 +159,9 @@ $00A8        BITC1   RS232 Input Bit count/Tape temporary.
 $00A9        RINONE  RS232 Flag: Start Bit check/Tape temporary.
 $00AA        RIDATA  RS232 Input Byte Buffer/Tape temporary.
 $00AB        RIPRTY  RS232 Input parity/Tape temporary.
-$00AC-$00AD  SAL     Pointer: Tape Buffer/Screen scrolling.
-$00AE-$00AF  EAL     Tape End Address/End of Program.
-$00B0-$00B1  CMPO    Tape timing Constants.
+$00AC-$00AD          Pointer: Tape Buffer/Screen scrolling.
+$00AE-$00AF          Tape End Address/End of Program.
+$00B0-$00B1          Tape timing Constants.
 $00B2-$00B3  TAPE1   Pointer: Start Address of Tape Buffer ($033C).
 $00B4        BITTS   RS232 Write bit count/Tape Read timing Flag.
 $00B5        NXTBIT  RS232 Next Bit to send/Tape Read - End of
@@ -186,7 +186,7 @@ $00C6        NDX     Number of Characters in Keyboard Buffer
 $00C7        RVS     Flag: Reverse On/Off; On = $01, Off = $00.
 $00C8        INDX    Pointer: End of Line for Input (Used to
                      suppress trailing spaces).
-$00C9-$00CA  LSXP    Cursor X/Y (Line/Column) position at start of
+$00C9-$00CA          Cursor X/Y (Line/Column) position at start of
                      Input.
 $00CB        SFDX    Flag: Print shifted Characters.
 $00CC        BLNSW   Flag: Cursor blink; $00 = Enabled, $01 =

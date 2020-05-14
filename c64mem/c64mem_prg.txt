@@ -89,7 +89,7 @@ $0066        FACSGN  Floating Accum. #1: Sign
 $0067        SGNFLG  Pointer: Series Evaluation Constant
 $0068        BITS    Floating Accum. #1: Overflow Digit
 $0069        ARGEXP  Floating-Point Accumulator #2: Exponent
-$006A-$006D  ARGHO   Floating Accum. #2: Mantissa
+$006A-$006D          Floating Accum. #2: Mantissa
 $006E        ARGSGN  Floating Accum. #2: Sign
 $006F        ARISGN  Sign Comparison Result: Accum. # 1 vs #2
 $0070        FACOV   Floating Accum. #1. Low-Order (Rounding)
@@ -123,9 +123,9 @@ $00A8        BITCI   RS-232 Input Bit Count / Cassette Temp
 $00A9        RINONE  RS-232 Flag: Check for Start Bit
 $00AA        RIDATA  RS-232 Input Byte Buffer/Cassette Temp
 $00AB        RIPRTY  RS-232 Input Parity / Cassette Short Cnt
-$00AC-$00AD  SAL     Pointer: Tape Buffer/ Screen Scrolling
-$00AE-$00AF  EAL     Tape End Addresses/End of Program
-$00B0-$00B1  CMP0    Tape Timing Constants
+$00AC-$00AD          Pointer: Tape Buffer/ Screen Scrolling
+$00AE-$00AF          Tape End Addresses/End of Program
+$00B0-$00B1          Tape Timing Constants
 $00B2-$00B3  TAPE1   Pointer: Start of Tape Buffer
 $00B4        BITTS   RS-232 Out Bit Count / Cassette Temp
 $00B5        NXTBIT  RS-232 Next Bit to Send/ Tape EOT Flag
@@ -145,7 +145,7 @@ $00C5        LSTX    Current Key Pressed: CHR$(n) 0 = No Key
 $00C6        NDX     No. of Chars. in Keyboard Buffer (Queue)
 $00C7        RVS     Flag: Reverse Chars. - 1=Yes, 0=No Used
 $00C8        INDX    Pointer: End of Logical Line for INPUT
-$00C9-$00CA  LSXP    Cursor X-Y Pos. at Start of INPUT
+$00C9-$00CA          Cursor X-Y Pos. at Start of INPUT
 $00CB        SFDX    Flag: Print Shifted Chars.
 $00CC        BLNSW   Cursor Blink enable: 0 = Flash Cursor
 $00CD        BLNCT   Timer: Countdown to Toggle Cursor
@@ -168,7 +168,7 @@ $00FB-$00FE  FREKZP  Free 0-Page Space for User Programs
 $00FF        BASZPT  BASIC Temp Data Area
 $0100-$01FF          Micro-Processor System Stack Area
 $0100-$013E  BAD     Tape Input Error Log
-$0100-$010A          Floating to String Work Area
+$00FF-$010A          Floating to String Work Area
 $0200-$0258  BUF     System INPUT Buffer
 $0259-$0262  LAT     KERNAL Table: Active Logical File No's.
 $0263-$026C  FAT     KERNAL Table: Device No. for Each File

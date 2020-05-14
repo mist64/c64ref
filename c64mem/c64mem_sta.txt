@@ -248,7 +248,7 @@ $0057-$005B  TEMPF1  Arithmetic register #3 (5 bytes).
 
 $005C-$0060  TEMPF2  Arithmetic register #4 (5 bytes).
 
-$0061-$0065  FACEXP  FAC, arithmetic register #1 (5 bytes).
+$0061-$0066  FAC     FAC, arithmetic register #1 (5 bytes).
 
 $0066        FACSGN  Sign of FAC
 
@@ -260,7 +260,7 @@ $0067        SGNFLG  Number of degrees during polynomial evaluation.
 
 $0068        BITS    Temporary area for various operations.
 
-$0069-$006D  ARGEXP  ARG, arithmetic register #2 (5 bytes).
+$0069-$006E          ARG, arithmetic register #2 (5 bytes).
 
 $006E        ARGSGN  Sign of ARG
 
@@ -268,7 +268,7 @@ $006E        ARGSGN  Sign of ARG
 
                      * Bit #7: 0 = Positive; 1 = Negative.
 
-$006F-$0070  ARISGN  Pointer to first string expression during string comparison.
+$006F-$0070  STRNG1  Pointer to first string expression during string comparison.
 
 $0071-$0072  FBUFPT  Auxiliary pointer during array operations.
                      Temporary area for saving original pointer to current BASIC instruction during VAL().
@@ -395,16 +395,16 @@ $00AA        RIDATA  Byte buffer during RS232 input.
 $00AB        RIPRTY  Parity during RS232 input.
                      Computed block checksum during datasette input.
 
-$00AC-$00AD  SAL     Start address for SAVE to serial bus.
+$00AC-$00AD          Start address for SAVE to serial bus.
                      Pointer to current byte during SAVE to serial bus or datasette.
                      Pointer to line in screen memory to be scrolled during scrolling the screen.
 
-$00AE-$00AF  EAL     Load address read from input file and pointer to current byte during LOAD/VERIFY from serial bus.
+$00AE-$00AF          Load address read from input file and pointer to current byte during LOAD/VERIFY from serial bus.
                      End address after LOAD/VERIFY from serial bus or datasette.
                      End address for SAVE to serial bus or datasette.
                      Pointer to line in Color RAM to be scrolled during scrolling the screen.
 
-$00B0-$00B1  CMP0    Unknown.
+$00B0-$00B1          Unknown.
 
 $00B2-$00B3  TAPE1   Pointer to datasette buffer.
 
@@ -549,14 +549,12 @@ $00D8        INSRT   Number of insertions
                      * $00: No insertions made, normal mode, control codes change screen layout or behavior.
                      * $01-$FF: Number of insertions, when inputting this many character next, those must be turned into control codes, similarly to quotation mode.
 
-$00D9-$00F1  LDTB1   High byte of pointers to each line in screen memory (25 bytes)
+$00D9-$00F2  LDTB1   High byte of pointers to each line in screen memory (25 bytes)
 
                      Values:
 
                      * $00-$7F: Pointer high byte.
                      * $80-$FF: No pointer, line is an extension of previous line on screen.
-
-$00F2                Temporary area during scrolling the screen.
 
 $00F3-$00F4  USER    Pointer to current line in Color RAM.
 
