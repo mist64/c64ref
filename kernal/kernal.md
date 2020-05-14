@@ -7,7 +7,6 @@
 * Registers affected: A, X
 
 
-
   **Description**: This is the routine to use when you want to get informa-
 tion from a device on the serial bus, like a disk. This routine gets a
 byte of data off the serial bus using full handshaking. The data is
@@ -102,9 +101,9 @@ will automatically send the LISTEN address specified by the OPEN routine
 (and a secondary address if there was one).
 
 ## How to Use:
-+-----------------------------------------------------------------------+
-| REMEMBER: this routine is NOT NEEDED to send data to the screen.      |
-+-----------------------------------------------------------------------+
+
+| REMEMBER: this routine is NOT NEEDED to send data to the screen. |
+| --- |
 
 0. Use the KERNAL OPEN routine to specify a logical file number, a
    LISTEN address, and a secondary address (if needed).
@@ -158,13 +157,13 @@ cursor.
 
 ## EXAMPLE:
 
-       LDY $#00      ;PREPARE THE Y REGISTER TO STORE THE DATA
-   RD  JSR CHRIN
-       STA DATA,Y    ;STORE THE YTH DATA BYTE IN THE YTH
-                     ;LOCATION IN THE DATA AREA.
-       INY
-       CMP #CR       ;IS IT A CARRIAGE RETURN?
-       BNE RD        ;NO, GET ANOTHER DATA BYTE
+        LDY $#00      ;PREPARE THE Y REGISTER TO STORE THE DATA
+    RD  JSR CHRIN
+        STA DATA,Y    ;STORE THE YTH DATA BYTE IN THE YTH
+                      ;LOCATION IN THE DATA AREA.
+        INY
+        CMP #CR       ;IS IT A CARRIAGE RETURN?
+        BNE RD        ;NO, GET ANOTHER DATA BYTE
 
 ## EXAMPLE:
 
@@ -199,13 +198,8 @@ to be output is loaded into the accumulator, and this routine is called.
 The data is then sent to the specified output device. The channel is left
 open after the call.
 
-+-----------------------------------------------------------------------+
-| NOTE: Care must be taken when using this routine to send data to a    |
-| specific serial device since data will be sent to all open output     |
-| channels on the bus. Unless this is desired, all open output channels |
-| on the serial bus other than the intended destination channel must be |
-| closed by a call to the KERNAL CLRCHN routine.                        |
-+-----------------------------------------------------------------------+
+| NOTE: Care must be taken when using this routine to send data to a specific serial device since data will be sent to all open output channels on the bus. Unless this is desired, all open output channels on the serial bus other than the intended destination channel must be closed by a call to the KERNAL CLRCHN routine. |
+| --- |
 
 ## How to Use:
 
@@ -504,11 +498,8 @@ routine returns the address of the highest RAM location loaded.
   Before this routine can be called, the KERNAL SETLFS, and SETNAM
 routines must be called.
 
-
-+-----------------------------------------------------------------------+
-| NOTE: You can NOT LOAD from the keyboard (0), RS-232 (2), or the      |
-| screen (3).                                                           |
-+-----------------------------------------------------------------------+
+| NOTE: You can NOT LOAD from the keyboard (0), RS-232 (2), or the screen (3). |
+| --- |
 
 
 ## How to Use:
@@ -688,11 +679,11 @@ SETTING CURSOR LOCATION
 
 # $FF87: RAMTAS - Perform RAM test
 
-  Communication registers: A, X, Y
-  Preparatory routines: None
-  Error returns: None
-  Stack requirements: 2
-  Registers affected: A, X, Y
+* Communication registers: A, X, Y
+* Preparatory routines: None
+* Error returns: None
+* Stack requirements: 2
+* Registers affected: A, X, Y
 
   **Description**: This routine is used to test RAM and set the top and
 bottom of memory pointers accordingly. It also clears locations $0000 to
@@ -701,15 +692,15 @@ the screen base to $0400. Normally, this routine is called as part of the
 initialization process of a Commodore 64 program cartridge.
 
 ## EXAMPLE:
-  JSR RAMTAS
+    JSR RAMTAS
 
 # $FFDE: RDTIM - Read system clock
 
-  Communication registers: A, X, Y
-  Preparatory routines: None
-  Error returns: None
-  Stack requirements: 2
-  Registers affected: A, X, Y
+* Communication registers: A, X, Y
+* Preparatory routines: None
+* Error returns: None
+* Stack requirements: 2
+* Registers affected: A, X, Y
 
   **Description**: This routine is used to read the system clock. The clock's
 resolution is a 60th of a second. Three bytes are returned by the
@@ -719,54 +710,40 @@ register contains the least significant byte.
 
 ## EXAMPLE:
 
-  JSR RDTIM
-  STY TIME
-  STX TIME+1
-  STA TIME+2
-  ...
-  TIME *=*+3
+    JSR RDTIM
+    STY TIME
+    STX TIME+1
+    STA TIME+2
+    ...
+    TIME *=*+3
 
 
 # $FFB7: READST - Read status word
 
-  Communication registers: A
-  Preparatory routines: None
-  Error returns: None
-  Stack requirements: 2
-  Registers affected: A
+* Communication registers: A
+* Preparatory routines: None
+* Error returns: None
+* Stack requirements: 2
+* Registers affected: A
 
   **Description**: This routine returns the current status of the I/O devices
 in the accumulator. The routine is usually called after new communication
 to an I/O device. The routine gives you information about device status,
 or errors that have occurred during the I/O operation.
+
   The bits returned in the accumulator contain the following information:
 (see table below)
 
-+---------+------------+---------------+------------+-------------------+
-|  ST Bit | ST Numeric |    Cassette   |   Serial   |    Tape Verify    |
-| Position|    Value   |      Read     |  Bus R/W   |      + Load       |
-+---------+------------+---------------+------------+-------------------+
-|    0    |      1     |               |  time out  |                   |
-|         |            |               |  write     |                   |
-+---------+------------+---------------+------------+-------------------+
-|    1    |      2     |               |  time out  |                   |
-|         |            |               |    read    |                   |
-+---------+------------+---------------+------------+-------------------+
-|    2    |      4     |  short block  |            |    short block    |
-+---------+------------+---------------+------------+-------------------+
-|    3    |      8     |   long block  |            |    long block     |
-+---------+------------+---------------+------------+-------------------+
-|    4    |     16     | unrecoverable |            |   any mismatch    |
-|         |            |   read error  |            |                   |
-+---------+------------+---------------+------------+-------------------+
-|    5    |     32     |    checksum   |            |     checksum      |
-|         |            |     error     |            |       error       |
-+---------+------------+---------------+------------+-------------------+
-|    6    |     64     |  end of file  |  EOI line  |                   |
-+---------+------------+---------------+------------+-------------------+
-|    7    |   -128     |  end of tape  | device not |    end of tape    |
-|         |            |               |   present  |                   |
-+---------+------------+---------------+------------+-------------------+
+| ST Bit Position| ST Numeric Value | Cassette Read            | Serial Bus R/W     | Tape Verify + Load |
+|----------------|------------------|--------------------------|--------------------|--------------------|
+|    0           |      1           |                          |  time out write    |                    |
+|    1           |      2           |                          |  time out read     |                    |
+|    2           |      4           |  short block             |                    |    short block     |
+|    3           |      8           |   long block             |                    |    long block      |
+|    4           |     16           | unrecoverable read error |                    |   any mismatch     |
+|    5           |     32           |    checksum error        |                    |     checksum error |
+|    6           |     64           |  end of file             |  EOI line          |                    |
+|    7           |   -128           |  end of tape             | device not present |    end of tape     |
 
 ## How to Use:
 
@@ -776,17 +753,17 @@ or errors that have occurred during the I/O operation.
 
 ## EXAMPLE:
 
-  ;CHECK FOR END OF FILE DURING READ
-  JSR READST
-  AND #64                       ;CHECK EOF BIT (EOF=END OF FILE)
-  BNE EOF                       ;BRANCH ON EOF
+    ;CHECK FOR END OF FILE DURING READ
+    JSR READST
+    AND #64                       ;CHECK EOF BIT (EOF=END OF FILE)
+    BNE EOF                       ;BRANCH ON EOF
 
 # $FF8A: RESTOR - Restore default system and interrupt vectors
 
-  Preparatory routines: None
-  Error returns: None
-  Stack requirements: 2
-  Registers affected: A, X, Y
+* Preparatory routines: None
+* Error returns: None
+* Stack requirements: 2
+* Registers affected: A, X, Y
 
   **Description**: This routine restores the default values of all system
 vectors used in KERNAL and BASIC routines and interrupts. (See the Memory
@@ -798,15 +775,15 @@ to read and alter individual system vectors.
 1. Call this routine.
 
 ## EXAMPLE:
-  JSR RESTOR
+    JSR RESTOR
 
 # $FFD8: SAVE - Save memory to a device
 
-  Communication registers: A, X, Y
-  Preparatory routines: SETLFS, SETNAM
-  Error returns: 5,8,9, READST
-  Stack requirements: None
-  Registers affected: A, X, Y
+* Communication registers: A, X, Y
+* Preparatory routines: SETLFS, SETNAM
+* Error returns: 5,8,9, READST
+* Stack requirements: None
+* Registers affected: A, X, Y
 
 
   **Description**: This routine saves a section of memory. Memory is saved
@@ -817,11 +794,8 @@ used before calling this routine. However, a file name is not required to
 SAVE to device 1 (the Datassette(TM) recorder). Any attempt to save to
 other devices without using a file name results in an error.
 
-+-----------------------------------------------------------------------+
-| NOTE: Device 0 (the keyboard), device 2 (RS-232), and device 3 (the   |
-| screen) cannot be SAVEd to. If the attempt is made, an error occurs,  |
-| and the SAVE is stopped.                                              |
-+-----------------------------------------------------------------------+
+| NOTE: Device 0 (the keyboard), device 2 (RS-232), and device 3 (the screen) cannot be SAVEd to. If the attempt is made, an error occurs, and the SAVE is stopped. |
+| --- |
 
 ## How to Use:
 
@@ -838,27 +812,27 @@ other devices without using a file name results in an error.
 
 ## EXAMPLE:
 
-  LDA #1              ;DEVICE = 1:CASSETTE
-  JSR SETLFS
-  LDA #0              ;NO FILE NAME
-  JSR SETNAM
-  LDA PROG            ;LOAD START ADDRESS OF SAVE
-  STA TXTTAB          ;(LOW BYTE)
-  LDA PROG+1
-  STA TXTTA B+1       ;(HIGH BYTE)
-  LDX VARTAB          ;LOAD X WITH LOW BYTE OF END OF SAVE
-  LDY VARTAB+1        ;LOAD Y WITH HIGH BYTE
-  LDA #<TXTTAB        ;LOAD ACCUMULATOR WITH PAGE 0 OFFSET
-  JSR SAVE
+    LDA #1              ;DEVICE = 1:CASSETTE
+    JSR SETLFS
+    LDA #0              ;NO FILE NAME
+    JSR SETNAM
+    LDA PROG            ;LOAD START ADDRESS OF SAVE
+    STA TXTTAB          ;(LOW BYTE)
+    LDA PROG+1
+    STA TXTTA B+1       ;(HIGH BYTE)
+    LDX VARTAB          ;LOAD X WITH LOW BYTE OF END OF SAVE
+    LDY VARTAB+1        ;LOAD Y WITH HIGH BYTE
+    LDA #<TXTTAB        ;LOAD ACCUMULATOR WITH PAGE 0 OFFSET
+    JSR SAVE
 
 
 # $FF9F: SCNKEY - Scan the keyboard
 
-  Communication registers: None
-  Preparatory routines: IOINIT
-  Error returns: None
-  Stack requirements: 5
-  Registers affected: A, X, Y
+* Communication registers: None
+* Preparatory routines: IOINIT
+* Error returns: None
+* Stack requirements: 5
+* Registers affected: A, X, Y
 
   **Description**: This routine scans the Commodore 64 keyboard and checks
 for pressed keys. It is the same routine called by the interrupt handler.
@@ -871,19 +845,19 @@ routine is called only if the normal IRQ interrupt is bypassed.
 
 ## EXAMPLE:
 
-  GET  JSR SCNKEY      ;SCAN KEYBOARD
-       JSR GETIN       ;GET CHARACTER
-       CMP #0          ;IS IT NULL?
-       BEQ GET         ;YES... SCAN AGAIN
-       JSR CHROUT      ;PRINT IT
+    GET  JSR SCNKEY      ;SCAN KEYBOARD
+         JSR GETIN       ;GET CHARACTER
+         CMP #0          ;IS IT NULL?
+         BEQ GET         ;YES... SCAN AGAIN
+         JSR CHROUT      ;PRINT IT
 
 
 # $FFED: SCREEN - Return screen format
 
-  Communication registers: X, Y
-  Preparatory routines: None
-  Stack requirements: 2
-  Registers affected: X, Y
+* Communication registers: X, Y
+* Preparatory routines: None
+* Stack requirements: 2
+* Registers affected: X, Y
 
   **Description**: This routine returns the format of the screen, e.g., 40
 columns in X and 25 lines in Y. The routine can be used to determine what
@@ -896,71 +870,75 @@ the Commodore 64 to help upward compatibility of your programs.
 
 ## EXAMPLE:
 
-  JSR SCREEN
-  STX MAXCOL
-  STY MAXROW
+    JSR SCREEN
+    STX MAXCOL
+    STY MAXROW
 
 
 # $FF93: SECOND - Send secondary address for LISTEN
 
-  Communication registers: A
-  Preparatory routines: LISTEN
-  Error returns: See READST
-  Stack requirements: 8
-  Registers affected: A
+* Communication registers: A
+* Preparatory routines: LISTEN
+* Error returns: See READST
+* Stack requirements: 8
+* Registers affected: A
 
   **Description**: This routine is used to send a secondary address to an
 I/O device after a call to the LISTEN routine is made, and the device is
 commanded to LISTEN. The routine canNOT be used to send a secondary
 address after a call to the TALK routine.
+
   A secondary address is usually used to give setup information to a
 device before I/O operations begin.
+
   When a secondary address is to be sent to a device on the serial bus,
 the address must first be ORed with $60.
 
 ## How to Use:
 
-1. load the accumulator with the secondary address to be sent.
+1. Load the accumulator with the secondary address to be sent.
 2. Call this routine.
 
 ## EXAMPLE:
 
-  ;ADDRESS DEVICE #8 WITH COMMAND (SECONDARY ADDRESS) #15
-  LDA #8
-  JSR LISTEN
-  LDA #15
-  JSR SECOND
+    ;ADDRESS DEVICE #8 WITH COMMAND (SECONDARY ADDRESS) #15
+    LDA #8
+    JSR LISTEN
+    LDA #15
+    JSR SECOND
 
 
 # $FFBA: SETLFS - Set up a logical file
 
-  Communication registers: A, X, Y
-  Preparatory routines: None
-  Error returns: None
-  Stack requirements: 2
-  Registers affected: None
+* Communication registers: A, X, Y
+* Preparatory routines: None
+* Error returns: None
+* Stack requirements: 2
+* Registers affected: None
 
 
   **Description**: This routine sets the logical file number, device address,
 and secondary address (command number) for other KERNAL routines.
+
   The logical file number is used by the system as a key to the file
 table created by the OPEN file routine. Device addresses can range from 0
 to 31. The following codes are used by the Commodore 64 to stand for the
 CBM devices listed below:
 
 
-                ADDRESS          DEVICE
-
-                   0            Keyboard
-                   1            Datassette(TM)
-                   2            RS-232C device
-                   3            CRT display
-                   4            Serial bus printer
-                   8            CBM serial bus disk drive
+              | ADDRESS    |     DEVICE                   |
+              |------------|------------------------------|
+              |    0       |    Keyboard                  |
+              |    1       |    Datassette(TM)            |
+              |    2       |    RS-232C device            |
+              |    3       |    CRT display               |
+              |    4       |    Serial bus printer        |
+              |    8       |    CBM serial bus disk drive |
 
 
   Device numbers 4 or greater automatically refer to devices on the
 serial bus.
+
   A command to the device is sent as a secondary address on the serial
 bus after the device number is sent during the serial attention
 handshaking sequence. If no secondary address is to be sent, the Y index
@@ -974,26 +952,27 @@ register should be set to 255.
 
 ## EXAMPLE:
 
-  FOR LOGICAL FILE 32, DEVICE #4, AND NO COMMAND:
-  LDA #32
-  LDX #4
-  LDY #255
-  JSR SETLFS
+    FOR LOGICAL FILE 32, DEVICE #4, AND NO COMMAND:
+    LDA #32
+    LDX #4
+    LDY #255
+    JSR SETLFS
 
 
 # $FF90: SETMSG - Control system message output
 
-  Communication registers: A
-  Preparatory routines: None
-  Error returns: None
-  Stack requirements: 2
-  Registers affected: A
+* Communication registers: A
+* Preparatory routines: None
+* Error returns: None
+* Stack requirements: 2
+* Registers affected: A
 
   **Description**: This routine controls the printing of error and control
 messages by the KERNAL. Either print error messages or print control mes-
 sages can be selected by setting the accumulator when the routine is
 called. FILE NOT FOUND is an example of an error message. PRESS PLAY ON
 CASSETTE is an example of a control message.
+
   Bits 6 and 7 of this value determine where the message will come from.
 If bit 7 is 1, one of the error messages from the KERNAL is printed. If
 bit 6 is set, control messages are printed.
@@ -1005,20 +984,20 @@ bit 6 is set, control messages are printed.
 
 ## EXAMPLE:
 
-  LDA #$40
-  JSR SETMSG          ;TURN ON CONTROL MESSAGES
-  LDA #$80
-  JSR SETMSG          ;TURN ON ERROR MESSAGES
-  LDA #0
-  JSR SETMSG          ;TURN OFF ALL KERNAL MESSAGES
+    LDA #$40
+    JSR SETMSG          ;TURN ON CONTROL MESSAGES
+    LDA #$80
+    JSR SETMSG          ;TURN ON ERROR MESSAGES
+    LDA #0
+    JSR SETMSG          ;TURN OFF ALL KERNAL MESSAGES
 
 
 # $FFBD: SETNAM - Set file name
 
-  Communication registers: A, X, Y
-  Preparatory routines:
-  Stack requirements: 2
-  Registers affected:
+* Communication registers: A, X, Y
+* Preparatory routines:
+* Stack requirements: 2
+* Registers affected:
 
   **Description**: This routine is used to set up the file name for the OPEN,
 SAVE, or LOAD routines. The accumulator must be loaded with the length of
@@ -1039,18 +1018,18 @@ Y registers can be set to any memory address in that case.
 
 ## EXAMPLE:
 
-  LDA #NAME2-NAME     ;LOAD LENGTH OF FILE NAME
-  LDX #<NAME          ;LOAD ADDRESS OF FILE NAME
-  LDY #>NAME
-  JSR SETNAM
+    LDA #NAME2-NAME     ;LOAD LENGTH OF FILE NAME
+    LDX #<NAME          ;LOAD ADDRESS OF FILE NAME
+    LDY #>NAME
+    JSR SETNAM
 
 # $FFDB: SETTIM - Set the system clock
 
-  Communication registers: A, X, Y
-  Preparatory routines: None
-  Error returns: None
-  Stack requirements: 2
-  Registers affected: None
+* Communication registers: A, X, Y
+* Preparatory routines: None
+* Error returns: None
+* Stack requirements: 2
+* Registers affected: None
 
   **Description**: A system clock is maintained by an interrupt routine that
 updates the clock every 1/60th of a second (one "jiffy"). The clock is
@@ -1069,22 +1048,23 @@ time setting (in jiffies).
 4. Call this routine.
 
 ## EXAMPLE:
- ;SET THE CLOCK TO 10 MINUTES = 3600 JIFFIES
- LDA #0               ;MOST SIGNIFICANT
- LDX #>3600
- LDY #<3600           ;LEAST SIGNIFICANT
- JSR SETTIM
+    ;SET THE CLOCK TO 10 MINUTES = 3600 JIFFIES
+    LDA #0               ;MOST SIGNIFICANT
+    LDX #>3600
+    LDY #<3600           ;LEAST SIGNIFICANT
+    JSR SETTIM
 
 # $FFA2: SETTMO - Set IEEE bus card timeout flag
 
-  Communication registers: A
-  Preparatory routines: None
-  Error returns: None
-  Stack requirements: 2
-  Registers affected: None
-+-----------------------------------------------------------------------+
-| NOTE: This routine is used ONLY with an IEEE add-on card!             |
-+-----------------------------------------------------------------------+
+* Communication registers: A
+* Preparatory routines: None
+* Error returns: None
+* Stack requirements: 2
+* Registers affected: None
+
+| NOTE: This routine is used ONLY with an IEEE add-on card! |
+| --- |
+
   **Description**: This routine sets the timeout flag for the IEEE bus. When
 the timeout flag is set, the Commodore 64 will wait for a device on the
 IEEE port for 64 milliseconds. If the device does not respond to the
@@ -1093,35 +1073,34 @@ Commodore 64 will recognize an error condition and leave the handshake
 sequence. When this routine is called when the accumulator contains a 0
 in bit 7, timeouts are enabled. A 1 in bit 7 will disable the timeouts.
 
-+-----------------------------------------------------------------------+
-| NOTE: The Commodore 64 uses the timeout feature to communicate that a |
-| disk file is not found on an attempt to OPEN a file only with an IEEE |
-| card.                                                                 |
-+-----------------------------------------------------------------------+
+| NOTE: The Commodore 64 uses the timeout feature to communicate that a disk file is not found on an attempt to OPEN a file only with an IEEE card. |
+| --- |
 
 ## How to Use:
 
 TO SET THE TIMEOUT FLAG
+
 1. Set bit 7 of the accumulator to 0.
 2. Call this routine.
 
 TO RESET THE TIMEOUT FLAG
+
 1. Set bit 7 of the accumulator to 1.
 2. Call this routine.
 
 ## EXAMPLE:
 
-  ;DISABLE TIMEOUT
-  LDA #0
-  JSR SETTMO
+    ;DISABLE TIMEOUT
+    LDA #0
+    JSR SETTMO
 
 # $FFE1: STOP - Check if <STOP> key is pressed
 
-  Communication registers: A
-  Preparatory routines: None
-  Error returns: None
-  Stack requirements: None
-  Registers affected: A, X
+* Communication registers: A
+* Preparatory routines: None
+* Error returns: None
+* Stack requirements: None
+* Registers affected: A, X
 
   **Description**: If the <STOP> key on the keyboard was pressed during a
 UDTIM call, this call returns the Z flag set. In addition, the channels
@@ -1137,18 +1116,18 @@ for certain other keys this way.
 
 ## EXAMPLE:
 
-  JSR UDTIM   ;SCAN FOR STOP
-  JSR STOP
-  BNE *+5     ;KEY NOT DOWN
-  JMP READY   ;=... STOP
+    JSR UDTIM   ;SCAN FOR STOP
+    JSR STOP
+    BNE *+5     ;KEY NOT DOWN
+    JMP READY   ;=... STOP
 
 # $FFB4: TALK - Command a device on the serial bus to TALK
 
-  Communication registers: A
-  Preparatory routines: None
-  Error returns: See READST
-  Stack requirements: 8
-  Registers affected: A
+* Communication registers: A
+* Preparatory routines: None
+* Error returns: See READST
+* Stack requirements: 8
+* Registers affected: A
 
   **Description**: To use this routine the accumulator must first be loaded
 with a device number between 0 and 31. When called, this routine then
@@ -1162,17 +1141,17 @@ data is transmitted as a command on the serial bus.
 
 ## EXAMPLE:
 
-  ;COMMAND DEVICE #4 TO TALK
-  LDA #4
-  JSR TALK
+    ;COMMAND DEVICE #4 TO TALK
+    LDA #4
+    JSR TALK
 
 # $FF96: TKSA - Send a secondary address to a device commanded to TALK
 
-  Communication registers: A
-  Preparatory routines: TALK
-  Error returns: See READST
-  Stack requirements: 8
-  Registers affected: A
+* Communication registers: A
+* Preparatory routines: TALK
+* Error returns: See READST
+* Stack requirements: 8
+* Registers affected: A
 
   **Description**: This routine transmits a secondary address on the serial
 bus for a TALK device. This routine must be called with a number between
@@ -1188,20 +1167,20 @@ after a call to the TALK routine. It will not work after a LISTEN.
 
 ## EXAMPLE:
 
-  ;TELL DEVICE #4 TO TALK WITH COMMAND #7
-  LDA #4
-  JSR TALK
-  LDA #7
-  JSR TALKSA
+    ;TELL DEVICE #4 TO TALK WITH COMMAND #7
+    LDA #4
+    JSR TALK
+    LDA #7
+    JSR TKSA
 
 
 # $FFEA: UDTIM - Update the system clock
 
-  Communication registers: None
-  Preparatory routines: None
-  Error returns: None
-  Stack requirements: 2
-  Registers affected: A, X
+* Communication registers: None
+* Preparatory routines: None
+* Error returns: None
+* Stack requirements: 2
+* Registers affected: A, X
 
   **Description**: This routine updates the system clock. Normally this
 routine is called by the normal KERNAL interrupt routine every 1/60th of
@@ -1218,11 +1197,11 @@ must be called, if the <STOP> key is to remain functional.
 
 # $FFAE: UNLSN - Send an UNLISTEN command
 
-  Communication registers: None
-  Preparatory routines: None
-  Error returns: See READST
-  Stack requirements: 8
-  Registers affected: A
+* Communication registers: None
+* Preparatory routines: None
+* Error returns: See READST
+* Stack requirements: 8
+* Registers affected: A
 
   **Description**: This routine commands all devices on the serial bus to
 stop receiving data from the Commodore 64 (i.e., UNLISTEN). Calling this
@@ -1237,16 +1216,16 @@ to get off the serial bus so it can be used for other purposes.
 1. Call this routine.
 
 ## EXAMPLE:
-  JSR UNLSN
+    JSR UNLSN
 
 
 # $FFAB: UNTLK - Send an UNTALK command
 
-  Communication registers: None
-  Preparatory routines: None
-  Error returns: See READST
-  Stack requirements: 8
-  Registers affected: A
+* Communication registers: None
+* Preparatory routines: None
+* Error returns: See READST
+* Stack requirements: 8
+* Registers affected: A
 
   **Description**: This routine transmits an UNTALK command on the serial
 bus. All devices previously set to TALK will stop sending data when this
@@ -1257,16 +1236,16 @@ command is received.
 1. Call this routine.
 
 ## EXAMPLE:
-  JSR UNTALK
+    JSR UNTALK
 
 
 # $FF8D: VECTOR - Manage RAM vectors
 
-  Communication registers: X, Y
-  Preparatory routines: None
-  Error returns: None
-  Stack requirements: 2
-  Registers affected: A, X, Y
+* Communication registers: X, Y
+* Preparatory routines: None
+* Error returns: None
+* Stack requirements: 2
+* Registers affected: A, X, Y
 
 
   **Description**: This routine manages all system vector jump addresses
@@ -1276,12 +1255,8 @@ by the X and Y registers. When this routine is called with the carry
 clear, the user list pointed to by the X and Y registers is transferred
 to the system RAM vectors. The RAM vectors are listed in the memory map.
 
-+-----------------------------------------------------------------------+
-| NOTE: This routine requires caution in its use. The best way to use it|
-| is to first read the entire vector contents into the user area, alter |
-| the desired vectors, and then copy the contents back to the system    |
-| vectors.                                                              |
-+-----------------------------------------------------------------------+
+| NOTE: This routine requires caution in its use. The best way to use it is to first read the entire vector contents into the user area, alter the desired vectors, and then copy the contents back to the system vectors. |
+| --- |
 
 ## How to Use:
 
@@ -1299,19 +1274,20 @@ LOAD THE SYSTEM RAM VECTORS
 3. Call this routine.
 
 ## EXAMPLE:
-  ;CHANGE THE INPUT ROUTINES TO NEW SYSTEM
-  LDX #<USER
-  LDY #>USER
-  SEC
-  JSR VECTOR      ;READ OLD VECTORS
-  LDA #<MYINP     ;CHANGE INPUT
-  STA USER+10
-  LDA #>MYINP
-  STA USER+11
-  LDX #<USER
-  LDY #>USER
-  CLC
-  JSR VECTOR      ;ALTER SYSTEM
-  ...
-  USER *=*+26
+
+    ;CHANGE THE INPUT ROUTINES TO NEW SYSTEM
+    LDX #<USER
+    LDY #>USER
+    SEC
+    JSR VECTOR      ;READ OLD VECTORS
+    LDA #<MYINP     ;CHANGE INPUT
+    STA USER+10
+    LDA #>MYINP
+    STA USER+11
+    LDX #<USER
+    LDY #>USER
+    CLC
+    JSR VECTOR      ;ALTER SYSTEM
+    ...
+    USER *=*+26
 
