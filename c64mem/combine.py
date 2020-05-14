@@ -331,27 +331,27 @@ while(True):
 	# print address
 	anchor = '<a name="{:04X}"/>'.format(address1)
 	if address1 == last_address1 and address2 == last_address2:
-		print('<th class="left_column" style="visibility:hidden;">' + anchor + '</th>')
+		print('<th class="left_column" style="visibility:hidden;"> ' + anchor + ' </th>')
 	else:
 		hex_range = '${:04X}'.format(address1)
 		if address2 != None:
 			hex_range += '-${:04X}'.format(address2)
-		print('<th class="left_column">' + anchor + hex_range + '</th>')
+		print('<th class="left_column"> ' + anchor + hex_range + ' </th>')
 
 	# print symbol
 	if len(symbol) == 0:
-		print('<th class="label_column" style="visibility:hidden;"></th>')
+		print('<th class="label_column" style="visibility:hidden;"> </th>')
 	else:
-		print('<th class="label_column">' + symbol + '</th>')
+		print('<th class="label_column"> ' + symbol + ' </th>')
 
 	# print decimal
 	if address1 == last_address1 and address2 == last_address2:
-		print('<th class="decimal_column" style="visibility:hidden;"></th>')
+		print('<th class="decimal_column" style="visibility:hidden;"> </th>')
 	else:
 		dec_range = str(address1)
 		if address2 != None:
 			dec_range += '-' + str(address2)
-		print('<th class="decimal_column">' + dec_range + '</th>')
+		print('<th class="decimal_column"> ' + dec_range + ' </th>')
 
 	last_address1 = address1
 	last_address2 = address2
