@@ -286,7 +286,7 @@ while(True):
 	list_symbol = []
 	for i in range(0, files):
 		if linenumber[i] >= len(data[i]):
-			break
+			continue
 		line = data[i][linenumber[i]]
 		address1 = line[1:5]
 		address1 = int(address1, 16)
@@ -311,12 +311,12 @@ while(True):
 	address2 = None
 	symbol = None
 	good_symbols = []
-	for i in range(0, files):
+	for i in range(0, len(list_address1)):
 		if list_address1[i] == address1 and (address2 == None or (list_address2[i] != None and list_address2[i] > address2)):
 				address2 = list_address2[i]
 
 	# get symbols of longest range
-	for i in range(0, files):
+	for i in range(0, len(list_address1)):
 		if list_address1[i] == address1 and list_address2[i] == address2 and list_symbol[i] != '':
 			good_symbols.append(list_symbol[i])
 	#print('xxx', address1, address2, good_symbols)

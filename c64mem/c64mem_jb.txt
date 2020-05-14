@@ -219,17 +219,3 @@ $032E-$032F  USRCMD  Warm start vector ($FE66)
 $0330-$0331  ILOAD   LOAD link ($F4A5)
 $0332-$0333  ISAVE   SAVE link ($F5ED)
 $033C-$03FB  TBUFFR  Cassette buffer
-$0400-$07FF  VICSCN  Screen memory
-$0800-$9FFF          Basic ROM memory
-$8000-$9FFF          Alternate: Rom plug-in area
-$A000-$BFFF          ROM : Basic
-$A000-$BFFF          Alternate: RAM
-$C000-$CFFF          RAM memory, including alternate
-$D000-$D02E          Video Chip (6566)
-$D400-$D41C          Sound Chip (6581 SID)
-$D800-$DBFF          Color nybble memory
-$DC00-$DC0F          Interface chip 1, IRQ (6526 CIA)
-$DD00-$DD0F          Interface chip 2, NMI (6526 CIA)
-$D000-$DFFF          Alternate: Character set
-$E000-$FFFF          ROM: Operating System
-$E000-$FFFF          Alternate : RAM

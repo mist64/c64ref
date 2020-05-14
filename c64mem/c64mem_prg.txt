@@ -238,14 +238,3 @@ $0332-$0333  ISAVE   KERNAL SAVE Routine Vector
 $0334-$033B          Unused
 $033C-$03FB  TBUFFR  Tape I/O Buffer
 $03FC-$03FF          Unused
-$0400-$07FF  VICSCN  1024 Byte Screen Memory Area
-$0400-$07E7          Video Matrix: 25 Lines X 40 Columns
-$07F8-$07FF          Sprite Data Pointers
-$0800-$9FFF          Normal BASIC Program Space
-$8000-$9FFF          VSP Cartridge ROM - 8192 Bytes
-$A000-$BFFF          BASIC ROM - 8192 Bytes (or 8K RAM)
-$C000-$CFFF          RAM - 4096 Bytes
-$D000-$DFFF          Input/Output Devices and
-                     Color RAM or Character Generator ROM
-                     or RAM - 4096 Bytes
-$E000-$FFFF          KERNAL ROM - 8192 Bytes (or 8K RAM)
