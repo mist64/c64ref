@@ -252,7 +252,7 @@ print('<p>')
 print('<input type="checkbox" id="checkbox_decimal" name="checkbox_decimal" onclick="toggleDecimal(document.getElementById(\'checkbox_decimal\').checked);">')
 print('<label for="checkbox_decimal">Show Decimal Address</label></input>')
 print('<br />')
-print('<button id="toggle_details_button" onclick="openAll()">Expand All Details</button>')
+print('<button id="toggle_details_button" onclick="closeAll()">Hide All Details</button>')
 print('</p>')
 
 print('<div class="disassembly_container_no_dec" id="disassembly_container">')
@@ -406,7 +406,7 @@ while(True):
 
 		is_collapsible = len(comments) and not (len(comments) == 1 and comments[0].isspace())
 		if is_collapsible:
-			print('<details>')
+			print('<details open>')
 
 		if len(headings) or is_collapsible:
 			print('<b>')
