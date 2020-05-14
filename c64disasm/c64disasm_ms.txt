@@ -11,6 +11,10 @@
 - up perfectly, so make sure the machine code matches the assembly
 - code in the respective lines your looking at.
 -
+- The range $E0F9-$E261 was taken from 
+-    The original C64 BASIC source by Commodore
+-    https://github.com/mist64/cbmsrc
+-
 - Converted and formatted by Michael Steil <mist64@mac.com>
 -
 - Corrections (formatting, lining up) welcome at:
@@ -6750,167 +6754,239 @@
 .,E0F4 A0 00    LDY #$00        
 .,E0F6 4C D4 BB JMP $BBD4       GMOVMF: JMP     MOVMF           ;PUT NEW ONE INTO MEMORY.
                                 
-.,E0F9 C9 F0    CMP #$F0        
-.,E0FB D0 07    BNE $E104       
-.,E0FD 84 38    STY $38         
-.,E0FF 86 37    STX $37         
-.,E101 4C 63 A6 JMP $A663       
-.,E104 AA       TAX             
-.,E105 D0 02    BNE $E109       
-.,E107 A2 1E    LDX #$1E        
-.,E109 4C 37 A4 JMP $A437       
-.,E10C 20 D2 FF JSR $FFD2       
-.,E10F B0 E8    BCS $E0F9       
-.,E111 60       RTS             
-.,E112 20 CF FF JSR $FFCF       
-.,E115 B0 E2    BCS $E0F9       
-.,E117 60       RTS             
-.,E118 20 AD E4 JSR $E4AD       
-.,E11B B0 DC    BCS $E0F9       
-.,E11D 60       RTS             
-.,E11E 20 C6 FF JSR $FFC6       
-.,E121 B0 D6    BCS $E0F9       
-.,E123 60       RTS             
-.,E124 20 E4 FF JSR $FFE4       
-.,E127 B0 D0    BCS $E0F9       
-.,E129 60       RTS             
-.,E12A 20 8A AD JSR $AD8A       
-.,E12D 20 F7 B7 JSR $B7F7       
-.,E130 A9 E1    LDA #$E1        
-.,E132 48       PHA             
-.,E133 A9 46    LDA #$46        
-.,E135 48       PHA             
-.,E136 AD 0F 03 LDA $030F       
-.,E139 48       PHA             
-.,E13A AD 0C 03 LDA $030C       
-.,E13D AE 0D 03 LDX $030D       
-.,E140 AC 0E 03 LDY $030E       
-.,E143 28       PLP             
-.,E144 6C 14 00 JMP ($0014)     
-.,E147 08       PHP             
-.,E148 8D 0C 03 STA $030C       
-.,E14B 8E 0D 03 STX $030D       
-.,E14E 8C 0E 03 STY $030E       
-.,E151 68       PLA             
-.,E152 8D 0F 03 STA $030F       
-.,E155 60       RTS             
-.,E156 20 D4 E1 JSR $E1D4       
-.,E159 A6 2D    LDX $2D         
-.,E15B A4 2E    LDY $2E         
-.,E15D A9 2B    LDA #$2B        
-.,E15F 20 D8 FF JSR $FFD8       
-.,E162 B0 95    BCS $E0F9       
-.,E164 60       RTS             
-.,E165 A9 01    LDA #$01        
-.:E167 2C       .BYTE $2C       
-.,E168 A9 00    LDA #$00        
-.,E16A 85 0A    STA $0A         
-.,E16C 20 D4 E1 JSR $E1D4       
-.,E16F A5 0A    LDA $0A         
-.,E171 A6 2B    LDX $2B         
-.,E173 A4 2C    LDY $2C         
-.,E175 20 D5 FF JSR $FFD5       
-.,E178 B0 57    BCS $E1D1       
-.,E17A A5 0A    LDA $0A         
-.,E17C F0 17    BEQ $E195       
-.,E17E A2 1C    LDX #$1C        
-.,E180 20 B7 FF JSR $FFB7       
-.,E183 29 10    AND #$10        
-.,E185 D0 17    BNE $E19E       
-.,E187 A5 7A    LDA $7A         
-.,E189 C9 02    CMP #$02        
-.,E18B F0 07    BEQ $E194       
-.,E18D A9 64    LDA #$64        
-.,E18F A0 A3    LDY #$A3        
-.,E191 4C 1E AB JMP $AB1E       
-.,E194 60       RTS             
-.,E195 20 B7 FF JSR $FFB7       
-.,E198 29 BF    AND #$BF        
-.,E19A F0 05    BEQ $E1A1       
-.,E19C A2 1D    LDX #$1D        
-.,E19E 4C 37 A4 JMP $A437       
-.,E1A1 A5 7B    LDA $7B         
-.,E1A3 C9 02    CMP #$02        
-.,E1A5 D0 0E    BNE $E1B5       
-.,E1A7 86 2D    STX $2D         
-.,E1A9 84 2E    STY $2E         
-.,E1AB A9 76    LDA #$76        
-.,E1AD A0 A3    LDY #$A3        
-.,E1AF 20 1E AB JSR $AB1E       
-.,E1B2 4C 2A A5 JMP $A52A       
-.,E1B5 20 8E A6 JSR $A68E       
-.,E1B8 20 33 A5 JSR $A533       
-.,E1BB 4C 77 A6 JMP $A677       
-.,E1BE 20 19 E2 JSR $E219       
-.,E1C1 20 C0 FF JSR $FFC0       
-.,E1C4 B0 0B    BCS $E1D1       
-.,E1C6 60       RTS             
-.,E1C7 20 19 E2 JSR $E219       
-.,E1CA A5 49    LDA $49         
-.,E1CC 20 C3 FF JSR $FFC3       
-.,E1CF 90 C3    BCC $E194       
-.,E1D1 4C F9 E0 JMP $E0F9       
-.,E1D4 A9 00    LDA #$00        
-.,E1D6 20 BD FF JSR $FFBD       
-.,E1D9 A2 01    LDX #$01        
-.,E1DB A0 00    LDY #$00        
-.,E1DD 20 BA FF JSR $FFBA       
-.,E1E0 20 06 E2 JSR $E206       
-.,E1E3 20 57 E2 JSR $E257       
-.,E1E6 20 06 E2 JSR $E206       
-.,E1E9 20 00 E2 JSR $E200       
-.,E1EC A0 00    LDY #$00        
-.,E1EE 86 49    STX $49         
-.,E1F0 20 BA FF JSR $FFBA       
-.,E1F3 20 06 E2 JSR $E206       
-.,E1F6 20 00 E2 JSR $E200       
-.,E1F9 8A       TXA             
-.,E1FA A8       TAY             
-.,E1FB A6 49    LDX $49         
-.,E1FD 4C BA FF JMP $FFBA       
-.,E200 20 0E E2 JSR $E20E       
-.,E203 4C 9E B7 JMP $B79E       
-.,E206 20 79 00 JSR $0079       
-.,E209 D0 02    BNE $E20D       
-.,E20B 68       PLA             
-.,E20C 68       PLA             
-.,E20D 60       RTS             
-.,E20E 20 FD AE JSR $AEFD       
-.,E211 20 79 00 JSR $0079       
-.,E214 D0 F7    BNE $E20D       
-.,E216 4C 08 AF JMP $AF08       
-.,E219 A9 00    LDA #$00        
-.,E21B 20 BD FF JSR $FFBD       
-.,E21E 20 11 E2 JSR $E211       
-.,E221 20 9E B7 JSR $B79E       
-.,E224 86 49    STX $49         
-.,E226 8A       TXA             
-.,E227 A2 01    LDX #$01        
-.,E229 A0 00    LDY #$00        
-.,E22B 20 BA FF JSR $FFBA       
-.,E22E 20 06 E2 JSR $E206       
-.,E231 20 00 E2 JSR $E200       
-.,E234 86 4A    STX $4A         
-.,E236 A0 00    LDY #$00        
-.,E238 A5 49    LDA $49         
-.,E23A E0 03    CPX #$03        
-.,E23C 90 01    BCC $E23F       
-.,E23E 88       DEY             
-.,E23F 20 BA FF JSR $FFBA       
-.,E242 20 06 E2 JSR $E206       
-.,E245 20 00 E2 JSR $E200       
-.,E248 8A       TXA             
-.,E249 A8       TAY             
-.,E24A A6 4A    LDX $4A         
-.,E24C A5 49    LDA $49         
-.,E24E 20 BA FF JSR $FFBA       
-.,E251 20 06 E2 JSR $E206       
-.,E254 20 0E E2 JSR $E20E       
-.,E257 20 9E AD JSR $AD9E       
-.,E25A 20 A3 B6 JSR $B6A3       
-.,E25D A6 22    LDX $22         
-.,E25F A4 23    LDY $23         
-.,E261 4C BD FF JMP $FFBD       
+.,E0F9 C9 F0    CMP #$F0        EREXIT  CMP #$F0        ;CHECK FOR SPECIAL CASE
+.,E0FB D0 07    BNE $E104               BNE EREXIX
+                                ; TOP OF MEMORY HAS CHANGED
+.,E0FD 84 38    STY $38                 STY MEMSIZ+1
+.,E0FF 86 37    STX $37                 STX MEMSIZ
+.,E101 4C 63 A6 JMP $A663               JMP CLEART      ;ACT AS IF HE TYPED CLEAR
+.,E104 AA       TAX             EREXIX  TAX             ;SET TERMINATION FLAGS
+.,E105 D0 02    BNE $E109               BNE EREXIY
+.,E107 A2 1E    LDX #$1E                LDX #ERBRK      ;BREAK ERROR
+.,E109 4C 37 A4 JMP $A437       EREXIY  JMP ERROR       ;NORMAL ERROR
+                                
+                                CLSCHN  =$FFCC
+                                
+.,E10C 20 D2 FF JSR $FFD2       OUTCH   JSR $FFD2
+.,E10F B0 E8    BCS $E0F9               BCS EREXIT
+.,E111 60       RTS                     RTS
+.,E112 20 CF FF JSR $FFCF       INCHR   JSR $FFCF
+.,E115 B0 E2    BCS $E0F9               BCS EREXIT
+.,E117 60       RTS                     RTS
+                                
+                                CCALL   =$FFE7
+                                
+                                SETTIM  =$FFDB
+                                RDTIM   =$FFDE
+                                
+.,E118 20 AD E4 JSR $E4AD       COOUT   JSR PPACH       ; GO OUT TO SAVE .A FOR PRINT# PATCH
+.,E11B B0 DC    BCS $E0F9               BCS EREXIT
+.,E11D 60       RTS                     RTS
+
+.,E11E 20 C6 FF JSR $FFC6       COIN    JSR $FFC6
+.,E121 B0 D6    BCS $E0F9               BCS EREXIT
+.,E123 60       RTS                     RTS
+                                
+                                READST  =$FFB7
+                                
+.,E124 20 E4 FF JSR $FFE4       CGETL   JSR $FFE4
+.,E127 B0 D0    BCS $E0F9               BCS EREXIT
+.,E129 60       RTS                     RTS
+                                
+                                RDBAS   =$FFF3
+                                
+                                SETMSG  =$FF90
+                                
+                                PLOT    =$FFF0
+                                
+.,E12A 20 8A AD JSR $AD8A       CSYS    JSR FRMNUM      ;EVAL FORMULA
+.,E12D 20 F7 B7 JSR $B7F7               JSR GETADR      ;CONVERT TO INT. ADDR
+.,E130 A9 E1    LDA #$E1                LDA #>CSYSRZ    ;PUSH RETURN ADDRESS
+.,E132 48       PHA                     PHA
+.,E133 A9 46    LDA #$46                LDA #<CSYSRZ
+.,E135 48       PHA                     PHA
+.,E136 AD 0F 03 LDA $030F               LDA SPREG       ;STATUS REG
+.,E139 48       PHA                     PHA
+.,E13A AD 0C 03 LDA $030C               LDA SAREG       ;LOAD 6502 REGS
+.,E13D AE 0D 03 LDX $030D               LDX SXREG
+.,E140 AC 0E 03 LDY $030E               LDY SYREG
+.,E143 28       PLP                     PLP             ;LOAD 6502 STATUS REG
+.,E144 6C 14 00 JMP ($0014)             JMP (LINNUM)    ;GO DO IT
+                                CSYSRZ  =*-1            ;RETURN TO HERE
+.,E147 08       PHP                     PHP             ;SAVE STATUS REG
+.,E148 8D 0C 03 STA $030C               STA SAREG       ;SAVE 6502 REGS
+.,E14B 8E 0D 03 STX $030D               STX SXREG
+.,E14E 8C 0E 03 STY $030E               STY SYREG
+.,E151 68       PLA                     PLA             ;GET STATUS REG
+.,E152 8D 0F 03 STA $030F               STA SPREG
+.,E155 60       RTS                     RTS             ;RETURN TO SYSTEM
+
+.,E156 20 D4 E1 JSR $E1D4       CSAVE   JSR PLSV        ;PARSE PARMS
+.,E159 A6 2D    LDX $2D                 LDX VARTAB      ;END SAVE ADDR
+.,E15B A4 2E    LDY $2E                 LDY VARTAB+1
+.,E15D A9 2B    LDA #$2B                LDA #<TXTTAB    ;INDIRECT WITH START ADDRESS
+.,E15F 20 D8 FF JSR $FFD8               JSR $FFD8       ;SAVE IT
+.,E162 B0 95    BCS $E0F9               BCS EREXIT
+.,E164 60       RTS                     RTS
+
+.,E165 A9 01    LDA #$01        CVERF   LDA #1          ;VERIFY FLAG
+.:E167 2C       .BYTE $2C               .BYT $2C        ;SKIP TWO BYTES
+
+.,E168 A9 00    LDA #$00        CLOAD   LDA #0          ;LOAD FLAG
+.,E16A 85 0A    STA $0A                 STA VERCK
+.,E16C 20 D4 E1 JSR $E1D4               JSR PLSV        ;PARSE PARAMETERS
+                                ;
+                                CLD10   ; JSR $FFE1 ;CHECK RUN/STOP
+                                ; CMP #$FF ;DONE YET?
+                                ; BNE CLD10 ;STILL BOUNCING
+.,E16F A5 0A    LDA $0A                 LDA VERCK
+.,E171 A6 2B    LDX $2B                 LDX TXTTAB      ;.X AND .Y HAVE ALT...
+.,E173 A4 2C    LDY $2C                 LDY TXTTAB+1    ;...LOAD ADDRESS
+.,E175 20 D5 FF JSR $FFD5               JSR $FFD5       ;LOAD IT
+.,E178 B0 57    BCS $E1D1               BCS JERXIT      ;PROBLEMS
+                                ;
+.,E17A A5 0A    LDA $0A                 LDA VERCK
+.,E17C F0 17    BEQ $E195               BEQ CLD50       ;WAS LOAD
+                                ;
+                                ;FINISH VERIFY
+                                ;
+.,E17E A2 1C    LDX #$1C                LDX #ERVFY      ;ASSUME ERROR
+.,E180 20 B7 FF JSR $FFB7               JSR $FFB7       ;READ STATUS
+.,E183 29 10    AND #$10                AND #$10        ;CHECK ERROR
+.,E185 D0 17    BNE $E19E               BNE CLD55       ;REPLACES BEQ *+5/JMP ERROR
+                                ;
+                                ;PRINT VERIFY 'OK' IF DIRECT
+                                ;
+.,E187 A5 7A    LDA $7A                 LDA TXTPTR
+.,E189 C9 02    CMP #$02                CMP #BUFPAG
+.,E18B F0 07    BEQ $E194               BEQ CLD20
+.,E18D A9 64    LDA #$64                LDA #<OKMSG
+.,E18F A0 A3    LDY #$A3                LDY #>OKMSG
+.,E191 4C 1E AB JMP $AB1E               JMP STROUT
+                                ;
+.,E194 60       RTS             CLD20   RTS
+
+                                ;
+                                ;FINISH LOAD
+                                ;
+.,E195 20 B7 FF JSR $FFB7       CLD50   JSR $FFB7       ;READ STATUS
+.,E198 29 BF    AND #$BF                AND #$FF-$40    ;CLEAR E.O.I.
+.,E19A F0 05    BEQ $E1A1               BEQ CLD60       ;WAS O.K.
+.,E19C A2 1D    LDX #$1D                LDX #ERLOAD
+.,E19E 4C 37 A4 JMP $A437       CLD55   JMP ERROR
+                                ;
+.,E1A1 A5 7B    LDA $7B         CLD60   LDA TXTPTR+1
+.,E1A3 C9 02    CMP #$02                CMP #BUFPAG     ;DIRECT?
+.,E1A5 D0 0E    BNE $E1B5               BNE CLD70       ;NO...
+                                ;
+.,E1A7 86 2D    STX $2D                 STX VARTAB
+.,E1A9 84 2E    STY $2E                 STY VARTAB+1    ;END LOAD ADDRESS
+.,E1AB A9 76    LDA #$76                LDA #<REDDY
+.,E1AD A0 A3    LDY #$A3                LDY #>REDDY
+.,E1AF 20 1E AB JSR $AB1E               JSR STROUT
+.,E1B2 4C 2A A5 JMP $A52A               JMP FINI
+                                ;
+                                ;PROGRAM LOAD
+                                ;
+.,E1B5 20 8E A6 JSR $A68E       CLD70   JSR STXTPT
+.,E1B8 20 33 A5 JSR $A533               JSR LNKPRG
+.,E1BB 4C 77 A6 JMP $A677               JMP FLOAD
+
+.,E1BE 20 19 E2 JSR $E219       COPEN   JSR PAOC        ;PARSE STATEMENT
+.,E1C1 20 C0 FF JSR $FFC0               JSR $FFC0       ;OPEN IT
+.,E1C4 B0 0B    BCS $E1D1               BCS JERXIT      ;BAD STUFF OR MEMSIZ CHANGE
+.,E1C6 60       RTS                     RTS             ;A.O.K.
+
+.,E1C7 20 19 E2 JSR $E219       CCLOS   JSR PAOC        ;PARSE STATEMENT
+.,E1CA A5 49    LDA $49                 LDA ANDMSK      ;GET LA
+.,E1CC 20 C3 FF JSR $FFC3               JSR $FFC3       ;CLOSE IT
+.,E1CF 90 C3    BCC $E194               BCC CLD20       ;IT'S OKAY...NO MEMSIZE CHANGE
+                                ;
+.,E1D1 4C F9 E0 JMP $E0F9       JERXIT  JMP EREXIT
+
+                                ;
+                                ;PARSE LOAD AND SAVE COMMANDS
+                                ;
+                                PLSV
+                                ;DEFAULT FILE NAME
+                                ;
+.,E1D4 A9 00    LDA #$00                LDA #0          ;LENGTH=0
+.,E1D6 20 BD FF JSR $FFBD               JSR $FFBD
+                                ;
+                                ;DEFAULT DEVICE #
+                                ;
+.,E1D9 A2 01    LDX #$01                LDX #1          ;DEVICE #1
+.,E1DB A0 00    LDY #$00                LDY #0          ;COMMAND 0
+.,E1DD 20 BA FF JSR $FFBA               JSR $FFBA
+                                ;
+.,E1E0 20 06 E2 JSR $E206               JSR PAOC20      ;BY-PASS JUNK
+.,E1E3 20 57 E2 JSR $E257               JSR PAOC15      ;GET/SET FILE NAME
+.,E1E6 20 06 E2 JSR $E206               JSR PAOC20      ;BY-PASS JUNK
+.,E1E9 20 00 E2 JSR $E200               JSR PLSV7       ;GET ',FA'
+.,E1EC A0 00    LDY #$00                LDY #0          ;COMMAND 0
+.,E1EE 86 49    STX $49                 STX ANDMSK
+.,E1F0 20 BA FF JSR $FFBA               JSR $FFBA
+.,E1F3 20 06 E2 JSR $E206               JSR PAOC20      ;BY-PASS JUNK
+.,E1F6 20 00 E2 JSR $E200               JSR PLSV7       ;GET ',SA'
+.,E1F9 8A       TXA                     TXA             ;NEW COMMAND
+.,E1FA A8       TAY                     TAY
+.,E1FB A6 49    LDX $49                 LDX ANDMSK      ;DEVICE #
+.,E1FD 4C BA FF JMP $FFBA               JMP $FFBA
+
+                                ;LOOK FOR COMMA FOLLOWED BY BYTE
+.,E200 20 0E E2 JSR $E20E       PLSV7   JSR PAOC30
+.,E203 4C 9E B7 JMP $B79E               JMP GETBYT
+
+                                ;SKIP RETURN IF NEXT CHAR IS END
+                                ;
+.,E206 20 79 00 JSR $0079       PAOC20  JSR CHRGOT
+.,E209 D0 02    BNE $E20D               BNE PAOCX
+.,E20B 68       PLA                     PLA
+.,E20C 68       PLA                     PLA
+.,E20D 60       RTS             PAOCX   RTS
+
+                                ;CHECK FOR COMMA AND GOOD STUFF
+                                ;
+.,E20E 20 FD AE JSR $AEFD       PAOC30  JSR CHKCOM      ;CHECK COMMA
+.,E211 20 79 00 JSR $0079       PAOC32  JSR CHRGOT      ;GET CURRENT
+.,E214 D0 F7    BNE $E20D               BNE PAOCX       ;IS O.K.
+.,E216 4C 08 AF JMP $AF08       PAOC40  JMP SNERR       ;BAD...END OF LINE
+
+                                ;PARSE OPEN/CLOSE
+                                ;
+.,E219 A9 00    LDA #$00        PAOC    LDA #0
+.,E21B 20 BD FF JSR $FFBD               JSR $FFBD       ;DEFAULT FILE NAME
+                                ;
+.,E21E 20 11 E2 JSR $E211               JSR PAOC32      ;MUST GOT SOMETHING
+.,E221 20 9E B7 JSR $B79E               JSR GETBYT      ;GET LA
+.,E224 86 49    STX $49                 STX ANDMSK
+.,E226 8A       TXA                     TXA
+.,E227 A2 01    LDX #$01                LDX #1          ;DEFAULT DEVICE
+.,E229 A0 00    LDY #$00                LDY #0          ;DEFAULT COMMAND
+.,E22B 20 BA FF JSR $FFBA               JSR $FFBA       ;STORE IT
+.,E22E 20 06 E2 JSR $E206               JSR PAOC20      ;SKIP JUNK
+.,E231 20 00 E2 JSR $E200               JSR PLSV7
+.,E234 86 4A    STX $4A                 STX EORMSK
+.,E236 A0 00    LDY #$00                LDY #0          ;DEFAULT COMMAND
+.,E238 A5 49    LDA $49                 LDA ANDMSK      ;GET LA
+.,E23A E0 03    CPX #$03                CPX #3
+.,E23C 90 01    BCC $E23F               BCC PAOC5
+.,E23E 88       DEY                     DEY             ;DEFAULT IEEE TO $FF
+.,E23F 20 BA FF JSR $FFBA       PAOC5   JSR $FFBA       ;STORE THEM
+.,E242 20 06 E2 JSR $E206               JSR PAOC20      ;SKIP JUNK
+.,E245 20 00 E2 JSR $E200               JSR PLSV7       ;GET SA
+.,E248 8A       TXA                     TXA
+.,E249 A8       TAY                     TAY
+.,E24A A6 4A    LDX $4A                 LDX EORMSK
+.,E24C A5 49    LDA $49                 LDA ANDMSK
+.,E24E 20 BA FF JSR $FFBA               JSR $FFBA       ;SET UP REAL EVEYTHING
+.,E251 20 06 E2 JSR $E206       PAOC7   JSR PAOC20
+.,E254 20 0E E2 JSR $E20E               JSR PAOC30
+.,E257 20 9E AD JSR $AD9E       PAOC15  JSR FRMEVL
+.,E25A 20 A3 B6 JSR $B6A3               JSR FRESTR      ;LENGTH IN .A
+.,E25D A6 22    LDX $22                 LDX INDEX1
+.,E25F A4 23    LDY $23                 LDY INDEX1+1
+.,E261 4C BD FF JMP $FFBD               JMP $FFBD
                                 
                                 PAGE
                                 SUBTTL  SINE, COSINE AND TANGENT FUNCTIONS.
