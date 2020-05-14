@@ -129,8 +129,8 @@ $0093        VERCK   Flag: 0 = Load, 1 = Verify.
 $0094        C3P0    Flag: Serial Bus - Output Character buffered.
 $0095        BSOUR   Buffered Character for Serial Bus.
 $0096        SYNO    Cassette Sync. number.
-$0097        TEMPX   Temporary storage of X Register during CHRIN.
-$0097        TEMPY   Temporary storage of Y Register during RS232
+$0097        XSAV    Temporary storage of X Register during CHRIN.
+                     Temporary storage of Y Register during RS232
                      fetch.
 $0098        LDTND   Number of Open Files/Index to File Table.
 $0099        DFLTN   Default Input Device (0).
@@ -140,9 +140,9 @@ $009C        DPSW    Flag: Byte received from Tape.
 $009D        MSGFLG  Flag: $00 = Program mode: Suppress Error
                      Messages, $40 = Kernal Error Messages only,
                      $80 = Direct mode: Full Error Messages.
-$009E        FNMIDX  Index to Cassette File name/Header ID for
-                     Tape write.
 $009E        PTR1    Tape Error log pass 1.
+$009E        T1      Index to Cassette File name/Header ID for
+                     Tape write.
 $009F        PTR2    Tape Error log pass 2.
 $00A0-$00A2  TIME    Real-time jiffy Clock (Updated by IRQ
                      Interrupt approx. every 1/60 of Second);

@@ -63,9 +63,10 @@ $0005-$0006  ADRAY2  Unused.
 
                      Default: $B391, execution address of routine converting integer to floating point.
 
-$0007        CHARAC  Byte being search for during various operations.
+$0007        CHARAC  Byte being searched for during various operations.
                      Current digit of number being input.
-                     Low byte of first integer operand during AND and OR.
+
+$0007        INTEGR  Low byte of first integer operand during AND and OR.
                      Low byte of integer-format FAC during INT().
 
 $0008        ENDCHR  Byte being search for during various operations.
@@ -106,9 +107,10 @@ $000E        INTFLG  Current numerical expression type
 
                      * Bit #7: 0 = Floating point; 1 = Integer.
 
-$000F        GARBFL  Quotation mode switch during tokenization; Bit #6: 0 = Normal mode; 1 = Quotation mode.
+$000F        GARBFL  Garbage collection indicator during memory allocation for string variable; $00-$7F = There was no garbage collection yet; $80 = Garbage collection already took place.
+
+$000F        DORES   Quotation mode switch during tokenization; Bit #6: 0 = Normal mode; 1 = Quotation mode.
                      Quotation mode switch during LIST; $01 = Normal mode; $FE = Quotation mode.
-                     Garbage collection indicator during memory allocation for string variable; $00-$7F = There was no garbage collection yet; $80 = Garbage collection already took place.
 
 $0010        SUBFLG  Switch during fetch of variable name
 
@@ -138,7 +140,8 @@ $0013        CHANNL  Current I/O device number.
 
 $0014-$0015  LINNUM  Line number during GOSUB, GOTO and RUN.
                      Second line number during LIST.
-                     Memory address during PEEK, POKE, SYS and WAIT.
+
+$0014-$0015  POKER   Memory address during PEEK, POKE, SYS and WAIT.
 
 $0016        TEMPPT  Pointer to next expression in string stack
 
@@ -213,10 +216,13 @@ $0045-$0046  VARNAM  Name and type of current variable
 $0047-$0048  VARPNT  Pointer to value of current variable or FN function.
 
 $0049-$004A  FORPNT  Pointer to value of current variable during LET.
-                     Value of second and third parameter during WAIT.
-                     Logical number and device number during OPEN.
-                     $0049, 73: Logical number of CLOSE.
+
+$0049        ANDMSK  Value of second parameter during WAIT.
+                     Logical number during CLOSE and CLOSE
                      Device number of LOAD, SAVE and VERIFY.
+
+$004A        EORMSK  Value of third parameter during WAIT.
+                     Device number during OPEN.
 
 $004B-$004C  VARTXT  Temporary area for saving original pointer to current BASIC instruction during GET, INPUT and READ.
 
@@ -266,9 +272,11 @@ $006E        ARGSGN  Sign of ARG
 
 $006F-$0070  STRNG1  Pointer to first string expression during string comparison.
 
-$0071-$0072  FBUFPT  Auxiliary pointer during array operations.
-                     Temporary area for saving original pointer to current BASIC instruction during VAL().
-                     Pointer to current item of polynomial table during polynomial evaluation.
+$0071-$0072  STRNG2  Temporary area for saving original pointer to current BASIC instruction during VAL().
+ 
+$0071-$0072  POLYPT  Pointer to current item of polynomial table during polynomial evaluation.
+
+$0071-$0072  CURTOL  Auxiliary pointer during array operations.
 
 $0073-$008A  CHRGET  CHRGET. Machine code routine to read next byte from BASIC program or direct command (24 bytes).
 
@@ -346,14 +354,20 @@ $009D        MSGFLG  System error display switch
                      * Bit #6: 0 = Suppress I/O error messages; 1 = Display them.
                      * Bit #7: 0 = Suppress system messages; 1 = Display them.
 
-$009E        PTR1    Byte to be put into output buffer during RS232 and datasette output.
-                     Block header type during datasette input/output.
-                     Length of file name during datasette input/output.
-                     Error counter during LOAD from datasette. Values: $00-$3E, 0-62.
+$009E        PTR1    Error counter during LOAD from datasette.
 
-$009F        PTR2    Auxiliary counter for writing file name into datasette buffer.
+                     Values: $00-$3E, 0-62.
+
+$009E        T1      Block header type during datasette input/output.
+                     Length of file name during datasette input/output.
+                     Byte to be put into output buffer during RS232 and datasette output.
+
+$009F        PTR2    Error correction counter during LOAD from datasette.
+
+                     Values: $00-$3E, 0-62.
+
+$009F        T2      Auxiliary counter for writing file name into datasette buffer.
                      Auxiliary counter for comparing requested file name with file name read from datasette during datasette input.
-                     Error correction counter during LOAD from datasette. Values: $00-$3E, 0-62.
 
 $00A0-$00A2  TIME    Value of TI variable, time of day, increased by 1 every 1/60 second (on PAL machines)
 

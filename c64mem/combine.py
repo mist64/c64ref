@@ -38,7 +38,7 @@ descriptions = [
 	'Comments from the original M6502 BASIC source by Microsoft and the original C64 KERNAL source by Commodore',
 	'Reference from <i>Mapping the Commodore 64</i> by Sheldon Leemon, ISBN 0-942386-23-X.',
 	'German-language reference from <i>Memory Map mit Wandervorschl&auml;gen</i> by Dr. H. Hauck, in 64\'er Sonderheft 1986/07.',
-	'German-language reference from <i>Das neue Commodore-64-intern-Buch</i> by Data Becker, ISBN 3890113079. Some minor corrections have been made.',
+	'German-language reference from <i>Das neue Commodore-64-intern-Buch</i> by Data Becker, ISBN 3890113079.',
 	'Reference by Joe Forster/STA, with awsm\'s changes applied.',
 	'Reference from <i>Commodore 64 Programmer\'s Reference Guide</i>.',
 	'Reference as found in "Commodore_64_Memory_Maps.txt" by anonymous.',

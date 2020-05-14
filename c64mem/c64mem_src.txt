@@ -73,13 +73,13 @@ $000D        VALTYP  The type indicator.
 
 $000E        INTFLG  Tells if integer.
 
+$000F        GARBFL  Whether to do garbage collection.
+
 $000F        DORES   Whether can or can't crunch res'd words.
 
                      Turned on when "data"
                      being scanned by crunch so unquoted
                      strings won't be crunched.
-
-$000F        GARBFL  Whether to do garbage collection.
 
 $0010        SUBFLG  Flag whether sub'd variable allowed.
 
@@ -363,8 +363,6 @@ $009D        MSGFLG  OS message flag
 $009E        PTR1    Cassette error pass1
 
 $009E        T1      Temporary 1
-
-$009F        TMPC
 
 $009F        PTR2    Cassette error pass2
 

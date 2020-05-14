@@ -338,13 +338,9 @@ $004E-$004F          Zeiger für FN
                      wo die Variablen und ihr Wert abgelegt
                      sind.
 
-$0050-$0053          Stringdescriptor
+$0050-$0052          Stringdescriptor
 
-                     In diesen Speicherzellen wird unter
-                     anderem die Schrittweite für Garbage
-                     Collection und andere wichtige
-                     Informationen für den Interpreter
-                     festgelegt.
+$0053                Schrittweite für Garbage Collection
 
 $0054                Konstante $4C JMP für Funktionen
 
