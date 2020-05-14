@@ -28,7 +28,7 @@
 
 $0000        D6510   6510 On-chip Data Direction Register.
 $0001        R6510   6510 On-chip 8-bit Input/Output Register.
-$0002        TEMP    Unused. Free for user programs.
+$0002                Unused. Free for user programs.
 $0003-$0004  ADRAY1  Jump Vector: Convert FAC to Integer in (A/Y)
                      ($B1AA).
 $0005-$0006  ADRAY2  Jump Vector: Convert Integer in (A/Y) to
@@ -147,15 +147,15 @@ $009F        PTR2    Tape Error log pass 2.
 $00A0-$00A2  TIME    Real-time jiffy Clock (Updated by IRQ
                      Interrupt approx. every 1/60 of Second);
                      Update Routine: UDTIMK ($F69B).
-$00A3        TSFCNT  Bit Counter Tape Read or Write/Serial Bus
+$00A3                Bit Counter Tape Read or Write/Serial Bus
                      EOI (End Of Input) Flag.
-$00A4        TBTCNT  Pulse Counter Tape Read or Write/Serial Bus
+$00A4                Pulse Counter Tape Read or Write/Serial Bus
                      shift Counter.
 $00A5        CNTDN   Tape Synchronising count down.
 $00A6        BUFPT   Pointer: Tape I/O buffer.
 $00A7        INBIT   RS232 temporary for received Bit/Tape
                      temporary.
-$00A8        BITC1   RS232 Input Bit count/Tape temporary.
+$00A8        BITCI   RS232 Input Bit count/Tape temporary.
 $00A9        RINONE  RS232 Flag: Start Bit check/Tape temporary.
 $00AA        RIDATA  RS232 Input Byte Buffer/Tape temporary.
 $00AB        RIPRTY  RS232 Input parity/Tape temporary.
@@ -202,7 +202,7 @@ $00D3        PNTR    Cursor Column on current Line, including
 $00D4        QTSW    Flag: Editor in Quote Mode; $00 = Not.
 $00D5        LNMX    Current logical Line length: 39 or 79.
 $00D6        TBLX    Current Screen Line number of Cursor.
-$00D7        SCHAR   Screen value of current Input Character/Last
+$00D7        DATA    Screen value of current Input Character/Last
                      Character Output.
 $00D8        INSRT   Count of number of inserts outstanding.
 $00D9-$00F2  LDTB1   Screen Line link Table/Editor temporaries.
@@ -215,9 +215,9 @@ $00F9-$00FA  ROBUF   RS232 Output Buffer Pointer.
 $00FB-$00FE  FREKZP  Free Zero Page space for User Programs.
 $00FF-$010A          Assembly Area for Floating point to ASCII
                      conversion.
-$0100-$01FF  STACK   6510 Hardware Stack Area.
+$0100-$01FF          6510 Hardware Stack Area.
 $0100-$013E  BAD     Tape Input Error log.
-$013F-$01FF  BSTACK  BASIC Stack Area.
+$013F-$01FF          BASIC Stack Area.
 $0200-$0258  BUF     BASIC Input Buffer (Input Line from Screen).
 $0259-$0262  LAT     Kernal Table: Active logical File numbers.
 $0263-$026C  FAT     Kernal Table: Active File First Addresses
@@ -263,12 +263,12 @@ $029E        RODBE   RS232 Index to End of Output Buffer.
 $029F-$02A0  IRQTMP  Temporary store for IRQ Vector during Tape
                      operations.
 $02A1        ENABL   RS232 Enables.
-$02A2        TODSNS  TOD sense during Tape I/O.
-$02A3        TRDTMP  Temporary storage during Tape READ.
-$02A4        TD1IRQ  Temporary D1IRQ Indicator during Tape READ.
-$02A5        TLNIDX  Temporary for Line Index.
+$02A2        CASTON  TOD sense during Tape I/O.
+$02A3        KIKA26  Temporary storage during Tape READ.
+$02A4        STUPID  Temporary D1IRQ Indicator during Tape READ.
+$02A5        LINTMP  Temporary for Line Index.
 $02A6        PALNTS  Flag: TV Standard: $00 = NTSC, $01 = PAL.
-$02A7-$02FF  TEMP    Unused.
+$02A7-$02FF          Unused.
 $0300-$0301  IERROR  Vector: Indirect entry to BASIC Error
                      Message, (X) points to Message ($E38B).
 $0302-$0303  IMAIN   Vector: Indirect entry to BASIC Input Line
@@ -287,9 +287,9 @@ $030E        SYREG   Storage for 6510 Y-Register during SYS.
 $030F        SPREG   Storage for 6510 Status Register during SYS.
 $0310                USR Function JMP Instruction ($4C).
 $0311-$0312  USRADD  USR Address ($LB,$MB).
-$0313        TEMP    Unused.
+$0313                Unused.
 $0314-$0315  CINV    Vector: Hardware IRQ Interrupt Address ($EA31).
-$0316-$0317  CNBINV  Vector: BRK Instruction Interrupt Address
+$0316-$0317  CBINV   Vector: BRK Instruction Interrupt Address
                      ($FE66).
 $0318-$0319  NMINV   Vector: Hardware NMI Interrupt Address ($FE47).
 $031A-$031B  IOPEN   Vector: Indirect entry to Kernal OPEN
@@ -317,6 +317,6 @@ $0330-$0331  ILOAD   Vector: Indirect entry to Kernal LOAD
                      Routine ($F4A5).
 $0332-$0333  ISAVE   Vector: Indirect entry to Kernal SAVE
                      Routine ($F5ED).
-$0334-$033B  TEMP    Unused.
+$0334-$033B          Unused.
 $033C-$03FB  TBUFFR  Tape I/O Buffer.
-$03FC-$03FF  TEMP    Unused.
+$03FC-$03FF          Unused.
