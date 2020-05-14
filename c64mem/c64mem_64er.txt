@@ -1776,7 +1776,7 @@ $0098                Anzahl der offenen Files
                      wieder auf dem Drucker gelistet und nicht auf dem Bildschirm. Die 
                      vorgeschriebene Schließmethode mit
 
-                         PRINT #1:CL0SE1
+                         PRINT #1:CLOSE1
 
                      geht jetzt aber auch nicht mehr, denn das Betriebssystem ist ja im Glauben, daß 
                      keine Datei eröffnet ist - schöner Schlamassel!
@@ -1914,7 +1914,7 @@ $009D                Flagge für Meldungen
 
                      Das folgende Beispiel macht das deutlich. Geben Sie direkt ein:
 
-                         POKE 157,0:L0AD "$",9
+                         POKE 157,0:LOAD"$",9
 
                      Wir versuchen, vom Gerät mit der Nummer 9, das ist eine zweite Floppy, die 
                      Directory zu laden. Wir erhalten entsprechend Punkt 1 nur die Meldung des 
@@ -1924,14 +1924,14 @@ $009D                Flagge für Meldungen
 
                      Verändern wir den POKE-Befehl für Punkt 2:
                      
-                         POKE 157,64:L0AD"$",9
+                         POKE 157,64:LOAD"$",9
 
                      Wir erhalten jetzt 
                      
                          I/O ERROR #5
                          ?DEVICE NOT PRESENT
 
-                         POKE 157,128:L0AD"$",9
+                         POKE 157,128:LOAD"$",9
 
                      ergibt die Meldung
                      
@@ -2039,7 +2039,7 @@ $00A0-$00A2          Interne Uhr für TI und TI$
                      die Zellen 160 bis 162 gePOKEt, zeigt uns den Nullsetzvorgang. Ersetzen Sie 
                      bitte die obige Zeile 5 durch eine neue Zeile:
 
-                         5 POKE 160,79:P0KE 161,25:POKE 162,0
+                         5 POKE 160,79:POKE 161,25:POKE 162,0
 
                      Nach vier Sekunden Laufzeit schalten alle drei Zellen in der Tat auf 0 zurück.
 
@@ -2742,7 +2742,7 @@ $00D3                Position des Cursors innerhalb einer logischen Zeile
                      positionieren. Das können wir auch. Um den Cursor auf Platz 5 in der 
                      Bildschirmzeile 18 zu bringen, geben wir folgende Programmzeile ein:
 
-                         10 POKE 214,17: PRINT: P0KE 211,5:PRINT"C64"
+                         10 POKE 214,17: PRINT: POKE 211,5:PRINT"C64"
 
                      Aus innerbetrieblichen Gründen muß der Wert, den wir als Zeile erzielen wollen, 
                      um 1 verringert in die Zelle 214 gePOKEt werden. Mit der Zahl 17 wird also der 
@@ -2762,7 +2762,7 @@ $00D3                Position des Cursors innerhalb einer logischen Zeile
 
                      Für unser Beispiel sieht das dann so aus:
 
-                         10 POKE 781,18:P0KE 782,5: SYS 58634:PRINT"C 64"
+                         10 POKE 781,18:POKE 782,5: SYS 58634:PRINT"C 64"
 
                      Wir erhalten dasselbe Ergebnis, nur mit dem Unterschied, daß die Zeile jetzt 
                      wirklich die Zeile 18 ist. Mit dieser Methode ist jetzt auch die Zeile 0 
@@ -3866,7 +3866,7 @@ $0314-$0315          Vektor auf die IRQ-Interrupt-Routine des Betriebssystems
                          50 DATA 3,76,49,234,174,32,208
                          60 DATA 202,142,32,208,76,175,02
                          70 POKE 56334,0
-                         80 P0KE 788,167:POKE 789,2
+                         80 POKE 788,167:POKE 789,2
                          90 POKE 56334,1
 
                      Dieses Programm gilt nur für den C 64; für den VC 20 müßte es entsprechend 
@@ -4006,8 +4006,8 @@ $0328-$0329          Vektor auf die STOP-Routine des Betriebssystems
                      Der Vektor zeigt auf die Adresse 63213 ($F6ED) - beim VC 20 auf 63344 ($F770). 
                      Die dort beginnende Routine prüft, ob die STOP-Taste gedrückt ist. Durch 
                      Verbiegen dieses Vektors kann die STOP-Taste abgeschaltet werden. Beim C 64 
-                     geht dies mit P0KE 808,239; wieder eingeschaltet wird die STOP-Taste mit P0KE 
-                     808,237. Beim VC 20 sind die Werte P0KE 808,100 beziehungsweise P0KE 808,112.
+                     geht dies mit POKE 808,239; wieder eingeschaltet wird die STOP-Taste mit POKE 
+                     808,237. Beim VC 20 sind die Werte POKE 808,100 beziehungsweise POKE 808,112.
 
 $032A-$032B          Vektor auf die GETIN-Routine des Betriebssystems
 
