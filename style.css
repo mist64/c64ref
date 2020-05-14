@@ -5,6 +5,8 @@
     --main-background: #e0f0ff;
     --main-color: #004080;
 
+    --highlight-background: #006ad5;
+
     --border-color: #0060a0;
 
     --title-color-1: #017100;
@@ -63,21 +65,27 @@ div.body {
 .topnav {
     background-color: #333;
     overflow: hidden;
+    padding: 0px;
+    border-bottom: solid 2px var(--main-color);
 }
 
 .topnav a, .topnav h1 {
     float: left;
     text-align: center;
-    color: white;
     padding: 14px 16px;
     margin: 0px;
     text-decoration: none;
     font-size: 17px;
 }
 
+.topnav a {
+    color: white;
+    border-right:solid 1px var(--main-background);
+}
+
 .topnav h1 {
-    color: e0f0ff;
-    text-shadow: 0px 1px var(--main-color);
+    color: black;
+    background-color: white;
 }
 
 .topnav a:hover {
@@ -86,7 +94,7 @@ div.body {
 }
 
 .topnav a.active {
-    background-color: var(--main-color);
+    background-color: var(--highlight-background);
     color: white;
 }
 
@@ -163,15 +171,23 @@ table.disassembly_table td, table.disassembly_table th {
     border-width:0px 1px 0px 1px;
 }
 
-table.disassembly_table th.left_column {
+
+table.disassembly_table th.left_column,  
+table.disassembly_table th.label_column,
+table.disassembly_table th.decimal_column {
     position: absolute;
-    left: 8px;
-    z-index: 11;
     border: 1px solid #000;
     border-radius: 2px;
     color: var(--main-background);
     background: var(--border-color);
 }
+
+
+table.disassembly_table th.left_column {
+    left: 8px;
+    z-index: 11;
+}
+
 
 th.left_column a {
     color: var(--main-background);
