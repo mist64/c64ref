@@ -1216,7 +1216,7 @@ $030D        SXREG   X-REG für SYS-Befehl
 
 $030E        SYREG   Y-REG für SYS-Befehl
 
-$030F        USRPOK  Status-Register für SYS-Befehl
+$030F        SPREG  Status-Register für SYS-Befehl
 
 $0311-$0312  USRADD  $B248 USR-Vektor
 

@@ -411,7 +411,9 @@ $0012        TANSGN  Flag: Sign of the Result of the TAN or SIN Function
                      
                      This location is used to determine whether the sign of the value
                      returned by the functions SIN or TAN is positive or negative.
-                     
+
+$0012        DOMASK                       
+
                      Additionally, the string and numeric comparison routines use this
                      location to indicate the outcome of the comparison.  For a comparison
                      of variable A to variable B, the value here will be 1 if A is greater
@@ -3313,7 +3315,7 @@ $0334-$033B          Unused
                      
                      Eight free bytes for user vectors or other data.
                      
-$033C-$03FB  TBUFFER Cassette I/O Buffer
+$033C-$03FB  TBUFFR  Cassette I/O Buffer
                      
                      This 192-byte buffer area is used to temporarily hold data that is
                      read from or written to the tape device (device number 1).

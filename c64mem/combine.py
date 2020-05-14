@@ -55,9 +55,9 @@ def cross_reference(string):
 				formatted_hex_number = '${:02X}'.format(dec_number)
 			else:
 				formatted_hex_number = '${:04X}'.format(dec_number)
-			string = string.replace(hex_number, '<a href="#' + '{:04x}'.format(dec_number) + '">' + formatted_hex_number + '</a>')
+			string = string.replace(hex_number, '<a href="#' + '{:04X}'.format(dec_number) + '">' + formatted_hex_number + '</a>')
 		elif (dec_number >= 0xa000 and dec_number <= 0xbfff) or (dec_number >= 0xe000 and dec_number <= 0xffff):
-			string = string.replace(hex_number, '<a href="https://www.pagetable.com/c64disasm/#' + '{:04x}'.format(dec_number) + '">' + hex_number + '</a>')
+			string = string.replace(hex_number, '<a href="https://www.pagetable.com/c64disasm/#' + '{:04X}'.format(dec_number) + '">' + hex_number + '</a>')
 
 	return string
 
@@ -329,14 +329,14 @@ while(True):
 	print('<tr>')
 
 	# print address
-	print('<a name="${:04X}"/>'.format(address1))
+	anchor = '<a name="{:04X}"/>'.format(address1)
 	if address1 == last_address1 and address2 == last_address2:
-		print('<th class="left_column" style="visibility:hidden;"></th>')
+		print('<th class="left_column" style="visibility:hidden;">' + anchor + '</th>')
 	else:
 		hex_range = '${:04X}'.format(address1)
 		if address2 != None:
 			hex_range += '-${:04X}'.format(address2)
-		print('<th class="left_column">' + hex_range + '</th>')
+		print('<th class="left_column">' + anchor + hex_range + '</th>')
 
 	# print symbol
 	if len(symbol) == 0:

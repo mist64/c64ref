@@ -453,11 +453,8 @@ $0011                Flagge für INPUT, GET oder READ
                      RETURN ein. Wir erhalten so die 0. Die GET-Schleife in Zeile 40 wartet auf 
                      einen Tastendruck, dann erhalten wir 64.
 
-$0012                1. Flagge für Vorzeichen bei SIN, COS und TAN
-                     2. Flagge bei Vergleich
+$0012        TANSGN  Flagge für Vorzeichen bei SIN, COS und TAN
                      
-                     Zuerst kommt das Vorzeichen der trigonometrischen Funktionen an die Reihe.
-
                      Die Routinen des Basic-Übersetzers (Interpreter), welche die drei 
                      trigonometrischen Funktionen SIN, COS und TAN berechnen, verwenden die 
                      Speicherzelle 18 zur Bestimmung des Vorzeichens.
@@ -491,6 +488,8 @@ $0012                1. Flagge für Vorzeichen bei SIN, COS und TAN
 
                      In Bild 2 sind nicht nur die Kurven und die Bereiche der Vorzeichen, sondern 
                      auch die Winkelbereiche sowohl im Bogenmaß als auch in Graden dargestellt.
+
+$0012        DOMASK  Flagge bei Vergleich
 
                      Die Speicherzelle 18 wird auch noch von anderen Routinen des Basic-Interpreters 
                      beansprucht und zwar von allen, die einen Vergleich wie <, >, >= und so weiter 
