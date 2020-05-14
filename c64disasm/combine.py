@@ -131,11 +131,11 @@ print('<a href="https://github.com/mist64/c64disasm" class="github-corner" aria-
 
 print('<div class="topnav">')
 print('    <h1>Ultimate Commodore 64 Reference</h1> ')
-print('    <a href="#">KERNAL API</a><!-- kernal/index.html -->')
-print('    <a class="active" href="../c64disasm/index.html">ROM Disassembly</a><!-- c64disasm/index.html -->')
-print('    <a href="../c64mem/index.html">Memory Map</a><!-- c64mem/index.html -->')
-print('    <a href="#">I/O Map</a><!-- c64io/index.html -->')
-print('    <a href="#">6502 CPU</a><!-- 6502/index.html -->')
+#print('    <a href="#">KERNAL API</a><!-- kernal/ -->')
+print('    <a class="active" href="../c64disasm/">ROM Disassembly</a><!-- c64disasm/ -->')
+print('    <a href="../c64mem/">Memory Map</a><!-- c64mem/ -->')
+#print('    <a href="#">I/O Map</a><!-- c64io/ -->')
+#print('    <a href="#">6502 CPU</a><!-- 6502/ -->')
 print('</div>')
 
 print('<div class="body">')
