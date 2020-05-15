@@ -2396,7 +2396,7 @@ $00C0                Motorsperre der Datasette
 
                      Ausschalten:
 
-                         POKE 37148,PEEK(37148) 0R 2
+                         POKE 37148,PEEK(37148) OR 2
 
                      Einschalten:
 
@@ -3627,6 +3627,12 @@ $02A7-$02FF          nicht belegt
                      wird. Er kann also für kleinere Maschinenprogramme oder auch für Sprite-Blöcke 
                      verwendet werden. Gegenüber dem Kassettenpuffer hat dieser Bereich den Vorteil, 
                      daß er durch Kassettenoperationen nicht gestört wird.
+
+$0300-$030B          
+
+                     Die nächsten 12 Speicherzellen enthalten 6 Vektoren, deren Bedeutung bei der 
+                     Übersetzung von Basic-Programmen im Texteinschub Nr. 31 »Indirekte Sprung-
+                     Vektoren« näher erklärt wird.
 
 $0300-$0301          Vektor auf die Ausgabe von Fehler-Meldungen (ERROR)
 

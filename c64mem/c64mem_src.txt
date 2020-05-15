@@ -635,9 +635,13 @@ $0316-$0317  CBINV   BRK instr RAM vector
 
 $0318-$0319  NMINV   NMI RAM vector
 
-$031A-$031B  IOPEN   Indirects for code
+$031A-$032D          Indirects for code
 
-$031C-$031D  ICLOSE  Conforms to KERNAL spec 8/19/80
+                     Conforms to KERNAL spec 8/19/80
+
+$031A-$031B  IOPEN   
+
+$031C-$031D  ICLOSE  
 
 $031E-$031F  ICHKIN
 

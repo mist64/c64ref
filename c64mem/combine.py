@@ -5,41 +5,41 @@ import pprint
 import markdown
 
 filenames = [
-	'c64mem_src.txt',
 	'c64mem_mapc64.txt',
 	'c64mem_64er.txt',
 	'c64mem_64intern.txt',
 	'c64mem_sta.txt',
+	'c64mem_src.txt',
 	'c64mem_prg.txt',
 	'c64mem_64map.txt',
 	'c64mem_jb.txt',
 ]
 names = [
-	'Microsoft/Commodore Source',
 	'Mapping the Commodore 64',
 	'64\'er [German]',
 	'Data Becker [German]',
 	'Joe Forster/STA',
+	'Microsoft/Commodore Source',
 	'Programmer\'s Reference Guide',
 	'64map',
 	'Jim Butterfield',
 ]
 links = [
-	'https://github.com/mist64/cbmsrc',
 	'http://unusedino.de/ec64/technical/project64/mapping_c64.html',
 	'https://archive.org/details/64er_sonderheft_1986_07/page/n6/mode/2up',
 	'https://www.pagetable.com/?p=1015',
 	'http://www.awsm.de/mem64/',
+	'https://github.com/mist64/cbmsrc',
 	'http://www.zimmers.net/cbmpics/cbm/c64/c64prg.txt',
 	'http://unusedino.de/ec64/technical/project64/memory_maps.html',
 	'https://www.atarimagazines.com/compute/issue29/394_1_COMMODORE_64_MEMORY_MAP.php',
 ]
 descriptions = [
-	'Comments from the original M6502 BASIC source by Microsoft and the original C64 KERNAL source by Commodore',
 	'Reference from <i>Mapping the Commodore 64</i> by Sheldon Leemon, ISBN 0-942386-23-X.',
 	'German-language reference from <i>Memory Map mit Wandervorschl&auml;gen</i> by Dr. H. Hauck, in 64\'er Sonderheft 1986/07.',
 	'German-language reference from <i>Das neue Commodore-64-intern-Buch</i> by Data Becker, ISBN 3890113079.',
 	'Reference by Joe Forster/STA, with awsm\'s changes applied.',
+	'Comments from the original M6502 BASIC source by Microsoft and the original C64 KERNAL source by Commodore',
 	'Reference from <i>Commodore 64 Programmer\'s Reference Guide</i>.',
 	'Reference as found in "Commodore_64_Memory_Maps.txt" by anonymous.',
 	'Reference by Jim Butterfield in COMPUTE! #29 (October 1982).',
