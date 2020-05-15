@@ -35,7 +35,7 @@ descriptions = [
 	"Comments from the <i>Commodore 64 BASIC/KERNAL ROM Disassembly Version 1.0 (June 1994)</i> by Marko M&auml;kel&auml;."
 ]
 
-def cross_reference(string):
+def cross_reference(string, symbols):
 	hex_numbers = re.findall(r'(?<!#)\$[0-9A-F][0-9A-F]+', string)
 	for hex_number in hex_numbers:
 		dec_number = int(hex_number[1:], 16)
@@ -43,6 +43,10 @@ def cross_reference(string):
 			string = string.replace(hex_number, "<a href=\"../c64mem/#" + '{:04X}'.format(dec_number) + "\">" + hex_number + "</a>")
 		elif (dec_number >= 0xa000 and dec_number <= 0xbfff) or (dec_number >= 0xe000 and dec_number <= 0xffff):
 			string = string.replace(hex_number, "<a href=\"#" + hex_number[1:] + "\">" + hex_number + "</a>")
+
+	for symbol in symbols:
+		string = re.sub('\\b' + symbol + '\\b', '<a href="../c64mem/#' + symbol + '">' + symbol + '</a>', string)
+
 	return string
 
 asm_donor_index = 1
@@ -52,6 +56,16 @@ f = os.popen("git log -1 --pretty=format:%h .")
 revision = f.read()
 f = os.popen("git log -1 --date=short --pretty=format:%cd .")
 date = f.read()
+
+symbols = []
+symbol_lines = [line.rstrip() for line in open('../c64mem/c64mem_src.txt')]
+for line in symbol_lines:
+	if line.startswith('#') or line.startswith('-'):
+		continue
+	symbol = line[13:19].rstrip()
+	if symbol != '':
+		symbols.append(symbol)
+symbols = set(symbols)
 
 data = []
 linenumber = []
@@ -79,7 +93,7 @@ for i in range(0, files):
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
 print('<html>')
 print('<head>')
-print('<title>Ultimate Commodore 64 BASIC & KERNAL ROM Disassembly</title>')
+print('<title>BASIC & KERNAL ROM Disassembly | Ultimate C64 Reference</title>')
 print('')
 print('<script language="javascript">')
 print('    window.onload = init;')
@@ -196,7 +210,7 @@ while(True):
 		asmaddress = int(hexaddress, 16)
 		has_address = True
 
-	asm = cross_reference(asm)
+	asm = cross_reference(asm, symbols)
 
 	print('<tr>')
 	print('<th class="left_column">')
@@ -220,7 +234,7 @@ while(True):
 			comment = line[32:]
 			comment = html.escape(comment)
 
-			comment = cross_reference(comment)
+			comment = cross_reference(comment, symbols)
 
 			if comment.startswith('***'):
 				comment = '<h3>' + comment[3:] + '</h3>'

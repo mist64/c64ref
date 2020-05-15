@@ -57,7 +57,7 @@ def cross_reference(string):
 				formatted_hex_number = '${:04X}'.format(dec_number)
 			string = string.replace(hex_number, '<a href="#' + '{:04X}'.format(dec_number) + '">' + formatted_hex_number + '</a>')
 		elif (dec_number >= 0xa000 and dec_number <= 0xbfff) or (dec_number >= 0xe000 and dec_number <= 0xffff):
-			string = string.replace(hex_number, '<a href="https://www.pagetable.com/c64disasm/#' + '{:04X}'.format(dec_number) + '">' + hex_number + '</a>')
+			string = string.replace(hex_number, '<a href="../c64disasm/#' + '{:04X}'.format(dec_number) + '">' + hex_number + '</a>')
 
 	return string
 
@@ -90,7 +90,7 @@ for i in range(0, files):
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
 print('<html>')
 print('<head>')
-print('<title>Ultimate Commodore 64 Memory Map</title>')
+print('<title>Memory Map | Ultimate C64 Reference</title>')
 print('')
 print('<script language="javascript">')
 print('    window.onload = init;')
@@ -334,7 +334,7 @@ while(True):
 	if len(symbol) == 0:
 		print('<th class="label_column" style="visibility:hidden;"> </th>')
 	else:
-		print('<th class="label_column"> ' + symbol + ' </th>')
+		print('<th class="label_column">' + symbol + ' <a name="' + symbol + '"/> </th>')
 
 	# print decimal
 	if address1 == last_address1 and address2 == last_address2:
