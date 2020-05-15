@@ -37,7 +37,7 @@ read the status word.
 
 * Communication registers: X
 * Preparatory routines: (OPEN)
-* Error returns:
+* Error returns: 0,3,5,6 (See READST)
 * Stack requirements: None
 * Registers affected: A, X
 
@@ -63,12 +63,6 @@ specified by the OPEN routine) over the bus.
 1. Load the X register with number of the logical file to be used.
 2. Call this routine (using a JSR command).
 
-
-Possible errors are:
-
-* #3: File not open
-* #5: Device not present
-* #6: File not an input file
 
 ## EXAMPLE:
 
@@ -115,12 +109,6 @@ will automatically send the LISTEN address specified by the OPEN routine
 
     LDX #3        ;DEFINE LOGICAL FILE 3 AS AN OUTPUT CHANNEL
     JSR CHKOUT
-
-Possible errors are:
-
-* #3: File not open
-* #5: Device not present
-* #7: Not an output file
 
 
 # $FFCF: CHRIN - Get a character from the input channel

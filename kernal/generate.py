@@ -26,21 +26,18 @@ for call_lines in calls_raw:
 	calls.append((address, name, summary, call_lines[1:]))
 	names.append(name)
 
-names.sort(reverse = True)
-print(names)
-
 print('<table border=1>')
 
 for (address, name, summary, lines) in calls:
 	print('<tr>')
-	print('<td>' + address + '</td>')
+	print('<td>$' + address + '</td>')
 	print('<td><a name="' + name + '">' + name + '</td>')
 	print('<td><details open><summary>' + summary + '</summary>')
 	all_text = '\n'.join(lines)
 	html = markdown.markdown(all_text, extensions=['tables' , 'sane_lists'])
 	for replace_name in names:
 		if replace_name != name:
-			html = re.sub('\\b' + 'KERNAL' + '\\b', '<a href="#"' + replace_name + '">' + replace_name + '</a>', html)
+			html = re.sub('\\b' + replace_name + '\\b', '<a href="#"' + replace_name + '">' + replace_name + '</a>', html)
 	print(html + '</details></td>')
 
 
