@@ -643,9 +643,9 @@ $0016                Zeiger auf den nächsten freien Speicherplatz im »Temporar
 
                      Die Speicherzelle 22 ($0016) ihrerseits enthält einen Zeiger auf den jeweils 
                      nächsten verfügbaren Platz in diesem Speicher ab Zelle 25. Da er eine Kapazität 
-                     von 3 * 3 Byte hat, zeigt der Zeiger auf die Zelle 25 ($19), wenn er leer ist. 
-                     Bei einem Eintrag zeigt er auf 28 ($1C), bei zwei Einträgen auf 31 ($1F) und 
-                     schließlich auf 34 ($22), wenn der Speicher voll ist.
+                     von 3 * 3 Byte hat, zeigt der Zeiger auf die Zelle 25 ($0019), wenn er leer ist. 
+                     Bei einem Eintrag zeigt er auf 28 ($001C), bei zwei Einträgen auf 31 ($001F) und 
+                     schließlich auf 34 ($0022), wenn der Speicher voll ist.
 
                      Eine Zeichenkette ist dann »vorläufig«, wenn sie noch nicht einer 
                      Stringvariablen zugeordnet worden ist, zum Beispiel »Mahlzeit« in dem Basic-
@@ -721,8 +721,8 @@ $0016                Zeiger auf den nächsten freien Speicherplatz im »Temporar
 $0017-$0018          Zeiger auf die Adresse der letzten Zeichenkette im »Temporary String Stack«
 
                      Der Inhalt dieser 2 Byte zeigt auf den zuletzt benutzten Speicherplatz 
-                     Innerhalb der Adresse 22 bis 33. Das heißt, daß der Wert in 23 ($17) immer um 3 
-                     kleiner ist als der in 22 ($16), während der Wert in 24 ($18) eine Null ist.
+                     Innerhalb der Adresse 22 bis 33. Das heißt, daß der Wert in 23 ($0017) immer um 3 
+                     kleiner ist als der in 22 ($0016), während der Wert in 24 ($0018) eine Null ist.
 
 
 $0019-$0021          Stapelspeicher für Angaben über vorläufige Zeichenketten

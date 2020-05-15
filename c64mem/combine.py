@@ -158,7 +158,7 @@ print('    }')
 print('</script>')
 print('')
 
-print('<link rel="stylesheet" href="../style.css">')
+print('<link rel="stylesheet" href="../c64disasm/style.css">')
 
 address_width=6.4
 label_width=4
@@ -315,14 +315,20 @@ while(True):
 	print('<tr>')
 
 	# print address
-	anchor = '<a name="{:04X}"/>'.format(address1)
+	anchors = ''
+	if address2 is not None:
+		r = range(address1, address2 + 1)
+	else:
+		r = range(address1, address1 + 1)
+	for address in r:
+		anchors += '<a name="{:04X}"/>'.format(address)
 	if address1 == last_address1 and address2 == last_address2:
-		print('<th class="left_column" style="visibility:hidden;"> ' + anchor + ' </th>')
+		print('<th class="left_column" style="visibility:hidden;"> ' + anchors + ' </th>')
 	else:
 		hex_range = '${:04X}'.format(address1)
 		if address2 != None:
 			hex_range += '-${:04X}'.format(address2)
-		print('<th class="left_column"> ' + anchor + hex_range + ' </th>')
+		print('<th class="left_column"> ' + anchors + hex_range + ' </th>')
 
 	# print symbol
 	if len(symbol) == 0:

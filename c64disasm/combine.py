@@ -35,6 +35,15 @@ descriptions = [
 	"Comments from the <i>Commodore 64 BASIC/KERNAL ROM Disassembly Version 1.0 (June 1994)</i> by Marko M&auml;kel&auml;."
 ]
 
+def cross_reference(string):
+	hex_numbers = re.findall(r'(?<!#)\$[0-9A-F][0-9A-F]+', string)
+	for hex_number in hex_numbers:
+		dec_number = int(hex_number[1:], 16)
+		if dec_number < 0x0400:
+			string = string.replace(hex_number, "<a href=\"../c64mem/#" + '{:04X}'.format(dec_number) + "\">" + hex_number + "</a>")
+		elif (dec_number >= 0xa000 and dec_number <= 0xbfff) or (dec_number >= 0xe000 and dec_number <= 0xffff):
+			string = string.replace(hex_number, "<a href=\"#" + hex_number[1:] + "\">" + hex_number + "</a>")
+	return string
 
 asm_donor_index = 1
 source_index = 0 # we treat the Microsoft/Commodore source differently
@@ -98,7 +107,7 @@ print('        }')
 print('    }')
 print('</script>')
 print('')
-print('<link rel="stylesheet" href="../style.css">')
+print('<link rel="stylesheet" href="../c64disasm/style.css">')
 print('<style type="text/css">')
 print('')
 print('h3 {')
@@ -187,10 +196,7 @@ while(True):
 		asmaddress = int(hexaddress, 16)
 		has_address = True
 
-	hex_numbers = re.findall(r'\$[0-9A-F][0-9A-F][0-9A-F][0-9A-F]', asm)
-	for hex_number in hex_numbers:
-		if (hex_number[1] == 'A' or hex_number[1] == 'B' or hex_number[1] == 'E' or hex_number[1] == 'F'):
-			asm = asm.replace(hex_number, "<a href=\"#" + hex_number[1:] + "\">" + hex_number + "</a>")
+	asm = cross_reference(asm)
 
 	print('<tr>')
 	print('<th class="left_column">')
@@ -214,10 +220,7 @@ while(True):
 			comment = line[32:]
 			comment = html.escape(comment)
 
-			hex_numbers = re.findall(r'\$[0-9A-F][0-9A-F][0-9A-F][0-9A-F]', comment)
-			for hex_number in hex_numbers:
-				if (hex_number[1] == 'A' or hex_number[1] == 'B' or hex_number[1] == 'E' or hex_number[1] == 'F'):
-					comment = comment.replace(hex_number, "<a href=\"#" + hex_number[1:] + "\">" + hex_number + "</a>")
+			comment = cross_reference(comment)
 
 			if comment.startswith('***'):
 				comment = '<h3>' + comment[3:] + '</h3>'

@@ -495,8 +495,8 @@ $0016        TEMPPT  Pointer to the Next Available Space in the Temporary String
                      This location points to the next available slot in the temporary
                      string descriptor stack located at 25-33 ($0019-$0021).  Since that stack
                      has room for three descriptors of three bytes each, this location will
-                     point to 25 ($19) if the stack is empty, to 28 ($1C) if there is one
-                     entry, to 31 ($1F) if there are two entries, and to 34 ($22) if the
+                     point to 25 ($0019) if the stack is empty, to 28 ($001C) if there is one
+                     entry, to 31 ($001F) if there are two entries, and to 34 ($0022) if the
                      stack is full.
                      
                      If BASIC needs to add an entry to the temporary string descriptor
@@ -508,8 +508,8 @@ $0017-$0018  LASTPT  Pointer to the Address of the Last String in the Temporary 
                      Stack
                      
                      This pointer indicates the last slot used in the temporary string
-                     descriptor stack.  Therefore, the value stored at 23 ($17) should be 3
-                     less than that stored at 22 ($16), while 24 ($18) will contain a 0.
+                     descriptor stack.  Therefore, the value stored at 23 ($0017) should be 3
+                     less than that stored at 22 ($0016), while 24 ($0018) will contain a 0.
                      
 $0019-$0021  TEMPST  Descriptor Stack for Temporary Strings
                      
