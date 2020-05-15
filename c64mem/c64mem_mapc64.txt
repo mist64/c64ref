@@ -3150,7 +3150,7 @@ $0313                Unused
 $0314-$0315  CINV    Vector to IRQ Interrupt Routine
                      
                      This vector points to the address of the routine that is executed when
-                     an IRQ interrupt occurs (normally 59953 ($FA31)).
+                     an IRQ interrupt occurs (normally 59953 ($EA31)).
                      
                      At power on, the CIA #1 Timer B is set to cause an IRQ interrupt to
                      occur every 1/60 second.  This vector is set to point to the routine

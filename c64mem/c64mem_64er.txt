@@ -1616,21 +1616,21 @@ $0090                Statusvariable ST
 
                      Jedes Bit der Zelle 144 hat eine eigene Bedeutung wie folgt.
 
-                     |       |            | Kassette                        |
-                     |-------|------------|---------------------------------|
-                     | Bit 2 | (Wert 4)   | Kurzer Block                    |
-                     | Bit 3 | (Wert 8)   | Langer Block                    |
-                     | Bit 4 | (Wert 16)  | Lesefehler (nicht korrigierbar) |
-                     | Bit 5 | (Wert 32)  | Prüfsummenfehler                |
-                     | Bit 6 | (Wert 64)  | File-Ende                       |
-                     | Bit 7 | (Wert 128) | Band-Ende                       |
+                     | Bit | Wert | Kassette                        |
+                     |-----|------|---------------------------------|
+                     | 2   | 4    | Kurzer Block                    |
+                     | 3   | 8    | Langer Block                    |
+                     | 4   | 16   | Lesefehler (nicht korrigierbar) |
+                     | 5   | 32   | Prüfsummenfehler                |
+                     | 6   | 64   | File-Ende                       |
+                     | 7   | 128  | Band-Ende                       |
                      
-                     |       |            | Floppy/Drucker                  |
-                     |-------|------------|---------------------------------|
-                     | Bit 0 | (Wert 1)   | Fehler beim Schreiben           |
-                     | Bit 1 | (Wert 2)   | Fehler beim Lesen               |
-                     | Bit 6 | (Wert 64)  | Daten-Ende                      |
-                     | Bit 7 | (Wert 128) | »Device Not Present«-Fehler     |
+                     | Bit | Wert | Floppy/Drucker                  |
+                     |-----|------|---------------------------------|
+                     | 0   | 1    | Fehler beim Schreiben           |
+                     | 1   | 2    | Fehler beim Lesen               |
+                     | 6   | 64   | Daten-Ende                      |
+                     | 7   | 128  | »Device Not Present«-Fehler     |
 
                      Alle nicht aufgeführten Bits sind nicht benutzt.
 

@@ -506,7 +506,7 @@ $00D9-$00F2  LDTB1   Line flags+endspace
 
 $00F3-$00F4  USER    Screen editor color IP
 
-$00F5-$00F5  KEYTAB  Keyscan table indirect
+$00F5-$00F6  KEYTAB  Keyscan table indirect
 
 $00F7-$00F8  RIBUF   RS-232 input buffer pointer
 

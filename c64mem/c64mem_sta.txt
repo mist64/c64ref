@@ -295,7 +295,9 @@ $0090        STATUS  Value of ST variable, device status for serial bus and data
                      * Bit #4: 1 = VERIFY error occurred (only during VERIFY), the file read from the device did not match that in the memory.
                      * Bit #6: 1 = End of file has been reached.
                      * Bit #7: 1 = Device is not present.
+
                      Datasette bits:
+
                      * Bit #2: 1 = Block is too short (shorter than 192 bytes).
                      * Bit #3: 1 = Block is too long (longer than 192 bytes).
                      * Bit #4: 1 = Not all bytes read with error during pass 1 could be corrected during pass 2, or a VERIFY error occurred, the file read from the device did not match that in the memory.
@@ -766,7 +768,7 @@ $02A1        ENABL   Temporary area for saving original value of CIA#2 interrupt
 
 $02A2        CASTON  Temporary area for saving original value of CIA#1 timer #1 control register, at memory address $DC0E, during datasette input/output.
 
-$02A3-$02A4  KIKA26  Unknown.
+$02A3-$02A4          Unknown.
 
 $02A5        LINTMP  Number of line currently being scrolled during scrolling the screen.
 
