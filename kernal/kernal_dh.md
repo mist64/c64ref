@@ -402,8 +402,9 @@ code other than ASCII, CHROUT will send them to the tape
 buffer. For the screen, though, the 64/VIC screen editor is set
 up to convert ASCII codes to screen codes or screen functions,
 and would not function well if you did not use ASCII.
-Determine Output Device
-F1CA/F27A-F1E4/F28E
+
+
+# Determine Output Device F1CA/F27A-F1E4/F28E
 
 **Called by**: Indirect JMP through (0326) from Kernal CHROUT vector at
 FFD2.
@@ -456,8 +457,7 @@ exists, the 64/VIC performs the actions in CINT during system
 reset.
 
 
- CIOUT
- FFA8
+# CIOUT FFA8
 
 **Called by**: None.
 
@@ -478,8 +478,7 @@ buffer is sent. The character is sent to all open devices on the
 serial bus.
 
 
- CLALL
- FFE7
+# CLALL FFE7
 
 **Called by**: JSR at A660/C660 in BASIC's CLR.
 
@@ -551,8 +550,8 @@ For all types of devices, a common CLOSE exit is used.
 The number of open files, 98, is decremented, and the entry for
 this logical file is deleted from the logical file number table, the
 device number table, and the secondary address table.
-Determine Device for CLOSE
-F291/F34A-F2AA/F363
+
+# Determine Device for CLOSE F291/F34A-F2AA/F363
 
 **Called by**: Indirect JMP through (031C) from Kernal CLOSE vector at
 FFC3.
@@ -770,8 +769,7 @@ the first character from the keyboard buffer.
    the same routines for both GETIN and CHRIN.
 
 
- IOBASE
- FFF3
+# IOBASE FFF3
 
 **Called by**: JSR at E09E/E09B BASIC's in RND
 
@@ -1291,52 +1289,80 @@ which are the conditions that indicate end-of-tape.
 
 The table below shows the possible values returned by
 READST:
-READST Values
-Status Terms
-Long Block: Tape read is trying to read data bytes after the
+
+## READST Values
+
+| Hex Value | Bit | Serial I/O         | Tape Read/LOAD/VERIFY    | RS-232 (64 only)       |
+|-----------|-----|--------------------|--------------------------|------------------------|
+| $80       | 7   | Device not present |                          | Break detected         |
+| $40       | 6   | EOI status         | End of file              | DSR signal missing     |
+| $20       | 5   |                    | Checksum error           |                        |
+| $10       | 4   | VERIFY error       | Unrecoverable read error | CTS signal missing     |
+| $08       | 3   |                    | Long block               | Receive buffer empty   |
+| $04       | 2   |                    | Short block              | Receive buffer overrun |
+| $02       | 1   | Read timeout       |                          | Framing error          |
+| $01       | 0   | Write timeout      |                          | Parity error           |
+
+## Status Terms
+
+**Long Block**: Tape read is trying to read data bytes after the
 first block has already completed.
-Short Block: Tape read is reading leader bits between blocks
+
+**Short Block**: Tape read is reading leader bits between blocks
 while the byte action routine is still expecting to be reading
 bytes from the block.
-Unrecoverable Read Error: During tape read and
+
+**Unrecoverable Read Error**: During tape read and
 LOAD/VERIFY, more than 31 errors were detected in block 1.
 This is also set if read or VERIFY errors for the same byte oc-
 curred in both blocks 1 and 2.
-Checksum Error: Computed parity for the loaded area is not
+
+**Checksum Error**: Computed parity for the loaded area is not
 the same as the final byte of tape block 2 (the parity computed
 during the SAVE of the second block).
-End of File: This status is set when doing CHRIN from tape
+
+**End of File**: This status is set when doing CHRIN from tape
 for a sequential file and the read-ahead byte in the tape buffer
-VERIFY Error: The byte retrieved from the serial device does
+
+**VERIFY Error**: The byte retrieved from the serial device does
 not match the byte in memory.
-EOI (End or Identify): This is set during the Receive Byte
+
+**EOI (End or Identify)**: This is set during the Receive Byte
 from Serial Device routine when the EOI handshake is per-
 formed. Set during serial read to indicate the last byte has
 been sent from the serial device. The unusual term EOI is a
 holdover from the IEEE-488 bus definitions used on older
 PET/CBM computers; you may find it simpler just to remem-
 ber this as End of File for disk.
-Device Not Present: Device does not respond with the proper
+
+**Device Not Present**: Device does not respond with the proper
 handshake sequence during OPEN, LOAD, VERIFY, or SAVE
 operations.
-Read Timeout, Write Timeout: Read or write timeouts are set
+
+**Read Timeout, Write Timeout**: Read or write timeouts are set
 when the serial device doesn't handshake within the allocated
-is 0.
 time.
-Break Detected: This is set if the check for a stop bit finds a 0
+
+**Break Detected**: This is set if the check for a stop bit finds a 0
 rather than a 1, and the data bits received so far are all 0's.
-Framing Error: This is set if the check for a stop bit finds a 0
+
+**Framing Error**: This is set if the check for a stop bit finds a 0
 and the data bits received so far included some bits set to 1.
-DSR Signal Missing: The 64 can't detect the Data Set Ready
+
+**DSR Signal Missing**: The 64 can't detect the Data Set Ready
 signal from the RS-232 device during x-line handshaking.
-CTS Signal Missing: The 64 can't detect the Clear To Send
+
+**CTS Signal Missing**: The 64 can't detect the Clear To Send
 signal from the RS-232 device during x-line handshaking.
-Parity Error: The parity bit indicates an error in transmission
+
+**Parity Error**: The parity bit indicates an error in transmission
 of this byte.
-Receiver Buffer Empty: Nothing is in the RS-232 input
+
+**Receiver Buffer Empty**: Nothing is in the RS-232 input
 buffer. This allows routines to test the status so they don't
 loop waiting for data.
-Receiver Buffer Overun: The RS-232 input buffer is full and
+
+**Receiver Buffer Overun**: The RS-232 input buffer is full and
 another byte has been received.
 
 
@@ -1770,21 +1796,24 @@ C6, the number of characters in the keyboard buffer, to 0.
 If $7E/$FE is not found, the Z flag will be 0 on exit (BNE
 condition). In this case, the accumulator can still be tested for
 the keys shown below using the value shown following it.
-STOP Routine Return Values
-Commodore 64 Key Accumulator VIC-20 Key  Accumulator 
-1                $FE         Cursor down $7F         
-Left arrow       $FD         /           $BF         
-CTRL             $FB                     $DF         
-2                $F7         N           $EF         
-Space            $EF         V           $F7         
-Commodore        $DF         X           $FB         
-Q                $BF         Left SHIFT  $FD         
+
+## STOP Routine Return Values
+
+| Commodore 64 Key | Accumulator | VIC-20 Key  | Accumulator |
+|------------------|-------------|-------------|-------------|
+| 1                | $FE         | Cursor down | $7F         |
+| Left arrow       | $FD         | /           | $BF         |
+| CTRL             | $FB         | ,           | $DF         |
+| 2                | $F7         | N           | $EF         |
+| Space            | $EF         | V           | $F7         |
+| Commodore        | $DF         | X           | $FB         |
+| Q                | $BF         | Left SHIFT  | $FD         |
+
 If no key is down in the STOP column, the routine returns $FF
 in the accumulator (64 and VIC).
 
 
-Test for STOP Key
-F6ED/F770-F6FA/F77D
+# Test for STOP Key F6ED/F770-F6FA/F77D
 
 **Called by**: Indirect JMP through (0328) from Kernal STOP vector at FFE1.
 
