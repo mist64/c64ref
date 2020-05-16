@@ -3,7 +3,8 @@
 import markdown
 import re
 
-lines = [line.rstrip() for line in open("kernal_prg.txt")]
+#lines = [line.rstrip() for line in open("kernal_prg.txt")]
+lines = [line.rstrip() for line in open("kernal_128intern.txt")]
 
 calls_raw = []
 call_lines = None
@@ -15,7 +16,8 @@ for line in lines:
 			calls_raw.append(call_lines)
 		call_lines = []
 
-	call_lines.append(line)
+	if call_lines is not None:
+		call_lines.append(line)
 
 calls = []
 names = []
