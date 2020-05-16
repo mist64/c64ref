@@ -3,7 +3,7 @@
 import markdown
 import re
 
-lines = [line.rstrip() for line in open("kernal_prg.md")]
+lines = [line.rstrip() for line in open("kernal_prg.txt")]
 
 calls_raw = []
 call_lines = None
