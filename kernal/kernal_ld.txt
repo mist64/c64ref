@@ -1,0 +1,605 @@
+-
+- The almost completely commented C64 ROM disassembly. V1.01 Lee Davison 2012
+-
+
+;************************************************************************************
+;
+; initialise VIC and screen editor
+
+;LAB_FF81
+	JMP	LAB_FF5B		; initialise VIC and screen editor
+
+
+;************************************************************************************
+;
+; initialise SID, CIA and IRQ, unused
+
+;LAB_FF84
+	JMP	LAB_FDA3		; initialise SID, CIA and IRQ
+
+
+;************************************************************************************
+;
+; RAM test and find RAM end
+
+;LAB_FF87
+	JMP	LAB_FD50		; RAM test and find RAM end
+
+
+;************************************************************************************
+;
+; restore default I/O vectors
+
+; this routine restores the default values of all system vectors used in KERNAL and
+; BASIC routines and interrupts.
+
+;LAB_FF8A
+	JMP	LAB_FD15		; restore default I/O vectors
+
+
+;************************************************************************************
+;
+; read/set vectored I/O
+
+; this routine manages all system vector jump addresses stored in RAM. Calling this
+; routine with the carry bit set will store the current contents of the RAM vectors
+; in a list pointed to by the X and Y registers. When this routine is called with
+; the carry bit clear, the user list pointed to by the X and Y registers is copied
+; to the system RAM vectors.
+
+; NOTE: This routine requires caution in its use. The best way to use it is to first
+; read the entire vector contents into the user area, alter the desired vectors and
+; then copy the contents back to the system vectors.
+
+;LAB_FF8D
+	JMP	LAB_FD1A		; read/set vectored I/O
+
+
+;************************************************************************************
+;
+; control kernal messages
+
+; this routine controls the printing of error and control messages by the KERNAL.
+; Either print error messages or print control messages can be selected by setting
+; the accumulator when the routine is called.
+
+; FILE NOT FOUND is an example of an error message. PRESS PLAY ON CASSETTE is an
+; example of a control message.
+
+; bits 6 and 7 of this value determine where the message will come from. If bit 7
+; is set one of the error messages from the KERNAL will be printed. If bit 6 is set
+; a control message will be printed.
+
+LAB_FF90
+	JMP	LAB_FE18		; control kernal messages
+
+
+;************************************************************************************
+;
+; send secondary address after LISTEN
+
+; this routine is used to send a secondary address to an I/O device after a call to
+; the LISTEN routine is made and the device commanded to LISTEN. The routine cannot
+; be used to send a secondary address after a call to the TALK routine.
+
+; A secondary address is usually used to give set-up information to a device before
+; I/O operations begin.
+
+; When a secondary address is to be sent to a device on the serial bus the address
+; must first be ORed with $60.
+
+;LAB_FF93
+	JMP	LAB_EDB9		; send secondary address after LISTEN
+
+
+;************************************************************************************
+;
+; send secondary address after TALK
+
+; this routine transmits a secondary address on the serial bus for a TALK device.
+; This routine must be called with a number between 4 and 31 in the accumulator.
+; The routine will send this number as a secondary address command over the serial
+; bus. This routine can only be called after a call to the TALK routine. It will
+; not work after a LISTEN.
+
+;LAB_FF96
+	JMP	LAB_EDC7		; send secondary address after TALK
+
+
+;************************************************************************************
+;
+; read/set the top of memory
+
+; this routine is used to read and set the top of RAM. When this routine is called
+; with the carry bit set the pointer to the top of RAM will be loaded into XY. When
+; this routine is called with the carry bit clear XY will be saved as the top of
+; memory pointer changing the top of memory.
+
+LAB_FF99
+	JMP	LAB_FE25		; read/set the top of memory
+
+
+;************************************************************************************
+;
+; read/set the bottom of memory
+
+; this routine is used to read and set the bottom of RAM. When this routine is
+; called with the carry bit set the pointer to the bottom of RAM will be loaded
+; into XY. When this routine is called with the carry bit clear XY will be saved as
+; the bottom of memory pointer changing the bottom of memory.
+
+LAB_FF9C
+	JMP	LAB_FE34		; read/set the bottom of memory
+
+
+;************************************************************************************
+;
+; scan the keyboard
+
+; this routine will scan the keyboard and check for pressed keys. It is the same
+; routine called by the interrupt handler. If a key is down, its ASCII value is
+; placed in the keyboard queue.
+
+;LAB_FF9F
+	JMP	LAB_EA87		; scan keyboard
+
+
+;************************************************************************************
+;
+; set timeout on serial bus
+
+; this routine sets the timeout flag for the serial bus. When the timeout flag is
+; set, the computer will wait for a device on the serial port for 64 milliseconds.
+; If the device does not respond to the computer's DAV signal within that time the
+; computer will recognize an error condition and leave the handshake sequence. When
+; this routine is called and the accumulator contains a 0 in bit 7, timeouts are
+; enabled. A 1 in bit 7 will disable the timeouts.
+
+; NOTE: The the timeout feature is used to communicate that a disk file is not found
+; on an attempt to OPEN a file.
+
+;LAB_FFA2
+	JMP	LAB_FE21		; set timeout on serial bus
+
+
+;************************************************************************************
+;
+; input byte from serial bus
+;
+; this routine reads a byte of data from the serial bus using full handshaking. the
+; data is returned in the accumulator. before using this routine the TALK routine,
+; LAB_FFB4, must have been called first to command the device on the serial bus to
+; send data on the bus. if the input device needs a secondary command it must be sent
+; by using the TKSA routine, LAB_FF96, before calling this routine.
+;
+; errors are returned in the status word which can be read by calling the READST
+; routine, LAB_FFB7.
+
+;LAB_FFA5
+	JMP	LAB_EE13		; input byte from serial bus
+
+
+;************************************************************************************
+;
+; output a byte to serial bus
+
+; this routine is used to send information to devices on the serial bus. A call to
+; this routine will put a data byte onto the serial bus using full handshaking.
+; Before this routine is called the LISTEN routine, LAB_FFB1, must be used to
+; command a device on the serial bus to get ready to receive data.
+
+; the accumulator is loaded with a byte to output as data on the serial bus. A
+; device must be listening or the status word will return a timeout. This routine
+; always buffers one character. So when a call to the UNLISTEN routine, LAB_FFAE,
+; is made to end the data transmission, the buffered character is sent with EOI
+; set. Then the UNLISTEN command is sent to the device.
+
+;LAB_FFA8
+	JMP	LAB_EDDD		; output byte to serial bus
+
+
+;************************************************************************************
+;
+; command serial bus to UNTALK
+
+; this routine will transmit an UNTALK command on the serial bus. All devices
+; previously set to TALK will stop sending data when this command is received.
+
+;LAB_FFAB
+	JMP	LAB_EDEF		; command serial bus to UNTALK
+
+
+;************************************************************************************
+;
+; command serial bus to UNLISTEN
+
+; this routine commands all devices on the serial bus to stop receiving data from
+; the computer. Calling this routine results in an UNLISTEN command being transmitted
+; on the serial bus. Only devices previously commanded to listen will be affected.
+
+; This routine is normally used after the computer is finished sending data to
+; external devices. Sending the UNLISTEN will command the listening devices to get
+; off the serial bus so it can be used for other purposes.
+
+;LAB_FFAE
+	JMP	LAB_EDFE		; command serial bus to UNLISTEN
+
+
+;************************************************************************************
+;
+; command devices on the serial bus to LISTEN
+
+; this routine will command a device on the serial bus to receive data. The
+; accumulator must be loaded with a device number between 4 and 31 before calling
+; this routine. LISTEN convert this to a listen address then transmit this data as
+; a command on the serial bus. The specified device will then go into listen mode
+; and be ready to accept information.
+
+;LAB_FFB1
+	JMP	LAB_ED0C		; command devices on the serial bus to LISTEN
+
+
+;************************************************************************************
+;
+; command serial bus device to TALK
+
+; to use this routine the accumulator must first be loaded with a device number
+; between 4 and 30. When called this routine converts this device number to a talk
+; address. Then this data is transmitted as a command on the Serial bus.
+
+;LAB_FFB4
+	JMP	LAB_ED09		; command serial bus device to TALK
+
+
+;************************************************************************************
+;
+; read I/O status word
+
+; this routine returns the current status of the I/O device in the accumulator. The
+; routine is usually called after new communication to an I/O device. The routine
+; will give information about device status, or errors that have occurred during the
+; I/O operation.
+
+LAB_FFB7
+	JMP	LAB_FE07		; read I/O status word
+
+
+;************************************************************************************
+;
+; set logical, first and second addresses
+
+; this routine will set the logical file number, device address, and secondary
+; address, command number, for other KERNAL routines.
+
+; the logical file number is used by the system as a key to the file table created
+; by the OPEN file routine. Device addresses can range from 0 to 30. The following
+; codes are used by the computer to stand for the following CBM devices:
+
+; ADDRESS	DEVICE
+; =======	======
+;  0		Keyboard
+;  1		Cassette #1
+;  2		RS-232C device
+;  3		CRT display
+;  4		Serial bus printer
+;  8		CBM Serial bus disk drive
+
+; device numbers of four or greater automatically refer to devices on the serial
+; bus.
+
+; a command to the device is sent as a secondary address on the serial bus after
+; the device number is sent during the serial attention handshaking sequence. If
+; no secondary address is to be sent Y should be set to $FF.
+
+LAB_FFBA
+	JMP	LAB_FE00		; set logical, first and second addresses
+
+
+;************************************************************************************
+;
+; set the filename
+
+; this routine is used to set up the file name for the OPEN, SAVE, or LOAD routines.
+; The accumulator must be loaded with the length of the file and XY with the pointer
+; to file name, X being th low byte. The address can be any valid memory address in
+; the system where a string of characters for the file name is stored. If no file
+; name desired the accumulator must be set to 0, representing a zero file length,
+; in that case  XY may be set to any memory address.
+
+LAB_FFBD
+	JMP	LAB_FDF9		; set the filename
+
+
+;************************************************************************************
+;
+; open a logical file
+
+; this routine is used to open a logical file. Once the logical file is set up it
+; can be used for input/output operations. Most of the I/O KERNAL routines call on
+; this routine to create the logical files to operate on. No arguments need to be
+; set up to use this routine, but both the SETLFS, LAB_FFBA, and SETNAM, LAB_FFBD,
+; KERNAL routines must be called before using this routine.
+
+
+LAB_FFC0
+	JMP	(LAB_031A)		; do open a logical file
+
+
+;************************************************************************************
+;
+; close a specified logical file
+
+; this routine is used to close a logical file after all I/O operations have been
+; completed on that file. This routine is called after the accumulator is loaded
+; with the logical file number to be closed, the same number used when the file was
+; opened using the OPEN routine.
+
+LAB_FFC3
+	JMP	(LAB_031C)		; do close a specified logical file
+
+
+;************************************************************************************
+;
+; open channel for input
+
+; any logical file that has already been opened by the OPEN routine, LAB_FFC0, can be
+; defined as an input channel by this routine. the device on the channel must be an
+; input device or an error will occur and the routine will abort.
+;
+; if you are getting data from anywhere other than the keyboard, this routine must be
+; called before using either the CHRIN routine, LAB_FFCF, or the GETIN routine,
+; LAB_FFE4. if you are getting data from the keyboard and no other input channels are
+; open then the calls to this routine and to the OPEN routine, LAB_FFC0, are not needed.
+;
+; when used with a device on the serial bus this routine will automatically send the
+; listen address specified by the OPEN routine, LAB_FFC0, and any secondary address.
+;
+; possible errors are:
+;
+;	3 : file not open
+;	5 : device not present
+;	6 : file is not an input file
+
+LAB_FFC6
+	JMP	(LAB_031E)		; do open channel for input
+
+
+;************************************************************************************
+;
+; open channel for output
+
+; any logical file that has already been opened by the OPEN routine, LAB_FFC0, can be
+; defined as an output channel by this routine the device on the channel must be an
+; output device or an error will occur and the routine will abort.
+;
+; if you are sending data to anywhere other than the screen this routine must be
+; called before using the CHROUT routine, LAB_FFD2. if you are sending data to the
+; screen and no other output channels are open then the calls to this routine and to
+; the OPEN routine, LAB_FFC0, are not needed.
+;
+; when used with a device on the serial bus this routine will automatically send the
+; listen address specified by the OPEN routine, LAB_FFC0, and any secondary address.
+;
+; possible errors are:
+;
+;	3 : file not open
+;	5 : device not present
+;	7 : file is not an output file
+
+LAB_FFC9
+	JMP	(LAB_0320)		; do open channel for output
+
+
+;************************************************************************************
+;
+; close input and output channels
+
+; this routine is called to clear all open channels and restore the I/O channels to
+; their original default values. It is usually called after opening other I/O
+; channels and using them for input/output operations. The default input device is
+; 0, the keyboard. The default output device is 3, the screen.
+
+; If one of the channels to be closed is to the serial port, an UNTALK signal is sent
+; first to clear the input channel or an UNLISTEN is sent to clear the output channel.
+; By not calling this routine and leaving listener(s) active on the serial bus,
+; several devices can receive the same data from the VIC at the same time. One way to
+; take advantage of this would be to command the printer to TALK and the disk to
+; LISTEN. This would allow direct printing of a disk file.
+
+LAB_FFCC
+	JMP	(LAB_0322)		; do close input and output channels
+
+
+;************************************************************************************
+;
+; input character from channel
+
+; this routine will get a byte of data from the channel already set up as the input
+; channel by the CHKIN routine, LAB_FFC6.
+;
+; If CHKIN, LAB_FFC6, has not been used to define another input channel the data is
+; expected to be from the keyboard. the data byte is returned in the accumulator. the
+; channel remains open after the call.
+;
+; input from the keyboard is handled in a special way. first, the cursor is turned on
+; and it will blink until a carriage return is typed on the keyboard. all characters
+; on the logical line, up to 80 characters, will be stored in the BASIC input buffer.
+; then the characters can be returned one at a time by calling this routine once for
+; each character. when the carriage return is returned the entire line has been
+; processed. the next time this routine is called the whole process begins again.
+
+LAB_FFCF
+	JMP	(LAB_0324)		; do input character from channel
+
+
+;************************************************************************************
+;
+; output character to channel
+
+; this routine will output a character to an already opened channel. Use the OPEN
+; routine, LAB_FFC0, and the CHKOUT routine, LAB_FFC9, to set up the output channel
+; before calling this routine. If these calls are omitted, data will be sent to the
+; default output device, device 3, the screen. The data byte to be output is loaded
+; into the accumulator, and this routine is called. The data is then sent to the
+; specified output device. The channel is left open after the call.
+
+; NOTE: Care must be taken when using routine to send data to a serial device since
+; data will be sent to all open output channels on the bus. Unless this is desired,
+; all open output channels on the serial bus other than the actually intended
+; destination channel must be closed by a call to the KERNAL close channel routine.
+
+LAB_FFD2
+	JMP	(LAB_0326)		; do output character to channel
+
+
+;************************************************************************************
+;
+; load RAM from a device
+
+; this routine will load data bytes from any input device directly into the memory
+; of the computer. It can also be used for a verify operation comparing data from a
+; device with the data already in memory, leaving the data stored in RAM unchanged.
+
+; The accumulator must be set to 0 for a load operation or 1 for a verify. If the
+; input device was OPENed with a secondary address of 0 the header information from
+; device will be ignored. In this case XY must contain the starting address for the
+; load. If the device was addressed with a secondary address of 1 or 2 the data will
+; load into memory starting at the location specified by the header. This routine
+; returns the address of the highest RAM location which was loaded.
+
+; Before this routine can be called, the SETLFS, LAB_FFBA, and SETNAM, LAB_FFBD,
+; routines must be called.
+
+LAB_FFD5
+	JMP	LAB_F49E		; load RAM from a device
+
+
+;************************************************************************************
+;
+; save RAM to a device
+
+; this routine saves a section of memory. Memory is saved from an indirect address
+; on page 0 specified by A, to the address stored in XY, to a logical file. The
+; SETLFS, LAB_FFBA, and SETNAM, LAB_FFBD, routines must be used before calling this
+; routine. However, a file name is not required to SAVE to device 1, the cassette.
+; Any attempt to save to other devices without using a file name results in an error.
+
+; NOTE: device 0, the keyboard, and device 3, the screen, cannot be SAVEd to. If
+; the attempt is made, an error will occur, and the SAVE stopped.
+
+LAB_FFD8
+	JMP	LAB_F5DD		; save RAM to device
+
+
+;************************************************************************************
+;
+; set the real time clock
+
+; the system clock is maintained by an interrupt routine that updates the clock
+; every 1/60th of a second. The clock is three bytes long which gives the capability
+; to count from zero up to 5,184,000 jiffies - 24 hours plus one jiffy. At that point
+; the clock resets to zero. Before calling this routine to set the clock the new time,
+; in jiffies, should be in YXA, the accumulator containing the most significant byte.
+
+LAB_FFDB
+	JMP	LAB_F6E4		; set real time clock
+
+
+;************************************************************************************
+;
+; read the real time clock
+
+; this routine returns the time, in jiffies, in AXY. The accumulator contains the
+; most significant byte.
+
+LAB_FFDE
+	JMP	LAB_F6DD		; read real time clock
+
+
+;************************************************************************************
+;
+; scan the stop key
+
+; if the STOP key on the keyboard is pressed when this routine is called the Z flag
+; will be set. All other flags remain unchanged. If the STOP key is not pressed then
+; the accumulator will contain a byte representing the last row of the keyboard scan.
+
+; The user can also check for certain other keys this way.
+
+LAB_FFE1
+	JMP	(LAB_0328)		; do scan stop key
+
+
+;************************************************************************************
+;
+; get character from input device
+
+; in practice this routine operates identically to the CHRIN routine, LAB_FFCF,
+; for all devices except for the keyboard. If the keyboard is the current input
+; device this routine will get one character from the keyboard buffer. It depends
+; on the IRQ routine to read the keyboard and put characters into the buffer.
+
+; If the keyboard buffer is empty the value returned in the accumulator will be zero.
+
+LAB_FFE4
+	JMP	(LAB_032A)		; do get character from input device
+
+
+;************************************************************************************
+;
+; close all channels and files
+
+; this routine closes all open files. When this routine is called, the pointers into
+; the open file table are reset, closing all files. Also the routine automatically
+; resets the I/O channels.
+
+LAB_FFE7
+	JMP	(LAB_032C)		; do close all channels and files
+
+
+;************************************************************************************
+;
+; increment real time clock
+
+; this routine updates the system clock. Normally this routine is called by the
+; normal KERNAL interrupt routine every 1/60th of a second. If the user program
+; processes its own interrupts this routine must be called to update the time. Also,
+; the STOP key routine must be called if the stop key is to remain functional.
+
+LAB_FFEA
+	JMP	LAB_F69B		; increment real time clock
+
+
+;************************************************************************************
+;
+; return X,Y organization of screen
+
+; this routine returns the x,y organisation of the screen in X,Y
+
+;LAB_FFED
+	JMP	LAB_E505		; return X,Y organization of screen
+
+
+;************************************************************************************
+;
+; read/set X,Y cursor position
+
+; this routine, when called with the carry flag set, loads the current position of
+; the cursor on the screen into the X and Y registers. X is the column number of
+; the cursor location and Y is the row number of the cursor. A call with the carry
+; bit clear moves the cursor to the position determined by the X and Y registers.
+
+LAB_FFF0
+	JMP	LAB_E50A		; read/set X,Y cursor position
+
+
+;************************************************************************************
+;
+; return the base address of the I/O devices
+
+; this routine will set XY to the address of the memory section where the memory
+; mapped I/O devices are located. This address can then be used with an offset to
+; access the memory mapped I/O devices in the computer.
+
+LAB_FFF3
+	JMP	LAB_E500		; return the base address of the I/O devices
