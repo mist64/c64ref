@@ -30,7 +30,7 @@ $FF9F  SCNKEY  Detect keyboard entry
 $FFED  SCREEN  Return number of columns and rows
 $FF93  SECOND  Send secondary address after listen to serial
 $FFBA  SETLFS  Set logical file number, device number, and secondary address
-$FF90  SETMSG  Set message control
+$FF90  SETMSG  Set  fmessage control
 $FFBD  SETNAM  Establish filename
 $FFDB  SETTIM  Set jiffy clock from registers
 $FFA2  SETTMO  Set IEEE time-out
@@ -43,12 +43,11 @@ $FFAB  UNTLK   Send untalk to serial
 $FF8D  VECTOR  Read or set RAM vectors
 
 
-ACPTR
-FFA5
+# ACPTR FFA5
 
-Called by: None.
+**Called by**: None.
 
-Setup routines: TALK, TKSA
+**Setup routines**: TALK, TKSA
 
 The vector is JMP EE13/EF19. At EE13/EF19 the com-
 puter goes through a handshake sequence with the serial bus.
@@ -64,18 +63,17 @@ no problems, and if the eight bits are received without
 handshaking error, the routine returns the byte received in the
 accumulator.
 
-Exit conditions: The accumulator contains the byte received from the serial
+**Exit conditions**: The accumulator contains the byte received from the serial
 bus.
 
 
-CHKIN
-FFC6
+# CHKIN FFC6
 
-Called by: JSR at E11E/E11B in BASIC's Set Input Device.
+**Called by**: JSR at E11E/E11B in BASIC's Set Input Device.
 
-Setup routines: OPEN
+**Setup routines**: OPEN
 
-Entry Requirements: The X register should contain the logical file number.
+**Entry requirements**: The X register should contain the logical file number.
 
 JMP (031E) with a default of F20E/F2C7. If the logical file
 is in the logical file number table, the routine obtains the de-
@@ -113,10 +111,9 @@ device, location 99, to 2 for RS-232, then handles either the 3-
 line handshaking or the x-line handshaking opening sequence.
 
 
-CHKIN Execution
-F20E/F2C7-F236/F2EF
+# CHKIN Execution F20E/F2C7-F236/F2EF
 
-Called by:
+**Called by**:
 Indirect JMP through (031E) from Kernal CHKIN vector at FFC6.
 
 If the current logical file passed in the X register is in the
@@ -142,7 +139,7 @@ INPUT FILE message.
 Store the current device number in the input device num-
 ber, 99, CLC, and exit.
 
-Operation:
+**Operation**:
 
 1. JSR F30F/F3CF to see if the logical file number in the X
    register exists. If the logical file passed in the X register is
@@ -172,12 +169,11 @@ Operation:
 9. CLC and RTS.
 
 
-CHKOUT
-FFC9
+# CHKOUT FFC9
 
-Called by: JSR at E4AE/E115 in BASIC's Set Output Device.
+**Called by**: JSR at E4AE/E115 in BASIC's Set Output Device.
 
-Entry requirements: Set X register to logical file number.
+**Entry requirements**: Set X register to logical file number.
 
 JMP (0320) with default of F250/F309. If the logical file is
 in the logical file number table, obtain the device number and
@@ -215,10 +211,9 @@ put channel. This routine sets 9A to 2, and then it handles the
 3-line or x-line handshaking sequence.
 
 
-CHKOUT Execution
-F250/F309-F278/F331
+# CHKOUT Execution F250/F309-F278/F331
 
-Called by: Indirect JMP through (0320) from Kernal CHKOUT vector at
+**Called by**: Indirect JMP through (0320) from Kernal CHKOUT vector at
 FFC9.
 
 If the logical file number passed in the accumulator at en-
@@ -247,7 +242,7 @@ play the NOT OUTPUT FILE error message. If the secondary
 address is legal, set the output device number, 9A, to the
 value 1.
 
-Operation:
+**Operation**:
 
 1. JSR F30F/F3CF to see if the logical file number passed in
    the X register is in the logical file number table. If not, JMP
@@ -272,12 +267,11 @@ Operation:
 8. CLC and RTS.
 
 
-CHRIN
-FFCF
+# CHRIN FFCF
 
-Called by: JSR at E112/E10F in BASIC's Input a Character.
+**Called by**: JSR at E112/E10F in BASIC's Input a Character.
 
-Setup routines: OPEN, CHKIN (not required in retrieving from keyboard).
+**Setup routines**: OPEN, CHKIN (not required in retrieving from keyboard).
 
 JMP (0324) with default of F157/F20E.
 
@@ -330,17 +324,19 @@ turn has been entered. After processing the screen characters,
 the screen CHRIN then resets a flag at D0 to 0 to force input
 from the keyboard for the next CHRIN.
 
-Exit conditions: Accumulator holds byte returned from channel.
+**Exit conditions**: Accumulator holds byte returned from channel.
 
-Determine Input Device
-F157/F20E-F178/F22F
 
-Called by: Indirect JMP through (0324) from Kernal CHRIN vector at
+# Determine Input Device F157/F20E-F178/F22F
+
+**Called by**: Indirect JMP through (0324) from Kernal CHRIN vector at
 FFCF.
 
 Call the appropriate character input routine based on the
 input device number, 99.
-Operation:
+
+**Operation**:
+
 1. If 99 is set to 0 (keyboard), save D3 in CA, save D6 in C9,
    and JMP E632/E64F (see chapter 7) to receive a character
    from the keyboard.
@@ -355,18 +351,16 @@ Operation:
    a character from tape.
 
 
-CHROUT
-FFD2
+# CHROUT FFD2
 
-Called by: JSR at E10C/E109 in BASIC's Output a Character, JSR at
+**Called by**: JSR at E10C/E109 in BASIC's Output a Character, JSR at
 F135/FlEC in Display Kernal Message, JSR at F5C9/F661 in
 Display Filename, JSR at F726/F7A9 in Error Message
 Handler, JSR at F759/F7DC in Find Next Tape Header.
 
-Setup routines:
-OPEN, CHKOUT (not required if output device is the screen).
-Entry requirements:
-Accumulator should contain the character to be output, in
+**Setup routines**: OPEN, CHKOUT (not required if output device is the screen).
+
+**Entry requirements**: Accumulator should contain the character to be output, in
 CBM ASCII. JMP (0326) with a default of FlCA/F27A.
 
 If 9A, the current output device, is the screen (3), the
@@ -409,14 +403,16 @@ buffer. For the screen, though, the 64/VIC screen editor is set
 up to convert ASCII codes to screen codes or screen functions,
 and would not function well if you did not use ASCII.
 Determine Output Device
-FlCA/F27A-FlE4/F28E
+F1CA/F27A-F1E4/F28E
 
-Called by: Indirect JMP through (0326) from Kernal CHROUT vector at
+**Called by**: Indirect JMP through (0326) from Kernal CHROUT vector at
 FFD2.
 
 Call the appropriate character output routine based on the
 output device number, 9A.
-Operation:
+
+**Operation**:
+
 1. If the output device is the screen, JMP E716/E742 (see
    chapter 7) to output a character to the screen.
 2. If the output device is a serial device, JMP EDDD/EEE4 (see
@@ -428,10 +424,9 @@ Operation:
    chapter 10) to handle CHROUT to tape.
 
 
-CINT (64 only)
-FF81
+# CINT (64 only) FF81
 
-Called by: None.
+**Called by**: None.
 
 JMP FF5B to initialize the VIC-II (6567) chip registers,
 clear the screen, set the cursor pointer, initialize the screen line
@@ -464,13 +459,12 @@ reset.
  CIOUT
  FFA8
 
-Called by: None.
+**Called by**: None.
 
- Setup routines:
- LISTEN, SECOND (if serial device requires a secondary
+**Setup routines**: LISTEN, SECOND (if serial device requires a secondary
 address)
- Entry requirements:
- Accumulator should contain character to output. JMP EDDD/
+
+**Entry requirements**: Accumulator should contain character to output. JMP EDDD/
 EEE4 to execute the Send Serial Byte Deferred routine.
 
 When sending a character to a serial device, the routine
@@ -487,7 +481,7 @@ serial bus.
  CLALL
  FFE7
 
-Called by: JSR at A660/C660 in BASIC's CLR.
+**Called by**: JSR at A660/C660 in BASIC's CLR.
 
 JMP (0322) with a default of F32F/F3EF.
 
@@ -504,27 +498,27 @@ Set 99, the current input device, to be the keyboard.
 Set 9A, the current output device, to be the screen.
 
 
- Reset to No Open Files
-F32F /F3EF-F332/F3F2
+# Reset to No Open Files F32F /F3EF-F332/F3F2
 
-Called by: Indirect JMP through (032C) from Kernal CLALL vector at
+**Called by**: Indirect JMP through (032C) from Kernal CLALL vector at
 FFE7.
 
 Reset location 98, the number of open files, to zero and
 fall through to F333/F3F3 to reset any open serial channels
 and reset the default device numbers.
-Operation:
+
+**Operation**:
+
 1. Set 98, the number of open files, to 0.
 2. Fall through to F333/F3F3, Clear Serial Channels and Reset
    Default Devices routine.
 
 
-CLOSE
-FFC3
+# CLOSE FFC3
 
-Called by: JSR at ElCC/ElC9 in BASIC's CLOSE
+**Called by**: JSR at ElCC/ElC9 in BASIC's CLOSE
 
-Entry requirements:
+**Entry requirements**:
 Accumulator should contain the number of the logical file to
 be closed.
 
@@ -560,7 +554,7 @@ device number table, and the secondary address table.
 Determine Device for CLOSE
 F291/F34A-F2AA/F363
 
-Called by: Indirect JMP through (031C) from Kernal CLOSE vector at
+**Called by**: Indirect JMP through (031C) from Kernal CLOSE vector at
 FFC3.
 
 Upon entry, the accumulator contains the logical file num-
@@ -575,10 +569,13 @@ the logical file number onto the stack. Determine the type of
 device the logical file is using and branch to the appropriate
 routine for closing screen, keyboard, serial, or tape devices, or
 fall through to following code for closing RS-232 devices.
-Entry requirements:
+
+**Entry requirements**:
 Accumulator should contain the number of the logical file to
 be closed.
-Operation:
+
+**Operation**:
+
 1. JSR F314/F3D4 to see if the logical file number is in the
   logical file number table. Return with X as the index into
   table corresponding to this logical file if it exists; return with
@@ -604,8 +601,9 @@ Operation:
 Common Exit for Close Logical File Routines
 
 
-F2F1 /F3Bl-F30E/F3CE
-Called by: Falls through after JSR to Close Logical File for Serial Device
+# F2F1/F3Bl-F30E/F3CE
+
+**Called by**: Falls through after JSR to Close Logical File for Serial Device
 at F2EE/FEAE, BEQ at F29F/F358 and F2A3/F35C in Deter-
 mine Device to Close, BEQ at in F2CC/F391 Close Logical File
 for Tape, BNE at F2E4/F3A4 in Close Logical File for Tape ,
@@ -634,7 +632,9 @@ vice, and secondary address.
 Entry conditions:
 Index into file tables for current logical file is pulled from the
 stack at entry.
-Operation:
+
+**Operation**:
+
 1. Pull index into file tables for current logical file from stack.
 2. Transfer the index into the tables to X register.
 3. Decrement the number of open files (plus one), location 98.
@@ -644,19 +644,18 @@ Operation:
    write the entries for this current logical file. Thus, just CLC
    and RTS.
 5. If the number of open files (plus one) after decrement is not
-  equal to the value in the X register, the current logical file
-  being closed is not the last entry in the table. In this case,
-  move the last entries in the three tables (device number,
-  secondary address, logical file number) to the current logical
-  file entries. Before this move,the last entry is pointed to by
-  98 and the current entry by the X register.
+   equal to the value in the X register, the current logical file
+   being closed is not the last entry in the table. In this case,
+   move the last entries in the three tables (device number,
+   secondary address, logical file number) to the current logical
+   file entries. Before this move,the last entry is pointed to by
+   98 and the current entry by the X register.
 6. CLC and RTS.
 
 
-CLRCHN
-FFCC
+# CLRCHN FFCC
 
-Called by: JSR at A447/C447 in BASIC's Error Message Handler, JSR at
+**Called by**: JSR at A447/C447 in BASIC's Error Message Handler, JSR at
 ABB7/CBB7 in BASIC's INPUT#, JSR at E37B/E467 in BA-
 SIC's Warm Start, JSR at F6F4/F777 in Test for STOP Key, JSR
 at F716/F799 in Error Message Handler.
@@ -675,27 +674,27 @@ Set 9A, the current output device, to be the screen.
 
 Clear Serial Channels and Reset Default Devices
 
-F333/F3F3-F349/F409
 
-Called by: Indirect JMP through (0322) from Kernal CLRCHN vector at
+# F333/F3F3-F349/F409
+
+**Called by**: Indirect JMP through (0322) from Kernal CLRCHN vector at
 FFCC, fall through from F331/F3F1 in Reset to No Open Files.
 
-Operation:
+**Operation**:
+
 1. If the current output device is a serial device, JSR
-  EDFE/EF04 to command the serial device to unlisten.
+   EDFE/EF04 to command the serial device to unlisten.
 2. If the current input device is a serial device, JSR
-  EDEF/EEF6 to command the serial device to untalk.
+   EDEF/EEF6 to command the serial device to untalk.
 3. Reset 9A, the current output device, to the screen (3).
 4. Reset 99, the current input device, to the keyboard (0).
 
 
-GETIN
-FFE4
+# GETIN FFE4
 
-Called by: JSR at E121 in BASIC's Get a Character.
+**Called by**: JSR at E121 in BASIC's Get a Character.
 
-Setup routines:
-OPEN, CHKIN
+**Setup routines**: OPEN, CHKIN
 
 JMP(032A) with a default of F13E/FlF5.
 
@@ -736,10 +735,9 @@ Also, read one byte ahead to see if the next byte is zero, in-
 dicating end of file, and if true, set end-of-file status in 90.
 
 
- GETIN Preparation
-F13E/FlF5-F14D/F204
+# GETIN Preparation F13E/FlF5-F14D/F204
 
-Called by: Indirect JMP through (032A) from Kernal GETIN vector at
+**Called by**: Indirect JMP through (032A) from Kernal GETIN vector at
 FFE4.
 
 This routine first determines if the current input device is
@@ -750,20 +748,22 @@ using the same routines as are used by CHRIN.
 If the current input device is the keyboard and if the key-
 board buffer contains characters, JMP E5B4/E5CF to retrieve
 the first character from the keyboard buffer.
- Operation:
- 1. If 99, the current input device, is not 0 (the keyboard),
+
+**Operation**:
+
+1. If 99, the current input device, is not 0 (the keyboard),
    branch to step 5.
- 2. If 99 is 0 for the keyboard, see if any characters are in the
+2. If 99 is 0 for the keyboard, see if any characters are in the
    keyboard buffer as indicated by C6, the number of charac-
    ters in the keyboard buffer.
- 3. If no characters are in the keyboard buffer, just CLC and
+3. If no characters are in the keyboard buffer, just CLC and
    RTS, thus returning with the accumulator set to 0.
- 4. If characters do exist in the keyboard buffer, disable IRQ
+4. If characters do exist in the keyboard buffer, disable IRQ
    interrupts and JMP E5B4/E5CF to retrieve the first character
    from the keyboard buffer and exit.
- 5. If the current input device, 99, is 2 for RS-232, fall through
+5. If the current input device, 99, is 2 for RS-232, fall through
    to F14E/F205 for the routine to get characters from RS-232.
- 6. If the current input device is neither 0 nor 2, branch to
+6. If the current input device is neither 0 nor 2, branch to
    F166/F21D to get a character from other devices. F166/F21D
    is located in the Determine Input Device routine used by
    CHRIN; thus, other devices (tape, screen, serial) perform
@@ -773,7 +773,7 @@ the first character from the keyboard buffer.
  IOBASE
  FFF3
 
-Called by: JSR at E09E/E09B BASIC's in RND
+**Called by**: JSR at E09E/E09B BASIC's in RND
 
 JMP E500.
 
@@ -805,10 +805,9 @@ BASIC's RND uses this routine to access the CIA/VIA
 timer registers in generating a random number.
 
 
-IOINIT (64 only)
-FF84
+# IOINIT (64 only) FF84
 
-Called by: None.
+**Called by**: None.
 
 JMP FDA3 to initialize the CIA registers, the 6510 I/O
 data registers, the SID chip registers, start CIA #1 timer A, en-
@@ -824,10 +823,9 @@ main use for IOINIT is for an autostart cartridge that wants to
 use the same I/O settings that the Kernal normally uses.
 
 
-LISTEN
-FFB1
+# LISTEN FFB1
 
-Called by: None.
+**Called by**: None.
 
 JMP ED0C/EE17.
 
@@ -846,14 +844,13 @@ rial attention output line low to cause all devices on the serial
 bus to listen for a command coming on the bus.
 
 
-LOAD
-FFD5
+# LOAD FFD5
 
-Called by: JSR at E175/E172 in BASIC's LOAD /VERIFY.
+**Called by**: JSR at E175/E172 in BASIC's LOAD /VERIFY.
 
-Setup routines:
-SETLFS, SETNAM
-Entry requirements:
+**Setup routines**: SETLFS, SETNAM
+
+**Entry requirements**:
 Accumulator should be set to 0 for LOAD; accumulator set to
 1 for VERIFY.
 
@@ -920,24 +917,24 @@ blocks on tape (two blocks are used for error correcting pur-
 poses; they should be identical copies of each other).
 
 
-Jump to LOAD Vector
-F49E/F542-F4A4/F548
+# Jump to LOAD Vector F49E/F542-F4A4/F548
 
-Called by: JMP from Kernal LOAD vector at FFD5.
+**Called by**: JMP from Kernal LOAD vector at FFD5.
 
 The starting address for a possible relocatable load, speci-
 fied in the X and Y registers at entry, is stored in (C3), fol-
 lowed by JMP (0330) with the default vector of F4A5/F549.
-Operation:
+
+**Operation**:
+
 1. STX C3.
 2. STY C4.
 3. JMP(0330).
 
 
-Determine Device for LOAD
-F4A5/F549-F4B7/F55B and F533/F5CA-F538/F5D0
+# Determine Device for LOAD F4A5/F549-F4B7/F55B and F533/F5CA-F538/F5D0
 
-Called by: Indirect JMP through (0330) at F4A2/F546 in Jump to LOAD
+**Called by**: Indirect JMP through (0330) at F4A2/F546 in Jump to LOAD
 Vector.
 
 This routine determines which device is being used for
@@ -945,31 +942,32 @@ the load. Invalid devices are the screen, keyboard, or RS-232.
 Valid devices are serial devices or tape, and for these the rou-
 tine passes control to the appropriate serial or tape load
 routine.
-Operation:
+
+**Operation**:
+
 1. STA 93, thus setting the LOAD/VERIFY flag to 0 for LOAD
-  or to 1 for VERIFY.
+   or to 1 for VERIFY.
 2. Reset 90, the I/O status, to 0.
 3. LDA from BA, the current device number.
 4. If the current device is the keyboard (0) or the screen (3),
-  JMP F713/F796 to display the ILLEGAL DEVICE NUMBER
-  error message.
+   JMP F713/F796 to display the ILLEGAL DEVICE NUMBER
+   error message.
 5. If the current device number is less than 3, branch to step 7.
 6. If the current device number is greater than 3, it's a serial
-  device. Fall through to F4B8/F55C to load from a serial
-  device.
+   device. Fall through to F4B8/F55C to load from a serial
+   device.
 7. If the current device is RS-232, JMP F713/F0B9 to display
-  ILLEGAL DEVICE NUMBER.
+   ILLEGAL DEVICE NUMBER.
 8. If the current device number is not 2 (RS-232), the only
-  number left is 1 (tape). Fall through to F539/F5D1 to load
-  from tape.
+   number left is 1 (tape). Fall through to F539/F5D1 to load
+   from tape.
 
 
-MEMBOT
-FF9C
+# MEMBOT FF9C
 
-Called by: JSR at E403/E3E5 in BASIC's Cold Start.
+**Called by**: JSR at E403/E3E5 in BASIC's Cold Start.
 
-Entry requirements:
+**Entry requirements**:
 Carry should be set or clear, depending on function desired:
 
 Set carry to read bottom of memory.
@@ -992,28 +990,28 @@ VIC, 0400 for a VIC with 3K expansion, 1200 for a VIC with
 8K or more expanded, and 0800 for the 64.
 
 
-MEMBOT Execution
-FE34/FE82-FE42/FE90
+# MEMBOT Execution FE34/FE82-FE42/FE90
 
-Called by: JMP from Kernal MEMBOT vector at FF9C.
+**Called by**: JMP from Kernal MEMBOT vector at FF9C.
 
 If the carry is clear at entry, set (0281), the pointer to the
 bottom of memory, from the X and Y registers. If carry is set at
 entry, load X and Y registers from (0281).
-Operation:
+
+**Operation**:
+
 1.  If carry is clear, branch to step 3.
 2.  Load X and Y registers from pointer to bottom of memory
-   (0281), and fall through to step 3.
+    (0281), and fall through to step 3.
 3.  Set (0281) from values in X and Y registers.
 4.  RTS.
 
 
-MEMTOP
-FF99
+# MEMTOP FF99
 
-Called by: JSR at E40B/E3ED in BASIC's Cold Start.
+**Called by**: JSR at E40B/E3ED in BASIC's Cold Start.
 
-Entry requirements:
+**Entry requirements**:
 Carry should be set or clear, depending on function desired:
 
 Set carry to read end of memory.
@@ -1032,10 +1030,9 @@ If carry is set at entry, load X and Y registers from (0283),
 the pointer to the top of memory.
 
 
-MEMTOP Execution
-FE25/FE73-FE33/FE81
+# MEMTOP Execution FE25/FE73-FE33/FE81
 
-Called by: JMP from Kernal MEMTOP vector at FF99; alternate entry at
+**Called by**: JMP from Kernal MEMTOP vector at FF99; alternate entry at
 FE27/FE75 by JSR at F2B2/F377 in Close Logical File for RS-
 232, JSR at F468/F527 in Open RS-232 Device; alternate entry
 at FE2D/FE7B by JMP at F480/F53F in Open RS-232 Device,
@@ -1048,7 +1045,9 @@ of memory pointer (0283) is set from the X and Y register val-
 ues. If the carry is set, or if the routine is entered at
 FE27/FE75, the X and Y registers are set from the top of
 memory pointer (0283).
-Operation:
+
+**Operation**:
+
 1. FE25/FE73: If carry is set, branch to step 3.
 2. FE27/FE75: Load X and Y registers from pointer to top of
    memory (0283), and fall through to step 3.
@@ -1056,13 +1055,11 @@ Operation:
 4. RTS.
 
 
-OPEN
-FFC0
+# OPEN FFC0
 
-Called by: JSR at E1C1/E1BE in BASIC's OPEN.
+**Called by**: JSR at E1C1/E1BE in BASIC's OPEN.
 
-Setup routines:
-SETLFS, SETNAM
+**Setup routines**: SETLFS, SETNAM
 
 JMP(031A) with a default of F34A/F40A.
 
@@ -1086,10 +1083,9 @@ OPEN handles the x-line handshaking opening sequence in-
 correctly on the VIC.
 
 
-OPEN Execution
-F34A/F40A-F3D4/F494
+# OPEN Execution F34A/F40A-F3D4/F494
 
-Called by: Indirect JMP through (031A) from Kernal OPEN vector at
+**Called by**: Indirect JMP through (031A) from Kernal OPEN vector at
 FFC0.
 
 OPEN creates a logical file that can be used by Kernal
@@ -1110,43 +1106,45 @@ FILES message is displayed.
 If the device is the screen or keyboard, exit as these de-
 vices do not use files. For RS-232-C, serial, or tape devices,
 jump or branch to their respective OPEN routines.
-Operation:
-  1. If the logical file number is 0, JMP F70A/F78D to set error
+
+**Operation**:
+
+ 1. If the logical file number is 0, JMP F70A/F78D to set error
     message number of 6 (NOT INPUT FILE) and exit.
-  2. JSR F30F/F3CF to see if the logical file number in B8, the
+ 2. JSR F30F/F3CF to see if the logical file number in B8, the
     current logical file, is already present in the logical file
     number table.
-  3. If the logical file number is in the logical file number table,
+ 3. If the logical file number is in the logical file number table,
     JMP F6FE/F781 to set the error message number of 2
     (FILE OPEN) and exit.
-  4. LDX 98 to get the number of open files.
-  5. If less than ten open files exist, continue with step 6. If ten
+ 4. LDX 98 to get the number of open files.
+ 5. If less than ten open files exist, continue with step 6. If ten
     files are already open, JMP F6FB/F77E to set error mes-
     sage number of 1 (TOO MANY FILES).
-  6. Increment the number of open files, 98.
-  7. Store the current logical file number in the logical file
+ 6. Increment the number of open files, 98.
+ 7. Store the current logical file number in the logical file
     number table, using the X register value from step 4 as an
     index into the table at 0259.
-  8. LDA B9, the secondary address, then ORA $60 in case a
+ 8. LDA B9, the secondary address, then ORA $60 in case a
     secondary address is to be sent to a serial device. Store
     this value in the secondary address table entry that corre-
     sponds to the entry for this file in the logical file number
     table.
-  9. Store the current device number, BA, in the device number
+ 9. Store the current device number, BA, in the device number
     table entry that corresponds to the entry for this file in the
     logical file number table.
-10.  If the current device is the keyboard or the screen, CLC
+10. If the current device is the keyboard or the screen, CLC
     and RTS as there is no need to open files to these devices.
-11.  If the current device is 1 or 2, branch to step 14. For de-
+11. If the current device is 1 or 2, branch to step 14. For de-
     vices > 3, fall through to step 12.
 12.  JSR to F3D5/F495 to send secondary address in B9 to the
-    current device on the serial bus. The secondary address is
+   current device on the serial bus. The secondary address is
     ORed with $F0 before sending to provide the secondary
     address for OPEN. Return with carry clear if the serial de-
     vice was present and the secondary address was sent with-
     out errors. No error routine is called from OPEN if this
     sequence fails.
-13.  If the carry is clear on return from the JSR in step 12, exit
+13. If the carry is clear on return from the JSR in step 12, exit
     with carry clear. Flowever, if the routine does not return
     the carry clear to indicate the device was present and re-
     sponded in time, OPEN does not branch to any error rou-
@@ -1160,14 +1158,13 @@ Operation:
     (tape). Branch to F38B/F44B to open a logical file to tape.
 
 
-PLOT
-FFF0
+# PLOT FFF0
 
-Called by: JSR at AAE9/CAE9 in BASIC's Tab to Column for PRINT, JSR
+**Called by**: JSR at AAE9/CAE9 in BASIC's Tab to Column for PRINT, JSR
 at AAFA/CAFA in BASIC'S TAB and SPC, JSR at B39F/D39F
 in BASIC'S POS.
 
-Entry requirements:
+**Entry requirements**:
 Carry bit should be set or clear, depending on function desired:
 Set carry to read cursor location (X register = row, and Y
 register = column).
@@ -1194,10 +1191,9 @@ physical line numbers in decimal are 0-24 (64) and 0-22
 and 0-87 (VIC).
 
 
-RAMTAS (64 only)
-FF87
+# RAMTAS (64 only) FF87
 
-Called by: None.
+**Called by**: None.
 
 JMP FD50 to the Initialize Memory Pointers routine on
 the 64.
@@ -1221,29 +1217,26 @@ start cartridge since the RAMTAS functions are normally exe-
 cuted during system reset.
 
 
-RDTIM
-FFDE
+# RDTIM FFDE
 
-Called by: JSR at AF84/CF84 in BASIC's TI and TI$.
+**Called by**: JSR at AF84/CF84 in BASIC's TI and TI$.
 
 JMP F6DD/F760.
 
 This routine reads the jiffy clock (A2-A0) into the accu-
 mulator, X register, and Y register.
 
-A0 is updated every 1 /60 second. When the jiffy clock
+A0 is updated every 1/60 second. When the jiffy clock
 reaches a value equal to 24 hours, it is reset to 0.
 
-Exit conditions: Accumulator holds high byte of jiffy clock. X register holds
-
+**Exit conditions**: Accumulator holds high byte of jiffy clock. X register holds
 middle byte of jiffy clock. Y register holds low byte of jiffy
 clock.
 
 
-RDTIM/SETTIM Execution
-F6DD/F760-F6EC/F76F
+# RDTIM/SETTIM Execution F6DD/F760-F6EC/F76F
 
-Called by: JMP from Kernal RDTIM vector at FFDE; alternate entry at
+**Called by**: JMP from Kernal RDTIM vector at FFDE; alternate entry at
 F6E4/F767 by JMP from Kernal SETTIM vector at FFDB.
 
 From the RDTIM entry point, this routine reads the jiffy
@@ -1254,7 +1247,9 @@ F6E4/F767.
 If entering at the SETTIM entry point at F6E4/F767, set
 the jiffy clock at A2, A1, and A0 from the accumulator, X reg-
 ister, and Y register.
-Operation:
+
+**Operation**:
+
 1. F6DD/F760: SEI to disable interrupts.
 2. LDA from A2, LDX from A1, and LDY from A0.
 3. F6E4/F767: SEI to disable interrupts (which has no effect if
@@ -1263,10 +1258,9 @@ Operation:
 5. CLI to enable interrupts, then RTS.
 
 
-READST
-FFB7
+# READST FFB7
 
-Called by: JSR at ABDD/CBDD in BASIC's INPUT, JSR at AF9A/CF9A
+**Called by**: JSR at ABDD/CBDD in BASIC's INPUT, JSR at AF9A/CF9A
 in BASIC's STATUS, JSR at E180/E17D E195 in BASIC's
 LOAD/VERIFY.
 
@@ -1346,10 +1340,9 @@ Receiver Buffer Overun: The RS-232 input buffer is full and
 another byte has been received.
 
 
-Read/Set Status and Set Message Control
-FE07/FE57-FE20/FE6E
+# Read/Set Status and Set Message Control FE07/FE57-FE20/FE6E
 
-Called by: JMP from Kernal READST vector at FFB7; alternate entry at
+**Called by**: JMP from Kernal READST vector at FFB7; alternate entry at
 FE18/FE66 by JMP from Kernal SETMSG vector at FF90;
 alternate entry at FElC/FE6A by JSR at EDB2/EEB9 in Set
 Status Word, JSR at EE4F/EF4D in Receive Byte from Serial
@@ -1379,7 +1372,9 @@ If entry at FElA/FE6A, then set 90, the I/O status, by
 ORing the accumulator with the current value of 90. The
 routines that call this entry point set the accumulator to a
 value for an I/O status.
-Operation:
+
+**Operation**:
+
 1.  FE07/FE57: If the device number, BA, is not 2, branch to
    step 4.
 2.  If device number is 2 (RS-232): LDA 0297, PHA (64 only),
@@ -1395,10 +1390,9 @@ Operation:
    point of FElC/FE6A was used.
 
 
-RESTOR
-FF8A
+# RESTOR FF8A
 
-Called by: None.
+**Called by**: None.
 
 JMP FD15/FD52 to execute the routine to initialize the
 Kernal RAM vectors. This RAM vector initialization is also
@@ -1408,14 +1402,13 @@ Calling this routine restores the vectors at (0314)-(0332)
 to their default values from the table at FD30/FD6D.
 
 
-SAVE
-FFD8
+# SAVE FFD8
 
-Called by: JSR at E15F/E15C in BASIC's SAVE.
+**Called by**: JSR at E15F/E15C in BASIC's SAVE.
 
-Setup routines:
-SETLFS, SETNAM (not required for saving to tape)
-Entry requirements:
+**Setup routines**: SETLFS, SETNAM (not required for saving to tape)
+
+**Entry requirements**:
 The accumulator should contain the offset within zero page to
  a two-byte pointer to the start of the area to be saved. The X
 register should hold the low byte of the address of the end of
@@ -1473,10 +1466,9 @@ written to tape to allow for error checking and correction dur-
 ing tape loading.
 
 
-Jump to SAVE Vector
-F5DD/F675-F5EC/F684
+# Jump to SAVE Vector F5DD/F675-F5EC/F684
 
-Called by: JMP from Kernal SAVE vector at FFD8.
+**Called by**: JMP from Kernal SAVE vector at FFD8.
 
 Set the pointer to the end of the save area + 1, (AE),
 from the X and Y registers.
@@ -1489,7 +1481,9 @@ two page-zero bytes.
 
 Jump to the address in the vector at (0322), normally
 F5ED/F685.
-Operation:
+
+**Operation**:
+
 1. STX AE, the low byte of the address of the end of the save
    area + 1.
 2. STY AF, the high byte of the address of the end of the save
@@ -1502,10 +1496,9 @@ Operation:
    vector is F5ED/F685.
 
 
-Determine Device for SAVE
-F5ED/F685-F5F9/F691
+# Determine Device for SAVE F5ED/F685-F5F9/F691
 
-Called by: Indirect JMP through (0322) at F5EA/F682 in Jump to SAVE
+**Called by**: Indirect JMP through (0322) at F5EA/F682 in Jump to SAVE
 Vector.
 
 If the current device is the keyboard or the screen, load
@@ -1518,7 +1511,7 @@ as an illegal device).
 
 If the current device is a serial device, fall through to the
 Save to Serial Device routine.
-Operation:
+**Operation**:
 1. If the current device is the keyboard or the screen, JMP
    F713/F796 to display the ILLEGAL DEVICE NUMBER er-
    ror message, set accumulator to 9, set carry, and exit. The
@@ -1533,10 +1526,9 @@ Operation:
    Serial Device routine at F5FA/F692.
 
 
-SCNKEY
-FF9F
+# SCNKEY FF9F
 
-Called by: None.
+**Called by**: None.
 
 JMP EA87/EBlE to the Keyboard Scan routine (see chap-
 ter 4) to check for a keypress. If a valid key is found down and
@@ -1548,10 +1540,9 @@ program that runs with IRQ interrupts disabled, but you still
 want to scan the keyboard.
 
 
-SCREEN
-FFED
+# SCREEN FFED
 
-Called by: None.
+**Called by**: None.
 
 JMP E505 to return the number of columns on the stan-
 dard display screen in the X register and the number of rows
@@ -1563,13 +1554,11 @@ ning on the VIC or the 64 is to JSR to SCREEN and test the
 values returned.
 
 
-SECOND
-FF93
+# SECOND FF93
 
-Called by: None.
+**Called by**: None.
 
-Setup routines:
-LISTEN
+**Setup routines**: LISTEN
 
 JMP EDB9/EEC0 to send the byte in the accumulator on
 the serial bus as a secondary address command with the serial
@@ -1584,15 +1573,14 @@ Raeto Collin West's Programming the PET/CBM for a detailed
 chart of the IEEE command groups.
 
 
-SETLFS
-FFBA
+# SETLFS FFBA
 
-Called by: JSRs at E1DD/E1DA, E1F0/E1ED, and E1FD/E1FA in BA-
+**Called by**: JSRs at E1DD/E1DA, E1F0/E1ED, and E1FD/E1FA in BA-
 SIC's Set LOAD/VERIFY/SAVE Parameters; JSRs at
 E22B/E228, E23F/E23C, and E24E/E24B in BASIC's Handle
 Parameters for OPEN and CLOSE.
 
-Entry requirements:
+**Entry requirements**:
 The accumulator should hold the logical file number, the X
 register should hold the device number, and the Y register
 should hold the secondary address.
@@ -1627,11 +1615,9 @@ dresses greater than 31 are used to represent commands to se-
 rial devices.
 
 
-Set Logical File Number, Device Number, Secondary
-Address
-FE00/FE50-FE06/FE56
+# Set Logical File Number, Device Number, Secondary Address FE00/FE50-FE06/FE56
 
-Called by: JMP from Kernal SETLFS vector at FFBA.
+**Called by**: JMP from Kernal SETLFS vector at FFBA.
 
 In preparation for other Kernal I/O routines, this sets the
 logical file number, device number, and secondary address.
@@ -1655,20 +1641,21 @@ erations, 255 (or any odd value > 128) is the same as a
 secondary address of 3. See " Block SAVE and LOAD" by
 Sheila Thornton in COMPUTE!'s Second Book of VIC from
 COMPUTE! Books.
-Operation:
+
+**Operation**:
+
 1. STA B8, the logical file number.
 2. STX BA, the device number.
 3. STY B9, the secondary address.
 
 
-SETMSG
-FF90
+# SETMSG FF90
 
-Called by: JSR at A47D/C47D in BASIC's Enable Kernal Control Mes-
+**Called by**: JSR at A47D/C47D in BASIC's Enable Kernal Control Mes-
 sages, JSR at A874/C874 in BASIC'S Disable Kernal Control
 Messages.
 
-Entry requirements:
+**Entry requirements**:
 Accumulator should contain the value used to set message
 control: $80 allows Kernal control messages; $40 allows Kernal
 error messages; $C0 allows both Kernal control and error mes-
@@ -1684,14 +1671,13 @@ are reversed in describing how to set message control in the
 64 and VIC Programmer's Reference Guides.
 
 
-SETNAM
-FFBD
+# SETNAM FFBD
 
-Called by: JSR at ElD6/ElD3 in BASIC's Set LOAD /VERIFY /SAVE
+**Called by**: JSR at ElD6/ElD3 in BASIC's Set LOAD /VERIFY /SAVE
 Parameters, JSRs at E21B/E218 and E261/E25E in BASIC's
 Handle Parameters for OPEN and CLOSE.
 
-Entry requirements:
+**Entry requirements**:
 Accumulator should contain the length of the filename. The X
 register should hold the low byte of the starting address of the
 filename. The Y register should hold the high byte of the file-
@@ -1718,10 +1704,9 @@ address you specify in SETLFS is larger than 128, the filename
 is not sent for OPEN, LOAD, or SAVE.
 
 
-Set Filename Location and Number of Characters
-FDF9/FE49-FDFF/FE4F
+# Set Filename Location and Number of Characters FDF9/FE49-FDFF/FE4F
 
-Called by: JMP from Kernal SETNAM vector at FFBD.
+**Called by**: JMP from Kernal SETNAM vector at FFBD.
 
 The location of the filename is placed in a pointer at (BB),
 and the nurnber of characters in the filename is placed in B7.
@@ -1731,18 +1716,19 @@ Kernal routines OPEN, SAVE, and LOAD. If no filename is
 needed for these routines, load the accumulator with zero
 before calling this routine. Flowever, loading or saving to a se-
 rial device requires that a filename be present.
-Operation:
+
+**Operation**:
+
 1. STA B7, the number of characters in the filename.
 2. STX BB, the low byte of the address of the filename.
 3. STY BC, the high byte of the address of the filename.
 
 
-SETTIM
-FFDB
+# SETTIM FFDB
 
-Called by: JMP at AA1A/CA1A in BASIC's TI$.
+**Called by**: JMP at AA1A/CA1A in BASIC's TI$.
 
-Entry requirements:
+**Entry requirements**:
 The accumulator should hold the high byte to be stored in the
 jiffy clock. The X register should hold the middle byte to be
 stored in the jiffy clock. The Y register should hold the low
@@ -1752,10 +1738,9 @@ JMP F6E4/F767 to set the three-byte jiffy clock at A2-A0
 from the values in the accumulator, X register, and Y register.
 
 
-SETTMO
-FFA2
+# SETTMO FFA2
 
-Called by: None.
+**Called by**: None.
 
 JMP FE21/FE6F to store accumulator in 0285. The VIC-20
 Programmer's Reference Guide refers to this routine as setting a
@@ -1767,10 +1752,9 @@ ferred to, it's hard to see how it can be used to enable or dis-
 able timeouts.
 
 
-STOP
-FFE1
+# STOP FFE1
 
-Called by: JSR at A82C/C82C in BASIC's Test for STOP Key, JSR at
+**Called by**: JSR at A82C/C82C in BASIC's Test for STOP Key, JSR at
 F4F9/F590 in Load/Verify from Serial Device, JSR at
 F62E/F6C6 in Save to Serial Device; JSR at F8D0/F94B Test
 for STOP Key During Tape I/O; JSR at FE61/FECD in NMI
@@ -1802,7 +1786,7 @@ in the accumulator (64 and VIC).
 Test for STOP Key
 F6ED/F770-F6FA/F77D
 
-Called by: Indirect JMP through (0328) from Kernal STOP vector at FFE1.
+**Called by**: Indirect JMP through (0328) from Kernal STOP vector at FFE1.
 
 This routine is called to test whether the STOP key is be-
 ing held down. When the STOP key is found down, this rou-
@@ -1811,7 +1795,9 @@ routine to test for this result with BEQ.
 
 Location 91 has the value of the keyboard scan for the
 STOP key column during the last IRQ or NMI interrupt.
-Operation:
+
+**Operation**:
+
 1. LDA 91.
 2. Check for the value that indicates the STOP key is pressed,
    $7F/$FE.
@@ -1827,12 +1813,11 @@ Operation:
 7. RTS.
 
 
-TALK
-FFB4
+# TALK FFB4
 
-Called by: None.
+**Called by**: None.
 
-Entry requirements:
+**Entry requirements**:
 Accumulator should hold the serial device number (4-31
 decimal).
 
@@ -1842,14 +1827,13 @@ command over the serial data bus while the serial attention
 output line is held low.
 
 
-TKSA
-FF96
+# TKSA FF96
 
-Called by: None.
+**Called by**: None.
 
-Setup routines:
-TALK.
-Entry requirements:
+**Setup routines**: TALK.
+
+**Entry requirements**:
 Accumulator should hold the secondary address 0-31 (deci-
 mal) ORed with $60.
 
@@ -1867,27 +1851,25 @@ ary addresses can be 2-15 with 15 the command channel and
 0 and 1 reserved for load and save.
 
 
-UDTIM
-FFEA
+# UDTIM FFEA
 
-Called by: JSR at EA31/EABF in IRQ Interrupt Handler.
+**Called by**: JSR at EA31/EABF in IRQ Interrupt Handler.
 
 JMP F69B/F734 to update the jiffy clock at A2-A0 and
 store a value from the keyboard row for column number
 seven/three (which contains the STOP key) in 91 if a key in
 that row is detected.
 
-Normally, this routine is called by the IRQ interrupt han-
+Normally, this routine is **Called by** the IRQ interrupt han-
 dler (64 and VIC) or by the NMI interrupt handler (VIC only).
 However, if you run a program with IRQ interrupts disabled,
 you should call this routine if you want the jiffy clock in-
 cremented and the STOP key column value saved in 91.
 
 
-UNLSN
-FFAE
+# UNLSN FFAE
 
-Called by: None.
+**Called by**: None.
 
 JMP EDFE/EF04 to send $3F, the command for UNLISTEN,
 over the serial bus. Serial devices that are listening should rec-
@@ -1895,22 +1877,20 @@ ognize the command and terminate their connection to the se-
 rial bus.
 
 
-UNTALK
-FFAB
+# UNTALK FFAB
 
-Called by: None.
+**Called by**: None.
 
 JMP EDEF/EEF6 to send $5F, the command for UNTALK,
 over the serial bus. Serial devices that are talking should quit
 talking and terminate their connection to the serial bus.
 
 
-VECTOR
-FF8D
+# VECTOR FF8D
 
-Called by: None.
+**Called by**: None.
 
-Entry requirements:
+**Entry requirements**:
 Carry should be set or clear, depending on the function
 desired:
 
@@ -1921,7 +1901,7 @@ registers.
 Clear the carry bit to load the RAM vectors at
 (0314)-(0332) from the location pointed to by X and Y.
 
-JMP FDlA/FD57 (see chapter 2).
+JMP FD1A/FD57 (see chapter 2).
 
 Store X and Y at (C3), the base address of where the vec-
 tor table will be read from or stored to.
