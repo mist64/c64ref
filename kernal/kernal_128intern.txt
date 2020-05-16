@@ -1,143 +1,168 @@
-﻿CINIT
-Zweck:    Video-Controller und Editor initialisieren
-Adresse: $FF8I (65409)
-Beschreibung: Es werden die Funktionstasten auf Standard
+﻿Adresse: $FF81  CINIT   Video-Controller und Editor initialisieren
+
+Es werden die Funktionstasten auf Standard
 gelegt, beide Video-Controller initialisiert und der 40/80-
 Zeichen-Modus in Abhängigkeit der 40/80-Zeichen-Taste
 eingeschaltet. Weiterhin werden der Tastaturbuffer gelöscht
 sowie alle Flags rückgesetzt und ein CLRCH ausgeführt.
-IOlNIT
-Zweck:  Initialisierung der Ein/Ausgabegeräte
-Adresse: $FF84 (65412)
-Beschreibung: Die Ein/Ausgabegeräte werden initialisiert, d.h.
+
+Adresse: $FF84  IOINIT Initialisierung der Ein/Ausgabegeräte
+
+Die Ein/Ausgabegeräte werden initialisiert, d.h.
 die RESET-Leitung auf dem IEC-Bus wird aktiviert. Ange-
 schlossene Drucker werden in den Anfangszustand versetzt und
 die Floppy löscht ihre Kanäle - hört sich also an, als ob sie
 gerade eingeschaltet worden wäre.
-RAMTAS
-Zweck:   BASIC-Warmstart
-Adresse: $FF87 (65415)
-Beschreibung: Diese Routine initialisiert die Zeropage, setzt die
+
+Adresse: $FF87  RAMTAS  BASIC-Warmstart
+
+Diese Routine initialisiert die Zeropage, setzt die
 Zeiger für SYSTOP und SYSBOT (also die Speicherunter- und -
 obergrenze), setzt die Zeiger für die RS-232-Ein/Ausgabebuffer
 und den Kassettenbuffer zurück.
-RESTOR
-Zweck:   Systemvektoren initialisieren
-Adresse :$FF8A (65418)
-Beschreibung: Es werden die Systemvektoren ab Adresse $0314
+
+Adresse: $FF8A RESTOR  Systemvektoren initialisieren
+
+Es werden die Systemvektoren ab Adresse $0314
 bis $0332 (inkl.) auf Normalwert gesetzt. Diese Routine sollte
 aufgerufen werden, wenn Sie zu viele Vektoren verbogen und
 die Übersicht verloren haben oder wenn Sie beispielsweise ein
 Erweiterungspaket ausschalten wollen. Diese Routine ruft die
 folgende VECTOR-Routine mit gelöschtem CARRY auf.
-VECTOR
-Zweck:   Systemvektoren kopieren oder rücksetzen
-Adresse: $FF8D(65421)
-Beschreibung: Diese Routine kopiert die 16 Vektoren ab $0314
+
+Adresse: $FF8D  VECTOR  Systemvektoren kopieren oder rücksetzen
+
+Diese Routine kopiert die 16 Vektoren ab $0314
 in den durch das X- (Low) und Y-Register (High) definierten
 Speicher, sofern das CARRY-Flag gesetzt ist. Bei gelöschtem
 CARRY-Flag werden die Vektoren ab $0314 mit dem durch das
 X- und Y-Register angegebenen Bereich geladen.
+
 Eingabeparameter: .X, .Y, CARRY
+
 Beispiel:
-           LDX #$00 ;Lo-Byte von $1000
-          LDY#$10 ;Hi-Byte von $1000
-           CLC     ;L6sche Carry zum Kopieren ($1000)->($0314)
-           JSR $FF80 ;Belege Vektoren neu
-SETMSG
-Zweck:       DOS-Meldungen  ermöglichen/verhindern
-Adresse: $FF90 (65424)
-Beschreibung: Die Routine speichert den Wert des <Akku> in
+
+            LDX #$00  ;Lo-Byte von $1000
+            LDY #$10  ;Hi-Byte von $1000
+            CLC       ;Lösche Carry zum Kopieren ($1000)->($0314)
+            JSR $FF80 ;Belege Vektoren neu
+
+Adresse: $FF90  SETMSG DOS-Meldungen ermöglichen/verhindern
+
+Die Routine speichert den Wert des <Akku> in
 der Zeropage-Adresse $9D. Sollen Systemmeldungen ausgegeben
 werden, so ist das Bit 7 des <Akkus> zu setzen. Ist $9D positiv,
 so werden Systemmeldungen verhindert.
+
 Eingabeparameter: .A
-SECND
-Zweck:      Sekundäradresse nach  LISTEN  senden
-Adresse: $FF93 (65427)
-Beschreibung: Es wird die zu sendende Sekundäradresse im
+
+Adresse: $FF93  SECND  Sekundäradresse nach LISTEN senden
+
+Es wird die zu sendende Sekundäradresse im
 <Akku> übergeben. Die Routine gibt den <Akku> dann als
 Sekundäradresse auf dem IEC-Bus aus.
-Eingabcparameler: .A
+
+Eingabeparameter: .A
+
 Beispiel:
-           ;LISTEN wurde gesendet
-           LDA #$F0 ;Sekadr. 0 bei CLOSE
-           JSR $FF93 ;Sekundaradresse senden
-TKSA
-Zweck:    Sekundäradresse nach  TALK senden
-Adresse: $FF96 (65430)
-Beschreibung: Adäquat zu der vorhergehenden Routine sendet
+
+            ;LISTEN wurde gesendet
+            LDA #$F0  ;Sekadr. 0 bei CLOSE
+            JSR $FF93 ;Sekundaradresse senden
+
+Adresse: $FF96  TKSA    Sekundäradresse nach TALK senden
+
+Adäquat zu der vorhergehenden Routine sendet
 diese Routine die Sekundäradresse - übergeben im <Akku> -
 nach erfolgtem TALK-Signal an den IEC-Bus.
+
 Eingabeparameter: .A
-MEMTOP
-Zweck:   Setzen/FIolen  der Speicherobergrenze
-Adresse: $FF99 (65433)
-Beschreibung: Ist das CARRY-Flag gesetzt, so wird im X-
+
+Adresse: $FF99  MEMTOP  Setzen/Holen der Speicherobergrenze
+
+Ist das CARRY-Flag gesetzt, so wird im X-
 Register (Lo) und Y-Register (Hi) die maximal verfügbare
 Speicherstelle übergeben. Wird die Routine mit gelöschtem
 CARRY angesprungen, so wird die Speicherobergrenze mit den
 beiden Registern belegt.
+
 Eingabeparameter: .X, .Y (bei gelöschtem CARRY), CARRY
+
 Ausgabeparameter: .X, .Y (bei gesetztem CARRY)
+
 Beispiel:
-MEMBOT
-Zweck:    Setzen/Holen der Speicheruntergrenze
-Adresse: $FF9C (65436)
-Beschreibung: Genauso wie bei der Routine MEMTOP wird bei
+
+            ;Auslesen der Speicherobergrenze
+            SEC       ;Auslesen der Obergrenze
+            JSR $FF99 ;Hole Obergrenze
+            STX $FC   ;zwischenspeichern
+            STY $FD   ;zwischenspeichern
+            LDX #$00  ;Lo-Byte von $1000
+            LDY #$10  ;Hi-Byte von $1000
+            CLC       ;Flag zum Setzen des MEMTOP
+            JSR $FF99 ;Setze Speicherobergrenze
+
+Adresse: $FF9C  MEMBOT  Setzen/Holen der Speicheruntergrenze
+
+Genauso wie bei der Routine MEMTOP wird bei
 gelöschtem CARRY-Flag die Untergrenze des verfügbaren
 Speichers mit den beiden Registern X ^Lo) und Y (Hi) belegt.
 Ist das CARRY-Flag gesetzt, so wird die Speicheruntergrenze
 ausgelesen und in den beiden Registern übergeben.
+
 Eingabeparameter: .X, .Y (bei gelöschtem CARRY), CARRY
+
 Ausgabeparameter: .X, .Y (bei gesetztem CARRY)
-KEY
-Zweck :Ermitteln gedrückter Tasten
-Adresse: $FF9F (65439)
-Beschreibung:   Diese   Routine  ist  elementar  zur   Tastatur-
+
+Adresse: $FF9F  KEY    Ermitteln gedrückter Tasten
+
+Diese  Routine ist elementar zur Tastatur-
 dekodierung. Die Tastatur wird auf eine gedrückte Taste anhand
 der Tastaturdekodiertabellen überprüft. Wird eine gedrückte
 Taste ermittelt, so wird der ASCII-Wert errechnet und dieser
 dem Tastaturbuffer (ab $034A) hinzugefügt.
-SETTMO
-Zweck:   Setzen des Timeout-Flags für IEEE
-Adresse: $FFA2 (65442)
-Beschreibung: Die Routine speichert den im <Akku> überge-
+
+Adresse: $FFA2  SETTMO  Setzen des Timeout-Flags für IEEE
+
+Die Routine speichert den im <Akku> überge-
 benen Wert als Timeout-Flag für die IEEE-Routinen an Adresse
 $0A0E. Um den Timeout in den IEEE-Routinen zu
 ermöglichen, muß das Bit 7 des <Akkus> gesetzt sein.
+
 Eingabeparameter: .A
-ACPTR
-Zweck:    Holt ein Byte vom seriellen Bus
-Adresse: $FFA5 (65445)
-Beschreibung: Die Routine holt ein Byte vom seriellen IEC-Bus.
+
+Adresse: $FFA5  ACPTR   Holt ein Byte vom seriellen Bus
+
+Die Routine holt ein Byte vom seriellen IEC-Bus.
 Das geholte Zeichen wird im Akku übergeben. Das Statusbyte
 ST an $90 wird entsprechend der Aktion gesetzt.
+
 Ausgabeparameter: .A
-CIOUT
-Zweck:     Ausgabe  eines Zeichens auf IEC-Bus
-Adresse: $FFA8 (65448)
-Beschreibung: Diese Routine ist das Gegenstück zu ACPTR. Das
+
+Adresse: $FFA8  CIOUT  Ausgabe eines Zeichens auf IEC-Bus
+
+Diese Routine ist das Gegenstück zu ACPTR. Das
 im <Akku> übergebene Zeichen wird auf dem lEC-Bus ausge-
 geben. Auch hier wird das Statusbyte ST an $90 entsprechend
 der Aktion geändert.
+
 Eingabeparameter: .A
-UNTLK
-Zweck:     UNTALK auf lEC-Bus senden
-Adresse: $FFAB(65451)
-Beschreibung: Diese Routine wird beim Schließen bzw. Umlegen
+
+Adresse: $FFAB  UNTLK   UNTALK auf lEC-Bus senden
+
+Diese Routine wird beim Schließen bzw. Umlegen
 eines Eingabekanals aufgerufen. Sie bringt das zum Reden
 (TALK) gebrachte Gerät zum Schweigen.
-UNLSN
-Zweck:  UNLISTEN auf IEC-Bus senden
-Adresse: $FFAE (65454)
-Beschreibung: Entsprechend zu UNTALK wird bei dieser
+
+Adresse: $FFAE  UNLSN  UNLISTEN auf IEC-Bus senden
+
+Entsprechend zu UNTALK wird bei dieser
 Routine ein empfangendes Gerät vorerst abgeschaltet. Dies wird
 beim Schließen oder Umlegen eines Ausgabekanals gemacht.
-LISTN
-Zweck:     Senden  von LISTEN an ein Gerät
-Adresse: $FFB1 (65457)
-Beschreibung: Es wird ein am IEC-Bus angeschlossenes Gerät
+
+Adresse: $FFB1  LISTN   Senden von LISTEN an ein Gerät
+
+Es wird ein am IEC-Bus angeschlossenes Gerät
 zum Empfang aufgefordert. Dazu wird das Signal LISTEN über
 den IEC-Bus geschickt. Im <Akku> wird die Geräteadresse des
 anzusprechenden Gerätes übergeben. Beispielsweise wird bei
@@ -151,43 +176,49 @@ komplizierten Arbeiten zu vereinfachen, können Sie im
 Betriebssystem Kanäle öffnen und schließen. BSOUT und
 BASIN übernehmen dann das Senden von LISTEN und
 UNLISTEN sowie TALK und UNTALK.
+
 Eingabeparameter: .A
+
 Beispiel:
-           ;LISTEN an Drucker senden
-           LDA #$24 ;Geräteadresse Drucker & LISTEN ein
-           JSR $FFB1
-TALK
-Zweck:    Senden von  TALK an ein Gerät
-Adresse: $FFB4 (65460)
-Beschreibung: Entsprechend der Routine LISTN sendet diese
+
+            ;LISTEN an Drucker senden
+            LDA #$24 ;Geräteadresse Drucker & LISTEN ein
+            JSR $FFB1
+
+Adresse: $FFB4  TALK   Senden von TALK an ein Gerät
+
+Entsprechend der Routine LISTN sendet diese
 Routine das Kommando TALK an ein beliebiges Gerät. Die
 Geräteadresse ist im <Akku> zu übergeben. Das Kommando
 TALK fordert ein am IEC-Bus angeschlossenes Gerät zum
 Reden, also zum Senden von Informationen auf.
+
 Eingabeparameter: .A
-READST
-Zweck:    Holen  des I/O-Statusbytes
-Adresse: $FFB7 (65463)
-Beschreibung: Es wird der aktuelle Systemstatus im <Akku>
+
+Adresse: $FFB7  READST  Holen des I/O-Statusbytes
+
+Es wird der aktuelle Systemstatus im <Akku>
 zurückgegeben. Ist die RS232 aktiv, so wird das Statusbyte
 übergeben und direkt im Speicher gelöscht. Sollten Sie also das
 Statusbyte öfters benötigen, so speichern Sie es zwischen. Ist ein
 anderer als der RS232-Kanal geöffnet, so wird das Statusbyte
 von Adresse $90 übergeben.
+
 Ausgabeparameter: .A
-SETLFS
-Zweck:   Fileparameter setzen
-Adresse: $FFBA (65466)
-Beschreibung: Diese Routine wird überall dort benötigt, wo man
+
+Adresse: $FFBA  SETLFS  Fileparameter setzen
+
+Diese Routine wird überall dort benötigt, wo man
 Files öffnen muß. Man übergibt die logische File-nummer im
 <Akku>, die Geräteadresse im X-Register und die Sekun-
 däradresse im Y-Register. Die Routine speichert diese Werte an
 den Zeropage-Adressen $B8 bis $BA ab.
+
 Eingabeparameter: .A, .X, .Y
-SETNAM
-Zweck:   Setzen  der Filenamenparameter
-Adresse: $FFBD (65469)
-Beschreibung: In der Routine werden die Informationen für den
+
+Adresse: $FFBD  SETNAM  Setzen der Filenamenparameter
+
+In der Routine werden die Informationen für den
 Filenamen in der Zeropage gespeichert. Diese Angaben sind alle
 vor dem Öffnen eines Kanales zu machen. Im <Akku> wird die
 Länge des Filenamens übergeben, im X-Register das Lo-Byte
@@ -195,51 +226,60 @@ der Adresse und im Y-Register das Hi-Byte der Adresse, an der
 der Filename gespeichert ist. Ferner müssen Sie mit der
 SETBNK-Routine die Konfigurationsindizes für den Filenamen
 und den zu bearbeitenden Speicherbereich übergeben.
+
 Eingabeparameter: .A, .X, .Y
+
 Beispiel:
-            ;Eroffnen eines des Directory-Files auf Diskette
-            LDA #$0C ;Bereich im RAM-Bank 0
+
+            ;Eröffnen eines des Directory-Files auf Diskette
+            LDA #$0C  ;Bereich im RAM-Bank 0
             TAX       ;Filename auch in RAM-Bank 0
             JSR $FF68 ;SETBNK aufrufen
-            LDA #$01 ;Logische Filenummer
-            LDX #$08 ;Geräteadresse
-            LDY #$00 ;Sekundäradresse für Lesen
+            LDA #$01  ;Logische Filenummer
+            LDX #$08  ;Geräteadresse
+            LDY #$00  ;Sekundäradresse für Lesen
             JSR $FFBA ;SETLFS
-            LDA #$01 ;Länge des Filenamens
-            LDX #$00 ;Lo-Byte der Adresse, an der der
-            LDY #$10 ;Filename gespeichert ist ($1000)
+            LDA #$01  ;Länge des Filenamens
+            LDX #$00  ;Lo-Byte der Adresse, an der der
+            LDY #$10  ;Filename gespeichert ist ($1000)
             JSR $FFBD ;SETNAM
             JSR $FFC0 ;OPEN - Öffnen des Kanals
+
 und an Adresse $1000:
-       01000 24 ___
-OPEN
-Zweck:    öffnen einer Datei
-Adresse: $FFC0 (65472)
-Beschreibung: Es wird die durch die Routinen SETNAM,
+
+    01000 24 ....
+
+Adresse: $FFC0  OPEN    öffnen einer Datei
+
+Es wird die durch die Routinen SETNAM,
 SETLFS und SETBNK definierte Datei in die Liste der
 logischen Filenummern aufgenommen. Erst ab diesem Augen-
 blick können die logischen Filenummern bei den Routinen
 CKOUT und CHKIN angegeben werden. Beachten Sie, daß Sie
 maximal neun Files auf einmal öffnen können.
-CLOSE
-Zweck:     Schließen einer logischen Datei
-Adresse: $FFC3 (65475)
-Beschreibung: Es wird die im <Akku> übergebene logische Datei
+
+Adresse: $FFC3  CLOSE   Schließen einer logischen Datei
+
+Es wird die im <Akku> übergebene logische Datei
 geschlossen. Dabei werden alle gespeicherten Werte wie
 Geräteadresse, Sekundäradresse etc. in der dafür vorgesehenen
 Tabelle gelöscht. Ist die Aktion nicht problemlos verlaufen, so
 wird das CARRY-Flag gesetzt.
+
 Eingabeparameter: .A
+
 Ausgabeparameter: CARRY
+
 Beispiel:
-          ;Beispiel für CLOSE
-          LDA #$01 ;SchlieBen der Beispieldatei von SETNAM
-          JSR $FFC3 ;CLOSE ausführen
-          BCS Error ;Fehler aufgetreten
-CIIKIN
-Zweck:     Logische Datei als Eingabekanal definieren
-Adresse: $FFC6 (65478)
-Beschreibung: Im X-Register wird die logische Dateinummer
+
+            ;Beispiel für CLOSE
+            LDA #$01  ;Schließen der Beispieldatei von SETNAM
+            JSR $FFC3 ;CLOSE ausführen
+            BCS Error ;Fehler aufgetreten
+
+Adresse: $FFC6  CHKIN   Logische Datei als Eingabekanal definieren
+
+Im X-Register wird die logische Dateinummer
 übergeben, die als Eingabekanal benutzt werden soll. Die ange-
 gebene logische Dateinummer muß natürlich bereits mit dem
 OPEN-Kommando geöffnet worden sein. Wird nach dem Aufruf
@@ -251,18 +291,22 @@ wendig ist, da die Tastatur Standard-Eingabegerät ist. Nach
 einem CLOSE oder CLRCH ist die Tastatur automatisch wieder
 das Eingabegerät. Auch bei dieser Routine wird das CARRY als
 OK-Flag benutzt.
+
 Eingabeparameter: .X
+
 Ausgabeparameter: CARRY
+
 Beispiel:
+
             ;Einlesen der Directory
             JSR DIROP ;OPEN 1,8,0,"$" (selbstdefinierte Routine)
-            LDX #$01 ;LFN der eröffneten Datei
+            LDX #$01  ;LFN der eröffneten Datei
             JSR $FFC6 ;CHKIN ausführen
             JSR $FFCF ;BASIN - Zeichen holen
-CKOUT
-Zweck:    Logische Datei als Ausgabedatei definieren
-Adresse: $FFC9 (65481)
-Beschreibung: Entsprechend zu CHKIN definiert diese Routine
+
+Adresse: $FFC9  CKOUT   Logische Datei als Ausgabedatei definieren
+
+Entsprechend zu CHKIN definiert diese Routine
 ein im X-Register zu übergebene Datei als Ausgabedatei. Die
 Datei muß ordnungsgemäß geöffnet worden sein, beispielsweise
 würde eine Datei, die mit OPEN l,8,0,"$" geöffnet wurde und
@@ -273,63 +317,73 @@ ist nicht mehr der Bildschirm, sondern die definierte Datei
 Ausgabegerät. Alle über BSOUT auzugebenen Zeichen werden
 an dieses Gerät gesandt. Das CARRY-Flag dient als Fehlermel-
 der. Ist es gelöscht, war die Aktion erfolgreich.
+
 Eingabeparameter: .X
+
 Ausgabeparameter: CARRY
-CLRCH
-Zweck:   Ein/Ausgabekanäle  schließen
-Adresse: $FFCC (65484)
-Beschreibung: Diese Routine löscht evtl, mit CHKIN und/oder
+
+Adresse: $FFCC  CLRCH  Ein/Ausgabekanäle  schließen
+
+Diese Routine löscht evtl, mit CHKIN und/oder
 CKOUT definierte Ein- und Ausgabedateien. Es wird an das
 Eingabegerät ein UNTALK und an das Ausgabegerät ein
 UNLISTEN gesendet. Der Bildschirm ist wieder Ausgabe- und
 die Tastatur Eingabegerät. Die Dateien werden nicht geschlossen,
 es erfolgt also kein CLOSE. Es werden weder Ein- noch
 Ausgabeparameter übergeben.
-BASIN
-Zweck:    Ein Zeichen von Eingabekanal holen
-Adresse: $FFCF (65487)
-Beschreibung: Die eröffnete und mit CHKIN als Eingabedatei
+
+Adresse: $FFCF  BASIN   Ein Zeichen von Eingabekanal holen
+
+Die eröffnete und mit CHKIN als Eingabedatei
 definierte Datei (sonst Tastatur) übergibt ein Zeichen im
 <Akku>.
+
 Ausgabeparameter: .A
-BSOUT
-Zweck:    Ein Zeichen auf Ausgabekanal ausgeben
-Adresse: $FFD2 (65490)
-Beschreibung: Es wird das im <Akku> übergebene Zeichen auf
+
+Adresse: $FFD2  BSOUT   Ein Zeichen auf Ausgabekanal ausgeben
+
+Es wird das im <Akku> übergebene Zeichen auf
 die eröffnete und mit CKOUT als Ausgabedatei definierte Datei
 ausgegeben. Ist der Bildschirm Ausgabedatei (Default), so wird
 das ASCII-Zeichen in den darzustellenden POKE-Code
 umgerechnet (ein recht aufwendiges Verfahren. Interessierte
 sollten sich den entsprechenden Teil im Kernal im C-Bereich
 ansehen).
+
 Eingabeparameter: .A
+
 Beispiel:
+
             ;Wechseln des 40/80-Zeichen-Modus
-            LDA #$1B ;<ESC>
+            LDA #$1B  ;<ESC>
             JSR BSOUT ;$FFD2, Zeichen ausgeben
-            LDA #"X" ;<ESC>-X zum Uechseln des Bildschirmstatus
+            LDA #"X"  ;<ESC>-X zum Uechseln des Bildschirmstatus
             JSR BSOUT ;ausgeben
+
 (Es gibt allerdings eine spezielle Routine, die man anspringen
 kann)
-LOADSP
-Zweck:      Laden einer Datei in  den Speicher
-Adresse: $FFD5 (65493)
-Beschreibung: Bevor mit LOADSP eine Datei geladen werden
+
+Adresse: $FFD5  LOADSP  Laden einer Datei in den Speicher
+
+Bevor mit LOADSP eine Datei geladen werden
 kann, muß das Gerät, die Sekundäradresse, der Filename etc.
 durch die Routinen SETLFS, SETNAM und SETBNK definiert
 worden sein. Im X- (Lo) und Y-Register (Hi) wird die Adresse
 angegeben, ab der die zu ladende Datei abgelegt werden soll.
+
 Eingabeparameter: .X, .Y
+
 Beispiel:
-           ;Laden eines Overlay o.ä.
-           JSR PREP ;SETLFS, SETBNK, SETNAM etc.
-           LDX #$00 ;Lo-Byte von $1000
-           LDY #$10 ;Hi-Byte von $1000 (Ladeadresse)
-           JSR $FFD5 ;Lade Datei ab $1000
-SAVESP
-Zweck:    Abspeichern eines Bereiches auf Datei
-Adresse: $FFD8 (65496)
-Beschreibung: Diese Routine speichert einen Speicherbereich auf
+
+            ;Laden eines Overlay o.ä.
+            JSR PREP  ;SETLFS, SETBNK, SETNAM etc.
+            LDX #$00  ;Lo-Byte von $1000
+            LDY #$10  ;Hi-Byte von $1000 (Ladeadresse)
+            JSR $FFD5 ;Lade Datei ab $1000
+
+Adresse: $FFD8  SAVESP  Abspeichern eines Bereiches auf Datei
+
+Diese Routine speichert einen Speicherbereich auf
 eine Datei (Diskette, Kassette) ab. Dazu muß man, wie bei der
 LOADSP-Routine, zunächst Geräteadresse, Sekundäradresse,
 RAM-Bank, Filename etc. durch die Routinen SETBNK,
@@ -338,140 +392,151 @@ Adresse angegeben, an der die Anfangsadresse des abzu-
 speichernden Bereiches steht. Im X- (Lo) und Y-Register (Hi)
 wird entsprechend die Endadresse des abzuspeichernden
 Bereiches angegeben.
+
 Eingabeparameter: .A, .X, .Y, Zeropage
+
 Beispiel:
-           ;Abspeichern des Bereiches $1000 bis $1100
-           JSR PREP ;SETLFS, SETNAM, SETBNK etc. aufrufen
-           LDA #$00 ;Lo-Byte von $1000
-           STA $FC ;in Zeropage speichern
-           LDA #$10 ;Hi-Byte von $1000
-           STA $FD ;in Zeropage speichern
-           LDA #$FC ;der Pointer befindet sich an $FC
-           LDX #$00 ;Lo-Byte der Endadresse $1100
-           LDY #$11 ;Hi-Byte der Endadresse $1100
-           JSR $FFD8 ;SAVESP - Speichern des Bereiches $1000-$1100
-SETTIM
-Zweck:     Setzen der Systemuhr TI
-Adresse: $FFDB (65499)
-Beschreibung: Die Routine setzt die Systemuhr TI, die ab
+
+            ;Abspeichern des Bereiches $1000 bis $1100
+            JSR PREP  ;SETLFS, SETNAM, SETBNK etc. aufrufen
+            LDA #$00  ;Lo-Byte von $1000
+            STA $FC   ;in Zeropage speichern
+            LDA #$10  ;Hi-Byte von $1000
+            STA $FD   ;in Zeropage speichern
+            LDA #$FC  ;der Pointer befindet sich an $FC
+            LDX #$00  ;Lo-Byte der Endadresse $1100
+            LDY #$11  ;Hi-Byte der Endadresse $1100
+            JSR $FFD8 ;SAVESP - Speichern des Bereiches $1000-$1100
+
+Adresse: $FFDB  SETTIM  Setzen der Systemuhr TI
+
+Die Routine setzt die Systemuhr TI, die ab
 Adresse $A0 definiert ist. Diese Uhr wird von der Kernal-IRQ-
 Routine gesteuert und ist nicht sehr genau. Legen Sie auf eine
 genauere Uhr Wert, so benutzen Sie die Timer in den beiden
 CIAs. (Siehe auch entsprechendes Kapitel) Das höchstwertige
 Byte der 24-Stunden-Uhr wird im Y-Register übergeben.
+
 Eingabeparameter: .A, .X, .Y
+
 Beispiel:
-           ;ROcksetzen der Systemuhr
-           LDA #$00 ;Riicksetzen bedeutet
-           TAY      ;auf 0,0,0 setzen
-           TAX      ;Alle drei Register auf null
-           JSR $FFDB ;SETTIM
-RDTIM
-Zweck:     Auslesen   der Systemuhr
-Adresse: $FFDE (65502)
-Beschreibung: Diese Routine liest die 24-Stunden-Uhr aus und
+
+            ;Rücksetzen der Systemuhr
+            LDA #$00  ;Rücksetzen bedeutet
+            TAY       ;auf 0,0,0 setzen
+            TAX       ;Alle drei Register auf null
+            JSR $FFDB ;SETTIM
+
+Adresse: $FFDE  RDTIM   Auslesen der Systemuhr
+
+Diese Routine liest die 24-Stunden-Uhr aus und
 übergibt die drei Bytes den Registern Y (höchstwertig), X und
 <Akku> (niederwertig).
+
 Ausgabeparameter: .A, .X, .Y
+
 Beispiel:
-           ;Auslesen der 24-Stunden-Uhr
-           JSR $FFDE ;RDTIM aufrufen
-           STY $FC ;MSB merken
-           STX $FD ;mittleres Byte merken
-           STA $FE ;LSB merken
-STOP
-Zweck:      Abfrage   der Stop-Taste
-Adresse: $FFE1 (65505)
-Beschreibung: Wenn bis zum letzten IRQ-Aufruf die Stop-Taste
+
+            ;Auslesen der 24-Stunden-Uhr
+            JSR $FFDE ;RDTIM aufrufen
+            STY $FC   ;MSB merken
+            STX $FD   ;mittleres Byte merken
+            STA $FE   ;LSB merken
+
+Adresse: $FFE1  STOP   Abfrage der Stop-Taste
+
+Wenn bis zum letzten IRQ-Aufruf die Stop-Taste
 betätigt worden ist, so wird das ZERO-Flag gesetzt und es wird
 ein CLRCH ausgeführt. Wurde die Stop-Taste nicht betätigt, so
 wird das ZERO-Flag gelöscht.
+
 Ausgabeparameter: ZERO-Flag
+
 Beispiel:
-           ;Auf STOP prüfen
-           JSR $FFE1 ;STOP-Taste gedrückt?
-           BEQ Jawoll;Ist gedrückt
-GETIN
-Zweck:     Holt ein Zeichen aus  Tastaturbuffer oder RS232
-Adresse: $FFE4 (65508)
-Beschreibung:   Holt  von   der definierten  Eingabedatei  ein
+
+            ;Auf STOP prüfen
+            JSR $FFE1  ;STOP-Taste gedrückt?
+            BEQ Jawoll ;Ist gedrückt
+
+Adresse: $FFE4  GETIN  Holt ein Zeichen aus Tastaturbuffer oder RS232
+
+Holt von der definierten Eingabedatei ein
 Zeichen. Ist kein Zeichen bereit gestellt, so wird der <Akku>
 mit null übergeben.
+
 Ausgabeparameter: .A
-CLALL
-Zweck:    Alle offenen  Dateien schließen
-Adresse: $FFE7 (65511)
-Beschreibung: Alle mittels OPEN eröffneten Dateien werden
+
+Adresse: $FFE7  CLALL  Alle offenen Dateien schließen
+
+Alle mittels OPEN eröffneten Dateien werden
 geschlossen oder besser gelöscht - es wird nämlich kein CLOSE
 ausgeführt. Beispielsweise bei offenen Floppy-Dateien kann dies
 sehr ärgerlich sein (WRITE FILE OPEN ERROR ist eine
 Konsequenz). Ferner wird nach dem Löschen der logischen
 Dateien ein CLRCH (s.o.) ausgeführt. CLALL ist also mit Vor-
 sicht anzuwenden.
-LIDTIM
-Zweck:    Systemuhr anpassen (updaten)
-Adresse: $FFEA (65514)
-Beschreibung: Diese Routine wird vornehmlich von der IRQ-
+
+Adresse: $FFEA  LIDTIM  Systemuhr anpassen (updaten)
+
+Diese Routine wird vornehmlich von der IRQ-
 Routine aufgerufen. Es wird die Drei-Byte-24-Stunden-Uhr um
 eine Einheit hochgezählt.
-SCRORG
-Zweck:    Größe des aktuellen Fensters holen
-Adresse: $FFED(65117)
-Beschreibung:   Die Routine SCRORG holt die aktuellen
+
+Adresse: $FFED  SCRORG  Größe des aktuellen Fensters holen
+
+Die Routine SCRORG holt die aktuellen
 Fensterwerte in die Register. Der <Akku> enthält nach dem
 Aufruf die maximale Spaltenzahl, im Y-Register befindet sich
 die Anzahl der Zeilen im Fenster und im X-Register die Anzahl
 der Spalten des Fensters.
+
 Ausgabeparameter: .A, .X, .Y
-PLOT
-Zweck:    Cursor-Position holen/setzen
-Adresse: $FFF0 (65120)
-Beschreibung: Je nach Zustand des CARRY-Flags wird entweder
+
+Adresse: $FFF0  PLOT    Cursor-Position holen/setzen
+
+Je nach Zustand des CARRY-Flags wird entweder
 die Cursorposition geholt oder gesetzt. X- und Y-Register sind
 auf jeden Fall die Kommunikationsregister. Das Y-Register
 definiert die Zeile (Erste Zeile im Fenster ist null) und das X-
 Register die Spalte des Cursors. Ist das CARRY-Flag gesetzt, so
 wird die aktuelle Cursorpostion im Fenster in X- und Y-
 Register zurückgegeben.
+
 Eingabeparameter: .X, .Y, CARRY
+
 Beispiel:
+
             ;Einen Stern (*) in die Fenstermitte setzen
-JSR $FFED
-TXA
-LSR A
-TAX
-TYA
-LSR A
-TAY
-CLC
-JSR tFFF0
-LDA #"*'•
-JSR $FFD2
-SCRORG aufrufen
-Spaltenzahl nach <Akku>
-Divisiondurch zwei (Mitte)
-und als Spalte wieder nach X
-Zeilenzahl nach <Akku>
-Divisiondurch zwei (Mitte)
-und wieder als Zeile nach Y
-Gelöschtes Carry=Setzen Cursorposition
-Setze Cursorposition
-<Akku> mit Stern laden
-und ausgeben.
-IOBASE
-Zweck:    Holt die Basisadresse des I/O-Bereiches
-Adresse: $FFF3 (65123)
-Beschreibung: Es wird die Adresse des Ein- und Ausgabebe-
+            JSR $FFED ;SCRORG aufrufen
+            TXA       ;Spaltenzahl nach <Akku>
+            LSR A     ;Divisiondurch zwei (Mitte)
+            TAX       ;und als Spalte wieder nach X
+            TYA       ;Zeilenzahl nach <Akku>
+            LSR A     ;Divisiondurch zwei (Mitte)
+            TAY       ;und wieder als Zeile nach Y
+            CLC       ;Gelöschtes Carry=Setzen Cursorposition
+            JSR $FFF0 ;Setze Cursorposition
+            LDA #"*"  ;<Akku> mit Stern laden
+            JSR $FFD2 ;und ausgeben.
+
+Adresse: $FFF3  IOBASE  Holt die Basisadresse des I/O-Bereiches
+
+Es wird die Adresse des Ein- und Ausgabebe-
 reiches in X- (Lo) und Y-Register (Hi) übergeben. Diese
 Adresse ist beim C128 natürlich immer $D000. Für spätere
 Erweiterungen bzw. Verschiebungen ist es aus Kompatibilitäts-
 gründen ratsam, diese Routine in die Software mit zu integrieren
 und sich darauf zu beziehen.
+
 Ausgabeparameter: .X, .Y
+
 Beispiel:
-           ;Anfang des Programmes:
-           JSR $FFF3 ;IOBASE
-           STX $FD ;Lo-Byte merken
-           STY $FE ;Hi-Byte merken
+
+            ;Anfang des Programmes:
+            JSR $FFF3 ;IOBASE
+            STX $FD   ;Lo-Byte merken
+            STY $FE   ;Hi-Byte merken
+
 Im Programm bezieht man diese Adresse dann wie folgt ein:
-           STA ($FD),Y ;In I/O-Bereich
+
+            STA ($FD),Y ;In I/O-Bereich
