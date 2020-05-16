@@ -127,8 +127,7 @@ The channel remains open after the call.
 
   Input from the keyboard is handled in a special way. First, the cursor
 is turned on, and blinks until a carriage return is typed on the
-keyboard. All characters on the line (up to 88 characters) are stored in
-the BASIC input buffer. These characters can be retrieved one at a time
+keyboard. All characters on the line can be retrieved one at a time
 by calling this routine once for each character. When the carriage return
 is retrieved, the entire line has been processed. The next time this
 routine is called, the whole process begins again, i.e., by flashing the
@@ -503,8 +502,8 @@ routines must be called.
 
             ;LOAD   A FILE FROM TAPE
      
-            LDA #DEVICE1        ;SET DEVICE NUMBER
-            LDX #FILENO         ;SET LOGICAL FILE NUMBER
+            LDA #FILENO         ;SET LOGICAL FILE NUMBER
+            LDX #DEVICE1        ;SET DEVICE NUMBER
             LDY CMD1            ;SET SECONDARY ADDRESS
             JSR SETLFS
             LDA #NAME1-NAME     ;LOAD A WITH NUMBER OF
