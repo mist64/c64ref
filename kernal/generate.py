@@ -3,12 +3,14 @@
 import markdown
 import re
 
-lines = [line.rstrip() for line in open("kernal.md")]
+lines = [line.rstrip() for line in open("kernal_prg.md")]
 
 calls_raw = []
 call_lines = None
 for line in lines:
-	if line.startswith('# '):
+	if line.startswith('#') or line.startswith('-'):
+		continue
+	if line.startswith('$'):
 		if call_lines is not None:
 			calls_raw.append(call_lines)
 		call_lines = []
@@ -19,11 +21,13 @@ calls = []
 names = []
 for call_lines in calls_raw:
 	title = call_lines[0]
-	address = title[3:7]
-	rest = title[9:].split(' - ')
-	name = rest[0]
-	summary = rest[1]
-	calls.append((address, name, summary, call_lines[1:]))
+	address = title[1:5]
+	name = title[7:13].rstrip()
+	summary = title[15:]
+	call_lines_stripped = []
+	for call_line in call_lines[1:]:
+		call_lines_stripped.append(call_line[15:])
+	calls.append((address, name, summary, call_lines_stripped))
 	names.append(name)
 
 print('<table border=1>')
