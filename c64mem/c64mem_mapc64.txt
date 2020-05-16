@@ -3201,7 +3201,7 @@ $0316-$0317  CBINV   Vector: BRK Instruction Interrupt
                      initialization routines such as RESTOR, IOINIT and part of CINT, and
                      then jumps through the BASIC warm start vector at 40962.  This is the
                      same routine that is used when the STOP and RESTORE keys are pressed
-                     simultaneously, and is currently located at 65126 ($Fe66).
+                     simultaneously, and is currently located at 65126 ($FE66).
                      
                      A machine language monitor program will usually change this vector to
                      point to the monitor warm start address, so that break points may be
