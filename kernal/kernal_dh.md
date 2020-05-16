@@ -343,9 +343,9 @@ input device number, 99.
 2. If 99 is set to 3 (screen), store 3 in DO, save D5 in C8, and
    JMP E632/E64F (see chapter 7) to receive a character from
    the screen.
-3. If 99 is set to 2 (RS-232), branch to FlB8/F26F (see chapter
+3. If 99 is set to 2 (RS-232), branch to F1B8/F26F (see chapter
    9) to receive a character from the RS-232 device.
-4. If the value in 99 > 3 (serial), branch to FlAD/F264 (see
+4. If the value in 99 > 3 (serial), branch to F1AD/F264 (see
    chapter 8) to receive a character from the serial device.
 5. If 99 is set to 1 (tape), fall through to F179/F230 to receive
    a character from tape.
@@ -354,14 +354,14 @@ input device number, 99.
 # CHROUT FFD2
 
 **Called by**: JSR at E10C/E109 in BASIC's Output a Character, JSR at
-F135/FlEC in Display Kernal Message, JSR at F5C9/F661 in
+F135/F1EC in Display Kernal Message, JSR at F5C9/F661 in
 Display Filename, JSR at F726/F7A9 in Error Message
 Handler, JSR at F759/F7DC in Find Next Tape Header.
 
 **Setup routines**: OPEN, CHKOUT (not required if output device is the screen).
 
 **Entry requirements**: Accumulator should contain the character to be output, in
-CBM ASCII. JMP (0326) with a default of FlCA/F27A.
+CBM ASCII. JMP (0326) with a default of F1CA/F27A.
 
 If 9A, the current output device, is the screen (3), the
 ASCII code is displayed on the screen unless the ASCII code is
@@ -421,7 +421,7 @@ output device number, 9A.
 3. If the output device is an RS-232 device, branch to
    F208/F2B9 (see chapter 9) to output a character to an RS-
    232 device.
-4. If the output device is tape, fall through to FlE5/F28F (see
+4. If the output device is tape, fall through to F1E5/F28F (see
    chapter 10) to handle CHROUT to tape.
 
 
@@ -515,7 +515,7 @@ and reset the default device numbers.
 
 # CLOSE FFC3
 
-**Called by**: JSR at ElCC/ElC9 in BASIC's CLOSE
+**Called by**: JSR at E1CC/E1C9 in BASIC's CLOSE
 
 **Entry requirements**:
 Accumulator should contain the number of the logical file to
@@ -600,7 +600,7 @@ be closed.
 Common Exit for Close Logical File Routines
 
 
-# F2F1/F3Bl-F30E/F3CE
+# F2F1/F3B1-F30E/F3CE
 
 **Called by**: Falls through after JSR to Close Logical File for Serial Device
 at F2EE/FEAE, BEQ at F29F/F358 and F2A3/F35C in Deter-
@@ -695,7 +695,7 @@ FFCC, fall through from F331/F3F1 in Reset to No Open Files.
 
 **Setup routines**: OPEN, CHKIN
 
-JMP(032A) with a default of F13E/FlF5.
+JMP(032A) with a default of F13E/F1F5.
 
 When retrieving characters from the keyboard, if any
 characters are in the keyboard buffer, the first character (an
@@ -734,7 +734,7 @@ Also, read one byte ahead to see if the next byte is zero, in-
 dicating end of file, and if true, set end-of-file status in 90.
 
 
-# GETIN Preparation F13E/FlF5-F14D/F204
+# GETIN Preparation F13E/F1F5-F14D/F204
 
 **Called by**: Indirect JMP through (032A) from Kernal GETIN vector at
 FFE4.
@@ -1207,7 +1207,7 @@ tor, the corresponding operation on the VIC is done by JMP
 FD8D. At FD8D the routine stores $00 in 00-FF and 0200-
 03FF; sets pointer to tape buffer, (B2), to 033C; sets the pointer
 to the end of RAM + 1 in (0283); sets the pointer to the start
-of RAM in (0281); sets the screen memory page to $lE or $10
+of RAM in (0281); sets the screen memory page to $1E or $10
 depending on where RAM ends.
 
 The RAMTAS routine would mainly be used by an auto-
@@ -1370,7 +1370,7 @@ another byte has been received.
 
 **Called by**: JMP from Kernal READST vector at FFB7; alternate entry at
 FE18/FE66 by JMP from Kernal SETMSG vector at FF90;
-alternate entry at FElC/FE6A by JSR at EDB2/EEB9 in Set
+alternate entry at FE1C/FE6A by JSR at EDB2/EEB9 in Set
 Status Word, JSR at EE4F/EF4D in Receive Byte from Serial
 Device, JSR at F18A/F241 in CHRIN from Tape, JSR at
 F518/F5AF in Load/Verify from Serial Device, JSR at
@@ -1394,26 +1394,26 @@ on, $C0 sets both Kernal control and error messages on, and
 $00 turns off all Kernal messages. Exit with the accumulator
 containing the value from 90, the I/O status word.
 
-If entry at FElA/FE6A, then set 90, the I/O status, by
+If entry at FE1A/FE6A, then set 90, the I/O status, by
 ORing the accumulator with the current value of 90. The
 routines that call this entry point set the accumulator to a
 value for an I/O status.
 
 **Operation**:
 
-1.  FE07/FE57: If the device number, BA, is not 2, branch to
+1. FE07/FE57: If the device number, BA, is not 2, branch to
    step 4.
-2.  If device number is 2 (RS-232): LDA 0297, PHA (64 only),
+2. If device number is 2 (RS-232): LDA 0297, PHA (64 only),
    LDA $00, STA 0297, PLA (64 only), RTS.
-3.  FE18/FE66: Store accumulator in 9D, the Kernal message
+3. FE18/FE66: Store accumulator in 9D, the Kernal message
    control flag.
-4.  LDA 90, the I/O status.
-5.  FElC/FE6A: ORA 90. Thus, if the routine continues from
+4. LDA 90, the I/O status.
+5. FE1C/FE6A: ORA 90. Thus, if the routine continues from
    the instructions above, 90 is not changed. However, if the
-   alternate entry point of FElC/FE6A is used, a new value
+   alternate entry point of FE1C/FE6A is used, a new value
    will result from this ORA.
-6.  STA 90, updating the I/O status word if the alternate entry
-   point of FElC/FE6A was used.
+6. STA 90, updating the I/O status word if the alternate entry
+   point of FE1C/FE6A was used.
 
 
 # RESTOR FF8A
@@ -1457,7 +1457,7 @@ of the save area + 1, (AE), from the X and Y registers. (End +
 location just past the end of the save area, since the save
 routines consider the save complete when the pointer to the
 save area equals the value of the pointer (AE).) It also sets
-(Cl), the pointer to the start of the save area, from the zero
+(C1), the pointer to the start of the save area, from the zero
 page pointer indexed by the accumulator, and then performs
 an indirect JMP through the vector at (0332), which defaults to
 F5ED/F675.
@@ -1502,7 +1502,7 @@ from the X and Y registers.
 The accumulator value at entry is transferred to the X reg-
 ister and is used as an index into page zero for the location of
 two bytes that specify the starting address for the save. Set the
-pointer to the start address of the save area, (Cl), from these
+pointer to the start address of the save area, (C1), from these
 two page-zero bytes.
 
 Jump to the address in the vector at (0322), normally
@@ -1515,7 +1515,7 @@ F5ED/F685.
 2. STY AF, the high byte of the address of the end of the save
    area + 1.
 3. TAX and LDA 00,X to get the low byte of the address of the
-   start of the save area, and STA in Cl.
+   start of the save area, and STA in C1.
 4. LDA 01,X to get the high byte of the address of the start of
    the save area, and STA in C2.
 5. JMP (0322) to the save routine. The default address in the
@@ -1556,7 +1556,7 @@ Save to Serial Device routine.
 
 **Called by**: None.
 
-JMP EA87/EBlE to the Keyboard Scan routine (see chap-
+JMP EA87/EB1E to the Keyboard Scan routine (see chap-
 ter 4) to check for a keypress. If a valid key is found down and
 the keyboard buffer is not full, the ASCII code value for the
 key is placed in the buffer.
@@ -1699,7 +1699,7 @@ are reversed in describing how to set message control in the
 
 # SETNAM FFBD
 
-**Called by**: JSR at ElD6/ElD3 in BASIC's Set LOAD /VERIFY /SAVE
+**Called by**: JSR at E1D6/E1D3 in BASIC's Set LOAD /VERIFY /SAVE
 Parameters, JSRs at E21B/E218 and E261/E25E in BASIC's
 Handle Parameters for OPEN and CLOSE.
 
@@ -1833,7 +1833,7 @@ STOP key column during the last IRQ or NMI interrupt.
 3. If STOP key is not pressed, then branch (BNE) to step 7 to
    RTS with the accumulator containing last value in $91.
 4. If STOP key is pressed, then JSR FFCC (the Kernal
-   CLRCFlN vector) to clear serial I/O and reset default input
+   CLRCFIN vector) to clear serial I/O and reset default input
    and output devices, returning with accumulator cleared to 0.
 5. STA C6, the number of characters in the keyboard buffer,
    thus clearing the buffer.
