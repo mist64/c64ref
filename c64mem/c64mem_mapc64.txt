@@ -214,7 +214,7 @@ $0001        R6510   6510 On-Chip I/O Port
                      
                      When cartridge ROM is selected to replace the Kernal, a Max emulator
                      mode is entered, which mimics the specification of the ill-fated Max
-                     Machine, a game machine which Commodore never produced for sale int he
+                     Machine, a game machine which Commodore never produced for sale in the
                      U.S.  In this mode, only the first 6K of RAM are used, there is no
                      access to the character ROM, and graphics data such as charactger
                      dot-data is mapped down from 57344 ($E000) to 8192 ($2000).  Further
@@ -3054,7 +3054,7 @@ $030C-$030F          Register Storage Area
                      
                      You can also use these locations to help you take advantage of Kernal
                      routines that return information in the register.  For example, the
-                     SCREEN routine (58629,$E505) returns the number of screen rows int he
+                     SCREEN routine (58629,$E505) returns the number of screen rows in the
                      .Y register, and the number of columns in the .X register.  Using this
                      routine, a BASIC program could be written to run on machines with
                      different screen formats (for example, the 64 and the VIC-20).  Just
