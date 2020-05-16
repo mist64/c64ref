@@ -1,0 +1,438 @@
+$FF81  CINT    Initialize Screen Editor and VIC-II Chip
+               
+               The start of the routine appears to be a patch that was added to later
+               versions of the Kernal.  It first calls the old routine at 58648
+               ($E518).  This initializes the VIC-II chip to the default values, sets
+               the keyboard as the input device and the screen as the output device,
+               initializes the cursor flash variables, builds the screen line link
+               table, clears the screen, and homes the cursor.  The new code then
+               checks the VIC Interrupt register to see if the conditions for a
+               Raster Compare IRQ have been fulfilled.  Since the Raster Register was
+               initialized to 311, that can only occur when using a PAL system (NTSC
+               screens do not have that many scan lines).  The PAL/NTSC register at
+               678 ($2A6) is set on the basis of the outcome of this test.  The CIA
+               #1 Timer A is then set to cause an IRQ interrupt every sixtieth of a
+               second, using the prescaler figures for a PAL or NTSC system, as
+               appropriate.
+               
+$FF84  IOINIT  Initialize CIA I/O Devices
+               
+               This routine intializes the Complex Interface Adapter (CIA)
+               devices, and turns the volume of the SID chip off.  As part of this
+               initialization, it sets CIA #1 Timer A to cause an IRQ interrupt every
+               sixtieth of a second.
+               
+$FF87  RAMTAS  Perform RAM Test and Set Pointers to the Top and Bottom of RAM
+               
+               This routine performs a number of initialization tasks.
+               
+               First, it clears Pages 0, 2, and 3 of memory to zeros.  Next, it sets
+               the tape buffer pointer to address 828 ($33C), and performs a
+               nondestructive test of RAM from 1024 ($400) up.  When it reaches a
+               non-RAM address (presumably the BASIC ROM at 40960 ($A000)), that
+               address is placed in the top of memory pointer at 643-4 ($283-4).  The
+               bottom of memory pointer at 641-2 ($281-2) is set to point to address
+               2048 ($800), which is the beginning of BASIC program text.  Finally,
+               the pointer to screen memory at 648 ($288) is set to 4, which lets the
+               Operating System know that screen memory starts at 1024 ($400).
+               
+$FF8A  RESTOR  Restore RAM Vectors for Default I/O Routines
+               
+               This routine sets the values for the 16 RAM vectors to the interrupt and
+               important Kernal I/O routines in the table that starts at 788 ($314)
+               to the standard values held in the ROM table at 64816 ($FD30).
+               
+$FF8D  VECTOR  Set the RAM Vector Table from the Table Pointed to by .X and .Y
+               
+               This routine is used to read or change the values for the 16 RAM vectors to the
+               interrupt and important Kernal I/O routines in the table that starts
+               at 788 ($314).  If the Carry flag is set when the routine is called,
+               the current value of the 16 vectors will be stored at a table whose
+               address is pointed to by the values in the .X and .Y registers.  If
+               the Carry flag is cleared, the RAM vectors will be loaded from the
+               table whose address is pointed to by the .X and .Y registers.  Since
+               this routine can change the vectors for the IRQ and NMI interrupts,
+               you might expect that the Interrupt disable flag would be set at its
+               beginning.  Such is not the case, however, and therefore it would be
+               wise to execute an SEI before calling it and a CLI afterwards (as the
+               power-on RESET routine does) just to be safe.
+               
+$FF90  SETMSG  Set the Message Control Flag
+               
+               This routine controls the printing of error messages and control
+               messages by the Kernal.  It Bit 6 is seto to 1 (bit value of 64),
+               Kernal control messages can be printed.  These messages include
+               SEARCHING FOR, LOADING, and the like.  If Bit 6 is cleared to 0, these
+               messages will not be printed (BASIC will clear this bit when a program
+               is running so that the messages do not appear when I/O is performed
+               from a program).  Setting Bit 6 will not suppress the PRESS PLAY ON
+               TAPE or PRESS PLAY & RECORD messages, however.
+               
+               If Bit 7 is set to 1 (bit value of 128), Kernal error messages can be
+               printed.  If Bit 7 is set to 0, those error messages (for example, I/O
+               ERROR #nn) will be suppressed.  Note that BASIC has its own set of
+               error messages (such as FILE NOT FOUND ERROR) which it uses in
+               preference to the Kernal's message.
+               
+$FF93  SECOND  Send a Secondary Address to a Device on the Serial Bus after LISTEN
+               
+               This routine sends a secondary address from the
+               Accumulator to the device on the serial bus that has just been
+               commanded to LISTEN.  This is usually done to give the device more
+               particular instructions on how the I/O is to be carried out before
+               information is sent.
+               
+$FF96  TKSA    Send a Secondary Address to a Device on the Serial Bus after TALK
+               
+               This routine sends a secondary address from the
+               Accumulator to the device on the serial bus that has just been
+               commanded to TALK.  This is usually done to give the device more
+               particular instructions on how the I/O is to be carried out before
+               information is sent.
+               
+$FF99  MEMTOP  Read/Set Top of RAM Pointer
+               
+               This routine can be used to either read or set the top of RAM pointer.  If
+               called with the Carry flag set, the address in the pointer will be
+               loaded into the .X and .Y registers.  If called with the Carry flag
+               cleared, the pointer will be changed to the address found in the .X
+               and .Y registers.
+               
+$FF9C  MEMBOT  Read/Set Bottom of RAM Pointer
+               
+               This routine can be used to either read or set the bottom of RAM pointer.  If
+               called with the Carry flag set, the address in the pointer willbe
+               loaded into the .X and .Y registers.  If called with the Carry flag
+               cleared, the pointer will be changed to the address found in the .X
+               and .Y registers.
+               
+$FF9F  SCNKEY  Read the Keyboard
+               
+               This subroutine is called by the IRQ interrupt handler above to read
+               the keyboard device which is connected to CIA #1 (see entry for 56320
+               ($DC00) for details on how to read the keyboard).
+               
+               This routine returns the keycode of the key
+               currently being pressed in 203 ($CB), sets the shift/control flag if
+               appropriate, and jumps through the vector at 655 ($28F) to the routine
+               that sets up the proper table to translate the keycode to PETASCII.
+               It concludes with the next routine, which places the PETASCII value of
+               the character in the keyboard buffer.
+               
+$FFA2  SETTMO  Set Time-Out Flag for IEEE Bus
+               
+               This routine sets the time-out flag for the IEEE bus.  When timeouts
+               are enabled, the Commodore will wait for a device for 64 milliseconds,
+               and if it does not receive a response to its signal it will issue a
+               time-out error.  Loading the Accumulator with a value less than 128
+               and calling this routine will enable time-outs, while using a value
+               over 128 will disable time-outs.
+               
+               This routine is for use only with the Commodore IEEE add-on card,
+               which at the time of this writing was not yet available.
+               
+$FFA5  ACPTR   Receive a Byte of Data from a Device on the Serial Bus
+               
+               When called, this routine will get a byte of data from
+               the current TALKer on the serial bus and store it in the Accumulator.
+               In order to receive the data, the device must have previously been
+               sent a command to TALK and a secondary address if it needs one.
+               
+$FFA8  CIOUT   Send a Byte to an I/O Device over the Serial Bus
+
+               This routine's purpose is to send a byte of data over
+               the serial bus.  In order for the data to be received, the serial
+               device must have first been commanded to LISTEN and been given a
+               secondary address if necessary.  This routine always buffers the
+               current character, and defers sending it until the next byte is
+               buffered.  When the UNLISTEN command is sent, the last byte will be
+               sent with an End or Identify (EOI).
+               
+$FFAB  UNTLK   Send UNTALK to a Device on the Serial Bus
+               
+               When called, this routine sends the UNTALK code (95, $5F) on the
+               serial bus.  This commands any TALKer on the bus to stop sending data.
+               
+$FFAE  UNLSN   Send UNLISTED to a Device on the Serial Bus
+               
+               This routine sends the UNLISTEN code (63, $3F) on the serial
+               bus.  This commands any LISTENers to get off the serial bus, and frees
+               up the bus for other users.
+               
+$FFB1  LISTEN  Send LISTEN to a Device on the Serial Bus
+
+               When called, this routine ORs the device number in the
+               Accumulator with the LISTEN code (32, $20) and sends it on the serial
+               bus.  This commands the device to LISTEN.
+               
+$FFB4  TALK    Send TALK to a Device on the Serial Bus
+               
+               When called, this routine ORs the device number in the
+               Accumulator with the TALK code (64, $40) and sends it on the serial
+               bus.  This commands the device to TALK.
+               
+$FFB7  READST  Read the I/O Status Word
+               
+               Whenever an I/O error occurs, a bit of the Status Word is set to
+               indicate what the problem was.  This routine allows you to read the
+               status word (it is returned in the Accumulator).  If the device was
+               the RS-232, its status register is read and cleared to zero.  For the
+               meanings of the various status codes, see the entry for location 144
+               ($90) or 663 ($297) for the RS-232 device.
+               
+$FFBA  SETLFS  Set Logical File Number, Device Number, and Secondary Address
+               
+               This routine stores the value in the Accumulator in the location which holds the
+               current logical file number, the value in the .X register is put in
+               the location that holds the current device number, and the value in
+               the .Y register is stored in the location that holds the current
+               secondary address.  If no secondary address is used, the .Y register
+               should be set to 255 ($FF).  It is necessary to set the values of the
+               current file number, device number, and secondary address before you
+               OPEN a file, or LOAD or SAVE.
+               
+$FFBD  SETNAM  Set Filename Parameters
+               
+               This routine puts the value in the Accumulator into the location which stores
+               the number of characters in the filename, and sets the pointer to the
+               address of the ASCII text of the filename from the .X and .Y
+               registers.  This sets up the filename for the OPEN, LOAD, or SAVE
+               routine.
+               
+$FFC0  OPEN    Open a Logical I/O File
+               
+               The routine jumps through a RAM vector at 794 ($31A).  This routine
+               assigns a logical file to a device, so that it can be used for
+               Input/Output operations.  In order to specify the logical file number,
+               the device number, and the secondary address if any, the SETLFS
+               routine must first be called.  Likewise, in order to designate the
+               filename, the SETNAM routine must be used first.  After these two
+               routines are called, OPEN is then called.
+               
+$FFC3  CLOSE   Close a Logical I/O File
+               
+               The routine jumps through a RAM vector at 796 ($31C).  It is used to
+               close a logical file after all I/O operations involving that file have
+               been completed.  This is accomplished by loading the Accumulator with
+               the logical file number of the file to be closed, and calling this
+               routine.
+               
+               Closing an RS-232 file will de-allocate space at the top of memory for
+               the receiving and trasmit buffers.  Closing a cassette file that was
+               opened for writing will force the last block to be written to
+               cassette, even if it is not a full 192 bytes.  Closing a serial bus
+               device will send an UNLISTEN command on the bus.  Remember, it is
+               necessary to properly CLOSE a cassette or disk data file in order to
+               retrieve the file later.
+               
+               For all types of files, CLOSE removes the file's entry from the tables
+               of logical files, device, and secondary address at 601, 611, and 621
+               ($259, $263, $26D), and moves all higher entries in the table down one
+               space.
+               
+$FFC6  CHKIN   Designate a Logical File As the Current Input Channel
+               
+               The routine jumps through a RAM vector at 798 ($31E).  If you wish to
+               get data from any device other than the keyboard, this routine must be
+               called after OPENing the device, before you can get a data byte with
+               the CHRIN or GETIN routine.  When called, the routine will designate
+               the logical file whose file number is in the .X register as the
+               current file, its device as the current device, and its secondary
+               address as the current secondary address.  If the device on the
+               channel is a serial device, which requires a TALK command and
+               sometimes a secondary address, this routine will send them over the
+               serial bus.
+               
+$FFC9  CHKOUT  Designate a Logical File As the Current Output Channel
+               
+               The routine jumps through a RAM vector at 800 ($320).  If you wish to
+               output data to any device other than the screen, this routine must be
+               called after OPENing the device, and before you output a data byte
+               with the CHROUT routine.  When called, the routine will designate the
+               logical file whose file number is in the .X register as the current
+               file, its device as the current device, and its secondary address as
+               the current secondary address.  If the device on the channel uses the
+               serial bus, and therefore requires a LISTEN command and possibly a
+               secondary address, this information will be sent on the bus.
+               
+$FFCC  CLRCHN  Restore Current Input and Output Devices to the Default Devices
+               
+               The routine jumps through a RAM vector at 802 ($322).  It sets the
+               current input device to the keyboard, and the current output device to
+               the screen.  Also, if the current input device was formerly a serial
+               device, the routine sends it an UNTALK command on the serial bus, and
+               if a serial device was formerly the current output device, the routine
+               sends it an UNLISTEN command.
+               
+$FFCF  CHRIN   Input a Character from the Current Device
+               
+               The routine jumps through a RAM vector at 804 ($324).  Its function is
+               to get a character from the current input device (whose device number
+               is stored at 153 ($99)).  This device must first have been OPENed and
+               then designated as the input channel by the CHKIN routine.
+               
+               When this routine is called, the next byte of data available from this
+               device is returned in the Accumulator.  The only exception is the
+               routine for the keyboard device (which is the default input device).
+               It the keyboard is the current input device, this routine blinks the
+               cursor, fetches characters from the keyboard buffer, and echoes them
+               to the screen until a carriage return is encountered.  When a carriage
+               return is round, the routine sets a flag to indicate the length of the
+               last logical line before the return character, and reads the first
+               character of this logical line from the screen.
+               
+               Subsequent calls to this routine will cause the next character in the
+               line to be read from the screen and returned in the Accumulator, until
+               the carriage return character is returned to indicate the end of the
+               line.  Any call after this character is received will start the whole
+               process over again.
+               
+               Note that only the last logical line before the carriage return is
+               used.  Any time you type in more than 80 characters, a new logical
+               line is started.  This routine will ignore any characters on the old
+               logical line, and process only the most recent 80-character group.
+               
+$FFD2  CHROUT  Output a Byte
+               
+               The routine jumps through a RAM vector at 806 ($326).
+               It is probably one of the best known and most used Kernal routines,
+               because it sends the character in the Accumulator to the current
+               output device.  Unless a device has been OPENed and designated as the
+               current output channel using the CHKOUT routine, the character is
+               printed to the screen, which is the default output device.  If the
+               cassette is the current device, outputting a byte will only add it to
+               the buffer.  No actual transmission of data will occur until the
+               192-byte buffer is full.
+               
+$FFD5  LOAD    Load RAM from a Device
+               
+               The routine jumps through a RAM vector at 816 ($330).  LOAD is used to
+               transfer data froma device directly to RAM.  It can also be used to
+               verify RAM, comparing its contents to those of a disk or tape file.
+               To choose between these operations you must set the Accumulator with a
+               0 for LOAD, or a 1 for VERIFY.
+               
+               Since the LOAD routine performs an OPEN, it must be preceded by a call
+               to the SETLFS routine to specify the logical file number, device
+               number, and secondary address, and a call to the SETNAM routine to
+               specify the filename (a LOAD from tape can be performed without a
+               filename being specified).  Then the .X and .Y registers should be set
+               with the starting address for the load, and the LOAD routine called.
+               If the secondary address specified was a 1, this starting address will
+               be ignored, and the header information will be used to supply the load
+               address.  If the secondary address was a 0, the address supplied by
+               the call will be used.  In either case, upon return from the
+               subroutine, the .X and .Y registers will contain the address of the
+               highest RAM location that was loaded.
+               
+$FFD8  SAVE    Save RAM to a Device
+               
+               The routine jumps through a RAM vector at 818 ($332).  SAVE is used to
+               transfer data directly from RAM to an I/O device.  Since the SAVE
+               routine performs an OPEN, it must be preceded by a call to the SETLFS
+               routine to specify the logical file number, device number, and
+               secondary address, and a call to the SETNAM routine to specify the
+               filename (although a SAVE to the cassette can be performed without
+               giving a filename).  A Page 0 pointer to the starting address of the
+               area to be saved should be set up, with the low byte of the address
+               first.  The accumulator should be loaded with the Page 0 offset of
+               that pointer, then the .X and .Y registers should be set with the
+               ending address for the save, and the SAVE routine called.
+               
+$FFDB  SETTIM  Set the Software Clock from the .A, .X, and .Y Registers
+               
+               This routine performs the reverse operation from RDTIM, storing the value in the
+               .Y register into location 160 ($A0), the .X register into 161 ($A1),
+               and the Accumulator into 162 ($A2).  Interrupts are first disabled, to
+               make sure that the clock will not be updated while being set.
+               
+$FFDE  RDTIM   Read the Time From the Software Clock into the .A, .X, and .Y Registers
+               
+               It reads the software clock (which counts sixtieths of a second) into
+               the internal registers.  The .Y register contains the most significant
+               byte (from location 160 ($A0)), the .X register contains the middle
+               byte (from location 161 ($A1)), and the Accumulator contains the least
+               significant byte (from location 162 ($A2)).
+               
+$FFE1  STOP    Test STOP Key
+               
+               This routine is vectored through RAM at 808 ($328).  The routine checks to see
+               if the STOP key was pressed during the last UDTIM call.  If it was,
+               the Zero flag is set to 1, the CLRCHN routine is called to set the
+               input and output devices back to the keyboard and screen, and the
+               keyboard queue is emptied.
+               
+$FFE4  GETIN   Get One Byte from the Input Device
+               
+               The routine jumps through a RAM vector at 810 ($32A).
+               Its function is to get a character from the current input device
+               (whose device number is stored at 153 ($99)).  In practive, it
+               operates identically to the CHRIN routine below for all devices except
+               for the keyboard.  If the keyboard is the current input device, this
+               routine gets one character from the keyboard buffer at 631 ($277).  It
+               depends on the IRQ interrupt routine to rad the keyboard and put
+               characters into the buffer.
+               
+$FFE7  CLALL   Close All Logical I/O Files
+               
+               The routine jumps through a RAM vector at 812 ($32C).  It closes all
+               open files, by resetting the index into open files at 152 ($98) to
+               zero.  It then falls through to the next routine, which restores the
+               default I/O devices.
+               
+$FFEA  UDTIM   Update the Software Clock and Check for the STOP Key
+               
+               This routine is normally called by the IRQ interrupt handler once every sixtieth
+               of a second.  It adds one to the value in the three-byte software
+               jiffy clock at 160-162 ($A0-$A2), and sets the clock back to zero when
+               it reaches the 24 hour point.  In addition, it scans the keyboard row
+               in which the STOP key is located, and stores the current value of that
+               key in location 145 ($91).  This variable is used by the STOP routine
+               which checks for the STOP key.
+               
+$FFED  SCREEN  Store Number of Screen Rows and Columns in .Y and .X
+               
+               When called, this subroutine returns the number of screen columns in
+               the .X register, and the number of screen rows in .Y.  Thus, a program
+               can detect the screen format of the machine on which it is running,
+               and make sure that text output is formatted accordingly.
+               
+               The present version of this routine loads the .X register with 40
+               ($28) and the .Y register with 25 ($19).
+               
+$FFF0  PLOT    Read/Set Location of the Cursor
+               
+               The routine allows the user to read or set the position of the cursor.
+               If the carry flag is set with the SEC instruction before calling this
+               subroutine, cursor column (X position) will be returned in the .X
+               register, and the cursor row (Y position) will be returned in the .Y
+               register.  If the carry flag is cleared with a CLC instruction before
+               entering this routine, and the .Y and .X registers are loaded with the
+               desired row and column positions respectively, this routine will set
+               the cursor position accordingly.
+               
+               The current read routine loads .X and .Y from locations 214 ($D6) and
+               211 ($D3) respectively.  The cursor set routine stores .X and .Y in
+               these locations, and calls the routine that sets the screen pointers
+               at 58732 ($E56C).
+               
+               The user can access this routine from BASIC by loading the .X, .Y, and
+               .P register values desired to the save area starting at 780 ($30C).
+               
+$FFF3  IOBASE  Store Base Address of Memory-Mapped I/O Devices in .X and .Y Registers
+               
+               When called, this routine sets the .X register to the low byte of the
+               base address of the memory-mapped I/O devices, and puts the high byte
+               in the .Y register.  This allows a user to set up a zero-page pointer
+               to the device, and to load and store indirectly through that pointer.
+               A program which uses this method, rather than directly accessing such
+               devices could be made to function without change on future Commodore
+               models, even though the I/O chips may be addressed at different
+               locations.  This of course assumes that the CIA or a similar chip will
+               be used.  This routine is of limited value for creating software that
+               is compatible with both the VIC-20 and the 64 because of the
+               differences in the VIA I/O chip that the VIC uses.
+               
+               The current version of this routine loads the .X register with a 0,
+               and the .Y register with 220 ($DC), thus pointing to CIA #1, which is
+               at 56320 ($DC00).
