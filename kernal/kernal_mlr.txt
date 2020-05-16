@@ -1,0 +1,775 @@
+﻿-
+- Heimarck, Todd D; Parrish, Patrick:
+- Machine language routines for the Commodore 64 and 128
+-
+
+ Standard Commodore Jump Table
+ ACPTR                     65445                     $FFA5
+ This low-level I/O routine retrieves a byte from a serial device
+without checking for a previous I/O error. U the operation is
+successful, the accumulator wtiJ hold the byte received from
+the device. The contents of .X and .Y are preserved. The suc-
+cess of the operation will be indicated by the value in the se-
+rial status flag upon return. (See READST for details.)
+     For the routine to function properly, the serial device
+must currently be a talker on the serial bus, which requires a
+number of setup steps. Generafiy, it's preferable to use the
+higher-level CHRFN routine instead,
+ CHKIN                     65478                     $FFC6
+ This routine specifies a logical file as the source of input in
+preparation for using the CHRIN or GETUNi routines. The logi-
+cal file should be opened before this routine is caUed. (See the
+OPEN routine.) The desired logical file number should be in
+.X when this routine is called. The contents of .Y are un-
+affected, but the accumulator value will be changed.
+     The routine sets the input channel (location $99) to the
+device number for the spedfied file. I£ the device is RS-232
+(device number 2), the CTA #2 interrupts for RS-232 reception
+are enabled. Ef a serial device (device number 4 or greater) was
+spedfied, the device is made a talker on the serial bus,
+     flf the file is successfully set for input, the status-register
+carry bit will be dear upon return. If carry is set, the operation
+was unsuccessful and the accumulator will contain a Kemal
+error-code value indicating which error occurred. Possible er-
+ror codes indude 3 (fiLe was not open), 5 (device did not re-
+spond), and 6 (file was not opened for input). The RS-232 and
+serial status-flag locations aJso reflect the success of operations
+for those devices. (See READST for details.)
+     The JMP to the CEDGN execution routine is by way of the
+ICHKDN indirect vector at 798-799 ($031E-$031F). You can
+modify the actions of CHfQN by changing the vector to point
+to a routine of your own.
+CHKOUT                     65481                      $FFC9
+This routine (some Commodore references caU it CKOUT)
+specifies a logical file as the recipient of output in preparation
+for using the CHROUT routine. The logical file should be
+opened before this routine is caUed. (See the OPEN routine.)
+The desired logical file number should be in .X when this rou-
+tine is caUed. The contents of .Y are unaffected, but the accu-
+mulator wUl be changed.
+     The routine sets the output channel (location $9A) to the
+device number for the spedfied file. If the device is RS-232
+(device number 2), the routine also enables the CLA #2 inter-
+rupts for RS-232 transmission. fi a serial device (device num-
+ber 4 or greater) is spedfied, the device is ateo made a hstener
+on the serial bus.
+     tf the file is successfuUy set for output, the status-register
+carry bit will be clear upon return. If the carry is set, the op-
+eration was unsuccessful, and the accumulator wUl contain a
+Kernal error-code value indicating which error occurred. Pos-
+sible error codes include 3 (file was not open), 5 (device did
+not respond), and 7 (file was not opened for output). The RS-
+232 and serial status-flag locations ako reflect the success of
+operations for those devices. (See READST for details.)
+     The JMP to the CHKOUT execution routine is by way of
+the ICKOUT indirect vector at $0320-$0321. You can modify
+the actions of the routine by changing the vector to point to a
+routine of your own.
+CHRUSI                     65487                      $FFCF
+This high-level I/O routine (some Commodore references may
+call it BASIN) receives a byte from the logieaL file currently
+specified for input (to change the default input device, see
+CHKIN above). Except to use the routine to retrieve input
+from the keyboard when the system is set for default I/O, you
+must open a logical fUe to the desired device and specify the
+fUe as the input source before calling this routine. (See the
+OPEN and CHKIN routines.)
+     For keyboard input (device 0), the routine accepts
+keypresses until RETURN is pressed, and then retums charac-
+ters from the input string one at a time on each subsequent
+call. The character codefor RETURN, 13, is returned when the
+end of an input string is reached. (The Kemal GETlN routine
+is better for retrieving individual keypresses.)
+     For tape (device 1), the routine retrieves the next character
+from the cassette buffer. If all characters have been read from
+the buffer, the next data block is read from tape into the
+buffer.
+     For RS-232 (device 2), the routine returns the next avail-
+able character from the RS-232 input buffer. If the buffer is
+empty, the routine waits until a character is received—unless
+the RS-232 status flag indicates that the DSR signal from the
+external device is missing, in which case a RETURN character
+code, 13, is returned.
+     CHRIN from the screen (device 3) retrieves characters one
+at a time from the current screen line, ending with a RETURN
+character code when the last nonspace character on the logical
+line is reached. (Note that CHRIN from the screen does not
+work properly in the original version of the 128 Kemal.) For
+serial devices (device numbers 4 and higher), the routine re-
+tums the next available character from the serial bus, unless
+the serial status flag contains a nonzero value. In that case, the
+RETURN character code is returned.
+     For all input devices, the received byte will be in the
+accumulator upon return. The contents of .X and .Y are pre-
+served during input from the keyboard, screen, or RS-232. For
+input from tape, only .X is preserved. For input from serial de-
+vices, only .Y is preserved. For input from the screen, key-
+board, or serial devices, the status-register carry bit wiU always
+be clear upon retum. For tape input, the carry bit will be clear
+unless the operation was aborted by pressing the RUN/STOP
+key. For tape, serial, or RS-232 input, the success of the opera-
+tion will be indicated by the value in the status-flag location.
+(See the entry for READST.) The RS-232 portion of the orig-
+inal 128 version of CHRRsJ has a bug: The carry bit will be set
+if a byte was successfully received, and will be dear only if
+the DSR signal is missing—the opposite of the settings for the
+64. It's better to judge the success of an RS-232 operation by
+the value in the status-flag location rather than by the carry-
+bit setting. (See the READST routine.)
+     TheJMP to the CHREN execution routine is by way of the
+ICHRfN indirect vector at $0324-$0325. You can modify the
+actions of the routine by changing the vector to point to a rou-
+tine of your own.
+CHROUT                      65490                      $FFD2
+This routine (some Commodore references caU it BSOUT)
+sends a byte to the logical file currently specified for output.
+Except to send output to the screen when the system is set for
+default I/O, you must open a logical file to the desired device
+and specify the file as the output target before caUing this rou-
+tine. (See the OPEN and CHKOUT routines.)
+     For output to tape (device 1), the character is stored at the
+next available position in the cassette buffer. When the buffer
+is full, the data block is written to tape.
+     For output to RS-232 (device 2), the character is stored in
+the next available position in the RS-232 output buffer, tf the
+buffer is full, the routine waits until a character is sent.
+     For output to the screen (device 3), the character is
+printed at the current cursor position. For serial devices (device
+numbers 4 and higher), the ClOUT routine is cafied.
+     Regardless of the output device, the contents of the accu-
+mulator, .X, and .Y are preserved during this routine. The
+status-register carry bit will always be dear upon return, un-
+less output to tape is aborted by pressing the RUN/STOP key.
+(In that case, the accumulator wUl also be set to 0, setting the
+status-register Z bit as weU.) For tape, serial, or RS-232 output,
+the success of the operation will be indicated by the value in
+the status flag. (See READST for details.)
+     The JMP to the CHROUT execution routine is by way of
+the lCHROUT indirect vector at $0326-$0327. You can modify
+the actions of the routine by changing the vector to point to a
+routine of your own.
+CESrr                       65409                      $FF81
+This routine initiaüzes aU RAM locations used by the screen
+editor, returning screen memory to its default position and set-
+ting default screen and border colors. The routlne ako dears
+the screen and homes the cursor. AU processor registers are
+affected.
+     For the 64 only, this routine initializes aU VIC chip reg-
+isters to their default values (that's done during the Kemal
+IOlNIT routine in the 128). For the 128, QNT dears both dis-
+plays and redirects printing to the display indicated by the po-
+sition of the 40/80 DISPLAY key. The 128 routine also sets
+SlD volume to zero and resets programmable function keys to
+their default definitions. It does not, however, reinitiaUze the
+80-column character set. (That's also part of lOlNIT.)
+CIOUT                    65448                   $FFA8
+This low-level I/O routine sends a byte to a seriaL device. The
+accumtUator should hold the byte to be sent. AH register val-
+ues are preserved. The success of the operation wiU be in-
+dicated by the value in the serial status flag. (See READST for
+details.)
+    For the routine to function properly, the target serial de-
+vice must currently he a listener on the serial bus, which re-
+quires a number of setup steps. However, if you have already
+performed all the preparatory steps necessary for CHROUT to
+a serial device, then you can freely substitute CIOUT for
+CHROUT, since, for a serial device, CHROUT simply jumps to
+the CIOUT routine.
+CLALL                    65511                   $FFE7
+This routine resets the number of open files (location $98) to
+zero, then faUs through into the CLRCH routine to reset de-
+fault t/O. The contents of .A and .X are changed, but ,Y is
+unaffected.
+    Despite its name, the routine doesn't actually close any
+files that may be open to tape, disk, or RS-232 devices. Un-
+closed files may cause problems, particularly on disks, so this
+routine is of Umited usefulness. The 128 Kemal provides an
+alternate routine that does properly close aU files open to a se-
+rial device. (See CLOSE_ALL.)
+    The JMP to the CLALL execution routine is by way of the
+JCLALL indirect vector at $032C-$032D. You can modify the
+actions of the routine by changing the vector to point to a rou-
+tine of your own.
+CLOSE                    65475                   $FFC3
+This routine closes a specified logical file. CaU the routine with
+the accumulator holding the number of the logical file to be
+closed. If no file with the specified logical file number is cur-
+rently open, no action is taken and no error is indicated. If a
+file with the specified number is open, its entry in the logical
+file number, device number, and secondary address tables wiU
+be removed. For RS-232 files, the driving CLA #2 interrupts wiU
+also be disabled. For tape files, the final block of data wiU be
+written to tape (foUowed by an end-of-tape marker, if one was
+specified). For disk files, the EOl sequence wUl be performed.
+    The 128 version of the routine offers a spedal close func-
+tion for disk files: Ff this routine is called with the status-
+register carry bit set, and if the device number for the file is 8
+or greater, and if the file was opened with a secondary address
+of 15, then the EOI sequence is skipped. (The table entries for
+the file are deleted, but that's aU.) This solves a problem in
+earlier versions of the Kemal for disk files opened with a
+secondary address of 15, the command channel to the drive.
+An attempt to close the command channel will result in an
+EOI sequence that closes all files currently open to the drive,
+not just the command-channel file, This spedal mode aUows
+the command-channel file to be closed without disturbmg
+other files that may be open to the drive.
+    The JMP to the CLOSE execution routine is by way of the
+ICLOSE indirect vector at $031C-$031D. You can modify the
+actions of the routine by changing the vector to point to a rou-
+tine of your own.
+CLRCHN                    65484                    $FFCC
+This routine restores the default I/O sources for the operating
+system. The output channel (location $9A) is reset to device 3,
+the video display. (If the previous output channel was a serial
+device, it is sent an UNLISTEN command.) The input channel
+(location $99) is reset to device 0, the keyboard, (lf the pre-
+vious input channel was a serial device, it is sent an UNTALK
+command.) The contents of .X and .A are changed, but ,Y is
+unaffected.
+    The JMP to the CLRCHN execution routine is by way of
+the lCLRCH indirect vector at $0322-$0323. You can modify
+the actions of the routine by changing the vector to point to a
+routine of your own.
+GETIN                     65508                    $FFE4
+This routine retrieves a single character from the current input
+device. The routine first checks to see whether the input de-
+vice number is 0 (keyboard) or 2 (RS-232). Lf it's not either of
+these, the Kemal CHJUN routine is caUed instead. For key-
+board or RS-232, the retrieved character will be in the accu-
+mulator upon retum, and the status-register carry bit wall be
+clear. If no character is available, the accumulator wUl contain
+0. (CHREM, by contrast, wUl wait for a character.) The contents
+of .Y are unaffected, but .X wUl be changed. For RS-232, bit 3
+of the status flag will also be set if no characters are available.
+(See READST for details.)
+     The JMP to the GETIN execution routine is by way of the
+IGETIN indirect vector at $032A-$032B. You can modify the
+actions of the routine by changing the vector to point to a rou-
+tine of your own.
+IOBASE                     65523                    $FFF3
+This routine retums a constant 1/0 chip base-address value in
+.X (low byte) and .Y (high byte). The accumulator is un-
+affected. For the 64, the value returned is $DCOO—the address
+of CLA #1. For the 128, the value is $D000—the address of
+the VIC chip.
+IOLNIT                     65412                    $FF84
+This routine initializes the CIA chips' registers to their default
+values, along with related RAM locations. AU processor reg-
+isters are affected. For the 128, the routine alsoinitiatizes the
+VlC and VDC chip registers (a step which is part of the Kemal
+CUSfT routine tn the 64). In addition, the 128 routine sets aU
+SID chip registers to zero and calls the Kernal DLCHR routine
+to initiahze the character set for the 80-column chip.
+LISTEN                     65457                    $FFB1
+This low-level serial I/O routine sends a LISTEN command to
+a specified serial device. CaU the routine with the accumulator
+holding the device number (4-31) of the serial device to re-
+ceive the command. The contents of ,A and .X wUl be changed;
+.Y is unaffected. The success of the operation witi be indicated
+by the value in the serial status flag upon return. (See
+READST for details.)
+LOAD                       65493                    $FFD5
+This routine loads a program file from tape or disk into a
+spedfied area of memory, or verifies a program file against the
+contents of a spedfied area of memory. A number of prepara-
+tory routines must be called before LOAD: SETLFS, SETNAM,
+and (for the 128 only) SETBNK. See the discussions ofthose
+routines for details.
+     SETLFS estabtishes the device number and secondary ad-
+dress for the operation. fThe logical file number isn't significant
+for loading or verifying.) The secondary-address value deter-
+mines whether the load/verify will be absolute or relocating.
+If bit 0 of the secondary address is %0 (if the value is 0 or any
+even number, for example), a relocating load wiU be performed:
+The file wül be loaded starting at the address specified in .X
+and .Y. U the bit is %1 (if the value is 1 or any odd number,
+for example), an absolute load will be performed: The data
+wiU be loaded starting at the address specified in the file itseLr.
+For tape files, the secondary-address spedfication can be over-
+ridden by the file's internal type specification. Nonrelocatable
+tape program files always load at their absolute address,
+regardless of the secondary address.
+    When calling the LOAD routine, the accumulator should
+hold the operation type value (0 for a load, or any nonzero
+value for a verify). If the secondary address specifies a relocat-
+ing load, the starting address at which data is to be loaded
+should be stored in .X (low byte) and .Y (high byte). The val-
+ues of .X and .Y are irrelevant for an absolute load.
+    The status-register carry bit will be dear upon retum if
+the file was successfully loaded, or set if an error occurred or if
+the RUN/STOP key was pressed to abort the load. When
+carry is se t upon retum, the accumulator wUl hold a Kemal er-
+ror-code value indicating the problem. Possible error codes in-
+clude 4 (file was not found), 5 (device was not present), 8 (no
+name was specified for a serial load), 9 (an illegal device num-
+ber was specified).
+    On the 128 only, the load wiU be aborted if it extends be-
+yond address $FEFF. This prevents corruption of the MMU
+configuration register at $FFQ0. Ln this case, an error code of
+16 will be returned. The success of the operation wUl also be
+indicated by the value in the tape/serial status flag. (See
+READST for details.)
+MEMBOT                    65436                  $FF9C
+MEMTOP                    65433                  $FF99
+These routines read or set the Kemal's bottom-of-memory
+pointer and top-of-memory pointer, respectively. (The bottom-
+of-memory pointer is at locations $0281-$0282 for the 64 or
+$0A05-$0A06 for the 128; the top-of-memory pointer is at
+locations $0283-$0284 for the 64 or $0A07-$0A08 for the
+128.) To read the pointer, caU the routine with the carry flag
+set; the pointer value wiU be returned in .X (low byte) and .Y
+(high byte). To set the pointer, call the routine with the carry
+flag dear and with .X and .Y containing the low and high
+bytes, respectively, of the desired pointer value.
+OPEN                       65472                    $FFC0
+This routine opens a logical file to a specified device in
+preparation for input or output. At least one preparatory step
+is required before the standard OPEN routine is called:
+SETLJFS must be caUed to estabhsh the logical file number, de-
+vice number, and secondary address, For tape (device 1), RS-
+232 (device 2), or serial (device 4 or higher), SETNAM is also
+required to specify the length and address of the associated
+filename. Tor the 128, SETBNK must be caUed to establish the
+bank number where the filename can he found.
+     It is not necessary to load any registers before calling
+OPEN, and all processor register values may be changed dur-
+ing the routine. The carry will be clear if the file was succee -
+fully opened, or it wiU be set if it could not be opened. When
+carry is set upon return, the accumulator wiU hold an error
+code indicating the problem. Possible error-code values in-
+clude 1 (ten fUes—the maximum aUowed—are already open),
+2 (a currently open file already uses the specified logical file
+number), and 5 (specified device did not respond). The RS-232
+and tape/serial status flags wUl also reflect the success of the
+operation for those devices, (See READST for details.)
+     On the 128, there is an exception to the carry-bit rule. Be-
+cause of a bug in the 128's RS-232 OPEN routine, carry will
+be set if the RS-232 device is present when x-Une handshaMng
+is used (if the DSR line is high), or clear if the device is ab-
+sent—the opposite of the proper setting.
+     The JMP to the OPEN execution routine is by way of the
+IOPEN indirect vector $031A-$031B. You can modify the ac-
+tions of the routine by changing the vector to point to a rou-
+tine of your own,
+PLOT                       65520                    $FFF0
+This routine reads or sets the cursor position on the active dis-
+play, lf it is called with the status-register carry bit dear, the
+value in .X spedfies the new cursor row (vertical position),
+and the vaJue in ,Y specifies the column (horizontal position).
+The carry bit wiU be set upon retum if the specified column or
+row values are beyond the right or bottom margins of the cur-
+rent output window, or it wiU be dear if the cursor was
+successfuUy positioned.
+     If the routine is called with the carry bit set, the row num-
+ber for the current cursor position is returned in .X and the
+current column number is returned in .Y. For the Commodore
+128, the cursor position wiU be relative to the home position
+of the current output window rather than to the upper left cor-
+ner of the screen. Of course, in the case of a full-screen output
+window—the default condition—the upper left comer of the
+screen is the home position of the window,
+RAMTAS                  65415                 $FF87
+This routine clears zero-page RAM (locations $02-$FF) and
+initiaUzes Kemal memory pointers in zero page. For the 64
+only, the routine also dears pages 2 and 3 (locations
+$0200-$03FF), tests aU RAM locations from $0400 upwards
+until ROM is encountered, and sets the iop-of-memory
+pointer. For the 128, the routine sets the BASIC restart vector
+($OAOO) to point to BASIC's cold-start entry address, $4000.
+RDTBVI                  65502                $FFDE
+This routine returns the current value of the jiffy dock. The
+dock value corresponds to the number of jiffies (1 /60-second
+intervals) that have elapsed since the system was tumed on or
+reset, or the number of jiffies since midnight if the dock value
+has been set. The low byte of the clock value (location $A2) is
+returned in .A, the middle byte (location $A1) in .X, and the
+high byte docation $A0) in .Y.
+READST                  65463                $FFB7
+This routine (some Commodore references call it READSS) re-
+turns the status of the most recent I/O operation. The status
+value wUI be in the accumulator upon retum; the contents of
+.X and .Y are unaffected. Lf the current device number is 2 (in-
+dicating an RS-232 operation), the status value is retrieved
+from the RS-232 status flag (location $0297 for the 64 or
+$0A14 for the 128), and the flag is deared. Otherwise, the sta-
+tus value is retrieved from the tape/serial status flag (location
+$90). That flag is not deared after being read.
+    RESTOR                    65418                   $FF8A
+    This routine resets the Kemal indirect vectors ($0314-$0333)
+    to their default values. Ail processor registers are affected.
+    SAVE                      65496                   $FFD8
+    This routine saves the contents of a block of memory to disk
+    or tape. It could be a BASIC or ML program, but it doesn't
+    have to be. A number of preparatory routines must be caUed
+    first: SETLFS, SETNAM, and (for the 128 only) SETBNK. See
+    the discussions of those routines for details.
+        SETLFS estabUshes the device number and secondary ad-
+    dress for the operation. (The logical file number isn't signifi-
+    cant for saving.) The secondary address is irrelevant for saves
+    to serial devices, but for tape it specifies the header type. If bit
+    0 of the secondary address value is %1 (if the value is 1, for
+    example), the data will be stored in a nonrelocatable file—one
+    that wUl always load to the same memory address from which
+    itwas saved. Otherwise, the data wiü be stored in a file that
+    can be loaded to another location. If bit 1 of the secondary ad-
+    dress is %1 (if the value is 2 or 3, for example), the file wiU be
+    followed by an end-of-tape marker.
+        Before calling SAVE, you must also set up a two-byte
+    zero-page pointer containing the starting address of the block
+    of memory to be saved and then store the address of the zero-
+    page pointer in the accumulator. The ending address (plus
+    one) for the save should be stored in .X (low byte) and .Y
+    (high byte). To save the entire contents of the desired area, it's
+    important to remember that .X and .Y must hold an address
+    that is one location beyond the desired ending address.
+        When the save is complete, the carry wiU be clear ifthe
+    file was successfully saved, or set if an error occurred (or if the
+    RUN/STOP key was pressed to abort the save). When carry is
+    set upon retum, the accumulator wUl hold the Kemal error
+    code indicating the problem. Possible error-code values in-
+    clude 5 (serial device was not present), 8 (no name was speci-
+    fied for a serial save), and 9 (an Ulegal device number was
+    specified). The success of the operation wiU atso be indicated
+    by the value in the tape/serial status flag. (See READST for
+    details.)
+    SCNKEY                    65439                   $FF9F
+    This routine scans the keyboard matrix to determine which
+    keys, if any, are currently pressed. The standard KQ service
+   routine calls SCNKEY, so it's not usuaUy necessary to caU it
+  explicitly to read the keyboard. The character code for the key
+  currently pressed is loaded into the keyboard buffer, from
+  where it can be retrieved using the Kernal GETfN routine. The
+  matrix code of the keypress read during this routine can abo
+  be read in location $CB (64) or $D4 (128), and the status of
+  the shift keys can be read in location $028D (64) or $D3 (128).
+   SCREEN                  65517                    $FFED
+   This routine (Commodore 128 Uterature caUs it SCRORG) re-
+  turns information on the size of the screen display. For the 64,
+  the routine always returns the same values—the screen width
+  in columns (40) in .X and the screen height in rows (25) in .Y.
+  The accumulator is unaffected. For the 128, the values retumed
+  reflect the size of the current output window. The X register
+  wUl contain in the current window the number of columns mi-
+  nus one, and .Y will contain the number of rows minus one.
+  The accumulator wUl hold the maximum column number for
+  the display currently active (39 for the 40-column screen or 79
+  for the 80-column screen).
+   SECOND ■                  65427                  $FF93
+   This low-level serial I/O routine sends a secondary address to
+  a device which has been commanded to listen. The value in
+  the serial status flag upon retum will indicate whether the op-
+  eration was successful.
+   SETLFS                    65466                  $FFBA
+   This routine assigns the logical file number (location $B8), de-
+  vice number (location $BA), and secondary address ^ocation
+  $B9) for the current I/O operation. CaU the routine with the
+  accumulator holding the logical file number, .X holding the
+  device number, and .Y holding the secondary address. All reg-
+  ister values are preserved during the routine. Refer to the
+  LOAD and SAVE routines for the special significance of the
+  secondary address in those cases. When OPENing files to se-
+  rial devices, it's vital that each logical file have a unique
+  secondary address, Ui the 128 Kemal, the LKUPLA and
+  LKUPSA routines can be used to find unused logical file num-
+  bers and secondary addresses.
+   SETMSG                  65424                    $FF90
+    SETMSG sets the value of the Kemal message flag (location
+    $9D). CaU the routine with the accumulator holding the de-
+   sired flag value (.X and .Y are unaffected,) Vatid flag values
+   are 0 (no Kemal messages are displayed), 64 (ordy error mes-
+   sages are displayed), 128 (only control messages—PRESS
+   PLAY ON TAPE, for example—are displayed), and 192 (both
+   error and control messages are dispkyed).
+   SETNAM                  65469                   $FFBD
+   This routine assigns the length (location $B7) and address
+   0ocations $BB-$BC) of the filename for the current I/O opera-
+   tion. Cafl the routine with the length of the filename in .A and
+   the address of the first character of the name in .X (low byte)
+   and .Y (high byte). If no name is used for the current opera-
+   tion, load the accumulator with 0; the values in .X and .Y are
+   then irrelevant, ALl register values are preserved during this
+   routine.
+   SETTIM                  65499                   $FFDB
+   This routine sets the value in the software jiffy dock. The
+   value in the accumulator is transferred to the low byte (loca-
+   tion $A2), the value in .X to the middle byte flocation $A1),
+   and the value in .Y to the high byte flocation $A0). The speci-
+   fied value should be less than $4F1A01, which corresponds to
+   24:00:00 hours.
+   SETTMO                  65442                   $FFA2
+   The SETTMO routine stores the contents of the accumulator in
+   the fEEE timeout flag. (.X and .Y are unaffected.) This routine
+   is superfluous, since the flag isn't used by any 64 or 128 ROM
+   routine. It is present merely to maintain consistency with pre-
+   vious versions of the KemaI. For the 64, the flag location is
+   $0285; for the 128, it's at $0A0E.
+   STOP                    65505                   $FFE1
+   This routine checks whether the RUN/STOP key is currently
+   pressed. It retums with the status-register Z bit dear if the key
+   is not pressed, or with the bit set if it is pressed. Additionally,
+   if RUN/STOP is pressed the CLRCH routine is called to re-
+   store default I/O channels, and the count of keys in the key-
+   board buffer is reset to zero.
+       The jMP to the STOP execution routine is by way of the
+   ISTOP indirect vector at $0328-$0329. You can modify the ac-
+   tions of the routine by changing the vector to point to a rou-
+   tine of your own.
+   TALK                    65460                   $FFB4
+   This low-level 1/0 routine sends a TALK command to a serial
+   device, Call the routine with the accumulator holding the
+   number (4-31) of the device. The success of the operation will
+   be indicated by the value in the serial status flag upon retum,
+   (See READST for detaUs.)
+   TKSA                    65430                   $FF96
+   This low-Ievel serial 1/0 routine sends a secondary address to
+   a device which has previously been commanded to taLk. The
+   success of the operation will be indicated by the value in the
+   serial status flag upon retum. (See READST for detaUs.)
+   UDTIM                   65514                   $FFEA
+   This routine increments the software jiffy dock and scans the
+   keyboard column containing the RUN/STOP key. (The 128
+   version of the routine aJso decrements a countdown timer.)
+   This routine is normally called every 1 /60 second as part of
+   the standard lRQ service routine.
+   UNLSN                   65454                   $FFAE
+   This low-level 3/0 routine sends an UNLlSTEN command to
+   aH devices on the serial bus. Any devices which are currently
+   listeners will cease accepting data.
+   UNTLK                   65451                   $FFAB
+   This low-Ievel 1/0 routine sends an UNTALK command to aU
+   devices on the serial bus. Any devices which are currently
+   talkers will cease sending data.
+   VECTOR                  65421                   $FF8D
+   This routine can be used either to store the current values of
+   Kemal indirect vectors at $0314-$0333 or to write new values
+   to the vectors. When caUing this routine, .X and .Y should be
+   loaded with the address of a 32-byte table (low byte in .X,
+   high byte in .Y). If the status-register carry bit is clear when
+   the routine is caUed, the vectors will be loaded with the values
+   from the table. If carry is set, the 16 two-byte address values
+   currently in the vectors wiU be copied to the table.
+   New 128 Kemal Jump Table
+   Locations $FF47-$FF7F comprise a new table of jump vectors
+   to routines foundin Commodore 128 ROM, but not in the
+   Commodore 64.
+   BOOT_CALL              65363                   $FF53
+   This routine attempts to load and execute boot sectors from a
+   specified disk drive. Call the routine with .X holding the de-
+   vice number for the drive (usually 8) and with the accu-
+   mulator holding the character code corresponding to the drive
+   number—not the actual drive number. The single drive in
+   1541 and 1571 units is drive 0; in this case, use 48, the charac-
+   ter code for zero. If the specified drive is not present or is
+   tumed off, or if the disk in the drive does not contain a valid
+   boot sector, the routine wUI retum with the status-register
+   carry bit set. If a boot sector is found, it wiU be loaded into
+   locations $0B00-$0BFF. Additional boot sectors may be loaded
+   into other areas of memory, and the boot code may not retum
+   to this routine.
+   CLOSE__ALL             65354                   $FF4A
+   This routine closes aU files currently opened to a specified de-
+   vice, providing an improved version of CLALL. Enter the rou-
+   tine with the accumulator holding the number of the device
+   on which files are to be closed. Lf the specified device is the
+   current input or output device, the input or output channel
+   will be reset to the default device (screen or keyboard). Lf aU
+   files to the device were successfully closed, the status-register
+   carry bit w01 clear upon retum. A set carry bit indicates that a
+   device error occurred.
+   C64_MODE               65357                   $FF4D
+   This is the equivalent of the BASIC command GO 64. It per-
+   forms an immediate cold start of 64 mode. To get back to 128
+   mode, it is necessary to reset the computer, or to tum it off
+   and back on.
+   DLCHR                  65378                   $FF62
+   This routine copies character shape data for both standard
+   ROM character sets into the VDC video chip's private block of
+   RAM, providing character definitions for the 80-column dis-
+   ptay. (The VDC has no character ROM.) This routine is also
+   caUed as part of IOEMFI for the 128.
+   DMA_CALL               65360                   $FF50
+   This routine passes a command to a DMA (Dkect Memory Ac-
+   cess) device. The DMA device wUI then take control of the
+   system to execute the command. The routine is written to sup-
+   port the REC (RAM Expansion ControUer) chip in the 1700
+   and 1750 Memory Expansion Modutes, the only DMA periph-
+   erals currently available. CaU the routine with .Y holding the
+   command for the DMA device and .X holding the bank number
+   for the operation. Other preparatory steps may be required,
+   depending on the command.
+   GETCFG                   65387                   $FF6B
+   This routine translates a bank number (0-15) into the
+   corresponding MMU register setting to configure the system
+   for that bank. CaU the routine with .X holding the bank num-
+   ber. Upon return, the accumulator vriU hold the corresponding
+   MMU configuration register value. (.Y is unaffected.) Once you
+   have this value, you can store it into $FF00 to change banks.
+   The input bank number is not checked for validity, and a
+   number outside the acceptable range wiU retum a meaningless
+   value.
+   UVDCMF                   65402                   $FF7A
+   This routine compares .A to the number held in a memory
+   location in a specified bank. In preparing to caU EMDCMP,
+   load a two-byte zero-page pointer with the address of the
+   location with which the accumulator is to be compared (or
+   with the base location if a series of bytes is to be compared),
+   then store the address of this pointer in location $02C8. CaU
+   the routine with the accumulator holding the byte to be com-
+   pared, .X holding the bank number (0-15) for the target loca-
+   tion, and .Y holding an offset value which wiU be added to
+   the address in the pointer. (Load .Y with 0 if no offset is de-
+   sired.) Upon retum, the accumulator will stiU hold the byte
+   value, and the status-register N, Z, and C (carry) bits wiU re-
+   flect the result of the comparison. The value in .Y wiU also be
+   preserved, but it is necessary to reload .X with the bank num-
+   ber before every call to this routine. You can compare up to
+   256 sequential locations without changing the address in the
+   zero-page pointer by simply incrementing ,Y between calls.
+   INDFET                   65396                   $FF74
+   This routine reads the contents of a location in a specified
+   bank. Prior to calUng this routine; you must load a two-byte
+   zero-page pointer with the address of the location to be read
+   (or with the base location if a series of bytes is to be read).
+       CaU the routine with the accumulator holding the address
+   of the zero-page pointer, .X holding the bank number (0-15)
+   for the target location, and .Y holding an offset value which
+   wUl be added to the address in the pointer. (Load .Y with 0 if
+    no offset is desired.) Upon return, the accumulator will hold
+    the byte from the specified address. The value in .Y is not
+    changed.
+       To read from a series of locations, it is necessary to reload
+    the accumulator and .X values before every cail to this routine,
+    but you can read up to 256 sequential locations without
+    changing the address in the zero-page pointer by incrementing
+    .Y between caUs.
+   INDSTA                    65399                   $FF77
+   This routine stores a value at an address in a specified bank.
+    Before calling the routine, you must load a two-byte zero-page
+    pointer with the address of the location at which the byte is to
+    be stored (or with the base location if a series of bytes is to be
+    stored), and then store the address of this pointer in location
+    $02B9. Call the routine with the accumulator holding the byte
+    to be stored, .X holding the bank number (0-15) for the target
+    location, and ,Y holding an offset value which wiU be added
+    to the address in the pointer. (Load Y with 0 if no offset is de-
+    sired.) Upon retum, the accumulator will still hold the byte
+    value; .Y is ako preserved. To write to a series oflocations,
+    you must reload .X with the bank number before every call,
+    but you can write to up to 256 sequential locations without
+    changing the address in the zero-page pointer by simply in-
+    crementing .Y between caUs.
+   JMPFAR                    65393                   $FF71
+   ]MPFAR jumps to a routine in a specified bank, with no retum
+    to the calling bank. Prior to calling this routine, you must store
+    the bank number (0-15) of the target routine in location 2 and
+    the address of the target routine in locations 3-4 in high-
+    byte/low-byte order, opposite from the usual arrangement.
+    Load location 5 with the value you want placed in the status
+    register when the target routine is entered. (The behavior of
+    many operating-system routines is influenced by the status-
+    register setting, particularly the state of the carry bit. Load 5
+    with the value 0 to clear carry or with 1 to set carry.) To pass
+    other register values, store the desired accumulator value in
+    location 6, the value for .X in 7, and the value for .Y in 8.
+   JSRFAR                    65390                   $FF6E
+   This routine jumps to a subroutine in a specified bank and re-
+    turns to the calling routine in bank 15. Prior to calting this
+  routine, you must store the bank number (0-15) of the target
+  routine in location 2 and the address of the target routine in
+  locations 3-4 (in high-byte/low-byte order, opposite from the
+  usual arrangement). Load location 5 with the value you want
+  placed in the status register when the target routine is caUed.
+  (The behavior of many operating system routines is influenced
+  by the status-register setting, particularly the state of the carry
+  bit. Load 5 with the value 0 to dear carry, or with 1 to set
+  carry.) To pass other register values to the routine you will be
+  caUing, store the desired accumulator value in location 6, the
+  value for .X in 7, and the value for .Y in 8. Upon retum, loca-
+  tion 5 wUl hold the status-register value at the time of exit, 6
+  will hold the accumulator value, 7 will hold the .X value, 8
+  will hold the .Y value, and 9 will hold the stack-pointer value.
+  The system is always configured for bank 15 upon exit.
+  LKUPLA                  65369                   $FF59
+  This routine checks whether a spedLfied logical £ile number is
+  currently used. CaU the routine with the accumulator holding
+  the logical-file-number value in question. If that file number is
+  available, the carry bit wiU be set upon retum. (The logical file
+  number will stUl be in the accumulator.) However, if the num-
+  ber is used for a currently open file, then the carry bit will be
+  clear upon retum, the accumulator wiU still hold the logical
+  file number, .X will hold the corresponding device number,
+  and .Y wUl hold the corresponding secondary address.
+  LKUPSA                  65372                   $FF5C
+  This routine checks whether a spedfied secondary address is
+  currently in use. CaU the routine with .Y holding the secondary-
+  address value in question. If that secondary address is not
+  currently used, the status-register carry bit wiU be set upon re-
+  turn. (The secondary-address value wUl stUl be in .Y.) How-
+  ever, ii the number is used for a currently open fUe, the carry
+  bit wUl be clear upon return, .Y wUl stUl hold the secondary
+  address, the accumulator vviU hold the associated logical file
+  number, and .X wUl hold the corresponding device number.
+  PFKEY                   65381                   $FF65
+  When you turn on the 128, its function keys are predefined.
+  Pressing F3 prints DIRECTORY, F7 holds the LIST command,
+  and so on. The PFKEY Kemal routine assigns a new definition
+  to one of the 10 programmable function keys (Fl-F8, SfflET-
+  RUN/STOP, and HELP).
+       CaU the routine with the accumulator holding the address
+   of a three-byte zero-page string descriptor, .X holding the key
+   number (1-10), and ,Y holding the length of the new defi-
+   nition string. The first two bytes of the descriptor in zero page
+   should contain the address of the definition string (in the
+   usual lovv-byte/high-byte order); the final byte should hold
+   the bank number where the definition string is located. PFKEY
+   doesn't check the key number for vahdity; a value outside the
+   acceptable range may garble existing definitions. Upon return,
+   the carry bit will be clear if the new definition was success-
+   fully added, or set if there was insufficient room in the defi-
+   nition table for the new definition.
+   PHOENIX                   65366                    $FF56
+   This routine initializes function ROMs and attempts to boot a
+   disk from the default drive. The presence of function ROMs in
+   cartridges or in the 128's spare ROM socket is recorded during
+   the power-on/reset sequence. This routine initializes the func-
+   tion ROMs by caUing their recorded cold-start entry addresses.
+   If ROMs are present, they may or may not retum to this rou-
+   tine, depending on the initialization steps performed. If no
+   ROMs are present, or if all ROMs retum after initialization,
+   the routine attempts to boot a disk in drive 0 of device 8 using
+   the BOOT_CALL routine,
+   PRIMM                     65405                    $FF7D
+   This routine prints the string of character codes which im-
+   mediately follows the JSR to this routine. (You must always
+   call this routine with JSR, never with JMP. Only JSR places the
+   required address information on the stack.) The routine contin-
+   ues printing bytes as character codes until a byte containing
+   zero is encountered. When the ending marker is found, the
+   routine returns to the address immediately foUowing the zero
+   byte. AU registers (.A, ,X, and .Y) are preserved during this
+   routine.
+   SETBNK                    65384                    $FF68
+   This Kemal routine estabhshes the current memory bank from
+   which data wiU be read or to which data will be written dur-
+   ing load/save operations, as well as the bank where the file-
+   name for the I/O operations can be found. CaU the routine
+   with the accumulator holding the bank number for data and
+   .X holding the bank for the filename. AU registers (.A, .X, and
+   .Y) are preserved during this routine.
+   SPW_SPOUT              65351                $FF47
+   This low-level serial I/O routine sets up the serial bus for fast
+   (burst mode) communications. Unless you're writing a custom
+   data-transfer routine, it's not necessary to caU this routine
+   exphcitiy. All higher-level serial 1/0 routines already indude
+   this setup step. The routine should be caUed with the status-
+   register carry bit dear to estabHsh fast serial input or with the
+   bit set to establish fast serial output.
+   SWAPPER                65375                $FF5F
+   This routine switches active screen displays. The active display
+   is the one which has a live cursor, and to which screen
+   CHROUT output is directed. The routine exchanges the active
+   and inactive screen-editor variable tables, tab-stop bitmaps,
+   and line-link bitmaps; and it toggles the active screen flag
+   (location $D7). The routine doesn't physicaUy tum either
+   video chip on or off—both chips always remain enabled.
