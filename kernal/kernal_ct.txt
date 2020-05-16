@@ -1,0 +1,335 @@
+-
+- Craig Taylor: Kernal 64 / 128
+- C=Hacking, Volume 1, Issue 3; July 15, 1992
+-
+
+Routine        : CINT
+ Kernal Address: $FF81
+ Description   : Setup VIC, screen values, (128: 8563)...
+ Registers In  : None.
+ Registers Out : None.
+ Memory Changed: Screen Editor Locations.
+
+Routine        : IOINIT
+ Kernal Address: $FF84
+ Description   : Initializes pertinant display and i/o devices
+ Registers In  : C64: None. | C128: $0A04/bit 7
+                            |          0 - Full Setup.
+                            |          1 - Partial Setup. (no 8563 char)
+ Registers Out : .A, .X, .Y destroyed.
+ Memory Changed: CIA's, VIC, 8502 port, (C128: also optionally 8563).
+ Note          : This routine automatically distinguishes a PAL system from a
+                 NTSC system and sets PALCNT accordingly for use in the 
+                 time routines.
+
+Routine        : RAMTAS
+ Kernal Address: $FF87
+ Description   : Clears Z-Page, Sets RS-232 buffers, top/bot Ram.
+ Registers In  : None.
+ Registers Out : .A, .X, .Y destroyed.
+ Memory Changed: Z-Page, Rs-232 buffers, top/bot Ram ptrs
+
+Routine        : VECTOR
+ Kernal Address: $FF8D
+ Description   : Copies / Stores KERNAL indirect RAM vectors.
+ Registers In  : .C = 0 (Set KERNAL Vectors) | .C = 1 (Duplicate KERNAL vectors)
+                 .XY = address of vectors    | .XY = address of user vectors
+ Registers Out : .A, .Y destroyed            | .A, .Y destroyed.
+ Memory Changed: KERNAL Vectors changed      | Vectors written to .XY
+ Note          : This routine is rarely used, usually the vectors are directly
+                 changed themselves. The vectors, in order, are :
+
+                 C128: IRQ,BRK,NMI,OPEN,CLOSE,CHKIN,CHKOUT,CLRCH,BASIN,BSOUT
+                       STOP,GETIN,CLALL,EXMON (monitor),LOAD,SAVE
+                 C64 : IRQ,BRK,NMI,OPEN,CLOSE,CHKIN,CHKOUT,CLRCH,BASIN,BSOUT
+                       STOP,GETIN,CLALL,USRCMD (not used),LOAD,SAVE
+
+Routine        : SETMSG
+ Kernal Address: $FF90
+ Description   : Set control of KERNAL control and error messages.
+ Registers In  : .A bit 7 = KERNAL Control Messages (1 = on)
+                    bit 6 = KERNAL Error   Messages (1 = on)
+ Registers Out : None.
+ Note          : KERNAL Control messages are those defined as Loading, Found etc
+                 ... KERNAL Error messages are I/O ERROR # messages which are
+                 listed as follows:
+
+Routine        : SECND
+ Kernal Address: $FF93
+ Description   : Sends secondary address to device after a LISTN
+ Registers In  : .A = secondary address
+ Registers Out : .A used.
+ Memory Changed: None.
+ Note          : Low level serial I/O - recommended use OPEN,CLOSE,CHROUT etc..
+
+Routine        : TKSA
+ Kernal Address: $FF96
+ Description   : Sends secondary address to device after TALK
+ Registers In  : .A = secondary address.
+ Registers Out : .A used.
+ Memory Changed: None.
+ Note          : Low level serial I/O - recommended use OPEN,CLOSE,CHROUT etc..
+
+Routine        : MEMTOP
+ Kernal Address: $FF99
+ Description   : Read or Set top of System Ram
+ Registers In  : .C = 1 (Read MemTop)     | .C = 0 (Set MemTop)
+                                          | .XY = top of memory
+ Registers Out : .XY = top of memory      | None.
+ Memory Changed: None.                    | Top of memory changed.
+ Note          : On the C=128, this routine refers to the top of BANK 0 RAM, not
+                 BANK 1 RAM.
+
+Routine        : MEMBOT
+ Kernal Address: $FF9C
+ Description   : Read or Set bottom of System Ram
+ Registers In  : .C = 1 (Read MemBot)     | .C = 0 (Set MemBot)
+                                          | .XY = bottom of memory.
+ Registers Out : .XY = bottom of memory   | None.
+ Memory Changed: None.                    | Bottom of Memory changed.
+ Note          : On the C=128, this routine refers to the bottom of BANK 0 RAM, 
+                 not, BANK 1 RAM.
+
+Routine        : KEY
+ Kernal Address: $FF9F
+ Description   : Scans Keyboard
+ Registers In  : None.
+ Registers Out : None.
+ Memory Changed: Relevant System Keyboard Values
+
+Routine        : SETMO
+ Kernal Address: $FFA2
+ Description   : This is a routine who's code never made it into any versions
+                 of the KERNAL on the C64, Vic-20 and C128.  Thus it is of no
+                 pratical use.
+
+Routine        : ACPTR
+ Kernal Address: $FFA5
+ Description   : Get byte from current talker.
+ Registers In  : None.
+ Registers Out : .A = data byte.
+ Memory Changed: None.
+ Note          : Low level serial I/O - recommended use OPEN,CLOSE,CHROUT etc..
+
+Routine        : CIOUT
+ Kernal Address: $FFA8
+ Description   : Output byte to current listener.
+ Registers In  : .A = byte.
+ Registers Out : .A used.
+ Memory Changed: None.
+ Note          : Low level serial I/O - recommended use OPEN,CLOSE,CHROUT etc..
+
+Routine        : UNTLK
+ Kernal Address: $FFAB
+ Description   : Commands current TALK device to stop TALKING.
+ Registers In  : None.
+ Registers Out : .A used.
+ Memory Changed: None.
+ Note          : Low level serial I/O - recommended use OPEN,CLOSE,CHROUT etc..
+
+Routine        : UNLSN
+ Kernal Address: $FFAE
+ Description   : Commands current listening device to stop listening.
+ Registers In  : None.
+ Registers Out : .A used.
+ Memory Changed: None.
+ Note          : Low level serial I/O - recommended use OPEN,CLOSE,CHROUT etc..
+
+Routine        : LISTN
+ Kernal Address: $FFB1
+ Description   : Commands device to begin listening.
+ Registers In  : .A = device #.
+ Registers Out : .A used.
+ Note          : Low level serial I/O - recommended use OPEN,CLOSE,CHROUT etc..
+
+Routine        : TALK
+ Kernal Address: $FFB4
+ Description   : Commands device to begin talking.
+ Registers In  : .A = device #.
+ Registers Out : .A used.
+ Memory Changed: None.
+ Note          : Low level serial I/O - recommended use OPEN,CLOSE,CHROUT etc..
+
+Routine        : READSS
+ Kernal Address: $FFB7
+ Description   : Return I/O status byte.
+ Registers In  : None.
+ Registers Out : .A = status byte. (see section on ERROR messages).
+ Memory Changed: None.
+
+Routine        : SETLFS
+ Kernal Address: $FFBA
+ Description   : Set logical file #, device #, secondary # for I/O.
+ Registers In  : .A = logical file #, .X = device #, .Y = secondary #
+ Registers Out : None.
+ Memory Changed: None.
+
+Routine        : SETNAM
+ Kernal Address: $FFBD
+ Description   : Sets pointer to filename in preperation for OPEN.
+ Registers In  : .A = string length, .XY = string address.
+ Registers Out : None.
+ Memory Changed: None.
+ Note          : To specify _no_ filename specify a length of 0.
+
+Routine        : OPEN
+ Kernal Address: $FFC0
+ Description   : Open up file that has been setup by SETNAM,SETLFS
+ Registers In  : None.
+ Registers Out : .A = error code, .X,.Y destroyed.
+                 .C = 1 if error.
+ Memory Changed: None.
+
+Routine        : CLOSE
+ Kernal Address: $FFC3
+ Description   : Close a logical file.
+ Registers In  : .A = logical file #.
+ Registers Out : .A = error code, .X,.Y destroyed.
+                 .C = 1 if error
+ Memory Changed: None.
+
+Routine        : CHKIN
+ Kernal Address: $FFC6
+ Description   : Sets input channel.
+ Registers In  : .X = logical file #.
+ Registers Out : .A = error code, .X,.Y destroyed.
+                 .C = 1 if error
+ Memory Changed: None.
+
+Routine        : CHKOUT
+ Kernal Address: $FFC9
+ Description   : Sets output channel.
+ Registers In  : .X = logical file #.
+ Registers Out : .A = error code, .X,.Y destroyed.
+                 .C = 1 if error
+ Memory Changed: None.
+
+Routine        : CLRCH
+ Kernal Address: $FFCC
+ Description   : Restore default input and output channels.
+ Registers In  : None.
+ Registers Out : .A, .X used.
+ Memory Changed: None.
+
+Routine        : BASIN
+ Kernal Address: $FFCF
+ Description   : Read character from current input channel.
+                 Cassette - Returned one character a time from cassette buffer.
+                 Rs-232   - Return one character at a time, waiting until 
+                            character is ready.
+                 Serial   - Returned one character at time, waiting if nessc.
+                 Screen   - Read from current cursor position.
+                 Keyboard - Read characters as a string, then return them 
+                            individually upon each call until all characters
+                            have been passed ($0d is the EOL).
+ Registers In  : None.
+ Registers Out : .A = character or error code, .C = 1 if error.
+ Memory Changed: None.
+
+Routine        : BSOUT aka CHROUT
+ Kernal Address: $FFD2
+ Description   : Output byte to current channel
+ Registers In  : .A = Byte
+ Registers Out : .C = 1 if ERROR (examine READST)
+ Memory Changed: Dependent upon current device.
+
+Routine        : LOAD
+ Kernal Address: $FFD5
+ Description   : Loads file into memory (setup via SETLFS,SETNAM)..
+ Registers In  : .A = 0 - Load, Non-0 = Verify
+                 .XY = load address (if secondary address = 0)
+ Registers Out : .A = error code .C = 1 if error.
+                 .XY = ending address 
+ Memory Changed: As per registers / data file.
+
+Routine        : SAVE
+ Kernal Address: $FFD8
+ Description   : Save section of memory to a file.
+ Registers In  : .A = Z-page ptr to start adress
+                 .XY = end address
+ Registers Out : .A = error code, .C = 1 if error.
+                 .XY = used.
+ Memory Changed: None.
+
+Routine        : SETTIM
+ Kernal Address: $FFDB
+ Description   : Set internal clock (TI$).
+ Registers In  : .AXY - Clock value in jiffies (1/60 secs).
+ Registers Out : None.
+ Memory Changed: Relevant system time locations set.
+
+Routine        : RDTIM
+ Kernal Address: $FFDE
+ Description   : Reads internal clock (TI$)
+ Registers In  : None.
+ Registers Out : .AXY - Clock value in jiffies (1/60 secs).
+ Memory Changed: None.
+
+Routine        : STOP
+ Kernal Address: FFE1
+ Description   : Scans STOP key.
+ Registers In  : None.
+ Registers Out : .A = last keyboard row, .X = destroyed (if stop key)
+ Memory Changed: None.
+ Note          : The last keyboard row is as follows:
+                 .A -> | 7   | 6   | 5   | 4   | 3   | 2   | 1  | 0
+                  KEY: |STOP |Q    |C=   |SPACE|2    |CTRL |<-  |1
+
+Routine       : GETIN
+ Kernal Address: $FFE4
+ Description   : Read buffered data from file.
+                 Keyboard - Read from keyboard buffer, else return null ($00).
+                 Rs-232   - Read from Rs-232 buffer, else null is returned.
+                 Serial   - See BASIN
+                 Cassette - See BASIN
+                 Screen   - See BASIN
+ Registers In  : None.
+ Registers Out : .A = character, .C = 1 if error.
+                 .XY = used.
+ Memory Changed: None.
+
+Routine       : CLALL
+ Kernal Address: $FFE7
+ Description   : Close all open files and channels.
+ Registers In  : None.
+ Registers Out : .AX used.
+ Memory Changed: None.
+ Note          : This routine does not _actually_ close the files, rather it
+                 removes their prescense from the file tables held in memory.
+                 It's recommended to use close to close files instead of using
+                 this routine.
+
+
+Routine        : UDTIME
+ Kernal Address: $FFEA
+ Description   : Update internal (TI$) clock by 1 jiffie (1/60 sec).
+ Registers In  : None.
+ Registers Out : .A,.X destroyed.
+ Memory Changed: Relevant system time locations changed.
+
+Routine        : SCRORG
+ Kernal Address: $FFED
+ Description   : Returns current window/screen size
+ Registers In  : None.
+ Registers Out : .X - Window Row Max
+                 .Y - Window Col Max
+                 .A - Screen Col Max (128 only, 64 unchanged)
+ Memory Changed: None
+
+Routine        : PLOT
+ Kernal Address: $FFF0
+ Description   : Read or set cursor position.
+ Registers In  : .C = 1 (Read)        |      .C = 0 (Set)
+                   None.              |        .X = Col
+                                      |        .Y = Row
+ Registers Out : .C = 1 (Read)        |      .C = 0 (Set) 
+                   .X = Current Col   |         None.
+                   .Y = Current Row   |
+ Memory Changed:  None                |      Screen Editor Locations.
+
+Routine        : IOBASE
+ Kernal Address: $FFF3
+ Description   : Returns base of I/O Block
+ Registers In  : None.
+ Registers Out : .XY = address of I/O block ($D000)
+ Memory Changed: Screen Editor Locations.
