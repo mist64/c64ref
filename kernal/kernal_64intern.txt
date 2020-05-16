@@ -1,0 +1,99 @@
+$FF81          Video-Reset
+
+$FF84          CIAs initialisieren
+
+$FF87          RAM löschen/testen
+
+$FF8A          I/O initialisieren
+
+$FF8D          I/O Vektoren initialisieren
+
+$FF90          Setzt Flag für Ausgabe von Systemmeldung
+
+$FF93          schickt Sekundäradresse nach einem LISTEN-Befehl
+               auf den IEC-Bus
+
+$FF96          schickt Sekundäradresse nach einem TALK-Befehl
+               auf den IEC-Bus
+
+$FF99          holt bei gesetzem Carry-Flag die höchste RAM-
+               Adresse nach X und Y, bei gelöschtem Carry-
+               Flag wird die Adresse von X und Y gesetzt.
+
+$FF9C          dieselbe Funktion wie $FF99, jedoch für den
+               RAM-Anfang
+
+$FF9F          fragt die Tastatur ab
+
+$FFA2          setzt das Time-out-Flag für den IEC-Bus
+
+$FFA5          holt ein Byte vom IEC-Bus in den Akku
+
+$FFA8          gibt ein Byte aus dem Akku an den IEC-Bus aus
+
+$FFAB          sendet UNTALK-Befehl auf den IEC-Bus
+
+$FFAE          sendet UNLISTEN-Befehl auf den IEC-Bus
+
+$FFB1          sendet LISTEN-Befehl auf den IEC-Bus
+
+$FFB4          sendet TALK-Befehl zum IEC-Bus
+
+$FFB7          holt das Statuswort in den Akku
+
+$FFBA          setzt die Fileparameter, Akku muß logische
+               Filenummer enthalten, X = Gerätenummer und
+               Y = Sekundäradresse
+
+$FFBD          setzt Parameter des Filenamens, Akku muß
+               Länge des Namens enthalten, X und Y enthalten
+               die Adresse des Filenamens (Low- und High-Byte)
+
+$FFC0          OPEN-Befehl, öffnet logische Datei
+
+$FFC3          CLOSE-Befehl, schließt logischeDatei,
+               Akku muß logische Filenummer enthalten
+
+$FFC6          CHKIN setzt folgende Eingabe auf logische
+               Datei, die in X übergeben wird.
+               Die logische Datei muß vorher mit der
+               OPEN-Routine geöffnet werden.
+
+$FFC9          CKOUT setzt folgende Ausgabe auf logische
+               Datei, die in X übergeben wird.
+               Die logische Datei muß vorher mit der
+               OPEN-Routine geöffnet werden.
+
+$FFCC          CLRCH setzt die Ein- und Ausgabe wieder
+               auf Standard (Tastatur/Bildschirm)
+
+$FFCF          BASIN Eingabe, holt ein Zeichen in den Akku
+
+$FFD2          BSOUT Ausgabe, gibt Zeichen im Akku aus
+
+$FFD5          LOAD, lädt Programm in den Speicher
+
+$FFD8          SAVE, speichert Programm ab
+
+$FFDE          setzt die laufende Zeit neu
+
+$FFE1          holt die laufende Zeit fragt die STOP-Taste ab
+
+$FFE4          GET, holt ein Zeichen in den Akku
+
+$FFE7          CLALL, setzt a lle Ein-/Ausgabekanäle
+               zurück, die Dateien werden jedoch
+               nicht geschlossen
+
+$FFEA          erhöht die laufende Zeit um eine
+               sechzigstel Sekunde
+
+$FFED          SCREEN holt die Anzahl der Zeilen und
+               Spalten des Bildschirms
+
+$FFF0          bei gelöschtem Carry-Flag wird der Cursor
+               auf die Position X/Y gesetzt, bei gesetztem
+               Carry-Flag wird die Cursorposition nach X/Y
+               geholt (X-Reg = Zeile, Y-Reg = Spalte)
+
+$FFF3          holt die Startadresse des I/O-Bausteins
