@@ -10,7 +10,7 @@
 - Converted and formatted by Michael Steil <mist64@mac.com>
 -
 - Corrections (typos, formatting, content) welcome at:
-- https://github.com/mist64/c64disasm
+- https://github.com/mist64/c64ref
 -
 ------------------------------------------------------------
 -

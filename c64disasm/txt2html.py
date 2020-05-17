@@ -4,7 +4,7 @@
 # into cross-referenced HTML.
 #
 # Michael Steil
-# https://github.com/mist64/c64disasm
+# https://github.com/mist64/c64ref
 #
 import sys, re, cgi, os
 

@@ -17,7 +17,7 @@ filenames = [
 names = [
 	'Mapping the Commodore 64',
 	'64\'er [German]',
-	'Data Becker [German]',
+	'64 intern [German]',
 	'Joe Forster/STA',
 	'Microsoft/Commodore Source',
 	'Programmer\'s Reference Guide',
@@ -25,13 +25,13 @@ names = [
 	'Jim Butterfield',
 ]
 links = [
-	'http://unusedino.de/ec64/technical/project64/mapping_c64.html',
+	'https://github.com/Project-64/reloaded/blob/master/c64/mapc64/MAPC6412.TXT',
 	'https://archive.org/details/64er_sonderheft_1986_07/page/n6/mode/2up',
 	'https://www.pagetable.com/?p=1015',
 	'http://www.awsm.de/mem64/',
 	'https://github.com/mist64/cbmsrc',
-	'http://www.zimmers.net/cbmpics/cbm/c64/c64prg.txt',
-	'http://unusedino.de/ec64/technical/project64/memory_maps.html',
+	'https://github.com/Project-64/reloaded/blob/master/c64/c64prg/C64PRG11.TXT',
+	'https://github.com/Project-64/reloaded/blob/master/c64/64MAP11.TXT',
 	'https://www.atarimagazines.com/compute/issue29/394_1_COMMODORE_64_MEMORY_MAP.php',
 ]
 descriptions = [

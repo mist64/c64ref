@@ -1,3 +1,34 @@
+- C64 KERNAL API (Mapping The Commodore 64)
+-
+- Leemon, Sheldon:
+- Mapping the Commodore 64
+- Greensboro: COMPUTE! Publications, 1984.
+- ISBN 0-942386-23-X
+-
+- MAPC6410.TXT, May 1998, etext #352#
+- typed by
+-   David Holz <david_holz@hotmail.com>
+- formatted to 71 columns and somewhat proofed by
+-   Cris Berneburg <pcgeek@compuserve.com>
+-
+- Corrections (typos as well as content), translations etc.
+- welcome at: https://github.com/mist64/c64ref
+-
+----------------------------------------------
+-
+# This plain text file is formatted so that it can be automatically
+# parsed in order to create cross-references etc.
+# * Lines starting with "-" is top-level information. The first line
+#   is the title. Lines starting with "--" are separators.
+# * Lines starting with "#" are internal comments.
+# * Hex addresses start at column 0.
+# * Symbols start at column 7.
+# * The description starts at column 15.
+# * All lines of the description until the first blank line are
+#   combined into the heading.
+# * The remaining text is in MarkDown format.
+# The encoding is UTF-8.
+
 $FF81  CINT    Initialize Screen Editor and VIC-II Chip
                
                The start of the routine appears to be a patch that was added to later
@@ -10,8 +41,8 @@ $FF81  CINT    Initialize Screen Editor and VIC-II Chip
                Raster Compare IRQ have been fulfilled.  Since the Raster Register was
                initialized to 311, that can only occur when using a PAL system (NTSC
                screens do not have that many scan lines).  The PAL/NTSC register at
-               678 ($2A6) is set on the basis of the outcome of this test.  The CIA
-               #1 Timer A is then set to cause an IRQ interrupt every sixtieth of a
+               678 ($2A6) is set on the basis of the outcome of this test.  The CIA #1
+               Timer A is then set to cause an IRQ interrupt every sixtieth of a
                second, using the prescaler figures for a PAL or NTSC system, as
                appropriate.
                

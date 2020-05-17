@@ -8,7 +8,7 @@
 - http://www.awsm.de/mem64/
 -
 - Corrections (typos as well as content), translations etc.
-- welcome at: https://github.com/mist64/c64disasm
+- welcome at: https://github.com/mist64/c64ref
 -
 ------------------------------------------------------------
 -

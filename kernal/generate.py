@@ -19,9 +19,47 @@ filenames = [
 	'kernal_64intern.txt',
 ]
 
-links = [ '', '', '', '', '', '', '', '', '', '', '']
-names = filenames #[ '', '', '', '', '', '', '', '', '', '', '']
-descriptions = [ '', '', '', '', '', '', '', '', '', '', '']
+names = [
+	'Programmer\'s Reference Guide',
+	'Tool Kit',
+	'Machine Language Routines',
+	'Mapping the Commodore 64',
+	'Commodore 128 intern [German]',
+	'Lee Davison',
+	'Cracking The Kernal',
+	'Craig Taylor',
+	'Joe Forster/STA',
+	'Frank Kontros',
+	'64 intern [German]',
+]
+
+links = [
+	'https://github.com/Project-64/reloaded/blob/master/c64/c64prg/C64PRG11.TXT',
+	'https://archive.org/details/COMPUTEs_VIC-20_and_Commodore_64_Tool_Kit_Kernal_1985_COMPUTE_Publications_a',
+	'https://archive.org/details/Compute_s_Machine_Language_Routines_for_the_Commodore_64_and_128',
+	'https://github.com/Project-64/reloaded/blob/master/c64/mapc64/MAPC6412.TXT',
+	'https://www.retrozone.ch/docs/c128/Commodore128Intern.pdf',
+	'https://github.com/Project-64/reloaded/blob/master/c64/firmware/C64LD11.S',
+	'https://www.atarimagazines.com/compute/issue40/cracking_the_kernal.php',
+	'http://csbruce.com/cbm/hacking/hacking03.txt',
+	'https://sta.c64.org/cbm64krnfunc.html',
+	'http://www.zimmers.net/anonftp/pub/cbm/c64/programming/documents/c64-kernal.txt',
+	'https://www.pagetable.com/?p=1015',
+]
+
+descriptions = [
+	'<i>Commodore 64 Programmer\'s Reference Guide</i>, ISBN ISBN 0-672-22056-3',
+	'<i>COMPUTE!\'s VIC-20 and Commodore 64 Tool Kit: Kernal</i> by Dan Heeb, ISBN 0942386337',
+	'<i>Machine Language Routines for the Commodore 64 and 128</i> by Todd D Heimarck and Patrick Parrish, ISBN 0874550858',
+	'<i>Mapping the Commodore 64</i> by Sheldon Leemon, ISBN 0-942386-23-X',
+	'<i>Commodore 128 intern</i> by Jörg Schieb, Frank Thrun, Heinz Wrobel, ISBN 3-89011-098-3',
+	'<i>The almost completely commented C64 ROM disassembly</i> by Lee Davison',
+	'<i>Cracking The Kernal</i> by Peter Marcotty in COMPUTE! #40, September 1983, pp. 268-274',
+	'<i>Kernal 64 / 128</i> by Craig Taylor in C= Hacking, Volume 1, Issue 3; July 15, 1992',
+	'<i>Commodore 64 standard KERNAL functions</i> by Joe Forster/STA',
+	'<i>C64 KERNAL jump table</i> by Frank Kontros',
+	'<i>Das neue Commodore-64-intern-Buch</i> by Baloui, Brückmann, Englisch, Felt, Gelfand, Gerits, and Krsnik, ISBN 3890113079',
+]
 
 files = len(filenames)
 

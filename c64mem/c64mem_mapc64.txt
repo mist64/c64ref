@@ -12,7 +12,7 @@
 -   Cris Berneburg <pcgeek@compuserve.com>
 -
 - Corrections (typos as well as content), translations etc.
-- welcome at: https://github.com/mist64/c64disasm
+- welcome at: https://github.com/mist64/c64ref
 -
 ------------------------------------------------------------
 -

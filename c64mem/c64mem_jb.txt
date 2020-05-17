@@ -9,7 +9,7 @@
 - https://archive.org/details/1982-10-compute-magazine/page/n153/mode/2up
 -
 - Corrections (typos as well as content), translations etc.
-- welcome at: https://github.com/mist64/c64disasm
+- welcome at: https://github.com/mist64/c64ref
 -
 ------------------------------------------------------------
 -

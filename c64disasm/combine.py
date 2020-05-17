@@ -21,10 +21,10 @@ names = [
 links = [
 	"https://github.com/mist64/cbmsrc",
 	"https://www.pagetable.com/?p=1015",
-	"https://www.pagetable.com/?p=726",
+	"https://github.com/Project-64/reloaded/blob/master/c64/firmware/C64LD11.S",
 	"https://www.pagetable.com/?p=728",
 	"https://www.telecomm.at/documents/Jiffydos_Romlisting.doc",
-	"http://www.unusedino.de/ec64/technical/misc/c64/romlisting.html"
+	"https://github.com/Project-64/reloaded/blob/master/c64/C64DIS11.TXT"
 ]
 descriptions = [
 	"The original M6502 BASIC source by Microsoft (KIM-1 version, not everything lines up, Commodore extensions are missing, but lots of comments by the original authors)<br/>and the original C64 KERNAL source by Commodore (lots of comments by the original authors)",

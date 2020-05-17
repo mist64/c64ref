@@ -1,3 +1,27 @@
+- C64 KERNAL API (STA)
+-
+- Joe Forster/STA:
+- Commodore 64 standard KERNAL functions
+- https://sta.c64.org/cbm64krnfunc.html
+-
+- Corrections (typos as well as content), translations etc.
+- welcome at: https://github.com/mist64/c64ref
+-
+----------------------------------------------
+-
+# This plain text file is formatted so that it can be automatically
+# parsed in order to create cross-references etc.
+# * Lines starting with "-" is top-level information. The first line
+#   is the title. Lines starting with "--" are separators.
+# * Lines starting with "#" are internal comments.
+# * Hex addresses start at column 0.
+# * Symbols start at column 7.
+# * The description starts at column 15.
+# * All lines of the description until the first blank line are
+#   combined into the heading.
+# * The remaining text is in MarkDown format.
+# The encoding is UTF-8.
+
 $FF81  SCINIT  Initialize VIC; restore default input/output to keyboard/screen; clear screen; set PAL/NTSC switch and interrupt timer.
 
                Input: –
