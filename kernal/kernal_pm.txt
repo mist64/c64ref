@@ -3,7 +3,7 @@
 - Peter Marcotty: Cracking The Kernal
 - COMPUTE! #40, September 1983, pp. 268-274
 -
-- Descriptions of RESTOR, SAVE, SCNKEY and SCREEN are missing from
+- Descriptions of RESTOR, SAVE and SCNKEY are missing from
 - the original source!
 -
 - Corrections (typos as well as content), translations etc.
@@ -77,7 +77,7 @@ $FFD2  CHROUT  Output character to channel.
                         RTS
                    ;The letter A is printed to the screen; call OPEN first for the printer.
                
-$FFAB  CIOUT   Output byte to serial port.
+$FFA8  CIOUT   Output byte to serial port.
 
                CIOUT will send data to the serial bus. LISTEN and SECOND must be called first. Call UNLSN to finish up neatly.
                
@@ -270,7 +270,7 @@ $FFB7  READST  Read I/O status word.
                
 $FF8A  RESTOR  Restore I/O default vectors.
 
-$FFDE  SAVE    Save RAM to device.
+$FFD8  SAVE    Save RAM to device.
 
 $FF9F  SCNKEY  Scan keyboard.
 

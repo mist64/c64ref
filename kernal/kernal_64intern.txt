@@ -106,7 +106,7 @@ $FFE1          holt die laufende Zeit fragt die STOP-Taste ab
 
 $FFE4          GET, holt ein Zeichen in den Akku
 
-$FFE7          CLALL, setzt a lle Ein-/Ausgabekanäle
+$FFE7          CLALL, setzt alle Ein-/Ausgabekanäle
                zurück, die Dateien werden jedoch
                nicht geschlossen
 

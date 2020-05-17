@@ -411,9 +411,9 @@ for address in all_addresses:
 	print('<th class="label_column"> ' + symbol + anchor + ' <a name="' + symbol + '"/> </th>')
 	category = categories[address]
 	if address in rom_calls:
-		category += ' [ROM]'
+		category += '<sup>1)</sup>'
 	if address in irq_calls:
-		category += ' [IRQ]'
+		category += '<sup>2)</sup>'
 	print('<th class="cat_column" style="background-color: var(' + border_color + ');"> {} </th>'.format(category))
 	print('<th class="decimal_column"> {} </th>'.format(address))
 	for call in sources:
@@ -422,10 +422,11 @@ for address in all_addresses:
 			(symbol, summary, lines) = call[address]
 
 			is_collapsible = len(lines) > 0
-#			print('xxx' , len(lines), is_collapsible)
 
 			if is_collapsible:
 				print('<details open><summary>')
+				if summary == '':
+					summary = '…'
 			print('<b>' + summary + '</b>')
 			if is_collapsible:
 				print('</summary>')
@@ -446,6 +447,8 @@ for address in all_addresses:
 
 print('</table>')
 print('</div>')
+print('<p><sup>1)</sup> intended to be called from a cartridge ROM<br/>')
+print('<sup>2)</sup> intended to be called from a replacement IRQ handler</p>')
 print('</div>')
 print('</body>')
 print('</html>')
