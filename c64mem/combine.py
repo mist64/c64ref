@@ -58,7 +58,6 @@ def cross_reference(string):
 			string = string.replace(hex_number, '<a href="#' + '{:04X}'.format(dec_number) + '">' + formatted_hex_number + '</a>')
 		elif (dec_number >= 0xa000 and dec_number <= 0xbfff) or (dec_number >= 0xe000 and dec_number <= 0xffff):
 			string = string.replace(hex_number, '<a href="../c64disasm/#' + '{:04X}'.format(dec_number) + '">' + hex_number + '</a>')
-
 	return string
 
 

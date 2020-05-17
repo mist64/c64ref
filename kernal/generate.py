@@ -61,6 +61,20 @@ descriptions = [
 	'<i>Das neue Commodore-64-intern-Buch</i> by Baloui, Brückmann, Englisch, Felt, Gelfand, Gerits, and Krsnik, ISBN 3890113079',
 ]
 
+def cross_reference(string):
+	hex_numbers = re.findall(r'\$[0-9A-F][0-9A-F][0-9A-F][0-9A-F]', string)
+	for hex_number in hex_numbers:
+		dec_number = int(hex_number[1:], 16)
+		if dec_number < 0x0400:
+			if dec_number < 0x100:
+				formatted_hex_number = '${:02X}'.format(dec_number)
+			else:
+				formatted_hex_number = '${:04X}'.format(dec_number)
+			string = string.replace(hex_number, '<a href="../c64mem/#' + '{:04X}'.format(dec_number) + '">' + formatted_hex_number + '</a>')
+		elif (dec_number >= 0xa000 and dec_number <= 0xbfff) or (dec_number >= 0xe000 and dec_number <= 0xffff):
+			string = string.replace(hex_number, '<a href="../c64disasm/#' + '{:04X}'.format(dec_number) + '">' + hex_number + '</a>')
+	return string
+
 files = len(filenames)
 
 f = os.popen('git log -1 --pretty=format:%h .')
@@ -109,13 +123,13 @@ print('    window.onload = init;')
 print('    function init() {')
 print('        var tbl = document.getElementById("disassembly_table");')
 print('        for (var i = 0; i < ' + str(len(filenames)) + '; i++) {')
-print('            var key = "com.pagetable.c64mem.column_" + i;')
+print('            var key = "com.pagetable.kernal.column_" + i;')
 print('            var element_name = "checkbox_" + i;')
 print('            var checked = localStorage.getItem(key) != "hidden";')
 print('            document.getElementById(element_name).checked = checked;')
 print('            hideCol(i, checked);')
 print('        }')
-print('        var key = "com.pagetable.c64mem.column_decimal";')
+print('        var key = "com.pagetable.kernal.column_decimal";')
 print('        var element_name = "checkbox_decimal";')
 print('        var visible = localStorage.getItem(key) == "visible";')
 print('        document.getElementById(element_name).checked = visible;')
@@ -126,7 +140,7 @@ print('        var tbl = document.getElementById("disassembly_table");')
 print('        for (var i = 0; i < tbl.rows.length; i++) {')
 print('            tbl.rows[i].cells[2].style.display = visible ? "" : "none";')
 print('        }')
-print('        var key = "com.pagetable.c64mem.column_decimal";')
+print('        var key = "com.pagetable.kernal.column_decimal";')
 print('        var cnt = document.getElementById("disassembly_container");')
 print('        if (visible) {')
 print('            cnt.className = "disassembly_container_with_dec";')
@@ -141,7 +155,7 @@ print('        var tbl = document.getElementById("disassembly_table");')
 print('        for (var i = 0; i < tbl.rows.length; i++) {')
 print('            tbl.rows[i].cells[col+3].style.display = checked ? "" : "none";') # data columns start at index 3
 print('        }')
-print('        var key = "com.pagetable.c64mem.column_" + col;')
+print('        var key = "com.pagetable.kernal.column_" + col;')
 print('        if (checked) {')
 print('            localStorage.removeItem(key);')
 print('        } else {')
@@ -314,6 +328,7 @@ for address in all_addresses:
 			for replace_symbol in all_symbols:
 				if replace_symbol != symbol:
 					html = re.sub('\\b' + replace_symbol + '\\b', '<a href="#' + replace_symbol + '">' + replace_symbol + '</a>', html)
+			html = cross_reference(html)
 			print(html + '</details></td>')
 		else:
 			print('<td></td>')
