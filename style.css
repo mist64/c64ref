@@ -195,6 +195,12 @@ table.checkbox_table tr:nth-of-type(11) td:nth-of-type(2) { background: var(--ti
 /* Main Table */
 
 
+table.disassembly_table h2 {
+	font-family: sans-serif;
+	font-size: smaller;
+}
+
+
 table.disassembly_table {
     border: solid grey;
     border-width:0px 0px 1px 0px;
