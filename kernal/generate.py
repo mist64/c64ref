@@ -398,17 +398,18 @@ for address in all_addresses:
 	if address < 0xff81:
 		continue
 
-	border_color = '--cat-color-' + categories[address].lower();
-	print('<tr>')
-	anchor = '<a name="{:04X}"/>'.format(address)
-	hex_address = '${:04X}'.format(address)
-	print('<th class="left_column"> ' + anchor + hex_address + ' </th>')
 	if address in symbols:
 		(symbol, _) = symbols[address].most_common(1)[0]
 	else:
 		symbol = ''
-	anchor = '<a name="{}"/>'.format(symbol)
-	print('<th class="label_column"> ' + symbol + anchor + ' <a name="' + symbol + '"/> </th>')
+
+	border_color = '--cat-color-' + categories[address].lower();
+	print('<tr>')
+	anchor = '<a name="{:04X}"/>'.format(address)
+	anchor += '<a name="{}"/>'.format(symbol)
+	hex_address = '${:04X}'.format(address)
+	print('<th class="left_column"> ' + anchor + hex_address + ' </th>')
+	print('<th class="label_column"> ' + symbol + '</th>')
 	category = categories[address]
 	if address in rom_calls:
 		category += '<sup>1)</sup>'
