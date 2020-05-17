@@ -317,7 +317,7 @@ $FFF3  IOBASE
 
                This routine returns a constant 1/0 chip base-address value in
                .X (low byte) and .Y (high byte). The accumulator is un-
-               affected. For the 64, the value returned is $DCOO—the address
+               affected. For the 64, the value returned is $DC00—the address
                of CLA #1. For the 128, the value is $D000—the address of
                the VIC chip.
 
@@ -465,7 +465,7 @@ $FF87  RAMTAS
                $0200-$03FF), tests all RAM locations from $0400 upwards
                until ROM is encountered, and sets the top-of-memory
                pointer. For the 128, the routine sets the BASIC restart vector
-               ($OAOO) to point to BASIC's cold-start entry address, $4000.
+               ($0A00) to point to BASIC's cold-start entry address, $4000.
 
 $FFDE  RDTIM
 

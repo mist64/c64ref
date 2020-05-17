@@ -242,6 +242,9 @@ table.disassembly_table th:nth-child(5 of .top_row) { background: var(--title-co
 table.disassembly_table th:nth-child(6 of .top_row) { background: var(--title-color-6); }
 table.disassembly_table th:nth-child(7 of .top_row) { background: var(--title-color-7); }
 table.disassembly_table th:nth-child(8 of .top_row) { background: var(--title-color-8); }
+table.disassembly_table th:nth-child(9 of .top_row) { background: var(--title-color-9); }
+table.disassembly_table th:nth-child(10 of .top_row) { background: var(--title-color-10); }
+table.disassembly_table th:nth-child(11 of .top_row) { background: var(--title-color-11); }
 
 
 table.disassembly_table tr td:nth-of-type(1) { background: var(--dark-color-1); }

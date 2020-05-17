@@ -61,6 +61,61 @@ descriptions = [
 	'<i>Das neue Commodore-64-intern-Buch</i> by Baloui, Brückmann, Englisch, Felt, Gelfand, Gerits, and Krsnik, ISBN 3890113079',
 ]
 
+categories = {
+	0xFF81: 'EDITOR',
+	0xFF84: 'SYS',
+	0xFF87: 'MEM',
+	0xFF8A: 'SYS',
+	0xFF8D: 'SYS',
+	0xFF90: 'IO',
+	0xFF93: 'IEEE',
+	0xFF96: 'IEEE',
+	0xFF99: 'MEM',
+	0xFF9C: 'MEM',
+	0xFF9F: 'KBD',
+	0xFFA2: 'IEEE',
+	0xFFA5: 'IEEE',
+	0xFFA8: 'IEEE',
+	0xFFAB: 'IEEE',
+	0xFFAE: 'IEEE',
+	0xFFB1: 'IEEE',
+	0xFFB4: 'IEEE',
+	0xFFB7: 'IO',
+	0xFFBA: 'IO',
+	0xFFBD: 'IO',
+	0xFFC0: 'IO',
+	0xFFC3: 'IO',
+	0xFFC6: 'IO',
+	0xFFC9: 'IO',
+	0xFFCC: 'IO',
+	0xFFCF: 'IO',
+	0xFFD2: 'IO',
+	0xFFD5: 'IO',
+	0xFFD8: 'IO',
+	0xFFDB: 'TIME',
+	0xFFDE: 'TIME',
+	0xFFE1: 'KBD',
+	0xFFE4: 'KBD',
+	0xFFE7: 'IO',
+	0xFFEA: 'TIME',
+	0xFFED: 'EDITOR',
+	0xFFF0: 'EDITOR',
+	0xFFF3: 'MEM',
+}
+
+# APIs that are intended to be called from a cartridge
+rom_calls = [
+	0xFF81,
+	0xFF84,
+	0xFF87,
+]
+
+# APIs that are intended to be called from a replacement IRQ handler
+irq_calls = [
+	0xFF9F,
+	0xFFEA,
+]
+
 def cross_reference(string):
 	hex_numbers = re.findall(r'\$[0-9A-F][0-9A-F][0-9A-F][0-9A-F]', string)
 	for hex_number in hex_numbers:
@@ -318,7 +373,13 @@ for address in all_addresses:
 		symbol = ''
 	anchor = '<a name="{}"/>'.format(symbol)
 	print('<th class="label_column"> ' + symbol + anchor + ' <a name="' + symbol + '"/> </th>')
-	print('<th class="decimal_column"> {} </th>'.format(address))
+	#print('<th class="decimal_column"> {} </th>'.format(address))
+	category = categories[address]
+	if address in rom_calls:
+		category += ' [ROM]'
+	if address in irq_calls:
+		category += ' [IRQ]'
+	print('<th class="decimal_column"> {} </th>'.format(category))
 	for call in sources:
 		if address in call:
 			(symbol, summary, lines) = call[address]
