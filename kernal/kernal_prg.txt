@@ -942,14 +942,14 @@ $FFBA  SETLFS  Set up a logical file
                CBM devices listed below:
                
                
-                             | ADDRESS    |     DEVICE                   |
-                             |------------|------------------------------|
-                             |    0       |    Keyboard                  |
-                             |    1       |    Datassette™               |
-                             |    2       |    RS-232C device            |
-                             |    3       |    CRT display               |
-                             |    4       |    Serial bus printer        |
-                             |    8       |    CBM serial bus disk drive |
+               | ADDRESS    |     DEVICE                   |
+               |------------|------------------------------|
+               |    0       |    Keyboard                  |
+               |    1       |    Datassette™               |
+               |    2       |    RS-232C device            |
+               |    3       |    CRT display               |
+               |    4       |    Serial bus printer        |
+               |    8       |    CBM serial bus disk drive |
                
                
                  Device numbers 4 or greater automatically refer to devices on the
