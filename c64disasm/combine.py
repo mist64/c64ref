@@ -159,6 +159,7 @@ print('    <a class="active" href="../c64disasm/">ROM Disassembly</a><!-- c64dis
 print('    <a href="../c64mem/">Memory Map</a><!-- c64mem/ -->')
 #print('    <a href="#">I/O Map</a><!-- c64io/ -->')
 #print('    <a href="#">6502 CPU</a><!-- 6502/ -->')
+print('    <a class="home" href="https://www.pagetable.com/">pagetable.com</a>')
 print('</div>')
 
 print('<div class="body">')

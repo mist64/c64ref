@@ -72,7 +72,8 @@ div.body {
 /* Navigation */
 
 .topnav {
-    background-color: #333;
+    color: black;
+    background-color: white;
     overflow: hidden;
     padding: 0px;
     border-bottom: solid 2px var(--main-color);
@@ -89,12 +90,8 @@ div.body {
 
 .topnav a {
     color: white;
+    background-color: #333;
     border-right:solid 1px var(--main-background);
-}
-
-.topnav h1 {
-    color: black;
-    background-color: white;
 }
 
 .topnav a:hover {
@@ -106,6 +103,17 @@ div.body {
     background-color: var(--highlight-background);
     color: white;
 }
+
+.topnav a.home, .topnav a.home:hover {
+    color: #666;
+    background-color: white;
+    font-weight:bolder;
+    border:none;
+    display: block;
+    float:right;
+    margin-right: 80px;
+}
+
 
 /* Tables */
 
