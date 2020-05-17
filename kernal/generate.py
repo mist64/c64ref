@@ -265,7 +265,7 @@ for address in all_addresses:
 	else:
 		symbol = ''
 	anchor = '<a name="{}"/>'.format(symbol)
-	print('<th class="label_column"> ' + anchor + symbol + ' <a name="' + symbol + '"/> </th>')
+	print('<th class="label_column"> ' + symbol + anchor + ' <a name="' + symbol + '"/> </th>')
 	print('<th class="decimal_column"> {} </th>'.format(address))
 	for call in sources:
 		if address in call:

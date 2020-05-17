@@ -192,10 +192,10 @@ $F250          CHKOUT Execution F250/F309-F278/F331
                If the device is a serial device, branch to Open Serial Out-
                put Channel.
                
-                If the device number is 2 (RS-232), jump to Open RS-232
+               If the device number is 2 (RS-232), jump to Open RS-232
                Output Channel.
                
-                If the device is tape, the secondary address must not be
+               If the device is tape, the secondary address must not be
                $60 because this indicates read from tape. If $60 is found, dis-
                play the NOT OUTPUT FILE error message. If the secondary
                address is legal, set the output device number, 9A, to the
@@ -404,7 +404,7 @@ $FF81  CINT    Initialize screen editor
                
                Thus, a VIC version might be something like this:
                
-                JMP 02A1
+               JMP 02A1
                02A1 JSR E518
                02A4 JSR FE39
                02A7 RTS
@@ -535,31 +535,29 @@ $F291          Determine Device for CLOSE F291/F34A-F2AA/F363
                **Operation**:
                
                1. JSR F314/F3D4 to see if the logical file number is in the
-                 logical file number table. Return with X as the index into
-                 table corresponding to this logical file if it exists; return with
-                 Z = 1 (detected with BEQ) if the logical file is found.
+                  logical file number table. Return with X as the index into
+                  table corresponding to this logical file if it exists; return with
+                  Z = 1 (detected with BEQ) if the logical file is found.
                2. If the file is not found CLC and RTS.
                3. If the file is found, then JSR F31F/F3DF to retrieve the cur-
-                 rent device number, BA, the current secondary address, B9,
-                 and the current logical file number, B8, from the tables for
-                 these with entries corresponding to the location of current
-                 logical file number in the logical file number table.
+                  rent device number, BA, the current secondary address, B9,
+                  and the current logical file number, B8, from the tables for
+                  these with entries corresponding to the location of current
+                  logical file number in the logical file number table.
                4. Transfer index into tables to accumulator and push on stack
-                 for later retrieval by the individual CLOSE routines for RS-
-                 232 and serial devices.
+                  for later retrieval by the individual CLOSE routines for RS-
+                  232 and serial devices.
                5. If current device is the keyboard or screen, branch to
-                 F2F1/F3B1 to decrement number of open files and remove
-                 current file entry from the three tables.
+                  F2F1/F3B1 to decrement number of open files and remove
+                  current file entry from the three tables.
                6. If current device is a serial device, branch to F2EE/F3AE for
-                 a JMP to the routine to close a serial device.
+                  a JMP to the routine to close a serial device.
                7. If current device is tape, branch to F2C8/F38D to close tape
-                 files.
+                  files.
                8. If current device is RS-232, fall through to the routine at
                   F2AB/F364 to close an RS-232 device.
-               Common Exit for Close Logical File Routines
-               
-               
-$F2F1          F2F1/F3B1-F30E/F3CE
+
+$F2F1          Common Exit for Close Logical File Routines F2F1/F3B1-F30E/F3CE
                
                **Called by**: Falls through after JSR to Close Logical File for Serial Device
                at F2EE/FEAE, BEQ at F29F/F358 and F2A3/F35C in Deter-
@@ -628,12 +626,9 @@ $FFCC  CLRCH   Reset I/O channels
                Set 99, the current input device, to be the keyboard.
                
                Set 9A, the current output device, to be the screen.
-               
-               
-               Clear Serial Channels and Reset Default Devices
-               
-               
-$F333          F333/F3F3-F349/F409
+
+
+$F333          Clear Serial Channels and Reset Default Devices F333/F3F3-F349/F409
                
                **Called by**: Indirect JMP through (0322) from Kernal CLRCHN vector at
                FFCC, fall through from F331/F3F1 in Reset to No Open Files.
@@ -1102,7 +1097,7 @@ $F34A          OPEN Execution F34A/F40A-F3D4/F494
                    out errors. No error routine is called from OPEN if this
                    sequence fails.
                13. If the carry is clear on return from the JSR in step 12, exit
-                   with carry clear. Flowever, if the routine does not return
+                   with carry clear. However, if the routine does not return
                    the carry clear to indicate the device was present and re-
                    sponded in time, OPEN does not branch to any error rou-
                    tine. This appears to be why you can open nonexistent
