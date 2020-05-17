@@ -197,7 +197,7 @@ print('    }')
 print('    function toggleDecimal(visible) {')
 print('        var tbl = document.getElementById("disassembly_table");')
 print('        for (var i = 0; i < tbl.rows.length; i++) {')
-print('            tbl.rows[i].cells[2].style.display = visible ? "" : "none";')
+print('            tbl.rows[i].cells[3].style.display = visible ? "" : "none";')
 print('        }')
 print('        var key = "com.pagetable.kernal.column_decimal";')
 print('        var cnt = document.getElementById("disassembly_container");')
@@ -245,19 +245,20 @@ print('')
 
 print('<link rel="stylesheet" href="../style.css">')
 
-address_width=6.4
+address_width=4
 label_width=4
+cat_width=4.6
 decimal_width=5
 
 print('<style type="text/css">')
 print('')
 print('div.disassembly_container_with_dec {')
-print('    padding: 1em 0em 1em ' + str(address_width + label_width + decimal_width + 1.6) + 'em;')
+print('    padding: 1em 0em 1em ' + str(address_width + label_width + cat_width + decimal_width + 2) + 'em;')
 print('    overflow: scroll;')
 print('}')
 print('')
 print('div.disassembly_container_no_dec {')
-print('    padding: 1em 0em 1em ' + str(address_width + label_width + 0.9) + 'em;')
+print('    padding: 1em 0em 1em ' + str(address_width + label_width + cat_width + 1.1) + 'em;')
 print('    overflow: scroll;')
 print('}')
 print('')
@@ -272,17 +273,30 @@ print('}')
 print('')
 print('table.disassembly_table th.label_column {')
 print('    width: ' + str(label_width) +'em;')
-print('    left: ' + str(address_width + 3) + 'em;')
+print('    left: ' + str(address_width + 2.6) + 'em;')
 print('    z-index: 12;')
 print('    font-family: monospace;')
 print('    text-align: center;')
 print('    color: yellow;')
 print('}')
 print('')
+print('table.disassembly_table tr:nth-of-type(1) th:nth-child(1 of .cat_column) {')
+print('    color: var(--main-background);')
+print('}')
+print('')
+print('table.disassembly_table th.cat_column {')
+print('    width: ' + str(cat_width) + 'em;')
+print('    left: ' + str(address_width + label_width + 3.4) + 'em;')
+print('    z-index: 13;')
+print('    font-size: smaller;')
+print('    text-align: center;')
+print('    color: var(--main-color);')
+print('}')
+print('')
 print('table.disassembly_table th.decimal_column {')
 print('    width: ' + str(decimal_width) + 'em;')
-print('    left: ' + str(address_width + label_width + 1.2) + 'em;')
-print('    z-index: 13;')
+print('    left: ' + str(address_width + label_width + cat_width + 1.6) + 'em;')
+print('    z-index: 14;')
 print('}')
 print('')
 print('details {')
@@ -333,6 +347,7 @@ print('<table id="disassembly_table" class="disassembly_table">')
 print('<tr>')
 print('<th class="left_column">Address</th>')
 print('<th class="label_column">Symbol</th>')
+print('<th class="cat_column">Category</th>')
 print('<th class="decimal_column">Decimal</th>')
 for i in range(0, files):
 	print('<th class="top_row">' + names[i] + '</th>')
@@ -368,6 +383,7 @@ for address in all_addresses:
 	if address < 0xff81:
 		continue
 
+	border_color = '--cat-color-' + categories[address].lower();
 	print('<tr>')
 	anchor = '<a name="{:04X}"/>'.format(address)
 	hex_address = '${:04X}'.format(address)
@@ -378,13 +394,13 @@ for address in all_addresses:
 		symbol = ''
 	anchor = '<a name="{}"/>'.format(symbol)
 	print('<th class="label_column"> ' + symbol + anchor + ' <a name="' + symbol + '"/> </th>')
-	#print('<th class="decimal_column"> {} </th>'.format(address))
 	category = categories[address]
 	if address in rom_calls:
 		category += ' [ROM]'
 	if address in irq_calls:
 		category += ' [IRQ]'
-	print('<th class="decimal_column"> {} </th>'.format(category))
+	print('<th class="cat_column" style="background-color: var(' + border_color + ');"> {} </th>'.format(category))
+	print('<th class="decimal_column"> {} </th>'.format(address))
 	for call in sources:
 		if address in call:
 			print('<td>')
