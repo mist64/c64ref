@@ -227,7 +227,7 @@ print('    }')
 print('    function hideCol(col, checked) {')
 print('        var tbl = document.getElementById("disassembly_table");')
 print('        for (var i = 0; i < tbl.rows.length; i++) {')
-print('            tbl.rows[i].cells[col+3].style.display = checked ? "" : "none";') # data columns start at index 3
+print('            tbl.rows[i].cells[col+4].style.display = checked ? "" : "none";') # data columns start at index 4
 print('        }')
 print('        var key = "com.pagetable.kernal.column_" + col;')
 print('        if (checked) {')
