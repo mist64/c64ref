@@ -2,7 +2,7 @@
 
 This project collects C64 reference material in a machine readable format and maintains a set of scripts to present these on the web.
 
-The most current web version can be found at [pagetable.com/c64disasm](http://pagetable.com/c64disasm).
+The most current web version can be found at [pagetable.com/c64disasm](http://pagetable.com/c64ref).
 
 * KERNAL & BASIC ROM Disassembly
     * [original Microsoft BASIC source](c64disasm/c64disasm_ms.txt)

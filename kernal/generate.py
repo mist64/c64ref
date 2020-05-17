@@ -52,13 +52,13 @@ descriptions = [
 	'<i>COMPUTE!\'s VIC-20 and Commodore 64 Tool Kit: Kernal</i> by Dan Heeb, ISBN 0942386337',
 	'<i>Machine Language Routines for the Commodore 64 and 128</i> by Todd D Heimarck and Patrick Parrish, ISBN 0874550858',
 	'<i>Mapping the Commodore 64</i> by Sheldon Leemon, ISBN 0-942386-23-X',
-	'<i>Commodore 128 intern</i> by Jörg Schieb, Frank Thrun, Heinz Wrobel, ISBN 3-89011-098-3',
+	'<i>Commodore 128 intern</i> by Jörg Schieb, Frank Thrun and Heinz Wrobel, ISBN 3-89011-098-3',
 	'<i>The almost completely commented C64 ROM disassembly</i> by Lee Davison',
 	'<i>Cracking The Kernal</i> by Peter Marcotty in COMPUTE! #40, September 1983, pp. 268-274',
 	'<i>Kernal 64 / 128</i> by Craig Taylor in C= Hacking, Volume 1, Issue 3; July 15, 1992',
 	'<i>Commodore 64 standard KERNAL functions</i> by Joe Forster/STA',
 	'<i>C64 KERNAL jump table</i> by Frank Kontros',
-	'<i>Das neue Commodore-64-intern-Buch</i> by Baloui, Brückmann, Englisch, Felt, Gelfand, Gerits, and Krsnik, ISBN 3890113079',
+	'<i>Das neue Commodore-64-intern-Buch</i> by Baloui, Brückmann, Englisch, Felt, Gelfand, Gerits and Krsnik, ISBN 3890113079',
 ]
 
 categories = {
