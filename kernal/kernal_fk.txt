@@ -23,169 +23,171 @@
 
 $FF81  CINT    init VIC & screen editor           
 
-                                                      - - -  - - -  A X Y
+                                                          - - -  - - -  A X Y
 
 $FF84  IOINIT  initialize CIA & IRQ               
 
-                                                      - - -  - - -  A X Y
+                                                          - - -  - - -  A X Y
 
 $FF87  RAMTAS  RAM test & search RAM end          
 
-                                                      - - -  - - -  A X Y
+                                                          - - -  - - -  A X Y
 
 $FF8A  RESTOR  restore default I/O vectors        
 
-                                                      - - -  - - -  A - Y
+                                                          - - -  - - -  A - Y
 
 $FF8D  VECTOR  read/set I/O vectors               
 
-               in: C=0 moves from Y/X to vectors      - X Y  - X -  A - Y
-                   C=1 moves vectors to Y/X           - X Y  - X -  A - Y
+                   in: C=0 moves from Y/X to vectors      - X Y  - X -  A - Y
+                       C=1 moves vectors to Y/X           - X Y  - X -  A - Y
 
 $FF90  SETMSG  enable/disable KERNAL messages     
 
-               in: A bit7=1 error msgs on             A - -  - - -  A - -
-                     bit6=1 control msgs on
+                   in: A bit7=1 error msgs on             A - -  - - -  A - -
+                         bit6=1 control msgs on
 
 $FF93  SECOND  send secondary addr after listen   
 
-               in: A=secondary address                A - -  - - -  A - -
+                   in: A=secondary address                A - -  - - -  A - -
 
 $FF96  TKSA    send secondary addr after talk     
 
-               in: A=secondary address                A - -  - - -  A - -
+                   in: A=secondary address                A - -  - - -  A - -
 
 $FF99  MEMTOP  read/set top of memory             
 
-               in: C=0; Y/X address                   - X Y  - X Y  - - -
-               out:C=1; Y/X address                   - - -  - X Y  - X Y
+                   in: C=0; Y/X address                   - X Y  - X Y  - - -
+                   out:C=1; Y/X address                   - - -  - X Y  - X Y
 
 $FF9C  MEMBOT  read/set bottom of memory          
 
-               in: C=0; Y/X address                   - X Y  - X Y  - - -
-               out:C=1; Y/X address                   - - -  - X Y  - X Y
+                   in: C=0; Y/X address                   - X Y  - X Y  - - -
+                   out:C=1; Y/X address                   - - -  - X Y  - X Y
 
 $FF9F  SCNKEY  scan keyboard
 
-                                                      - - -  - - -  A X Y
+                                                          - - -  - - -  A X Y
 
 $FFA2  SETTMO  set IEEE timeout                   
 
-               in: A bit7=1 disable, bit7=0 enable    A - -  A - -  - - -
+                   in: A bit7=1 disable, bit7=0 enable    A - -  A - -  - - -
 
 $FFA5  ACPTR   input byte from SERIAL             
 
-               out:A=byte, C=1 and ST=2 if timeout    - - -  A - -  A - -
+                   out:A=byte, C=1 and ST=2 if timeout    - - -  A - -  A - -
 
 $FFA8  CIOUT   output byte to SERIAL              
 
-               in: A=byte, C=1 and ST=3 if timeout    A - -  A - -  - - -
+                   in: A=byte, C=1 and ST=3 if timeout    A - -  A - -  - - -
 
 $FFAB  UNTLK   untalk all SERIAL devices              
-                                                      - - -  - - -  A - -
+
+                                                          - - -  - - -  A - -
 
 $FFAE  UNLSN   unlisten all SERIAL devices            
-                                                      - - -  - - -  A - -
+
+                                                          - - -  - - -  A - -
 
 $FFB1  LISTEN  make SERIAL device listen          
 
-               in: A=device number                    A - -  - - -  A - -
+                   in: A=device number                    A - -  - - -  A - -
 
 $FFB4  TALK    make SERIAL device talk            
 
-               in: A=device number                    A - -  - - -  A - -
+                   in: A=device number                    A - -  - - -  A - -
 
 $FFB7  READST  read I/O status byte               
 
-               out:A=status byte                      - - -  A - -  A - -
+                   out:A=status byte                      - - -  A - -  A - -
 
 $FFBA  SETLFS  set file parameters                
 
-               in: A=logical file number              A X Y  A X Y  - - -
-                   X=device number
-                   Y=secondary addr
+                   in: A=logical file number              A X Y  A X Y  - - -
+                       X=device number
+                       Y=secondary addr
 
 $FFBD  SETNAM  set file name                      
 
-               in: A=length of filename               A X Y  A X Y  - - -
-                   Y/X=pointer to name addr
+                   in: A=length of filename               A X Y  A X Y  - - -
+                       Y/X=pointer to name addr
 
 $FFC0  OPEN    open log.file after SETLFS,SETNAM  
 
-               out:A=error# if C=1                    - - -  - - -  A X Y
+                   out:A=error# if C=1                    - - -  - - -  A X Y
 
 $FFC3  CLOSE   close a logical file               
 
-               in: A=logical file number              A - -  - - -  A X Y
+                   in: A=logical file number              A - -  - - -  A X Y
 
 $FFC6  CHKIN   open channel for input             
 
-               in: X=logical file number              - X -  - - -  A X -
+                   in: X=logical file number              - X -  - - -  A X -
 
 $FFC9  CHKOUT  open channel for output            
 
-               in: X=logical file number              - X -  - - -  A X -
+                   in: X=logical file number              - X -  - - -  A X -
 
 $FFCC  CLRCHN  restore default devices                
 
-                                                      - - -  - - -  A X -
+                                                          - - -  - - -  A X -
 
 $FFCF  CHRIN   input character                    
 
-               out:A=character, C=1 and ST=error      - - -  A - -  A - -
+                   out:A=character, C=1 and ST=error      - - -  A - -  A - -
 
 $FFD2  CHROUT  output character                   
 
-               in: A=character, C=1 and ST=error      A - -  A - -  - - -
+                   in: A=character, C=1 and ST=error      A - -  A - -  - - -
 
 $FFD5  LOAD    load after call SETLFS,SETNAM      
 
-               in: A=0 load, a=1 verify               A X Y  A X Y  A X Y
-                   Y/X = dest.addr if sec.addr=0
+                   in: A=0 load, a=1 verify               A X Y  A X Y  A X Y
+                       Y/X = dest.addr if sec.addr=0
 
 $FFD8  SAVE    save after call SETLFS,SETNAM      
 
-               in: A=zero page pointer to start.addr  A X Y  - - -  A X Y
-                   Y/X=ending address
+                   in: A=zero page pointer to start.addr  A X Y  - - -  A X Y
+                       Y/X=ending address
 
 $FFDB  SETTIM  set jiffy clock                    
 
-               in: A=MSB, X=middle, Y=LSB             A X Y  - - -  - - -
+                   in: A=MSB, X=middle, Y=LSB             A X Y  - - -  - - -
 
 $FFDE  RDTIM   read jiffy clock                   
 
-               out:A=MSB, X=middle, Y=LSB             - - -  A X Y  A X Y
+                   out:A=MSB, X=middle, Y=LSB             - - -  A X Y  A X Y
 
 $FFE1  STOP    check stop key                     
 
-               out:Z=0 if STOP not used; X unchanged  - - -  A - -  A - -
-                   Z=1 if STOP used; X changed        - - -  A - -  A X -
-                   A=last line of keyboard matrix
+                   out:Z=0 if STOP not used; X unchanged  - - -  A - -  A - -
+                       Z=1 if STOP used; X changed        - - -  A - -  A X -
+                       A=last line of keyboard matrix
 
 $FFE4  GETIN   get a byte from channel            
 
-               out:keyboard:A=0 if puffer empty       - - -  A - -  A X Y
-                   RS232:status byte                  - - -  A - -  A - -
-                   serial:status byte                 - - -  A - -  A - -
-                   tape:status byte                   - - -  A - -  A - Y
+                   out:keyboard:A=0 if puffer empty       - - -  A - -  A X Y
+                       RS232:status byte                  - - -  A - -  A - -
+                       serial:status byte                 - - -  A - -  A - -
+                       tape:status byte                   - - -  A - -  A - Y
 
 $FFE7  CLALL   close or abort all files              
 
-                                                      - - -  - - -  A X -
+                                                          - - -  - - -  A X -
 
 $FFEA  UDTIM   update jiffy clock                    
 
-                                                      - - -  - - -  A X -
+                                                          - - -  - - -  A X -
 
 $FFED  SCREEN  return screen size                 
 
-               out:X=columns, Y=rows                  - - -  - X Y  - X Y
+                   out:X=columns, Y=rows                  - - -  - X Y  - X Y
 
 $FFF0  PLOT    read/set cursor position           
 
-               in: C=0, X=row, Y=column               - X Y  - X Y  - - -
-               out:C=1, X=row, Y=column               - - -  - X Y  - X Y
+                   in: C=0, X=row, Y=column               - X Y  - X Y  - - -
+                   out:C=1, X=row, Y=column               - - -  - X Y  - X Y
 
 $FFF3  IOBASE  returns the addr of I/O devices    
 
-               out:Y/X=addr($DC00)                    - - -  - X Y  - X Y
+                   out:Y/X=addr($DC00)                    - - -  - X Y  - X Y
