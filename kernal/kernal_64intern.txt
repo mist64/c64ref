@@ -76,7 +76,7 @@ $FFBD          setzt Parameter des Filenamens, Akku muß
 
 $FFC0          OPEN-Befehl, öffnet logische Datei
 
-$FFC3          CLOSE-Befehl, schließt logischeDatei,
+$FFC3          CLOSE-Befehl, schließt logische Datei,
                Akku muß logische Filenummer enthalten
 
 $FFC6          CHKIN setzt folgende Eingabe auf logische

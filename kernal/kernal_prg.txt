@@ -57,9 +57,9 @@ $FFA5  ACPTR   Get data from the serial bus
                
                ## EXAMPLE:
                
-                   ;GET A BYTE FROM THE BUS
-                   JSR ACPTR
-                   STA DATA
+                        ;GET A BYTE FROM THE BUS
+                        JSR ACPTR
+                        STA DATA
                
                
 $FFC6  CHKIN   Open a channel for input
@@ -95,9 +95,9 @@ $FFC6  CHKIN   Open a channel for input
                
                ## EXAMPLE:
                
-                   ;PREPARE FOR INPUT FROM LOGICAL FILE 2
-                   LDX #2
-                   JSR CHKIN
+                        ;PREPARE FOR INPUT FROM LOGICAL FILE 2
+                        LDX #2
+                        JSR CHKIN
                
                
 $FFC9  CHKOUT  Open a channel for output
@@ -136,8 +136,8 @@ $FFC9  CHKOUT  Open a channel for output
                
                ## EXAMPLE:
                
-                   LDX #3        ;DEFINE LOGICAL FILE 3 AS AN OUTPUT CHANNEL
-                   JSR CHKOUT
+                        LDX #3        ;DEFINE LOGICAL FILE 3 AS AN OUTPUT CHANNEL
+                        JSR CHKOUT
                
                
 $FFCF  CHRIN   Get a character from the input channel
@@ -173,18 +173,18 @@ $FFCF  CHRIN   Get a character from the input channel
                
                ## EXAMPLE:
                
-                       LDY $#00      ;PREPARE THE Y REGISTER TO STORE THE DATA
-                   RD  JSR CHRIN
-                       STA DATA,Y    ;STORE THE YTH DATA BYTE IN THE YTH
-                                     ;LOCATION IN THE DATA AREA.
-                       INY
-                       CMP #CR       ;IS IT A CARRIAGE RETURN?
-                       BNE RD        ;NO, GET ANOTHER DATA BYTE
+                        LDY $#00      ;PREPARE THE Y REGISTER TO STORE THE DATA
+                   RD   JSR CHRIN
+                        STA DATA,Y    ;STORE THE YTH DATA BYTE IN THE YTH
+                                      ;LOCATION IN THE DATA AREA.
+                        INY
+                        CMP #CR       ;IS IT A CARRIAGE RETURN?
+                        BNE RD        ;NO, GET ANOTHER DATA BYTE
                
                ## EXAMPLE:
                
-                   JSR CHRIN
-                   STA DATA
+                        JSR CHRIN
+                        STA DATA
                
                ### FROM OTHER DEVICES
                
@@ -194,8 +194,8 @@ $FFCF  CHRIN   Get a character from the input channel
                
                ## EXAMPLE:
                
-                   JSR CHRIN
-                   STA DATA
+                        JSR CHRIN
+                        STA DATA
                
                
 $FFD2  CHROUT  Output a character
@@ -225,11 +225,11 @@ $FFD2  CHROUT  Output a character
                
                ## EXAMPLE:
                
-                   ;DUPLICATE THE BASIC INSTRUCTION CMD 4,"A";
-                   LDX #4          ;LOGICAL FILE #4
-                   JSR CHKOUT      ;OPEN CHANNEL OUT
-                   LDA #'A
-                   JSR CHROUT      ;SEND CHARACTER
+                        ;DUPLICATE THE BASIC INSTRUCTION CMD 4,"A";
+                        LDX #4          ;LOGICAL FILE #4
+                        JSR CHKOUT      ;OPEN CHANNEL OUT
+                        LDA #'A
+                        JSR CHROUT      ;SEND CHARACTER
                
                
 $FFA8  CIOUT   Transmit a byte over the serial bus
@@ -262,8 +262,8 @@ $FFA8  CIOUT   Transmit a byte over the serial bus
                ## EXAMPLE:
                
                
-                   LDA #'X       ;SEND AN X TO THE SERIAL BUS
-                   JSR CIOUT
+                        LDA #'X       ;SEND AN X TO THE SERIAL BUS
+                        JSR CIOUT
                
                
 $FF81  CINT    Initialize screen editor & 6567 video chip
@@ -285,8 +285,8 @@ $FF81  CINT    Initialize screen editor & 6567 video chip
                
                ## EXAMPLE:
                
-                   JSR CINT
-                   JMP RUN       ;BEGIN EXECUTION
+                        JSR CINT
+                        JMP RUN       ;BEGIN EXECUTION
                
                
 $FFE7  CLALL   Close all files
@@ -308,8 +308,8 @@ $FFE7  CLALL   Close all files
                
                ## EXAMPLE:
                
-                   JSR CLALL   ;CLOSE ALL FILES AND SELECT DEFAULT I/O CHANNELS
-                   JMP RUN     ;BEGIN EXECUTION
+                        JSR CLALL   ;CLOSE ALL FILES AND SELECT DEFAULT I/O CHANNELS
+                        JMP RUN     ;BEGIN EXECUTION
                
                
 $FFC3  CLOSE   Close a logical file
@@ -334,8 +334,8 @@ $FFC3  CLOSE   Close a logical file
                ## EXAMPLE:
                
                    ;CLOSE 15
-                   LDA #15
-                   JSR CLOSE
+                        LDA #15
+                        JSR CLOSE
                
 $FFCC  CLRCHN  Clear I/O channels
                
@@ -439,12 +439,12 @@ $FFF3  IOBASE  Define I/O memory page
                ## EXAMPLE:
                
                    ;SET THE DATA DIRECTION REGISTER OF THE USER PORT TO 0 (INPUT)
-                   JSR IOBASE
-                   STX POINT       ;SET BASE REGISTERS
-                   STY POINT+1
-                   LDY #2
-                   LDA #0          ;OFFSET FOR DDR OF THE USER PORT
-                   STA (POINT),Y   ;SET DDR TO 0
+                        JSR IOBASE
+                        STX POINT       ;SET BASE REGISTERS
+                        STY POINT+1
+                        LDY #2
+                        LDA #0          ;OFFSET FOR DDR OF THE USER PORT
+                        STA (POINT),Y   ;SET DDR TO 0
                
                
 $FF84  IOINIT  Initialize I/O devices
@@ -460,7 +460,7 @@ $FF84  IOINIT  Initialize I/O devices
                of a Commodore 64 program cartridge.
                
                ## EXAMPLE:
-                   JSR IOINIT
+                        JSR IOINIT
                
                
 $FFB1  LISTEN  Command a device on the serial bus to listen
@@ -486,8 +486,8 @@ $FFB1  LISTEN  Command a device on the serial bus to listen
                
                ## EXAMPLE:
                    ;COMMAND DEVICE #8 TO LISTEN
-                   LDA #8
-                   JSR LISTEN
+                        LDA #8
+                        JSR LISTEN
                
                
 $FFD5  LOAD    Load RAM from device
@@ -529,26 +529,26 @@ $FFD5  LOAD    Load RAM from device
                
                ## EXAMPLE:
                
-                           ;LOAD   A FILE FROM TAPE
+                   ;LOAD A FILE FROM TAPE
                     
-                           LDA #FILENO         ;SET LOGICAL FILE NUMBER
-                           LDX #DEVICE1        ;SET DEVICE NUMBER
-                           LDY CMD1            ;SET SECONDARY ADDRESS
-                           JSR SETLFS
-                           LDA #NAME1-NAME     ;LOAD A WITH NUMBER OF
-                                               ;CHARACTERS IN FILE NAME
-                           LDX #<NAME          ;LOAD X AND Y WITH ADDRESS OF
-                           LDY #>NAME          ;FILE NAME
-                           JSR SETNAM
-                           LDA #0              ;SET FLAG FOR A LOAD
-                           LDX #$FF            ;ALTERNATE START
-                           LDY #$FF
-                           JSR LOAD
-                           STX VARTAB          ;END OF LOAD
-                           STY VARTA B+1
-                           JMP START
-                   NAME    .BYT 'FILE NAME'
-                   NAME1                       ;
+                        LDA #FILENO      ;SET LOGICAL FILE NUMBER
+                        LDX #DEVICE1     ;SET DEVICE NUMBER
+                        LDY CMD1         ;SET SECONDARY ADDRESS
+                        JSR SETLFS
+                        LDA #NAME1-NAME  ;LOAD A WITH NUMBER OF
+                                         ;CHARACTERS IN FILE NAME
+                        LDX #<NAME       ;LOAD X AND Y WITH ADDRESS OF
+                        LDY #>NAME       ;FILE NAME
+                        JSR SETNAM
+                        LDA #0           ;SET FLAG FOR A LOAD
+                        LDX #$FF         ;ALTERNATE START
+                        LDY #$FF
+                        JSR LOAD
+                        STX VARTAB       ;END OF LOAD
+                        STY VARTA B+1
+                        JMP START
+                   NAME .BYT 'FILE NAME'
+                   NAME1                 ;
                
                
 $FF9C  MEMBOT  Set bottom of memory
@@ -583,11 +583,11 @@ $FF9C  MEMBOT  Set bottom of memory
                ## EXAMPLE:
                
                    ;MOVE BOTTOM OF MEMORY UP 1 PAGE
-                   SEC         ;READ MEMORY BOTTOM
-                   JSR MEMBOT
-                   INY
-                   CLC         ;SET MEMORY BOTTOM TO NEW VALUE
-                   JSR MEMBOT
+                        SEC         ;READ MEMORY BOTTOM
+                        JSR MEMBOT
+                        INY
+                        CLC         ;SET MEMORY BOTTOM TO NEW VALUE
+                        JSR MEMBOT
                
 $FF99  MEMTOP  Set the top of RAM
                
@@ -606,10 +606,10 @@ $FF99  MEMTOP  Set the top of RAM
                
                ## EXAMPLE:
                    ;DEALLOCATE THE RS-232 BUFFER
-                   SEC
-                   JSR MEMTOP   ;READ TOP OF MEMORY
-                   DEX
-                   CLC
+                        SEC
+                        JSR MEMTOP   ;READ TOP OF MEMORY
+                        DEX
+                        CLC
                    JSR MEMTOP   ;SET NEW TOP OF MEMORY
                
                
@@ -639,16 +639,16 @@ $FFC0  OPEN    Open a logical file
                
                This is an implementation of the BASIC statement: OPEN 15,8,15,"I/O"
                
-                         LDA #NAME2-NAME    ;LENGTH OF FILE NAME FOR SETLFS
-                         LDY #>NAME         ;ADDRESS OF FILE NAME
-                         LDX #<NAME
-                         JSR SETNAM
-                         LDA #15
-                         LDX #8
-                         LDY #15
-                         JSR SETLFS
-                         JSR OPEN
-                   NAME  .BYT 'I/O'
+                        LDA #NAME2-NAME    ;LENGTH OF FILE NAME FOR SETLFS
+                        LDY #>NAME         ;ADDRESS OF FILE NAME
+                        LDX #<NAME
+                        JSR SETNAM
+                        LDA #15
+                        LDX #8
+                        LDY #15
+                        JSR SETLFS
+                        JSR OPEN
+                   NAME .BYT 'I/O'
                    NAME2
                
                
@@ -687,10 +687,10 @@ $FFF0  PLOT    Set cursor location
                ## EXAMPLE:
                
                    ;MOVE THE CURSOR TO ROW 10, COLUMN 5 (5,10)
-                   LDX #10
-                   LDY #5
-                   CLC
-                   JSR PLOT
+                        LDX #10
+                        LDY #5
+                        CLC
+                        JSR PLOT
                
                
 $FF87  RAMTAS  Perform RAM test
@@ -708,7 +708,7 @@ $FF87  RAMTAS  Perform RAM test
                initialization process of a Commodore 64 program cartridge.
                
                ## EXAMPLE:
-                   JSR RAMTAS
+                        JSR RAMTAS
                
 $FFDE  RDTIM   Read system clock
                
@@ -726,11 +726,11 @@ $FFDE  RDTIM   Read system clock
                
                ## EXAMPLE:
                
-                   JSR RDTIM
-                   STY TIME
-                   STX TIME+1
-                   STA TIME+2
-                   ...
+                        JSR RDTIM
+                        STY TIME
+                        STX TIME+1
+                        STA TIME+2
+                        ...
                    TIME *=*+3
                
                
@@ -770,9 +770,9 @@ $FFB7  READST  Read status word
                ## EXAMPLE:
                
                    ;CHECK FOR END OF FILE DURING READ
-                   JSR READST
-                   AND #64                       ;CHECK EOF BIT (EOF=END OF FILE)
-                   BNE EOF                       ;BRANCH ON EOF
+                        JSR READST
+                        AND #64                       ;CHECK EOF BIT (EOF=END OF FILE)
+                        BNE EOF                       ;BRANCH ON EOF
                
 $FF8A  RESTOR  Restore default system and interrupt vectors
                
@@ -791,7 +791,7 @@ $FF8A  RESTOR  Restore default system and interrupt vectors
                1. Call this routine.
                
                ## EXAMPLE:
-                   JSR RESTOR
+                        JSR RESTOR
                
 $FFD8  SAVE    Save memory to a device
                
@@ -807,7 +807,7 @@ $FFD8  SAVE    Save memory to a device
                address stored in the X and Y registers. It is then sent to a logical
                file on an input/output device. The SETLFS and SETNAM routines must be
                used before calling this routine. However, a file name is not required to
-               SAVE to device 1 (the Datassette(TM) recorder). Any attempt to save to
+               SAVE to device 1 (the Datassette™ recorder). Any attempt to save to
                other devices without using a file name results in an error.
                
                | NOTE: Device 0 (the keyboard), device 2 (RS-232), and device 3 (the screen) cannot be SAVEd to. If the attempt is made, an error occurs, and the SAVE is stopped. |
@@ -828,18 +828,18 @@ $FFD8  SAVE    Save memory to a device
                
                ## EXAMPLE:
                
-                   LDA #1              ;DEVICE = 1:CASSETTE
-                   JSR SETLFS
-                   LDA #0              ;NO FILE NAME
-                   JSR SETNAM
-                   LDA PROG            ;LOAD START ADDRESS OF SAVE
-                   STA TXTTAB          ;(LOW BYTE)
-                   LDA PROG+1
-                   STA TXTTA B+1       ;(HIGH BYTE)
-                   LDX VARTAB          ;LOAD X WITH LOW BYTE OF END OF SAVE
-                   LDY VARTAB+1        ;LOAD Y WITH HIGH BYTE
-                   LDA #<TXTTAB        ;LOAD ACCUMULATOR WITH PAGE 0 OFFSET
-                   JSR SAVE
+                        LDA #1              ;DEVICE = 1:CASSETTE
+                        JSR SETLFS
+                        LDA #0              ;NO FILE NAME
+                        JSR SETNAM
+                        LDA PROG            ;LOAD START ADDRESS OF SAVE
+                        STA TXTTAB          ;(LOW BYTE)
+                        LDA PROG+1
+                        STA TXTTA B+1       ;(HIGH BYTE)
+                        LDX VARTAB          ;LOAD X WITH LOW BYTE OF END OF SAVE
+                        LDY VARTAB+1        ;LOAD Y WITH HIGH BYTE
+                        LDA #<TXTTAB        ;LOAD ACCUMULATOR WITH PAGE 0 OFFSET
+                        JSR SAVE
                
                
 $FF9F  SCNKEY  Scan the keyboard
@@ -886,9 +886,9 @@ $FFED  SCREEN  Return screen format
                
                ## EXAMPLE:
                
-                   JSR SCREEN
-                   STX MAXCOL
-                   STY MAXROW
+                        JSR SCREEN
+                        STX MAXCOL
+                        STY MAXROW
                
                
 $FF93  SECOND  Send secondary address for LISTEN
@@ -918,10 +918,10 @@ $FF93  SECOND  Send secondary address for LISTEN
                ## EXAMPLE:
                
                    ;ADDRESS DEVICE #8 WITH COMMAND (SECONDARY ADDRESS) #15
-                   LDA #8
-                   JSR LISTEN
-                   LDA #15
-                   JSR SECOND
+                        LDA #8
+                        JSR LISTEN
+                        LDA #15
+                        JSR SECOND
                
                
 $FFBA  SETLFS  Set up a logical file
@@ -945,7 +945,7 @@ $FFBA  SETLFS  Set up a logical file
                              | ADDRESS    |     DEVICE                   |
                              |------------|------------------------------|
                              |    0       |    Keyboard                  |
-                             |    1       |    Datassette(TM)            |
+                             |    1       |    Datassette™               |
                              |    2       |    RS-232C device            |
                              |    3       |    CRT display               |
                              |    4       |    Serial bus printer        |
@@ -968,11 +968,11 @@ $FFBA  SETLFS  Set up a logical file
                
                ## EXAMPLE:
                
-                   FOR LOGICAL FILE 32, DEVICE #4, AND NO COMMAND:
-                   LDA #32
-                   LDX #4
-                   LDY #255
-                   JSR SETLFS
+                   ;FOR LOGICAL FILE 32, DEVICE #4, AND NO COMMAND:
+                        LDA #32
+                        LDX #4
+                        LDY #255
+                        JSR SETLFS
                
                
 $FF90  SETMSG  Control system message output
@@ -1000,12 +1000,12 @@ $FF90  SETMSG  Control system message output
                
                ## EXAMPLE:
                
-                   LDA #$40
-                   JSR SETMSG          ;TURN ON CONTROL MESSAGES
-                   LDA #$80
-                   JSR SETMSG          ;TURN ON ERROR MESSAGES
-                   LDA #0
-                   JSR SETMSG          ;TURN OFF ALL KERNAL MESSAGES
+                        LDA #$40
+                        JSR SETMSG          ;TURN ON CONTROL MESSAGES
+                        LDA #$80
+                        JSR SETMSG          ;TURN ON ERROR MESSAGES
+                        LDA #0
+                        JSR SETMSG          ;TURN OFF ALL KERNAL MESSAGES
                
                
 $FFBD  SETNAM  Set file name
@@ -1034,10 +1034,10 @@ $FFBD  SETNAM  Set file name
                
                ## EXAMPLE:
                
-                   LDA #NAME2-NAME     ;LOAD LENGTH OF FILE NAME
-                   LDX #<NAME          ;LOAD ADDRESS OF FILE NAME
-                   LDY #>NAME
-                   JSR SETNAM
+                        LDA #NAME2-NAME     ;LOAD LENGTH OF FILE NAME
+                        LDX #<NAME          ;LOAD ADDRESS OF FILE NAME
+                        LDY #>NAME
+                        JSR SETNAM
                
 $FFDB  SETTIM  Set the system clock
                
@@ -1065,10 +1065,10 @@ $FFDB  SETTIM  Set the system clock
                
                ## EXAMPLE:
                    ;SET THE CLOCK TO 10 MINUTES = 3600 JIFFIES
-                   LDA #0               ;MOST SIGNIFICANT
-                   LDX #>3600
-                   LDY #<3600           ;LEAST SIGNIFICANT
-                   JSR SETTIM
+                        LDA #0               ;MOST SIGNIFICANT
+                        LDX #>3600
+                        LDY #<3600           ;LEAST SIGNIFICANT
+                        JSR SETTIM
                
 $FFA2  SETTMO  Set IEEE bus card timeout flag
                
@@ -1107,8 +1107,8 @@ $FFA2  SETTMO  Set IEEE bus card timeout flag
                ## EXAMPLE:
                
                    ;DISABLE TIMEOUT
-                   LDA #0
-                   JSR SETTMO
+                        LDA #0
+                        JSR SETTMO
                
 $FFE1  STOP    Check if <STOP> key is pressed
                
@@ -1132,10 +1132,10 @@ $FFE1  STOP    Check if <STOP> key is pressed
                
                ## EXAMPLE:
                
-                   JSR UDTIM   ;SCAN FOR STOP
-                   JSR STOP
-                   BNE *+5     ;KEY NOT DOWN
-                   JMP READY   ;=... STOP
+                        JSR UDTIM   ;SCAN FOR STOP
+                        JSR STOP
+                        BNE *+5     ;KEY NOT DOWN
+                        JMP READY   ;=... STOP
                
 $FFB4  TALK    Command a device on the serial bus to TALK
                
@@ -1158,8 +1158,8 @@ $FFB4  TALK    Command a device on the serial bus to TALK
                ## EXAMPLE:
                
                    ;COMMAND DEVICE #4 TO TALK
-                   LDA #4
-                   JSR TALK
+                        LDA #4
+                        JSR TALK
                
 $FF96  TKSA    Send a secondary address to a device commanded to TALK
                
@@ -1184,10 +1184,10 @@ $FF96  TKSA    Send a secondary address to a device commanded to TALK
                ## EXAMPLE:
                
                    ;TELL DEVICE #4 TO TALK WITH COMMAND #7
-                   LDA #4
-                   JSR TALK
-                   LDA #7
-                   JSR TKSA
+                        LDA #4
+                        JSR TALK
+                        LDA #7
+                        JSR TKSA
                
                
 $FFEA  UDTIM   Update the system clock
@@ -1232,7 +1232,7 @@ $FFAE  UNLSN   Send an UNLISTEN command
                1. Call this routine.
                
                ## EXAMPLE:
-                   JSR UNLSN
+                        JSR UNLSN
                
                
 $FFAB  UNTLK   Send an UNTALK command
@@ -1252,7 +1252,7 @@ $FFAB  UNTLK   Send an UNTALK command
                1. Call this routine.
                
                ## EXAMPLE:
-                   JSR UNTALK
+                        JSR UNTALK
                
                
 $FF8D  VECTOR  Manage RAM vectors
@@ -1292,18 +1292,18 @@ $FF8D  VECTOR  Manage RAM vectors
                ## EXAMPLE:
                
                    ;CHANGE THE INPUT ROUTINES TO NEW SYSTEM
-                   LDX #<USER
-                   LDY #>USER
-                   SEC
-                   JSR VECTOR      ;READ OLD VECTORS
-                   LDA #<MYINP     ;CHANGE INPUT
-                   STA USER+10
-                   LDA #>MYINP
-                   STA USER+11
-                   LDX #<USER
-                   LDY #>USER
-                   CLC
-                   JSR VECTOR      ;ALTER SYSTEM
-                   ...
+                        LDX #<USER
+                        LDY #>USER
+                        SEC
+                        JSR VECTOR      ;READ OLD VECTORS
+                        LDA #<MYINP     ;CHANGE INPUT
+                        STA USER+10
+                        LDA #>MYINP
+                        STA USER+11
+                        LDX #<USER
+                        LDY #>USER
+                        CLC
+                        JSR VECTOR      ;ALTER SYSTEM
+                        ...
                    USER *=*+26
                

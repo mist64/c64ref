@@ -47,7 +47,7 @@ $FFC6  CHKIN
 
                The routine sets the input channel (location $99) to the
                device number for the specified file. If the device is RS-232
-               (device number 2), the CTA #2 interrupts for RS-232 reception
+               (device number 2), the CIA #2 interrupts for RS-232 reception
                are enabled. Ef a serial device (device number 4 or greater) was
                specified, the device is made a talker on the serial bus,
 
@@ -55,7 +55,7 @@ $FFC6  CHKIN
                carry bit will be clear upon return. If carry is set, the operation
                was unsuccessful and the accumulator will contain a Kernal
                error-code value indicating which error occurred. Possible er-
-               ror codes include 3 (fiLe was not open), 5 (device did not re-
+               ror codes include 3 (file was not open), 5 (device did not re-
                spond), and 6 (file was not opened for input). The RS-232 and
                serial status-flag locations also reflect the success of operations
                for those devices. (See READST for details.)

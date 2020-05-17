@@ -163,7 +163,11 @@ for filename in filenames:
 		summary = title[15:]
 		call_lines_stripped = []
 		for call_line in call_lines[1:]:
-			call_lines_stripped.append(call_line[15:])
+			call_lines_stripped.append(call_line[15:].rstrip())
+		while len(call_lines_stripped) > 0 and call_lines_stripped[0] == '':
+			call_lines_stripped = call_lines_stripped[1:]
+		while len(call_lines_stripped) > 0 and call_lines_stripped[-1] == '':
+			call_lines_stripped = call_lines_stripped[:-1]
 		calls[address] = (symbol, summary, call_lines_stripped)
 
 	sources.append(calls)
@@ -383,15 +387,28 @@ for address in all_addresses:
 	print('<th class="decimal_column"> {} </th>'.format(category))
 	for call in sources:
 		if address in call:
+			print('<td>')
 			(symbol, summary, lines) = call[address]
-			print('<td><details open><summary>' + summary + '</summary>')
+
+			is_collapsible = len(lines) > 0
+#			print('xxx' , len(lines), is_collapsible)
+
+			if is_collapsible:
+				print('<details open><summary>')
+			print('<b>' + summary + '</b>')
+			if is_collapsible:
+				print('</summary>')
+
 			all_text = '\n'.join(lines)
 			html = markdown.markdown(all_text, extensions=['tables' , 'sane_lists'])
 			for replace_symbol in all_symbols:
 				if replace_symbol != symbol:
 					html = re.sub('\\b' + replace_symbol + '\\b', '<a href="#' + replace_symbol + '">' + replace_symbol + '</a>', html)
 			html = cross_reference(html)
-			print(html + '</details></td>')
+			print(html)
+			if is_collapsible:
+				print('</details>')
+			print('</td>')
 		else:
 			print('<td></td>')
 	print('</tr>')
