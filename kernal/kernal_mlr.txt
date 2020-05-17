@@ -22,7 +22,7 @@
 # * The remaining text is in MarkDown format.
 # The encoding is UTF-8.
 
-$FFA5  ACPTR
+$FFA5  ACPTR   ACPTR
 
                 This low-level I/O routine retrieves a byte from a serial device
                without checking for a previous I/O error. If the operation is
@@ -36,7 +36,7 @@ $FFA5  ACPTR
                number of setup steps. Generally, it's preferable to use the
                higher-level CHRFN routine instead.
 
-$FFC6  CHKIN
+$FFC6  CHKIN   CHKIN
 
                This routine specifies a logical file as the source of input in
                preparation for using the CHRIN or GETIN routines. The logi-
@@ -65,7 +65,7 @@ $FFC6  CHKIN
                modify the actions of CHfQN by changing the vector to point
                to a routine of your own.
 
-$FFC9  CHKOUT
+$FFC9  CHKOUT  CHKOUT
 
                This routine (some Commodore references call it CKOUT)
                specifies a logical file as the recipient of output in preparation
@@ -96,7 +96,7 @@ $FFC9  CHKOUT
                the actions of the routine by changing the vector to point to a
                routine of your own.
 
-$FFCF  CHRIN
+$FFCF  CHRIN   CHRIN
 
                This high-level I/O routine (some Commodore references may
                call it BASIN) receives a byte from the logical file currently
@@ -159,7 +159,7 @@ $FFCF  CHRIN
                actions of the routine by changing the vector to point to a rou-
                tine of your own.
 
-$FFD2  CHROUT
+$FFD2  CHROUT  CHROUT
 
                This routine (some Commodore references call it BSOUT)
                sends a byte to the logical file currently specified for output.
@@ -194,7 +194,7 @@ $FFD2  CHROUT
                the actions of the routine by changing the vector to point to a
                routine of your own.
 
-$FF81  CINT
+$FF81  CINT    CINT
 
                This routine initializes all RAM locations used by the screen
                editor, returning screen memory to its default position and set-
@@ -211,7 +211,7 @@ $FF81  CINT
                their default definitions. It does not, however, reinitialize the
                80-column character set. (That's also part of IOINIT.)
 
-$FFA8  CIOUT
+$FFA8  CIOUT   CIOUT
 
                This low-level I/O routine sends a byte to a serial device. The
                accumulator should hold the byte to be sent. All register val-
@@ -227,7 +227,7 @@ $FFA8  CIOUT
                CHROUT, since, for a serial device, CHROUT simply jumps to
                the CIOUT routine.
 
-$FFE7  CLALL
+$FFE7  CLALL   CLALL
 
                This routine resets the number of open files (location $98) to
                zero, then falls through into the CLRCH routine to reset de-
@@ -246,7 +246,7 @@ $FFE7  CLALL
                actions of the routine by changing the vector to point to a rou-
                tine of your own.
 
-$FFC3  CLOSE
+$FFC3  CLOSE   CLOSE
 
                This routine closes a specified logical file. Call the routine with
                the accumulator holding the number of the logical file to be
@@ -278,7 +278,7 @@ $FFC3  CLOSE
                actions of the routine by changing the vector to point to a rou-
                tine of your own.
 
-$FFCC  CLRCHN
+$FFCC  CLRCHN  CLRCHN
 
                This routine restores the default I/O sources for the operating
                system. The output channel (location $9A) is reset to device 3,
@@ -294,7 +294,7 @@ $FFCC  CLRCHN
                the actions of the routine by changing the vector to point to a
                routine of your own.
 
-$FFE4  GETIN
+$FFE4  GETIN   GETIN
 
                This routine retrieves a single character from the current input
                device. The routine first checks to see whether the input de-
@@ -313,7 +313,7 @@ $FFE4  GETIN
                actions of the routine by changing the vector to point to a rou-
                tine of your own.
 
-$FFF3  IOBASE
+$FFF3  IOBASE  IOBASE
 
                This routine returns a constant 1/0 chip base-address value in
                .X (low byte) and .Y (high byte). The accumulator is un-
@@ -321,7 +321,7 @@ $FFF3  IOBASE
                of CLA #1. For the 128, the value is $D000—the address of
                the VIC chip.
 
-$FF84  IOINIT
+$FF84  IOINIT  IOINIT
 
                This routine initializes the CIA chips' registers to their default
                values, along with related RAM locations. All processor reg-
@@ -331,7 +331,7 @@ $FF84  IOINIT
                SID chip registers to zero and calls the Kernal DLCHR routine
                to initiahze the character set for the 80-column chip.
 
-$FFB1  LISTEN
+$FFB1  LISTEN  LISTEN
 
                This low-level serial I/O routine sends a LISTEN command to
                a specified serial device. Call the routine with the accumulator
@@ -341,7 +341,7 @@ $FFB1  LISTEN
                by the value in the serial status flag upon return. (See
                READST for details.)
 
-$FFD5  LOAD
+$FFD5  LOAD    LOAD
 
                This routine loads a program file from tape or disk into a
                specified area of memory, or verifies a program file against the
@@ -388,8 +388,11 @@ $FFD5  LOAD
                indicated by the value in the tape/serial status flag. (See
                READST for details.)
 
-$FF9C  MEMBOT
-$FF99  MEMTOP
+$FF9C  MEMBOT  MEMBOT
+
+               See MEMTOP.
+
+$FF99  MEMTOP  MEMTOP
 
                These routines read or set the Kernal's bottom-of-memory
                pointer and top-of-memory pointer, respectively. (The bottom-
@@ -402,7 +405,7 @@ $FF99  MEMTOP
                flag clear and with .X and .Y containing the low and high
                bytes, respectively, of the desired pointer value.
 
-$FFC0  OPEN
+$FFC0  OPEN    OPEN
 
                This routine opens a logical file to a specified device in
                preparation for input or output. At least one preparatory step
@@ -437,7 +440,7 @@ $FFC0  OPEN
                tions of the routine by changing the vector to point to a rou-
                tine of your own,
 
-$FFF0  PLOT
+$FFF0  PLOT    PLOT
 
                This routine reads or sets the cursor position on the active dis-
                play, if it is called with the status-register carry bit clear, the
@@ -457,7 +460,7 @@ $FFF0  PLOT
                window—the default condition—the upper left comer of the
                screen is the home position of the window,
 
-$FF87  RAMTAS
+$FF87  RAMTAS  RAMTAS
 
                This routine clears zero-page RAM (locations $02-$FF) and
                initializes Kernal memory pointers in zero page. For the 64
@@ -467,7 +470,7 @@ $FF87  RAMTAS
                pointer. For the 128, the routine sets the BASIC restart vector
                ($0A00) to point to BASIC's cold-start entry address, $4000.
 
-$FFDE  RDTIM
+$FFDE  RDTIM   RDTIM
 
                This routine returns the current value of the jiffy dock. The
                dock value corresponds to the number of jiffies (1 /60-second
@@ -477,7 +480,7 @@ $FFDE  RDTIM
                returned in .A, the middle byte (location $A1) in .X, and the
                high byte loocation $A0) in .Y.
 
-$FFB7  READST
+$FFB7  READST  READST
 
                This routine (some Commodore references call it READSS) re-
                turns the status of the most recent I/O operation. The status
@@ -501,12 +504,12 @@ $FFB7  READST
                | 6   |  64/$40 | EOI (end of file)     | end of file                           | DSR missing              |
                | 7   | 128/$80 | device nol present    | end of tape                           | break                    |
   
-$FF8A  RESTOR
+$FF8A  RESTOR  RESTOR
 
                This routine resets the Kernal indirect vectors ($0314-$0333)
                to their default values. All processor registers are affected.
 
-$FFD8  SAVE
+$FFD8  SAVE    SAVE
 
                This routine saves the contents of a block of memory to disk
                or tape. It could be a BASIC or ML program, but it doesn't
@@ -546,7 +549,7 @@ $FFD8  SAVE
                by the value in the tape/serial status flag. (See READST for
                details.)
 
-$FF9F  SCNKEY
+$FF9F  SCNKEY  SCNKEY
 
                This routine scans the keyboard matrix to determine which
                keys, if any, are currently pressed. The standard KQ service
@@ -558,7 +561,7 @@ $FF9F  SCNKEY
                be read in location $CB (64) or $D4 (128), and the status of
                the shift keys can be read in location $028D (64) or $D3 (128).
 
-$FFED  SCREEN
+$FFED  SCREEN  SCREEN
 
                This routine (Commodore 128 literature calls it SCRORG) re-
                turns information on the size of the screen display. For the 64,
@@ -572,14 +575,14 @@ $FFED  SCREEN
                the display currently active (39 for the 40-column screen or 79
                for the 80-column screen).
 
-$FF93  SECOND
+$FF93  SECOND  SECOND
 
                This low-level serial I/O routine sends a secondary address to
                a device which has been commanded to listen. The value in
                the serial status flag upon return will indicate whether the op-
                eration was successful.
 
-$FFBA  SETLFS
+$FFBA  SETLFS  SETLFS
 
                This routine assigns the logical file number (location $B8), de-
                vice number (location $BA), and secondary address location
@@ -594,7 +597,7 @@ $FFBA  SETLFS
                LKUPSA routines can be used to find unused logical file num-
                bers and secondary addresses.
 
-$FF90  SETMSG
+$FF90  SETMSG  SETMSG
 
                SETMSG sets the value of the Kernal message flag (location
                $9D). Call the routine with the accumulator holding the de-
@@ -604,7 +607,7 @@ $FF90  SETMSG
                PLAY ON TAPE, for example—are displayed), and 192 (both
                error and control messages are displayed).
 
-$FFBD  SETNAM
+$FFBD  SETNAM  SETNAM
 
                This routine assigns the length (location $B7) and address
                locations $BB-$BC) of the filename for the current I/O opera-
@@ -615,7 +618,7 @@ $FFBD  SETNAM
                then irrelevant, All register values are preserved during this
                routine.
 
-$FFDB  SETTIM
+$FFDB  SETTIM  SETTIM
 
                This routine sets the value in the software jiffy dock. The
                value in the accumulator is transferred to the low byte (loca-
@@ -624,7 +627,7 @@ $FFDB  SETTIM
                fied value should be less than $4F1A01, which corresponds to
                24:00:00 hours.
 
-$FFA2  SETTMO
+$FFA2  SETTMO  SETTMO
 
                The SETTMO routine stores the contents of the accumulator in
                the IEEE timeout flag. (.X and .Y are unaffected.) This routine
@@ -633,7 +636,7 @@ $FFA2  SETTMO
                vious versions of the Kernal. For the 64, the flag location is
                $0285; for the 128, it's at $0A0E.
 
-$FFE1  STOP
+$FFE1  STOP    STOP
 
                This routine checks whether the RUN/STOP key is currently
                pressed. It returns with the status-register Z bit clear if the key
@@ -646,7 +649,7 @@ $FFE1  STOP
                tions of the routine by changing the vector to point to a rou-
                tine of your own.
 
-$FFB4  TALK
+$FFB4  TALK    TALK
 
                This low-level 1/0 routine sends a TALK command to a serial
                device, Call the routine with the accumulator holding the
@@ -654,14 +657,14 @@ $FFB4  TALK
                be indicated by the value in the serial status flag upon return,
                (See READST for details.)
 
-$FF96  TKSA
+$FF96  TKSA    TKSA
 
                This low-level serial 1/0 routine sends a secondary address to
                a device which has previously been commanded to taLk. The
                success of the operation will be indicated by the value in the
                serial status flag upon return. (See READST for details.)
 
-$FFEA  UDTIM
+$FFEA  UDTIM   UDTIM
 
                This routine increments the software jiffy dock and scans the
                keyboard column containing the RUN/STOP key. (The 128
@@ -669,19 +672,19 @@ $FFEA  UDTIM
                This routine is normally called every 1 /60 second as part of
                the standard lRQ service routine.
 
-$FFAE  UNLSN
+$FFAE  UNLSN   UNLSN
 
                This low-level I/O routine sends an UNLISTEN command to
                aH devices on the serial bus. Any devices which are currently
                listeners will cease accepting data.
 
-$FFAB  UNTLK
+$FFAB  UNTLK   UNTLK
 
                This low-level 1/0 routine sends an UNTALK command to all
                devices on the serial bus. Any devices which are currently
                talkers will cease sending data.
 
-$FF8D  VECTOR
+$FF8D  VECTOR  VECTOR
 
                This routine can be used either to store the current values of
                Kernal indirect vectors at $0314-$0333 or to write new values
@@ -692,7 +695,7 @@ $FF8D  VECTOR
                from the table. If carry is set, the 16 two-byte address values
                currently in the vectors will be copied to the table.
 
-$FF53  BOOT_CALL
+$FF53  BOOT_CALL BOOT_CALL
 
                This routine attempts to load and execute boot sectors from a
                specified disk drive. Call the routine with .X holding the de-
@@ -708,7 +711,7 @@ $FF53  BOOT_CALL
                into other areas of memory, and the boot code may not return
                to this routine.
 
-$FF4A  CLOSE_ALL
+$FF4A  CLOSE_ALL CLOSE_ALL
 
                This routine closes all files currently opened to a specified de-
                vice, providing an improved version of CLALL. Enter the rou-
@@ -720,14 +723,14 @@ $FF4A  CLOSE_ALL
                carry bit w01 clear upon return. A set carry bit indicates that a
                device error occurred.
 
-$FF4D  C64_MODE
+$FF4D  C64_MODE C64_MODE
 
                This is the equivalent of the BASIC command GO 64. It per-
                forms an immediate cold start of 64 mode. To get back to 128
                mode, it is necessary to reset the computer, or to tum it off
                and back on.
 
-$FF62  DLCHR
+$FF62  DLCHR   DLCHR
 
                This routine copies character shape data for both standard
                ROM character sets into the VDC video chip's private block of
@@ -735,7 +738,7 @@ $FF62  DLCHR
                play. (The VDC has no character ROM.) This routine is also
                called as part of IOEMFI for the 128.
 
-$FF50  DMA_CALL
+$FF50  DMA_CALL DMA_CALL
 
                This routine passes a command to a DMA (Direct Memory Ac-
                cess) device. The DMA device will then take control of the
@@ -747,7 +750,7 @@ $FF50  DMA_CALL
                for the operation. Other preparatory steps may be required,
                depending on the command.
 
-$FF6B  GETCFG
+$FF6B  GETCFG  GETCFG
 
                This routine translates a bank number (0-15) into the
                corresponding MMU register setting to configure the system
@@ -759,7 +762,7 @@ $FF6B  GETCFG
                number outside the acceptable range will return a meaningless
                value.
 
-$FF7A  INDCMP
+$FF7A  INDCMP  INDCMP
 
                This routine compares .A to the number held in a memory
                location in a specified bank. In preparing to call EMDCMP,
@@ -779,7 +782,7 @@ $FF7A  INDCMP
                256 sequential locations without changing the address in the
                zero-page pointer by simply incrementing .Y between calls.
 
-$FF74  INDFET
+$FF74  INDFET  INDFET
 
                This routine reads the contents of a location in a specified
                bank. Prior to calling this routine; you must load a two-byte
@@ -800,7 +803,7 @@ $FF74  INDFET
                changing the address in the zero-page pointer by incrementing
                .Y between calls.
 
-$FF77  INDSTA
+$FF77  INDSTA  INDSTA
 
                This routine stores a value at an address in a specified bank.
                Before calling the routine, you must load a two-byte zero-page
@@ -818,7 +821,7 @@ $FF77  INDSTA
                changing the address in the zero-page pointer by simply in-
                crementing .Y between calls.
 
-$FF71  JMPFAR
+$FF71  JMPFAR  JMPFAR
 
                JMPFAR jumps to a routine in a specified bank, with no return
                to the calling bank. Prior to calling this routine, you must store
@@ -833,7 +836,7 @@ $FF71  JMPFAR
                other register values, store the desired accumulator value in
                location 6, the value for .X in 7, and the value for .Y in 8.
 
-$FF6E  JSRFAR
+$FF6E  JSRFAR  JSRFAR
 
                This routine jumps to a subroutine in a specified bank and re-
                turns to the calling routine in bank 15. Prior to calling this
@@ -853,7 +856,7 @@ $FF6E  JSRFAR
                will hold the .Y value, and 9 will hold the stack-pointer value.
                The system is always configured for bank 15 upon exit.
 
-$FF59  LKUPLA
+$FF59  LKUPLA  LKUPLA
 
                This routine checks whether a specified logical file number is
                currently used. Call the routine with the accumulator holding
@@ -865,7 +868,7 @@ $FF59  LKUPLA
                file number, .X will hold the corresponding device number,
                and .Y will hold the corresponding secondary address.
 
-$FF5C  LKUPSA
+$FF5C  LKUPSA  LKUPSA
 
                This routine checks whether a specified secondary address is
                currently in use. Call the routine with .Y holding the secondary-
@@ -877,7 +880,7 @@ $FF5C  LKUPSA
                address, the accumulator will hold the associated logical file
                number, and .X will hold the corresponding device number.
 
-$FF65  PFKEY
+$FF65  PFKEY   PFKEY
 
                When you turn on the 128, its function keys are predefined.
                Pressing F3 prints DIRECTORY, F7 holds the LIST command,
@@ -898,7 +901,7 @@ $FF65  PFKEY
                fully added, or set if there was insufficient room in the defi-
                nition table for the new definition.
 
-$FF56  PHOENIX
+$FF56  PHOENIX PHOENIX
 
                This routine initializes function ROMs and attempts to boot a
                disk from the default drive. The presence of function ROMs in
@@ -911,7 +914,7 @@ $FF56  PHOENIX
                the routine attempts to boot a disk in drive 0 of device 8 using
                the BOOT_CALL routine,
 
-$FF7D  PRIMM
+$FF7D  PRIMM   PRIMM
 
                This routine prints the string of character codes which im-
                mediately follows the JSR to this routine. (You must always
@@ -923,7 +926,7 @@ $FF7D  PRIMM
                byte. All registers (.A, .X, and .Y) are preserved during this
                routine.
 
-$FF68  SETBNK
+$FF68  SETBNK  SETBNK
 
                This Kernal routine establishes the current memory bank from
                which data will be read or to which data will be written dur-
@@ -933,7 +936,7 @@ $FF68  SETBNK
                .X holding the bank for the filename. All registers (.A, .X, and
                .Y) are preserved during this routine.
 
-$FF47  SPIN_SPOUT
+$FF47  SPIN_SPOUT SPIN_SPOUT
 
                This low-level serial I/O routine sets up the serial bus for fast
                (burst mode) communications. Unless you're writing a custom
@@ -943,7 +946,7 @@ $FF47  SPIN_SPOUT
                register carry bit clear to establish fast serial input or with the
                bit set to establish fast serial output.
 
-$FF5F  SWAPPER
+$FF5F  SWAPPER SWAPPER
 
                This routine switches active screen displays. The active display
                is the one which has a live cursor, and to which screen

@@ -100,9 +100,11 @@ $FFD5          LOAD, lädt Programm in den Speicher
 
 $FFD8          SAVE, speichert Programm ab
 
-$FFDE          setzt die laufende Zeit neu
+$FFDB          setzt die laufende Zeit neu
 
-$FFE1          holt die laufende Zeit fragt die STOP-Taste ab
+$FFDE          holt die laufende Zeit
+
+$FFE1          fragt die STOP-Taste ab
 
 $FFE4          GET, holt ein Zeichen in den Akku
 
