@@ -130,6 +130,21 @@ def cross_reference(string):
 			string = string.replace(hex_number, '<a href="../c64disasm/#' + '{:04X}'.format(dec_number) + '">' + hex_number + '</a>')
 	return string
 
+def smart_join(lines):
+	s = ''
+	while len(lines) > 0:
+		if s == '':
+			s = lines[0]
+		elif s[-1] == '-':
+			if len(lines[0]) > 0 and lines[0][0].islower():
+				s = s[:-1] + lines[0]
+			else:
+				s += lines[0]
+		else:
+			s += '\n' + lines[0]
+		lines = lines[1:]
+	return s
+
 files = len(filenames)
 
 f = os.popen('git log -1 --pretty=format:%h .')
@@ -415,7 +430,7 @@ for address in all_addresses:
 			if is_collapsible:
 				print('</summary>')
 
-			all_text = '\n'.join(lines)
+			all_text = smart_join(lines)
 			html = markdown.markdown(all_text, extensions=['tables' , 'sane_lists'])
 			for replace_symbol in all_symbols:
 				if replace_symbol != symbol:
