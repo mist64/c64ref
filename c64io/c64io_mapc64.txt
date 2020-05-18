@@ -6,8 +6,7 @@
 -
 # [...]
 
-                     53248-53294   $D000-$D02E
-                     VIC-II Chip Registers
+$D000-$D02E          VIC-II Chip Registers
                      
                      The Video Interface Controller (VIC-II chip) is a specially designed
                      processor that is in charge of the 64's video display.  It is this
@@ -264,8 +263,7 @@
                      Register, or the two color values in the Sprite Multicolor Registers
                      at 53285-53286 ($D025-$D026).
                      
-                     Location Range: 53248-53264 ($D000-$D010)
-                     Sprite Horizontal and Vertical Position Registers
+$D000-$D010          Sprite Horizontal and Vertical Position Registers
                      
                      These locations determine the horizontal and vertical position at
                      which each sprite will be displayed on the screen.  Each sprite has
@@ -319,39 +317,39 @@
                      
                      These registers are all intialized to 0 at power-up.
                      
-$D000       SP0X  Sprite 0 Horizontal Position
+$D000        SP0X    Sprite 0 Horizontal Position
+                        
+$D001        SP0Y    Sprite 0 Vertical Position
+                        
+$D002        SP1X    Sprite 1 Horizontal Position
+                        
+$D003        SP1Y    Sprite 1 Vertical Position
+                        
+$D004        SP2X    Sprite 2 Horizontal Position
+                        
+$D005        SP2Y    Sprite 2 Vertical Position
+                        
+$D006        SP3X    Sprite 3 Horizontal Position
+                        
+$D007        SP3Y    Sprite 3 Vertical Position
+                        
+$D008        SP4X    Sprite 4 Horizontal Position
+                        
+$D009        SP4Y    Sprite 4 Vertical Position
+                        
+$D00A        SP5X    Sprite 5 Horizontal Position
+                        
+$D00B        SP5Y    Sprite 5 Vertical Position
+                        
+$D00C        SP6X    Sprite 6 Horizontal Position
+                        
+$D00D        SP6Y    Sprite 6 Vertical Position
+                        
+$D00E        SP7X    Sprite 7 Horizontal Position
+                        
+$D00F        SP7Y    Sprite 7 Vertical Position
                      
-$D001       SP0Y  Sprite 0 Vertical Position
-                     
-$D002       SP1X  Sprite 1 Horizontal Position
-                     
-$D003       SP1Y  Sprite 1 Vertical Position
-                     
-$D004       SP2X  Sprite 2 Horizontal Position
-                     
-$D005       SP2Y  Sprite 2 Vertical Position
-                     
-$D006       SP3X  Sprite 3 Horizontal Position
-                     
-$D007       SP3Y  Sprite 3 Vertical Position
-                     
-$D008       SP4X  Sprite 4 Horizontal Position
-                     
-$D009       SP4Y  Sprite 4 Vertical Position
-                     
-$D00A       SP5X  Sprite 5 Horizontal Position
-                     
-$D00B       SP5Y  Sprite 5 Vertical Position
-                     
-$D00C       SP6X  Sprite 6 Horizontal Position
-                     
-$D00D       SP6Y  Sprite 6 Vertical Position
-                     
-$D00E       SP7X  Sprite 7 Horizontal Position
-                     
-$D00F       SP7Y  Sprite 7 Vertical Position
-                     
-$D010       MSIGX  Most Significant Bits of Sprites 0-7 Horizontal Position
+$D010        MSIGX   Most Significant Bits of Sprites 0-7 Horizontal Position
                      
                      Bit 0:  Most significant bit of Sprite 0 horizontal position
                      Bit 1:  Most significant bit of Sprite 1 horizontal position
@@ -367,11 +365,11 @@ $D010       MSIGX  Most Significant Bits of Sprites 0-7 Horizontal Position
                      the horizontal position of the corresponding sprite to a value of 255
                      or less
                      
-$D011       SCROLY  Vertical Fine Scrolling and Control Register
+$D011        SCROY   Vertical Fine Scrolling and Control Register
                      
-                     Bits 0-2:  Fine scroll display vertically by X scan lines (0-7)
+                     its 0-2:  Fine scroll display vertically by X scan lines (0-7)
                      Bit 3:  Select a 24-row or 25-row text display (1=25 rows, 0=24 rows)
-                     Bit 4:  Blank the entire screen to the same color as the background
+                     it 4:  Blank the entire screen to the same color as the background
                        (0=blank)
                      Bit 5:  Enable bitmap graphics mode (1=enable)
                      Bit 6:  Enable extended color text mode (1=enable)
@@ -809,7 +807,7 @@ $D011       SCROLY  Vertical Fine Scrolling and Control Register
                      WAIT 53265,128, but BASIC is usually not fast enough to execute the
                      next statement while still in the blanking interval.
                      
-$D012       RASTER  Read Current Raster Scan Line/Write Line to Compare for Raster IRQ
+$D012        RASTE   Read Current Raster Scan Line/Write Line to Compare for Raster IRQ
                      
                      The Raster Compare register has two different functions, depending on
                      whether you are reading from it or writing to it.  When this register
@@ -874,8 +872,7 @@ $D012       RASTER  Read Current Raster Scan Line/Write Line to Compare for Rast
                      numbers do not go up that high, no interrupt request was ever issued
                      and the program did not work.
                      
-                     Location Range: 53267-53268 ($D013-$D014)
-                     Light Pen Registers
+$D013-$D014          Light Pen Registers
                      
                      A light pen is an input device that can be plugged into joystick
                      Control Port #1.  It is shaped like a pen and has a light-sensitive
@@ -897,7 +894,7 @@ $D012       RASTER  Read Current Raster Scan Line/Write Line to Compare for Rast
                      returned from a number of samplings, particularly when using a machine
                      language driver.
                      
-$D013       LPENX  Light Pen Horizontal Position
+$D013        LPENX   Light Pen Horizontal Position
                      
                      This location holds the horizontal position of the light pen.  Since
                      there are only eight bits available (which give a range of 256 values)
@@ -907,13 +904,13 @@ $D013       LPENX  Light Pen Horizontal Position
                      close approximation of the actual horizontal dot position of the light
                      pen.
                      
-$D014       LPENY  Light Pen Vertical Position
+$D014        LPENY   Light Pen Vertical Position
                      
                      This location holds the vertical position of the light pen.  Since
                      there are only 200 visible scan lines on the screen, the value in this
                      register corresponds exactly to the current raster scan line.
                      
-$D015       SPENA  Sprite Enable Register
+$D015        SPENA   Sprite Enable Register
                      
                      Bit 0:  Enable Sprite 0 (1=sprite is on, 0=sprite is off)
                      Bit 1:  Enable Sprite 1 (1=sprite is on, 0=sprite is off)
@@ -934,7 +931,7 @@ $D015       SPENA  Sprite Enable Register
                      Registers must be set for positions that lie within the visible screen
                      range in order for a sprite to appear on screen.
                      
-$D016       SCROLX  Horizontal Fine Scrolling and Control Register
+$D016        SCROLX  Horizontal Fine Scrolling and Control Register
                      
                      Bits 0-2:  Fine scroll display horizontally by X dot positions (0-7)
                      Bit 3:  Select a 38-column or 40-column text display (1=40 columns,
@@ -1106,7 +1103,7 @@ $D016       SCROLX  Horizontal Fine Scrolling and Control Register
                      
                      Bits 6 and 7.  These bits are not used.
                      
-$D017       YXPAND  Sprite Vertical Expansion Register
+$D017        YXPAND  Sprite Vertical Expansion Register
                      
                      Bit 0:  Expand Sprite 0 vertically (1=double height, 0=normal height)
                      Bit 1:  Expand Sprite 1 vertically (1=double height, 0=normal height)
@@ -1122,7 +1119,7 @@ $D017       YXPAND  Sprite Vertical Expansion Register
                      set to 1, each dot of the 24 by 21 sprite dot matrix will become two
                      raster scan lines high instead of one.
                      
-$D018       VMCSB  VIC-II Chip Memory Control Register
+$D018        VMCSB   VIC-II Chip Memory Control Register
                      
                      Bit 0:  Unused
                      Bits 1-3:  Text character dot-data base address within VIC-II address
@@ -1202,7 +1199,7 @@ $D018       VMCSB  VIC-II Chip Memory Control Register
                      ($8400).  For examples of how to change the video memory area, and of
                      how to relocate the screen, see the entro for 56576 ($DD00).
                      
-$D019       VICIRQ  VIC Interrupt Flag Register
+$D019        VICIRQ  VIC Interrupt Flag Register
                      
                      Bit 0:  Flag:  Is the Raster Compare a possible source of an IRQ?
                              (1=yes)
@@ -1264,8 +1261,8 @@ $D019       VICIRQ  VIC Interrupt Flag Register
                      For more information, and a sample VIC IRQ program, see the following
                      entry.
                      
-$D01A       IRQMASK  IRQ Mask Register
-                     
+$D01A        IRQMASK IRQ Mask Register
+                      
                      Bit 0:  Enable Raster Compare IRQ (1=interrupt enabled)
                      Bit 1:  Enable IRQ to occure when sprite collides with display of
                        normal
@@ -1505,9 +1502,9 @@ $D01A       IRQMASK  IRQ Mask Register
                      Sprite-Sprite Collision Register at 53278 ($D01E), to see which sprite
                      or sprites are involved in the collision.  See the entry for those
                      locations for more details on collisions.
-                     
-$D01B       SPBGPR  Sprite to Foreground Display Priority Register
-                     
+                      
+$D01B        SPBGPR  Sprite to Foreground Display Priority Register
+                      
                      Bit 0:  Select display priority of Sprite 0 to foreground (0=sprite
                              appears in front of foreground)
                      Bit 1:  Select display priority of Sprite 1 to foreground (0=sprite
@@ -1546,9 +1543,9 @@ $D01B       SPBGPR  Sprite to Foreground Display Priority Register
                      The use of priority can aid in creating three-dimensional effects, by
                      allowing some objects on the screen to pass in front of or behind
                      other objects.
-                     
-$D01C       SPMC  Sprite Multicolor Registers
-                     
+                      
+$D01C        SPMC    Sprite Multicolor Registers
+                      
                      Bit 0:  Select multicolor mode for Sprite 0 (1=multicolor, 0=hi-res)
                      Bit 1:  Select multicolor mode for Sprite 1 (1=multicolor, 0=hi-res)
                      Bit 2:  Select multicolor mode for Sprite 2 (1=multicolor, 0=hi-res)
@@ -1577,11 +1574,11 @@ $D01C       SPMC  Sprite Multicolor Registers
                      Like multicolor text characters, multicolor sprites all share two
                      color registers.  While each sprite can display three foreground
                      colors, only one of these colors in unique to that sprite.  The number
-                     of unique colors may be increated by combining more than one sprite
+                     of unique colors may be increased by combining more than one sprite
                      into a single character.
-                     
-$D01D       XXPAND  Sprite Horizontal Expansion Register
-                     
+                      
+$D01D        XXPAND  Sprite Horizontal Expansion Register
+                      
                      Bit 0:  Expand Sprite 0 horizontally (1=double-width sprite, 0=normal
                              width)
                      Bit 1:  Expand Sprite 1 horizontally (1=double-width sprite, 0=normal
@@ -1605,10 +1602,9 @@ $D01D       XXPAND  Sprite Horizontal Expansion Register
                      changing its horizontal resolution, the sprite takes up twice as much
                      space.  The horizontal expansion feature can be used alone, or in
                      combination with the vertical expansion register at 53271 ($D017).
-                     
-                     Location Range: 53278-53279 ($D01E-$D01F)
-                     Sprite Collision Detection Registers
-                     
+                      
+$D01E-$D01F          Sprite Collision Detection Registers
+                      
                      While Bit 2 of the VIC IRQ Register at 53273 ($D019) is set to 1
                      anytime two sprites overlap, and Bit 1 is set to 1, when a sprite
                      shape is touching the foreground text or bit-graphics display, these
@@ -1658,9 +1654,9 @@ $D01D       XXPAND  Sprite Horizontal Expansion Register
                      between sprites and foreground display data can occur when that data
                      is in an area that is covered by the border due to the reduction of
                      the display to 38 columns or 24 rows.
-                     
-$D01E       SPSPCL  Sprite to Sprite Collision Register
-                     
+                      
+$D01E        SPSPCL  Sprite to Sprite Collision Register
+                      
                      Bit 0:  Did Sprite 0 collide with another sprite?  (1=yes)
                      Bit 1:  Did Sprite 1 collide with another sprite?  (1=yes)
                      Bit 2:  Did Sprite 2 collide with another sprite?  (1=yes)
@@ -1669,9 +1665,9 @@ $D01E       SPSPCL  Sprite to Sprite Collision Register
                      Bit 5:  Did Sprite 5 collide with another sprite?  (1=yes)
                      Bit 6:  Did Sprite 6 collide with another sprite?  (1=yes)
                      Bit 7:  Did Sprite 7 collide with another sprite?  (1=yes)
-                     
-$D01F       SPBGCL  Sprite to Foreground Collision Register
-                     
+                      
+$D01F        SPBGCL  Sprite to Foreground Collision Register
+                      
                      Bit 0:  Did Sprite 0 collide with the foreground display?  (1=yes)
                      Bit 1:  Did Sprite 1 collide with the foreground display?  (1=yes)
                      Bit 2:  Did Sprite 2 collide with the foreground display?  (1=yes)
@@ -1680,93 +1676,89 @@ $D01F       SPBGCL  Sprite to Foreground Collision Register
                      Bit 5:  Did Sprite 5 collide with the foreground display?  (1=yes)
                      Bit 6:  Did Sprite 6 collide with the foreground display?  (1=yes)
                      Bit 7:  Did Sprite 7 collide with the foreground display?  (1=yes)
-                     
-                     Location Range: 53280-53294 ($D020-$D02E)
-                     VIC-II Color Register
-                     
+                      
+$D020-$D02E          VIC-II Color Register
+                      
                      Although these color registers are used for various purposes, all of
                      them have one thing in common.  Like the Color RAM Nybbles, only the
                      lower four bits are connected.  Therefore, when reading these
                      registers, you must mask out the upper four bits (that is,
                      BORDERCOLOR=PEEK(53280)AND15) in order to get a true reading.
-                     
-$D020       EXTCOL  Border Color Register
-                     
+                      
+$D020        EXTCOL  Border Color Register
+                      
                      The color value here determines the color of the border or frame
                      around the central display area.  The entire screen is set to this
                      color when the blanking feature of Bit 4 of 53265 ($D011) is enabled.
                      The default color value is 14 (light blue).
-                     
-$D021       BGCOL0  Background Color 0
-                     
+                      
+$D021        BGCOL0  Background Color 0
+                      
                      This register sets the background color for all text modes, sprite
                      graphics, and multicolor bitmap graphics.  The default color value is
                      6 (blue).
-                     
-$D022       BGCOL1  Background Color 1
-                     
+                      
+$D022        BGCOL1  Background Color 1
+                      
                      This register sets the color for the 01 bit-pair of multicolor
                      character graphics, and the background color for characters having
                      screen codes 64-127 in extended background color text mode.  The
                      default color value is 1 (white).
-                     
-$D023       BGCOL2  Background Color 2
-                     
+                      
+$D023        BGCOL2  Background Color 2
+                      
                      This register sets the color for the 10 bit-pair of multicolor
                      character graphics, and the background color for characters habing
                      screen codes 128-191 in extended background color text mode.  The
                      default color value is 2 (red).
                      
-$D024       BGCOL3  Background Color 3
+$D024        BGCOL3  Background Color 3
                      
                      This register sets the background color for characters having screen
                      codes between 192 and 255 in extended background color text mode.  The
                      default color value is 3 (cyan).
                      
-$D025       SPMC0  Sprite Multicolor Register 0
+$D025        SPMC0   Sprite Multicolor Register 0
                      
                      This register sets the color that is displayed by the 01 bit-pair in
                      multicolor sprite graphics.  The default color value is 4 (purple).
                      
-$D026       SPMC1  Sprite Multicolor Register 1
+$D026        SPMC1   Sprite Multicolor Register 1
                      
                      This register sets the color that is displayed by the 11 bit-pair in
                      multicolor sprite graphics.  The default color value is 0 (black).
                      
-                     Location Range: 53287-53294 ($D027-$D02E)
-                     Sprite Color Registers
+$D027-$D02E          Sprite Color Registers
                      
                      These registers are used to set the color to be displayed by bits of
                      hi-res sprite data having a value of 1, and by bit-pairs of multicolor
                      sprite data having a value of 10.  The color of each sprite is
                      determined by its own individual color register.
                      
-$D027       SP0COL  Sprite 0 Color Register (the default color value is 1, white)
+$D027        SP0COL  Sprite 0 Color Register (the default color value is 1, white)
                      
-$D028       SP1COL  Sprite 1 Color Register (the default color value is 2, red)
+$D028        SP1COL  Sprite 1 Color Register (the default color value is 2, red)
                      
-$D029       SP2COL  Sprite 2 Color Register (the default color value is 3, cyan)
+$D029        SP2COL  Sprite 2 Color Register (the default color value is 3, cyan)
                      
-$D01A       SP3COL  Sprite 3 Color Register (the default color value is 4, purple)
+$D01A        SP3COL  Sprite 3 Color Register (the default color value is 4, purple)
                      
-$D01B       SP4COL  Sprite 4 Color Register (the default color value is 5, green)
+$D01B        SP4COL  Sprite 4 Color Register (the default color value is 5, green)
                      
-$D01C       SP5COL  Sprite 5 Color Register (the default color value is 6, blue)
+$D01C        SP5COL  Sprite 5 Color Register (the default color value is 6, blue)
                      
-$D01D       SP6COL  Sprite 6 Color Register (the default color value is 7, yellow)
+$D01D        SP6COL  Sprite 6 Color Register (the default color value is 7, yellow)
                      
-$D01E       SP7COL  Sprite 7 Color Register (the default color value is 12, medium gray)
+$D01E        SP7COL  Sprite 7 Color Register (the default color value is 12, medium gray)
                      
-                     Location Range: 53295-53311 ($D02F-$D03F)
-                     Not Connected
+$D02F-$D03F          Not Connected
                      
                      The VIC-II chip has only 47 registers for 64 bytes of possible address
                      space.  Therefore, the remaining 17 addresses do not access any
                      memory.  When read, they will always give a value of 255 ($FF).  This
                      value will not change after writing to them.
                      
-                     Location Range: 53312-54271 ($D040-$D3FF)
-                     VIC-II Register Images
+$D040-$D3FF          VIC-II Register Images
                      
                      Since the VIC-II requires only enough addressing lines to handle 64
                      locations (the minimum possible for its 47 registers), none of the
@@ -1776,11 +1768,10 @@ $D01E       SP7COL  Sprite 7 Color Register (the default color value is 12, medi
                      POKE53281+10*64,1; they all turn the screen background to white.  For
                      the sake of clarity in your programs it is advisable to use the base
                      address of the chip.
+                      
+$D400-$D41C          Sound Interface Device (SID) Registers
                      
-                     54272-54300   $D400-$D41C
-                     Sound Interface Device (SID) Registers
-                     
-                     Mmeory locations 54272-54300 ($D400-$D41C) are used to address the
+                     Memory locations 54272-54300 ($D400-$D41C) are used to address the
                      6581 Sound Interface Device (SID).
                      
                      SID is a custom music synthesizer and sound effects generator chip
@@ -1823,8 +1814,7 @@ $D01E       SP7COL  Sprite 7 Color Register (the default color value is 12, medi
                      these addresses are write-only.  That means that their values cannot
                      be determined by PEEKing these locations.
                      
-                     Location Range: 54272-54273 ($D400-$D401)
-                     Voice 1 Frequency Control
+$D400-$D401          Voice 1 Frequency Control
                      
                      Together, these two locations control the frequency or pitch of the
                      musical output of voice 1.  Some frequency must be selected in order
@@ -1846,12 +1836,11 @@ $D01E       SP7COL  Sprite 7 Color Register (the default color value is 12, medi
                      
                      FREQUENCY=REGISTER VALUE*.060959458 Hz
                      
-$D400       FRELO1  Voice 1 Frequency Control (low byte)
+$D400        FRELO1  Voice 1 Frequency Control (low byte)
                      
-$D401       FREHI1  Voice 1 Frequency Control (high byte)
+$D401        FREHI1  Voice 1 Frequency Control (high byte)
                      
-                     Location Range: 54274-54275 ($D402-$D403)
-                     Voice 1 Pulse Waveform Width Control
+$D402-$D403          Voice 1 Pulse Waveform Width Control
                      
                      As you will see below under the description of the Control Register at
                      54276 ($D404), you can select one of four different waveforms for the
@@ -1875,11 +1864,11 @@ $D401       FREHI1  Voice 1 Frequency Control (high byte)
                      pulse width will vastly change the sound created with the pulse
                      waveform.
                      
-$D402       PWLO1  Voice 1 Pulse Waveform Width (low byte)
+$D402        PWLO1   Voice 1 Pulse Waveform Width (low byte)
                      
-$D403       PWHI1  Voice 1 Pulse Waveform Width (high nybble)
+$D403        PWHI1   Voice 1 Pulse Waveform Width (high nybble)
                      
-$D404       VCREG1  Voice 1 Control Register
+$D404        VCREG1  Voice 1 Control Register
                      
                      Bit 0:  Gate Bit:  1=Start attack/decay/sustain, 0=Start release
                      Bit 1:  Sync Bit:  1=Synchronize Oscillator with Oscillator 3 frequency
@@ -1938,8 +1927,7 @@ $D404       VCREG1  Voice 1 Control Register
                      the waveforms.  Particularly, the combination of the noise waveform
                      and another is not recommended.
                      
-                     Location Range: 54277-54278 ($D405-$D406)
-                     Voice 1 Envelop (ADSR) Control
+$D405-$D406          Voice 1 Envelope (ADSR) Control
                      
                      When a note is played on a musical instrument, the volume does not
                      suddenly rise to a peak and then cut off to zero.  Rather, the volume
@@ -1979,7 +1967,7 @@ $D404       VCREG1  Voice 1 Control Register
                      waveform bit back to 0, changing the frequency to 0, or setting the
                      volume to 0.
                      
-$D405       ATDCY1  Voice 1 Attack/Decay Register
+$D405        ATDCY1  Voice 1 Attack/Decay Register
                      
                      Bits 0-3:  Select decay cycle duration (0-15)
                      Bits 4-7:  Select attack cycle duration (0-15)
@@ -2018,8 +2006,8 @@ $D405       ATDCY1  Voice 1 Attack/Decay Register
                      with the number to be placed in the register:
                      
                      REGISTER VALUE=(ATTACK*16)+DECAY
-                     
-$D406       SUREL1  Voice 1 Sustain/Release Control Register
+                      
+$D406        SUREL1  Voice 1 Sustain/Release Control Register
                      
                      Bits 0-3:  Select release cycle duration (0-15)
                      Bits 4-7:  Select sustain volume level (0-15)
@@ -2047,8 +2035,7 @@ $D406       SUREL1  Voice 1 Sustain/Release Control Register
                      6 = 204 milliseconds        14 = 15 seconds
                      7 = 240 milliseconds        15 = 24 seconds
                      
-                     Location Range: 54279-54292 ($D407-$D414)
-                     Voice 2 and Voice 3 Controls
+$D407-$D414          Voice 2 and Voice 3 Controls
                      
                      The various control registers for these two voices correspond almost
                      exactly to those of voice 1.  The one exception is that the sync and
@@ -2056,15 +2043,15 @@ $D406       SUREL1  Voice 1 Sustain/Release Control Register
                      the same bits of the Control Register for voice 3 uses Oscillators 2
                      and 3.
                      
-$D407       FRELO2  Voice 2 Frequency Control (low byte)
+$D407        FRELO2  Voice 2 Frequency Control (low byte)
                      
-$D408       FREHI2  Voice 2 Frequency Control (high byte)
+$D408        FREHI2  Voice 2 Frequency Control (high byte)
                      
-$D409       PWLO2  Voice 2 Pulse Waveform Width (low byte)
+$D409        PWLO2   Voice 2 Pulse Waveform Width (low byte)
                      
-$D40A       PWHI2  Voice 2 Pulse Waveform Width (high nybble)
+$D40A        PWHI2   Voice 2 Pulse Waveform Width (high nybble)
                      
-$D40B       VCREG2  Voice 2 Control Register
+$D40B        VCREG2  Voice 2 Control Register
                      
                      Bit 0:  Gate Bit:  1=Start attack/decay/sustain, 0=Start release
                      Bit 1:  Sync Bit:  1=Synchronize oscillator with Oscillator 1 frequency
@@ -2075,25 +2062,25 @@ $D40B       VCREG2  Voice 2 Control Register
                      Bit 6:  Select pulse waveform
                      Bit 7:  Select noise waveform
                      
-$D40C       ATDCY2  Voice 2 Attack/Decay Register
+$D40C        ATDCY2  Voice 2 Attack/Decay Register
                      
                      Bits 0-3:  Select decay cycle duration (0-15)
                      Bits 4-7:  Select attack cycle duration (0-15)
                      
-$D40D       SUREL2  Voice 2 Sustain/Release Control Register
+$D40D        SUREL2  Voice 2 Sustain/Release Control Register
                      
                      Bits 0-3:  Select release cycle duration (0-15)
                      Bits 4-7:  Select sustain volume level (0-15)
                      
-$D40E       FRELO3  Voice 3 Frequency Control (low byte)
+$D40E        FRELO3  Voice 3 Frequency Control (low byte)
                      
-$D40F       FREHI3  Voice 3 Frequency Control (high byte)
+$D40F        FREHI3  Voice 3 Frequency Control (high byte)
                      
-$D410       PWLO3  Voice 3 Pulse Waveform Width (low byte)
+$D410        PWLO3   Voice 3 Pulse Waveform Width (low byte)
                      
-$D411       PWHI3  Voice 3 Pulse Waveform Width (high nybble)
+$D411        PWHI3   Voice 3 Pulse Waveform Width (high nybble)
                      
-$D412       VCREG3  Voice 3 Control Register
+$D412        VCREG3  Voice 3 Control Register
                      
                      Bit 0:  Gate Bit:  1=Start attack/decay/sustain, 0=Start release
                      Bit 1:  Sync Bit:  1=Synchronize oscillator with Oscillator 2 frequency
@@ -2104,18 +2091,17 @@ $D412       VCREG3  Voice 3 Control Register
                      Bit 6:  Select pulse waveform
                      Bit 7:  Select noise waveform
                      
-$D413       ATDCY3  Voice 3 Attack/Decay Register
+$D413        ATDCY3  Voice 3 Attack/Decay Register
                      
                      Bits 0-3:  Select decay cycle duration (0-15)
                      Bits 4-7:  Select attack cycle duration (0-15)
                      
-$D414       SUREL3  Voice 3 Sustain/Release Control Register
+$D414        SUREL3  Voice 3 Sustain/Release Control Register
                      
                      Bits 0-3:  Select release cycle duration (0-15)
                      Bits 4-7:  Select sustain volume level (0-15)
                      
-                     Location Range: 54293-54296 ($D415-$D418)
-                     Filter Controls
+$D415-$D418          Filter Controls
                      
                      In addition to the controls detailed above for each voice, the SID
                      chip also provides a filtering capability which allows you to
@@ -2131,14 +2117,14 @@ $D414       SUREL3  Voice 3 Sustain/Release Control Register
                      frequency components on both sides of the chosen frequency, thereby
                      enhancing that frequency.  Finally, the high-pass and low-pass filters
                      can be combined to form a notch reject filter, which reduces the
-                     folume of the frequency components nearest the selected frequency.
+                     volume of the frequency components nearest the selected frequency.
                      These various filters can dramatically change the quality of the sound
                      produced.
                      
                      The first two registers are used to select the filter cutoff
                      frequency.  This is the frequency above or below which any sounds will
                      be made quieter.  The further away from this level any frequency
-                     components are, the more their output volume will be suppresed (high-
+                     components are, the more their output volume will be suppressed (high-
                      and low-pass filters reduce the volume of those components by 12 dB
                      per octave away from the center frequency, while the band-pass filter
                      attenuates them by 6 dB per octave).
@@ -2148,7 +2134,7 @@ $D414       SUREL3  Voice 3 Sustain/Release Control Register
                      bits.  Therefore, to compute the frequency represented by the value in
                      these registers, you must multiply the value in the high byte by 8,
                      and add the value of the low three bits.  The range of cutoff
-                     freqnencies represented by these 2048 values stretches from 30 Hz to
+                     frequencies represented by these 2048 values stretches from 30 Hz to
                      about 12,000 Hz.  The exact frequency may be calculated with the
                      formula:
                      
@@ -2158,13 +2144,13 @@ $D414       SUREL3  Voice 3 Sustain/Release Control Register
                      allows you to peak the volume of the frequency elements nearest the
                      cutoff frequency.
                      
-$D415       CUTLO  
+$D415        CUTLO  
                      Bits 0-2:  Low portion of filter cutoff frequency
                      Bits 5-7:  Unused
                      
-$D416       CUTHI  Filter Cutoff Frequency (high byte)
+$D416        CUTHI   Filter Cutoff Frequency (high byte)
                      
-$D417       RESON  Filter Resonance Control Register
+$D417        RESON   Filter Resonance Control Register
                      
                      Bit 0:  Filter the output of voice 1?  1=yes
                      Bit 1:  Filter the output of voice 2?  1=yes
@@ -2186,7 +2172,7 @@ $D417       RESON  Filter Resonance Control Register
                      filtering effect.  A setting of 0 causes no resonance, while a setting
                      of 15 gives maximum resonance.
                      
-$D418       SIGVOL  Volume and Filter Select Register
+$D418        SIGVOL  Volume and Filter Select Register
                      
                      Bits 0-3:  Select output volume (0-15)
                      Bit 4:  Select low-pass filter, 1=low-pass on
@@ -2210,8 +2196,7 @@ $D418       SIGVOL  Volume and Filter Select Register
                      frequency of the other voices, or for generating random number,
                      without any undesired audio output.
                      
-                     Location Range: 54297-54298 ($D419-$D41A)
-                     Game Paddle Inputs
+$D419-$D41A          Game Paddle Inputs
                      
                      These registers allow you to read the game paddles that plug into
                      joystick Controller Ports 1 and 2.  Each paddle uses a variable
@@ -2264,11 +2249,11 @@ $D418       SIGVOL  Volume and Filter Select Register
                      If a 0 is returned by the PEEK statement, the button is pushed, and if
                      a 1 is returned, it is not.
                      
-$D419       POTX  Read Game Paddle 1 (or 3) Position
+$D419        POTX    Read Game Paddle 1 (or 3) Position
                      
-$D41A       POTY  Read Game Paddle 2 (or 4) Position
+$D41A        POTY    Read Game Paddle 2 (or 4) Position
                      
-$D41B       RANDOM  Read Oscillator 3/Random Number Generator
+$D41B        RANDOM  Read Oscillator 3/Random Number Generator
                      
                      This register lets you read the upper eight bits of the waveform
                      output of Oscillator 3.  The kinds of numbers generated by this output
@@ -2305,7 +2290,7 @@ $D41B       RANDOM  Read Oscillator 3/Random Number Generator
                      Bit 0 of Control Register 3 to use the oscillator, however, as its
                      output is not affected by the ADSR envelope cycle.
                      
-$D41C       ENV3  Envelope Generator 3 Output
+$D41C        ENV3    Envelope Generator 3 Output
                      
                      This register allows you to read the output of the voice 3 Envelope
                      generator, in much the same way that the preceding register lets you
@@ -2317,16 +2302,14 @@ $D41C       ENV3  Envelope Generator 3 Output
                      sound, setting the gate bit to 1 starts the attack/decay/sustain
                      cycle, and setting it back to 0 starts the release cycle.
                      
-                     Location Range: 54301-54303 ($D41D-$D41F)
-                     Not Connected
+$D41D-$D41F          Not Connected
                      
                      The SID chip has been provided with enough addresses for 32 different
                      registers, but as it has only 29, the remaining three addresses are
                      not used.  Reading them will always return a value of 255 ($FF), and
                      writing to them will have no effect.
                      
-                     Location Range: 54304-55295 ($D420-$D7FF)
-                     SID Register Images
+$D420-$D7FF          SID Register Images
                      
                      Since the SID chip requires enough addressing lines for only 32
                      locations (the minimum possible for its 29 registers), none of the
@@ -2335,8 +2318,7 @@ $D41C       ENV3  Envelope Generator 3 Output
                      block is a mirror of every other.  For the sake of clarity in your
                      programs, it is advisable not to use these addresses at all.
                      
-                     55296-56319   $D800-$DBFF
-                     Color RAM
+$D800-$DBFF          Color RAM
                      
                      The normal Commodore 64 text graphics system uses a screen RAM area to
                      keep track of the character shapes that are to be displayed.  But
@@ -2415,7 +2397,7 @@ $D41C       ENV3  Envelope Generator 3 Output
                      multicolor characters, with the color of the 11 bit-pair determined by
                      the color value minus 8.  Characters with a color value under 8 are
                      displayed normally.
-                     
+                      
                      It should be noted that unlike the Screen RAM area, which can be moved
                      to any RAM location, the Color RAM area is fixed, and will function
                      normally regardless of where screen memory is located.
@@ -2443,8 +2425,7 @@ $D41C       ENV3  Envelope Generator 3 Output
                      see below, the CIA chip has a host of other features to aid in
                      Input/Output functions.
                      
-                     Location Range: 56320-56321 ($DC00-$DC01)
-                     CIA #1 Data Ports A and B
+$DC00-$DC01          CIA #1 Data Ports A and B
                      
                      These registers are where the actual communication with outside
                      devices takes place.  Bits of data written to these registers can be
@@ -2613,8 +2594,8 @@ $D41C       ENV3  Envelope Generator 3 Output
                      either to pulse the output of Bit 6 for one machine cycle, or to
                      toggle that bit from 1 to 0 or 0 to 1.  Timer B can use Bit 7 of this
                      register for the same purpose.
-                     
-$DC00       CIAPRA  Data Port Register A
+                      
+$DC00        CIAPRA  Data Port Register A
                      
                      Bit 0:  Select to read keyboard column 0
                              Read joystick 2 up direction
@@ -2634,7 +2615,7 @@ $DC00       CIAPRA  Data Port Register A
                      Bit 7:  Select to read keyboard column 7
                              Select to read paddles on Port A or B
                      
-$DC01       CIAPRB  Data Port Register B
+$DC01        CIAPRB  Data Port Register B
                      
                      Bit 0:  Read keyboard row 0
                              Read joystick 1 up direction
@@ -2654,8 +2635,7 @@ $DC01       CIAPRB  Data Port Register B
                      Bit 7:  Read keyboard row 7
                              Toggle or pulse data output for Timer B
                      
-                     Location Range: 56322-56323 ($DC02-$DC03)
-                     CIA #1 Data Direction Registers A and B
+$DC02-$DC03          CIA #1 Data Direction Registers A and B
                      
                      These Data Direction Registers control the direction of data flow over
                      Data Ports A and B.  Each bit controls the direction of the data on
@@ -2674,7 +2654,7 @@ $DC01       CIAPRB  Data Port Register B
                      keyboard column number is written to Data Port A, and the row number
                      is then read in Data Port B).
                      
-$DC02       CIDDRA  Data Direction Register A
+$DC02        CIDDRA  Data Direction Register A
                      
                      Bit 0:  Select Bit 0 of Data Port A for input or output (0=input, 1=output)
                      Bit 1:  Select Bit 1 of Data Port A for input or output (0=input, 1=output)
@@ -2685,7 +2665,7 @@ $DC02       CIDDRA  Data Direction Register A
                      Bit 6:  Select Bit 6 of Data Port A for input or output (0=input, 1=output)
                      Bit 7:  Select Bit 7 of Data Port A for input or output (0=input, 1=output)
                      
-$DC03       CIDDRB  Data Direction Register B
+$DC03        CIDDRB  Data Direction Register B
                      
                      Bit 0:  Select Bit 0 of Data Port B for input or output (0=input, 1=output)
                      Bit 1:  Select Bit 1 of Data Port B for input or output (0=input, 1=output)
@@ -2696,8 +2676,7 @@ $DC03       CIDDRB  Data Direction Register B
                      Bit 6:  Select Bit 6 of Data Port B for input or output (0=input, 1=output)
                      Bit 7:  Select Bit 7 of Data Port B for input or output (0=input, 1=output)
                      
-                     Location Range: 56324-56327 ($DC04-$DC07)
-                     Timers A and B Low and High Bytes
+$DC04-$DC07          Timers A and B Low and High Bytes
                      
                      These four timer registers (two for each timer) have different
                      functions depending on whether you are reading from them or writing to
@@ -2762,16 +2741,15 @@ $DC03       CIDDRB  Data Direction Register B
                      writing to the cassette uses both CIA #1 Timer A and Timer B for
                      timing the I/O routines.
                      
-$DC04       TIMALO  Timer A (low byte)
+$DC04        TIMALO  Timer A (low byte)
                      
-$DC05       TIMAHI  Timer A (high byte)
+$DC05        TIMAHI  Timer A (high byte)
                      
-$DC06       TIMBLO  Timer B (low byte)
+$DC06        TIMBLO  Timer B (low byte)
                      
-$DC07       TIMBHI  Timer B (high byte)
+$DC07        TIMBHI  Timer B (high byte)
                      
-                     Location Range: 56328-56331 ($DC08-$DC0B)
-                     Time of Day Clock (TOD)
+$DC08-$DC0B          Time of Day Clock (TOD)
                      
                      In addition to the two general-purpose timers, the 6526 CIA chip has a
                      special-purpose Time of Day Clock, which keeps time in a format that
@@ -2858,31 +2836,31 @@ $DC07       TIMBHI  Timer B (high byte)
                      290 POKE 53281,1:PRINT CHR$(147):POKE 53281,6
                      300 POKE 1240,58:POKE 1243,58:POKE 1246,58:GOTO 20
                      
-$DC08       TODTEN  Time of Day Clock Tenths of Seconds
+$DC08        TODTEN  Time of Day Clock Tenths of Seconds
                      
                      Bits 0-3:  Time of Day tenths of second digit (BCD)
                      Bits 4-7:  Unused
                      
-$DC09       TODSEC  Time of Day Clock Seconds
+$DC09        TODSEC  Time of Day Clock Seconds
                      
                      Bits 0-3:  Second digit of Time of Day seconds (BCD)
                      Bits 4-6:  First digit of Time of Day seconds (BCD)
                      Bit 7:  Unused
                      
-$DC0A       TODMIN  Time of Day Clock Minutes
+$DC0A        TODMIN  Time of Day Clock Minutes
                      
                      Bits 0-3:  Second digit of Time of Day minutes (BCD)
                      Bits 4-6:  First digit of Time of Day minutes (BCD)
                      Bit 7:  Unused
                      
-$DC0B       TODHRS  Time of Day Clock Hours
+$DC0B        TODHRS  Time of Day Clock Hours
                      
                      Bits 0-3:  Second digit of Time of Day hours (BCD)
                      Bit 4:  First digit of Time of Day hours (BCD)
                      Bits 5-6:  Unused
                      Bit 7:  AM/PM Flag (1=PM, 0=AM)
-                     
-$DC0C       CIASDR  Serial Data Port
+                      
+$DC0C        CIASDR  Serial Data Port
                      
                      The CIA chip has an on-chip serial port, which allows you to send or
                      receive a byte of data one bit at a time, with the most significant
@@ -2907,7 +2885,7 @@ $DC0C       CIASDR  Serial Data Port
                      The Serial Data Register is not used by the 64, which does all of its
                      serial I/O through the regular data ports.
                      
-$DC0D       CIAICR  Interrupt Control Register
+$DC0D        CIAICR  Interrupt Control Register
                      
                      Bit 0:  Read / did Timer A count down to 0?  (1=yes)
                              Write/ enable or disable Timer A interrupt (1=enable, 0=disable)
@@ -2969,7 +2947,7 @@ $DC0D       CIAICR  Interrupt Control Register
                      it, so you should preserve its contents in RAM if you want to test
                      more than one bit.
                      
-$DC0E       CIACRA  Control Register A
+$DC0E        CIACRA  Control Register A
                      
                      Bit 0:  Start Timer A (1=start, 0=stop)
                      Bit 1:  Select Timer A output on Port B (1=Timer A output appears on Bit 6 of
@@ -3023,7 +3001,7 @@ $DC0E       CIACRA  Control Register A
                      of Day Clock will use a 50 Hz or 60 Hz signal on the TOD pin in order
                      to keep accurate time (the 64 uses a 60 Hz signal on that pin).
                      
-$DC0F       CIACRB  Control Register B
+$DC0F        CIACRB  Control Register B
                      
                      Bit 0:  Start Timer B (1=start, 0=stop)
                      Bit 1:  Select Timer B output on Port B (1=Timer B output appears on
@@ -3063,8 +3041,7 @@ $DC0F       CIACRB  Control Register B
                      the ALARM time.  If this bit is cleared to 0, writing to the TOD
                      registers sets the TOD clock.
                      
-                     Location Range: 56336-56575 ($DC10-$DCFF)
-                     CIA #1 Register Images
+$DC10-$DCFF          CIA #1 Register Images
                      
                      Since the CIA chip requires only enough addressing lines to handle 16
                      registers, none of the higher bits are decoded when addressing the
@@ -3101,8 +3078,7 @@ $DC0F       CIACRB  Control Register B
                      the NMI vector when setting up routines to be driven by interrupts
                      generated by this chip.
                      
-                     Location Range: 56576-56577 ($DD00-$DD01)
-                     CIA #2 Data Ports A and B
+$DD00-$DD01          CIA #2 Data Ports A and B
                      
                      These registers are where the communication with the Serial Bus,
                      RS-232 device, and User Port take place.  The Serial Bus is like the
@@ -3377,7 +3353,7 @@ $DC0F       CIACRB  Control Register B
                      See also the sample program showing how to configure your 64 like a
                      PET at location 43 ($2B).
                      
-$DD00       CI2PRA  Data Port Register A
+$DD00        CI2PRA  Data Port Register A
                      
                      Bits 0-1:  Select the 16K VIC-II chip memory bank (11=bank 0, 00=bank 3)
                      Bit 2:  RS-232 data output (Sout)/Pin M of User Port
@@ -3387,7 +3363,7 @@ $DD00       CI2PRA  Data Port Register A
                      Bit 6:  Serial bus clock pulse input
                      Bit 7:  Serial bus data input
                      
-$DD01       CI2PRB  Data Port B
+$DD01        CI2PRB  Data Port B
                      
                      Bit 0:  RS-232 data input (SIN)/ Pin C of User Port
                      Bit 1:  RS-232 request to send (RTS)/ Pin D of User Port
@@ -3400,8 +3376,7 @@ $DD01       CI2PRB  Data Port B
                      Bit 7:  RS-232 data set ready (DSR)/ Pin L of User Port
                              Toggle or pulse data output for Timer B
                      
-                     Location Range: 56578-56579 ($DD02-$DD03)
-                     CIA #2 Data Direction Registers A and B
+$DD02-$DD03          CIA #2 Data Direction Registers A and B
                      
                      These Data Direction registers control the direction of data flow over
                      Data Ports A and B.  For more details on the operation of these
@@ -3413,7 +3388,7 @@ $DD01       CI2PRB  Data Port B
                      default setting is 0 (all inputs).  Bits 1 and 2 of Port B are changed
                      to output when the RS-232 device is opened.
                      
-$DD02       C2DDRA  Data Direction Register A
+$DD02        C2DDRA  Data Direction Register A
                      
                      Bit 0:  Select Bit 0 of data Port A for input or output (0=input, 1=output)
                      Bit 1:  Select Bit 1 of data Port A for input or output (0=input, 1=output)
@@ -3424,7 +3399,7 @@ $DD02       C2DDRA  Data Direction Register A
                      Bit 6:  Select Bit 6 of data Port A for input or output (0=input, 1=output)
                      Bit 7:  Select Bit 7 of data Port A for input or output (0=input, 1=output)
                      
-$DD03       C2DDRB  Data Direction Register B
+$DD03        C2DDRB  Data Direction Register B
                      
                      Bit 0:  Select Bit 0 of data Port B for input or output (0=input, 1=output)
                      Bit 1:  Select Bit 1 of data Port B for input or output (0=input, 1=output)
@@ -3435,8 +3410,7 @@ $DD03       C2DDRB  Data Direction Register B
                      Bit 6:  Select Bit 6 of data Port B for input or output (0=input, 1=output)
                      Bit 7:  Select Bit 7 of data Port B for input or output (0=input, 1=output)
                      
-                     Location Range: 56580-56583 ($DD04-$DD07)
-                     Timer A and B Low and High Bytes
+$DD04-$DD07          Timer A and B Low and High Bytes
                      
                      These four timer registers are used to control Timers A and B.  For
                      details on the operation of these timers, see the entry for Location
@@ -3446,16 +3420,15 @@ $DD03       C2DDRB  Data Direction Register B
                      timing RS-232 send and receive operations.  Serial Bus timing uses CIA
                      #1 Timer B.
                      
-$DD04       TI2ALO  Timer A (low byte)
+$DD04        TI2ALO  Timer A (low byte)
                      
-$DD05       TI2AHI  Timer A (high byte)
+$DD05        TI2AHI  Timer A (high byte)
                      
-$DD06       TI2BLO  Timer B (low byte)
+$DD06        TI2BLO  Timer B (low byte)
                      
-$DD07       TI2BHI  Timer B (high byte)
+$DD07        TI2BHI  Timer B (high byte)
                      
-                     Location Range: 56584-56587 ($DD08-$DD0B)
-                     Time of Day Clock
+$DD08-$DD0B          Time of Day Clock
                      
                      In addition to the two general purpose timers, the 6526 CIA chip has a
                      special purpose Time of Day Clock, which keeps time in a format that
@@ -3464,31 +3437,31 @@ $DD07       TI2BHI  Timer B (high byte)
                      56328-56331 ($DC08-$DC0B).  The 64's Operating system does not make
                      use of these registers.
                      
-$DD08       TO2TEN  Time of Day Clock Tenths of Seconds
+$DD08        TO2TEN  Time of Day Clock Tenths of Seconds
                      
                      Bits 0-3:  Time of Day tenths of second digit (BCD)
                      Bits 4-7:  Unused
                      
-$DD09       TO2SEC  Time of Day Clock Seconds
+$DD09        TO2SEC  Time of Day Clock Seconds
                      
                      Bits 0-3:  Second digit of Time of Day seconds (BCD)
                      Bits 4-6:  First digit of Time of Day seconds (BCD)
                      Bit 7:  Unused
                      
-$DD0A       TO2MIN  Time of Day Clock Minutes
+$DD0A        TO2MIN  Time of Day Clock Minutes
                      
                      Bits 0-3:  Second digit of Time of Day minutes (BCD)
                      Bits 4-6:  First digit of Time of Day minutes (BCD)
                      Bit 7:  Unused
                      
-$DD0B       TO2HRS  Time of Day Clock Hours
+$DD0B        TO2HRS  Time of Day Clock Hours
                      
                      Bits 0-3:  Second digit of Time of Day hours (BCD)
                      Bit 4:  First digit of Time of Day hours (BCD)
                      Bits 5-6:  Unused
                      Bit 7:  AM/PM flag (1=PM, 0=AM)
                      
-$DD0C       CI2SDR  Serial Data Port
+$DD0C        CI2SDR  Serial Data Port
                      
                      The CIA chip has an on-chip serial port, which allows you to send or
                      receive a byte of data one bit at a time, with the most significant
@@ -3496,7 +3469,7 @@ $DD0C       CI2SDR  Serial Data Port
                      use, see the entry for location 56332 ($DC0C).  The 64's Operating
                      System does not use this facility.
                      
-$DD0D       CI2ICR  Interrupt Control Register
+$DD0D        CI2ICR  Interrupt Control Register
                      
                      Bit 0:  Read / did Timer A count down to 0?  (1=yes)
                              Write/ enable or disable Timer A interrupt (1=enable, 0=disable)
@@ -3523,10 +3496,9 @@ $DD0D       CI2ICR  Interrupt Control Register
                      of the User Port, and thus is available to the user who wishes to take
                      advantage of its ability to cause interrupts for handshaking purposes.
                      
-                     Location Range: 56590-$56591 ($DD0E-$DD0F)
-                     See locations 56334 and 56334 for details
+$DD0E-$DD0F          See locations 56334 and 56334 for details
                      
-$DD0E       CI2CRA  Control Register A
+$DD0E        CI2CRA  Control Register A
                      
                      Bit 0:  Start Timer A (1=start, 0=stop)
                      Bit 1:  Select Timer A output on Port B (1=Timer A output appears on
@@ -3542,7 +3514,7 @@ $DD0E       CI2CRA  Control Register A
                      Bit 7:  Time of Day Clock frequency (1=50 Hz required on TOD pin,
                              0=60 Hz)
                      
-$DD0F       CI2CRB  Control Register B
+$DD0F        CI2CRB  Control Register B
                      
                      Bit 0:  Start Timer B (1=start, 0=stop)
                      Bit 1:  Select Timer B output on Port B (1=Timer B output appears on
@@ -3560,8 +3532,7 @@ $DD0F       CI2CRB  Control Register B
                      Bit 7:  Select Time of Day write (0=writing to TOD registers sets
                                 alarm, 1=writing to ROD registers sets clock)
                      
-                     Location Range: 56592-56831 ($DD10-$DDFF)
-                     CIA #2 Register Images
+$DD10-$DDFF          CIA #2 Register Images
                      
                      Since the CIA chip requires only enough addressing lines to handle 16
                      registers, none of the higher bits are decoded when addressing the
@@ -3570,8 +3541,7 @@ $DD0F       CI2CRB  Control Register B
                      the sake of clarity in your programs, it is advisable not to use these
                      addresses.
                      
-                     Location Range: 56832-57087 ($DE00-$DEFF)
-                     Reserved for I/O Expansion
+$DE00-$DEFF          Reserved for I/O Expansion
                      
                      This range of locations is not used directly by the 64's internal
                      hardware.  It is, however, accessible via pin 7 of the Expansion Port.
@@ -3589,8 +3559,7 @@ $DD0F       CI2CRB  Control Register B
                      cartridge on and off by writing to or reading from location 56832
                      ($DE00).
                      
-                     Location Range: 57088-57343 ($DF00-$DFFF)
-                     CIA #2 Register Images
+$DF00-$DFFF          CIA #2 Register Images
                      
                      This range of locations is not used directly by the 64's internal
                      hardward, but is accessible via pin 10 of the Expansion Port.  One

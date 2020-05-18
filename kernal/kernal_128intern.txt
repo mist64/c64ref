@@ -332,7 +332,7 @@ $FFC9  CKOUT   Logische Datei als Ausgabedatei definieren
                Entsprechend zu CHKIN definiert diese Routine
                ein im X-Register zu übergebene Datei als Ausgabedatei. Die
                Datei muß ordnungsgemäß geöffnet worden sein, beispielsweise
-               würde eine Datei, die mit OPEN l,8,0,"$" geöffnet wurde und
+               würde eine Datei, die mit OPEN 1,8,0,"$" geöffnet wurde und
                mit CKOUT als Ausgabedatei definiert werden soll, einen
                Fehler hervorrufen, weil diese Datei zum Lesen und nicht zum
                Schreiben geöffnet wurde. Nach Definition einer Ausgabedatei
@@ -350,7 +350,7 @@ $FFCC  CLRCH   Ein/Ausgabekanäle schließen
                Diese Routine löscht evtl, mit CHKIN und/oder
                CKOUT definierte Ein- und Ausgabedateien. Es wird an das
                Eingabegerät ein UNTALK und an das Ausgabegerät ein
-               UNLISTEN gesendet. Der Bildschirm ist wieder Ausgabe- und
+               UNLISTEN gesendet. Der Bildschirm ist wieder Ausgabe - und
                die Tastatur Eingabegerät. Die Dateien werden nicht geschlossen,
                es erfolgt also kein CLOSE. Es werden weder Ein- noch
                Ausgabeparameter übergeben.
