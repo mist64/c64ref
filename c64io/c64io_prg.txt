@@ -439,13 +439,13 @@ $DD0C                     Synchronous Serial I/O Data Buffer
 $DD0D                     CIA Interrupt Control Register (Read
                             NMIs/Write Mask)
 
-                     7      NMI Flag (1 = NMI Occurred) / Set-
-                              Clear Flag
-                     4      FLAG1 NMI (User/RS-232 Received Data
-                              Input)
-                     3      Serial Port Interrupt
-                     1      Timer B Interrupt
-                     0      Timer A Interrupt
+                     7    NMI Flag (1 = NMI Occurred) / Set-
+                            Clear Flag
+                     4    FLAG1 NMI (User/RS-232 Received Data
+                            Input)
+                     3    Serial Port Interrupt
+                     1    Timer B Interrupt
+                     0    Timer A Interrupt
 	             
 $DD0E                     CIA Control Register A
 
