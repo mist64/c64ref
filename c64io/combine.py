@@ -65,7 +65,7 @@ for i in range(0, files):
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
 print('<html>')
 print('<head>')
-print('<title>Memory Map | Ultimate C64 Reference</title>')
+print('<title>I/O Map | Ultimate C64 Reference</title>')
 print('')
 print('<script language="javascript">')
 print('    window.onload = init;')
@@ -191,16 +191,16 @@ print('<a href="https://github.com/mist64/c64ref" class="github-corner" aria-lab
 
 print('<div class="topnav">')
 print('    <h1>Ultimate Commodore 64 Reference</h1> ')
-#print('    <a href="#">KERNAL API</a><!-- kernal/ -->')
+print('    <a href="../kernal/">KERNAL API</a>')
 print('    <a href="../c64disasm/">ROM Disassembly</a><!-- c64disasm/ -->')
-print('    <a class="active" href="../c64mem/">Memory Map</a><!-- c64mem/ -->')
-#print('    <a href="#">I/O Map</a><!-- c64io/ -->')
+print('    <a href="../c64mem/">Memory Map</a><!-- c64mem/ -->')
+print('    <a class="active" href="#">I/O Map</a><!-- c64io/ -->')
 #print('    <a href="#">6502 CPU</a><!-- 6502/ -->')
 print('    <a class="home" href="https://www.pagetable.com/">pagetable.com</a>')
 print('</div>')
 
 print('<div class="body">')
-print('<h1>C64 Memory Map</h1>')
+print('<h1>C64 I/O Map</h1>')
 
 print('<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>. Revision ' + revision + ', ' + date + '</i></p>')
 

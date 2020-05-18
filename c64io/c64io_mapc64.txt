@@ -3054,8 +3054,7 @@ $DC10-$DCFF          CIA #1 Register Images
                      the base address of the chip, and not use the higher addresses to
                      communicate with the chip.
                      
-                     56576-56591    $DD00-$DD0F
-                     Complex Interface Adapter (CIA) #2 Registers
+$DD00-$DD0F          Complex Interface Adapter (CIA) #2 Registers
                      
                      Locations 56576-56591 ($DD00-$DD0F) are used to address the Complex
                      Interface Adapter chip #2 (CIA #2).  Since the chip itself is
@@ -3071,7 +3070,7 @@ $DC10-$DCFF          CIA #1 Register Images
                      used for telecommunications), and the User Port, an eight-bit parallel
                      port that can be turned to whatever purpose the user desires.  In
                      addition, Data Port A has the important task of selecting the 16K bank
-                     ofmemory that will be used by the VIC-II chip for graphics.
+                     of memory that will be used by the VIC-II chip for graphics.
                      
                      Another significant difference between CIA chips #1 and #2 is that the
                      interrupt line of CIA #1 is wired to the 6510 IRQ line, while that of
