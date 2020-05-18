@@ -198,27 +198,27 @@ $D000-$D02E          VIC-II Chip Registers
                      We can put these two kinds of lines together to show how a large cross
                      might be drawn using bytes of sprite data.
                      
-                     000000000000000000000000 = 0, 0, 0
-                     000000000000000000000000 = 0, 0, 0
-                     000000000111111000000000 = 0, 126, 0
-                     000000000111111000000000 = 0, 126, 0
-                     000000000111111000000000 = 0, 126, 0
-                     000000000111111000000000 = 0, 126, 0
-                     000000000111111000000000 = 0, 126, 0
-                     000000000111111000000000 = 0, 126, 0
-                     000000000111111000000000 = 0, 126, 0
-                     000111111111111111111000 = 21, 255, 248
-                     000111111111111111111000 = 21, 255, 248
-                     000111111111111111111000 = 21, 255, 248
-                     000000000111111000000000 = 0, 126, 0
-                     000000000111111000000000 = 0, 126, 0
-                     000000000111111000000000 = 0, 126, 0
-                     000000000111111000000000 = 0, 126, 0
-                     000000000111111000000000 = 0, 126, 0
-                     000000000111111000000000 = 0, 126, 0
-                     000000000111111000000000 = 0, 126, 0
-                     000000000000000000000000 = 0, 0, 0
-                     000000000000000000000000 = 0,0,0
+                         000000000000000000000000 = 0, 0, 0
+                         000000000000000000000000 = 0, 0, 0
+                         000000000111111000000000 = 0, 126, 0
+                         000000000111111000000000 = 0, 126, 0
+                         000000000111111000000000 = 0, 126, 0
+                         000000000111111000000000 = 0, 126, 0
+                         000000000111111000000000 = 0, 126, 0
+                         000000000111111000000000 = 0, 126, 0
+                         000000000111111000000000 = 0, 126, 0
+                         000111111111111111111000 = 21, 255, 248
+                         000111111111111111111000 = 21, 255, 248
+                         000111111111111111111000 = 21, 255, 248
+                         000000000111111000000000 = 0, 126, 0
+                         000000000111111000000000 = 0, 126, 0
+                         000000000111111000000000 = 0, 126, 0
+                         000000000111111000000000 = 0, 126, 0
+                         000000000111111000000000 = 0, 126, 0
+                         000000000111111000000000 = 0, 126, 0
+                         000000000111111000000000 = 0, 126, 0
+                         000000000000000000000000 = 0, 0, 0
+                         000000000000000000000000 = 0,0,0
                      
                      The 63 numbers, displayed three per line opposite the bit patters they
                      represent, are the values that would have to be put in the sprite
@@ -367,9 +367,9 @@ $D010        MSIGX   Most Significant Bits of Sprites 0-7 Horizontal Position
                      
 $D011        SCROY   Vertical Fine Scrolling and Control Register
                      
-                     its 0-2:  Fine scroll display vertically by X scan lines (0-7)
+                     Bits 0-2:  Fine scroll display vertically by X scan lines (0-7)
                      Bit 3:  Select a 24-row or 25-row text display (1=25 rows, 0=24 rows)
-                     it 4:  Blank the entire screen to the same color as the background
+                     Bit 4:  Blank the entire screen to the same color as the background
                        (0=blank)
                      Bit 5:  Enable bitmap graphics mode (1=enable)
                      Bit 6:  Enable extended color text mode (1=enable)
@@ -400,10 +400,10 @@ $D011        SCROY   Vertical Fine Scrolling and Control Register
                      appear in the next row.  To demonstrate this, type in the following
                      sample program, LIST it, and RUN.
                      
-                     10 FOR I= 1 TO 50:FOR J=0 TO 7
-                     20 POKE 53265, (PEEK(53265)AND248) OR J:NEXTJ,I
-                     30 FOR I= 1 TO 50:FOR J=7 TO 0 STEP-1
-                     40 POKE 53265, (PEEK(53265)AND248) OR J:NEXTJ,I
+                         10 FOR I= 1 TO 50:FOR J=0 TO 7
+                         20 POKE 53265, (PEEK(53265)AND248) OR J:NEXTJ,I
+                         30 FOR I= 1 TO 50:FOR J=7 TO 0 STEP-1
+                         40 POKE 53265, (PEEK(53265)AND248) OR J:NEXTJ,I
                      
                      As you can see, after the display has moved seven dot positions up or
                      down, it starts over at its original position.  In order to continue
@@ -416,14 +416,14 @@ $D011        SCROY   Vertical Fine Scrolling and Control Register
                      maintain the effect of smooth motion.  The following BASIC program,
                      however, will give you an iea of what vertical fine scrolling is like:
                      
-                     10 POKE 53281,0:PRINTCHR$(5);CHR$(147)
-                     20 FORI=1 TO 27:
-                     30 PRINTTAB(15)CHR$(145)"            ":POKE 53265,PEEK(53265)AND248
-                     40 WAIT53265,128:PRINTTAB(15)"I'M FALLING"
-                     50 FOR J=1 TO 7
-                     60 POKE53265,(PEEK(53265)AND248)+J
-                     70 FORK=1TO50
-                     80 NEXT K,J,I:RUN
+                         10 POKE 53281,0:PRINTCHR$(5);CHR$(147)
+                         20 FORI=1 TO 27:
+                         30 PRINTTAB(15)CHR$(145)"            ":POKE 53265,PEEK(53265)AND248
+                         40 WAIT53265,128:PRINTTAB(15)"I'M FALLING"
+                         50 FOR J=1 TO 7
+                         60 POKE53265,(PEEK(53265)AND248)+J
+                         70 FORK=1TO50
+                         80 NEXT K,J,I:RUN
                      
                      Bit 3.  This bit register allows you to select either the normal
                      25-line text display (by setting the bit to 1), or a shortened 24-row
@@ -476,17 +476,17 @@ $D011        SCROY   Vertical Fine Scrolling and Control Register
                      screen on as the 64 does with its screen off.  And the same test on a
                      PET will run substantially slower.
                      
-                     10 PRINT CHR$(147);TAB(13);"TIMING TEST":PRINT:TI$="000000":GOTO 30
-                     20 FOR I=1 TO 10000:NEXT I:RETURN
-                     30 GOSUB 20:DISPLAY=TI
-                     40 POKE 53265,11:TI$="000000"
-                     50 GOSUB 20:NOSCREEN=TI:POKE 53265,27
-                     60 PRINT "THE LOOP TOOK";DISPLAY;" JIFFIES"
-                     70 PRINT "WITH NO SCREEN BLANKING":PRINT
-                     80 PRINT "THE LOOP TOOK";NOSCREEN;" JIFFIES"
-                     90 PRINT "WITH SCREEN BLANKING":PRINT
-                     100 PRINT "SCREEN BLANKING MAKE THE PROCESSOR"
-                     110 PRINT "GO";DISPLAY/NOSCREEN*100-100;"PERCENT FASTER"
+                         10 PRINT CHR$(147);TAB(13);"TIMING TEST":PRINT:TI$="000000":GOTO 30
+                         20 FOR I=1 TO 10000:NEXT I:RETURN
+                         30 GOSUB 20:DISPLAY=TI
+                         40 POKE 53265,11:TI$="000000"
+                         50 GOSUB 20:NOSCREEN=TI:POKE 53265,27
+                         60 PRINT "THE LOOP TOOK";DISPLAY;" JIFFIES"
+                         70 PRINT "WITH NO SCREEN BLANKING":PRINT
+                         80 PRINT "THE LOOP TOOK";NOSCREEN;" JIFFIES"
+                         90 PRINT "WITH SCREEN BLANKING":PRINT
+                         100 PRINT "SCREEN BLANKING MAKE THE PROCESSOR"
+                         110 PRINT "GO";DISPLAY/NOSCREEN*100-100;"PERCENT FASTER"
                      
                      The above explanation accounts for the screen being turned off during
                      tape read and write operations.  The timing of these operations is
@@ -608,35 +608,35 @@ $D011        SCROY   Vertical Fine Scrolling and Control Register
                      
                      To turn on the desired dot,
                      
-                     POKE BY, PEEK(BY) OR (2^(NOTX AND 7)
+                         POKE BY, PEEK(BY) OR (2^(NOTX AND 7)
                      
                      To turn the dot off,
                      
-                     POKE BY, PEEK(BY) AND (255-2^(NOTX AND 7))
+                         POKE BY, PEEK(BY) AND (255-2^(NOTX AND 7))
                      
                      The exponentation function takes a lot of time.  To speed things up,
                      an array can be created, each of whose elements corresponds to a power
                      of two.
                      
-                     FOR I=0 TO 7:BIT(I)=2^1:NEXT
+                         FOR I=0 TO 7:BIT(I)=2^1:NEXT
                      
                      After this is done, the expression 2^(I) can be replaced by BI(I).
                      
                      The following sample program illustrates the bit-graphics concepts
                      explained above, and serves as a summary of that information.
                      
-                     10 FOR I=0 TO 7:BI(I)=2^I:NEXT: REM SET UP ARRAY OF POWERS OF 2 (BIT VALUE)
-                     20 BASE=2*4096:POKE53272,PEEK(53272)OR8:REM PUT BIT MAP AT 8192
-                     30 POKE53265,PEEK(53265)OR32:REM ENTER BIT MAP MODE
-                     40 A$="":FOR I=1 TO 37:A$=A$+"C":NEXT:PRINT CHR$(19);
-                     50 FOR I=1 TO 27:PRINTA$;:NEXT:POKE2023,PEEK(2022): REM SET COLOR MAP
-                     60 A$="":FOR I=1 TO 27:A$=A$+"@":NEXT:FOR I=32 TO 63 STEP 2
-                     70 POKE648,I:PRINT CHR$(19);A$;A$;A$;A$:NEXT:POKE648,4:REM CLEAR HI-RES SCREEN
-                     80 FORY=0TO199STEP.5:REM FROM THE TOP OF THE SCREEN TO THE BOTTOM
-                     90 X=INT(160+40*SIN(Y/10)): REM SINE WAVE SHAPE
-                     100 BY=BASE+40*(Y AND 248)+(Y AND 7)+(X AND 504): REM FIND HI-RES BYTE
-                     110 POKEBY,PEEK(BY)OR(BI(NOT X AND 7)):NEXT Y:REM POKE IN BIT VALUE
-                     120 GOTO 120: REM LET IT STAY ON SCREEN
+                         10 FOR I=0 TO 7:BI(I)=2^I:NEXT: REM SET UP ARRAY OF POWERS OF 2 (BIT VALUE)
+                         20 BASE=2*4096:POKE53272,PEEK(53272)OR8:REM PUT BIT MAP AT 8192
+                         30 POKE53265,PEEK(53265)OR32:REM ENTER BIT MAP MODE
+                         40 A$="":FOR I=1 TO 37:A$=A$+"C":NEXT:PRINT CHR$(19);
+                         50 FOR I=1 TO 27:PRINTA$;:NEXT:POKE2023,PEEK(2022): REM SET COLOR MAP
+                         60 A$="":FOR I=1 TO 27:A$=A$+"@":NEXT:FOR I=32 TO 63 STEP 2
+                         70 POKE648,I:PRINT CHR$(19);A$;A$;A$;A$:NEXT:POKE648,4:REM CLEAR HI-RES SCREEN
+                         80 FORY=0TO199STEP.5:REM FROM THE TOP OF THE SCREEN TO THE BOTTOM
+                         90 X=INT(160+40*SIN(Y/10)): REM SINE WAVE SHAPE
+                         100 BY=BASE+40*(Y AND 248)+(Y AND 7)+(X AND 504): REM FIND HI-RES BYTE
+                         110 POKEBY,PEEK(BY)OR(BI(NOT X AND 7)):NEXT Y:REM POKE IN BIT VALUE
+                         120 GOTO 120: REM LET IT STAY ON SCREEN
                      
                      As you can see, using BASIC to draw in bit-graphics mode is somewhat
                      slow and tedious.  Machine language is much more suiable for
@@ -691,27 +691,27 @@ $D011        SCROY   Vertical Fine Scrolling and Control Register
                      Let's try an experiment to see just how this works.  First, we will
                      put the codes for four different letters in screen memory:
                      
-                     FOR I=0 TO 3:POKE 1230+(I*8),I*64+I:POKE 55502+(I*8),1:NEXT
+                         FOR I=0 TO 3:POKE 1230+(I*8),I*64+I:POKE 55502+(I*8),1:NEXT
                      
                      Four white letters should appear on the screen, an A, a shifted A, a
                      reversed A, and a reversed, shifted A, all on a blue background.
                      Next, we will put colors in the other background color registers:
                      
-                     POKE 53282,0:POKE53283,2:POKE53284,5
+                         POKE 53282,0:POKE53283,2:POKE53284,5
                      
                      This sets the registers to black, red, and green, respectively.
                      Finally, we will activate extended color mode by setting Bit 6 of the
                      VIC-II register at location 53265 to a 1.  The BASIC statement that
                      turns this mode on is:
                      
-                     POKE 53265,PEEK(53265) OR 64
+                         POKE 53265,PEEK(53265) OR 64
                      
                      Notice that two things happened.  First, all of the letters took on
                      the same shape, that of the letter A.  Second, each took on the
                      background color of a different color register.  To get things back to
                      normal, turn off extended color mode with this statement:
                      
-                     POKE 53265,PEEK(53265) AND 191
+                         POKE 53265,PEEK(53265) AND 191
                      
                      Extended color mode can be a very useful enhancement for your text
                      displays.  It allows the creation of windows.  These windows, because
@@ -741,7 +741,7 @@ $D011        SCROY   Vertical Fine Scrolling and Control Register
                      solution to this problem is to have a subroutine to the translation
                      for you.  Since letters will appear normally in window 1, and window 3
                      characters are simply window 1 characters reversed, you will only have
-                     problems with characters in windows 2 and 4.  To conver these
+                     problems with characters in windows 2 and 4.  To convert these
                      characters, put your message in A$, and use the following subroutine:
                      
                      500 B$="":FOR I=1 TO LEN(A$):B=ASC(MID$(A$,I,1))
@@ -759,31 +759,31 @@ $D011        SCROY   Vertical Fine Scrolling and Control Register
                      given in the sample program below.  The program sets up three windows,
                      and shows them flashing, appearing and disappearing.
                      
-                     5 DIM RO$(25):RO$(0)=CHR$(19):FOR I=1 TO 24:RO$(I)=RO$(I-1)+CHR$(17):NEXT
-                     10 POKE 53265,PEEK(53265) OR 64
-                     20 POKE 53280,0:POKE 53281,0:POKE 53282,1:POKE 53283,2:POKE 53284,13
-                     25 OP$=CHR$(160):FOR I=1 TO 4:OP$=OP$:NEXTI:PRINTCHR$(147);RO$(3);
-                     30 FOR I=1 TO10:PRINTTAB(1);CHR$(18);"               ";TAB(23);OP$:NEXT
-                     40 PRINT CHR$(146):PRINT:PRINT:FOR I=1 TO 4:PRINTOP$;OP$;OP$;OP$;OP$;:NEXTI
-                     50 PRINT RO$(5);CHR$(5);CHR$(18);TAB(2);"A RED WINDOW"
-                     60 PRINT CHR$(18);TAB(2);"COULD BE USED"
-                     70 PRINT CHR$(18);TAB(2);"FOR ERROR"
-                     80 PRINT CHR$(18);TAB(2);"MESSAGES"
-                     100 A$="A GREEN WINDOW":GOSUB 300:PRINT RO$(5);CHR$(144);CHR$(18);TAB(24);B$
-                     110 A$="COULD BE USED":GOSUB 300:PRINTTAB(24);CHR$(18);B$
-                     120 A$="TO GIVE":GOSUB 300:PRINTTAB(24);CHR$(18);B$
-                     130 A$="INSTRUCTIONS":GOSUB 300:PRINTTAB(24);CHR$(18);B
-                     140 PRINT CHR$(31);RO$(19);
-                     150 A$="  WHILE THE MAIN WINDOW COULD BE USED":GOSUB 300:PRINT B$
-                     160 A$="  FOR ACCEPTING COMMANDS.":GOSUB 300:PRINT B$
-                     170 FOR I=1 TO 5000:NEXT I:POKE 53284,0
-                     180 FOR I=1 TO 5:FOR J=1 TO 300:NEXT J:POKE 53282,15
-                     190 FOR J=1 TO 300:NEXT J:POKE 53282,1
-                     200 NEXT I:POKE 53283,-2*(PEEK(53283)=240):POKE 53284,-13*(PEEK(53284)=240)
-                     210 GOTO 180
-                     300 B$="":FOR I=1TOLEN(A$):B=ASC(MID$(A$,I,1))
-                     310 B=B+32:IFB<96THENB=B+96
-                     320 B$=B$+CHR$(B):NEXTI:RETURN
+                         5 DIM RO$(25):RO$(0)=CHR$(19):FOR I=1 TO 24:RO$(I)=RO$(I-1)+CHR$(17):NEXT
+                         10 POKE 53265,PEEK(53265) OR 64
+                         20 POKE 53280,0:POKE 53281,0:POKE 53282,1:POKE 53283,2:POKE 53284,13
+                         25 OP$=CHR$(160):FOR I=1 TO 4:OP$=OP$:NEXTI:PRINTCHR$(147);RO$(3);
+                         30 FOR I=1 TO10:PRINTTAB(1);CHR$(18);"               ";TAB(23);OP$:NEXT
+                         40 PRINT CHR$(146):PRINT:PRINT:FOR I=1 TO 4:PRINTOP$;OP$;OP$;OP$;OP$;:NEXTI
+                         50 PRINT RO$(5);CHR$(5);CHR$(18);TAB(2);"A RED WINDOW"
+                         60 PRINT CHR$(18);TAB(2);"COULD BE USED"
+                         70 PRINT CHR$(18);TAB(2);"FOR ERROR"
+                         80 PRINT CHR$(18);TAB(2);"MESSAGES"
+                         100 A$="A GREEN WINDOW":GOSUB 300:PRINT RO$(5);CHR$(144);CHR$(18);TAB(24);B$
+                         110 A$="COULD BE USED":GOSUB 300:PRINTTAB(24);CHR$(18);B$
+                         120 A$="TO GIVE":GOSUB 300:PRINTTAB(24);CHR$(18);B$
+                         130 A$="INSTRUCTIONS":GOSUB 300:PRINTTAB(24);CHR$(18);B
+                         140 PRINT CHR$(31);RO$(19);
+                         150 A$="  WHILE THE MAIN WINDOW COULD BE USED":GOSUB 300:PRINT B$
+                         160 A$="  FOR ACCEPTING COMMANDS.":GOSUB 300:PRINT B$
+                         170 FOR I=1 TO 5000:NEXT I:POKE 53284,0
+                         180 FOR I=1 TO 5:FOR J=1 TO 300:NEXT J:POKE 53282,15
+                         190 FOR J=1 TO 300:NEXT J:POKE 53282,1
+                         200 NEXT I:POKE 53283,-2*(PEEK(53283)=240):POKE 53284,-13*(PEEK(53284)=240)
+                         210 GOTO 180
+                         300 B$="":FOR I=1TOLEN(A$):B=ASC(MID$(A$,I,1))
+                         310 B=B+32:IFB<96THENB=B+96
+                         320 B$=B$+CHR$(B):NEXTI:RETURN
                      
                      Bit 7.  Bit 7 of this register is the high-order bit (Bit 8) of the
                      Raster Compare register at 53266 ($D012).  Even though it is located
@@ -796,8 +796,8 @@ $D011        SCROY   Vertical Fine Scrolling and Control Register
                      delay changing the graphics display until the scan is in the vertical
                      blanking interval and the display is no longer being drawn:
                      
-                     LOOP  LDA $D011
-                           BPL LOOP
+                         LOOP  LDA $D011
+                               BPL LOOP
                      
                      Sprites should always be moved when the raster is scanning off-screen,
                      because if they are moved while they are being scanned, their shapes
@@ -833,19 +833,19 @@ $D012        RASTE   Read Current Raster Scan Line/Write Line to Compare for Ras
                      background color in midscreen, in order to show all 256 combinations
                      of foreground and background text colors at once.
                      
-                     40 FOR I=49152 TO 49188:READ A:POKE I,A:NEXT:POKE 53280,11
-                     50 PRINT CHR$(147):FOR I=1024 TO I+1000:POKE I,160:POKE I+54272,11:NEXT I
-                     60 FOR I=0 TO 15:FOR J=0 TO 15
-                     70 P=1196+(48*I)+J:POKE P,J+I:POKE P+54272,J:NEXT J,I
-                     80 PRINT TAB(15)CHR$(5)"COLOR CHART":FOR I=1 TO 19:PRINT:NEXT
-                     85 PRINT "THIS CHART SHOWS ALL COMBINATIONS OF   "
-                     86 PRINT "FOREGROUND AND BACKGROUND COLORS.      "
-                     87 PRINT "FOREGROUND INCREASES FROM LEFT TO RIGHT"
-                     88 PRINT "BACKGROUND INCREASES FROM TOP TO BOTTOM"
-                     90 SYS 12*4096
-                     100 DATA 169,90,133,251,169,0,141,33,208,162,15,120,173,17,208,48
-                     105 DATA 251,173,18,208
-                     110 DATA 197,251,208,249,238,33,208,24,105,8,133,251,202,16,233,48,219
+                         40 FOR I=49152 TO 49188:READ A:POKE I,A:NEXT:POKE 53280,11
+                         50 PRINT CHR$(147):FOR I=1024 TO I+1000:POKE I,160:POKE I+54272,11:NEXT I
+                         60 FOR I=0 TO 15:FOR J=0 TO 15
+                         70 P=1196+(48*I)+J:POKE P,J+I:POKE P+54272,J:NEXT J,I
+                         80 PRINT TAB(15)CHR$(5)"COLOR CHART":FOR I=1 TO 19:PRINT:NEXT
+                         85 PRINT "THIS CHART SHOWS ALL COMBINATIONS OF   "
+                         86 PRINT "FOREGROUND AND BACKGROUND COLORS.      "
+                         87 PRINT "FOREGROUND INCREASES FROM LEFT TO RIGHT"
+                         88 PRINT "BACKGROUND INCREASES FROM TOP TO BOTTOM"
+                         90 SYS 12*4096
+                         100 DATA 169,90,133,251,169,0,141,33,208,162,15,120,173,17,208,48
+                         105 DATA 251,173,18,208
+                         110 DATA 197,251,208,249,238,33,208,24,105,8,133,251,202,16,233,48,219
                      
                      Writing to this register designates the comparison value for the
                      Raster Compare Interrupt.  When that interrupt is enabled, a maskable
@@ -964,10 +964,10 @@ $D016        SCROLX  Horizontal Fine Scrolling and Control Register
                      having it appear at the next one over.  To demonstrate this, type in
                      the following program, LIST, and RUN it.
                      
-                     10 FOR I=1 TO 50:FOR J=0 TO 7
-                     20 POKE 53270,(PEEK(53270)AND248) OR J:NEXT J,I
-                     30 FOR I=1 TO 50:FOR J=7 TO 0 STEP-1
-                     40 POKE 53270,(PEEK(53270)AND248) OR J:NEXT J,I
+                         10 FOR I=1 TO 50:FOR J=0 TO 7
+                         20 POKE 53270,(PEEK(53270)AND248) OR J:NEXT J,I
+                         30 FOR I=1 TO 50:FOR J=7 TO 0 STEP-1
+                         40 POKE 53270,(PEEK(53270)AND248) OR J:NEXT J,I
                      
                      As you can see, after the display has moved over seven dots, it starts
                      over at its original position.  In order to continue with the scroll,
@@ -982,14 +982,14 @@ $D016        SCROLX  Horizontal Fine Scrolling and Control Register
                      BASIC program, however, will give you an idea of what the combination
                      of fine and coarse scrolling looks like.
                      
-                     10 POKE 53281,0:PRINT CHR$(5);CHR$(147):FOR I=1 TO 5:PRINT CHR$(17):NEXT
-                     20 FOR I=1 TO 30
-                     30 PRINT TAB(I-1)"{UP}{10 SPACES}{UP}"
-                     40 WAIT53265,128:POKE53270,PEEK(53270)AND248:PRINTTAB(I)"AWAY WE GO"
-                     50 FOR J=1 TO 7
-                     60 POKE 53270,(PEEK(53270)AND248)+J
-                     70 FORK=1TO30-I
-                     80 NEXT K,J,I:RUN
+                         10 POKE 53281,0:PRINT CHR$(5);CHR$(147):FOR I=1 TO 5:PRINT CHR$(17):NEXT
+                         20 FOR I=1 TO 30
+                         30 PRINT TAB(I-1)"{UP}{10 SPACES}{UP}"
+                         40 WAIT53265,128:POKE53270,PEEK(53270)AND248:PRINTTAB(I)"AWAY WE GO"
+                         50 FOR J=1 TO 7
+                         60 POKE 53270,(PEEK(53270)AND248)+J
+                         70 FORK=1TO30-I
+                         80 NEXT K,J,I:RUN
                      
                      Changing the value of the three horizontal scroll bits will affect the
                      entire screen display.  If you wish to scroll only a portion of the
@@ -1032,7 +1032,7 @@ $D016        SCROLX  Horizontal Fine Scrolling and Control Register
                      You can see the effect that setting this bit has by typing in the
                      following BASIC command line:
                      
-                     POKE 53270,PEEK(53280)OR16:PRINT CHR$(149)"THIS IS MULTICOLOR MODE"
+                         POKE 53270,PEEK(53280)OR16:PRINT CHR$(149)"THIS IS MULTICOLOR MODE"
                      
                      It is obvious from this example that the normal set of text characters
                      was not made to be used in multicolor mode.  In order to take
@@ -1082,19 +1082,19 @@ $D016        SCROLX  Horizontal Fine Scrolling and Control Register
                      
                      The following program will demonstrate this technique:
                      
-                     10 CA(0)=1:CA(1)=4:CA(2)=16:CA(3)=64:REM ARRAY FOR BIT PAIRS
-                     20 BASE=2*4096:POKE53272,PEEK(53272)OR8:REM PUT BIT MAP AT 8192
-                     30 POKE53265,PEEK(53265)OR32:POKE53270,PEEK(53270)OR16:REM MULTI-COLOR BIT MAP
-                     40 A$="":FOR I=1 TO 37:A$=A$+"C":NEXT:PRINT CHR$(19);
-                     50 FOR I=1 TO 27:PRINT A$;:NEXT:POKE 2023,PEEK(2022): REM SET COLOR MAP
-                     60 A$="":FOR I=1 TO 128:A$=A$+"@":NEXT:FOR I=32 TO 63 STEP 2
-                     70 POKE648,I:PRINTCHR$(19);A$;A$;A$;A$:NEXT:POKE648,4:REM CLR HI-RES SCREEN
-                     80 FOR CO=1TO3:FOR Y=0TO199STEP.5:REM FROM THE TOP OF THE SCREEN TO THE BOTTOM
-                     90 X=INT(10*CO+15*SIN(CO*45+Y/10)): REM SINE WAVE SHAPE
-                     100 BY=BASE+40*(Y AND 248)+(Y AND 7)+(X*2 AND 504): REM FIND HI-RES BYTE
-                     110 BI=(NOT X AND 3):POKE BY,PEEK(BY) AND (NOT 3*CA(BI)) OR(CO*CA(BI))
-                     120 NEXT Y,CO
-                     130 GOTO 130: REM LET IT STAY ON SCREEN
+                         10 CA(0)=1:CA(1)=4:CA(2)=16:CA(3)=64:REM ARRAY FOR BIT PAIRS
+                         20 BASE=2*4096:POKE53272,PEEK(53272)OR8:REM PUT BIT MAP AT 8192
+                         30 POKE53265,PEEK(53265)OR32:POKE53270,PEEK(53270)OR16:REM MULTI-COLOR BIT MAP
+                         40 A$="":FOR I=1 TO 37:A$=A$+"C":NEXT:PRINT CHR$(19);
+                         50 FOR I=1 TO 27:PRINT A$;:NEXT:POKE 2023,PEEK(2022): REM SET COLOR MAP
+                         60 A$="":FOR I=1 TO 128:A$=A$+"@":NEXT:FOR I=32 TO 63 STEP 2
+                         70 POKE648,I:PRINTCHR$(19);A$;A$;A$;A$:NEXT:POKE648,4:REM CLR HI-RES SCREEN
+                         80 FOR CO=1TO3:FOR Y=0TO199STEP.5:REM FROM THE TOP OF THE SCREEN TO THE BOTTOM
+                         90 X=INT(10*CO+15*SIN(CO*45+Y/10)): REM SINE WAVE SHAPE
+                         100 BY=BASE+40*(Y AND 248)+(Y AND 7)+(X*2 AND 504): REM FIND HI-RES BYTE
+                         110 BI=(NOT X AND 3):POKE BY,PEEK(BY) AND (NOT 3*CA(BI)) OR(CO*CA(BI))
+                         120 NEXT Y,CO
+                         130 GOTO 130: REM LET IT STAY ON SCREEN
                      
                      Bit 5:  Bit 5 controls the VIC-II chip Reset line.  Setting this bit
                      to 1 will completely stop the video chip from operating.  On older
@@ -1425,48 +1425,48 @@ $D01A        IRQMASK IRQ Mask Register
                      background color of any of the screen parts while the program is
                      running.
                      
-                     5 FOR I=0 TO 7:BI(I)=2^I:NEXT
-                     10 FOR I=49152 TO 49278:READ A:POKE I,A:NEXT:SYS12*4096
-                     20 PRINT CHR$(147):FOR I=0 TO 8:PRINT:NEXT
-                     30 PRINT"THE TOP AREA IS HIGH-RES BIT MAP MODE"
-                     40 PRINT:PRINT"THE MIDDLE AREA IS ORDINARY TEXT "
-                     50 PRINT:PRINT"THE BOTTOM AREA IS MULTI-COLOR BIT MAP"
-                     60 FORG=1384 TO 1423:POKE G,6:NEXT
-                     70 FORG=1024 TO 1383:POKEG,114:POKE G+640,234:NEXT
-                     80 A$="":FOR I=1 TO 128:A$=A$+"@":NEXT:FOR I=32 TO 63 STEP 2
-                     90 POKE 648,I:PRINT CHR$(19)CHR$(153);A$;A$;A$;A$:NEXT:POKE 648,4
-                     100 BASE=2*4096:BK=49267
-                     110 H=40:C=0:FORX=0TO319:GOSUB150:NEXT
-                     120 H=160:C=0:FORX=0TO319STEP2:GOSUB150:NEXT:C=40
-                     125 FORX=1TO319STEP2:GOSUB150:NEXT
-                     130 C=80:FOR X=0 TO 319 STEP2:W=0:GOSUB150:W=1:GOSUB150:NEXT
-                     140 GOTO 140
-                     150 Y=INT(H+20*SIN(X/10+C)):BY=BASE+40*(Y AND 248)+(Y AND 7)+(X AND 504)
-                     160 POKE BY,PEEK(BY) OR (BI(ABS(7-(XAND7)-W))):RETURN
-                     49152 DATA 120, 169, 127, 141, 13, 220
-                     49158 DATA 169, 1, 141, 26, 208, 169
-                     49164 DATA 3, 133, 251, 173, 112, 192
-                     49170 DATA 141, 18, 208, 169, 24, 141
-                     49176 DATA 17, 208, 173, 20, 3, 141
-                     49182 DATA 110, 192, 173, 21, 3, 141
-                     49188 DATA 111, 192, 169, 50, 141, 20
-                     49194 DATA 3, 169, 192, 141, 21, 3
-                     49200 DATA 88, 96, 173, 25, 208, 141
-                     49206 DATA 25, 208, 41, 1, 240, 43
-                     49212 DATA 190, 251, 16, 4, 169, 2
-                     49218 DATA 133, 251, 166, 251, 189, 115
-                     49224 DATA 192, 141, 33, 208, 189, 118
-                     49230 DATA 192, 141, 17, 208, 189, 121
-                     49236 DATA 192, 141, 22, 208, 189, 124
-                     49242 DATA 192, 141, 24, 208, 189, 112
-                     49248 DATA 192, 141, 18, 208, 138, 240
-                     49254 DATA 6, 104, 168, 104, 170, 104
-                     49260 DATA 64, 76, 49, 234
-                     49264 DATA 49, 170, 129 :REM SCAN LINES
-                     49267 DATA 0, 6, 0:REM BACKGROUND COLOR
-                     49270 DATA 59, 27,59:REM CONTROL REG. 1
-                     49273 DATA 24, 8, 8:REM CONTROL REG. 2
-                     49276 DATA 24, 20, 24:REM MEMORY CONTROLRUN
+                         5 FOR I=0 TO 7:BI(I)=2^I:NEXT
+                         10 FOR I=49152 TO 49278:READ A:POKE I,A:NEXT:SYS12*4096
+                         20 PRINT CHR$(147):FOR I=0 TO 8:PRINT:NEXT
+                         30 PRINT"THE TOP AREA IS HIGH-RES BIT MAP MODE"
+                         40 PRINT:PRINT"THE MIDDLE AREA IS ORDINARY TEXT "
+                         50 PRINT:PRINT"THE BOTTOM AREA IS MULTI-COLOR BIT MAP"
+                         60 FORG=1384 TO 1423:POKE G,6:NEXT
+                         70 FORG=1024 TO 1383:POKEG,114:POKE G+640,234:NEXT
+                         80 A$="":FOR I=1 TO 128:A$=A$+"@":NEXT:FOR I=32 TO 63 STEP 2
+                         90 POKE 648,I:PRINT CHR$(19)CHR$(153);A$;A$;A$;A$:NEXT:POKE 648,4
+                         100 BASE=2*4096:BK=49267
+                         110 H=40:C=0:FORX=0TO319:GOSUB150:NEXT
+                         120 H=160:C=0:FORX=0TO319STEP2:GOSUB150:NEXT:C=40
+                         125 FORX=1TO319STEP2:GOSUB150:NEXT
+                         130 C=80:FOR X=0 TO 319 STEP2:W=0:GOSUB150:W=1:GOSUB150:NEXT
+                         140 GOTO 140
+                         150 Y=INT(H+20*SIN(X/10+C)):BY=BASE+40*(Y AND 248)+(Y AND 7)+(X AND 504)
+                         160 POKE BY,PEEK(BY) OR (BI(ABS(7-(XAND7)-W))):RETURN
+                         49152 DATA 120, 169, 127, 141, 13, 220
+                         49158 DATA 169, 1, 141, 26, 208, 169
+                         49164 DATA 3, 133, 251, 173, 112, 192
+                         49170 DATA 141, 18, 208, 169, 24, 141
+                         49176 DATA 17, 208, 173, 20, 3, 141
+                         49182 DATA 110, 192, 173, 21, 3, 141
+                         49188 DATA 111, 192, 169, 50, 141, 20
+                         49194 DATA 3, 169, 192, 141, 21, 3
+                         49200 DATA 88, 96, 173, 25, 208, 141
+                         49206 DATA 25, 208, 41, 1, 240, 43
+                         49212 DATA 190, 251, 16, 4, 169, 2
+                         49218 DATA 133, 251, 166, 251, 189, 115
+                         49224 DATA 192, 141, 33, 208, 189, 118
+                         49230 DATA 192, 141, 17, 208, 189, 121
+                         49236 DATA 192, 141, 22, 208, 189, 124
+                         49242 DATA 192, 141, 24, 208, 189, 112
+                         49248 DATA 192, 141, 18, 208, 138, 240
+                         49254 DATA 6, 104, 168, 104, 170, 104
+                         49260 DATA 64, 76, 49, 234
+                         49264 DATA 49, 170, 129 :REM SCAN LINES
+                         49267 DATA 0, 6, 0:REM BACKGROUND COLOR
+                         49270 DATA 59, 27,59:REM CONTROL REG. 1
+                         49273 DATA 24, 8, 8:REM CONTROL REG. 2
+                         49276 DATA 24, 20, 24:REM MEMORY CONTROLRUN
                      
                      Besides enabling the creation of mixed graphics-modes screens, the
                      Raster Compare Interrupt is also useful for creating scrolling zones,
@@ -2241,10 +2241,10 @@ $D419-$D41A          Game Paddle Inputs
                      
                      The BASIC statements to test these buttons, thereore, are:
                      
-                     PB(1)=(PEEK(56321)AND4)/4
-                     PB(2)=(PEEK(56321)AND8)/8
-                     PB(3)=(PEEK(56320)AND4)/4
-                     PB(4)=(PEEK(56320)AND8)/8
+                         PB(1)=(PEEK(56321)AND4)/4
+                         PB(2)=(PEEK(56321)AND8)/8
+                         PB(3)=(PEEK(56320)AND4)/4
+                         PB(4)=(PEEK(56320)AND8)/8
                      
                      If a 0 is returned by the PEEK statement, the button is pushed, and if
                      a 1 is returned, it is not.
@@ -2346,22 +2346,24 @@ $D800-$DBFF          Color RAM
                      This will always return a color value between 0 and 15.  These color
                      values correspond to the following colors:
                      
-                      0 = BLACK
-                      1 = WHITE
-                      2 = RED
-                      3 = CYAN (LIGHT BLUE-GREEN)
-                      4 = PURPLE
-                      5 = GREEN
-                      6 = BLUE
-                      7 = YELLOW
-                      8 = ORANGE
-                      9 = BROWN
-                     10 = LIGHT RED
-                     11 = DARK GRAY
-                     12 = MEDIUM GRAY
-                     13 = LIGHT GREEN
-                     14 = LIGHT BLUE
-                     15 = LIGHT GRAY
+                     |   |                         |
+                     |---|-------------------------|
+                     | 0 | BLACK		   |
+                     | 1 | WHITE		   |
+                     | 2 | RED			   |
+                     | 3 | CYAN (LIGHT BLUE-GREEN) |
+                     | 4 | PURPLE		   |
+                     | 5 | GREEN		   |
+                     | 6 | BLUE			   |
+                     | 7 | YELLOW		   |
+                     | 8 | ORANGE		   |
+                     | 9 | BROWN		   |
+                     |10 | LIGHT RED		   |
+                     |11 | DARK GRAY		   |
+                     |12 | MEDIUM GRAY		   |
+                     |13 | LIGHT GREEN		   |
+                     |14 | LIGHT BLUE		   |
+                     |15 | LIGHT GRAY		   |
                      
                      Color mapping affords a convenient method of changing the color of the
                      text display without changing the letters.  By POKEing the appropriate
@@ -2402,8 +2404,7 @@ $D800-$DBFF          Color RAM
                      to any RAM location, the Color RAM area is fixed, and will function
                      normally regardless of where screen memory is located.
                      
-                     56320-56335   $DC00-$DC0F
-                     Complex Interface Adapter (CIA) #1 Registers
+$DC00-$DC0F          Complex Interface Adapter (CIA) #1 Registers
                      
                      Locations 56320-56335 ($DC00-$DC0F) are used to communicate with the
                      Complex Interface Adapter chip #1 (CIA #1).  This chip is a successor
@@ -2438,25 +2439,25 @@ $DC00-$DC01          CIA #1 Data Ports A and B
                      keys are connected in a matrix of eight rows by eight columns to CIA
                      #1 Ports A and B.  The layout of this matrix is shown below.
                      
-                     WRITE TO PORT A               READ PORT B (56321, $DC01)
-                     56320/$DC00
-                              Bit 7   Bit 6   Bit 5   Bit 4   Bit 3   Bit 2   Bit 1   Bit 0
-                     
-                     Bit 7    STOP    Q       C=      SPACE   2       CTRL    <-      1
-                     
-                     Bit 6    /       ^       =       RSHIFT  HOME    ;       *       LIRA
-                     
-                     Bit 5    ,       @       :       .       -       L       P       +
-                     
-                     Bit 4    N       O       K       M       0       J       I       9
-                     
-                     Bit 3    V       U       H       B       8       G       Y       7
-                     
-                     Bit 2    X       T       F       C       6       D       R       5
-                     
-                     Bit 1    LSHIFT  E       S       Z       4       A       W       3
-                     
-                     Bit 0    CRSR DN F5      F3      F1      F7      CRSR RT RETURN  DELETE
+                         WRITE TO PORT A               READ PORT B (56321, $DC01)
+                         56320/$DC00
+                                  Bit 7   Bit 6   Bit 5   Bit 4   Bit 3   Bit 2   Bit 1   Bit 0
+                         
+                         Bit 7    STOP    Q       C=      SPACE   2       CTRL    <-      1
+                         
+                         Bit 6    /       ^       =       RSHIFT  HOME    ;       *       LIRA
+                         
+                         Bit 5    ,       @       :       .       -       L       P       +
+                         
+                         Bit 4    N       O       K       M       0       J       I       9
+                         
+                         Bit 3    V       U       H       B       8       G       Y       7
+                         
+                         Bit 2    X       T       F       C       6       D       R       5
+                         
+                         Bit 1    LSHIFT  E       S       Z       4       A       W       3
+                         
+                         Bit 0    CRSR DN F5      F3      F1      F7      CRSR RT RETURN  DELETE
                      
                      As you can see, there are two keys which do not appear in the matrix.
                      The SHIFT LOCK key is not read as a separate key, but rather is a
@@ -2505,15 +2506,17 @@ $DC00-$DC01          CIA #1 Data Ports A and B
                      
                      The meaning of the possible numbers returned are:
                      
-                      0 = none pressed
-                      1 = up
-                      2 = down
-                      4 = left
-                      5 = up left
-                      6 = down left
-                      8 = right
-                      9 = up right
-                     10 = down right
+                     |    |              |
+                     |----|--------------|
+                     |  0 | none pressed |
+                     |  1 | up		 |
+                     |  2 | down	 |
+                     |  4 | left	 |
+                     |  5 | up left	 |
+                     |  6 | down left	 |
+                     |  8 | right	 |
+                     |  9 | up right	 |
+                     | 10 | down right	 |
                      
                      The same technique can be used for joystick 2, by substituting 56320
                      as the number to PEEK.  By the way, the 3 and 7 aren't listed because
@@ -2522,7 +2525,7 @@ $DC00-$DC01          CIA #1 Data Ports A and B
                      To read the fire buttons, you can PEEK the appropriate port and use
                      the AND operator to mask all but bit 4:
                      
-                     T1=(PEEK(56321)AND16)/16
+                         T1=(PEEK(56321)AND16)/16
                      
                      The above will return a 0 if the button is pressed, and a 1 if it is
                      not.  Substitute location 56320 as the location to PEEK for Trigger
@@ -2819,22 +2822,22 @@ $DC08-$DC0B          Time of Day Clock (TOD)
                      The following digital clock program, written in BASIC, will
                      demonstrate the use of these timers:
                      
-                     10 PRINT CHR$(147):GOSUB 200
-                     20 H=PEEK(56331):POKE 1238,(H AND 16)/16+48:POKE 1239,(H AND 15)+48
-                     30 M=PEEK(56330):POKE 1241,(M AND 240)/16+48:POKE 1242,(M AND 15)+48
-                     40 S=PEEK(56329):POKE 1244,(S AND 240)/16+48:POKE 1245,(S AND 15)+48
-                     50 T=PEEK(56328)AND15:POKE 1247,T+48:GOTO 20
-                     200 INPUT"WHAT IS THE HOUR";H$:IF H$="" THEN 200
-                     210 H=0:IF LEN(H$)>1 THEN H=16
-                     220 HH=VAL(RIGHT$(H$,1)):H=H+HH:POKE56331,H
-                     230 INPUT "WHAT IS THE MINUTE";M$:IF M$=""THEN 200
-                     240 M=0:IF LEN(M$)>1 THEN M=16*VAL(LEFT$(M$,1))
-                     250 MM=VAL(RIGHT$(M$,1)):M=M+MM:POKE56330,M
-                     260 INPUT "WHAT IS THE SECOND";S$:IF S$=""THEN 200
-                     270 S=0:IF LEN(S$)>1 THEN S=16*VAL(LEFT$(S$,1))
-                     280 SS=VAL(RIGHT$(S$,1)):S=S+SS:POKE56329,S:POKE56328,0
-                     290 POKE 53281,1:PRINT CHR$(147):POKE 53281,6
-                     300 POKE 1240,58:POKE 1243,58:POKE 1246,58:GOTO 20
+                         10 PRINT CHR$(147):GOSUB 200
+                         20 H=PEEK(56331):POKE 1238,(H AND 16)/16+48:POKE 1239,(H AND 15)+48
+                         30 M=PEEK(56330):POKE 1241,(M AND 240)/16+48:POKE 1242,(M AND 15)+48
+                         40 S=PEEK(56329):POKE 1244,(S AND 240)/16+48:POKE 1245,(S AND 15)+48
+                         50 T=PEEK(56328)AND15:POKE 1247,T+48:GOTO 20
+                         200 INPUT"WHAT IS THE HOUR";H$:IF H$="" THEN 200
+                         210 H=0:IF LEN(H$)>1 THEN H=16
+                         220 HH=VAL(RIGHT$(H$,1)):H=H+HH:POKE56331,H
+                         230 INPUT "WHAT IS THE MINUTE";M$:IF M$=""THEN 200
+                         240 M=0:IF LEN(M$)>1 THEN M=16*VAL(LEFT$(M$,1))
+                         250 MM=VAL(RIGHT$(M$,1)):M=M+MM:POKE56330,M
+                         260 INPUT "WHAT IS THE SECOND";S$:IF S$=""THEN 200
+                         270 S=0:IF LEN(S$)>1 THEN S=16*VAL(LEFT$(S$,1))
+                         280 SS=VAL(RIGHT$(S$,1)):S=S+SS:POKE56329,S:POKE56328,0
+                         290 POKE 53281,1:PRINT CHR$(147):POKE 53281,6
+                         300 POKE 1240,58:POKE 1243,58:POKE 1246,58:GOTO 20
                      
 $DC08        TODTEN  Time of Day Clock Tenths of Seconds
                      
@@ -3125,34 +3128,32 @@ $DD00-$DD01          CIA #2 Data Ports A and B
                      probably see many interesting applications for the User Port on the
                      64.  A pin description of tthe User Port connector is provided below:
                      
-                     User         RS-232
-                     Port  CIA    DB-25
-                     Pin   Line   Pin     Description
-                     
-                     1                    Ground
-                     2                    +5 Volts (100 milliamps maximum)
-                     3                    RESET (grounding this pin causes a cold start)
-                     4     CNT1           CIA #1 Serial Port and Timer Counter
-                     5     SP1            CIA #1 Serial Data Port
-                     6     CNT2           CIA #2 Serial Port and Timer Counter
-                     7     SP2            CIA #2 Serial Data Port
-                     8     PC2            CIA #2 handshaking line
-                     9                    Connected to the ATN line of the Serial Bus
-                     10                   9 Volts AC (+ phase, 50 milliamps maximum)
-                     11                   9 volts AC (- phase, 50 milliamps maximum)
-                     12                   Ground
-                     A            1       Ground
-                     B     FLAG2          CIA #2 handshaking line
-                     C     PB0    3       Port B Bit 0--RS-232 Received Data (SIN)
-                     D     PB1    4       Port B Bit 1--RS-232 Request to Send (RTS)
-                     E     PB2    20      Port B Bit 2--RS-232 Data Terminal Ready (DTR)
-                     F     PB3    22      Port B Bit 3--RS-232 Ring Indicator (RI)
-                     H     PB4    8       Port B Bit 4--RS-232 Carrier Detect (DCD)
-                     J     PB5            Port B Bit 5
-                     K     PB6    5       Port B Bit 6--RS-232 Clear to Send (CTS)
-                     L     PB7    6       Port B Bit 7--RS-232 Data Set Ready (DSR)
-                     M     PA2    2       Port A Bit 2--RS-232 Transmitted Data (Sout)
-                     N            7       Ground
+                     | User Port Pin | CIA Line | RS-232 DB-25 Pin | Description				    |
+                     |---------------|----------|------------------|------------------------------------------------|
+                     | 1             |          |                  | Ground					    |
+                     | 2             |          |                  | +5 Volts (100 milliamps maximum)		    |
+                     | 3             |          |                  | RESET (grounding this pin causes a cold start) |
+                     | 4             | CNT1     |                  | CIA #1 Serial Port and Timer Counter	    |
+                     | 5             | SP1      |                  | CIA #1 Serial Data Port			    |
+                     | 6             | CNT2     |                  | CIA #2 Serial Port and Timer Counter	    |
+                     | 7             | SP2      |                  | CIA #2 Serial Data Port			    |
+                     | 8             | PC2      |                  | CIA #2 handshaking line			    |
+                     | 9             |          |                  | Connected to the ATN line of the Serial Bus    |
+                     | 10            |          |                  | 9 Volts AC (+ phase, 50 milliamps maximum)	    |
+                     | 11            |          |                  | 9 volts AC (- phase, 50 milliamps maximum)	    |
+                     | 12            |          |                  | Ground					    |
+                     | A             |          | 1                | Ground					    |
+                     | B             | FLAG2    |                  | CIA #2 handshaking line			    |
+                     | C             | PB0      | 3                | Port B Bit 0--RS-232 Received Data (SIN)	    |
+                     | D             | PB1      | 4                | Port B Bit 1--RS-232 Request to Send (RTS)	    |
+                     | E             | PB2      | 20               | Port B Bit 2--RS-232 Data Terminal Ready (DTR) |
+                     | F             | PB3      | 22               | Port B Bit 3--RS-232 Ring Indicator (RI)	    |
+                     | H             | PB4      | 8                | Port B Bit 4--RS-232 Carrier Detect (DCD)	    |
+                     | J             | PB5      |                  | Port B Bit 5				    |
+                     | K             | PB6      | 5                | Port B Bit 6--RS-232 Clear to Send (CTS)	    |
+                     | L             | PB7      | 6                | Port B Bit 7--RS-232 Data Set Ready (DSR)	    |
+                     | M             | PA2      | 2                | Port A Bit 2--RS-232 Transmitted Data (Sout)   |
+                     | N             |          | 7                | Ground					    |
                      
                      One of the handshaking lines on the above chart, PC2, was not covered
                      in the discussion of CIA #1, because that line of CIA #1 is not
@@ -3322,33 +3323,33 @@ $DD00-$DD01          CIA #2 Data Ports A and B
                      displayed.  Finally, the machine language move is used again to show
                      how quickly the set is restored.
                      
-                     20 FOR I=1 TO 33:READ A:POKE 49152+I,A:NEXT: REM SET UP ML ROUTINE
-                     30 GOSUB 200: REM ML COPY OF ROM CHARACTER SET TO RAM
-                     40 POKE 56576,PEEK(56576) AND 252: REM STEP 1, ENABLE BANK 3
-                     50 POKE 53272,44: REM STEPS 2-3, POINT VIC-II TO SCREEN AND CHARACTER MEMORY
-                     60 REM SCREEN OFFSET IS 2*16, CHARACTER OFFSET IS 12
-                     70 POKE 648,200: REM STEP 4, POINT OS TO SCREEN AT 51200 (200*256)
-                     80 PRINT CHR$(147): REM CLEAR SCREEN
-                     90 FOR I=53236 TO 53245:READ A:POKE I,A:NEXT: REM NEW INTERRUPT ROUTINE
-                     100 POKE 53246,PEEK(792):POKE 53247,PEK(793): REM SAVE OLD NMI VECTOR
-                     110 POKE 792,244:POKE 793,207: REM ROUTE THE INTERRUPT THROUGH THE NEW ROUTINE
-                     120 FOR I=0 TO 255:POKE 51400+I,I:POKE 55496+I,1:NEXT
-                     125 REM POKE CHARACTERS TO SCREEN
-                     130 FOR J=1 TO 8:FOR I=61439+J TO I+2048 STEP 8
-                     140 POKE I,0:NEXT I,J: REM ERASE CHARACTER SET
-                     150 FOR I=61440 TO I+2048:POKE I,PEEK(I):NEXT: REM POKE ROM TO RAM
-                     160 GOSUB 200:END: REM RESTORE CHARACTER SET
-                     200 POKE 56334,PEEK(56334) AND 254: REM DISABLE INTERRUPTS
-                     210 POKE 1,PEEK(1) AND 251:REM SWITCH CHARACTER ROM INTO 6510 MEMORY
-                     220 SYS 49152: REM COPY ROM CHARACTER SET TO RAM AT 61440
-                     230 POKE 1,PEEK(1) OR 4: REM SWITCH CHARACTER ROM OUT OF 6510 MEMORY
-                     240 POKE 56334,PEEK(56334)OR 1: REM ENABLE INTERRUPTS
-                     250 RETURN
-                     300 REM DATA FOR ML PROGRAM TO COPY CHARACTER SET TO RAM
-                     310 DATA169,0,133,251,133,253,169,208,133,252,169,240,133,254,162,16
-                     320 DATA160,0,177,251,145,253,136,208,249,230,252,230,254,202,208,240,96
-                     330 REM NEXT IS ML PROGRAM TO MAKE THE RESTORE KEY RESET OS POINTER TO SCREEN
-                     340 DATA 72,169,4,141,136,02,104,108,254,207
+                         20 FOR I=1 TO 33:READ A:POKE 49152+I,A:NEXT: REM SET UP ML ROUTINE
+                         30 GOSUB 200: REM ML COPY OF ROM CHARACTER SET TO RAM
+                         40 POKE 56576,PEEK(56576) AND 252: REM STEP 1, ENABLE BANK 3
+                         50 POKE 53272,44: REM STEPS 2-3, POINT VIC-II TO SCREEN AND CHARACTER MEMORY
+                         60 REM SCREEN OFFSET IS 2*16, CHARACTER OFFSET IS 12
+                         70 POKE 648,200: REM STEP 4, POINT OS TO SCREEN AT 51200 (200*256)
+                         80 PRINT CHR$(147): REM CLEAR SCREEN
+                         90 FOR I=53236 TO 53245:READ A:POKE I,A:NEXT: REM NEW INTERRUPT ROUTINE
+                         100 POKE 53246,PEEK(792):POKE 53247,PEK(793): REM SAVE OLD NMI VECTOR
+                         110 POKE 792,244:POKE 793,207: REM ROUTE THE INTERRUPT THROUGH THE NEW ROUTINE
+                         120 FOR I=0 TO 255:POKE 51400+I,I:POKE 55496+I,1:NEXT
+                         125 REM POKE CHARACTERS TO SCREEN
+                         130 FOR J=1 TO 8:FOR I=61439+J TO I+2048 STEP 8
+                         140 POKE I,0:NEXT I,J: REM ERASE CHARACTER SET
+                         150 FOR I=61440 TO I+2048:POKE I,PEEK(I):NEXT: REM POKE ROM TO RAM
+                         160 GOSUB 200:END: REM RESTORE CHARACTER SET
+                         200 POKE 56334,PEEK(56334) AND 254: REM DISABLE INTERRUPTS
+                         210 POKE 1,PEEK(1) AND 251:REM SWITCH CHARACTER ROM INTO 6510 MEMORY
+                         220 SYS 49152: REM COPY ROM CHARACTER SET TO RAM AT 61440
+                         230 POKE 1,PEEK(1) OR 4: REM SWITCH CHARACTER ROM OUT OF 6510 MEMORY
+                         240 POKE 56334,PEEK(56334)OR 1: REM ENABLE INTERRUPTS
+                         250 RETURN
+                         300 REM DATA FOR ML PROGRAM TO COPY CHARACTER SET TO RAM
+                         310 DATA169,0,133,251,133,253,169,208,133,252,169,240,133,254,162,16
+                         320 DATA160,0,177,251,145,253,136,208,249,230,252,230,254,202,208,240,96
+                         330 REM NEXT IS ML PROGRAM TO MAKE THE RESTORE KEY RESET OS POINTER TO SCREEN
+                         340 DATA 72,169,4,141,136,02,104,108,254,207
                      
                      See also the sample program showing how to configure your 64 like a
                      PET at location 43 ($2B).
@@ -3591,8 +3592,10 @@ $DF00-$DFFF          CIA #2 Register Images
                      these binary digits has a bit value that is two times greater than the
                      last.  The values of a bit set to 1 in each of the bit places are:
                      
-                     Bit    0    1     2    3    4    5    6    7
-                     Value  1    2     4    8   16   32   64  128
+                     |       |   |   |   |   |    |    |    |     |
+                     |-------|---|---|---|---|----|----|----|-----|
+                     | Bit   | 0 | 1 | 2 | 3 |  4 |  5 |  6 |   7 |
+                     | Value | 1 | 2 | 4 | 8 | 16 | 32 | 64 | 128 |
                      
                      A byte whose value is 255 has every bit set to 1
                      (128+64+32+16+8+4+2+1=255), while a byte whose value is 0 is made up
@@ -3607,14 +3610,14 @@ $DF00-$DFFF          CIA #2 Register Images
                      60, 102, 110, 110, 96, 98, 60, 0.  Breaking these data bytes down into
                      their bit values gives us a picture that looks like the following:
                      
-                     00111100   0 +   0 +  32 +  16 +   8 +   4 +   0 +   0 =  60
-                     01100110   0 +  64 +  32 +   0 +   0 +   4 +   2 +   0 = 101
-                     01101110   0 +  64 +  32 +   0 +   8 +   4 +   2 +   0 = 110
-                     01101110   0 +  64 +  32 +   0 +   8 +   4 +   2 +   0 = 110
-                     01100000   0 +  64 +  32 +   0 +   0 +   0 +   0 +   0 =  96
-                     01100010   0 +  64 +  32 +   0 +   0 +   0 +   2 +   0 =  98
-                     00111100   0 +   0 +  32 +  16 +   8 +   4 +   0 +   0 =  60
-                     00000000   0 +   0 +   0 +   0 +   0 +   0 +   0 +   0 =   0
+                         00111100   0 +   0 +  32 +  16 +   8 +   4 +   0 +   0 =  60
+                         01100110   0 +  64 +  32 +   0 +   0 +   4 +   2 +   0 = 101
+                         01101110   0 +  64 +  32 +   0 +   8 +   4 +   2 +   0 = 110
+                         01101110   0 +  64 +  32 +   0 +   8 +   4 +   2 +   0 = 110
+                         01100000   0 +  64 +  32 +   0 +   0 +   0 +   0 +   0 =  96
+                         01100010   0 +  64 +  32 +   0 +   0 +   0 +   2 +   0 =  98
+                         00111100   0 +   0 +  32 +  16 +   8 +   4 +   0 +   0 =  60
+                         00000000   0 +   0 +   0 +   0 +   0 +   0 +   0 +   0 =   0
                      
                      If you look closely, you will recognize the shape of the commercial at
                      sign (@) as it's displayed on your screen.  The first byte of data is
@@ -3626,15 +3629,15 @@ $DF00-$DFFF          CIA #2 Register Images
                      shows the shape of any of the 512 characters in the ROM, along with
                      the number value of each byte of the shape.
                      
-                     10 DIM B%(7),T%(7):FOR I=0 TO 7:T%(I)=2^I:NEXT
-                     20 POKE 53281,2:PRINT CHR$(147):POKE 53281,1:POKE 53280,0:POKE 646,11
-                     30 POKE 214,20:PRINT:INPUT" CHARACTER NUMBER (0-511)";C$
-                     40 C=VAL(C$):GOSUB 80:FOR I=0 TO 7
-                     50 POKE 214,6+I:PRINT:PRINT TAB(23);B%(I);CHR$(20);"   "
-                     60 FOR J=7 TO 0 STEP-1:POKE 1319+(7-J)+I*40,32-128*((B%(I)ANDT%(J))=T%(J))
-                     70 NEXT J,I:POKE 214,20:PRINT:PRINT TAB(27)"    ":GOTO 30
-                     80 POKE 56333,127:POKE 1,51:FOR I=0 TO 7
-                     90 B%(I)=PEEK(53248+C*8+I):NEXT:POKE 1,55:POKE 56333,129:RETURN
+                         10 DIM B%(7),T%(7):FOR I=0 TO 7:T%(I)=2^I:NEXT
+                         20 POKE 53281,2:PRINT CHR$(147):POKE 53281,1:POKE 53280,0:POKE 646,11
+                         30 POKE 214,20:PRINT:INPUT" CHARACTER NUMBER (0-511)";C$
+                         40 C=VAL(C$):GOSUB 80:FOR I=0 TO 7
+                         50 POKE 214,6+I:PRINT:PRINT TAB(23);B%(I);CHR$(20);"   "
+                         60 FOR J=7 TO 0 STEP-1:POKE 1319+(7-J)+I*40,32-128*((B%(I)ANDT%(J))=T%(J))
+                         70 NEXT J,I:POKE 214,20:PRINT:PRINT TAB(27)"    ":GOTO 30
+                         80 POKE 56333,127:POKE 1,51:FOR I=0 TO 7
+                         90 B%(I)=PEEK(53248+C*8+I):NEXT:POKE 1,55:POKE 56333,129:RETURN
                      
                      If you have read about the VIC-II video chip, you know that it can
                      address only 16K of memory at a time, and that all display data such
@@ -3643,7 +3646,7 @@ $DF00-$DFFF          CIA #2 Register Images
                      
                      Since it would be very inconvenient for the VIC-II chip to be able to
                      access the character data only at the 16K block which includes
-                     adresses 53248-57343 ($D000-$DFFF), the 64 uses an addressing trick
+                     addresses 53248-57343 ($D000-$DFFF), the 64 uses an addressing trick
                      that makes the VIC-II chip see an image of the Character ROM at
                      4096-8191 ($1000-$1FFF) and at 36864-40959 ($9000-$9FFF).  It is not
                      available in the other two blocks.  To generate characters in these
@@ -3651,7 +3654,7 @@ $DF00-$DFFF          CIA #2 Register Images
                      the ROM data to RAM.  A machine language routine for doing this is
                      included in a sample program at the entry for 56576 ($DD00).
                      
-                     As indicated above, you are by no means limited to useing the
+                     As indicated above, you are by no means limited to using the
                      character data furnished by the ROM.  The availability of user-defined
                      characters greatly extends the graphics power of the 64.  It allows
                      you to create special text characters, like math or chemistry symbols
