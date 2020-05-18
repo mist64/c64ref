@@ -77,7 +77,7 @@ $D000-$D02E               VIC-II Chip Registers
                           corresponding character in the group with codes 0-63.
 
                           3.  For characters with codes 64-127 (SHIFTed characters), the
-                          background colors are deterined by the value in Background Color
+                          background colors are determined by the value in Background Color
                           Register 1 (53282, $D022).
 
                           4.  The value in Background Color Register 2 (53283, $D023) is used
@@ -88,7 +88,7 @@ $D000-$D02E               VIC-II Chip Registers
 
 
                           In place of the normal text mode, a bitmap graphics mode is also
-                          abailable by setting Bit 5 of location 53265 ($D011).  In this mode,
+                          available by setting Bit 5 of location 53265 ($D011).  In this mode,
                           each bit of data determines whether one dot on the screen will be set
                           to either the background color or foreground color.  Within an 8 by 8
                           dot area, the foreground and background colors may be individually
@@ -161,7 +161,7 @@ $D000-$D02E               VIC-II Chip Registers
                           last.  If the digit in the zero bit place is a 1, it has a value of 1
                           (we count bit places from 0 to 7).  A 1 in the first bit place has a
                           value of 2, the second bit has a value of 4, the third has a value of
-                          8, the fourth has a vlue of 16, the fifth a value of 32, the sixth a
+                          8, the fourth has a value of 16, the fifth a value of 32, the sixth a
                           value of 64, and the seventh a value of 128.
 
                           By making all of the possible combinations of 0's and 1's in all eight
@@ -251,7 +251,7 @@ $D000-$D02E               VIC-II Chip Registers
 
                           If a sprite is positioned in the same place on the screen as a text
                           character or bitmap dot, a Priority Register allows you to choose
-                          whether the sprite or the normal graphics will by displayed.  This
+                          whether the sprite or the normal graphics will be displayed.  This
                           enables three- dimensional effects by letting you choose whether the
                           sprite goes in front of or behind other objects on the screen.
 
@@ -278,7 +278,7 @@ $D000-$D010               Sprite Horizontal and Vertical Position Registers
                           being partially or wholly offscreen.
 
                           The visible viewing area starts at line 50 and extends to line 249.
-                          Therefore, any sprite whose vertical psition is 29 ($1D) or less will
+                          Therefore, any sprite whose vertical position is 29 ($1D) or less will
                           be completely above the visible picture.  At vertical position 30
                           ($1E), the bottom line of the sprite display becomes visible at the
                           top of the screen.  At position 230 ($E6), the bottom line of the
@@ -309,13 +309,13 @@ $D000-$D010               Sprite Horizontal and Vertical Position Registers
                           dot of the sprite's 24-dot width.  The visible display is restricted
                           to the 320 dot positions between positions 24 and 344.  At position 0
                           the whole sprite is past the left edge of the visible screen.  At
-                          position 1 the righmost dot enters the display area, and at position
+                          position 1 the rightmost dot enters the display area, and at position
                           24 ($18) the entire sprite is displayed on screen.  At position 321
                           ($141) the rightmost dot goes past the right edge of the visible
                           display area, and a position 355 ($158) the whole sprite has moved out
                           of sight, off the right edge of the screen.
 
-                          These registers are all intialized to 0 at power-up.
+                          These registers are all initialized to 0 at power-up.
 
 $D000        SP0X         Sprite 0 Horizontal Position
 
@@ -351,14 +351,14 @@ $D00F        SP7Y         Sprite 7 Vertical Position
 
 $D010        MSIGX        Most Significant Bits of Sprites 0-7 Horizontal Position
 
-                          Bit 0:  Most significant bit of Sprite 0 horizontal position
-                          Bit 1:  Most significant bit of Sprite 1 horizontal position
-                          Bit 2:  Most significant bit of Sprite 2 horizontal position
-                          Bit 3:  Most significant bit of Sprite 3 horizontal position
-                          Bit 4:  Most significant bit of Sprite 4 horizontal position
-                          Bit 5:  Most significant bit of Sprite 5 horizontal position
-                          Bit 6:  Most significant bit of Sprite 6 horizontal position
-                          Bit 7:  Most significant bit of Sprite 7 horizontal position
+                     0    Most significant bit of Sprite 0 horizontal position
+                     1    Most significant bit of Sprite 1 horizontal position
+                     2    Most significant bit of Sprite 2 horizontal position
+                     3    Most significant bit of Sprite 3 horizontal position
+                     4    Most significant bit of Sprite 4 horizontal position
+                     5    Most significant bit of Sprite 5 horizontal position
+                     6    Most significant bit of Sprite 6 horizontal position
+                     7    Most significant bit of Sprite 7 horizontal position
 
                           Setting one of these bites to 1 adds 256 to the horizontal position of
                           the corresponding sprite.  Resetting one of these bits to 0 restricts
@@ -367,16 +367,16 @@ $D010        MSIGX        Most Significant Bits of Sprites 0-7 Horizontal Positi
 
 $D011        SCROY        Vertical Fine Scrolling and Control Register
 
-                          Bits 0-2:  Fine scroll display vertically by X scan lines (0-7)
-                          Bit 3:  Select a 24-row or 25-row text display (1=25 rows, 0=24 rows)
-                          Bit 4:  Blank the entire screen to the same color as the background
+                     0-2  Fine scroll display vertically by X scan lines (0-7)
+                     3    Select a 24-row or 25-row text display (1=25 rows, 0=24 rows)
+                     4    Blank the entire screen to the same color as the background
                             (0=blank)
-                          Bit 5:  Enable bitmap graphics mode (1=enable)
-                          Bit 6:  Enable extended color text mode (1=enable)
-                          Bit 7:  High bit (Bit 8) of raster compare register at 53266 ($D012)
+                     5    Enable bitmap graphics mode (1=enable)
+                     6    Enable extended color text mode (1=enable)
+                     7    High bit (Bit 8) of raster compare register at 53266 ($D012)
 
                           This is one of the two important multifunction control registers on
-                          the VIC-II chip.  Its defaule value is 155, which sets the high bit of
+                          the VIC-II chip.  Its default value is 155, which sets the high bit of
                           the raster compare to 1, selects a 25-row display, disables the
                           blanking feature, and uses a vertical scrolling offset of three scan
                           lines.
@@ -912,14 +912,14 @@ $D014        LPENY        Light Pen Vertical Position
 
 $D015        SPENA        Sprite Enable Register
 
-                          Bit 0:  Enable Sprite 0 (1=sprite is on, 0=sprite is off)
-                          Bit 1:  Enable Sprite 1 (1=sprite is on, 0=sprite is off)
-                          Bit 2:  Enable Sprite 2 (1=sprite is on, 0=sprite is off)
-                          Bit 3:  Enable Sprite 3 (1=sprite is on, 0=sprite is off)
-                          Bit 4:  Enable Sprite 4 (1=sprite is on, 0=sprite is off)
-                          Bit 5:  Enable Sprite 5 (1=sprite is on, 0=sprite is off)
-                          Bit 6:  Enable Sprite 6 (1=sprite is on, 0=sprite is off)
-                          Bit 7:  Enable Sprite 7 (1=sprite is on, 0=sprite is off)
+                     0    Enable Sprite 0 (1=sprite is on, 0=sprite is off)
+                     1    Enable Sprite 1 (1=sprite is on, 0=sprite is off)
+                     2    Enable Sprite 2 (1=sprite is on, 0=sprite is off)
+                     3    Enable Sprite 3 (1=sprite is on, 0=sprite is off)
+                     4    Enable Sprite 4 (1=sprite is on, 0=sprite is off)
+                     5    Enable Sprite 5 (1=sprite is on, 0=sprite is off)
+                     6    Enable Sprite 6 (1=sprite is on, 0=sprite is off)
+                     7    Enable Sprite 7 (1=sprite is on, 0=sprite is off)
 
                           In order for any sprite to be displayed, the corresponding bit in this
                           register must be set to 1 (the default for this location is 0).  Of
@@ -933,13 +933,13 @@ $D015        SPENA        Sprite Enable Register
 
 $D016        SCROLX       Horizontal Fine Scrolling and Control Register
 
-                          Bits 0-2:  Fine scroll display horizontally by X dot positions (0-7)
-                          Bit 3:  Select a 38-column or 40-column text display (1=40 columns,
+                     0-2  Fine scroll display horizontally by X dot positions (0-7)
+                     3    Select a 38-column or 40-column text display (1=40 columns,
                             0=38 columns)
-                          Bit 4:  Enable multicolor text or multicolor bitmap mode (1=multicolor on,
+                     4    Enable multicolor text or multicolor bitmap mode (1=multicolor on,
                             0=multicolor off)
-                          Bit 5:  Video chip reset (0=normal operations, 1=video completely off)
-                          Bits 6-7:  Unused
+                     5    Video chip reset (0=normal operations, 1=video completely off)
+                     6-7  Unused
 
                           This is one of the two important multifunction control registers on
                           the VIC-II chip.  On power-up, it is set to a default value of 8,
@@ -1105,14 +1105,14 @@ $D016        SCROLX       Horizontal Fine Scrolling and Control Register
 
 $D017        YXPAND       Sprite Vertical Expansion Register
 
-                          Bit 0:  Expand Sprite 0 vertically (1=double height, 0=normal height)
-                          Bit 1:  Expand Sprite 1 vertically (1=double height, 0=normal height)
-                          Bit 2:  Expand Sprite 2 vertically (1=double height, 0=normal height)
-                          Bit 3:  Expand Sprite 3 vertically (1=double height, 0=normal height)
-                          Bit 4:  Expand Sprite 4 vertically (1=double height, 0=normal height)
-                          Bit 5:  Expand Sprite 5 vertically (1=double height, 0=normal height)
-                          Bit 6:  Expand Sprite 6 vertically (1=double height, 0=normal height)
-                          Bit 7:  Expand Sprite 7 vertically (1=double height, 0=normal height)
+                     0    Expand Sprite 0 vertically (1=double height, 0=normal height)
+                     1    Expand Sprite 1 vertically (1=double height, 0=normal height)
+                     2    Expand Sprite 2 vertically (1=double height, 0=normal height)
+                     3    Expand Sprite 3 vertically (1=double height, 0=normal height)
+                     4    Expand Sprite 4 vertically (1=double height, 0=normal height)
+                     5    Expand Sprite 5 vertically (1=double height, 0=normal height)
+                     6    Expand Sprite 6 vertically (1=double height, 0=normal height)
+                     7    Expand Sprite 7 vertically (1=double height, 0=normal height)
 
                           This register can be used to double the height of any sprite.  When
                           the bit in this register that corresponds to a particular sprite is
@@ -1121,10 +1121,10 @@ $D017        YXPAND       Sprite Vertical Expansion Register
 
 $D018        VMCSB        VIC-II Chip Memory Control Register
 
-                          Bit 0:  Unused
-                          Bits 1-3:  Text character dot-data base address within VIC-II address
+                     0    Unused
+                     1-3  Text character dot-data base address within VIC-II address
                             space
-                          Bits 4-7:  Video matrix base address within VIC-II address space
+                     4-7  Video matrix base address within VIC-II address space
 
                           This register affects virtually all graphics operations.  It
                           determines the vase address of two very important data areas, the
@@ -1135,7 +1135,7 @@ $D018        VMCSB        VIC-II Chip Memory Control Register
                           information on character shape data, see the alternate entry for
                           location 53248 ($D000), the Character Generator ROM).
 
-                          Bits 1-3 can represent any even number from 0 to 14.  That numer
+                          Bits 1-3 can represent any even number from 0 to 14.  That number
                           stands for the even 1K offset of the character data area from the
                           beginning of VIC-II memory.  For example, if these bits are all set to
                           0, it means that the character memory occupies the first 2K of VIC-II
@@ -1201,17 +1201,17 @@ $D018        VMCSB        VIC-II Chip Memory Control Register
 
 $D019        VICIRQ       VIC Interrupt Flag Register
 
-                          Bit 0:  Flag:  Is the Raster Compare a possible source of an IRQ?
-                                  (1=yes)
-                          Bit 1:  Flag:  Is a collision between a sprite and the normal graphics
-                                  display a possible source of an IRQ?  (1=yes)
-                          Bit 2:  Flag:  Is a collision between two sprites a possible source of
-                                  an IRQ?  (1=yes)
-                          Bit 3:  Flag:  Is the light pen trigger a possible source of an IRQ?
-                                  (1=yes)
-                          Bits 4-6:  Not used
-                          Bit 7:  Flag:  Is there any VIC-II chip IRQ source which could cause
-                                  an IRQ?  (1=yes)
+                     0    Flag:  Is the Raster Compare a possible source of an IRQ?
+                            (1=yes)
+                     1    Flag:  Is a collision between a sprite and the normal graphics
+                            display a possible source of an IRQ?  (1=yes)
+                     2    Flag:  Is a collision between two sprites a possible source of
+                            an IRQ?  (1=yes)
+                     3    Flag:  Is the light pen trigger a possible source of an IRQ?
+                            (1=yes)
+                     4-6  Not used
+                     7    Flag:  Is there any VIC-II chip IRQ source which could cause
+                            an IRQ?  (1=yes)
 
                           The VIC-II chip is capable of generating a maskable request (IRQ) when
                           certain conditions relating to the video display are fulfilled.
@@ -1263,14 +1263,13 @@ $D019        VICIRQ       VIC Interrupt Flag Register
 
 $D01A        IRQMASK      IRQ Mask Register
 
-                          Bit 0:  Enable Raster Compare IRQ (1=interrupt enabled)
-                          Bit 1:  Enable IRQ to occure when sprite collides with display of
-                            normal
-                                  graphics data (1=interrupt enabled)
-                          Bit 2:  Enable IRQ to occur when two sprites collide (1=interrupt
+                     0    Enable Raster Compare IRQ (1=interrupt enabled)
+                     1    Enable IRQ to occur when sprite collides with display of
+                            normal graphics data (1=interrupt enabled)
+                     2    Enable IRQ to occur when two sprites collide (1=interrupt
                             enabled)
-                          Bit 3:  Enable light pen to trigger an IRQ (1=interrupt enabled)
-                          Bits 4-7:  Not used
+                     3    Enable light pen to trigger an IRQ (1=interrupt enabled)
+                     4-7  Not used
 
                           This register is used to enable an IRQ request to occur when one of
                           the VIC-II chip interrupt conditions is met.  In order to understand
@@ -1505,22 +1504,22 @@ $D01A        IRQMASK      IRQ Mask Register
 
 $D01B        SPBGPR       Sprite to Foreground Display Priority Register
 
-                          Bit 0:  Select display priority of Sprite 0 to foreground (0=sprite
-                                  appears in front of foreground)
-                          Bit 1:  Select display priority of Sprite 1 to foreground (0=sprite
-                                  appears in front of foreground)
-                          Bit 2:  Select display priority of Sprite 2 to foreground (0=sprite
-                                  appears in front of foreground)
-                          Bit 3:  Select display priority of Sprite 3 to foreground (0=sprite
-                                  appears in front of foreground)
-                          Bit 4:  Select display priority of Sprite 4 to foreground (0=sprite
-                                  appears in front of foreground)
-                          Bit 5:  Select display priority of Sprite 5 to foreground (0=sprite
-                                  appears in front of foreground)
-                          Bit 6:  Select display priority of Sprite 6 to foreground (0=sprite
-                                  appears in front of foreground)
-                          Bit 7:  Select display priority of Sprite 7 to foreground (0=sprite
-                                  appears in front of foreground)
+                     0    Select display priority of Sprite 0 to foreground (0=sprite
+                            appears in front of foreground)
+                     1    Select display priority of Sprite 1 to foreground (0=sprite
+                            appears in front of foreground)
+                     2    Select display priority of Sprite 2 to foreground (0=sprite
+                            appears in front of foreground)
+                     3    Select display priority of Sprite 3 to foreground (0=sprite
+                            appears in front of foreground)
+                     4    Select display priority of Sprite 4 to foreground (0=sprite
+                            appears in front of foreground)
+                     5    Select display priority of Sprite 5 to foreground (0=sprite
+                            appears in front of foreground)
+                     6    Select display priority of Sprite 6 to foreground (0=sprite
+                            appears in front of foreground)
+                     7    Select display priority of Sprite 7 to foreground (0=sprite
+                            appears in front of foreground)
 
                           If a sprite is positioned to appear at a spot on the screen that is
                           already occupied by text or bitmap graphics, a conflict arises.  The
@@ -1546,19 +1545,19 @@ $D01B        SPBGPR       Sprite to Foreground Display Priority Register
 
 $D01C        SPMC         Sprite Multicolor Registers
 
-                          Bit 0:  Select multicolor mode for Sprite 0 (1=multicolor, 0=hi-res)
-                          Bit 1:  Select multicolor mode for Sprite 1 (1=multicolor, 0=hi-res)
-                          Bit 2:  Select multicolor mode for Sprite 2 (1=multicolor, 0=hi-res)
-                          Bit 3:  Select multicolor mode for Sprite 3 (1=multicolor, 0=hi-res)
-                          Bit 4:  Select multicolor mode for Sprite 4 (1=multicolor, 0=hi-res)
-                          Bit 5:  Select multicolor mode for Sprite 5 (1=multicolor, 0=hi-res)
-                          Bit 6:  Select multicolor mode for Sprite 6 (1=multicolor, 0=hi-res)
-                          Bit 7:  Select multicolor mode for Sprite 7 (1=multicolor, 0=hi-res)
+                     0    Select multicolor mode for Sprite 0 (1=multicolor, 0=hi-res)
+                     1    Select multicolor mode for Sprite 1 (1=multicolor, 0=hi-res)
+                     2    Select multicolor mode for Sprite 2 (1=multicolor, 0=hi-res)
+                     3    Select multicolor mode for Sprite 3 (1=multicolor, 0=hi-res)
+                     4    Select multicolor mode for Sprite 4 (1=multicolor, 0=hi-res)
+                     5    Select multicolor mode for Sprite 5 (1=multicolor, 0=hi-res)
+                     6    Select multicolor mode for Sprite 6 (1=multicolor, 0=hi-res)
+                     7    Select multicolor mode for Sprite 7 (1=multicolor, 0=hi-res)
 
                           Sprite multicolor mode is very similar to text and bitmap multicolor
                           modes (see Bit 4 of 53270, $D016).  Normally, the color of each dot of
                           the sprite is controlled by a single bit of sprite shape data.  When
-                          thi mode is enabled for a sprite, by setting the corresponding bit of
+                          the mode is enabled for a sprite, by setting the corresponding bit of
                           this register to 1, the bits of sprite shape data are grouped together
                           in pairs, with each pair of bits controlling a double-wide dot of the
                           sprite display.  By sacrificing some of the horizontal resolution (the
@@ -1566,10 +1565,12 @@ $D01C        SPMC         Sprite Multicolor Registers
                           the use of two additional colors.  The four possible combinations of
                           these bit-pairs display dot colors from the following sources:
 
-                          00 Background Color Register 0 (transparent)
-                          01 Sprite Multicolor Register 0 (53285, $D025)
-                          10 Sprite Color Registers (53287-94, $D027-E)
-                          11 Sprite Multicolor Register 1 (53286, $D026)
+			  |    |					     |
+			  |----|---------------------------------------------|
+                          | 00 | Background Color Register 0 (transparent)   |
+                          | 01 | Sprite Multicolor Register 0 (53285, $D025) |
+                          | 10 | Sprite Color Registers (53287-94, $D027-E)  |
+                          | 11 | Sprite Multicolor Register 1 (53286, $D026) |
 
                           Like multicolor text characters, multicolor sprites all share two
                           color registers.  While each sprite can display three foreground
@@ -1579,22 +1580,14 @@ $D01C        SPMC         Sprite Multicolor Registers
 
 $D01D        XXPAND       Sprite Horizontal Expansion Register
 
-                          Bit 0:  Expand Sprite 0 horizontally (1=double-width sprite, 0=normal
-                                  width)
-                          Bit 1:  Expand Sprite 1 horizontally (1=double-width sprite, 0=normal
-                                  width)
-                          Bit 2:  Expand Sprite 2 horizontally (1=double-width sprite, 0=normal
-                                  width)
-                          Bit 3:  Expand Sprite 3 horizontally (1=double-width sprite, 0=normal
-                                  width)
-                          Bit 4:  Expand Sprite 4 horizontally (1=double-width sprite, 0=normal
-                                  width)
-                          Bit 5:  Expand Sprite 5 horizontally (1=double-width sprite, 0=normal
-                                  width)
-                          Bit 6:  Expand Sprite 6 horizontally (1=double-width sprite, 0=normal
-                                  width)
-                          Bit 7:  Expand Sprite 7 horizontally (1=double-width sprite, 0=normal
-                                  width)
+                     0    Expand Sprite 0 horizontally (1=double-width sprite, 0=normal width)
+                     1    Expand Sprite 1 horizontally (1=double-width sprite, 0=normal width)
+                     2    Expand Sprite 2 horizontally (1=double-width sprite, 0=normal width)
+                     3    Expand Sprite 3 horizontally (1=double-width sprite, 0=normal width)
+                     4    Expand Sprite 4 horizontally (1=double-width sprite, 0=normal width)
+                     5    Expand Sprite 5 horizontally (1=double-width sprite, 0=normal width)
+                     6    Expand Sprite 6 horizontally (1=double-width sprite, 0=normal width)
+                     7    Expand Sprite 7 horizontally (1=double-width sprite, 0=normal width)
 
                           This register can be used to double the width of any sprite.  Setting
                           any bit of this register to 1 will cause each dot of the corresponding
@@ -1657,25 +1650,25 @@ $D01E-$D01F               Sprite Collision Detection Registers
 
 $D01E        SPSPCL       Sprite to Sprite Collision Register
 
-                          Bit 0:  Did Sprite 0 collide with another sprite?  (1=yes)
-                          Bit 1:  Did Sprite 1 collide with another sprite?  (1=yes)
-                          Bit 2:  Did Sprite 2 collide with another sprite?  (1=yes)
-                          Bit 3:  Did Sprite 3 collide with another sprite?  (1=yes)
-                          Bit 4:  Did Sprite 4 collide with another sprite?  (1=yes)
-                          Bit 5:  Did Sprite 5 collide with another sprite?  (1=yes)
-                          Bit 6:  Did Sprite 6 collide with another sprite?  (1=yes)
-                          Bit 7:  Did Sprite 7 collide with another sprite?  (1=yes)
+                     0    Did Sprite 0 collide with another sprite?  (1=yes)
+                     1    Did Sprite 1 collide with another sprite?  (1=yes)
+                     2    Did Sprite 2 collide with another sprite?  (1=yes)
+                     3    Did Sprite 3 collide with another sprite?  (1=yes)
+                     4    Did Sprite 4 collide with another sprite?  (1=yes)
+                     5    Did Sprite 5 collide with another sprite?  (1=yes)
+                     6    Did Sprite 6 collide with another sprite?  (1=yes)
+                     7    Did Sprite 7 collide with another sprite?  (1=yes)
 
 $D01F        SPBGCL       Sprite to Foreground Collision Register
 
-                          Bit 0:  Did Sprite 0 collide with the foreground display?  (1=yes)
-                          Bit 1:  Did Sprite 1 collide with the foreground display?  (1=yes)
-                          Bit 2:  Did Sprite 2 collide with the foreground display?  (1=yes)
-                          Bit 3:  Did Sprite 3 collide with the foreground display?  (1=yes)
-                          Bit 4:  Did Sprite 4 collide with the foreground display?  (1=yes)
-                          Bit 5:  Did Sprite 5 collide with the foreground display?  (1=yes)
-                          Bit 6:  Did Sprite 6 collide with the foreground display?  (1=yes)
-                          Bit 7:  Did Sprite 7 collide with the foreground display?  (1=yes)
+                     0    Did Sprite 0 collide with the foreground display?  (1=yes)
+                     1    Did Sprite 1 collide with the foreground display?  (1=yes)
+                     2    Did Sprite 2 collide with the foreground display?  (1=yes)
+                     3    Did Sprite 3 collide with the foreground display?  (1=yes)
+                     4    Did Sprite 4 collide with the foreground display?  (1=yes)
+                     5    Did Sprite 5 collide with the foreground display?  (1=yes)
+                     6    Did Sprite 6 collide with the foreground display?  (1=yes)
+                     7    Did Sprite 7 collide with the foreground display?  (1=yes)
 
 $D020-$D02E               VIC-II Color Register
 
@@ -1870,15 +1863,14 @@ $D403        PWHI1        Voice 1 Pulse Waveform Width (high nybble)
 
 $D404        VCREG1       Voice 1 Control Register
 
-                          Bit 0:  Gate Bit:  1=Start attack/decay/sustain, 0=Start release
-                          Bit 1:  Sync Bit:  1=Synchronize Oscillator with Oscillator 3 frequency
-                          Bit 2:  Ring Modulation:  1=Ring modulate Oscillators 1 and 3
-                          Bit 3:  Test Bit:  1=Disable Oscillator 1
-                          Bit 4:  Select triangle waveform
-                          Bit 5:  Select sawtooth waveform
-                          Bit 6:  Select pulse waveform
-                          Bit 7:  Select random noise waveform
-
+                     0    Gate Bit:  1=Start attack/decay/sustain, 0=Start release
+                     1    Sync Bit:  1=Synchronize Oscillator with Oscillator 3 frequency
+                     2    Ring Modulation:  1=Ring modulate Oscillators 1 and 3
+                     3    Test Bit:  1=Disable Oscillator 1
+                     4    Select triangle waveform
+                     5    Select sawtooth waveform
+                     6    Select pulse waveform
+                     7    Select random noise waveform
 
                           Bit 0.  Bit 0 is used to gate the sound.  Setting this bit to a 1
                           while selecting one of the four waveforms will start the
@@ -1969,8 +1961,8 @@ $D405-$D406               Voice 1 Envelope (ADSR) Control
 
 $D405        ATDCY1       Voice 1 Attack/Decay Register
 
-                          Bits 0-3:  Select decay cycle duration (0-15)
-                          Bits 4-7:  Select attack cycle duration (0-15)
+                     0-3  Select decay cycle duration (0-15)
+                     4-7  Select attack cycle duration (0-15)
 
                           Bits 4-7 control the duration of the attack cycle.  This is the period
                           of time over which the volume will rise from 0 to its peak amplitude.
@@ -2009,8 +2001,8 @@ $D405        ATDCY1       Voice 1 Attack/Decay Register
 
 $D406        SUREL1       Voice 1 Sustain/Release Control Register
 
-                          Bits 0-3:  Select release cycle duration (0-15)
-                          Bits 4-7:  Select sustain volume level (0-15)
+                     0-3  Select release cycle duration (0-15)
+                     4-7  Select sustain volume level (0-15)
 
                           Bits 4-7 select the volume level at which the note is sustained.
                           Following the decay cycle, the volume of the output of voice 1 will
@@ -2026,14 +2018,24 @@ $D406        SUREL1       Voice 1 Sustain/Release Control Register
                           duration of this decline in volume corresponds to the number (0-15)
                           selected in the same way as for the decay value:
 
-                          0 = 6 milliseconds           8 = 300 milliseconds
-                          1 = 24 milliseconds          9 = 750 milliseconds
-                          2 = 48 milliseconds         10 = 1.5 seconds
-                          3 = 72 milliseconds         11 = 2.4 seconds
-                          4 = 114 milliseconds        12 = 3 seconds
-                          5 = 168 milliseconds        13 = 9 seconds
-                          6 = 204 milliseconds        14 = 15 seconds
-                          7 = 240 milliseconds        15 = 24 seconds
+                          |    |                  |
+                          |----|------------------|
+                          |  0 | 6 milliseconds   |
+                          |  1 | 24 milliseconds  |
+                          |  2 | 48 milliseconds  |
+                          |  3 | 72 milliseconds  |
+                          |  4 | 114 milliseconds |
+                          |  5 | 168 milliseconds |
+                          |  6 | 204 milliseconds |
+                          |  7 | 240 milliseconds |
+                          |  8 | 300 milliseconds |
+                          |  9 | 750 milliseconds |
+                          | 10 | 1.5 seconds      |
+                          | 11 | 2.4 seconds      |
+                          | 12 | 3 seconds        |
+                          | 13 | 9 seconds        |
+                          | 14 | 15 seconds       |
+                          | 15 | 24 seconds       |
 
 $D407-$D414               Voice 2 and Voice 3 Controls
 
@@ -2053,24 +2055,24 @@ $D40A        PWHI2        Voice 2 Pulse Waveform Width (high nybble)
 
 $D40B        VCREG2       Voice 2 Control Register
 
-                          Bit 0:  Gate Bit:  1=Start attack/decay/sustain, 0=Start release
-                          Bit 1:  Sync Bit:  1=Synchronize oscillator with Oscillator 1 frequency
-                          Bit 2:  Ring Modulation:  1=Ring modulate Oscillators 2 and 1
-                          Bit 3:  Test Bit:  1=Disable Oscillator 2
-                          Bit 4:  Select triangle waveform
-                          Bit 5:  Select sawtooth waveform
-                          Bit 6:  Select pulse waveform
-                          Bit 7:  Select noise waveform
+                     0    Gate Bit:  1=Start attack/decay/sustain, 0=Start release
+                     1    Sync Bit:  1=Synchronize oscillator with Oscillator 1 frequency
+                     2    Ring Modulation:  1=Ring modulate Oscillators 2 and 1
+                     3    Test Bit:  1=Disable Oscillator 2
+                     4    Select triangle waveform
+                     5    Select sawtooth waveform
+                     6    Select pulse waveform
+                     7    Select noise waveform
 
 $D40C        ATDCY2       Voice 2 Attack/Decay Register
 
-                          Bits 0-3:  Select decay cycle duration (0-15)
-                          Bits 4-7:  Select attack cycle duration (0-15)
+                     0-3  Select decay cycle duration (0-15)
+                     4-7  Select attack cycle duration (0-15)
 
 $D40D        SUREL2       Voice 2 Sustain/Release Control Register
 
-                          Bits 0-3:  Select release cycle duration (0-15)
-                          Bits 4-7:  Select sustain volume level (0-15)
+                     0-3  Select release cycle duration (0-15)
+                     4-7  Select sustain volume level (0-15)
 
 $D40E        FRELO3       Voice 3 Frequency Control (low byte)
 
@@ -2082,24 +2084,24 @@ $D411        PWHI3        Voice 3 Pulse Waveform Width (high nybble)
 
 $D412        VCREG3       Voice 3 Control Register
 
-                          Bit 0:  Gate Bit:  1=Start attack/decay/sustain, 0=Start release
-                          Bit 1:  Sync Bit:  1=Synchronize oscillator with Oscillator 2 frequency
-                          Bit 2:  Ring Modulation:  1=Ring modulate Oscillators 3 and 2
-                          Bit 3:  Test Bit:  1=Disable Oscillator 3
-                          Bit 4:  Select triangle waveform
-                          Bit 5:  Select sawtooth waveform
-                          Bit 6:  Select pulse waveform
-                          Bit 7:  Select noise waveform
+                     0    Gate Bit:  1=Start attack/decay/sustain, 0=Start release
+                     1    Sync Bit:  1=Synchronize oscillator with Oscillator 2 frequency
+                     2    Ring Modulation:  1=Ring modulate Oscillators 3 and 2
+                     3    Test Bit:  1=Disable Oscillator 3
+                     4    Select triangle waveform
+                     5    Select sawtooth waveform
+                     6    Select pulse waveform
+                     7    Select noise waveform
 
 $D413        ATDCY3       Voice 3 Attack/Decay Register
 
-                          Bits 0-3:  Select decay cycle duration (0-15)
-                          Bits 4-7:  Select attack cycle duration (0-15)
+                     0-3  Select decay cycle duration (0-15)
+                     4-7  Select attack cycle duration (0-15)
 
 $D414        SUREL3       Voice 3 Sustain/Release Control Register
 
-                          Bits 0-3:  Select release cycle duration (0-15)
-                          Bits 4-7:  Select sustain volume level (0-15)
+                     0-3  Select release cycle duration (0-15)
+                     4-7  Select sustain volume level (0-15)
 
 $D415-$D418               Filter Controls
 
@@ -2145,18 +2147,18 @@ $D415-$D418               Filter Controls
                           cutoff frequency.
 
 $D415        CUTLO
-                          Bits 0-2:  Low portion of filter cutoff frequency
-                          Bits 5-7:  Unused
+                     0-2  Low portion of filter cutoff frequency
+                     5-7  Unused
 
 $D416        CUTHI        Filter Cutoff Frequency (high byte)
 
 $D417        RESON        Filter Resonance Control Register
 
-                          Bit 0:  Filter the output of voice 1?  1=yes
-                          Bit 1:  Filter the output of voice 2?  1=yes
-                          Bit 2:  Filter the output of voice 3?  1=yes
-                          Bit 3:  Filter the output from the external input?  1=yes
-                          Bits 4-7:  Select filter resonance 0-15
+                     0    Filter the output of voice 1?  1=yes
+                     1    Filter the output of voice 2?  1=yes
+                     2    Filter the output of voice 3?  1=yes
+                     3    Filter the output from the external input?  1=yes
+                     4-7  Select filter resonance 0-15
 
                           Bits 0-3 are used to control which of the voices will be altered by
                           the filters.  If one of these bits is set to 1, the corresponding
@@ -2174,11 +2176,11 @@ $D417        RESON        Filter Resonance Control Register
 
 $D418        SIGVOL       Volume and Filter Select Register
 
-                          Bits 0-3:  Select output volume (0-15)
-                          Bit 4:  Select low-pass filter, 1=low-pass on
-                          Bit 5:  Select band-pass filter, 1=band-pass on
-                          Bit 6:  Select high-pass filter, 1=high-pass on
-                          Bit 7:  Disconnect output of voice 4, 1=voice 3 off
+                     0-3  Select output volume (0-15)
+                     4    Select low-pass filter, 1=low-pass on
+                     5    Select band-pass filter, 1=band-pass on
+                     6    Select high-pass filter, 1=high-pass on
+                     7    Disconnect output of voice 4, 1=voice 3 off
 
                           Bits 0-3 control the volume of all outputs.  The possible volume
                           levels range from 0 (no volume) to 15 (maximum volume).  Some level of
@@ -2600,43 +2602,43 @@ $DC00-$DC01               CIA #1 Data Ports A and B
 
 $DC00        CIAPRA       Data Port Register A
 
-                          Bit 0:  Select to read keyboard column 0
-                                  Read joystick 2 up direction
-                          Bit 1:  Select to read keyboard column 1
-                                  Read joystick 2 down direction
-                          Bit 2:  Select to read keyboard column 2
-                                  Read joystick 2 left direction
-                                  Read paddle 1 fire button
-                          Bit 3:  Select to read keyboard column 3
-                                  Read joystick 2 right direction
-                                  Read paddle 2 fire button
-                          Bit 4:  Select to read keyboard column 4
-                                  Read joystick 2 fire button
-                          Bit 5:  Select to read keyboard column 5
-                          Bit 6:  Select to read keyboard column 6
-                                  Select to read paddles on Port A or B
-                          Bit 7:  Select to read keyboard column 7
-                                  Select to read paddles on Port A or B
+                     0    Select to read keyboard column 0.
+                          Read joystick 2 up direction
+                     1    Select to read keyboard column 1.
+                          Read joystick 2 down direction
+                     2    Select to read keyboard column 2.
+                          Read joystick 2 left direction.
+                          Read paddle 1 fire button
+                     3    Select to read keyboard column 3.
+                          Read joystick 2 right direction.
+                          Read paddle 2 fire button
+                     4    Select to read keyboard column 4.
+                          Read joystick 2 fire button
+                     5    Select to read keyboard column 5
+                     6    Select to read keyboard column 6.
+                          Select to read paddles on Port A or B
+                     7    Select to read keyboard column 7.
+                          Select to read paddles on Port A or B
 
 $DC01        CIAPRB       Data Port Register B
 
-                          Bit 0:  Read keyboard row 0
-                                  Read joystick 1 up direction
-                          Bit 1:  Read keyboard row 1
-                                  Read joystick 1 down direction
-                          Bit 2:  Read keyboard row 2
-                                  Read joystick 1 left direction
-                                  Read paddle 1 fire button
-                          Bit 3:  Read keyboard row 3
-                                  Read joystick 1 right direction
-                                  Read paddle 2 fire button
-                          Bit 4:  Read keyboard row 4
-                                  Read joystick 1 fire button
-                          Bit 5:  Read keyboard row 5
-                          Bit 6:  Read keyboard row 6
-                                  Toggle or pulse data output for Timer A
-                          Bit 7:  Read keyboard row 7
-                                  Toggle or pulse data output for Timer B
+                     0    Read keyboard row 0.
+                          Read joystick 1 up direction
+                     1    Read keyboard row 1.
+                          Read joystick 1 down direction
+                     2    Read keyboard row 2.
+                          Read joystick 1 left direction.
+                          Read paddle 1 fire button
+                     3    Read keyboard row 3.
+                          Read joystick 1 right direction.
+                          Read paddle 2 fire button
+                     4    Read keyboard row 4.
+                          Read joystick 1 fire button
+                     5    Read keyboard row 5
+                     6    Read keyboard row 6.
+                          Toggle or pulse data output for Timer A
+                     7    Read keyboard row 7.
+                          Toggle or pulse data output for Timer B
 
 $DC02-$DC03               CIA #1 Data Direction Registers A and B
 
@@ -2659,25 +2661,25 @@ $DC02-$DC03               CIA #1 Data Direction Registers A and B
 
 $DC02        CIDDRA       Data Direction Register A
 
-                          Bit 0:  Select Bit 0 of Data Port A for input or output (0=input, 1=output)
-                          Bit 1:  Select Bit 1 of Data Port A for input or output (0=input, 1=output)
-                          Bit 2:  Select Bit 2 of Data Port A for input or output (0=input, 1=output)
-                          Bit 3:  Select Bit 3 of Data Port A for input or output (0=input, 1=output)
-                          Bit 4:  Select Bit 4 of Data Port A for input or output (0=input, 1=output)
-                          Bit 5:  Select Bit 5 of Data Port A for input or output (0=input, 1=output)
-                          Bit 6:  Select Bit 6 of Data Port A for input or output (0=input, 1=output)
-                          Bit 7:  Select Bit 7 of Data Port A for input or output (0=input, 1=output)
+                     0    Select Bit 0 of Data Port A for input or output (0=input, 1=output)
+                     1    Select Bit 1 of Data Port A for input or output (0=input, 1=output)
+                     2    Select Bit 2 of Data Port A for input or output (0=input, 1=output)
+                     3    Select Bit 3 of Data Port A for input or output (0=input, 1=output)
+                     4    Select Bit 4 of Data Port A for input or output (0=input, 1=output)
+                     5    Select Bit 5 of Data Port A for input or output (0=input, 1=output)
+                     6    Select Bit 6 of Data Port A for input or output (0=input, 1=output)
+                     7    Select Bit 7 of Data Port A for input or output (0=input, 1=output)
 
 $DC03        CIDDRB       Data Direction Register B
 
-                          Bit 0:  Select Bit 0 of Data Port B for input or output (0=input, 1=output)
-                          Bit 1:  Select Bit 1 of Data Port B for input or output (0=input, 1=output)
-                          Bit 2:  Select Bit 2 of Data Port B for input or output (0=input, 1=output)
-                          Bit 3:  Select Bit 3 of Data Port B for input or output (0=input, 1=output)
-                          Bit 4:  Select Bit 4 of Data Port B for input or output (0=input, 1=output)
-                          Bit 5:  Select Bit 5 of Data Port B for input or output (0=input, 1=output)
-                          Bit 6:  Select Bit 6 of Data Port B for input or output (0=input, 1=output)
-                          Bit 7:  Select Bit 7 of Data Port B for input or output (0=input, 1=output)
+                     0    Select Bit 0 of Data Port B for input or output (0=input, 1=output)
+                     1    Select Bit 1 of Data Port B for input or output (0=input, 1=output)
+                     2    Select Bit 2 of Data Port B for input or output (0=input, 1=output)
+                     3    Select Bit 3 of Data Port B for input or output (0=input, 1=output)
+                     4    Select Bit 4 of Data Port B for input or output (0=input, 1=output)
+                     5    Select Bit 5 of Data Port B for input or output (0=input, 1=output)
+                     6    Select Bit 6 of Data Port B for input or output (0=input, 1=output)
+                     7    Select Bit 7 of Data Port B for input or output (0=input, 1=output)
 
 $DC04-$DC07               Timers A and B Low and High Bytes
 
@@ -2841,27 +2843,27 @@ $DC08-$DC0B               Time of Day Clock (TOD)
 
 $DC08        TODTEN       Time of Day Clock Tenths of Seconds
 
-                          Bits 0-3:  Time of Day tenths of second digit (BCD)
-                          Bits 4-7:  Unused
+                     0-3  Time of Day tenths of second digit (BCD)
+                     4-7  Unused
 
 $DC09        TODSEC       Time of Day Clock Seconds
 
-                          Bits 0-3:  Second digit of Time of Day seconds (BCD)
-                          Bits 4-6:  First digit of Time of Day seconds (BCD)
-                          Bit 7:  Unused
+                     0-3  Second digit of Time of Day seconds (BCD)
+                     4-6  First digit of Time of Day seconds (BCD)
+                     7    Unused
 
 $DC0A        TODMIN       Time of Day Clock Minutes
 
-                          Bits 0-3:  Second digit of Time of Day minutes (BCD)
-                          Bits 4-6:  First digit of Time of Day minutes (BCD)
-                          Bit 7:  Unused
+                     0-3  Second digit of Time of Day minutes (BCD)
+                     4-6  First digit of Time of Day minutes (BCD)
+                     7    Unused
 
 $DC0B        TODHRS       Time of Day Clock Hours
 
-                          Bits 0-3:  Second digit of Time of Day hours (BCD)
-                          Bit 4:  First digit of Time of Day hours (BCD)
-                          Bits 5-6:  Unused
-                          Bit 7:  AM/PM Flag (1=PM, 0=AM)
+                     0-3  Second digit of Time of Day hours (BCD)
+                     4    First digit of Time of Day hours (BCD)
+                     5-6  Unused
+                     7    AM/PM Flag (1=PM, 0=AM)
 
 $DC0C        CIASDR       Serial Data Port
 
@@ -2890,23 +2892,23 @@ $DC0C        CIASDR       Serial Data Port
 
 $DC0D        CIAICR       Interrupt Control Register
 
-                          Bit 0:  Read / did Timer A count down to 0?  (1=yes)
-                                  Write/ enable or disable Timer A interrupt (1=enable, 0=disable)
-                          Bit 1:  Read / did Timer B count down to 0?  (1=yes)
-                                  Write/ enable or disable Timer B interrupt (1=enable, 0=disable)
-                          Bit 2:  Read / did Time of Day Clock reach the alarm time?  (1=yes)
-                                  Write/ enable or disable TOD clock alarm interrupt (1=enable,
-                                  0=disable)
-                          Bit 3:  Read / did the serial shift register finish a byte? (1=yes)
-                                  Write/ enable or disable serial shift register interrupt (1=enable,
-                                  0=disable)
-                          Bit 4:  Read / was a signal sent on the flag line?  (1=yes)
-                                  Write/ enable or disable FLAG line interrupt (1=enable, 0=disable)
-                          Bit 5:  Not used
-                          Bit 6:  Not used
-                          Bit 7:  Read / did any CIA #1 source cause an interrupt?  (1=yes)
-                                  Write/ set or clear bits of this register (1=bits written with 1 will
-                                  be set, 0=bits written with 1 will be cleared)
+                     0    Read / did Timer A count down to 0?  (1=yes).
+                          Write/ enable or disable Timer A interrupt (1=enable, 0=disable)
+                     1    Read / did Timer B count down to 0?  (1=yes).
+                          Write/ enable or disable Timer B interrupt (1=enable, 0=disable)
+                     2    Read / did Time of Day Clock reach the alarm time?  (1=yes).
+                          Write/ enable or disable TOD clock alarm interrupt (1=enable,
+                          0=disable)
+                     3    Read / did the serial shift register finish a byte? (1=yes).
+                          Write/ enable or disable serial shift register interrupt (1=enable,
+                          0=disable)
+                     4    Read / was a signal sent on the flag line?  (1=yes).
+                          Write/ enable or disable FLAG line interrupt (1=enable, 0=disable)
+                     5    Not used
+                     6    Not used
+                     7    Read / did any CIA #1 source cause an interrupt?  (1=yes).
+                          Write/ set or clear bits of this register (1=bits written with 1 will
+                          be set, 0=bits written with 1 will be cleared)
 
                           This register is used to control the five interrupt sources on the
                           6526 CIA chip.  These sources are Timer A, Timer B, the Time of Day
@@ -2952,17 +2954,17 @@ $DC0D        CIAICR       Interrupt Control Register
 
 $DC0E        CIACRA       Control Register A
 
-                          Bit 0:  Start Timer A (1=start, 0=stop)
-                          Bit 1:  Select Timer A output on Port B (1=Timer A output appears on Bit 6 of
-                                  Port B)
-                          Bit 2:  Port B output mode (1=toggle Bit 6, 0=pulse Bit 6 for one cycle)
-                          Bit 3:  Timer A run mode (1=one-shot, 0=continuous)
-                          Bit 4:  Force latched value to be loaded to Timer A counter (1=force load
-                                  strobe)
-                          Bit 5:  Timer A input mode (1=count microprocessor cycles, 0=count signals on
-                                  CNT line at pin 4 of User Port)
-                          Bit 6:  Serial Port (56332, $DC0C) mode (1=output, 0=input)
-                          Bit 7:  Time of Day Clock frequency (1=50 Hz required on TOD pin, 0=60 Hz)
+                     0    Start Timer A (1=start, 0=stop)
+                     1    Select Timer A output on Port B (1=Timer A output appears on Bit 6 of
+                            Port B)
+                     2    Port B output mode (1=toggle Bit 6, 0=pulse Bit 6 for one cycle)
+                     3    Timer A run mode (1=one-shot, 0=continuous)
+                     4    Force latched value to be loaded to Timer A counter (1=force load
+                            strobe)
+                     5    Timer A input mode (1=count microprocessor cycles, 0=count signals on
+                            CNT line at pin 4 of User Port)
+                     6    Serial Port (56332, $DC0C) mode (1=output, 0=input)
+                     7    Time of Day Clock frequency (1=50 Hz required on TOD pin, 0=60 Hz)
 
                           Bits 0-3.  This nybble controls Timer A.  Bit 0 is set to 1 to start
                           the timer counting down, and set to 0 to stop it.  Bit 3 sets the
@@ -3006,21 +3008,21 @@ $DC0E        CIACRA       Control Register A
 
 $DC0F        CIACRB       Control Register B
 
-                          Bit 0:  Start Timer B (1=start, 0=stop)
-                          Bit 1:  Select Timer B output on Port B (1=Timer B output appears on
-                                  Bit 7 of Port B)
-                          Bit 2:  Port B output mode (1=toggle Bit 7, 0=pulse Bit 7 for one
-                                  cycle)
-                          Bit 3:  Timer B run mode (1=one-shot, 0=continuous)
-                          Bit 4:  Force latched value to be loaded to Timer B counter (1=force
-                                  load strobe)
-                          Bits 5-6:  Timer B input mode
-                                     00 = Timer B counts microprocessor cycles
-                                     01 = Count signals on CNT line at pin 4 of User Port
-                                     10 = Count each time that Timer A counts down to 0
-                                     11 = Count Timer A 0's when CNT pulses are also present
-                          Bit 7:  Select Time of Day write (0=writing to TOD registers sets
-                                  alarm, 1=writing to TOD registers sets clock)
+                     0    Start Timer B (1=start, 0=stop)
+                     1    Select Timer B output on Port B (1=Timer B output appears on
+                            Bit 7 of Port B)
+                     2    Port B output mode (1=toggle Bit 7, 0=pulse Bit 7 for one
+                            cycle)
+                     3    Timer B run mode (1=one-shot, 0=continuous)
+                     4    Force latched value to be loaded to Timer B counter (1=force
+                            load strobe)
+                     5-6  Timer B input mode
+                              00 = Timer B counts microprocessor cycles
+                              01 = Count signals on CNT line at pin 4 of User Port
+                              10 = Count each time that Timer A counts down to 0
+                              11 = Count Timer A 0's when CNT pulses are also present
+                     7    Select Time of Day write (0=writing to TOD registers sets
+                          alarm, 1=writing to TOD registers sets clock)
 
                           Bits 0-3.  This nybble performs the same functions for Timer B that
                           Bits 0-3 of Control Register A perform for Timer A, except that Timer
@@ -3180,10 +3182,10 @@ $DD00-$DD01               CIA #2 Data Ports A and B
                           Bits 0 and 1 select the current 16K bank for video memory from the
                           four possible choices using the following bit patterns:
 
-                          00 (bit value of 0) Bank 3 (49152-65535, $C000-$FFFF)
-                          01 (bit value of 1) Bank 2 (32768-49151, $8000-$BFFF)
-                          10 (bit value of 2) Bank 1 (16384-32767, $4000-$7FFF)
-                          11 (bit value of 3) Bank 0 (0-16383, $0-$3FFF)
+                              00 (bit value of 0) Bank 3 (49152-65535, $C000-$FFFF)
+                              01 (bit value of 1) Bank 2 (32768-49151, $8000-$BFFF)
+                              10 (bit value of 2) Bank 1 (16384-32767, $4000-$7FFF)
+                              11 (bit value of 3) Bank 0 (0-16383, $0-$3FFF)
 
                           The technique for making this change from BASIC is discussed below.
                           But before we go ahead and start changing banks, let's briefly review
@@ -3275,21 +3277,18 @@ $DD00-$DD01               CIA #2 Data Ports A and B
                           2.  Select a bank.  Banks 0-3 can be chosen by entering the following
                           lines:
 
-                          POKE 56578,PEEK(56578) OR 3: REM SET FOR OUTPUT IF NOT ALREADY
-                          POKE 56576,(PEEK(56576) AND 252) OR (3-BANK): REM BANK IS BANK #, MUST
-                            BE 0-3
+                              POKE 56578,PEEK(56578) OR 3: REM SET FOR OUTPUT IF NOT ALREADY
+                              POKE 56576,(PEEK(56576) AND 252) OR (3-BANK): REM BANK IS BANK #, MUST BE 0-3
 
                           3.  Set the VIC-II register for character memory.  As explained at the
                           entry for location 53272 ($D018), the formula for this is:
 
-                          POKE 53272,(PEEK(53272) AND 240) OR TK: REM TK IS 2 KBYTE OFFSET FROM
-                            BEGINNING OF BLOCK
+                              POKE 53272,(PEEK(53272) AND 240) OR TK: REM TK IS 2 KBYTE OFFSET FROM BEGINNING OF BLOCK
 
                           4.  Set the VIC-II register for display memory.  As explained at the
                           entry for location 53272 ($D018), the formula for this is:
 
-                          POKE 53272,(PEEK(53272) AND 15) OR K*16: REM K IS KBYTE OFFSET FROM
-                            BEGINNING OF BLOCK
+                          POKE 53272,(PEEK(53272) AND 15) OR K*16: REM K IS KBYTE OFFSET FROM BEGINNING OF BLOCK
 
                           Since steps 3 and 4 operate on the same register, you could combine
                           these steps and just POKE 53272,(16*K+TK).
@@ -3299,7 +3298,7 @@ $DD00-$DD01               CIA #2 Data Ports A and B
                           for the screen, the Operating System does not yet know where to write
                           its text characters.  Let it know with this statement:
 
-                          POKE 648,AD/256: REM AD IS THE ACTUAL ADDRESS OF SCREEN MEMORY
+                              POKE 648,AD/256: REM AD IS THE ACTUAL ADDRESS OF SCREEN MEMORY
 
                           After you make this change, you must watch out for the STOP/RESTORE
                           key combination.  The BRK initialization changes the screen display
@@ -3325,13 +3324,13 @@ $DD00-$DD01               CIA #2 Data Ports A and B
                               20 FOR I=1 TO 33:READ A:POKE 49152+I,A:NEXT: REM SET UP ML ROUTINE
                               30 GOSUB 200: REM ML COPY OF ROM CHARACTER SET TO RAM
                               40 POKE 56576,PEEK(56576) AND 252: REM STEP 1, ENABLE BANK 3
-                              50 POKE 53272,44: REM STEPS 2-3, POINT VIC-II TO SCREEN AND CHARACTER      MEMORY
+                              50 POKE 53272,44: REM STEPS 2-3, POINT VIC-II TO SCREEN AND CHARACTER MEMORY
                               60 REM SCREEN OFFSET IS 2*16, CHARACTER OFFSET IS 12
                               70 POKE 648,200: REM STEP 4, POINT OS TO SCREEN AT 51200 (200*256)
                               80 PRINT CHR$(147): REM CLEAR SCREEN
                               90 FOR I=53236 TO 53245:READ A:POKE I,A:NEXT: REM NEW INTERRUPT ROUTINE
                               100 POKE 53246,PEEK(792):POKE 53247,PEK(793): REM SAVE OLD NMI VECTOR
-                              110 POKE 792,244:POKE 793,207: REM ROUTE THE INTERRUPT THROUGH THE NEW      ROUTINE
+                              110 POKE 792,244:POKE 793,207: REM ROUTE THE INTERRUPT THROUGH THE NEW ROUTINE
                               120 FOR I=0 TO 255:POKE 51400+I,I:POKE 55496+I,1:NEXT
                               125 REM POKE CHARACTERS TO SCREEN
                               130 FOR J=1 TO 8:FOR I=61439+J TO I+2048 STEP 8
@@ -3347,7 +3346,7 @@ $DD00-$DD01               CIA #2 Data Ports A and B
                               300 REM DATA FOR ML PROGRAM TO COPY CHARACTER SET TO RAM
                               310 DATA169,0,133,251,133,253,169,208,133,252,169,240,133,254,162,16
                               320 DATA160,0,177,251,145,253,136,208,249,230,252,230,254,202,208,240,96
-                              330 REM NEXT IS ML PROGRAM TO MAKE THE RESTORE KEY RESET OS POINTER TO      SCREEN
+                              330 REM NEXT IS ML PROGRAM TO MAKE THE RESTORE KEY RESET OS POINTER TO SCREEN
                               340 DATA 72,169,4,141,136,02,104,108,254,207
 
                           See also the sample program showing how to configure your 64 like a
@@ -3355,26 +3354,26 @@ $DD00-$DD01               CIA #2 Data Ports A and B
 
 $DD00        CI2PRA       Data Port Register A
 
-                          Bits 0-1:  Select the 16K VIC-II chip memory bank (11=bank 0, 00=bank 3)
-                          Bit 2:  RS-232 data output (Sout)/Pin M of User Port
-                          Bit 3:  Serial bus ATN signal output
-                          Bit 4:  Serial bus clock pulse output
-                          Bit 5:  Serial bus data output
-                          Bit 6:  Serial bus clock pulse input
-                          Bit 7:  Serial bus data input
+                     0-1  Select the 16K VIC-II chip memory bank (11=bank 0, 00=bank 3)
+                     2    RS-232 data output (Sout)/Pin M of User Port
+                     3    Serial bus ATN signal output
+                     4    Serial bus clock pulse output
+                     5    Serial bus data output
+                     6    Serial bus clock pulse input
+                     7    Serial bus data input
 
 $DD01        CI2PRB       Data Port B
 
-                          Bit 0:  RS-232 data input (SIN)/ Pin C of User Port
-                          Bit 1:  RS-232 request to send (RTS)/ Pin D of User Port
-                          Bit 2:  RS-232 data terminal ready (DTR)/ Pin E of User Port
-                          Bit 3:  RS-232 ring indicator (RI)/ Pin F of User Port
-                          Bit 4:  RS-232 carrier detect (DCD)/ Pin H of User Port
-                          Bit 5:  Pin J of User Port
-                          Bit 6:  RS-232 clear to send (CTS)/ Pin K of User Port
-                                  Toggle or pulse data output for Timer A
-                          Bit 7:  RS-232 data set ready (DSR)/ Pin L of User Port
-                                  Toggle or pulse data output for Timer B
+                     0    RS-232 data input (SIN)/ Pin C of User Port
+                     1    RS-232 request to send (RTS)/ Pin D of User Port
+                     2    RS-232 data terminal ready (DTR)/ Pin E of User Port
+                     3    RS-232 ring indicator (RI)/ Pin F of User Port
+                     4    RS-232 carrier detect (DCD)/ Pin H of User Port
+                     5    Pin J of User Port
+                     6    RS-232 clear to send (CTS)/ Pin K of User Port
+                          Toggle or pulse data output for Timer A
+                     7    RS-232 data set ready (DSR)/ Pin L of User Port
+                          Toggle or pulse data output for Timer B
 
 $DD02-$DD03               CIA #2 Data Direction Registers A and B
 
@@ -3390,25 +3389,25 @@ $DD02-$DD03               CIA #2 Data Direction Registers A and B
 
 $DD02        C2DDRA       Data Direction Register A
 
-                          Bit 0:  Select Bit 0 of data Port A for input or output (0=input, 1=output)
-                          Bit 1:  Select Bit 1 of data Port A for input or output (0=input, 1=output)
-                          Bit 2:  Select Bit 2 of data Port A for input or output (0=input, 1=output)
-                          Bit 3:  Select Bit 3 of data Port A for input or output (0=input, 1=output)
-                          Bit 4:  Select Bit 4 of data Port A for input or output (0=input, 1=output)
-                          Bit 5:  Select Bit 5 of data Port A for input or output (0=input, 1=output)
-                          Bit 6:  Select Bit 6 of data Port A for input or output (0=input, 1=output)
-                          Bit 7:  Select Bit 7 of data Port A for input or output (0=input, 1=output)
+                     0    Select Bit 0 of data Port A for input or output (0=input, 1=output)
+                     1    Select Bit 1 of data Port A for input or output (0=input, 1=output)
+                     2    Select Bit 2 of data Port A for input or output (0=input, 1=output)
+                     3    Select Bit 3 of data Port A for input or output (0=input, 1=output)
+                     4    Select Bit 4 of data Port A for input or output (0=input, 1=output)
+                     5    Select Bit 5 of data Port A for input or output (0=input, 1=output)
+                     6    Select Bit 6 of data Port A for input or output (0=input, 1=output)
+                     7    Select Bit 7 of data Port A for input or output (0=input, 1=output)
 
 $DD03        C2DDRB       Data Direction Register B
 
-                          Bit 0:  Select Bit 0 of data Port B for input or output (0=input, 1=output)
-                          Bit 1:  Select Bit 1 of data Port B for input or output (0=input, 1=output)
-                          Bit 2:  Select Bit 2 of data Port B for input or output (0=input, 1=output)
-                          Bit 3:  Select Bit 3 of data Port B for input or output (0=input, 1=output)
-                          Bit 4:  Select Bit 4 of data Port B for input or output (0=input, 1=output)
-                          Bit 5:  Select Bit 5 of data Port B for input or output (0=input, 1=output)
-                          Bit 6:  Select Bit 6 of data Port B for input or output (0=input, 1=output)
-                          Bit 7:  Select Bit 7 of data Port B for input or output (0=input, 1=output)
+                     0    Select Bit 0 of data Port B for input or output (0=input, 1=output)
+                     1    Select Bit 1 of data Port B for input or output (0=input, 1=output)
+                     2    Select Bit 2 of data Port B for input or output (0=input, 1=output)
+                     3    Select Bit 3 of data Port B for input or output (0=input, 1=output)
+                     4    Select Bit 4 of data Port B for input or output (0=input, 1=output)
+                     5    Select Bit 5 of data Port B for input or output (0=input, 1=output)
+                     6    Select Bit 6 of data Port B for input or output (0=input, 1=output)
+                     7    Select Bit 7 of data Port B for input or output (0=input, 1=output)
 
 $DD04-$DD07               Timer A and B Low and High Bytes
 
@@ -3439,27 +3438,27 @@ $DD08-$DD0B               Time of Day Clock
 
 $DD08        TO2TEN       Time of Day Clock Tenths of Seconds
 
-                          Bits 0-3:  Time of Day tenths of second digit (BCD)
-                          Bits 4-7:  Unused
+                     0-3  Time of Day tenths of second digit (BCD)
+                     4-7  Unused
 
 $DD09        TO2SEC       Time of Day Clock Seconds
 
-                          Bits 0-3:  Second digit of Time of Day seconds (BCD)
-                          Bits 4-6:  First digit of Time of Day seconds (BCD)
+                     0-3  Second digit of Time of Day seconds (BCD)
+                     4-6  First digit of Time of Day seconds (BCD)
                           Bit 7:  Unused
 
 $DD0A        TO2MIN       Time of Day Clock Minutes
 
-                          Bits 0-3:  Second digit of Time of Day minutes (BCD)
-                          Bits 4-6:  First digit of Time of Day minutes (BCD)
-                          Bit 7:  Unused
+                     0-3  Second digit of Time of Day minutes (BCD)
+                     4-6  First digit of Time of Day minutes (BCD)
+                     7    Unused
 
 $DD0B        TO2HRS       Time of Day Clock Hours
 
-                          Bits 0-3:  Second digit of Time of Day hours (BCD)
+                     0-3  Second digit of Time of Day hours (BCD)
                           Bit 4:  First digit of Time of Day hours (BCD)
-                          Bits 5-6:  Unused
-                          Bit 7:  AM/PM flag (1=PM, 0=AM)
+                     5-6  Unused
+                     7    AM/PM flag (1=PM, 0=AM)
 
 $DD0C        CI2SDR       Serial Data Port
 
@@ -3471,23 +3470,23 @@ $DD0C        CI2SDR       Serial Data Port
 
 $DD0D        CI2ICR       Interrupt Control Register
 
-                          Bit 0:  Read / did Timer A count down to 0?  (1=yes)
-                                  Write/ enable or disable Timer A interrupt (1=enable, 0=disable)
-                          Bit 1:  Read / did Timer B count down to 0?  (1=yes)
-                                  Write/ enable or disable Timer B interrupt (1=enable, 0=disable)
-                          Bit 2:  Read / did Time of Day Clock reach the alarm time?  (1=yes)
-                                  Write/ enable or disable TOD clock alarm interrupt (1=enable,
-                                  0=disable)
-                          Bit 3:  Read / did the serial shift register finish a byte?  (1=yes)
-                                  Write/ enable or disable serial shift register interrupt (1=enable,
-                                  0=disable)
-                          Bit 4:  Read / was a signal sent on the FLAG line?  (1=yes)
-                                  Write/ enable or disable FLAG line interrupt (1=enable, 0=disable)
-                          Bit 5:  Not used
-                          Bit 6:  Not used
-                          Bit 7:  Read / did any CIA #2 source cause an interrupt?  (1=yes)
-                                  Write/ set or clear bits of this register (1=bits written with 1 will
-                                  be set, 0=bits written with 1 will be cleared)
+                     0    Read / did Timer A count down to 0?  (1=yes).
+                          Write/ enable or disable Timer A interrupt (1=enable, 0=disable)
+                     1    Read / did Timer B count down to 0?  (1=yes).
+                          Write/ enable or disable Timer B interrupt (1=enable, 0=disable)
+                     2    Read / did Time of Day Clock reach the alarm time?  (1=yes).
+                          Write/ enable or disable TOD clock alarm interrupt (1=enable,
+                          0=disable)
+                     3    Read / did the serial shift register finish a byte?  (1=yes).
+                          Write/ enable or disable serial shift register interrupt (1=enable,
+                          0=disable)
+                     4    Read / was a signal sent on the FLAG line?  (1=yes).
+                          Write/ enable or disable FLAG line interrupt (1=enable, 0=disable)
+                     5    Not used
+                     6    Not used
+                     7    Read / did any CIA #2 source cause an interrupt?  (1=yes).
+                          Write/ set or clear bits of this register (1=bits written with 1 will
+                          be set, 0=bits written with 1 will be cleared)
 
                           This register is used to control the five interrupt sources on the
                           6526 CIA chip.  For details on its operation, see the entry for 56333
@@ -3500,37 +3499,37 @@ $DD0E-$DD0F               See locations 56334 and 56334 for details
 
 $DD0E        CI2CRA       Control Register A
 
-                          Bit 0:  Start Timer A (1=start, 0=stop)
-                          Bit 1:  Select Timer A output on Port B (1=Timer A output appears on
-                                  Bit 6 of Port B)
-                          Bit 2:  Port B output mode (1=toggle Bit 6, 0=pulse Bit 6 for one
-                                  cycle)
-                          Bit 3:  Timer A run mode (1=one-shot, 0=continuous)
-                          Bit 4:  Force latched value to be loaded to Timer A counter (1=force
-                                  load strobe)
-                          Bit 5:  Timer A input mode (1=count microprocessor cycles, 0=count
-                                  signals on CNT line at pin 4 of User Port)
-                          Bit 6:  Serial Port (56588, $DD0C) mode (1=output, 0=input)
-                          Bit 7:  Time of Day Clock frequency (1=50 Hz required on TOD pin,
-                                  0=60 Hz)
+                     0    Start Timer A (1=start, 0=stop)
+                     1    Select Timer A output on Port B (1=Timer A output appears on
+                            Bit 6 of Port B)
+                     2    Port B output mode (1=toggle Bit 6, 0=pulse Bit 6 for one
+                            cycle)
+                     3    Timer A run mode (1=one-shot, 0=continuous)
+                     4    Force latched value to be loaded to Timer A counter (1=force
+                            load strobe)
+                     5    Timer A input mode (1=count microprocessor cycles, 0=count
+                            signals on CNT line at pin 4 of User Port)
+                     6    Serial Port (56588, $DD0C) mode (1=output, 0=input)
+                     7    Time of Day Clock frequency (1=50 Hz required on TOD pin,
+                            0=60 Hz)
 
 $DD0F        CI2CRB       Control Register B
 
-                          Bit 0:  Start Timer B (1=start, 0=stop)
-                          Bit 1:  Select Timer B output on Port B (1=Timer B output appears on
-                                  Bit 7 of Port B)
-                          Bit 2:  Port B output mode (1=toggle Bit 7, 0=pulse Bit 7 for one
-                                  cycle)
-                          Bit 3:  Timer B run mode (1=one shot, 0=continuous)
-                          Bit 4:  Force latched value to be loaded to Timer B counter (1=force
-                                  load strobe)
-                          Bits 5-6:  Timer B input mode
-                                     00 = Timer B counts microprocessor cycles
-                                     01 = Count signals on CNT line at pin 4 of User Port
-                                     10 = Count each time that Timer A counts down to 0
-                                     11 = Count Timer A 0's when CNT pulses are also present
-                          Bit 7:  Select Time of Day write (0=writing to TOD registers sets
-                                     alarm, 1=writing to ROD registers sets clock)
+                     0    Start Timer B (1=start, 0=stop)
+                     1    Select Timer B output on Port B (1=Timer B output appears on
+                          Bit 7 of Port B)
+                     2    Port B output mode (1=toggle Bit 7, 0=pulse Bit 7 for one
+                            cycle)
+                     3    Timer B run mode (1=one shot, 0=continuous)
+                     4    Force latched value to be loaded to Timer B counter (1=force
+                            load strobe)
+                     5-6  Timer B input mode
+                              00 = Timer B counts microprocessor cycles
+                              01 = Count signals on CNT line at pin 4 of User Port
+                              10 = Count each time that Timer A counts down to 0
+                              11 = Count Timer A 0's when CNT pulses are also present
+                     7    Select Time of Day write (0=writing to TOD registers sets
+                            alarm, 1=writing to ROD registers sets clock)
 
 $DD10-$DDFF               CIA #2 Register Images
 
