@@ -20,9 +20,9 @@ for filename_in in sys.argv[1:]:
 	index = 0
 
 	while start_offset < len(charset):
-		img = Image.new('1', (16 * 8, 16 * 8), color = 'white')
+		img = Image.new('1', (16 * 8, 8 * 8), color = 'white')
 		pixels = img.load()
-		for c in range(0, 256):
+		for c in range(0, 128):
 			for y in range(0, 8):
 				for x in range(0, 8):
 					if charset[start_offset + ((c << 3) | y)] & (1 << (7-x)) > 0:
@@ -32,7 +32,7 @@ for filename_in in sys.argv[1:]:
 		print("Writing {}".format(filename_out))
 		img.save(filename_out)
 
-		start_offset += 2048
+		start_offset += 1024
 		index += 1
 
 
