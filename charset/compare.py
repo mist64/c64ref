@@ -93,36 +93,73 @@ pprint.pprint(charset_descriptions_from_crc)
 all_charset_crcs = list(charset_descriptions_from_crc.keys())
 
 frendly_name_for_crc = {
+	# base
 	3435009579: "PET upper",
 	605158551:  "PET lower",
+	2829211046: "PET 1 lower swapped"
 
 	4273001443: "VIC-20 upper",
 	371145055:  "VIC-20 lower",
 
 	43627586:   "C64/C16/C128 upper",
 	3491641016: "C64 lower",
+	239914569:  "C64 upper alt",
+	3704310963: "C64 lower alt",
 	2047760083: "C128 lower",
 	265494848:  "C16 lower",
 
 	18405299:   "LCD upper",
 	3336443024: "LCD lower",
 
-	239914569:  "C64 upper alt",
-	3704310963: "C64 lower alt",
+	#
+	# PET-style
+	#
 
 	453258916:  "VIC-20/C128 German upper",
 	18896184:   "VIC-20/C128 German lower",
-	3224365868: "C64 Spanish upper",
-	2256338360: "C64 Spanish lower",
+
+	3522684517: "VIC-20/C128 Norwegian upper",
+	1316062724: "VIC-20/C128 Norwegian upper alt",
+	1319596343: "VIC-20/C128 Norwegian lower",
+	738416628:  "VIC-20/C128 Norwegian lower alt",
+
+	1378924721: "PET/VIC-20 Swedish upper",
+	738563421:  "PET/VIC-20 Swedish lower",
+
+	#
+	# C64-style
+	#
 
 	2746692664: "C64 Danish upper",
 	2942455347: "C64 Danish upper alt",
 	3266402763: "C64 Danish lower",
 	3462669248: "C64 Danish lower alt",
 
-	1378924721: "PET/VIC-20 Swedish upper",
-	738563421:  "PET/VIC-20 Swedish lower",
+	3224365868: "C64 Spanish upper",
+	2256338360: "C64 Spanish lower",
 
+	684454765:  "C64 Swedish upper",
+	4104886629: "C64 Swedish upper 2",
+	4099903933: "C64 Swedish upper alt",
+	4169065326: "C64 Swedish upper 2 alt",
+	2117474727: "C64 Swedish lower",
+	3699529572: "C64 Swedish lower 2",
+	3324836326: "C64 Swedish lower alt",
+	2743931256: "C64 Swedish lower 2 alt",
+
+	#
+	# PET other
+	#
+	276903316:  "SuperPET ASCII Swedish",
+	2832168426: "SuperPET APL Swedish",
+
+	#
+	# Other
+	#
+	1220100133: "C64 Japanese upper" # PET looks, one line shifted down, symbols scrambled
+	2318553394: "C64 Japanese upper/Kanji"
+	1258522589: "C64 Turkish upper" # probably 3rd party
+	1004035711: "C64 Turkish lower" # probably 3rd party
 }
 
 reference_charset_crcs = list(frendly_name_for_crc.keys())
@@ -145,6 +182,12 @@ for charset_crc in charset_from_crc.keys():
 		print('{}:'.format(frendly_name_for_crc[charset_crc]))
 	else:
 		print(charset_descriptions_from_crc[charset_crc], charset_crc)
+
+	data = []
 	for similar_charset_crc in similar_charsets.keys():
-		print('\t',frendly_name_for_crc[similar_charset_crc], similar_charsets[similar_charset_crc])
+		data.append((similar_charsets[similar_charset_crc], similar_charset_crc))
+	data.sort(key=lambda tup: tup[0], reverse=True)
+
+	for (num, crc) in data:
+		print('\t', num, frendly_name_for_crc[crc])
 
