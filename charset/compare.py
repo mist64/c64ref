@@ -112,6 +112,17 @@ frendly_name_for_crc = {
 
 	453258916:  "VIC-20/C128 German upper",
 	18896184:   "VIC-20/C128 German lower",
+	3224365868: "C64 Spanish upper",
+	2256338360: "C64 Spanish lower",
+
+	2746692664: "C64 Danish upper",
+	2942455347: "C64 Danish upper alt",
+	3266402763: "C64 Danish lower",
+	3462669248: "C64 Danish lower alt",
+
+	1378924721: "PET/VIC-20 Swedish upper",
+	738563421:  "PET/VIC-20 Swedish lower",
+
 }
 
 reference_charset_crcs = list(frendly_name_for_crc.keys())
