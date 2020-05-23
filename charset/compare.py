@@ -86,16 +86,32 @@ for filename_in in sys.argv[1:]:
 		start_offset += 1024
 		index += 1
 
-#pprint.pprint(charset_descriptions_from_crc)
+pprint.pprint(charset_descriptions_from_crc)
 #pprint.pprint(char_descriptions_from_crc)
 #pprint.pprint(charset_from_crc)
 
 all_charset_crcs = list(charset_descriptions_from_crc.keys())
 
-print('Source,Target,Type,Kind,Id,Label,timeset,Weight')
-index = 0
+frendly_name_for_crc = {
+	3435009579: "PET upper",
+	605158551:  "PET lower",
+
+	371145055:  "VIC-20 upper",
+	4273001443: "VIC-20 lower",
+
+	43627586:   "C64/C16/C128 upper",
+	3491641016: "C64 lower",
+	2047760083: "C128 lower",
+	265494848:  "C16 lower",
+
+	239914569:  "C64 upper alt",
+	3704310963: "C64 lower alt",
+}
+
+reference_charset_crcs = list(frendly_name_for_crc.keys())
 
 for charset_crc in charset_from_crc.keys():
+
 	charset = charset_from_crc[charset_crc]
 	similar_charsets = {}
 	for c in range(0, 128):
@@ -103,48 +119,15 @@ for charset_crc in charset_from_crc.keys():
 		crc = binascii.crc32(char)
 		char_descriptions = char_descriptions_from_crc[crc]
 		for (charset_crc2, same_c) in char_descriptions:
-			if same_c == c:
+			if same_c == c and charset_crc2 in reference_charset_crcs:
 				if charset_crc2 in similar_charsets:
 					similar_charsets[charset_crc2] += 1
 				else:
 					similar_charsets[charset_crc2] = 1
-	#print(charset_crc, similar_charsets)
+	if charset_crc in reference_charset_crcs:
+		print(frendly_name_for_crc[charset_crc], charset_crc)
+	else:
+		print(charset_descriptions_from_crc[charset_crc][0], charset_crc)
 	for similar_charset_crc in similar_charsets.keys():
-		if charset_crc != similar_charset_crc and similar_charsets[similar_charset_crc] > 120:
-			#print('{},{},Undirected,{},{},,,1'.format(all_charset_crcs.index(charset_crc), all_charset_crcs.index(similar_charset_crc), 128 - similar_charsets[similar_charset_crc], index))
-			print('{},{},Undirected,{},{},,,1'.format(all_charset_crcs.index(charset_crc), all_charset_crcs.index(similar_charset_crc), 128 - similar_charsets[similar_charset_crc], index))
-			index += 1
+		print('\t',frendly_name_for_crc[similar_charset_crc], similar_charsets[similar_charset_crc])
 
-index = 0
-for crc in all_charset_crcs:
-	print(index, charset_descriptions_from_crc[crc])
-	index += 1
-
-
-
-#reference_charset_crcs = [
-#	43627586,   # C64 upper
-#	3491641016, # C64 lower
-#	3435009579, # PET upper
-#	605158551,  # PET lower
-#	#239914569  # C64 upper alt
-#	#3704310963 # C64 lower alt
-#	#2047760083 # C128 lower
-#	#265494848  # C16 lower
-#]
-#
-#for charset_crc in charset_from_crc.keys():
-#	charset = charset_from_crc[charset_crc]
-#	similar_charsets = {}
-#	for c in range(0, 128):
-#		char = charset[c*8:c*8+8]
-#		crc = binascii.crc32(char)
-#		char_descriptions = char_descriptions_from_crc[crc]
-#		for (charset_crc2, same_c) in char_descriptions:
-#			if same_c == c and charset_crc2 in reference_charset_crcs:
-#				if charset_crc2 in similar_charsets:
-#					similar_charsets[charset_crc2] += 1
-#				else:
-#					similar_charsets[charset_crc2] = 1
-#	print(charset_crc, similar_charsets)
-#
