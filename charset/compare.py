@@ -96,16 +96,22 @@ frendly_name_for_crc = {
 	3435009579: "PET upper",
 	605158551:  "PET lower",
 
-	371145055:  "VIC-20 upper",
-	4273001443: "VIC-20 lower",
+	4273001443: "VIC-20 upper",
+	371145055:  "VIC-20 lower",
 
 	43627586:   "C64/C16/C128 upper",
 	3491641016: "C64 lower",
 	2047760083: "C128 lower",
 	265494848:  "C16 lower",
 
+	18405299:   "LCD upper",
+	3336443024: "LCD lower",
+
 	239914569:  "C64 upper alt",
 	3704310963: "C64 lower alt",
+
+	453258916:  "VIC-20/C128 German upper",
+	18896184:   "VIC-20/C128 German lower",
 }
 
 reference_charset_crcs = list(frendly_name_for_crc.keys())
@@ -125,9 +131,9 @@ for charset_crc in charset_from_crc.keys():
 				else:
 					similar_charsets[charset_crc2] = 1
 	if charset_crc in reference_charset_crcs:
-		print(frendly_name_for_crc[charset_crc], charset_crc)
+		print('{}:'.format(frendly_name_for_crc[charset_crc]))
 	else:
-		print(charset_descriptions_from_crc[charset_crc][0], charset_crc)
+		print(charset_descriptions_from_crc[charset_crc], charset_crc)
 	for similar_charset_crc in similar_charsets.keys():
 		print('\t',frendly_name_for_crc[similar_charset_crc], similar_charsets[similar_charset_crc])
 
