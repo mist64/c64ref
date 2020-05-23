@@ -96,7 +96,7 @@ frendly_name_for_crc = {
 	# base
 	3435009579: "PET upper",
 	605158551:  "PET lower",
-	2829211046: "PET 1 lower swapped"
+	2829211046: "PET 1 lower swapped",
 
 	4273001443: "VIC-20 upper",
 	371145055:  "VIC-20 lower",
@@ -118,13 +118,54 @@ frendly_name_for_crc = {
 	453258916:  "VIC-20/C128 German upper",
 	18896184:   "VIC-20/C128 German lower",
 
+	4101158221: "C128 Danish upper",
+	1940591026: "C128 Danish lower",
+
+	3526512616: "PET French upper",
+
+	2762550771: "C128 French upper",
+	1044248186: "C128 French upper alt",
+	1835942841: "C128 French lower",
+	3010141862: "C128 French lower alt",
+
+	2267404205: "PET German upper",
+	619984985:  "PET German lower", # "from VICE"; sane layout
+	3068260560: "PET German lower alt", # less sane layout
+	3794189463: "PET German lower alt", # 8296D
+
+	3980244294: "PET Greek upper", # greek characters instead of latin, some latin in graphics
+	3648127786: "PET Greek lower",
+
+	556671508:  "PET Norwegian upper",
+	3534714178: "PET Norwegian lower",
+	813334050:  "C128 Norwegian upper",
+	420996052:  "C128 Norwegian upper alt",
+	1384180002: "C128 Norwegian lower",
+	2188101221: "C128 Norwegian lower alt",
+
 	3522684517: "VIC-20/C128 Norwegian upper",
 	1316062724: "VIC-20/C128 Norwegian upper alt",
 	1319596343: "VIC-20/C128 Norwegian lower",
 	738416628:  "VIC-20/C128 Norwegian lower alt",
 
+	2975021441: "PET Russian upper", # cyrillic in graphics
+
+	2712146221: "C128 Spanish upper",
+	3401793753: "C128 Spanish upper alt",
+	1382891279: "C128 Spanish lower",
+	1625115699: "C128 Spanish lower alt",
+
 	1378924721: "PET/VIC-20 Swedish upper",
 	738563421:  "PET/VIC-20 Swedish lower",
+	2706267264: "VIC-20 Swedish lowern alt", # same as above, but ö seems buggy
+
+	891747983:  "C128 Swiss upper",
+	2947687686: "C128 Swiss upper alt",
+	4242641093: "C128 Swiss lower (PET French lower)",
+	585420250:  "C128 Swiss lower alt",
+
+	1044400996: "VIC-20 Japanese upper", # pound -> yen
+	3580406124: "VIC-20 Japanese upper/Kanji",
 
 	#
 	# C64-style
@@ -134,6 +175,9 @@ frendly_name_for_crc = {
 	2942455347: "C64 Danish upper alt",
 	3266402763: "C64 Danish lower",
 	3462669248: "C64 Danish lower alt",
+
+	3962070790: "C64 Hungarian lower",
+	3911143684: "C64 Hungarian lower alt",
 
 	3224365868: "C64 Spanish upper",
 	2256338360: "C64 Spanish lower",
@@ -147,19 +191,27 @@ frendly_name_for_crc = {
 	3324836326: "C64 Swedish lower alt",
 	2743931256: "C64 Swedish lower 2 alt",
 
+	679100969:  "C16 Hungarian upper",
+	2966169543: "C16 Hungarian lower",
+
 	#
 	# PET other
 	#
+	909143548:  "SuperPET ASCII",
 	276903316:  "SuperPET ASCII Swedish",
-	2832168426: "SuperPET APL Swedish",
+	2832168426: "SuperPET APL",
 
 	#
 	# Other
 	#
-	1220100133: "C64 Japanese upper" # PET looks, one line shifted down, symbols scrambled
-	2318553394: "C64 Japanese upper/Kanji"
-	1258522589: "C64 Turkish upper" # probably 3rd party
-	1004035711: "C64 Turkish lower" # probably 3rd party
+	1220100133: "C64 Japanese upper", # PET looks, one line shifted down, symbols scrambled
+	2318553394: "C64 Japanese upper/Kanji",
+	1258522589: "C64 Turkish upper", # probably 3rd party
+	1004035711: "C64 Turkish lower", # probably 3rd party
+	2503191058: "C64 upper (buggy 1)", # from C128 Norwegian
+	1495968665: "C64 upper (buggy 2)", # from C128 Norwegian
+	1802520121: "C64 lower (buggy 1)", # from C128 Norwegian
+	163579034:  "C64 lower (buggy 1)", # from C128 Norwegian
 }
 
 reference_charset_crcs = list(frendly_name_for_crc.keys())
