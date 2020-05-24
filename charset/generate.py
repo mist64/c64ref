@@ -52,6 +52,15 @@ for c in range(0, 128):
 
 print('')
 print('</style>')
+
+
+print('<script>')
+print('function test(element) {')
+print('  document.getElementById(element).style.filter = "invert(100%)";')
+print('}')
+print('</script>')
+
+
 print('</head>')
 
 print('<body>')
@@ -64,14 +73,13 @@ print('	<img src="3491641016.png" />')
 print('</div>')
 print('<div>')
 
-
 for c in range(0, 128):
-	print('<span class="container"><span class="character char-{}"></span></span>'.format(hex(c)))
+	print('<span id="{}" type="button" class="container" onclick="test(\'{}\')"><span class="character char-{}"></span></span>'.format(hex(c), hex(c), hex(c)))
 	if c & 15 == 15:
 		print('<br />')
 
 for c in range(0, 128):
-	print('<span class="container inverted"><span class="character char-{}"></span></span>'.format(hex(c)))
+	print('<span id="{}" type="button" class="container inverted" onclick="test(\'{}\')"><span class="character char-{}"></span></span>'.format(hex(c + 128), hex(c + 128), hex(c)))
 	if c & 15 == 15:
 		print('<br />')
 
