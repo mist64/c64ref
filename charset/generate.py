@@ -33,11 +33,11 @@ for c in range(0, 128):
 	petscii_from_scrcode.append(result)
 
 # read control code descriptions
-control_code = {}
+description_from_control_code = {}
 for line in open('petscii_control_codes.txt'):
 	line = line.rstrip()
 	if len(line) != 0:
-		control_code[int(line[0:2], 16)] = line[3:]
+		description_from_control_code[int(line[0:2], 16)] = line[3:]
 
 # read PETSCII -> Unicode
 description_from_unicode = {}
@@ -223,7 +223,7 @@ print('<br />')
 for c1 in range(0, 256):
 	c = scrcode_from_petscii[c1]
 	if c is None:
-		print('<span class="container">{}</span>'.format(control_code[c1]))
+		print('<span class="container">{}</span>'.format(description_from_control_code[c1]))
 	else:
 		print('<span class="container"><span class="character char-{}"></span></span>'.format(hex(c)))
 	if c1 & 15 == 15:
@@ -266,6 +266,40 @@ for c in range(0, 256):
 	unicode = unicode_from_petscii[0][petscii]
 	print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
 	print('<li>Unicode \'&#x{:x};\'</li>'.format(unicode))
+
+for petscii in range(0, 256):
+	print('<h2>PETSCII {}</h2>'.format(hex(petscii)))
+	scr = scrcode_from_petscii[petscii]
+	if scr is None:
+		print('<li><span class="container">{}</span></li>'.format(description_from_control_code[petscii]))
+	else:
+		print('<li><span class="container"><span class="character char-{}"></span></span></li>'.format(hex(scr)))
+
+	print('<li>PETSCII hex: ${:02X}</li>'.format(petscii))
+	print('<li>PETSCII dec: {}</li>'.format(petscii))
+	kbd = ''
+	for modifier in range(0, 4):
+		for scancode in range(0, 64):
+			p2 = petscii_from_scancode[modifier][scancode]
+			if p2 != 0xff and p2 == petscii:
+				m = description_from_modifier[modifier]
+				d = description_from_scancode[scancode]
+				if m:
+					m = '<span style="background-color: black; color: white;">{}</span> + '.format(m)
+				else:
+					m = ''
+
+				kbd += '{}<span style="background-color: black; color: white;">{}</span><br/>'.format(m, d)
+	if len(kbd) > 0:
+		print('<li>Keyboard: {}</li>'.format(kbd))
+		# XXX print keyboard combinations generating alternate codes for the same screen code
+	print('</tr>')
+	print('</table>')
+	if scr:
+		print('<li>Screencode ${:02X}</li>'.format(scr))
+		unicode = unicode_from_petscii[0][petscii]
+		print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
+		print('<li>Unicode \'&#x{:x};\'</li>'.format(unicode))
 
 print('</body>')
 print('</html>')
