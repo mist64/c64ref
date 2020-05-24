@@ -4,21 +4,31 @@
 scale = 4 # character scale up factor
 side = 8 # character width/height 8px
 
-def scrcode_from_petscii(c):
+scrcode_from_petscii = []
+for c in range(0, 256):
 	if c < 0x20:
-		return None
+		d = None
 	elif c < 0x40:
-		return c
+		d = c
 	elif c < 0x60:
-		return c - 0x40
+		d = c - 0x40
 	elif c < 0x80:
-		return c - 0x20
+		d = c - 0x20
 	elif c < 0xa0:
-		return None
+		d = None
 	elif c < 0xc0:
-		return c - 0x40
+		d = c - 0x40
 	else:
-		return c - 0x80
+		d = c - 0x80
+	scrcode_from_petscii.append(d)
+
+petscii_from_scrcode = []
+for c in range(0, 128):
+	result = []
+	for d in range(0, 256):
+		if scrcode_from_petscii[d] == c:
+			result.append(d)
+	petscii_from_scrcode.append(result)
 
 
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
@@ -47,7 +57,7 @@ print('  filter: invert(100%)')
 print(' }')
 print('')
 print('.character {')
-print('  background-image: url(\'3580406124.png\');')
+print('  background-image: url(\'43627586.png\');')
 print('  background-repeat: no-repeat;')
 print('  background-color: #f00;')
 print('  transform: scale(' + str(scale) + ',' + str(scale) + ');')
@@ -61,6 +71,13 @@ print('  display: block;')
 print('  image-rendering: pixelated;')
 print(' }')
 print('')
+
+
+control_code = {}
+for line in open('petscii_control_codes.txt'):
+	line = line.rstrip()
+	if len(line) != 0:
+		control_code[int(line[0:2], 16)] = line[3:]
 
 for c in range(0, 128):
 	x = (c & 15) * -8
@@ -86,7 +103,7 @@ print('<div class="body">')
 print('<h1>C64 Charset</h1>')
 
 print('<div>')
-print('	<img src="3580406124.png" />')
+print('	<img src="43627586.png" />')
 print('</div>')
 print('<div>')
 
@@ -118,15 +135,23 @@ print('<br />')
 
 
 for c1 in range(0, 256):
-	c = scrcode_from_petscii(c1)
-	if not c:
-		c = 0x20
-	print('<span class="container"><span class="character char-{}"></span></span>'.format(hex(c)))
+	c = scrcode_from_petscii[c1]
+	if c is None:
+		print('<span class="container">{}</span>'.format(control_code[c1]))
+	else:
+		print('<span class="container"><span class="character char-{}"></span></span>'.format(hex(c)))
 	if c1 & 15 == 15:
 		print('<br />')
 
 print('</div>')
 print('</div>')
+
+for c in range(0, 256):
+	print('<h2>Screencode {}</h2>'.format(hex(c)))
+	if c < 128:
+		for petscii in petscii_from_scrcode[c]:
+			print('<li><tt>CHR$({})</tt></li>'.format(petscii))
+
 print('</body>')
 print('</html>')
 

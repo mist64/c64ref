@@ -141,11 +141,11 @@ frendly_name_for_crc = {
 	3980244294: ("PET", "Greek", "upper", ""), # greek characters instead of latin, some latin in graphics
 	3648127786: ("PET", "Greek", "lower", ""),
 
-	2058038919: ("CBM", "Hungarian", "upper", ""),
-	1566913143: ("CBM", "Hungarian", "lower", ""),
+	2058038919: ("PET", "Hungarian", "upper", ""),
+	1566913143: ("PET", "Hungarian", "lower", ""),
 
-	1044400996: ("VIC-20", "Japanese", "upper", ""), # pound -> yen
-	1761655243: ("PET", "Japanese", "upper", ""),    # same as "VIC-20 Japanese upper", but bug pixel in arrow-left
+	1044400996: ("PET/VIC-20", "Japanese", "upper", ""),    # pound -> yen, used on VIC-20
+	1761655243: ("PET/VIC-20", "Japanese", "upper", "bug"), # same as above, bug pixel in arrow-left, used on PET
 	3580406124: ("VIC-20", "Japanese", "upper/Kanji", ""),
 
 	556671508:  ("PET", "Norwegian", "upper", ""),
@@ -172,8 +172,8 @@ frendly_name_for_crc = {
 	2706267264: ("VIC-20", "Swedish", "lower", "alt"), # as above; buggy 'ö'
 
 	891747983:  ("C128", "Swiss", "upper", ""),
-	2947687686: ("C128 Swiss", "upper", "alt"),
-	4242641093: ("C128 Swiss", "lower",  ""), # also: PET French lower,
+	2947687686: ("C128", "Swiss", "upper", "alt"),
+	4242641093: ("C128", "Swiss", "lower",  ""), # also: PET French lower,
 	585420250:  ("C128", "Swiss", "lower", "alt"),
 
 	#
