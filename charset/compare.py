@@ -82,7 +82,7 @@ for filename_in in sys.argv[1:]:
 				char_descriptions_from_crc[crc] = set([char_description])
 
 		#write_png(charset, filename_base + '_{}.png'.format(index))
-		write_png(charset, str(binascii.crc32(charset)) + '.png'.format(index))
+		#write_png(charset, str(binascii.crc32(charset)) + '.png'.format(index))
 
 		start_offset += 1024
 		index += 1
@@ -95,129 +95,129 @@ all_charset_crcs = list(charset_descriptions_from_crc.keys())
 
 frendly_name_for_crc = {
 	# base
-	3435009579: "PET upper",
-	605158551:  "PET lower",
-	2829211046: "PET 1 lower swapped",
+	3435009579: ("PET", "", "upper", ""),
+	605158551:  ("PET", "", "lower", ""),
+	2829211046: ("PET", "", "lower", "swapped"),
 
-	4273001443: "VIC-20 upper", # same as "PET upper", but '£' instead of '\'
-	371145055:  "VIC-20 lower", # same as "PET lower", but '£' instead of '\'
+	4273001443: ("VIC-20", "", "upper", ""), # same as "PET upper", but '£' instead of '\'
+	371145055:  ("VIC-20", "", "lower", ""), # same as "PET lower", but '£' instead of '\'
 
-	43627586:   "C64/C16/C128 upper",
-	239914569:  "C64 upper alt", # dual-pixel '@'
-	3491641016: "C64 lower",
-	3704310963: "C64 lower alt", # dual-pixel '@'
-	265494848:  "C16 lower",
-	2047760083: "C128 lower",
+	43627586:   ("C64/C16/C128", "", "upper"),
+	239914569:  ("C64", "", "upper", "alt"), # dual-pixel '@'
+	3491641016: ("C64", "", "lower", ""),
+	3704310963: ("C64", "", "lower", "alt"), # dual-pixel '@'
+	265494848:  ("C16", "", "lower", ""),
+	2047760083: ("C128", "", "lower", ""),
 
-	18405299:   "LCD upper",
-	3336443024: "LCD lower",
+	18405299:   ("LCD", "", "upper", ""),
+	3336443024: ("LCD", "", "lower", ""),
 
 	#
 	# PET-style
 	#
 
-	4228823884: "VIC-20 Danish upper",
-	3624743168: "VIC-20 Danish lower",
+	4228823884: ("VIC-20", "Danish", "upper", ""),
+	3624743168: ("VIC-20", "Danish", "lower", ""),
 
-	4101158221: "C128 Danish upper",
-	1940591026: "C128 Danish lower",
+	4101158221: ("C128", "Danish", "upper", ""),
+	1940591026: ("C128", "Danish", "lower", ""),
 
-	3526512616: "PET French upper",
+	3526512616: ("PET", "French", "upper", ""),
 
-	2762550771: "C128 French upper",
-	1044248186: "C128 French upper alt",
-	1835942841: "C128 French lower",
-	3010141862: "C128 French lower alt",
-	4274898967: "PET French lower", # 8096; unconfirmed whether it's French
+	2762550771: ("C128", "French", "upper", ""),
+	1044248186: ("C128", "French", "upper", "alt"),
+	1835942841: ("C128", "French", "lower", ""),
+	3010141862: ("C128", "French", "lower", "alt"),
+	4274898967: ("PET", "French", "lower", ""), # 8096; unconfirmed whether it's French
 
-	2267404205: "PET German upper",
-	619984985:  "PET German lower", # "from VICE"; sane layout
-	3068260560: "PET German lower alt", # less sane layout
-	3794189463: "PET German lower alt", # 8296D
+	2267404205: ("PET", "German", "upper", ""),
+	619984985:  ("PET", "German", "lower", ""), # "from VICE"; sane layout
+	3068260560: ("PET", "German", "lower", "alt"), # less sane layout
+	3794189463: ("PET", "German", "lower", "alt"), # 8296D
 
-	453258916:  "C128 German upper", # extra characters in last graphics row
-	18896184:   "C128 German lower", # extra characters graphics
+	453258916:  ("C128", "German", "upper", ""), # extra characters in last graphics row
+	18896184:   ("C128", "German", "lower", ""), # extra characters graphics
 
-	3980244294: "PET Greek upper", # greek characters instead of latin, some latin in graphics
-	3648127786: "PET Greek lower",
+	3980244294: ("PET", "Greek", "upper", ""), # greek characters instead of latin, some latin in graphics
+	3648127786: ("PET", "Greek", "lower", ""),
 
-	2058038919: "CBM Hungarian upper",
-	1566913143: "CBM Hungarian lower",
+	2058038919: ("CBM", "Hungarian", "upper", ""),
+	1566913143: ("CBM", "Hungarian", "lower", ""),
 
-	1044400996: "VIC-20 Japanese upper", # pound -> yen
-	1761655243: "PET Japanese upper",    # same as "VIC-20 Japanese upper", but bug pixel in arrow-left
-	3580406124: "VIC-20 Japanese upper/Kanji",
+	1044400996: ("VIC-20", "Japanese", "upper", ""), # pound -> yen
+	1761655243: ("PET", "Japanese", "upper", ""),    # same as "VIC-20 Japanese upper", but bug pixel in arrow-left
+	3580406124: ("VIC-20", "Japanese", "upper/Kanji", ""),
 
-	556671508:  "PET Norwegian upper",
-	3534714178: "PET Norwegian lower",
-	1384180002: "C128 Norwegian lower", # similar layout, but unrelated
-	2188101221: "C128 Norwegian lower alt",
+	556671508:  ("PET", "Norwegian", "upper", ""),
+	3534714178: ("PET", "Norwegian", "lower", ""),
+	1384180002: ("C128", "Norwegian", "lower", ""), # similar layout, but unrelated
+	2188101221: ("C128", "Norwegian", "lower", "alt"),
 
-	3522684517: "C128 Norwegian upper",
-	813334050:  "C128 Norwegian upper bugs", # as above; bugs (several unset pixels)
-	1316062724: "C128 Norwegian upper alt",  # underlined 'AE'
-	420996052:  "C128 Norwegian upper alt bugs", # as above; bugs (several set pixels)
-	1319596343: "C128 Norwegian lower",
-	738416628:  "C128 Norwegian lower alt",
+	3522684517: ("C128", "Norwegian", "upper", ""),
+	813334050:  ("C128", "Norwegian", "upper", "bugs"), # as above; bugs (several unset pixels)
+	1316062724: ("C128", "Norwegian", "upper", "alt"),  # underlined 'AE'
+	420996052:  ("C128", "Norwegian", "upper", "alt", "bugs"), # as above; bugs (several set pixels)
+	1319596343: ("C128", "Norwegian", "lower", ""),
+	738416628:  ("C128", "Norwegian", "lower", "alt"),
 
-	2975021441: "PET Russian upper", # cyrillic in graphics
+	2975021441: ("PET", "Russian", "upper", ""), # cyrillic in graphics
 
-	2712146221: "C128 Spanish upper",
-	3401793753: "C128 Spanish upper alt", # different 'Ç'
-	1382891279: "C128 Spanish lower",
-	1625115699: "C128 Spanish lower alt", # bug: extra pixel in 'Z'
+	2712146221: ("C128", "Spanish", "upper", ""),
+	3401793753: ("C128", "Spanish", "upper", "alt"), # different 'Ç'
+	1382891279: ("C128", "Spanish", "lower", ""),
+	1625115699: ("C128", "Spanish", "lower", "alt"), # bug: extra pixel in 'Z'
 
-	1378924721: "PET/VIC-20 Swedish upper",
-	738563421:  "PET/VIC-20 Swedish lower",
-	2706267264: "VIC-20 Swedish lower alt", # as above; buggy 'ö'
+	1378924721: ("PET/VIC-20", "Swedish", "upper", ""),
+	738563421:  ("PET/VIC-20", "Swedish", "lower", ""),
+	2706267264: ("VIC-20", "Swedish", "lower", "alt"), # as above; buggy 'ö'
 
-	891747983:  "C128 Swiss upper",
-	2947687686: "C128 Swiss upper alt",
-	4242641093: "C128 Swiss lower (PET French lower)",
-	585420250:  "C128 Swiss lower alt",
+	891747983:  ("C128", "Swiss", "upper", ""),
+	2947687686: ("C128 Swiss", "upper", "alt"),
+	4242641093: ("C128 Swiss", "lower",  ""), # also: PET French lower,
+	585420250:  ("C128", "Swiss", "lower", "alt"),
 
 	#
 	# C64-style
 	#
 
-	2746692664: "C64 Danish upper",
-	2942455347: "C64 Danish upper alt",
-	3266402763: "C64 Danish lower",
-	3462669248: "C64 Danish lower alt",
+	2746692664: ("C64", "Danish", "upper", ""),
+	2942455347: ("C64", "Danish", "upper", "alt"),
+	3266402763: ("C64", "Danish", "lower", ""),
+	3462669248: ("C64", "Danish", "lower", "alt"),
 
-	679100969:  "C16 Hungarian upper",
-	2966169543: "C16 Hungarian lower",
+	679100969:  ("C16", "Hungarian", "upper", ""),
+	2966169543: ("C16", "Hungarian", "lower", ""),
 
-	3224365868: "C64 Spanish upper",
-	2256338360: "C64 Spanish lower",
+	3224365868: ("C64", "Spanish", "upper", ""),
+	2256338360: ("C64", "Spanish", "lower", ""),
 
-	684454765:  "C64 Swedish upper",       # 1-pixel '@', 1-pixel 'Ä'/'Ö' dots
-	4099903933: "C64 Swedish upper bugs",  # as above; buggy 'Ä'
-	4104886629: "C64 Swedish upper alt",   # 1-pixel '@', 2-pixel 'Ä'/'Ö' dots
-	4169065326: "C64 Swedish upper alt 2", # 2-pixel '@', 2-pixel 'Ä'/'Ö' dots
-	2117474727: "C64 Swedish lower",       # 1-pixel '@', 1-pixel 'ä'/'ö'/'Ä'/'Ö'
-	3324836326: "C64 Swedish lower alt",   # as above; buggy 'Ä', 2-pixel '@'
-	3699529572: "C64 Swedish lower 2",     # 1-pixel '@', 2-pixel 'ä'/'ö'/'Ä'/'Ö', different 'å'
-	2743931256: "C64 Swedish lower 2 alt", # as above; buggy 'ä', 2-pixel '@'
+	684454765:  ("C64", "Swedish", "upper", ""),       # 1-pixel '@', 1-pixel 'Ä'/'Ö' dots
+	4099903933: ("C64", "Swedish", "upper", "bugs"),  # as above; buggy 'Ä'
+	4104886629: ("C64", "Swedish", "upper", "alt"),   # 1-pixel '@', 2-pixel 'Ä'/'Ö' dots
+	4169065326: ("C64", "Swedish", "upper", "alt 2"), # 2-pixel '@', 2-pixel 'Ä'/'Ö' dots
+	2117474727: ("C64", "Swedish", "lower", ""),       # 1-pixel '@', 1-pixel 'ä'/'ö'/'Ä'/'Ö'
+	3324836326: ("C64", "Swedish", "lower", "alt"),   # as above; buggy 'Ä', 2-pixel '@'
+	3699529572: ("C64", "Swedish", "lower", "2"),     # 1-pixel '@', 2-pixel 'ä'/'ö'/'Ä'/'Ö', different 'å'
+	2743931256: ("C64", "Swedish", "lower", "2 alt"), # as above; buggy 'ä', 2-pixel '@'
 
 	#
 	# PET other
 	#
-	909143548:  "SuperPET ASCII",
-	276903316:  "SuperPET ASCII Swedish",
-	2832168426: "SuperPET APL",
+	909143548:  ("SuperPET", "", "ASCII", ""),
+	276903316:  ("SuperPET", "Swedish", "ASCII", ""),
+	2832168426: ("SuperPET", "", "APL", ""),
 
 	#
 	# Other
 	#
-	1220100133: "C64 Japanese upper", # PET looks, one line shifted down, symbols scrambled
-	2318553394: "C64 Japanese upper/Kanji",
-	1258522589: "C64 Turkish upper", # probably 3rd party
-	1004035711: "C64 Turkish lower", # probably 3rd party
-	2503191058: "C64 upper (buggy 1)", # from C128 Norwegian
-	1495968665: "C64 upper (buggy 2)", # from C128 Norwegian
-	1802520121: "C64 lower (buggy 1)", # from C128 Norwegian
-	163579034:  "C64 lower (buggy 1)", # from C128 Norwegian
+	1220100133: ("C64", "Japanese", "upper", ""), # PET looks, one line shifted down, symbols scrambled
+	2318553394: ("C64", "Japanese", "upper/Kanji", ""),
+	1258522589: ("C64", "Turkish", "upper", ""), # probably 3rd party
+	1004035711: ("C64", "Turkish", "lower", ""), # probably 3rd party
+	2503191058: ("C64", "", "upper", "buggy 1"), # from C128 Norwegian
+	1495968665: ("C64", "", "upper", "buggy 2"), # from C128 Norwegian
+	1802520121: ("C64", "", "lower", "buggy 1"), # from C128 Norwegian
+	163579034:  ("C64", "", "lower", "buggy 1"), # from C128 Norwegian
 }
 
 reference_charset_crcs = list(frendly_name_for_crc.keys())
