@@ -23,6 +23,15 @@ for c in range(0, 256):
 		d = c - 0x80
 	scrcode_from_petscii.append(d)
 
+def modifiers_and_scancodes_from_petscii(petscii):
+	modifiers_and_scancodes = []
+	for modifier in range(0, 4):
+		for scancode in range(0, 64):
+			p2 = petscii_from_scancode[modifier][scancode]
+			if p2 != 0xff and p2 == petscii:
+				modifiers_and_scancodes.append((modifier, scancode))
+	return modifiers_and_scancodes
+
 # generate petscii_from_scrcode mapping
 petscii_from_scrcode = []
 for c in range(0, 128):
@@ -247,18 +256,15 @@ for c in range(0, 256):
 		print('<tr>')
 		print('<td>${:02X}</td><td>{}</tt></td>'.format(petscii, petscii))
 		kbd = ''
-		for modifier in range(0, 4):
-			for scancode in range(0, 64):
-				p2 = petscii_from_scancode[modifier][scancode]
-				if p2 != 0xff and p2 == petscii:
-					m = description_from_modifier[modifier]
-					d = description_from_scancode[scancode]
-					if m:
-						m = '<span style="background-color: black; color: white;">{}</span> + '.format(m)
-					else:
-						m = ''
+		for (modifier, scancode) in modifiers_and_scancodes_from_petscii(petscii):
+			m = description_from_modifier[modifier]
+			d = description_from_scancode[scancode]
+			if m:
+				m = '<span style="background-color: black; color: white;">{}</span> + '.format(m)
+			else:
+				m = ''
 
-					kbd += '{}<span style="background-color: black; color: white;">{}</span><br/>'.format(m, d)
+			kbd += '{}<span style="background-color: black; color: white;">{}</span><br/>'.format(m, d)
 		print('<td>{}</td>'.format(kbd))
 		print('</tr>')
 	print('</table>')
@@ -277,21 +283,20 @@ for petscii in range(0, 256):
 
 	print('<li>PETSCII hex: ${:02X}</li>'.format(petscii))
 	print('<li>PETSCII dec: {}</li>'.format(petscii))
-	kbd = ''
-	for modifier in range(0, 4):
-		for scancode in range(0, 64):
-			p2 = petscii_from_scancode[modifier][scancode]
-			if p2 != 0xff and p2 == petscii:
-				m = description_from_modifier[modifier]
-				d = description_from_scancode[scancode]
-				if m:
-					m = '<span style="background-color: black; color: white;">{}</span> + '.format(m)
-				else:
-					m = ''
 
-				kbd += '{}<span style="background-color: black; color: white;">{}</span><br/>'.format(m, d)
-	if len(kbd) > 0:
-		print('<li>Keyboard: {}</li>'.format(kbd))
+	modifiers_and_scancodes = modifiers_and_scancodes_from_petscii(petscii)
+	if len(modifiers_and_scancodes) > 0:
+		print('<li>Keyboard:<ul>')
+		for (modifier, scancode) in modifiers_and_scancodes:
+			m = description_from_modifier[modifier]
+			d = description_from_scancode[scancode]
+
+			if m:
+				m = '<span style="background-color: black; color: white;">{}</span> + '.format(m)
+			else:
+				m = ''
+			print('<li>{}<span style="background-color: black; color: white;">{}</span></li>'.format(m, d))
+		print('</ul></li>')
 		# XXX print keyboard combinations generating alternate codes for the same screen code
 	print('</tr>')
 	print('</table>')
