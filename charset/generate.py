@@ -234,36 +234,38 @@ print('</div>')
 
 for c in range(0, 256):
 	print('<h2>Screencode {}</h2>'.format(hex(c)))
-	if c > 0x80:
+	c7 = c & 0x7f
+	if c >= 0x80:
 		inverted = 'inverted'
+		print('<li>REVERSE</li>')
 	else:
 		inverted = ''
-	print('<li><span class="container {}"><span class="character char-{}"></span></span></li>'.format(inverted, hex(c & 0x7f)))
-	if c < 128:
-		print('<table><th>PETSCII<br/>hex</th><th>PETSCII<br/>dec</th><th>Keyboard</th>')
-		for petscii in petscii_from_scrcode[c]:
-			print('<tr>')
-			print('<td>${:02X}</td><td>{}</tt></td>'.format(petscii, petscii))
-			kbd = ''
-			for modifier in range(0, 4):
-				for scancode in range(0, 64):
-					p2 = petscii_from_scancode[modifier][scancode]
-					if p2 != 0xff and p2 == petscii:
-						m = description_from_modifier[modifier]
-						d = description_from_scancode[scancode]
-						if m:
-							m = '<span style="background-color: black; color: white;">{}</span> + '.format(m)
-						else:
-							m = ''
+	print('<li><span class="container {}"><span class="character char-{}"></span></span></li>'.format(inverted, hex(c7)))
 
-						kbd += '{}<span style="background-color: black; color: white;">{}</span><br/>'.format(m, d)
-			print('<td>{}</td>'.format(kbd))
-			print('</tr>')
-		print('</table>')
-		petscii = petscii_from_scrcode[c][0]
-		unicode = unicode_from_petscii[0][petscii]
-		print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
-		print('<li>Unicode \'&#x{:x};\'</li>'.format(unicode))
+	print('<table><th>PETSCII<br/>hex</th><th>PETSCII<br/>dec</th><th>Keyboard</th>')
+	for petscii in petscii_from_scrcode[c7]:
+		print('<tr>')
+		print('<td>${:02X}</td><td>{}</tt></td>'.format(petscii, petscii))
+		kbd = ''
+		for modifier in range(0, 4):
+			for scancode in range(0, 64):
+				p2 = petscii_from_scancode[modifier][scancode]
+				if p2 != 0xff and p2 == petscii:
+					m = description_from_modifier[modifier]
+					d = description_from_scancode[scancode]
+					if m:
+						m = '<span style="background-color: black; color: white;">{}</span> + '.format(m)
+					else:
+						m = ''
+
+					kbd += '{}<span style="background-color: black; color: white;">{}</span><br/>'.format(m, d)
+		print('<td>{}</td>'.format(kbd))
+		print('</tr>')
+	print('</table>')
+	petscii = petscii_from_scrcode[c7][0]
+	unicode = unicode_from_petscii[0][petscii]
+	print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
+	print('<li>Unicode \'&#x{:x};\'</li>'.format(unicode))
 
 print('</body>')
 print('</html>')
