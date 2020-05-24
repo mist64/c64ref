@@ -139,37 +139,19 @@ print('')
 print('<script language="javascript">')
 print('</script>')
 print('')
+print('<svg class="defs-only">') # via https://css-tricks.com/color-filters-can-turn-your-gray-skies-blue/
+print('  <filter id="duotone" color-interpolation-filters="sRGB"')
+print('          x="0" y="0" height="100%" width="100%">')
+print('    <feColorMatrix type="matrix"')
+print('      values="0.90 0 0 0   0.40')
+print('              0.95 0 0 0  -0.10')
+print('             -0.20 0 0 0   0.65')
+print('                0  0 0 1   0" />')
+print('  </filter>')
+print('</svg>')
 print('<link rel="stylesheet" href="../style.css">')
+print('<link rel="stylesheet" href="style.css">')
 print('<style type="text/css">')
-print('')
-print('.container {')
-print('  border: 1px solid gray;')
-print('  display: inline-block;')
-print('  margin: 2px;')
-print('  height: ' + str(scale * side) + 'px;')
-print('  width: ' + str(scale * side) + ';')
-print('  padding:0px;')
-print('  background-color: #0f0;')
-print(' }')
-print('')
-print('.inverted {')
-print('  filter: invert(100%)')
-print(' }')
-print('')
-print('.character {')
-print('  background-image: url(\'43627586.png\');')
-print('  background-repeat: no-repeat;')
-print('  background-color: #f00;')
-print('  transform: scale(' + str(scale) + ',' + str(scale) + ');')
-print('  transform-origin: 0% 0%;')
-print('  height: ' + str(side) + 'px;')
-print('  width: ' + str(side) + 'px;')
-print('  margin:0px;')
-print('  padding:0px;')
-print('  border: 0px;')
-print('  display: block;')
-print('  image-rendering: pixelated;')
-print(' }')
 print('')
 
 
@@ -185,8 +167,10 @@ print('</style>')
 
 print('<script>')
 print('function test(element) {')
-print('  document.getElementById(element).style.filter = "invert(100%)";')
+print('  var char = document.getElementById(element);')
+print('  char.classList.toggle("highlighted");')
 print('}')
+print('')
 print('</script>')
 
 
@@ -260,11 +244,11 @@ for c in range(0, 256):
 			m = description_from_modifier[modifier]
 			d = description_from_scancode[scancode]
 			if m:
-				m = '<span style="background-color: black; color: white;">{}</span> + '.format(m)
+				m = '<span class="key-box">{}</span> + '.format(m)
 			else:
 				m = ''
 
-			kbd += '{}<span style="background-color: black; color: white;">{}</span><br/>'.format(m, d)
+			kbd += '{}<span class="key-box">{}</span><br/>'.format(m, d)
 		print('<td>{}</td>'.format(kbd))
 		print('</tr>')
 	print('</table>')
@@ -292,10 +276,10 @@ for petscii in range(0, 256):
 			d = description_from_scancode[scancode]
 
 			if m:
-				m = '<span style="background-color: black; color: white;">{}</span> + '.format(m)
+				m = '<span class="key-box">{}</span> + '.format(m)
 			else:
 				m = ''
-			print('<li>{}<span style="background-color: black; color: white;">{}</span></li>'.format(m, d))
+			print('<li>{}<span class="key-box">{}</span></li>'.format(m, d))
 		print('</ul></li>')
 		# XXX print keyboard combinations generating alternate codes for the same screen code
 	print('</tr>')

@@ -1,0 +1,43 @@
+.container {
+     border: 1px solid gray;
+     display: inline-block;
+     margin: 2px;
+     height: 32px;
+     width: 32px;
+     padding:0px;
+     background-color: #0f0;
+}
+
+.inverted {
+     filter: invert(100%) 
+}
+
+.highlighted {
+     filter: url(#duotone);
+     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.character {
+     background-image: url(43627586.png);
+     background-repeat: no-repeat;
+     background-color: #f00;
+     transform: scale(4, 4);
+     transform-origin: 0% 0%;
+     height: 8px;
+     width: 8px;
+     margin:0px;
+     padding:0px;
+     border: 0px;
+     display: block;
+     image-rendering: pixelated;
+}
+
+.key-box {
+     background-color: black;
+     color: white;
+     border: 1px solid gray;
+     border-radius: 4px;
+     padding:2px 8px;
+     font-family: monospace;
+}
+ 
