@@ -82,6 +82,7 @@ for filename_in in sys.argv[1:]:
 				char_descriptions_from_crc[crc] = set([char_description])
 
 		#write_png(charset, filename_base + '_{}.png'.format(index))
+		write_png(charset, str(binascii.crc32(charset)) + '.png'.format(index))
 
 		start_offset += 1024
 		index += 1
@@ -98,13 +99,13 @@ frendly_name_for_crc = {
 	605158551:  "PET lower",
 	2829211046: "PET 1 lower swapped",
 
-	4273001443: "VIC-20 upper",
-	371145055:  "VIC-20 lower",
+	4273001443: "VIC-20 upper", # same as "PET upper", but '£' instead of '\'
+	371145055:  "VIC-20 lower", # same as "PET lower", but '£' instead of '\'
 
 	43627586:   "C64/C16/C128 upper",
+	239914569:  "C64 upper alt", # dual-pixel '@'
 	3491641016: "C64 lower",
-	239914569:  "C64 upper alt",
-	3704310963: "C64 lower alt",
+	3704310963: "C64 lower alt", # dual-pixel '@'
 	2047760083: "C128 lower",
 	265494848:  "C16 lower",
 
@@ -115,8 +116,8 @@ frendly_name_for_crc = {
 	# PET-style
 	#
 
-	453258916:  "VIC-20/C128 German upper",
-	18896184:   "VIC-20/C128 German lower",
+	4228823884: "VIC-20 Danish upper",
+	3624743168: "VIC-20 Danish lower",
 
 	4101158221: "C128 Danish upper",
 	1940591026: "C128 Danish lower",
@@ -127,19 +128,26 @@ frendly_name_for_crc = {
 	1044248186: "C128 French upper alt",
 	1835942841: "C128 French lower",
 	3010141862: "C128 French lower alt",
+	4274898967: "CBM French lower", # 8096, French?
 
 	2267404205: "PET German upper",
 	619984985:  "PET German lower", # "from VICE"; sane layout
 	3068260560: "PET German lower alt", # less sane layout
 	3794189463: "PET German lower alt", # 8296D
 
+	453258916:  "C128 German upper", # extra characters in last graphics row
+	18896184:   "C128 German lower", # extra characters graphics
+
 	3980244294: "PET Greek upper", # greek characters instead of latin, some latin in graphics
 	3648127786: "PET Greek lower",
 
+	2058038919: "CBM Hungarian upper",
+	1566913143: "CBM Hungarian lower",
+
 	556671508:  "PET Norwegian upper",
 	3534714178: "PET Norwegian lower",
-	813334050:  "C128 Norwegian upper",
-	420996052:  "C128 Norwegian upper alt",
+	813334050:  "C128 Norwegian upper", # C64-style graphics
+	420996052:  "C128 Norwegian upper alt", # C64-style graphics, bugs?
 	1384180002: "C128 Norwegian lower",
 	2188101221: "C128 Norwegian lower alt",
 
@@ -165,6 +173,7 @@ frendly_name_for_crc = {
 	585420250:  "C128 Swiss lower alt",
 
 	1044400996: "VIC-20 Japanese upper", # pound -> yen
+	1761655243: "VIC-20 Japanese upper alt",
 	3580406124: "VIC-20 Japanese upper/Kanji",
 
 	#
@@ -176,8 +185,10 @@ frendly_name_for_crc = {
 	3266402763: "C64 Danish lower",
 	3462669248: "C64 Danish lower alt",
 
+	679100969:  "C16 Hungarian upper",
+	2966169543: "C16 Hungarian lower",
 	3962070790: "C64 Hungarian lower",
-	3911143684: "C64 Hungarian lower alt",
+	3911143684: "C64 Hungarian lower alt", # dual-pixel '@'
 
 	3224365868: "C64 Spanish upper",
 	2256338360: "C64 Spanish lower",
@@ -190,9 +201,6 @@ frendly_name_for_crc = {
 	3699529572: "C64 Swedish lower 2",
 	3324836326: "C64 Swedish lower alt",
 	2743931256: "C64 Swedish lower 2 alt",
-
-	679100969:  "C16 Hungarian upper",
-	2966169543: "C16 Hungarian lower",
 
 	#
 	# PET other
