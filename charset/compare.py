@@ -106,8 +106,8 @@ frendly_name_for_crc = {
 	239914569:  "C64 upper alt", # dual-pixel '@'
 	3491641016: "C64 lower",
 	3704310963: "C64 lower alt", # dual-pixel '@'
-	2047760083: "C128 lower",
 	265494848:  "C16 lower",
+	2047760083: "C128 lower",
 
 	18405299:   "LCD upper",
 	3336443024: "LCD lower",
@@ -187,8 +187,6 @@ frendly_name_for_crc = {
 
 	679100969:  "C16 Hungarian upper",
 	2966169543: "C16 Hungarian lower",
-	3962070790: "C64 Hungarian lower",
-	3911143684: "C64 Hungarian lower alt", # dual-pixel '@'
 
 	3224365868: "C64 Spanish upper",
 	2256338360: "C64 Spanish lower",
