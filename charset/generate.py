@@ -104,6 +104,24 @@ petscii_from_scancode.append([ # ctrl
 	0x90, 0x06, 0xFF, 0x05, 0xFF, 0xFF, 0x11, 0xFF,
 ])
 
+description_from_modifier = [
+	None,
+	'SHIFT',
+	'C=',
+	'CTRL',
+]
+
+description_from_scancode = [
+	'DEL','RETURN','RT CRSR','F4','F1','F2','F3','CRSR DWN',
+	'3','W','A','4','Z','S','E','L.SHIFT',
+	'5','R','D','6','C','F','T','X',
+	'7','Y','G','8','B','H','U','V',
+	'9','I','J','0','M','K','O','N',
+	'+','P','L','-','.',':','@',',',
+	'YEN SIGN','*',';','HOME','R.SHIFTT','=','EXP','/',
+	'1','LEFT ARROW','CTRL','2','SPACE','COM.KEY','Q','STOP',
+]
+
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
 print('<html>')
 print('<head>')
@@ -216,12 +234,31 @@ print('</div>')
 
 for c in range(0, 256):
 	print('<h2>Screencode {}</h2>'.format(hex(c)))
+	if c > 0x80:
+		inverted = 'inverted'
+	else:
+		inverted = ''
+	print('<li><span class="container {}"><span class="character char-{}"></span></span></li>'.format(inverted, hex(c & 0x7f)))
 	if c < 128:
 		for petscii in petscii_from_scrcode[c]:
-			print('<li><tt>CHR$({})</tt></li>'.format(petscii))
-		unicode = unicode_from_petscii[0][petscii_from_scrcode[c][0]]
+			print('<li><tt>CHR$({})</tt> [${:02X}]</li>'.format(petscii, petscii))
+		petscii = petscii_from_scrcode[c][0]
+		unicode = unicode_from_petscii[0][petscii]
 		print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
 		print('<li>Unicode \'&#x{:x};\'</li>'.format(unicode))
+		for petscii in petscii_from_scrcode[c]:
+			for modifier in range(0, 4):
+				for scancode in range(0, 64):
+					p2 = petscii_from_scancode[modifier][scancode]
+					if p2 != 0xff and p2 == petscii:
+						m = description_from_modifier[modifier]
+						d = description_from_scancode[scancode]
+						if m:
+							m = '<span style="background-color: black; color: white;">{}</span> + '.format(m)
+						else:
+							m = ''
+
+						print('<li>{}<span style="background-color: black; color: white;">{}</span> [${:02X}]</li>'.format(m, d, petscii))
 
 print('</body>')
 print('</html>')
