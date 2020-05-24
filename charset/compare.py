@@ -128,7 +128,7 @@ frendly_name_for_crc = {
 	1044248186: "C128 French upper alt",
 	1835942841: "C128 French lower",
 	3010141862: "C128 French lower alt",
-	4274898967: "CBM French lower", # 8096, French?
+	4274898967: "PET French lower", # 8096; unconfirmed whether it's French
 
 	2267404205: "PET German upper",
 	619984985:  "PET German lower", # "from VICE"; sane layout
@@ -144,37 +144,37 @@ frendly_name_for_crc = {
 	2058038919: "CBM Hungarian upper",
 	1566913143: "CBM Hungarian lower",
 
+	1044400996: "VIC-20 Japanese upper", # pound -> yen
+	1761655243: "PET Japanese upper",    # same as "VIC-20 Japanese upper", but bug pixel in arrow-left
+	3580406124: "VIC-20 Japanese upper/Kanji",
+
 	556671508:  "PET Norwegian upper",
 	3534714178: "PET Norwegian lower",
-	813334050:  "C128 Norwegian upper", # C64-style graphics
-	420996052:  "C128 Norwegian upper alt", # C64-style graphics, bugs?
-	1384180002: "C128 Norwegian lower",
+	1384180002: "C128 Norwegian lower", # similar layout, but unrelated
 	2188101221: "C128 Norwegian lower alt",
 
-	3522684517: "VIC-20/C128 Norwegian upper",
-	1316062724: "VIC-20/C128 Norwegian upper alt",
-	1319596343: "VIC-20/C128 Norwegian lower",
-	738416628:  "VIC-20/C128 Norwegian lower alt",
+	3522684517: "C128 Norwegian upper",
+	813334050:  "C128 Norwegian upper bugs", # as above; bugs (several unset pixels)
+	1316062724: "C128 Norwegian upper alt",  # underlined 'AE'
+	420996052:  "C128 Norwegian upper alt bugs", # as above; bugs (several set pixels)
+	1319596343: "C128 Norwegian lower",
+	738416628:  "C128 Norwegian lower alt",
 
 	2975021441: "PET Russian upper", # cyrillic in graphics
 
 	2712146221: "C128 Spanish upper",
-	3401793753: "C128 Spanish upper alt",
+	3401793753: "C128 Spanish upper alt", # different 'Ç'
 	1382891279: "C128 Spanish lower",
-	1625115699: "C128 Spanish lower alt",
+	1625115699: "C128 Spanish lower alt", # bug: extra pixel in 'Z'
 
 	1378924721: "PET/VIC-20 Swedish upper",
 	738563421:  "PET/VIC-20 Swedish lower",
-	2706267264: "VIC-20 Swedish lowern alt", # same as above, but ö seems buggy
+	2706267264: "VIC-20 Swedish lower alt", # as above; buggy 'ö'
 
 	891747983:  "C128 Swiss upper",
 	2947687686: "C128 Swiss upper alt",
 	4242641093: "C128 Swiss lower (PET French lower)",
 	585420250:  "C128 Swiss lower alt",
-
-	1044400996: "VIC-20 Japanese upper", # pound -> yen
-	1761655243: "VIC-20 Japanese upper alt",
-	3580406124: "VIC-20 Japanese upper/Kanji",
 
 	#
 	# C64-style
@@ -193,14 +193,14 @@ frendly_name_for_crc = {
 	3224365868: "C64 Spanish upper",
 	2256338360: "C64 Spanish lower",
 
-	684454765:  "C64 Swedish upper",
-	4104886629: "C64 Swedish upper 2",
-	4099903933: "C64 Swedish upper alt",
-	4169065326: "C64 Swedish upper 2 alt",
-	2117474727: "C64 Swedish lower",
-	3699529572: "C64 Swedish lower 2",
-	3324836326: "C64 Swedish lower alt",
-	2743931256: "C64 Swedish lower 2 alt",
+	684454765:  "C64 Swedish upper",       # 1-pixel '@', 1-pixel 'Ä'/'Ö' dots
+	4099903933: "C64 Swedish upper bugs",  # as above; buggy 'Ä'
+	4104886629: "C64 Swedish upper alt",   # 1-pixel '@', 2-pixel 'Ä'/'Ö' dots
+	4169065326: "C64 Swedish upper alt 2", # 2-pixel '@', 2-pixel 'Ä'/'Ö' dots
+	2117474727: "C64 Swedish lower",       # 1-pixel '@', 1-pixel 'ä'/'ö'/'Ä'/'Ö'
+	3324836326: "C64 Swedish lower alt",   # as above; buggy 'Ä', 2-pixel '@'
+	3699529572: "C64 Swedish lower 2",     # 1-pixel '@', 2-pixel 'ä'/'ö'/'Ä'/'Ö', different 'å'
+	2743931256: "C64 Swedish lower 2 alt", # as above; buggy 'ä', 2-pixel '@'
 
 	#
 	# PET other
