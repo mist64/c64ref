@@ -121,14 +121,14 @@ description_from_modifier = [
 ]
 
 description_from_scancode = [
-	'DEL','RETURN','RT CRSR','F4','F1','F2','F3','CRSR DWN',
+	'DEL','RETURN','CRSR RT','F4','F1','F2','F3','CRSR DWN',
 	'3','W','A','4','Z','S','E','L.SHIFT',
 	'5','R','D','6','C','F','T','X',
 	'7','Y','G','8','B','H','U','V',
 	'9','I','J','0','M','K','O','N',
 	'+','P','L','-','.',':','@',',',
-	'YEN SIGN','*',';','HOME','R.SHIFTT','=','EXP','/',
-	'1','LEFT ARROW','CTRL','2','SPACE','COM.KEY','Q','STOP',
+	'£','*',';','HOME','R.SHIFT','=','↑','/',
+	'1','LEFT ARROW','CTRL','2','SPACE','C=','Q','STOP',
 ]
 
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
@@ -259,18 +259,30 @@ for c in range(0, 256):
 
 for petscii in range(0, 256):
 	print('<h2>PETSCII {}</h2>'.format(hex(petscii)))
-	scr = scrcode_from_petscii[petscii]
-	if scr is None:
+	scrcode = scrcode_from_petscii[petscii]
+	if scrcode is None:
 		print('<li><span class="container">{}</span></li>'.format(description_from_control_code[petscii]))
 	else:
-		print('<li><span class="container"><span class="character char-{}"></span></span></li>'.format(hex(scr)))
+		print('<li><span class="container"><span class="character char-{}"></span></span></li>'.format(hex(scrcode)))
 
 	print('<li>PETSCII hex: ${:02X}</li>'.format(petscii))
 	print('<li>PETSCII dec: {}</li>'.format(petscii))
 
 	modifiers_and_scancodes = modifiers_and_scancodes_from_petscii(petscii)
+	other_petscii = None
+	if len(modifiers_and_scancodes) == 0 and scrcode is not None:
+		for check_petscii in petscii_from_scrcode[scrcode & 0x7f]:
+			if check_petscii != petscii:
+				other_petscii = check_petscii
+				break
+		if other_petscii:
+			modifiers_and_scancodes = modifiers_and_scancodes_from_petscii(other_petscii)
+
 	if len(modifiers_and_scancodes) > 0:
-		print('<li>Keyboard:<ul>')
+		alt_text = ''
+		if other_petscii:
+			alt_text = ' (alt code ${:02X})'.format(other_petscii)
+		print('<li>Keyboard{}:<ul>'.format(alt_text))
 		for (modifier, scancode) in modifiers_and_scancodes:
 			m = description_from_modifier[modifier]
 			d = description_from_scancode[scancode]
@@ -284,8 +296,8 @@ for petscii in range(0, 256):
 		# XXX print keyboard combinations generating alternate codes for the same screen code
 	print('</tr>')
 	print('</table>')
-	if scr:
-		print('<li>Screencode ${:02X}</li>'.format(scr))
+	if scrcode:
+		print('<li>Screencode ${:02X}</li>'.format(scrcode))
 		unicode = unicode_from_petscii[0][petscii]
 		print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
 		print('<li>Unicode \'&#x{:x};\'</li>'.format(unicode))
