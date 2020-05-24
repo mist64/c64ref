@@ -4,6 +4,23 @@
 scale = 4 # character scale up factor
 side = 8 # character width/height 8px
 
+def scrcode_from_petscii(c):
+	if c < 0x20:
+		return None
+	elif c < 0x40:
+		return c
+	elif c < 0x60:
+		return c - 0x40
+	elif c < 0x80:
+		return c - 0x20
+	elif c < 0xa0:
+		return None
+	elif c < 0xc0:
+		return c - 0x40
+	else:
+		return c - 0x80
+
+
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
 print('<html>')
 print('<head>')
@@ -30,7 +47,7 @@ print('  filter: invert(100%)')
 print(' }')
 print('')
 print('.character {')
-print('  background-image: url(\'3491641016.png\');')
+print('  background-image: url(\'3580406124.png\');')
 print('  background-repeat: no-repeat;')
 print('  background-color: #f00;')
 print('  transform: scale(' + str(scale) + ',' + str(scale) + ');')
@@ -57,10 +74,10 @@ print('</head>')
 print('<body>')
 
 print('<div class="body">')
-print('<h1>C64 Charsets Things</h1>')
+print('<h1>C64 Charset</h1>')
 
 print('<div>')
-print('	<img src="3491641016.png" />')
+print('	<img src="3580406124.png" />')
 print('</div>')
 print('<div>')
 
@@ -73,6 +90,31 @@ for c in range(0, 128):
 for c in range(0, 128):
 	print('<span class="container inverted"><span class="character char-{}"></span></span>'.format(hex(c)))
 	if c & 15 == 15:
+		print('<br />')
+
+print('<br />')
+print('<br />')
+print('<br />')
+print('<br />')
+print('<br />')
+
+# Interchange => Video
+# $00 - $1F => (control characters)
+# $20 - $3F => $20 - $3F
+# $40 - $5F => $00 - $1F
+# $60 - $7F => $40 - $5F
+# $80 - $9F => (control characters)
+# $A0 - $BF => $60 - $7F
+# $C0 - $DF => $40 - $5F
+# $E0 - $FF => $60 - $7F
+
+
+for c1 in range(0, 256):
+	c = scrcode_from_petscii(c1)
+	if not c:
+		c = 0x20
+	print('<span class="container"><span class="character char-{}"></span></span>'.format(hex(c)))
+	if c1 & 15 == 15:
 		print('<br />')
 
 print('</div>')
