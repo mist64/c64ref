@@ -4,6 +4,7 @@
 scale = 4 # character scale up factor
 side = 8 # character width/height 8px
 
+# generate scrcode_from_petscii mapping
 scrcode_from_petscii = []
 for c in range(0, 256):
 	if c < 0x20:
@@ -22,6 +23,7 @@ for c in range(0, 256):
 		d = c - 0x80
 	scrcode_from_petscii.append(d)
 
+# generate petscii_from_scrcode mapping
 petscii_from_scrcode = []
 for c in range(0, 128):
 	result = []
@@ -30,6 +32,34 @@ for c in range(0, 128):
 			result.append(d)
 	petscii_from_scrcode.append(result)
 
+# read control code descriptions
+control_code = {}
+for line in open('petscii_control_codes.txt'):
+	line = line.rstrip()
+	if len(line) != 0:
+		control_code[int(line[0:2], 16)] = line[3:]
+
+# read PETSCII -> Unicode
+description_from_unicode = {}
+unicode_from_scrcode = []
+unicode_from_scrcode.append({})
+for line in open('C64IPRI.TXT'):
+	line = line.rstrip()
+	if line.startswith('#') or len(line) == 0:
+		continue
+	petscii = int(line[2:4], 16)
+	unicode = int(line[7:11], 16)
+	unicode_from_scrcode[0][petscii] = unicode
+	description_from_unicode[unicode] = line[14:]
+unicode_from_scrcode.append({})
+for line in open('C64IALT.TXT'):
+	line = line.rstrip()
+	if line.startswith('#') or len(line) == 0:
+		continue
+	petscii = int(line[2:4], 16)
+	unicode = int(line[7:11], 16)
+	unicode_from_scrcode[1][petscii] = unicode
+	description_from_unicode[unicode] = line[14:]
 
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
 print('<html>')
@@ -73,11 +103,6 @@ print(' }')
 print('')
 
 
-control_code = {}
-for line in open('petscii_control_codes.txt'):
-	line = line.rstrip()
-	if len(line) != 0:
-		control_code[int(line[0:2], 16)] = line[3:]
 
 for c in range(0, 128):
 	x = (c & 15) * -8
@@ -151,6 +176,9 @@ for c in range(0, 256):
 	if c < 128:
 		for petscii in petscii_from_scrcode[c]:
 			print('<li><tt>CHR$({})</tt></li>'.format(petscii))
+		unicode = unicode_from_scrcode[0][petscii_from_scrcode[c][0]]
+		print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
+		print('<li>Unicode \'&#x{:x};\'</li>'.format(unicode))
 
 print('</body>')
 print('</html>')
