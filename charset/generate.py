@@ -164,24 +164,16 @@ print('<head>')
 print('<title>Character Set | Ultimate C64 Reference</title>')
 print('')
 print('<script language="javascript">')
+print('function test(element) {')
+print('  var char = document.getElementById(element);')
+print('  char.classList.toggle("highlighted");')
+print('}')
 print('</script>')
 print('')
-print('<svg class="defs-only">') # via https://css-tricks.com/color-filters-can-turn-your-gray-skies-blue/
-print('  <filter id="duotone" color-interpolation-filters="sRGB"')
-print('          x="0" y="0" height="100%" width="100%">')
-print('    <feColorMatrix type="matrix"')
-print('      values="0.90 0 0 0   0.40')
-print('              0.95 0 0 0  -0.10')
-print('             -0.20 0 0 0   0.65')
-print('                0  0 0 1   0" />')
-print('  </filter>')
-print('</svg>')
 print('<link rel="stylesheet" href="../style.css">')
 print('<link rel="stylesheet" href="style.css">')
 print('<style type="text/css">')
 print('')
-
-
 
 for c in range(0, 128):
 	x = (c & 15) * -8
@@ -190,16 +182,6 @@ for c in range(0, 128):
 
 print('')
 print('</style>')
-
-
-print('<script>')
-print('function test(element) {')
-print('  var char = document.getElementById(element);')
-print('  char.classList.toggle("highlighted");')
-print('}')
-print('')
-print('</script>')
-
 
 print('</head>')
 

@@ -13,8 +13,14 @@
 }
 
 .highlighted {
-     filter: url(#duotone);
-     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 0px 0px black;
+	filter:
+        /* white to off-white */
+        sepia(100%)
+        /* off-white to yellow */
+        saturate(1000%)
+        /* do whatever you want with yellow */
+        hue-rotate(100deg);
 }
 
 .character {
