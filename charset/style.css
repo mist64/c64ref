@@ -1,20 +1,12 @@
-.container {
-     border: 1px solid gray;
-     display: inline-block;
-     margin: 2px;
-     height: 32px;
-     width: 32px;
-     padding:0px;
-     background-color: #0f0;
-}
+/* Character Boxes */
 
 .inverted {
-     filter: invert(100%) 
+    filter: invert(100%) 
 }
 
 .highlighted {
     box-shadow: 2px 2px 0px 0px black;
-	filter:
+    filter:
         /* white to off-white */
         sepia(100%)
         /* off-white to yellow */
@@ -23,27 +15,82 @@
         hue-rotate(100deg);
 }
 
-.character {
-     background-image: url(43627586.png);
-     background-repeat: no-repeat;
-     background-color: #f00;
-     transform: scale(4, 4);
-     transform-origin: 0% 0%;
-     height: 8px;
-     width: 8px;
-     margin:0px;
-     padding:0px;
-     border: 0px;
-     display: block;
-     image-rendering: pixelated;
+.highlighted.inverted {
+    filter:
+	    invert(100%) 
+        /* white to off-white */
+        sepia(100%)
+        /* off-white to yellow */
+        saturate(1000%)
+        /* do whatever you want with yellow */
+        hue-rotate(100deg);
 }
 
-.key-box {
-     background-color: black;
-     color: white;
-     border: 1px solid gray;
-     border-radius: 4px;
-     padding:2px 8px;
-     font-family: monospace;
+
+.char-box {
+    border: 1px solid gray;
+    display: inline-block;
+    margin: 2px;
+    height: 32px;
+    width: 32px;
+    padding:0px;
+    background-color: #0f0;
+}
+
+.char-img {
+    position: relative;
+    background-image: url(43627586.png);
+    background-repeat: no-repeat;
+    background-color: #f00;
+    transform: scale(4, 4);
+    transform-origin: 0% 0%;
+    height: 8px;
+    width: 8px;
+    margin:0px;
+    padding:0px;
+    border: 0px;
+    display: block;
+    image-rendering: pixelated;
+    z-index: 20;
+}
+
+.char-txt {
+    position: relative;
+    top: -8px;
+    margin:0px;
+    padding:0px;
+    height: 32px;
+    width: 32px;
+    filter: invert(100%);
+    z-index: 21;
+    background-color: #9999;
+    border: 0px solid cyan;
+    display: block;
+    overflow: hidden;
+	white-space: nowrap;
+	text-overflow: clip;
+	color: white;
+	font-weight: bold;
+	font-size: xx-small;
+	vertical-align: top;
+	text-align: center;
+
+}
+
+/* Visual Keys */
+
+span.key-box {
+    background-color: black;
+    color: white;
+    border: 1px solid gray;
+    border-radius: 4px;
+    padding:2px 8px;
+}
+
+div.key-box {
+    font-family: monospace;
+    padding: 0px;
+    margin: 0px;
+    white-space: nowrap;
 }
  

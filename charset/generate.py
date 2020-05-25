@@ -61,7 +61,7 @@ def modifiers_and_scancodes_html_from_petscii(petscii, machine = 'C64'):
 				m = '<span class="key-box">{}</span> + '.format(m)
 			else:
 				m = ''
-			modifiers_and_scancodes_html.append('{}<span class="key-box">{}</span>'.format(m, d))
+			modifiers_and_scancodes_html.append('<div class="key-box">{}<span class="key-box">{}</span></div>'.format(m, d))
 
 	return (modifiers_and_scancodes_html, other_petscii)
 
@@ -71,7 +71,15 @@ def pixel_char_html_from_scrcode(scrcode, description = None):
 		inverted = 'inverted'
 	else:
 		inverted = ''
-	return '<span class="container {}">{}<span class="character char-{}"></span></span>'.format(inverted, description if description else '', hex(scrcode7))
+
+	description_html = ''
+	color_html = ''
+		
+	if description is not None:
+		color_html = ' style="background-color: #9999;"'
+		description_html = '<span class="char-txt"{}>{}<br /></span>'.format(color_html, description)
+
+	return '<div class="char-box {}"><span class="char-img char-{}"></span>{}</div>'.format(inverted, hex(scrcode7), description_html)
 
 ####################################################################
 
@@ -255,12 +263,7 @@ print('<html>')
 print('<head>')
 print('<title>Character Set | Ultimate C64 Reference</title>')
 print('')
-print('<script language="javascript">')
-print('function test(element) {')
-print('  var char = document.getElementById(element);')
-print('  char.classList.toggle("highlighted");')
-print('}')
-print('</script>')
+print('<script language="javascript" src="script.js"></script>')
 print('')
 print('<link rel="stylesheet" href="../style.css">')
 print('<link rel="stylesheet" href="style.css">')
@@ -282,25 +285,30 @@ print('<body>')
 print('<div class="body">')
 print('<h1>C64 Charset</h1>')
 
-print('<div>')
+print('<div id="current-image">')
 print('	<img src="43627586.png" />')
 print('</div>')
-print('<div>')
+
+print('<div id="screencode-overview">')
 
 for scrcode in range(0, 256):
 	inverted = ''
 	if scrcode >= 0x80:
 		inverted = 'inverted'
-	print('<span id="{}" type="button" class="container {}" onclick="test(\'{}\')"><span class="character char-{}"></span></span>'.format(hex(scrcode), inverted, hex(scrcode), hex(scrcode & 0x7f)))
+	print('<div id="{}" type="button" class="char-box {}" onclick="test(\'{}\')"><span class="char-img char-{}"></span></div>'.format(hex(scrcode), inverted, hex(scrcode), hex(scrcode & 0x7f)))
 	if scrcode & 15 == 15:
 		print('<br />')
 
+print('</div>')
+
 
 print('<br />')
 print('<br />')
 print('<br />')
 print('<br />')
 print('<br />')
+
+print('<div id="petscii-overview">')
 
 for petscii in range(0, 256):
 	scrcode = scrcode_from_petscii[petscii]
@@ -309,11 +317,15 @@ for petscii in range(0, 256):
 		(description, _) = description
 	if not description:
 		description = ''
+	if is_petscii_printable(petscii):
+		description= None
+
 	print(pixel_char_html_from_scrcode(scrcode, description))
 	if petscii & 15 == 15:
 		print('<br />')
 
 print('</div>')
+
 print('</div>')
 
 ## Screencode Boxes
@@ -325,7 +337,7 @@ print('</div>')
 #		print('<li>REVERSE</li>')
 #	else:
 #		inverted = ''
-#	print('<li><span class="container {}"><span class="character char-{}"></span></span></li>'.format(inverted, hex(c7)))
+#	print('<li><span class="char-box {}"><span class="char-img char-{}"></span></span></li>'.format(inverted, hex(c7)))
 #
 #	print('<table><th>PETSCII<br/>hex</th><th>PETSCII<br/>dec</th><th>Keyboard</th>')
 #	for petscii in petscii_from_scrcode[c7]:
@@ -340,7 +352,7 @@ print('</div>')
 #			else:
 #				m = ''
 #
-#			kbd += '{}<span class="key-box">{}</span><br/>'.format(m, d)
+#			kbd += '<div class="key-box>{}<span class="key-box">{}</span></div>'.format(m, d)
 #		print('<td>{}</td>'.format(kbd))
 #		print('</tr>')
 #	print('</table>')
