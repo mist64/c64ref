@@ -98,46 +98,46 @@ for c in range(0, 128):
 # read control code descriptions
 #
 description_from_control_code_symbol = {
-	'CLEAR':           ('CLR', ''),
-	'COL_BLACK':       ('Blk', ''),
-	'COL_BLUE':        ('Blu', ''),
-	'COL_BROWN':       ('Brn', ''),
-	'COL_CYAN':        ('Cyn', ''),
-	'COL_GREEN':       ('Grn', ''),
-	'COL_GREY_1':      ('Gry1', ''),
-	'COL_GREY_2':      ('Gry2', ''),
-	'COL_GREY_3':      ('Gry3', ''),
-	'COL_LT_BLUE':     ('LBlu', ''),
-	'COL_LT_GREEN':    ('LGrn', ''),
-	'COL_LT_RED':      ('LRed', ''),
-	'COL_ORANGE':      ('Orng', ''),
-	'COL_PURPLE':      ('Pur', ''),
-	'COL_RED':         ('Red', ''),
-	'COL_WHITE':       ('Wht', ''),
-	'COL_YELLOW':      ('Yel', ''),
-	'CRSR_DOWN':       ('↑', ''),
-	'CRSR_HOME':       ('HOME', ''),
-	'CRSR_LEFT':       ('←', ''),
-	'CRSR_RIGHT':      ('→', ''),
-	'CRSR_UP':         ('↑', ''),
-	'DEL':             ('DEL', ''),
-	'DIS_CASE_SWITCH': ('Disable Case', ''),
-	'ENA_CASE_SWITCH': ('Enable Case', ''),
-	'INST':            ('INST', ''),
-	'KEY_F1':          ('f1', ''),
-	'KEY_F2':          ('f2', ''),
-	'KEY_F3':          ('f3', ''),
-	'KEY_F4':          ('f4', ''),
-	'KEY_F5':          ('f5', ''),
-	'KEY_F6':          ('f6', ''),
-	'KEY_F7':          ('f7', ''),
-	'KEY_F8':          ('f8', ''),
-	'LOWER_CASE':      ('Lower Case', ''),
-	'RETURN':          ('RETURN', ''),
-	'RVS_OFF':         ('RVS Off', ''),
-	'RVS_ON':          ('RVS On', ''),
-	'SHIFT_RETURN':    ('SHIFT RETURN', ''),
-	'UPPER_CASE':      ('Upper Case', ''),
+	'CLEAR':           ('CLR', 'Clear'),
+	'COL_BLACK':       ('Blk', 'Set text color to black'),
+	'COL_BLUE':        ('Blu', 'Set text color to Blue'),
+	'COL_BROWN':       ('Brn', 'Set text color to Brown'),
+	'COL_CYAN':        ('Cyn', 'Set text color to Cyan'),
+	'COL_GREEN':       ('Grn', 'Set text color to Green'),
+	'COL_GREY_1':      ('Gry1', 'Set text color to Gray 1'),
+	'COL_GREY_2':      ('Gry2', 'Set text color to Gray 2'),
+	'COL_GREY_3':      ('Gry3', 'Set text color to Gray 3'),
+	'COL_LT_BLUE':     ('LBlu', 'Set text color to Light Blue'),
+	'COL_LT_GREEN':    ('LGrn', 'Set text color to Light Green'),
+	'COL_LT_RED':      ('LRed', 'Set text color to Light Red'),
+	'COL_ORANGE':      ('Orng', 'Set text color to Orange'),
+	'COL_PURPLE':      ('Pur', 'Set text color to Purple'),
+	'COL_RED':         ('Red', 'Set text color to Red'),
+	'COL_WHITE':       ('Wht', 'Set text color to White'),
+	'COL_YELLOW':      ('Yel', 'Set text color to Yellow'),
+	'CRSR_DOWN':       ('↓', 'Cursor Down'),
+	'CRSR_HOME':       ('HOME', 'Cursor Home'),
+	'CRSR_LEFT':       ('←', 'Cursor Left'),
+	'CRSR_RIGHT':      ('→', 'Cursor Right'),
+	'CRSR_UP':         ('↑', 'Cursor Up'),
+	'DEL':             ('DEL', 'Delete'),
+	'DIS_CASE_SWITCH': ('Disable Case', 'Disable Case-Switching Keys'),
+	'ENA_CASE_SWITCH': ('Enable Case', 'Enable Case-Switching Keys'),
+	'INST':            ('INST', 'Insert'),
+	'KEY_F1':          ('f1', 'f1 key'),
+	'KEY_F2':          ('f2', 'f2 key'),
+	'KEY_F3':          ('f3', 'f3 key'),
+	'KEY_F4':          ('f4', 'f4 key'),
+	'KEY_F5':          ('f5', 'f5 key'),
+	'KEY_F6':          ('f6', 'f6 key'),
+	'KEY_F7':          ('f7', 'f7 key'),
+	'KEY_F8':          ('f8', 'f8 key'),
+	'LOWER_CASE':      ('Lower Case', 'Switch to lower case'),
+	'RETURN':          ('RETURN', 'Return'),
+	'RVS_OFF':         ('RVS Off', 'Reverse Off'),
+	'RVS_ON':          ('RVS On', 'Reverse On'),
+	'SHIFT_RETURN':    ('SHIFT RETURN', 'Shift Return'),
+	'UPPER_CASE':      ('Upper Case', 'Switch to upper case'),
 }
 description_from_control_code = {}
 for line in open('control_codes_c64.txt'):
@@ -369,7 +369,7 @@ for petscii in range(0, 256):
 	if not is_petscii_printable(petscii):
 		description = description_from_control_code.get(petscii)
 		if description:
-			(description, _) = description
+			(_, description) = description
 		if not description:
 			description = ''
 		print('<li>Description: {}</li>'.format(description))
@@ -435,7 +435,7 @@ for petscii in range(0, 256):
 	else:
 		description = description_from_control_code.get(petscii)
 		if description:
-			(description, _) = description
+			(_, description) = description
 		if not description:
 			description = ''
 		color_html = ''
