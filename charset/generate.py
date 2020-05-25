@@ -23,14 +23,41 @@ for c in range(0, 256):
 		d = c - 0x80
 	scrcode_from_petscii.append(d)
 
-def modifiers_and_scancodes_from_petscii(petscii):
-	modifiers_and_scancodes = []
+def c64_modifiers_and_scancodes_from_petscii(petscii):
+	c64_modifiers_and_scancodes = []
 	for modifier in range(0, 4):
 		for scancode in range(0, 64):
+			if scancode == 15 or scancode == 52: # l.shift, r.shift
+				continue
 			p2 = petscii_from_scancode[modifier][scancode]
 			if p2 != 0xff and p2 == petscii:
-				modifiers_and_scancodes.append((modifier, scancode))
-	return modifiers_and_scancodes
+				c64_modifiers_and_scancodes.append((modifier, scancode))
+	return c64_modifiers_and_scancodes
+
+def c64_modifiers_and_scancodes_html_from_petscii(petscii):
+	c64_modifiers_and_scancodes_html = []
+	c64_modifiers_and_scancodes = c64_modifiers_and_scancodes_from_petscii(petscii)
+	other_petscii = None
+	if len(c64_modifiers_and_scancodes) == 0 and scrcode is not None:
+		for check_petscii in petscii_from_scrcode[scrcode & 0x7f]:
+			if check_petscii != petscii:
+				other_petscii = check_petscii
+				break
+		if other_petscii:
+			c64_modifiers_and_scancodes = c64_modifiers_and_scancodes_from_petscii(other_petscii)
+
+	if len(c64_modifiers_and_scancodes) > 0:
+		for (modifier, scancode) in c64_modifiers_and_scancodes:
+			m = description_from_modifier[modifier]
+			d = description_from_scancode[scancode]
+
+			if m:
+				m = '<span class="key-box">{}</span> + '.format(m)
+			else:
+				m = ''
+			c64_modifiers_and_scancodes_html.append('{}<span class="key-box">{}</span>'.format(m, d))
+
+	return (c64_modifiers_and_scancodes_html, other_petscii)
 
 # generate petscii_from_scrcode mapping
 petscii_from_scrcode = []
@@ -225,38 +252,40 @@ for c1 in range(0, 256):
 print('</div>')
 print('</div>')
 
-for c in range(0, 256):
-	print('<h2>Screencode {}</h2>'.format(hex(c)))
-	c7 = c & 0x7f
-	if c >= 0x80:
-		inverted = 'inverted'
-		print('<li>REVERSE</li>')
-	else:
-		inverted = ''
-	print('<li><span class="container {}"><span class="character char-{}"></span></span></li>'.format(inverted, hex(c7)))
+## Screencode Boxes
+#for c in range(0, 256):
+#	print('<h2>Screencode {}</h2>'.format(hex(c)))
+#	c7 = c & 0x7f
+#	if c >= 0x80:
+#		inverted = 'inverted'
+#		print('<li>REVERSE</li>')
+#	else:
+#		inverted = ''
+#	print('<li><span class="container {}"><span class="character char-{}"></span></span></li>'.format(inverted, hex(c7)))
+#
+#	print('<table><th>PETSCII<br/>hex</th><th>PETSCII<br/>dec</th><th>Keyboard</th>')
+#	for petscii in petscii_from_scrcode[c7]:
+#		print('<tr>')
+#		print('<td>${:02X}</td><td>{}</tt></td>'.format(petscii, petscii))
+#		kbd = ''
+#		for (modifier, scancode) in c64_modifiers_and_scancodes_from_petscii(petscii):
+#			m = description_from_modifier[modifier]
+#			d = description_from_scancode[scancode]
+#			if m:
+#				m = '<span class="key-box">{}</span> + '.format(m)
+#			else:
+#				m = ''
+#
+#			kbd += '{}<span class="key-box">{}</span><br/>'.format(m, d)
+#		print('<td>{}</td>'.format(kbd))
+#		print('</tr>')
+#	print('</table>')
+#	petscii = petscii_from_scrcode[c7][0]
+#	unicode = unicode_from_petscii[0][petscii]
+#	print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
+#	print('<li>Unicode \'&#x{:x};\'</li>'.format(unicode))
 
-	print('<table><th>PETSCII<br/>hex</th><th>PETSCII<br/>dec</th><th>Keyboard</th>')
-	for petscii in petscii_from_scrcode[c7]:
-		print('<tr>')
-		print('<td>${:02X}</td><td>{}</tt></td>'.format(petscii, petscii))
-		kbd = ''
-		for (modifier, scancode) in modifiers_and_scancodes_from_petscii(petscii):
-			m = description_from_modifier[modifier]
-			d = description_from_scancode[scancode]
-			if m:
-				m = '<span class="key-box">{}</span> + '.format(m)
-			else:
-				m = ''
-
-			kbd += '{}<span class="key-box">{}</span><br/>'.format(m, d)
-		print('<td>{}</td>'.format(kbd))
-		print('</tr>')
-	print('</table>')
-	petscii = petscii_from_scrcode[c7][0]
-	unicode = unicode_from_petscii[0][petscii]
-	print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
-	print('<li>Unicode \'&#x{:x};\'</li>'.format(unicode))
-
+# PETSCII Boxes
 for petscii in range(0, 256):
 	print('<h2>PETSCII {}</h2>'.format(hex(petscii)))
 	scrcode = scrcode_from_petscii[petscii]
@@ -268,32 +297,18 @@ for petscii in range(0, 256):
 	print('<li>PETSCII hex: ${:02X}</li>'.format(petscii))
 	print('<li>PETSCII dec: {}</li>'.format(petscii))
 
-	modifiers_and_scancodes = modifiers_and_scancodes_from_petscii(petscii)
-	other_petscii = None
-	if len(modifiers_and_scancodes) == 0 and scrcode is not None:
-		for check_petscii in petscii_from_scrcode[scrcode & 0x7f]:
-			if check_petscii != petscii:
-				other_petscii = check_petscii
-				break
-		if other_petscii:
-			modifiers_and_scancodes = modifiers_and_scancodes_from_petscii(other_petscii)
 
-	if len(modifiers_and_scancodes) > 0:
+	(c64_modifiers_and_scancodes_html, other_petscii) = c64_modifiers_and_scancodes_html_from_petscii(petscii)
+
+	if len(c64_modifiers_and_scancodes_html) > 0:
 		alt_text = ''
 		if other_petscii:
 			alt_text = ' (alt code ${:02X})'.format(other_petscii)
 		print('<li>Keyboard{}:<ul>'.format(alt_text))
-		for (modifier, scancode) in modifiers_and_scancodes:
-			m = description_from_modifier[modifier]
-			d = description_from_scancode[scancode]
-
-			if m:
-				m = '<span class="key-box">{}</span> + '.format(m)
-			else:
-				m = ''
-			print('<li>{}<span class="key-box">{}</span></li>'.format(m, d))
+		for html in c64_modifiers_and_scancodes_html:
+			print('<li>{}</li>'.format(html))
 		print('</ul></li>')
-		# XXX print keyboard combinations generating alternate codes for the same screen code
+
 	print('</tr>')
 	print('</table>')
 	if scrcode:
@@ -301,6 +316,42 @@ for petscii in range(0, 256):
 		unicode = unicode_from_petscii[0][petscii]
 		print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
 		print('<li>Unicode \'&#x{:x};\'</li>'.format(unicode))
+
+# PETSCII Table
+print('<table border="1">')
+for petscii in range(0, 256):
+	print('<tr>')
+
+	print('<td>${:02X}</td>'.format(petscii))
+	scrcode = scrcode_from_petscii[petscii]
+	if scrcode is None:
+		print('<td><span class="container">{}</span></td>'.format(description_from_control_code[petscii]))
+	else:
+		print('<td><span class="container"><span class="character char-{}"></span></span></td>'.format(hex(scrcode)))
+
+	if scrcode is not None:
+		unicode = unicode_from_petscii[0][petscii]
+		print('<td>\'&#x{:x};\'</td>'.format(unicode))
+		print('<td>U+{:04X}</td>'.format(unicode))
+		print('<td>{}</td>'.format(description_from_unicode[unicode]))
+		print('<td>${:02X}</td>'.format(scrcode))
+	else:
+		print('<td></td><td></td><td></td><td></td>')
+
+
+	(c64_modifiers_and_scancodes_html, other_petscii) = c64_modifiers_and_scancodes_html_from_petscii(petscii)
+
+	if len(c64_modifiers_and_scancodes_html) > 0:
+		alt_text = ''
+		if not other_petscii:
+			print('<td>{}<ul>'.format(alt_text))
+			for html in c64_modifiers_and_scancodes_html:
+				print('{}<br/>'.format(html))
+			print('</ul></td>')
+
+	print('</tr>')
+
+print('</table>')
 
 print('</body>')
 print('</html>')
