@@ -23,6 +23,15 @@ for c in range(0, 256):
 		d = c - 0x80
 	scrcode_from_petscii.append(d)
 
+ext_scrcode_from_petscii = []
+for c in range(0, 256):
+	if scrcode_from_petscii[c] is not None:
+		ext_scrcode_from_petscii.append(scrcode_from_petscii[c])
+	elif c < 0x80:
+		ext_scrcode_from_petscii.append(c + 0x80)
+	else:
+		ext_scrcode_from_petscii.append(c + 0x40)
+
 def c64_modifiers_and_scancodes_from_petscii(petscii):
 	c64_modifiers_and_scancodes = []
 	for modifier in range(0, 4):
@@ -58,6 +67,14 @@ def c64_modifiers_and_scancodes_html_from_petscii(petscii):
 			c64_modifiers_and_scancodes_html.append('{}<span class="key-box">{}</span>'.format(m, d))
 
 	return (c64_modifiers_and_scancodes_html, other_petscii)
+
+def pixel_char_html_from_scrcode(scrcode):
+	scrcode7 = scrcode & 0x7f
+	if scrcode >= 0x80:
+		inverted = 'inverted'
+	else:
+		inverted = ''
+	return '<span class="container {}"><span class="character char-{}"></span></span>'.format(inverted, hex(scrcode7))
 
 # generate petscii_from_scrcode mapping
 petscii_from_scrcode = []
@@ -346,6 +363,7 @@ for petscii in range(0, 256):
 	print('<td>${:02X}</td>'.format(petscii))
 
 	scrcode = scrcode_from_petscii[petscii]
+	ext_scrcode = ext_scrcode_from_petscii[petscii]
 
 	(c64_modifiers_and_scancodes_html, other_petscii) = c64_modifiers_and_scancodes_html_from_petscii(petscii)
 
@@ -356,11 +374,11 @@ for petscii in range(0, 256):
 				print('{}<br/>'.format(html))
 	print('</td>')
 
+	print('<td>${:02X}</td>'.format(ext_scrcode))
+
+	print('<td>{}</td>'.format(pixel_char_html_from_scrcode(ext_scrcode)))
+
 	if scrcode is not None:
-		print('<td>${:02X}</td>'.format(scrcode))
-
-		print('<td><span class="container"><span class="character char-{}"></span></span></td>'.format(hex(scrcode)))
-
 		unicode = unicode_from_petscii[0][petscii]
 		print('<td>\'&#x{:x};\'</td>'.format(unicode))
 		print('<td>U+{:04X}</td>'.format(unicode))
@@ -377,7 +395,7 @@ for petscii in range(0, 256):
 		if description in color_index_from_color_name:
 			hex_color = hex_color_from_color_index[color_index_from_color_name[description]]
 			color_html = 'bgcolor="{}"'.format(hex_color)
-		print('<td {} colspan="5">{}</td>'.format(color_html, description))
+		print('<td {} colspan="3">{}</td>'.format(color_html, description))
 
 
 
