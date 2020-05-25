@@ -65,7 +65,7 @@ def modifiers_and_scancodes_html_from_petscii(petscii, machine = 'C64'):
 
 	return (modifiers_and_scancodes_html, other_petscii)
 
-def pixel_char_html_from_scrcode(scrcode, description = None):
+def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None):
 	scrcode7 = scrcode & 0x7f
 	if scrcode >= 0x80:
 		inverted = 'inverted'
@@ -76,7 +76,11 @@ def pixel_char_html_from_scrcode(scrcode, description = None):
 	color_html = ''
 		
 	if description is not None:
-		color_html = ' style="background-color: #9999;"'
+		if hex_color is None:
+			hex_color = '#0008'
+		else:
+			hex_color += 'E0'
+		color_html = ' style="background-color: {};"'.format(hex_color)
 		description_html = '<span class="char-txt"{}>{}<br /></span>'.format(color_html, description)
 
 	return '<div class="char-box {}"><span class="char-img char-{}"></span>{}</div>'.format(inverted, hex(scrcode7), description_html)
@@ -98,54 +102,65 @@ for c in range(0, 128):
 # read control code descriptions
 #
 description_from_control_code_symbol = {
-	'CLEAR':           ('CLR', 'Clear'),
-	'COL_BLACK':       ('Blk', 'Set text color to black'),
-	'COL_BLUE':        ('Blu', 'Set text color to Blue'),
-	'COL_BROWN':       ('Brn', 'Set text color to Brown'),
-	'COL_CYAN':        ('Cyn', 'Set text color to Cyan'),
-	'COL_GREEN':       ('Grn', 'Set text color to Green'),
-	'COL_GREY_1':      ('Gry1', 'Set text color to Gray 1'),
-	'COL_GREY_2':      ('Gry2', 'Set text color to Gray 2'),
-	'COL_GREY_3':      ('Gry3', 'Set text color to Gray 3'),
-	'COL_LT_BLUE':     ('LBlu', 'Set text color to Light Blue'),
-	'COL_LT_GREEN':    ('LGrn', 'Set text color to Light Green'),
-	'COL_LT_RED':      ('LRed', 'Set text color to Light Red'),
-	'COL_ORANGE':      ('Orng', 'Set text color to Orange'),
-	'COL_PURPLE':      ('Pur', 'Set text color to Purple'),
-	'COL_RED':         ('Red', 'Set text color to Red'),
-	'COL_WHITE':       ('Wht', 'Set text color to White'),
-	'COL_YELLOW':      ('Yel', 'Set text color to Yellow'),
-	'CRSR_DOWN':       ('↓', 'Cursor Down'),
-	'CRSR_HOME':       ('HOME', 'Cursor Home'),
-	'CRSR_LEFT':       ('←', 'Cursor Left'),
-	'CRSR_RIGHT':      ('→', 'Cursor Right'),
-	'CRSR_UP':         ('↑', 'Cursor Up'),
-	'DEL':             ('DEL', 'Delete'),
-	'DIS_CASE_SWITCH': ('Disable Case', 'Disable Case-Switching Keys'),
-	'ENA_CASE_SWITCH': ('Enable Case', 'Enable Case-Switching Keys'),
-	'INST':            ('INST', 'Insert'),
-	'KEY_F1':          ('f1', 'f1 key'),
-	'KEY_F2':          ('f2', 'f2 key'),
-	'KEY_F3':          ('f3', 'f3 key'),
-	'KEY_F4':          ('f4', 'f4 key'),
-	'KEY_F5':          ('f5', 'f5 key'),
-	'KEY_F6':          ('f6', 'f6 key'),
-	'KEY_F7':          ('f7', 'f7 key'),
-	'KEY_F8':          ('f8', 'f8 key'),
-	'LOWER_CASE':      ('Lower Case', 'Switch to lower case'),
-	'RETURN':          ('RETURN', 'Return'),
-	'RVS_OFF':         ('RVS Off', 'Reverse Off'),
-	'RVS_ON':          ('RVS On', 'Reverse On'),
-	'SHIFT_RETURN':    ('SHIFT RETURN', 'Shift Return'),
-	'UPPER_CASE':      ('Upper Case', 'Switch to upper case'),
+	'CLEAR':            ('CLR', 'Clear'),
+	'COL_BLACK':        ('Blk', 'Set text color to black'),
+	'COL_BLUE':         ('Blu', 'Set text color to Blue'),
+	'COL_BLUE_GREEN':   ('BlGrn', 'Set text color to Blue Green'),
+	'COL_BROWN':        ('Brn', 'Set text color to Brown'),
+	'COL_CYAN':         ('Cyn', 'Set text color to Cyan'),
+	'COL_DARK_BLUE':    ('DkBlu', 'Set text color to Dark Blue'),
+	'COL_GREEN':        ('Grn', 'Set text color to Green'),
+	'COL_GREY_1':       ('Gry1', 'Set text color to Gray 1'),
+	'COL_GREY_2':       ('Gry2', 'Set text color to Gray 2'),
+	'COL_GREY_3':       ('Gry3', 'Set text color to Gray 3'),
+	'COL_LIGHT_GRN':    ('LtGrn', 'Set text color to Light Green'),
+	'COL_LIGHT_BLUE':   ('LBlu', 'Set text color to Light Blue'),
+	'COL_LIGHT_GREEN':  ('LGrn', 'Set text color to Light Green'),
+	'COL_LIGHT_RED':    ('LRed', 'Set text color to Light Red'),
+	'COL_ORANGE':       ('Orng', 'Set text color to Orange'),
+	'COL_PINK':         ('Pink', 'Set text color to Pink'),
+	'COL_PURPLE':       ('Pur', 'Set text color to Purple'),
+	'COL_RED':          ('Red', 'Set text color to Red'),
+	'COL_WHITE':        ('Wht', 'Set text color to White'),
+	'COL_YELLOW':       ('Yel', 'Set text color to Yellow'),
+	'COL_YELLOW_GREEN': ('YlGrn', 'Set text color to Yellow Green'),
+	'CRSR_DOWN':        ('↓', 'Cursor Down'),
+	'CRSR_HOME':        ('HOME', 'Cursor Home'),
+	'CRSR_LEFT':        ('←', 'Cursor Left'),
+	'CRSR_RIGHT':       ('→', 'Cursor Right'),
+	'CRSR_UP':          ('↑', 'Cursor Up'),
+	'DEL':              ('DEL', 'Delete'),
+	'DIS_CASE_SWITCH':  ('Disable Case', 'Disable Case-Switching Keys'),
+	'ENA_CASE_SWITCH':  ('Enable Case', 'Enable Case-Switching Keys'),
+	'FLASH_ON':         ('Flash On', 'Flash On'),
+	'FLASH_OFF':        ('Flash Off', 'Flash Off'),
+	'INST':             ('INST', 'Insert'),
+	'KEY_F1':           ('f1', 'f1 key'),
+	'KEY_F2':           ('f2', 'f2 key'),
+	'KEY_F3':           ('f3', 'f3 key'),
+	'KEY_F4':           ('f4', 'f4 key'),
+	'KEY_F5':           ('f5', 'f5 key'),
+	'KEY_F6':           ('f6', 'f6 key'),
+	'KEY_F7':           ('f7', 'f7 key'),
+	'KEY_F8':           ('f8', 'f8 key'),
+	'LOWER_CASE':       ('Lower Case', 'Switch to lower case'),
+	'RETURN':           ('RETURN', 'Return'),
+	'RVS_OFF':          ('RVS Off', 'Reverse Off'),
+	'RVS_ON':           ('RVS On', 'Reverse On'),
+	'SHIFT_RETURN':     ('SHIFT RETURN', 'Disabled Return'),
+	'UPPER_CASE':       ('Upper Case', 'Switch to upper case'),
+
 }
 description_from_control_code = {}
+symbol_from_control_code = {}
 for line in open('control_codes_c64.txt'):
 	line = line.rstrip()
 	if len(line) != 0:
-		symbol_from_control_code = line[3:]
-		if len(symbol_from_control_code) > 0:
-			description_from_control_code[int(line[0:2], 16)] = description_from_control_code_symbol[symbol_from_control_code]
+		petscii = int(line[0:2], 16)
+		symbol = line[3:]
+		symbol_from_control_code[petscii] = symbol
+		if len(symbol) > 0:
+			description_from_control_code[petscii] = description_from_control_code_symbol[symbol]
 
 
 
@@ -221,22 +236,22 @@ for machine in machines:
 
 
 color_index_from_color_name = {
-	'COL_BLACK': 0,
-	'COL_WHITE': 1,
-	'COL_RED': 2,
-	'COL_CYAN': 3,
-	'COL_GREEN': 5,
-	'COL_PURPLE': 4,
-	'COL_BLUE': 6,
-	'COL_YELLOW': 7,
-	'COL_ORANGE': 8,
-	'COL_BROWN': 9,
-	'COL_LT_RED': 10,
-	'COL_GREY_1': 11,
-	'COL_GREY_2': 12,
+	'COL_BLACK':     0,
+	'COL_WHITE':     1,
+	'COL_RED':       2,
+	'COL_CYAN':      3,
+	'COL_GREEN':     5,
+	'COL_PURPLE':    4,
+	'COL_BLUE':      6,
+	'COL_YELLOW':    7,
+	'COL_ORANGE':    8,
+	'COL_BROWN':     9,
+	'COL_LT_RED':   10,
+	'COL_GREY_1':   11,
+	'COL_GREY_2':   12,
 	'COL_LT_GREEN': 13,
-	'COL_LT_BLUE': 14,
-	'COL_GREY_3': 15,
+	'COL_LT_BLUE':  14,
+	'COL_GREY_3':   15,
 }
 
 hex_color_from_color_index = [
@@ -320,7 +335,12 @@ for petscii in range(0, 256):
 	if is_petscii_printable(petscii):
 		description= None
 
-	print(pixel_char_html_from_scrcode(scrcode, description))
+	hex_color = None
+	if not is_petscii_printable(petscii):
+		symbol = symbol_from_control_code[petscii]
+		if symbol in color_index_from_color_name:
+			hex_color = hex_color_from_color_index[color_index_from_color_name[symbol]]
+	print(pixel_char_html_from_scrcode(scrcode, description, hex_color))
 	if petscii & 15 == 15:
 		print('<br />')
 
@@ -436,12 +456,13 @@ for petscii in range(0, 256):
 		description = description_from_control_code.get(petscii)
 		if description:
 			(_, description) = description
+		color_html = ''
+		symbol = symbol_from_control_code[petscii]
+		if symbol in color_index_from_color_name:
+			hex_color = hex_color_from_color_index[color_index_from_color_name[symbol]]
+			color_html = 'bgcolor="{}"'.format(hex_color)
 		if not description:
 			description = ''
-		color_html = ''
-		if description in color_index_from_color_name:
-			hex_color = hex_color_from_color_index[color_index_from_color_name[description]]
-			color_html = 'bgcolor="{}"'.format(hex_color)
 		print('<td {} colspan="3">{}</td>'.format(color_html, description))
 
 
