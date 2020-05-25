@@ -84,7 +84,7 @@ for line in open('C64IPRI.TXT'):
 	if line.startswith('#') or len(line) == 0:
 		continue
 	petscii = int(line[2:4], 16)
-	unicode = int(line[7:11], 16)
+	unicode = int(line[7:12], 16)
 	unicode_from_petscii[0][petscii] = unicode
 	description_from_unicode[unicode] = line[14:]
 unicode_from_petscii.append({})
@@ -93,7 +93,7 @@ for line in open('C64IALT.TXT'):
 	if line.startswith('#') or len(line) == 0:
 		continue
 	petscii = int(line[2:4], 16)
-	unicode = int(line[7:11], 16)
+	unicode = int(line[7:12], 16)
 	unicode_from_petscii[1][petscii] = unicode
 	description_from_unicode[unicode] = line[14:]
 
@@ -301,35 +301,37 @@ for petscii in range(0, 256):
 
 # PETSCII Table
 print('<table border="1">')
+print('<tr><th>PETSCII</th><th>Keyboard</th><th>Screencode</th><th>Character</th><th colspan="3">Unicode</th></tr>')
 for petscii in range(0, 256):
 	print('<tr>')
 
 	print('<td>${:02X}</td>'.format(petscii))
+
 	scrcode = scrcode_from_petscii[petscii]
-	if scrcode is None:
-		print('<td><span class="container">{}</span></td>'.format(description_from_control_code[petscii]))
-	else:
-		print('<td><span class="container"><span class="character char-{}"></span></span></td>'.format(hex(scrcode)))
+
+	(c64_modifiers_and_scancodes_html, other_petscii) = c64_modifiers_and_scancodes_html_from_petscii(petscii)
+
+	print('<td>')
+	if len(c64_modifiers_and_scancodes_html) > 0:
+		if not other_petscii:
+			for html in c64_modifiers_and_scancodes_html:
+				print('{}<br/>'.format(html))
+	print('</td>')
 
 	if scrcode is not None:
+		print('<td>${:02X}</td>'.format(scrcode))
+
+		print('<td><span class="container"><span class="character char-{}"></span></span></td>'.format(hex(scrcode)))
+
 		unicode = unicode_from_petscii[0][petscii]
 		print('<td>\'&#x{:x};\'</td>'.format(unicode))
 		print('<td>U+{:04X}</td>'.format(unicode))
 		print('<td>{}</td>'.format(description_from_unicode[unicode]))
-		print('<td>${:02X}</td>'.format(scrcode))
+
 	else:
-		print('<td></td><td></td><td></td><td></td>')
+		print('<td colspan="5">{}</td>'.format(description_from_control_code[petscii]))
 
 
-	(c64_modifiers_and_scancodes_html, other_petscii) = c64_modifiers_and_scancodes_html_from_petscii(petscii)
-
-	if len(c64_modifiers_and_scancodes_html) > 0:
-		alt_text = ''
-		if not other_petscii:
-			print('<td>{}<ul>'.format(alt_text))
-			for html in c64_modifiers_and_scancodes_html:
-				print('{}<br/>'.format(html))
-			print('</ul></td>')
 
 	print('</tr>')
 
