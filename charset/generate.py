@@ -30,9 +30,9 @@ def is_petscii_printable(petscii):
 def modifiers_and_scancodes_from_petscii(petscii, machine):
 	modifiers_and_scancodes = []
 	for modifier in range(0, 4):
-		for scancode in range(0, 64):
-			 # skip l.shift, r.shift, ctrl, c=
-			if scancode == 15 or scancode == 52 or scancode == 58 or scancode == 61:
+		for scancode in range(0, len(petscii_from_scancode[machine][modifier])):
+			 # skip l.shift, r.shift, ctrl, c=, alt
+			if scancode == 15 or scancode == 52 or scancode == 58 or scancode == 61 or (machine == 'C128' and scancode == 16):
 				continue
 			p2 = petscii_from_scancode[machine][modifier][scancode]
 			if p2 != 0xff and p2 == petscii:
@@ -154,6 +154,28 @@ petscii_from_scancode['C64'].append([ # ctrl
 	0x90, 0x06, 0xFF, 0x05, 0xFF, 0xFF, 0x11, 0xFF,
 ])
 
+petscii_from_scancode['C128'] = []
+petscii_from_scancode['C128'].append([ # no modifiers
+	0x84, 0x38, 0x35, 0x09, 0x32, 0x34, 0x37, 0x31,
+	0x1b, 0x2b, 0x2d, 0x0a, 0x0d, 0x36, 0x39, 0x33,
+	0x08, 0x30, 0x2e, 0x91, 0x11, 0x9d, 0x1d, 0xff,
+])
+petscii_from_scancode['C128'].append([ # shift
+	0x84, 0x38, 0x35, 0x18, 0x32, 0x34, 0x37, 0x31,
+	0x1b, 0x2b, 0x2d, 0x0a, 0x8d, 0x36, 0x39, 0x33,
+	0x08, 0x30, 0x2e, 0x91, 0x11, 0x9d, 0x1d, 0xff,
+])
+petscii_from_scancode['C128'].append([ # cbm
+	0x84, 0x38, 0x35, 0x18, 0x32, 0x34, 0x37, 0x31,
+	0x1b, 0x2b, 0x2d, 0x0a, 0x8d, 0x36, 0x39, 0x33,
+	0x08, 0x30, 0x2e, 0x91, 0x11, 0x9d, 0x1d, 0xff,
+])
+petscii_from_scancode['C128'].append([ # ctrl
+	0x84, 0x38, 0x35, 0x18, 0x32, 0x34, 0x37, 0x31,
+	0x1b, 0x2b, 0x2d, 0x0a, 0x8d, 0x36, 0x39, 0x33,
+	0x08, 0x30, 0x2e, 0x91, 0x11, 0x9d, 0x1d, 0xff,
+])
+
 petscii_from_scancode['TED'] = []
 petscii_from_scancode['TED'].append([ # no modifiers
 	0x14, 0x0d, 0x5c, 0x8c, 0x85, 0x89, 0x86, 0x40,
@@ -213,6 +235,11 @@ description_from_scancode['C64'] = [
 	'+','P','L','-','.',':','@',',',
 	'£','*',';','HOME','R.SHIFT','=','↑','/',
 	'1','←','CTRL','2','SPACE','C=','Q','STOP',
+]
+description_from_scancode['C128'] = [
+	'HELP','[8]','[5]','TAB','[2]','[4]','[7]','[1]',
+	'ESC','[+]','[-]','LINE FEED','[ENTER]','[6]','[9]','[3]',
+	'ALT','[0]','[.]','↑','↓','←','→','NO SCROLL',
 ]
 
 description_from_scancode['TED'] = [
@@ -393,7 +420,7 @@ for petscii in range(0, 256):
 
 # PETSCII Table
 print('<table border="1">')
-print('<tr><th>PETSCII</th><th>C64 Keyboard</th><th>C16, Plus/4 Keyboard</th><th>Screencode</th><th>Character</th><th colspan="3">Unicode Upper</th><th colspan="3">Unicode Lower</th></tr>')
+print('<tr><th>PETSCII</th><th>C64 Keyboard</th><th>C128 Keyboard (Extra)</th><th>C16, Plus/4 Keyboard</th><th>Screencode</th><th>Character</th><th colspan="3">Unicode Upper</th><th colspan="3">Unicode Lower</th></tr>')
 for petscii in range(0, 256):
 	print('<tr>')
 
@@ -402,7 +429,7 @@ for petscii in range(0, 256):
 	scrcode = scrcode_from_petscii[petscii]
 
 	# keyboard
-	for machine in ['C64', 'TED']:
+	for machine in ['C64', 'C128', 'TED']:
 		print('<td>')
 		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, machine)
 		if len(modifiers_and_scancodes_html) > 0:
