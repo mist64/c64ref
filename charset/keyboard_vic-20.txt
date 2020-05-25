@@ -1,0 +1,49 @@
+scan    1        3       5       7       9       +       £       DEL
+scan    ←        W       R       Y       I       P       *       RETURN
+scan    CTRL     A       D       G       J       L       ;       ←CRSR→
+scan    STOP     L.SHIFT X       V       N       COMMA   /       ↑CRSR↓
+scan    SPACE    Z       C       B       M       .       RSH     f1
+scan    C=       S       F       H       K       :       =       f3
+scan    Q        E       T       U       O       @       ↑       f5
+scan    2        4       6       8       0       -       HOME    f7
+
+exclude 10 # CTRL
+exclude 19 # L SHIFT
+exclude 26 # R SHIFT
+exclude 28 # C=
+
+regular 31 33 35 37 39 2B 5C 14
+regular 5F 57 52 59 49 50 2A 0D
+regular 04 41 44 47 4A 4C 3B 1D
+regular 03 01 58 56 4E 2C 2F 11
+regular 20 5A 43 42 4D 2E 01 85
+regular 02 53 46 48 4B 3A 3D 86
+regular 51 45 54 55 4F 40 5E 87
+regular 32 34 36 38 30 2D 13 88
+
+shift   21 23 25 27 29 DB A9 94
+shift   5F D7 D2 D9 C9 D0 C0 8D
+shift   04 C1 C4 C7 CA CC 5D 9D
+shift   83 01 D8 D6 CE 3C 3F 91
+shift   A0 DA C3 C2 CD 3E 01 89
+shift   02 D3 C6 C8 CB 5B 3D 8A
+shift   D1 C5 D4 D5 CF BA DE 8B
+shift   22 24 26 28 30 DD 93 8C
+
+cbm     21 23 25 27 29 A6 A8 94
+cbm     5F B3 B2 B7 A2 AF DF 8D
+cbm     04 B0 AC A5 B5 B6 5D 9D
+cbm     83 01 BD BE AA 3C 3F 91
+cbm     A0 AD BC BF A7 3E 01 89
+cbm     02 AE BB B4 A1 5B 3D 8A
+cbm     AB B1 A3 B8 B9 A4 DE 8B
+cbm     22 24 26 28 30 DC 93 8C
+
+ctrl    90 1C 9C 1F 12 FF FF FF
+ctrl    06 FF 12 FF FF FF FF FF
+ctrl    FF FF FF FF FF FF FF FF
+ctrl    FF FF FF FF FF FF FF FF
+ctrl    FF FF FF FF FF FF FF FF
+ctrl    FF FF FF FF FF FF FF FF
+ctrl    FF FF FF FF FF FF FF FF
+ctrl    05 9F 1E 9E 92 FF FF FF

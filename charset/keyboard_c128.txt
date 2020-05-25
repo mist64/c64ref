@@ -1,0 +1,21 @@
+scan    HELP     [8]     [5]     TAB     [2]     [4]     [7]     [1]
+scan    ESC      [+]     [-]   LINE_FEED [ENTER] [6]     [9]     [3]
+scan    ALT      [0]     [.]     ↑       ↓       ←       →       NO_SCROLL
+
+exclude 10 # ALT
+
+regular 84 38 35 09 32 34 37 31
+regular 1B 2B 2D 0A 0D 36 39 33
+regular 08 30 2E 91 11 9D 1D FF
+
+shift   84 38 35 18 32 34 37 31
+shift   1B 2B 2D 0A 8D 36 39 33
+shift   08 30 2E 91 11 9D 1D FF
+
+cbm     84 38 35 18 32 34 37 31
+cbm     1B 2B 2D 0A 8D 36 39 33
+cbm     08 30 2E 91 11 9D 1D FF
+
+ctrl    84 38 35 18 32 34 37 31
+ctrl    1B 2B 2D 0A 8D 36 39 33
+ctrl    08 30 2E 91 11 9D 1D FF

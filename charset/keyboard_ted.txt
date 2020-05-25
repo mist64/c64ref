@@ -1,0 +1,49 @@
+scan    DEL      RETURN  £       HELP    f1      f2      f3      @
+scan    3        W       A       4       Z       S       E       SHIFT
+scan    5        R       D       6       C       F       T       X
+scan    7        Y       G       8       B       H       U       V
+scan    9        I       J       0       M       K       O       N
+scan    CRSR↓    P       L       CRSR↑   .       :       -       COMMA
+scan    CRSR←    *       ;       CRSR→   ESCAPE  =       +       /
+scan    1        HOME    CTRL    2       SPACE   C=      Q       STOP
+
+exclude 0F # L SHIFT
+exclude 34 # R SHIFT
+exclude 3A # CTRL
+exclude 3D # C=
+
+regular 14 0D 5C 8C 85 89 86 40
+regular 33 57 41 34 5A 53 45 01
+regular 35 52 44 36 43 46 54 58
+regular 37 59 47 38 42 48 55 56
+regular 39 49 4A 30 4D 4B 4F 4E
+regular 11 50 4C 91 2E 3A 2D 2C
+regular 9D 2A 3B 1D 1B 3D 2B 2F
+regular 31 13 04 32 20 02 51 03
+
+shift   94 8D A9 88 8A 87 8B BA
+shift   23 D7 C1 24 DA D3 C5 01
+shift   25 D2 C4 26 C3 C6 D4 D8
+shift   27 D9 C7 28 C2 C8 D5 D6
+shift   29 C9 CA 5E CD CB CF CE
+shift   11 D0 CC 91 3E 5B DD 3C
+shift   9D C0 5D 1D 1B 5F DB 3F
+shift   21 93 04 22 A0 02 D1 83
+
+cbm     94 8D A8 88 8A 87 8B A4
+cbm     96 B3 B0 97 AD AE B1 01
+cbm     98 B2 AC 99 BC BB A3 BD
+cbm     9A B7 A5 9B BF B4 B8 BE
+cbm     29 A2 B5 30 A7 A1 B9 AA
+cbm     11 AF B6 91 3E 5B DC 3C
+cbm     9D DF 5D 1D 1B DE A6 3F
+cbm     81 93 04 95 A0 02 AB 83
+
+ctrl    FF FF 1C FF FF FF FF FF
+ctrl    1C 17 01 9F 1A 13 05 FF
+ctrl    9C 12 04 1E 03 06 14 18
+ctrl    1F 19 07 9E 02 08 15 16
+ctrl    12 09 0A 92 0D 0B 0F 0E
+ctrl    FF 10 0C FF 84 1B FF 82
+ctrl    FF FF 1D FF 1B 06 FF FF
+ctrl    90 FF FF 05 FF FF 11 FF
