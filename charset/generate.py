@@ -158,6 +158,44 @@ description_from_scancode = [
 	'1','LEFT ARROW','CTRL','2','SPACE','C=','Q','STOP',
 ]
 
+color_index_from_color_name = {
+	'{black}': 0,
+	'{white}': 1,
+	'{red}': 2,
+	'{cyan}': 3,
+	'{green}': 5,
+	'{purple}': 4,
+	'{blue}': 6,
+	'{yellow}': 7,
+	'{orange}': 8,
+	'{brown}': 9,
+	'{lt.red}': 10,
+	'{grey 1}': 11,
+	'{grey 2}': 12,
+	'{lt.green}': 13,
+	'{lt.blue}': 14,
+	'{grey 3}': 15,
+}
+
+hex_color_from_color_index = [
+	'#000000',
+	'#ffffff',
+	'#813338',
+	'#75cec8',
+	'#8e3c97',
+	'#56ac4d',
+	'#2e2c9b',
+	'#edf171',
+	'#8e5029',
+	'#553800',
+	'#c46c71',
+	'#4a4a4a',
+	'#7b7b7b',
+	'#a9ff9f',
+	'#706deb',
+	'#b2b2b2',
+]
+
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
 print('<html>')
 print('<head>')
@@ -301,7 +339,7 @@ for petscii in range(0, 256):
 
 # PETSCII Table
 print('<table border="1">')
-print('<tr><th>PETSCII</th><th>Keyboard</th><th>Screencode</th><th>Character</th><th colspan="3">Unicode</th></tr>')
+print('<tr><th>PETSCII</th><th>Keyboard</th><th>Screencode</th><th>Character</th><th colspan="3">Unicode Upper</th><th colspan="3">Unicode Lower</th></tr>')
 for petscii in range(0, 256):
 	print('<tr>')
 
@@ -328,8 +366,18 @@ for petscii in range(0, 256):
 		print('<td>U+{:04X}</td>'.format(unicode))
 		print('<td>{}</td>'.format(description_from_unicode[unicode]))
 
+		unicode = unicode_from_petscii[1][petscii]
+		print('<td>\'&#x{:x};\'</td>'.format(unicode))
+		print('<td>U+{:04X}</td>'.format(unicode))
+		print('<td>{}</td>'.format(description_from_unicode[unicode]))
+
 	else:
-		print('<td colspan="5">{}</td>'.format(description_from_control_code[petscii]))
+		description = description_from_control_code[petscii]
+		color_html = ''
+		if description in color_index_from_color_name:
+			hex_color = hex_color_from_color_index[color_index_from_color_name[description]]
+			color_html = 'bgcolor="{}"'.format(hex_color)
+		print('<td {} colspan="5">{}</td>'.format(color_html, description))
 
 
 
@@ -339,3 +387,4 @@ print('</table>')
 
 print('</body>')
 print('</html>')
+

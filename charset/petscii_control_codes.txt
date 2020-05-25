@@ -53,7 +53,7 @@
 93 {clear}
 94 {inst}
 95 {brown}
-96 {lt. red}
+96 {lt.red}
 97 {grey 1}
 98 {grey 2}
 99 {lt.green}
