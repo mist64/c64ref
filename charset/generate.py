@@ -64,13 +64,13 @@ def c64_modifiers_and_scancodes_html_from_petscii(petscii):
 
 	return (c64_modifiers_and_scancodes_html, other_petscii)
 
-def pixel_char_html_from_scrcode(scrcode):
+def pixel_char_html_from_scrcode(scrcode, description = None):
 	scrcode7 = scrcode & 0x7f
 	if scrcode >= 0x80:
 		inverted = 'inverted'
 	else:
 		inverted = ''
-	return '<span class="container {}"><span class="character char-{}"></span></span>'.format(inverted, hex(scrcode7))
+	return '<span class="container {}">{}<span class="character char-{}"></span></span>'.format(inverted, description if description else '', hex(scrcode7))
 
 # generate petscii_from_scrcode mapping
 petscii_from_scrcode = []
@@ -246,15 +246,14 @@ print('	<img src="43627586.png" />')
 print('</div>')
 print('<div>')
 
-for c in range(0, 128):
-	print('<span id="{}" type="button" class="container" onclick="test(\'{}\')"><span class="character char-{}"></span></span>'.format(hex(c), hex(c), hex(c)))
-	if c & 15 == 15:
+for scrcode in range(0, 256):
+	inverted = ''
+	if scrcode >= 0x80:
+		inverted = 'inverted'
+	print('<span id="{}" type="button" class="container {}" onclick="test(\'{}\')"><span class="character char-{}"></span></span>'.format(hex(scrcode), inverted, hex(scrcode), hex(scrcode & 0x7f)))
+	if scrcode & 15 == 15:
 		print('<br />')
 
-for c in range(0, 128):
-	print('<span id="{}" type="button" class="container inverted" onclick="test(\'{}\')"><span class="character char-{}"></span></span>'.format(hex(c + 128), hex(c + 128), hex(c)))
-	if c & 15 == 15:
-		print('<br />')
 
 print('<br />')
 print('<br />')
@@ -262,24 +261,11 @@ print('<br />')
 print('<br />')
 print('<br />')
 
-# Interchange => Video
-# $00 - $1F => (control characters)
-# $20 - $3F => $20 - $3F
-# $40 - $5F => $00 - $1F
-# $60 - $7F => $40 - $5F
-# $80 - $9F => (control characters)
-# $A0 - $BF => $60 - $7F
-# $C0 - $DF => $40 - $5F
-# $E0 - $FF => $60 - $7F
-
-
-for c1 in range(0, 256):
-	c = scrcode_from_petscii[c1]
-	if c is None:
-		print('<span class="container">{}</span>'.format(description_from_control_code[c1]))
-	else:
-		print('<span class="container"><span class="character char-{}"></span></span>'.format(hex(c)))
-	if c1 & 15 == 15:
+for petscii in range(0, 256):
+	scrcode = scrcode_from_petscii[petscii]
+	description = description_from_control_code.get(petscii)
+	print(pixel_char_html_from_scrcode(scrcode, description))
+	if petscii & 15 == 15:
 		print('<br />')
 
 print('</div>')
@@ -322,14 +308,13 @@ print('</div>')
 for petscii in range(0, 256):
 	print('<h2>PETSCII ${:02X}</h2>'.format(petscii))
 	scrcode = scrcode_from_petscii[petscii]
-	if is_petscii_printable(petscii):
-		print('<li><span class="container"><span class="character char-{}"></span></span></li>'.format(hex(scrcode)))
-	else:
-		print('<li><span class="container">{}</span></li>'.format(description_from_control_code[petscii]))
+	print('<li>{}</li>'.format(pixel_char_html_from_scrcode(scrcode)))
+	if not is_petscii_printable(petscii):
+		print('<li>Description: {}</li>'.format(description_from_control_code[petscii]))
 
 	print('<li>PETSCII hex: ${:02X}</li>'.format(petscii))
 	print('<li>PETSCII dec: {}</li>'.format(petscii))
-
+	print('<li>Screencode: ${:02X}</li>'.format(scrcode))
 
 	(c64_modifiers_and_scancodes_html, other_petscii) = c64_modifiers_and_scancodes_html_from_petscii(petscii)
 
