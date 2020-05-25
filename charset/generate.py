@@ -89,11 +89,60 @@ for c in range(0, 128):
 #
 # read control code descriptions
 #
+description_from_control_code_symbol = {
+	'CLEAR':           ('CLR', ''),
+	'COL_BLACK':       ('Blk', ''),
+	'COL_BLUE':        ('Blu', ''),
+	'COL_BROWN':       ('Brn', ''),
+	'COL_CYAN':        ('Cyn', ''),
+	'COL_GREEN':       ('Grn', ''),
+	'COL_GREY_1':      ('Gry1', ''),
+	'COL_GREY_2':      ('Gry2', ''),
+	'COL_GREY_3':      ('Gry3', ''),
+	'COL_LT_BLUE':     ('LBlu', ''),
+	'COL_LT_GREEN':    ('LGrn', ''),
+	'COL_LT_RED':      ('LRed', ''),
+	'COL_ORANGE':      ('Orng', ''),
+	'COL_PURPLE':      ('Pur', ''),
+	'COL_RED':         ('Red', ''),
+	'COL_WHITE':       ('Wht', ''),
+	'COL_YELLOW':      ('Yel', ''),
+	'CRSR_DOWN':       ('↑', ''),
+	'CRSR_HOME':       ('HOME', ''),
+	'CRSR_LEFT':       ('←', ''),
+	'CRSR_RIGHT':      ('→', ''),
+	'CRSR_UP':         ('↑', ''),
+	'DEL':             ('DEL', ''),
+	'DIS_CASE_SWITCH': ('Disable Case', ''),
+	'ENA_CASE_SWITCH': ('Enable Case', ''),
+	'INST':            ('INST', ''),
+	'KEY_F1':          ('f1', ''),
+	'KEY_F2':          ('f2', ''),
+	'KEY_F3':          ('f3', ''),
+	'KEY_F4':          ('f4', ''),
+	'KEY_F5':          ('f5', ''),
+	'KEY_F6':          ('f6', ''),
+	'KEY_F7':          ('f7', ''),
+	'KEY_F8':          ('f8', ''),
+	'LOWER_CASE':      ('Lower Case', ''),
+	'RETURN':          ('RETURN', ''),
+	'RVS_OFF':         ('RVS Off', ''),
+	'RVS_ON':          ('RVS On', ''),
+	'SHIFT_RETURN':    ('SHIFT RETURN', ''),
+	'UPPER_CASE':      ('Upper Case', ''),
+}
 description_from_control_code = {}
-for line in open('petscii_control_codes.txt'):
+for line in open('control_codes_c64.txt'):
 	line = line.rstrip()
 	if len(line) != 0:
-		description_from_control_code[int(line[0:2], 16)] = line[3:]
+		symbol_from_control_code = line[3:]
+		if len(symbol_from_control_code) > 0:
+			description_from_control_code[int(line[0:2], 16)] = description_from_control_code_symbol[symbol_from_control_code]
+
+
+
+
+
 
 #
 # read PETSCII -> Unicode
@@ -164,22 +213,22 @@ for machine in machines:
 
 
 color_index_from_color_name = {
-	'{black}': 0,
-	'{white}': 1,
-	'{red}': 2,
-	'{cyan}': 3,
-	'{green}': 5,
-	'{purple}': 4,
-	'{blue}': 6,
-	'{yellow}': 7,
-	'{orange}': 8,
-	'{brown}': 9,
-	'{lt.red}': 10,
-	'{grey 1}': 11,
-	'{grey 2}': 12,
-	'{lt.green}': 13,
-	'{lt.blue}': 14,
-	'{grey 3}': 15,
+	'COL_BLACK': 0,
+	'COL_WHITE': 1,
+	'COL_RED': 2,
+	'COL_CYAN': 3,
+	'COL_GREEN': 5,
+	'COL_PURPLE': 4,
+	'COL_BLUE': 6,
+	'COL_YELLOW': 7,
+	'COL_ORANGE': 8,
+	'COL_BROWN': 9,
+	'COL_LT_RED': 10,
+	'COL_GREY_1': 11,
+	'COL_GREY_2': 12,
+	'COL_LT_GREEN': 13,
+	'COL_LT_BLUE': 14,
+	'COL_GREY_3': 15,
 }
 
 hex_color_from_color_index = [
@@ -256,6 +305,10 @@ print('<br />')
 for petscii in range(0, 256):
 	scrcode = scrcode_from_petscii[petscii]
 	description = description_from_control_code.get(petscii)
+	if description:
+		(description, _) = description
+	if not description:
+		description = ''
 	print(pixel_char_html_from_scrcode(scrcode, description))
 	if petscii & 15 == 15:
 		print('<br />')
@@ -302,7 +355,12 @@ for petscii in range(0, 256):
 	scrcode = scrcode_from_petscii[petscii]
 	print('<li>{}</li>'.format(pixel_char_html_from_scrcode(scrcode)))
 	if not is_petscii_printable(petscii):
-		print('<li>Description: {}</li>'.format(description_from_control_code[petscii]))
+		description = description_from_control_code.get(petscii)
+		if description:
+			(description, _) = description
+		if not description:
+			description = ''
+		print('<li>Description: {}</li>'.format(description))
 
 	print('<li>PETSCII hex: ${:02X}</li>'.format(petscii))
 	print('<li>PETSCII dec: {}</li>'.format(petscii))
@@ -363,7 +421,11 @@ for petscii in range(0, 256):
 		print('<td>{}</td>'.format(description_from_unicode[unicode]))
 
 	else:
-		description = description_from_control_code[petscii]
+		description = description_from_control_code.get(petscii)
+		if description:
+			(description, _) = description
+		if not description:
+			description = ''
 		color_html = ''
 		if description in color_index_from_color_name:
 			hex_color = hex_color_from_color_index[color_index_from_color_name[description]]
