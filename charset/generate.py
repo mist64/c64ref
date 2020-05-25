@@ -31,8 +31,7 @@ def modifiers_and_scancodes_from_petscii(petscii, machine):
 	modifiers_and_scancodes = []
 	for modifier in range(0, 4):
 		for scancode in range(0, len(petscii_from_scancode[machine][modifier])):
-			 # skip l.shift, r.shift, ctrl, c=, alt
-			if scancode == 15 or scancode == 52 or scancode == 58 or scancode == 61 or (machine == 'C128' and scancode == 16):
+			if scancode in excluded_scancodes[machine]:
 				continue
 			p2 = petscii_from_scancode[machine][modifier][scancode]
 			if p2 != 0xff and p2 == petscii:
@@ -55,6 +54,8 @@ def modifiers_and_scancodes_html_from_petscii(petscii, machine = 'C64'):
 		for (modifier, scancode) in modifiers_and_scancodes:
 			m = description_from_modifier[modifier]
 			d = description_from_scancode[machine][scancode]
+			if d is None:
+				d = '${:02X}'.format(scancode)
 
 			if m:
 				m = '<span class="key-box">{}</span> + '.format(m)
@@ -112,6 +113,49 @@ for line in open('C64IALT.TXT'):
 
 # scancode to PETSCII tables
 petscii_from_scancode = {}
+
+petscii_from_scancode['VIC-20'] = []
+petscii_from_scancode['VIC-20'].append([ # no modifiers
+	0x31, 0x33, 0x35, 0x37, 0x39, 0x2B, 0x5C, 0x14,
+	0x5F, 0x57, 0x52, 0x59, 0x49, 0x50, 0x2A, 0x0D,
+	0x04, 0x41, 0x44, 0x47, 0x4A, 0x4C, 0x3B, 0x1D,
+	0x03, 0x01, 0x58, 0x56, 0x4E, 0x2C, 0x2F, 0x11,
+	0x20, 0x5A, 0x43, 0x42, 0x4D, 0x2E, 0x01, 0x85,
+	0x02, 0x53, 0x46, 0x48, 0x4B, 0x3A, 0x3D, 0x86,
+	0x51, 0x45, 0x54, 0x55, 0x4F, 0x40, 0x5E, 0x87,
+	0x32, 0x34, 0x36, 0x38, 0x30, 0x2D, 0x13, 0x88,
+])
+petscii_from_scancode['VIC-20'].append([ # shift
+	0x21, 0x23, 0x25, 0x27, 0x29, 0xDB, 0xA9, 0x94,
+	0x5F, 0xD7, 0xD2, 0xD9, 0xC9, 0xD0, 0xC0, 0x8D,
+	0x04, 0xC1, 0xC4, 0xC7, 0xCA, 0xCC, 0x5D, 0x9D,
+	0x83, 0x01, 0xD8, 0xD6, 0xCE, 0x3C, 0x3F, 0x91,
+	0xA0, 0xDA, 0xC3, 0xC2, 0xCD, 0x3E, 0x01, 0x89,
+	0x02, 0xD3, 0xC6, 0xC8, 0xCB, 0x5B, 0x3D, 0x8A,
+	0xD1, 0xC5, 0xD4, 0xD5, 0xCF, 0xBA, 0xDE, 0x8B,
+	0x22, 0x24, 0x26, 0x28, 0x30, 0xDD, 0x93, 0x8C,
+])
+petscii_from_scancode['VIC-20'].append([ # cbm
+	0x21, 0x23, 0x25, 0x27, 0x29, 0xA6, 0xA8, 0x94,
+	0x5F, 0xB3, 0xB2, 0xB7, 0xA2, 0xAF, 0xDF, 0x8D,
+	0x04, 0xB0, 0xAC, 0xA5, 0xB5, 0xB6, 0x5D, 0x9D,
+	0x83, 0x01, 0xBD, 0xBE, 0xAA, 0x3C, 0x3F, 0x91,
+	0xA0, 0xAD, 0xBC, 0xBF, 0xA7, 0x3E, 0x01, 0x89,
+	0x02, 0xAE, 0xBB, 0xB4, 0xA1, 0x5B, 0x3D, 0x8A,
+	0xAB, 0xB1, 0xA3, 0xB8, 0xB9, 0xA4, 0xDE, 0x8B,
+	0x22, 0x24, 0x26, 0x28, 0x30, 0xDC, 0x93, 0x8C,
+])
+petscii_from_scancode['VIC-20'].append([ # ctrl
+	0x90, 0x1C, 0x9C, 0x1F, 0x12, 0xFF, 0xFF, 0xFF,
+	0x06, 0xFF, 0x12, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+	0x05, 0x9F, 0x1E, 0x9E, 0x92, 0xFF, 0xFF, 0xFF,
+])
+
 petscii_from_scancode['C64'] = []
 petscii_from_scancode['C64'].append([ # no modifiers
 	0x14, 0x0D, 0x1D, 0x88, 0x85, 0x86, 0x87, 0x11,
@@ -226,6 +270,25 @@ description_from_modifier = [
 ]
 
 description_from_scancode = {}
+excluded_scancodes = {}
+
+description_from_scancode['VIC-20'] = [
+	'1', '3', '5', '7', '9', '+', '£', 'DEL',
+	'←', 'W', 'R', 'Y', 'I', 'P', '*', 'RETURN',
+	'CTRL', 'A', 'D', 'G', 'J', 'L', ';', '←CRSR→',
+	'STOP', 'LSH', 'X', 'V', 'N', ',', '/', '↑CRSR↓',
+	'SPACE', 'Z', 'C', 'B', 'M', '.', 'RSH', 'f1',
+	'C=', 'S', 'F', 'H', 'K', ':', '=', 'f3',
+	'Q', 'E', 'T', 'U', 'O', '@', '↑', 'f5',
+	'2', '4', '6', '8', '0', '-', 'HOME', 'f7',
+]
+excluded_scancodes['VIC-20'] = [
+	16, # CTRL
+	25, # L SHIFT
+	38, # R SHIFT
+	40, # C=
+]
+
 description_from_scancode['C64'] = [
 	'DEL','RETURN','←CRSR→','f7','f1','f3','f5','↑CRSR↓',
 	'3','W','A','4','Z','S','E','L.SHIFT',
@@ -236,10 +299,22 @@ description_from_scancode['C64'] = [
 	'£','*',';','HOME','R.SHIFT','=','↑','/',
 	'1','←','CTRL','2','SPACE','C=','Q','STOP',
 ]
+
+excluded_scancodes['C64'] = [
+	15, # L SHIFT
+	52, # R SHIFT
+	58, # CTRL
+	61, # C=
+]
+
 description_from_scancode['C128'] = [
 	'HELP','[8]','[5]','TAB','[2]','[4]','[7]','[1]',
 	'ESC','[+]','[-]','LINE FEED','[ENTER]','[6]','[9]','[3]',
 	'ALT','[0]','[.]','↑','↓','←','→','NO SCROLL',
+]
+
+excluded_scancodes['C128'] = [
+	16, # ALT
 ]
 
 description_from_scancode['TED'] = [
@@ -251,6 +326,13 @@ description_from_scancode['TED'] = [
 	'CRSR↓','P','L','CRSR↑','.',':','-',',',
 	'CRSR←','*',';','CRSR→','ESCAPE','=','+','/',
 	'1','HOME','CTRL','2','SPACE','C=','Q','STOP',
+]
+
+excluded_scancodes['TED'] = [
+	15, # L SHIFT
+	52, # R SHIFT
+	58, # CTRL
+	61, # C=
 ]
 
 
@@ -420,7 +502,7 @@ for petscii in range(0, 256):
 
 # PETSCII Table
 print('<table border="1">')
-print('<tr><th>PETSCII</th><th>C64 Keyboard</th><th>C128 Keyboard (Extra)</th><th>C16, Plus/4 Keyboard</th><th>Screencode</th><th>Character</th><th colspan="3">Unicode Upper</th><th colspan="3">Unicode Lower</th></tr>')
+print('<tr><th>PETSCII</th><th>C16 Keyboard</th><th>C64 Keyboard</th><th>C128 Keyboard (Extra)</th><th>C16, Plus/4 Keyboard</th><th>Screencode</th><th>Character</th><th colspan="3">Unicode Upper</th><th colspan="3">Unicode Lower</th></tr>')
 for petscii in range(0, 256):
 	print('<tr>')
 
@@ -429,7 +511,7 @@ for petscii in range(0, 256):
 	scrcode = scrcode_from_petscii[petscii]
 
 	# keyboard
-	for machine in ['C64', 'C128', 'TED']:
+	for machine in ['VIC-20', 'C64', 'C128', 'TED']:
 		print('<td>')
 		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, machine)
 		if len(modifiers_and_scancodes_html) > 0:
