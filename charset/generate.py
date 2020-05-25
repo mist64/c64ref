@@ -8,7 +8,7 @@ side = 8 # character width/height 8px
 scrcode_from_petscii = []
 for c in range(0, 256):
 	if c < 0x20:
-		d = None
+		d = c + 0x80 # inverted control characters
 	elif c < 0x40:
 		d = c
 	elif c < 0x60:
@@ -16,27 +16,23 @@ for c in range(0, 256):
 	elif c < 0x80:
 		d = c - 0x20
 	elif c < 0xa0:
-		d = None
+		d = c + 0x40 # inverted control characters
 	elif c < 0xc0:
 		d = c - 0x40
 	else:
 		d = c - 0x80
 	scrcode_from_petscii.append(d)
 
-ext_scrcode_from_petscii = []
-for c in range(0, 256):
-	if scrcode_from_petscii[c] is not None:
-		ext_scrcode_from_petscii.append(scrcode_from_petscii[c])
-	elif c < 0x80:
-		ext_scrcode_from_petscii.append(c + 0x80)
-	else:
-		ext_scrcode_from_petscii.append(c + 0x40)
+def is_petscii_printable(petscii):
+	return not (petscii < 0x20 or (petscii >= 0x80 and petscii < 0xa0))
+
 
 def c64_modifiers_and_scancodes_from_petscii(petscii):
 	c64_modifiers_and_scancodes = []
 	for modifier in range(0, 4):
 		for scancode in range(0, 64):
-			if scancode == 15 or scancode == 52: # l.shift, r.shift
+			 # skip l.shift, r.shift, ctrl, c=
+			if scancode == 15 or scancode == 52 or scancode == 58 or scancode == 61:
 				continue
 			p2 = petscii_from_scancode[modifier][scancode]
 			if p2 != 0xff and p2 == petscii:
@@ -165,14 +161,14 @@ description_from_modifier = [
 ]
 
 description_from_scancode = [
-	'DEL','RETURN','CRSR RT','F4','F1','F2','F3','CRSR DWN',
+	'DEL','RETURN','←CRSR→','F4','F1','F2','F3','↑CRSR↓',
 	'3','W','A','4','Z','S','E','L.SHIFT',
 	'5','R','D','6','C','F','T','X',
 	'7','Y','G','8','B','H','U','V',
 	'9','I','J','0','M','K','O','N',
 	'+','P','L','-','.',':','@',',',
 	'£','*',';','HOME','R.SHIFT','=','↑','/',
-	'1','LEFT ARROW','CTRL','2','SPACE','C=','Q','STOP',
+	'1','←','CTRL','2','SPACE','C=','Q','STOP',
 ]
 
 color_index_from_color_name = {
@@ -324,12 +320,12 @@ print('</div>')
 
 # PETSCII Boxes
 for petscii in range(0, 256):
-	print('<h2>PETSCII {}</h2>'.format(hex(petscii)))
+	print('<h2>PETSCII ${:02X}</h2>'.format(petscii))
 	scrcode = scrcode_from_petscii[petscii]
-	if scrcode is None:
-		print('<li><span class="container">{}</span></li>'.format(description_from_control_code[petscii]))
-	else:
+	if is_petscii_printable(petscii):
 		print('<li><span class="container"><span class="character char-{}"></span></span></li>'.format(hex(scrcode)))
+	else:
+		print('<li><span class="container">{}</span></li>'.format(description_from_control_code[petscii]))
 
 	print('<li>PETSCII hex: ${:02X}</li>'.format(petscii))
 	print('<li>PETSCII dec: {}</li>'.format(petscii))
@@ -348,7 +344,7 @@ for petscii in range(0, 256):
 
 	print('</tr>')
 	print('</table>')
-	if scrcode:
+	if is_petscii_printable(petscii):
 		print('<li>Screencode ${:02X}</li>'.format(scrcode))
 		unicode = unicode_from_petscii[0][petscii]
 		print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
@@ -363,7 +359,6 @@ for petscii in range(0, 256):
 	print('<td>${:02X}</td>'.format(petscii))
 
 	scrcode = scrcode_from_petscii[petscii]
-	ext_scrcode = ext_scrcode_from_petscii[petscii]
 
 	(c64_modifiers_and_scancodes_html, other_petscii) = c64_modifiers_and_scancodes_html_from_petscii(petscii)
 
@@ -374,11 +369,11 @@ for petscii in range(0, 256):
 				print('{}<br/>'.format(html))
 	print('</td>')
 
-	print('<td>${:02X}</td>'.format(ext_scrcode))
+	print('<td>${:02X}</td>'.format(scrcode))
 
-	print('<td>{}</td>'.format(pixel_char_html_from_scrcode(ext_scrcode)))
+	print('<td>{}</td>'.format(pixel_char_html_from_scrcode(scrcode)))
 
-	if scrcode is not None:
+	if is_petscii_printable(petscii):
 		unicode = unicode_from_petscii[0][petscii]
 		print('<td>\'&#x{:x};\'</td>'.format(unicode))
 		print('<td>U+{:04X}</td>'.format(unicode))
