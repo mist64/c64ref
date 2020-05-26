@@ -425,18 +425,51 @@ print('<div style="display: none">')
 
 # Screencode Boxes
 for scrcode in range(0, 256):
-	print('<div id="info_scrcode_{}">'.format(hex(scrcode)))
-	print('<h2>Screencode ${:02X} (dec {})</h2>'.format(scrcode, scrcode))
 	scrcode7 = scrcode & 0x7f
 	is_reverse = scrcode >= 0x80
-	if is_reverse:
-		inverted = 'inverted'
-		print('<li>REVERSE</li>')
-	else:
-		inverted = ''
-	print('<li><span class="char-box {}"><span class="char-img char-{}"></span></span></li>'.format(inverted, hex(scrcode7)))
+	petscii = petscii_from_scrcode[scrcode & 0x7f][0]
 
-	print('<table><th>PETSCII<br/>hex</th><th>PETSCII<br/>dec</th><th>Keyboard</th><th>Mode</th>')
+	print('<div id="info_scrcode_{}">'.format(hex(scrcode)))
+
+	print('<table border="1">')
+
+	print('<tr>')
+	print('<td width="50%">')
+	print(pixel_char_html_from_scrcode(scrcode))
+	print('</td>')
+	print('<td width="50%">')
+	unicode = unicode_from_petscii[0][petscii]
+	print('<span class="unicode-box">&#x{:x};</span>'.format(unicode))
+	print('</td>')
+	print('</tr>')
+
+	print('<tr>')
+	print('<td>')
+	print('Screencode')
+	print('</td>')
+	print('<td>')
+	print('Unicode')
+	print('</td>')
+	print('</tr>')
+
+	print('<tr>')
+	print('<td>')
+	print('${:02X}<br/>'.format(scrcode))
+	print('{}'.format(scrcode))
+	print('</td>')
+	if is_petscii_printable(petscii):
+		print('<td>')
+		print('U+{:04X}<br/>'.format(unicode))
+		print('{}'.format(description_from_unicode[unicode]))
+		if is_reverse:
+			print('<br/>+ reverse')
+		print('</td>')
+	print('</tr>')
+
+	print('<tr>')
+	print('<td colspan="2">')
+
+	print('<table border="1"><th>PETSCII<br/>hex</th><th>PETSCII<br/>dec</th><th>Keyboard</th><th>Mode</th>')
 	run = 0
 	if is_reverse:
 		scrcode_list = [scrcode7, scrcode]
@@ -468,11 +501,12 @@ for scrcode in range(0, 256):
 		run += 1
 
 	print('</table>')
-	petscii = petscii_from_scrcode[scrcode7][0]
-	unicode = unicode_from_petscii[0][petscii]
-	print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
-	print('<li>Unicode <span class="unicode-box">&#x{:x};</span></li>'.format(unicode))
-	print('</div>');
+
+	print('</td>')
+	print('</tr>')
+
+	print('</table>')
+	print('</div>')
 
 # PETSCII Boxes
 for petscii in range(0, 256):
