@@ -65,7 +65,43 @@ def modifiers_and_scancodes_html_from_petscii(petscii, machine = 'C64'):
 
 	return (modifiers_and_scancodes_html, other_petscii)
 
-def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None):
+def combined_keyboard_html_from_petscii(petscii):
+	# collect keyboard combinations for all machines
+	htmls = {}
+	html_set = []
+	for machine in machines:
+		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, machine)
+		if other_petscii == None and len(modifiers_and_scancodes_html) > 0:
+			htmls[machine] = modifiers_and_scancodes_html
+			html_set.extend(modifiers_and_scancodes_html)
+
+	html_set = list(set(html_set))
+	combined_htmls = {}
+	for html in html_set: # for each keyboard combination
+		machine_list = []
+		for machine in machines:
+			if machine in htmls and html in htmls[machine]:
+				machine_list.append(machine)
+		machines_string = '/'.join(machine_list)
+		if machines_string in combined_htmls:
+			combined_htmls[machines_string].append(html)
+		else:
+			combined_htmls[machines_string] = [html]
+
+	#print('xxx', combined_htmls)
+
+	combined_keyboard_html = ''
+	keys = list(combined_htmls.keys())
+	keys.sort()
+	for machines_string in keys:
+		combined_keyboard_html += '<b>' + machines_string + '</b></br>'
+		for h in combined_htmls[machines_string]:
+			combined_keyboard_html += '{}<br/>'.format(h)
+
+
+	return combined_keyboard_html
+
+def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, link_prefix = 'scrcode'):
 	scrcode7 = scrcode & 0x7f
 	if scrcode >= 0x80:
 		inverted = 'inverted'
@@ -84,7 +120,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None):
 		description_html = '<span class="char-txt"{}>{}<br /></span>'.format(color_html, description)
 		#description_html = '<span class="char-txt"{}><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></span>'.format(color_html, description)
 
-	return '<div class="char-box {}" id="scrcode_{}" type="button" onclick="test(\'scrcode_{}\')"><span class="char-img char-{}"></span>{}</div>'.format(inverted, hex(scrcode), hex(scrcode), hex(scrcode7), description_html)
+	return '<div class="char-box {}" id="{}_{}" type="button" onclick="test(\'{}_{}\')"><span class="char-img char-{}"></span>{}</div>'.format(inverted, link_prefix, hex(scrcode), link_prefix, hex(scrcode), hex(scrcode7), description_html)
 
 ####################################################################
 
@@ -208,8 +244,8 @@ description_from_unicode = {}
 unicode_from_petscii = []
 unicode_from_petscii.append({})
 for line in open('C64IPRI.TXT'):
-	line = line.split('#')[0].rstrip()
-	if len(line) == 0:
+	line = line.rstrip()
+	if len(line) == 0 or line.startswith('#'):
 		continue
 	petscii = int(line[2:4], 16)
 	unicode = int(line[7:12], 16)
@@ -217,8 +253,8 @@ for line in open('C64IPRI.TXT'):
 	description_from_unicode[unicode] = line[14:]
 unicode_from_petscii.append({})
 for line in open('C64IALT.TXT'):
-	line = line.split('#')[0].rstrip()
-	if len(line) == 0:
+	line = line.rstrip()
+	if len(line) == 0 or line.startswith('#'):
 		continue
 	petscii = int(line[2:4], 16)
 	unicode = int(line[7:12], 16)
@@ -307,7 +343,7 @@ print('<div">')
 print('<div id="screencode_overview">')
 
 for scrcode in range(0, 256):
-	print(pixel_char_html_from_scrcode(scrcode))
+	print(pixel_char_html_from_scrcode(scrcode, link_prefix = 'scrcode'))
 	if scrcode & 15 == 15:
 		print('<br />')
 
@@ -345,7 +381,7 @@ for petscii in range(0, 256):
 		symbol = symbol_from_control_code[machine][petscii]
 		if symbol in color_index_from_color_name['C64']:
 			hex_color = hex_color_from_color_index['C64'][color_index_from_color_name['C64'][symbol]]
-	print(pixel_char_html_from_scrcode(scrcode, description, hex_color))
+	print(pixel_char_html_from_scrcode(scrcode, description, hex_color, 'petscii'))
 	if petscii & 15 == 15:
 		print('<br />')
 
@@ -357,7 +393,7 @@ print('</div>')
 # Screencode Boxes
 for scrcode in range(0, 256):
 	print('<div id="info_scrcode_{}">'.format(hex(scrcode)))
-	print('<h2>Screencode {}</h2>'.format(hex(scrcode)))
+	print('<h2>Screencode ${:02X}</h2>'.format(scrcode))
 	scrcode7 = scrcode & 0x7f
 	is_reverse = scrcode >= 0x80
 	if is_reverse:
@@ -378,17 +414,19 @@ for scrcode in range(0, 256):
 			print('<tr>')
 			print('<td>${:02X}</td><td>{}</tt></td>'.format(petscii, petscii))
 
-			(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii)
-
 			print('<td>')
-			if other_petscii == None and len(modifiers_and_scancodes_html) > 0:
-				for html in modifiers_and_scancodes_html:
-					print('{}<br/>'.format(html))
+			combined_keyboard_html = combined_keyboard_html_from_petscii(petscii)
+			if combined_keyboard_html:
+				print(combined_keyboard_html)
+			else:
+				print('-')
 			print('</td>')
 			print('<td>')
 			if run == 0:
 				if is_reverse:
-					print('in reverse mode')
+					print('reverse')
+				else:
+					print('plain')
 			else:
 				print('control code in quote mode')
 			print('</td>')
