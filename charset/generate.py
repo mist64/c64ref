@@ -163,6 +163,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, 
 ####################################################################
 
 machines = ['VIC-20', 'C64', 'C128', 'C65', 'TED']
+machines.append('PET')
 #machines.append('CBM2')
 
 #
