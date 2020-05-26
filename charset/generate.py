@@ -83,7 +83,7 @@ def combined_keyboard_html_from_petscii(petscii, other_ok = False):
 			if machine in htmls and html in htmls[machine]:
 				machine_list.append(machine)
 		if len(machine_list) == len(machines):
-			machines_string = 'ALL'
+			machines_string = 'All'
 		else:
 			machines_string = '/'.join(machine_list)
 		if machines_string in combined_htmls:
@@ -593,22 +593,19 @@ for petscii in range(0, 256):
 	print('</td>')
 	print('</tr>')
 
+	(combined_keyboard_html, other_petscii) = combined_keyboard_html_from_petscii(petscii, is_petscii_printable(petscii))
+
 	print('<tr>')
 	print('<td colspan="2">')
 	print('Keyboard')
+	if other_petscii:
+		print(' (alt code ${:02X})<br/>'.format(other_petscii))
 	print('</td>')
 	print('</tr>')
 
 	print('<tr>')
 	print('<td colspan="2">')
-
-	(combined_keyboard_html, other_petscii) = combined_keyboard_html_from_petscii(petscii, is_petscii_printable(petscii))
-	alt_text = ''
-	if other_petscii:
-		alt_text = ' (alt code ${:02X})<br/>'.format(other_petscii)
-	print(alt_text)
 	print(combined_keyboard_html)
-
 	print('</td>')
 	print('</tr>')
 	print('</table>')
