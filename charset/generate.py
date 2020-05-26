@@ -83,14 +83,20 @@ def combined_keyboard_html_from_petscii(petscii):
 			if machine in htmls and html in htmls[machine]:
 				machine_list.append(machine)
 		machines_string = '/'.join(machine_list)
-		combined_htmls[machines_string] = html
+		if machines_string in combined_htmls:
+			combined_htmls[machines_string].append(html)
+		else:
+			combined_htmls[machines_string] = [html]
 
 	#print('xxx', combined_htmls)
 
 	combined_keyboard_html = ''
-	for machines_string in combined_htmls.keys():
+	keys = list(combined_htmls.keys())
+	keys.sort()
+	for machines_string in keys:
 		combined_keyboard_html += '<b>' + machines_string + '</b></br>'
-		combined_keyboard_html += '{}<br/>'.format(combined_htmls[machines_string])
+		for h in combined_htmls[machines_string]:
+			combined_keyboard_html += '{}<br/>'.format(h)
 
 
 	return combined_keyboard_html
