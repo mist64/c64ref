@@ -1,3 +1,81 @@
+/* Colors */
+
+:root {
+	--box-background: #eef;
+}
+
+/* Character Tables */
+
+/* via https://www.mediaevent.de/tutorial/css-tabs.html */
+
+#tab_screencode:checked ~ figure #screencode_overview,
+#tab_petscii:checked ~ figure #petscii_overview {
+	display: block;
+}
+
+
+
+/* Tabs mit radio-Buttons */
+.tabbed {
+	display: inline-block;
+}
+.tabbed figure { 
+	display: block;
+	margin-left: 0; 
+	clear: both;
+}
+
+.tabbed > input,
+.tabbed figure > div { display: none; }
+
+.tabbed figure > div {
+	background: var(--box-background);
+	width: 100%;
+	border: 1px solid silver;
+}
+
+
+/* Character Tables: Navigation Styling */
+
+nav label {
+	float: left;
+	padding: 15px 15px;
+	border-top: 1px solid silver;
+	border-right: 1px solid silver;
+	background: hsl(210,50%,50%);
+	color: #eee;
+	text-align: center;
+	width: 28%;
+}
+
+nav label:nth-child(1) { border-left: 1px solid silver; }
+nav label:hover { background: hsl(210, 50%, 40%); }
+nav label:active { background: white; color: black; }
+
+#tab_screencode:checked ~ nav label[for="tab_screencode"],
+#tab_petscii:checked ~ nav label[for="tab_petscii"] {
+	background: var(--box-background);
+	color: black;
+	position: relative;
+	border-bottom: none;
+	font-weight: bold;
+}
+
+#tab_screencode:checked ~ nav label[for="tab_screencode"]:after,
+#tab_petscii:checked ~ nav label[for="tab_petscii"]:after {
+	content: "";
+	display: block;
+	position: absolute;
+	height: 2px;
+	width: 100%;
+	background: var(--box-background);
+	left: 0;
+	bottom: -1px;
+}
+
+
+
+
 /* Character Boxes */
 
 .inverted {
@@ -80,12 +158,6 @@
 
 /* Info Box */
 
-#screencode_overview, #petscii_overview {
-display: inline-block;
-padding: 0px;
-
-}
-
 #info_box:empty {
 	display: none;
 }
@@ -95,7 +167,7 @@ padding: 0px;
 	padding: 1em;
 	margin: 1em;
 	display: inline-block;
-	background: #fff4;
+	background: var(--box-background);
 	border: 2px solid gray;
 	border-radius: 8px;
 	vertical-align: top;

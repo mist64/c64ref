@@ -341,31 +341,31 @@ print('<h1>C64 Charset</h1>')
 #print('</div>')
 
 
-print('<div">')
+print('<div class="tabbed">')
+print('')
+print('   <input checked="checked" id="tab_screencode" type="radio" name="tabs" />')
+print('   <input id="tab_petscii" type="radio" name="tabs" />')
+print('')
+print('   <nav>')
+print('      <label for="tab_screencode">Screencodes</label>')
+print('      <label for="tab_petscii">PETSCII</label>')
+print('   </nav>')
+print('')
+print('   <figure>')
+print('      <div id="screencode_overview">')
 
-print('<div id="screencode_overview">')
 
 for scrcode in range(0, 256):
 	print(pixel_char_html_from_scrcode(scrcode, link = 'scrcode_' + hex(scrcode)))
 	if scrcode & 15 == 15:
 		print('<br />')
 
-print('</div>')
 
-print('<div id="info_box"></div>')
+print('      </div>')
+print('')
+print('      <div id="petscii_overview">')
 
-print('</div>')
 
-
-print('<br />')
-print('<br />')
-print('<br />')
-print('<br />')
-print('<br />')
-
-print('<div">')
-
-print('<div id="petscii_overview">')
 
 machine = 'C64'
 
@@ -388,9 +388,16 @@ for petscii in range(0, 256):
 	if petscii & 15 == 15:
 		print('<br />')
 
-print('</div>')
+
+print('      </div>')
+print('   </figure>')
 
 print('</div>')
+
+print('<div id="info_box"></div>')
+
+
+
 print('</div>')
 
 # Screencode Boxes
