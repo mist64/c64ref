@@ -268,6 +268,7 @@ for machine in machines:
 			values = [int(v, 16) for v in values]
 			petscii_from_scancode[machine][key].extend(values)
 
+####################################################################
 
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
 print('<html>')
@@ -351,43 +352,44 @@ print('</div>')
 
 print('</div>')
 
-## Screencode Boxes
-#for c in range(0, 256):
-#	print('<h2>Screencode {}</h2>'.format(hex(c)))
-#	c7 = c & 0x7f
-#	if c >= 0x80:
-#		inverted = 'inverted'
-#		print('<li>REVERSE</li>')
-#	else:
-#		inverted = ''
-#	print('<li><span class="char-box {}"><span class="char-img char-{}"></span></span></li>'.format(inverted, hex(c7)))
-#
-#	print('<table><th>PETSCII<br/>hex</th><th>PETSCII<br/>dec</th><th>Keyboard</th>')
-#	for petscii in petscii_from_scrcode[c7]:
-#		print('<tr>')
-#		print('<td>${:02X}</td><td>{}</tt></td>'.format(petscii, petscii))
-#		kbd = ''
-#		for (modifier, scancode) in c64_modifiers_and_scancodes_from_petscii(petscii):
-#			m = description_from_modifier[modifier]
-#			d = description_from_c64_scancode[scancode]
-#			if m:
-#				m = '<span class="key-box">{}</span> + '.format(m)
-#			else:
-#				m = ''
-#
-#			kbd += '<div class="key-box>{}<span class="key-box">{}</span></div>'.format(m, d)
-#		print('<td>{}</td>'.format(kbd))
-#		print('</tr>')
-#	print('</table>')
-#	petscii = petscii_from_scrcode[c7][0]
-#	unicode = unicode_from_petscii[0][petscii]
-#	print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
-#	print('<li>Unicode \'&#x{:x};\'</li>'.format(unicode))
+# Screencode Boxes
+for scrcode in range(0, 256):
+	print('<div id="info_scrcode_{}">'.format(hex(scrcode)))
+	print('<h2>Screencode {}</h2>'.format(hex(scrcode)))
+	scrcode7 = scrcode & 0x7f
+	if scrcode >= 0x80:
+		inverted = 'inverted'
+		print('<li>REVERSE</li>')
+	else:
+		inverted = ''
+	print('<li><span class="char-box {}"><span class="char-img char-{}"></span></span></li>'.format(inverted, hex(scrcode7)))
+
+	print('<table><th>PETSCII<br/>hex</th><th>PETSCII<br/>dec</th><th>Keyboard</th>')
+	for petscii in petscii_from_scrcode[scrcode7]:
+		print('<tr>')
+		print('<td>${:02X}</td><td>{}</tt></td>'.format(petscii, petscii))
+
+		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii)
+
+		print('<td>')
+		if other_petscii == None and len(modifiers_and_scancodes_html) > 0:
+			for html in modifiers_and_scancodes_html:
+				print('{}<br/>'.format(html))
+		print('</td>')
+
+
+		print('</tr>')
+	print('</table>')
+	petscii = petscii_from_scrcode[scrcode7][0]
+	unicode = unicode_from_petscii[0][petscii]
+	print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
+	print('<li>Unicode \'&#x{:x};\'</li>'.format(unicode))
+	print('</div>');
 
 # PETSCII Boxes
 for petscii in range(0, 256):
 
-	print('<div id="info_scrcode_{}">'.format(hex(petscii)))
+	print('<div id="info_petscii_{}">'.format(hex(petscii)))
 	print('<h2>PETSCII ${:02X}</h2>'.format(petscii))
 	scrcode = scrcode_from_petscii[petscii]
 	print('<li>{}</li>'.format(pixel_char_html_from_scrcode(scrcode)))
