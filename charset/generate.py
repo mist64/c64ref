@@ -304,7 +304,7 @@ print('<h1>C64 Charset</h1>')
 
 print('<div">')
 
-print('<div id="screencode_overview" style="display: inline-block;">')
+print('<div id="screencode_overview">')
 
 for scrcode in range(0, 256):
 	print(pixel_char_html_from_scrcode(scrcode))
@@ -313,8 +313,7 @@ for scrcode in range(0, 256):
 
 print('</div>')
 
-print('<div id="info_box" style="display: inline-block;">')
-print('</div>')
+print('<div id="info_box"></div>')
 
 print('</div>')
 
@@ -324,6 +323,8 @@ print('<br />')
 print('<br />')
 print('<br />')
 print('<br />')
+
+print('<div">')
 
 print('<div id="petscii_overview">')
 
@@ -350,6 +351,7 @@ for petscii in range(0, 256):
 
 print('</div>')
 
+print('</div>')
 print('</div>')
 
 # Screencode Boxes

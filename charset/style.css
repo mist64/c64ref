@@ -78,6 +78,29 @@
 	text-align: center;
 }
 
+/* Info Box */
+
+#screencode_overview, #petscii_overview {
+display: inline-block;
+padding: 0px;
+
+}
+
+#info_box:empty {
+	display: none;
+}
+
+
+#info_box {
+	padding: 1em;
+	margin: 1em;
+	display: inline-block;
+	background: #fff4;
+	border: 2px solid gray;
+	border-radius: 8px;
+	vertical-align: top;
+}
+
 /* Visual Keys */
 
 span.key-box {
