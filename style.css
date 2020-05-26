@@ -69,10 +69,6 @@ a {
     color: var(--border-color);
 }
 
-div {
-    padding: 1em;
-}
-
 div.body {
     padding: 8px;
 }
