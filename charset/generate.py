@@ -101,7 +101,7 @@ def combined_keyboard_html_from_petscii(petscii):
 
 	return combined_keyboard_html
 
-def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None):
+def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, link_prefix = 'scrcode'):
 	scrcode7 = scrcode & 0x7f
 	if scrcode >= 0x80:
 		inverted = 'inverted'
@@ -120,7 +120,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None):
 		description_html = '<span class="char-txt"{}>{}<br /></span>'.format(color_html, description)
 		#description_html = '<span class="char-txt"{}><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></span>'.format(color_html, description)
 
-	return '<div class="char-box {}" id="scrcode_{}" type="button" onclick="test(\'scrcode_{}\')"><span class="char-img char-{}"></span>{}</div>'.format(inverted, hex(scrcode), hex(scrcode), hex(scrcode7), description_html)
+	return '<div class="char-box {}" id="{}_{}" type="button" onclick="test(\'{}_{}\')"><span class="char-img char-{}"></span>{}</div>'.format(inverted, link_prefix, hex(scrcode), link_prefix, hex(scrcode), hex(scrcode7), description_html)
 
 ####################################################################
 
@@ -343,7 +343,7 @@ print('<div">')
 print('<div id="screencode_overview" style="display: inline-block;">')
 
 for scrcode in range(0, 256):
-	print(pixel_char_html_from_scrcode(scrcode))
+	print(pixel_char_html_from_scrcode(scrcode, link_prefix = 'scrcode'))
 	if scrcode & 15 == 15:
 		print('<br />')
 
@@ -380,7 +380,7 @@ for petscii in range(0, 256):
 		symbol = symbol_from_control_code[machine][petscii]
 		if symbol in color_index_from_color_name['C64']:
 			hex_color = hex_color_from_color_index['C64'][color_index_from_color_name['C64'][symbol]]
-	print(pixel_char_html_from_scrcode(scrcode, description, hex_color))
+	print(pixel_char_html_from_scrcode(scrcode, description, hex_color, 'petscii'))
 	if petscii & 15 == 15:
 		print('<br />')
 
@@ -391,7 +391,7 @@ print('</div>')
 # Screencode Boxes
 for scrcode in range(0, 256):
 	print('<div id="info_scrcode_{}">'.format(hex(scrcode)))
-	print('<h2>Screencode {}</h2>'.format(hex(scrcode)))
+	print('<h2>Screencode ${:02X}</h2>'.format(scrcode))
 	scrcode7 = scrcode & 0x7f
 	is_reverse = scrcode >= 0x80
 	if is_reverse:
@@ -413,12 +413,18 @@ for scrcode in range(0, 256):
 			print('<td>${:02X}</td><td>{}</tt></td>'.format(petscii, petscii))
 
 			print('<td>')
-			print(combined_keyboard_html_from_petscii(petscii))
+			combined_keyboard_html = combined_keyboard_html_from_petscii(petscii)
+			if combined_keyboard_html:
+				print(combined_keyboard_html)
+			else:
+				print('-')
 			print('</td>')
 			print('<td>')
 			if run == 0:
 				if is_reverse:
-					print('in reverse mode')
+					print('reverse')
+				else:
+					print('plain')
 			else:
 				print('control code in quote mode')
 			print('</td>')
