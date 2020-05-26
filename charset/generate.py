@@ -106,11 +106,22 @@ def combined_keyboard_html_from_petscii(petscii, other_ok = False):
 
 
 def combined_description_from_control_code(petscii):
-	combined_description = ''
+	description_to_machines = {}
 	for machine in machines:
 		if machine in description_from_control_code and petscii in description_from_control_code[machine]:
 			(_, description) = description_from_control_code[machine][petscii]
-			combined_description += machine + ': ' + description + '<br/>'
+			if machine == 'C64':
+				# all C64 combos are valid for C128 as well
+				machine = 'C64/C128'
+			if description in description_to_machines:
+				description_to_machines[description].append(machine)
+			else:
+				description_to_machines[description] = [machine]
+
+	combined_description = ''
+	for description in description_to_machines.keys():
+		machines_string = '/'.join(description_to_machines[description])
+		combined_description += '<b>' + machines_string + '</b>: ' + description + '<br/>'
 	return combined_description
 
 
@@ -463,11 +474,9 @@ for petscii in range(0, 256):
 	print('<li>{}</li>'.format(pixel_char_html_from_scrcode(scrcode)))
 	if not is_petscii_printable(petscii):
 		description = combined_description_from_control_code(petscii)
-#		if description:
-#			(_, description) = description
-#		if not description:
-#			description = '&lt;undefined&gt;'
-		print('<li>Control code: {}</li>'.format(description))
+		if description == '':
+			description = '&lt;undefined&gt;'
+		print('<li>Control code:<br/>{}</li>'.format(description))
 
 	print('<li>PETSCII hex: ${:02X}</li>'.format(petscii))
 	print('<li>PETSCII dec: {}</li>'.format(petscii))
