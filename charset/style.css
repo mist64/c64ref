@@ -2,6 +2,7 @@
 
 :root {
 	--box-background: #eef;
+	--box-border: black;
 }
 
 /* Character Tables */
@@ -31,7 +32,7 @@
 .tabbed figure > div {
 	background: var(--box-background);
 	width: 100%;
-	border: 1px solid silver;
+	border: 1px solid var(--box-border);
 	padding: 20px 0px 20px 15px;
 	margin: 0px;
 }
@@ -42,17 +43,24 @@
 nav label {
 	float: left;
 	padding: 15px 15px;
-	border-top: 1px solid silver;
-	border-right: 1px solid silver;
-	background: hsl(210,50%,50%);
-	color: #eee;
+	border-top: 1px solid var(--box-border);
+	border-right: 1px solid  var(--box-border);
+	background: hsl(210,0%,70%);
+	color: hsl(210,0%,30%);
 	text-align: center;
 	width: 28%;
 }
 
-nav label:nth-child(1) { border-left: 1px solid silver; }
-nav label:hover { background: hsl(210, 50%, 40%); }
-nav label:active { background: white; color: black; }
+nav label:nth-child(1) { border-left: 1px solid var(--box-border); }
+nav label:hover {
+	background: hsl(210, 0%, 60%);
+	color: black;
+}
+nav label:active {
+	background: hsl(210, 0%, 80%);
+	color: black;
+	font-weight: bold;
+}
 
 #tab_screencode:checked ~ nav label[for="tab_screencode"],
 #tab_petscii:checked ~ nav label[for="tab_petscii"] {
