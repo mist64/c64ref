@@ -153,14 +153,17 @@ description_from_control_code_symbol = {
 }
 description_from_control_code = {}
 symbol_from_control_code = {}
-for line in open('control_codes_c64.txt'):
-	line = line.rstrip()
-	if len(line) != 0:
-		petscii = int(line[0:2], 16)
-		symbol = line[3:]
-		symbol_from_control_code[petscii] = symbol
-		if len(symbol) > 0:
-			description_from_control_code[petscii] = description_from_control_code_symbol[symbol]
+for machine in ['C64', 'TED']:
+	symbol_from_control_code[machine] = {}
+	description_from_control_code[machine] = {}
+	for line in open('control_codes_{}.txt'.format(machine.lower())):
+		line = line.rstrip()
+		if len(line) != 0:
+			petscii = int(line[0:2], 16)
+			symbol = line[3:]
+			symbol_from_control_code[machine][petscii] = symbol
+			if len(symbol) > 0:
+				description_from_control_code[machine][petscii] = description_from_control_code_symbol[symbol]
 
 
 
@@ -235,13 +238,16 @@ for machine in machines:
 			petscii_from_scancode[machine][key].extend(values)
 
 
-color_index_from_color_name = {
+color_index_from_color_name = {}
+hex_color_from_color_index = {}
+
+color_index_from_color_name['C64'] = {
 	'COL_BLACK':        0,
 	'COL_WHITE':        1,
 	'COL_RED':          2,
 	'COL_CYAN':         3,
-	'COL_GREEN':        5,
 	'COL_PURPLE':       4,
+	'COL_GREEN':        5,
 	'COL_BLUE':         6,
 	'COL_YELLOW':       7,
 	'COL_ORANGE':       8,
@@ -254,7 +260,7 @@ color_index_from_color_name = {
 	'COL_GREY_3':      15,
 }
 
-hex_color_from_color_index = [
+hex_color_from_color_index['C64'] = [
 	'#000000',
 	'#ffffff',
 	'#813338',
@@ -271,6 +277,44 @@ hex_color_from_color_index = [
 	'#a9ff9f',
 	'#706deb',
 	'#b2b2b2',
+]
+
+color_index_from_color_name['TED'] = {
+	'COL_BLACK':         0,
+	'COL_WHITE':         1,
+	'COL_RED':           2,
+	'COL_CYAN':          3,
+	'COL_PURPLE':        4,
+	'COL_GREEN':         5,
+	'COL_BLUE':          6,
+	'COL_YELLOW':        7,
+	'COL_ORANGE':        8,
+	'COL_BROWN':         9,
+	'COL_YELLOW_GREEN': 10,
+	'COL_PINK':         11,
+	'COL_BLUE_GREEN':   12,
+	'COL_LIGHT_BLUE':   13,
+	'COL_DARK_BLUE':    14,
+	'COL_LIGHT_GRN':    15,
+}
+
+hex_color_from_color_index['TED'] = [
+	'#000000',
+	'#ffffff',
+	'#a04b43',
+	'#95e0e6',
+	'#b56cf7',
+	'#3d8d00',
+	'#8a7eff',
+	'#ffff87',
+	'#c18a40',
+	'#775c00',
+	'#afc81c',
+	'#fba8f4',
+	'#7ad282',
+	'#afc6ff',
+	'#5735d8',
+	'#a3cd21',
 ]
 
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
@@ -325,11 +369,13 @@ print('<br />')
 
 print('<div id="petscii-overview">')
 
+machine = 'C64'
+
 for petscii in range(0, 256):
 	scrcode = scrcode_from_petscii[petscii]
 	description = None
 	if not is_petscii_printable(petscii):
-		description = description_from_control_code.get(petscii)
+		description = description_from_control_code[machine].get(petscii)
 		if description:
 			(description, _) = description
 		if not description:
@@ -337,9 +383,9 @@ for petscii in range(0, 256):
 
 	hex_color = None
 	if not is_petscii_printable(petscii):
-		symbol = symbol_from_control_code[petscii]
-		if symbol in color_index_from_color_name:
-			hex_color = hex_color_from_color_index[color_index_from_color_name[symbol]]
+		symbol = symbol_from_control_code[machine][petscii]
+		if symbol in color_index_from_color_name['C64']:
+			hex_color = hex_color_from_color_index['C64'][color_index_from_color_name['C64'][symbol]]
 	print(pixel_char_html_from_scrcode(scrcode, description, hex_color))
 	if petscii & 15 == 15:
 		print('<br />')
@@ -387,7 +433,7 @@ for petscii in range(0, 256):
 	scrcode = scrcode_from_petscii[petscii]
 	print('<li>{}</li>'.format(pixel_char_html_from_scrcode(scrcode)))
 	if not is_petscii_printable(petscii):
-		description = description_from_control_code.get(petscii)
+		description = description_from_control_code[machine].get(petscii)
 		if description:
 			(_, description) = description
 		if not description:
@@ -453,17 +499,18 @@ for petscii in range(0, 256):
 		print('<td>{}</td>'.format(description_from_unicode[unicode]))
 
 	else:
-		description = description_from_control_code.get(petscii)
-		if description:
-			(_, description) = description
-		color_html = ''
-		symbol = symbol_from_control_code[petscii]
-		if not description:
-			description = ''
-		if symbol in color_index_from_color_name:
-			hex_color = hex_color_from_color_index[color_index_from_color_name[symbol]]
-			description = '<span style="background-color:{}; border: solid gray 1px; width: 1em; height: 1em; display: inline-block;"> </span> '.format(hex_color) + description
-		print('<td colspan="3">{}</td>'.format(description))
+		for machine in ['C64', 'TED']: #machines:
+			description = description_from_control_code[machine].get(petscii)
+			if description:
+				(_, description) = description
+			color_html = ''
+			symbol = symbol_from_control_code[machine][petscii]
+			if not description:
+				description = ''
+			if symbol in color_index_from_color_name[machine]:
+				hex_color = hex_color_from_color_index[machine][color_index_from_color_name[machine][symbol]]
+				description = '<span style="background-color:{}; border: solid gray 1px; width: 1em; height: 1em; display: inline-block;"> </span> '.format(hex_color) + description
+			print('<td>{}</td>'.format(description))
 
 
 
