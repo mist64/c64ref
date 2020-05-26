@@ -81,11 +81,11 @@ def combined_keyboard_html_from_petscii(petscii, other_ok = False):
 		machine_list = []
 		for machine in machines:
 			if machine in htmls and html in htmls[machine]:
-				if machine == 'C64':
-					# all C64 combos are valid for C128 as well
-					machine = 'C64/C128'
 				machine_list.append(machine)
-		machines_string = '/'.join(machine_list)
+		if len(machine_list) == len(machines):
+			machines_string = 'ALL'
+		else:
+			machines_string = '/'.join(machine_list)
 		if machines_string in combined_htmls:
 			combined_htmls[machines_string].append(html)
 		else:
@@ -97,7 +97,7 @@ def combined_keyboard_html_from_petscii(petscii, other_ok = False):
 	keys = list(combined_htmls.keys())
 	keys.sort()
 	for machines_string in keys:
-		combined_keyboard_html += '<b>' + machines_string + '</b></br>'
+		combined_keyboard_html += '<b>' + machines_string + '</b><br/>'
 		for h in combined_htmls[machines_string]:
 			combined_keyboard_html += '{}<br/>'.format(h)
 
@@ -107,25 +107,35 @@ def combined_keyboard_html_from_petscii(petscii, other_ok = False):
 
 def combined_description_from_control_code(petscii):
 	description_to_machines = {}
+	machines_with_function = []
 	for machine in machines:
 		if machine in description_from_control_code and petscii in description_from_control_code[machine]:
 			(_, description) = description_from_control_code[machine][petscii]
-			if machine == 'C64':
-				# all C64 combos are valid for C128 as well
-				machine = 'C64/C128'
 			if description in description_to_machines:
 				description_to_machines[description].append(machine)
 			else:
 				description_to_machines[description] = [machine]
+			machines_with_function.append(machine)
+
+	machines_without_function = list(machines) # copy
+	for machine in machines_with_function:
+		machines_without_function.remove(machine)
+#	print('xxx', machines_without_function)
+	if len(machines_without_function) > 0:
+		description_to_machines['no function'] = machines_without_function
+
 
 	combined_description = ''
 	for description in description_to_machines.keys():
-		machines_string = '/'.join(description_to_machines[description])
-		combined_description += '<b>' + machines_string + '</b>: ' + description + '<br/>'
+		if len(description_to_machines[description]) != len(machines):
+			machines_string = '<b>' + '/'.join(description_to_machines[description]) + '</b>: '
+		else:
+			machines_string = ''
+		combined_description += machines_string + description + '<br/>'
 	return combined_description
 
 
-def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, link = 'scrcode_0x0'):
+def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, link = None):
 	scrcode7 = scrcode & 0x7f
 	if scrcode >= 0x80:
 		inverted = 'inverted'
@@ -144,11 +154,15 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, 
 		description_html = '<span class="char-txt"{}>{}<br /></span>'.format(color_html, description)
 		#description_html = '<span class="char-txt"{}><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></span>'.format(color_html, description)
 
-	return '<div class="char-box {}" id="{}" type="button" onclick="test(\'{}\')"><span class="char-img char-{}"></span>{}</div>'.format(inverted, link, link, hex(scrcode7), description_html)
+	link_html = ''
+	if link:
+		link_html = 'type="button" onclick="test(\'{}\')"'.format(link)
+
+	return '<div class="char-box {}" id="{}" {}><span class="char-img char-{}"></span>{}</div>'.format(inverted, link, link_html, hex(scrcode7), description_html)
 
 ####################################################################
 
-machines = ['VIC-20', 'C64', 'C128', 'TED']
+machines = ['VIC-20', 'C64', 'C128', 'C65', 'TED']
 
 #
 # generate petscii_from_scrcode mapping
@@ -213,6 +227,12 @@ description_from_control_code_symbol = {
 	'KEY_F6':           ('f6', 'f6 key'),
 	'KEY_F7':           ('f7', 'f7 key'),
 	'KEY_F8':           ('f8', 'f8 key'),
+	'KEY_F9':           ('f9', 'f9 key'),
+	'KEY_F10':          ('f10', 'f10 key'),
+	'KEY_F11':          ('f11', 'f11 key'),
+	'KEY_F12':          ('f12', 'f12 key'),
+	'KEY_F13':          ('f13', 'f13 key'),
+	'KEY_F14':          ('f14', 'f14 key'),
 	'LINE_FEED':        ('LF', 'Line Feed'),
 	'LOWER_CASE':       ('Lower Case', 'Switch to lower case'),
 	'RETURN':           ('RETURN', 'Return'),
@@ -220,10 +240,14 @@ description_from_control_code_symbol = {
 	'RVS_OFF':          ('RVS Off', 'Reverse Off'),
 	'RVS_ON':           ('RVS On', 'Reverse On'),
 	'SHIFT_RETURN':     ('SHIFT RETURN', 'Disabled Return'),
+	'STOP':             ('STOP', 'STOP'),
 	'TAB_SET_CLR':      ('Tab set/clr', 'Tab set/clear'),
 	'UNDERLINE_OFF':    ('Underline Off', 'Underline Off'),
 	'UNDERLINE_ON':     ('Underline On', 'Underline On'),
 	'UPPER_CASE':       ('Upper Case', 'Switch to upper case'),
+	'BELL_TONE': ('BEL', 'Bell Tone'),
+	'TAB': ('TAB', 'Forward TAB'),
+	'HELP': ('HELP', 'HELP'),
 }
 description_from_control_code = {}
 symbol_from_control_code = {}
@@ -235,7 +259,7 @@ for machine in machines:
 		if len(line) == 0:
 			continue
 		petscii = int(line[0:2], 16)
-		symbol = line[3:].split(' ')[0] # XXX there may be more
+		symbol = line[3:].split(' ')[0] # XXX C128 and C65 have more than one function!
 		symbol_from_control_code[machine][petscii] = symbol
 		if len(symbol) > 0:
 			description_from_control_code[machine][petscii] = description_from_control_code_symbol[symbol]
@@ -246,7 +270,7 @@ for machine in machines:
 #
 color_index_from_color_name = {}
 hex_color_from_color_index = {}
-for machine in ['C64', 'C128', 'TED']:
+for machine in machines:
 	color_index_from_color_name[machine] = {}
 	hex_color_from_color_index[machine] = {}
 	color_index = 0
@@ -478,7 +502,7 @@ for scrcode in range(0, 256):
 	for eff_scrcode in scrcode_list:
 		for petscii in petscii_from_scrcode[eff_scrcode]:
 			print('<tr>')
-			print('<td><a href="#petscii_table_{:02x}">${:02X}</a></td><td>{}</tt></td>'.format(petscii, petscii, petscii))
+			print('<td><a href="#petscii_table_{:02x}">${:02X}</a></td><td>{}</td>'.format(petscii, petscii, petscii))
 
 			print('<td>')
 			(combined_keyboard_html, _) = combined_keyboard_html_from_petscii(petscii, False)
@@ -529,8 +553,6 @@ for petscii in range(0, 256):
 		print('<td width="50%" rowspan="5">')
 
 		description = combined_description_from_control_code(petscii)
-		if description == '':
-			description = '&lt;undefined&gt;'
 		print('Control code:<br/>{}'.format(description))
 
 		print('</td>')
@@ -580,7 +602,7 @@ for petscii in range(0, 256):
 	print('<tr>')
 	print('<td colspan="2">')
 
-	(combined_keyboard_html, other_petscii) = combined_keyboard_html_from_petscii(petscii, True)
+	(combined_keyboard_html, other_petscii) = combined_keyboard_html_from_petscii(petscii, is_petscii_printable(petscii))
 	alt_text = ''
 	if other_petscii:
 		alt_text = ' (alt code ${:02X})<br/>'.format(other_petscii)
@@ -598,7 +620,7 @@ print('</div>');
 
 # PETSCII Table
 print('<table border="1">')
-print('<tr><th>PETSCII</th><th>C16 Keyboard</th><th>C64 Keyboard</th><th>C128 Keyboard (Extra)</th><th>C16, Plus/4 Keyboard</th><th>Screencode</th><th>Character</th><th colspan="3">Unicode Upper</th><th colspan="3">Unicode Lower</th></tr>')
+print('<tr><th>PETSCII</th><th>C16 Keyboard</th><th>C64 Keyboard</th><th>C128 Keyboard</th><th>C65 Keyboard</th><th>C16, Plus/4 Keyboard</th><th>Screencode</th><th>Character</th><th colspan="3">Unicode Upper</th><th colspan="3">Unicode Lower</th></tr>')
 for petscii in range(0, 256):
 	print('<tr>')
 
@@ -632,7 +654,7 @@ for petscii in range(0, 256):
 		print('<td>{}</td>'.format(description_from_unicode[unicode]))
 
 	else:
-		for machine in ['C64', 'C128', 'TED']: #machines:
+		for machine in machines:
 			description = description_from_control_code[machine].get(petscii)
 			if description:
 				(_, description) = description
