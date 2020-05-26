@@ -476,33 +476,88 @@ for scrcode in range(0, 256):
 
 # PETSCII Boxes
 for petscii in range(0, 256):
-	print('<div id="info_petscii_{}">'.format(hex(petscii)))
-	print('<h2>PETSCII ${:02X} (dec {})</h2>'.format(petscii, petscii))
 	scrcode = scrcode_from_petscii[petscii]
-	print('<li>{}</li>'.format(pixel_char_html_from_scrcode(scrcode)))
+
+	print('<div id="info_petscii_{}">'.format(hex(petscii)))
+
+	print('<table border="1">')
+
+	print('<tr>')
+	print('<td width="50%">')
+	print(pixel_char_html_from_scrcode(scrcode))
+	print('</td>')
 	if is_petscii_printable(petscii):
+		print('<td width="50%">')
 		unicode = unicode_from_petscii[0][petscii]
-		print('<li>Unicode <span class="unicode-box">&#x{:x};</span></li>'.format(unicode))
-		print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
+		print('<span class="unicode-box">&#x{:x};</span>'.format(unicode))
+		print('</td>')
 	else:
+		print('<td width="50%" rowspan="5">')
+
 		description = combined_description_from_control_code(petscii)
 		if description == '':
 			description = '&lt;undefined&gt;'
-		print('<li>Control code:<br/>{}</li>'.format(description))
+		print('Control code:<br/>{}'.format(description))
 
-	print('<li>Screencode: ${:02X}</li>'.format(scrcode))
+		print('</td>')
+	print('</tr>')
+
+	print('<tr>')
+	print('<td>')
+	print('PETSCII')
+	print('</td>')
+	if is_petscii_printable(petscii):
+		print('<td>')
+		print('Unicode')
+		print('</td>')
+	print('</tr>')
+
+	print('<tr>')
+	print('<td>')
+	print('<a href="#petscii_table_{:02x}">${:02X}</a><br/>'.format(petscii, petscii))
+	print('{}'.format(petscii))
+	print('</td>')
+	if is_petscii_printable(petscii):
+		print('<td rowspan="3">')
+		print('U+{:04X}<br/>'.format(unicode))
+		print('{}'.format(description_from_unicode[unicode]))
+		print('</td>')
+	print('</tr>')
+
+
+	print('<tr>')
+	print('<td>')
+	print('Screencode')
+	print('</td>')
+	print('</tr>')
+
+	print('<tr>')
+	print('<td>')
+	print('${:02X}'.format(scrcode))
+	print('</td>')
+	print('</tr>')
+
+	print('<tr>')
+	print('<td colspan="2">')
+	print('Keyboard')
+	print('</td>')
+	print('</tr>')
+
+	print('<tr>')
+	print('<td colspan="2">')
 
 	(combined_keyboard_html, other_petscii) = combined_keyboard_html_from_petscii(petscii, True)
 	alt_text = ''
 	if other_petscii:
-		alt_text = ' (alt code ${:02X})'.format(other_petscii)
-	print('<li>Keyboard{}:<br/>'.format(alt_text))
+		alt_text = ' (alt code ${:02X})<br/>'.format(other_petscii)
+	print(alt_text)
 	print(combined_keyboard_html)
-	print('</li>')
-	print('<li><a href="#petscii_table_{:02x}">Table: ${:02X}</a></li>'.format(petscii, petscii))
 
+	print('</td>')
 	print('</tr>')
 	print('</table>')
+
+
 	print('</div>');
 
 print('</div>');
