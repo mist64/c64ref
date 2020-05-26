@@ -421,6 +421,8 @@ print('<div id="info_box"></div>')
 
 print('</div>')
 
+print('<div style="display: none">')
+
 # Screencode Boxes
 for scrcode in range(0, 256):
 	print('<div id="info_scrcode_{}">'.format(hex(scrcode)))
@@ -505,6 +507,8 @@ for petscii in range(0, 256):
 		print('<li>Unicode <span class="unicode-box">&#x{:x};</span></li>'.format(unicode))
 	print('</div>');
 
+print('</div>');
+
 # PETSCII Table
 print('<table border="1">')
 print('<tr><th>PETSCII</th><th>C16 Keyboard</th><th>C64 Keyboard</th><th>C128 Keyboard (Extra)</th><th>C16, Plus/4 Keyboard</th><th>Screencode</th><th>Character</th><th colspan="3">Unicode Upper</th><th colspan="3">Unicode Lower</th></tr>')
@@ -531,12 +535,12 @@ for petscii in range(0, 256):
 
 	if is_petscii_printable(petscii):
 		unicode = unicode_from_petscii[0][petscii]
-		print('<td>\'&#x{:x};\'</td>'.format(unicode))
+		print('<td><span class="unicode-box">&#x{:x};</span></td>'.format(unicode))
 		print('<td>U+{:04X}</td>'.format(unicode))
 		print('<td>{}</td>'.format(description_from_unicode[unicode]))
 
 		unicode = unicode_from_petscii[1][petscii]
-		print('<td>\'&#x{:x};\'</td>'.format(unicode))
+		print('<td><span class="unicode-box">&#x{:x};</span></td>'.format(unicode))
 		print('<td>U+{:04X}</td>'.format(unicode))
 		print('<td>{}</td>'.format(description_from_unicode[unicode]))
 
