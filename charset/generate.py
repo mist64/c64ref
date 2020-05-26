@@ -125,7 +125,7 @@ def combined_description_from_control_code(petscii):
 	return combined_description
 
 
-def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, link = 'scrcode_0x0'):
+def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, link = None):
 	scrcode7 = scrcode & 0x7f
 	if scrcode >= 0x80:
 		inverted = 'inverted'
@@ -144,7 +144,11 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, 
 		description_html = '<span class="char-txt"{}>{}<br /></span>'.format(color_html, description)
 		#description_html = '<span class="char-txt"{}><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></span>'.format(color_html, description)
 
-	return '<div class="char-box {}" id="{}" type="button" onclick="test(\'{}\')"><span class="char-img char-{}"></span>{}</div>'.format(inverted, link, link, hex(scrcode7), description_html)
+	link_html = ''
+	if link:
+		link_html = 'type="button" onclick="test(\'{}\')"'.format(link)
+
+	return '<div class="char-box {}" id="{}" {}><span class="char-img char-{}"></span>{}</div>'.format(inverted, link, link_html, hex(scrcode7), description_html)
 
 ####################################################################
 
