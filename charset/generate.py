@@ -85,7 +85,6 @@ def combined_keyboard_html_from_petscii(petscii, other_ok = False):
 				if machine == 'C64':
 					# all C64 combos are valid for C128 as well
 					machine_list.append('C128')
-		#print('xxx', machine_list, machines)
 		if len(machine_list) == len(machines):
 			machines_string = 'ALL'
 		else:
@@ -111,6 +110,7 @@ def combined_keyboard_html_from_petscii(petscii, other_ok = False):
 
 def combined_description_from_control_code(petscii):
 	description_to_machines = {}
+	machines_with_function = []
 	for machine in machines:
 		if machine in description_from_control_code and petscii in description_from_control_code[machine]:
 			(_, description) = description_from_control_code[machine][petscii]
@@ -118,6 +118,15 @@ def combined_description_from_control_code(petscii):
 				description_to_machines[description].append(machine)
 			else:
 				description_to_machines[description] = [machine]
+			machines_with_function.append(machine)
+
+	machines_without_function = list(machines) # copy
+	for machine in machines_with_function:
+		machines_without_function.remove(machine)
+#	print('xxx', machines_without_function)
+	if len(machines_without_function) > 0:
+		description_to_machines['no function'] = machines_without_function
+
 
 	combined_description = ''
 	for description in description_to_machines.keys():
@@ -547,8 +556,6 @@ for petscii in range(0, 256):
 		print('<td width="50%" rowspan="5">')
 
 		description = combined_description_from_control_code(petscii)
-		if description == '':
-			description = '&lt;undefined&gt;'
 		print('Control code:<br/>{}'.format(description))
 
 		print('</td>')
