@@ -110,9 +110,6 @@ def combined_description_from_control_code(petscii):
 	for machine in machines:
 		if machine in description_from_control_code and petscii in description_from_control_code[machine]:
 			(_, description) = description_from_control_code[machine][petscii]
-			if machine == 'C64':
-				# all C64 combos are valid for C128 as well
-				machine = 'C64/C128'
 			if description in description_to_machines:
 				description_to_machines[description].append(machine)
 			else:
@@ -120,8 +117,11 @@ def combined_description_from_control_code(petscii):
 
 	combined_description = ''
 	for description in description_to_machines.keys():
-		machines_string = '/'.join(description_to_machines[description])
-		combined_description += '<b>' + machines_string + '</b>: ' + description + '<br/>'
+		if len(description_to_machines[description]) != len(machines):
+			machines_string = '<b>' + '/'.join(description_to_machines[description]) + '</b>: '
+		else:
+			machines_string = ''
+		combined_description += machines_string + description + '<br/>'
 	return combined_description
 
 
