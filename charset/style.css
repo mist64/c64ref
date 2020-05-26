@@ -191,7 +191,7 @@ nav label:active {
 
 .grid-container {
 	display: grid;
-	grid-template-columns: 8em 8em 8em 8em;
+	grid-template-columns: 6em 6em 10em 10em;
 	grid-gap: 0px;
 	background-color: hsl(var(--info-hue), 80%, 80%);
 }
@@ -203,7 +203,7 @@ nav label:active {
 .item5,
 .item6,
 .item7 {
-	padding: 0.5em;
+	padding: 4px;
 }
 
 .item1,
@@ -256,7 +256,7 @@ nav label:active {
 	grid-row: 1;
 	grid-column: 3 / span 2;
 	text-align: center;
-v}
+}
 
 .item5 {
 	grid-area: unicodeTitle;
@@ -281,20 +281,36 @@ v}
 
 .item7 table {
 	width: 100%;
+	border: none;
 	border-collapse: collapse;
+	border-spacing: 1px;
+	margin: 0px;
 }
 
 .item7 table th {
 	background-color: hsl(var(--info-hue), 60%, 80%);
 	font-weight: bold;
 	text-align: center;
+	vertical-align: middle;
 }
 
-
-.item7 table th, .item7 table th, .item7 table td {
-	border: solid 1px black;
+.item7 table tr:nth-child(even) td {
+	background-color: hsl(var(--info-hue), 100%, 80%);
 }
 
+.item7 table th, .item7 table td {
+	border: solid 1px gray;
+	padding: 4px;
+}
+
+.item7 table tr td:nth-child(1),
+.item7 table tr td:nth-child(2) {
+	width: 10%;
+}
+
+.item7 table tr td:nth-child(4) {
+	width: 20%;
+}
 /*
 .item7 {
 	grid-area: petsciiHeader;
