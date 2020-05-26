@@ -82,10 +82,6 @@ def combined_keyboard_html_from_petscii(petscii, other_ok = False):
 		for machine in machines:
 			if machine in htmls and html in htmls[machine]:
 				machine_list.append(machine)
-				if machine == 'C64':
-					# all C64 combos are valid for C128 anc C65 as well
-					machine_list.append('C128')
-					machine_list.append('C65')
 		if len(machine_list) == len(machines):
 			machines_string = 'ALL'
 		else:
@@ -274,7 +270,7 @@ for machine in machines:
 #
 color_index_from_color_name = {}
 hex_color_from_color_index = {}
-for machine in ['C64', 'C128', 'TED']:
+for machine in machines:
 	color_index_from_color_name[machine] = {}
 	hex_color_from_color_index[machine] = {}
 	color_index = 0
@@ -606,7 +602,7 @@ for petscii in range(0, 256):
 	print('<tr>')
 	print('<td colspan="2">')
 
-	(combined_keyboard_html, other_petscii) = combined_keyboard_html_from_petscii(petscii, True)
+	(combined_keyboard_html, other_petscii) = combined_keyboard_html_from_petscii(petscii, is_petscii_printable(petscii))
 	alt_text = ''
 	if other_petscii:
 		alt_text = ' (alt code ${:02X})<br/>'.format(other_petscii)
@@ -624,7 +620,7 @@ print('</div>');
 
 # PETSCII Table
 print('<table border="1">')
-print('<tr><th>PETSCII</th><th>C16 Keyboard</th><th>C64 Keyboard</th><th>C128 Keyboard (Extra)</th><th>C16, Plus/4 Keyboard</th><th>Screencode</th><th>Character</th><th colspan="3">Unicode Upper</th><th colspan="3">Unicode Lower</th></tr>')
+print('<tr><th>PETSCII</th><th>C16 Keyboard</th><th>C64 Keyboard</th><th>C128 Keyboard</th><th>C65 Keyboard</th><th>C16, Plus/4 Keyboard</th><th>Screencode</th><th>Character</th><th colspan="3">Unicode Upper</th><th colspan="3">Unicode Lower</th></tr>')
 for petscii in range(0, 256):
 	print('<tr>')
 
@@ -658,7 +654,7 @@ for petscii in range(0, 256):
 		print('<td>{}</td>'.format(description_from_unicode[unicode]))
 
 	else:
-		for machine in ['C64', 'C128', 'TED']: #machines:
+		for machine in machines:
 			description = description_from_control_code[machine].get(petscii)
 			if description:
 				(_, description) = description
