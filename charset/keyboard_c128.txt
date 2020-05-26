@@ -1,6 +1,6 @@
 scan    HELP     [8]     [5]     TAB     [2]     [4]     [7]     [1]
 scan    ESC      [+]     [-]   LINE_FEED [ENTER] [6]     [9]     [3]
-scan    ALT      [0]     [.]     ↑       ↓       ←       →       NO_SCROLL
+scan    ALT      [0]     [.]     CRSR↑   CRSR↓   CRSR←   CRSR→   NO_SCROLL
 
 exclude 10 # ALT
 
