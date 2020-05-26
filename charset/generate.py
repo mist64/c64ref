@@ -104,6 +104,16 @@ def combined_keyboard_html_from_petscii(petscii, other_ok = False):
 
 	return (combined_keyboard_html, other_petscii)
 
+
+def combined_description_from_control_code(petscii):
+	combined_description = ''
+	for machine in machines:
+		if machine in description_from_control_code and petscii in description_from_control_code[machine]:
+			(_, description) = description_from_control_code[machine][petscii]
+			combined_description += machine + ': ' + description + '<br/>'
+	return combined_description
+
+
 def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, link = 'scrcode_0x0'):
 	scrcode7 = scrcode & 0x7f
 	if scrcode >= 0x80:
@@ -126,6 +136,8 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, 
 	return '<div class="char-box {}" id="{}" type="button" onclick="test(\'{}\')"><span class="char-img char-{}"></span>{}</div>'.format(inverted, link, link, hex(scrcode7), description_html)
 
 ####################################################################
+
+machines = ['VIC-20', 'C64', 'C128', 'TED']
 
 #
 # generate petscii_from_scrcode mapping
@@ -204,7 +216,7 @@ description_from_control_code_symbol = {
 }
 description_from_control_code = {}
 symbol_from_control_code = {}
-for machine in ['C64', 'C128', 'TED']:
+for machine in machines:
 	symbol_from_control_code[machine] = {}
 	description_from_control_code[machine] = {}
 	for line in open('control_codes_{}.txt'.format(machine.lower())):
@@ -274,8 +286,6 @@ description_from_modifier = {
 	'cbm': 'C=',
 	'ctrl': 'CTRL',
 }
-
-machines = ['VIC-20', 'C64', 'C128', 'TED']
 
 petscii_from_scancode = {}
 description_from_scancode = {}
@@ -452,11 +462,11 @@ for petscii in range(0, 256):
 	scrcode = scrcode_from_petscii[petscii]
 	print('<li>{}</li>'.format(pixel_char_html_from_scrcode(scrcode)))
 	if not is_petscii_printable(petscii):
-		description = description_from_control_code[machine].get(petscii)
-		if description:
-			(_, description) = description
-		if not description:
-			description = '&lt;undefined&gt;'
+		description = combined_description_from_control_code(petscii)
+#		if description:
+#			(_, description) = description
+#		if not description:
+#			description = '&lt;undefined&gt;'
 		print('<li>Control code: {}</li>'.format(description))
 
 	print('<li>PETSCII hex: ${:02X}</li>'.format(petscii))
