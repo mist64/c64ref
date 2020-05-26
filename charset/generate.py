@@ -81,11 +81,15 @@ def combined_keyboard_html_from_petscii(petscii, other_ok = False):
 		machine_list = []
 		for machine in machines:
 			if machine in htmls and html in htmls[machine]:
+				machine_list.append(machine)
 				if machine == 'C64':
 					# all C64 combos are valid for C128 as well
-					machine = 'C64/C128'
-				machine_list.append(machine)
-		machines_string = '/'.join(machine_list)
+					machine_list.append('C128')
+		#print('xxx', machine_list, machines)
+		if len(machine_list) == len(machines):
+			machines_string = 'ALL'
+		else:
+			machines_string = '/'.join(machine_list)
 		if machines_string in combined_htmls:
 			combined_htmls[machines_string].append(html)
 		else:
@@ -97,7 +101,7 @@ def combined_keyboard_html_from_petscii(petscii, other_ok = False):
 	keys = list(combined_htmls.keys())
 	keys.sort()
 	for machines_string in keys:
-		combined_keyboard_html += '<b>' + machines_string + '</b></br>'
+		combined_keyboard_html += '<b>' + machines_string + '</b><br/>'
 		for h in combined_htmls[machines_string]:
 			combined_keyboard_html += '{}<br/>'.format(h)
 
@@ -152,7 +156,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, 
 
 ####################################################################
 
-machines = ['VIC-20', 'C64', 'C128', 'TED']
+machines = ['VIC-20', 'C64', 'C128', 'C65', 'TED']
 
 #
 # generate petscii_from_scrcode mapping
@@ -217,6 +221,12 @@ description_from_control_code_symbol = {
 	'KEY_F6':           ('f6', 'f6 key'),
 	'KEY_F7':           ('f7', 'f7 key'),
 	'KEY_F8':           ('f8', 'f8 key'),
+	'KEY_F9':           ('f9', 'f9 key'),
+	'KEY_F10':          ('f10', 'f10 key'),
+	'KEY_F11':          ('f11', 'f11 key'),
+	'KEY_F12':          ('f12', 'f12 key'),
+	'KEY_F13':          ('f13', 'f13 key'),
+	'KEY_F14':          ('f14', 'f14 key'),
 	'LINE_FEED':        ('LF', 'Line Feed'),
 	'LOWER_CASE':       ('Lower Case', 'Switch to lower case'),
 	'RETURN':           ('RETURN', 'Return'),
@@ -224,10 +234,14 @@ description_from_control_code_symbol = {
 	'RVS_OFF':          ('RVS Off', 'Reverse Off'),
 	'RVS_ON':           ('RVS On', 'Reverse On'),
 	'SHIFT_RETURN':     ('SHIFT RETURN', 'Disabled Return'),
+	'STOP':             ('STOP', 'STOP'),
 	'TAB_SET_CLR':      ('Tab set/clr', 'Tab set/clear'),
 	'UNDERLINE_OFF':    ('Underline Off', 'Underline Off'),
 	'UNDERLINE_ON':     ('Underline On', 'Underline On'),
 	'UPPER_CASE':       ('Upper Case', 'Switch to upper case'),
+	'BELL_TONE': ('BEL', 'Bell Tone'),
+	'TAB': ('TAB', 'Forward TAB'),
+	'HELP': ('HELP', 'HELP'),
 }
 description_from_control_code = {}
 symbol_from_control_code = {}
@@ -239,7 +253,7 @@ for machine in machines:
 		if len(line) == 0:
 			continue
 		petscii = int(line[0:2], 16)
-		symbol = line[3:].split(' ')[0] # XXX there may be more
+		symbol = line[3:].split(' ')[0] # XXX C128 and C65 have more than one function!
 		symbol_from_control_code[machine][petscii] = symbol
 		if len(symbol) > 0:
 			description_from_control_code[machine][petscii] = description_from_control_code_symbol[symbol]
@@ -482,7 +496,7 @@ for scrcode in range(0, 256):
 	for eff_scrcode in scrcode_list:
 		for petscii in petscii_from_scrcode[eff_scrcode]:
 			print('<tr>')
-			print('<td><a href="#petscii_table_{:02x}">${:02X}</a></td><td>{}</tt></td>'.format(petscii, petscii, petscii))
+			print('<td><a href="#petscii_table_{:02x}">${:02X}</a></td><td>{}</td>'.format(petscii, petscii, petscii))
 
 			print('<td>')
 			(combined_keyboard_html, _) = combined_keyboard_html_from_petscii(petscii, False)
