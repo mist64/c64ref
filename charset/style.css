@@ -103,12 +103,22 @@ padding: 0px;
 
 /* Visual Keys */
 
+span.unicode-box {
+    background-color: lightgray;
+    color: black;
+    border: 2px solid dimgray;
+    border-radius: 1px;
+    padding: 1px;
+    margin: 0px;
+}
+
+
 span.key-box {
     background-color: black;
     color: white;
     border: 1px solid gray;
     border-radius: 4px;
-    padding:2px 8px;
+    padding: 2px 8px;
 }
 
 div.key-box {

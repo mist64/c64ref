@@ -400,7 +400,7 @@ for scrcode in range(0, 256):
 	petscii = petscii_from_scrcode[scrcode7][0]
 	unicode = unicode_from_petscii[0][petscii]
 	print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
-	print('<li>Unicode \'&#x{:x};\'</li>'.format(unicode))
+	print('<li>Unicode <span class="unicode-box">&#x{:x};</span></li>'.format(unicode))
 	print('</div>');
 
 # PETSCII Boxes
@@ -439,7 +439,7 @@ for petscii in range(0, 256):
 		print('<li>Screencode ${:02X}</li>'.format(scrcode))
 		unicode = unicode_from_petscii[0][petscii]
 		print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
-		print('<li>Unicode \'&#x{:x};\'</li>'.format(unicode))
+		print('<li>Unicode <span class="unicode-box">&#x{:x};</span></li>'.format(unicode))
 	print('</div>');
 
 # PETSCII Table
