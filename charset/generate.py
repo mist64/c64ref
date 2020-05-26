@@ -92,7 +92,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None):
 # generate petscii_from_scrcode mapping
 #
 petscii_from_scrcode = []
-for c in range(0, 128):
+for c in range(0, 256):
 	result = []
 	for d in range(0, 256):
 		if scrcode_from_petscii[d] == c:
@@ -357,28 +357,43 @@ for scrcode in range(0, 256):
 	print('<div id="info_scrcode_{}">'.format(hex(scrcode)))
 	print('<h2>Screencode {}</h2>'.format(hex(scrcode)))
 	scrcode7 = scrcode & 0x7f
-	if scrcode >= 0x80:
+	is_reverse = scrcode >= 0x80
+	if is_reverse:
 		inverted = 'inverted'
 		print('<li>REVERSE</li>')
 	else:
 		inverted = ''
 	print('<li><span class="char-box {}"><span class="char-img char-{}"></span></span></li>'.format(inverted, hex(scrcode7)))
 
-	print('<table><th>PETSCII<br/>hex</th><th>PETSCII<br/>dec</th><th>Keyboard</th>')
-	for petscii in petscii_from_scrcode[scrcode7]:
-		print('<tr>')
-		print('<td>${:02X}</td><td>{}</tt></td>'.format(petscii, petscii))
+	print('<table><th>PETSCII<br/>hex</th><th>PETSCII<br/>dec</th><th>Keyboard</th><th>Mode</th>')
+	run = 0
+	if is_reverse:
+		scrcode_list = [scrcode7, scrcode]
+	else:
+		scrcode_list = [scrcode]
+	for eff_scrcode in scrcode_list:
+		for petscii in petscii_from_scrcode[eff_scrcode]:
+			print('<tr>')
+			print('<td>${:02X}</td><td>{}</tt></td>'.format(petscii, petscii))
 
-		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii)
+			(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii)
 
-		print('<td>')
-		if other_petscii == None and len(modifiers_and_scancodes_html) > 0:
-			for html in modifiers_and_scancodes_html:
-				print('{}<br/>'.format(html))
-		print('</td>')
+			print('<td>')
+			if other_petscii == None and len(modifiers_and_scancodes_html) > 0:
+				for html in modifiers_and_scancodes_html:
+					print('{}<br/>'.format(html))
+			print('</td>')
+			print('<td>')
+			if run == 0:
+				if is_reverse:
+					print('in reverse mode')
+			else:
+				print('control code in quote mode')
+			print('</td>')
 
+			print('</tr>')
+		run += 1
 
-		print('</tr>')
 	print('</table>')
 	petscii = petscii_from_scrcode[scrcode7][0]
 	unicode = unicode_from_petscii[0][petscii]
