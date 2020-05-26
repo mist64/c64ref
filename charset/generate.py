@@ -417,7 +417,7 @@ print('</div>')
 # Screencode Boxes
 for scrcode in range(0, 256):
 	print('<div id="info_scrcode_{}">'.format(hex(scrcode)))
-	print('<h2>Screencode ${:02X}</h2>'.format(scrcode))
+	print('<h2>Screencode ${:02X} (dec {})</h2>'.format(scrcode, scrcode))
 	scrcode7 = scrcode & 0x7f
 	is_reverse = scrcode >= 0x80
 	if is_reverse:
@@ -469,17 +469,19 @@ for scrcode in range(0, 256):
 for petscii in range(0, 256):
 
 	print('<div id="info_petscii_{}">'.format(hex(petscii)))
-	print('<h2>PETSCII ${:02X}</h2>'.format(petscii))
+	print('<h2>PETSCII ${:02X} (dec {})</h2>'.format(petscii, petscii))
 	scrcode = scrcode_from_petscii[petscii]
 	print('<li>{}</li>'.format(pixel_char_html_from_scrcode(scrcode)))
-	if not is_petscii_printable(petscii):
+	if is_petscii_printable(petscii):
+		unicode = unicode_from_petscii[0][petscii]
+		print('<li>Unicode <span class="unicode-box">&#x{:x};</span></li>'.format(unicode))
+		print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
+	else:
 		description = combined_description_from_control_code(petscii)
 		if description == '':
 			description = '&lt;undefined&gt;'
 		print('<li>Control code:<br/>{}</li>'.format(description))
 
-	print('<li>PETSCII hex: ${:02X}</li>'.format(petscii))
-	print('<li>PETSCII dec: {}</li>'.format(petscii))
 	print('<li>Screencode: ${:02X}</li>'.format(scrcode))
 
 	(combined_keyboard_html, other_petscii) = combined_keyboard_html_from_petscii(petscii, True)
@@ -491,11 +493,6 @@ for petscii in range(0, 256):
 
 	print('</tr>')
 	print('</table>')
-	if is_petscii_printable(petscii):
-		print('<li>Screencode ${:02X}</li>'.format(scrcode))
-		unicode = unicode_from_petscii[0][petscii]
-		print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
-		print('<li>Unicode <span class="unicode-box">&#x{:x};</span></li>'.format(unicode))
 	print('</div>');
 
 # PETSCII Table
