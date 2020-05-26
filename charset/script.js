@@ -10,4 +10,9 @@ function test(element) {
 			currentBox.classList.remove("highlighted");
 		}
 	}
+	
+	var infoId = "info_".concat(element) ;
+	var currentInfo = document.getElementById(infoId);
+	var infoBox = document.getElementById("info_box");
+	infoBox.innerHTML = currentInfo.innerHTML;
 }

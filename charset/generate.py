@@ -84,7 +84,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None):
 		description_html = '<span class="char-txt"{}>{}<br /></span>'.format(color_html, description)
 		#description_html = '<span class="char-txt"{}><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></span>'.format(color_html, description)
 
-	return '<div class="char-box {}"><span class="char-img char-{}"></span>{}</div>'.format(inverted, hex(scrcode7), description_html)
+	return '<div class="char-box {}" id="scrcode_{}" type="button" onclick="test(\'scrcode_{}\')"><span class="char-img char-{}"></span>{}</div>'.format(inverted, hex(scrcode), hex(scrcode), hex(scrcode7), description_html)
 
 ####################################################################
 
@@ -300,12 +300,20 @@ print('<h1>C64 Charset</h1>')
 #print('	<img src="43627586.png" />')
 #print('</div>')
 
-print('<div id="screencode-overview">')
+
+print('<div">')
+
+print('<div id="screencode_overview" style="display: inline-block;">')
 
 for scrcode in range(0, 256):
 	print(pixel_char_html_from_scrcode(scrcode))
 	if scrcode & 15 == 15:
 		print('<br />')
+
+print('</div>')
+
+print('<div id="info_box" style="display: inline-block;">')
+print('</div>')
 
 print('</div>')
 
@@ -316,7 +324,7 @@ print('<br />')
 print('<br />')
 print('<br />')
 
-print('<div id="petscii-overview">')
+print('<div id="petscii_overview">')
 
 machine = 'C64'
 
@@ -378,6 +386,8 @@ print('</div>')
 
 # PETSCII Boxes
 for petscii in range(0, 256):
+
+	print('<div id="info_scrcode_{}">'.format(hex(petscii)))
 	print('<h2>PETSCII ${:02X}</h2>'.format(petscii))
 	scrcode = scrcode_from_petscii[petscii]
 	print('<li>{}</li>'.format(pixel_char_html_from_scrcode(scrcode)))
@@ -411,6 +421,7 @@ for petscii in range(0, 256):
 		unicode = unicode_from_petscii[0][petscii]
 		print('<li>Unicode U+{:04X} # {}</li>'.format(unicode, description_from_unicode[unicode]))
 		print('<li>Unicode \'&#x{:x};\'</li>'.format(unicode))
+	print('</div>');
 
 # PETSCII Table
 print('<table border="1">')
