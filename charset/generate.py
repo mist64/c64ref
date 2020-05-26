@@ -441,8 +441,6 @@ print('</div>')
 
 print('<div id="info_box"></div>')
 
-
-
 print('</div>')
 
 print('<div style="display: none">')
@@ -455,45 +453,35 @@ for scrcode in range(0, 256):
 
 	print('<div id="info_scrcode_{}">'.format(hex(scrcode)))
 
-	print('<table border="1">')
-
-	print('<tr>')
-	print('<td width="50%">')
+	print('<div class="grid-container">')
+	print('  <div class="item1">')
 	print(pixel_char_html_from_scrcode(scrcode))
-	print('</td>')
-	print('<td width="50%">')
-	unicode = unicode_from_petscii[0][petscii]
-	print('<span class="unicode-box">&#x{:x};</span>'.format(unicode))
-	print('</td>')
-	print('</tr>')
-
-	print('<tr>')
-	print('<td>')
-	print('Screencode')
-	print('</td>')
-	print('<td>')
-	print('Unicode')
-	print('</td>')
-	print('</tr>')
-
-	print('<tr>')
-	print('<td>')
+	print('  </div>')
+	print('  <div class="item2">Screencode</div>')
+	print('  <div class="item3">')
 	print('${:02X}<br/>'.format(scrcode))
 	print('{}'.format(scrcode))
-	print('</td>')
-	if is_petscii_printable(petscii):
-		print('<td>')
-		print('U+{:04X}<br/>'.format(unicode))
-		print('{}'.format(description_from_unicode[unicode]))
-		if is_reverse:
-			print('<br/>+ reverse')
-		print('</td>')
-	print('</tr>')
+	print('  </div>')
 
-	print('<tr>')
-	print('<td colspan="2">')
+	unicode = unicode_from_petscii[0][petscii]
+	print('  <div class="item4"><span class="unicode-box">&#x{:x};</span></div>'.format(unicode))
+	print('  <div class="item5">Unicode</div>')
 
-	print('<table border="1"><th>PETSCII<br/>hex</th><th>PETSCII<br/>dec</th><th>Keyboard</th><th>Mode</th>')
+	print('  <div class="item6">')
+	print('    U+{:04X}<br/>'.format(unicode))
+	print('    {}'.format(description_from_unicode[unicode]))
+	if is_reverse:
+		print('    <br/>+ reverse')
+	print('  </div>')
+
+
+	print('  <div class="item7">')
+	
+	print('<table>')
+	print('<tr><th colspan="2">PETSCII <th rowspan="2">Keyboard</th><th rowspan="2">Mode</th></tr>')
+	print('<tr><th>hex</th><th>dec</th></tr>')
+
+	
 	run = 0
 	if is_reverse:
 		scrcode_list = [scrcode7, scrcode]
@@ -523,14 +511,16 @@ for scrcode in range(0, 256):
 
 			print('</tr>')
 		run += 1
-
 	print('</table>')
-
-	print('</td>')
-	print('</tr>')
-
-	print('</table>')
+	print('  </div>')
+	
 	print('</div>')
+	print('</div>')
+
+
+
+
+
 
 # PETSCII Boxes
 for petscii in range(0, 256):
