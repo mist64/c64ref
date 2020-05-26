@@ -83,8 +83,9 @@ def combined_keyboard_html_from_petscii(petscii, other_ok = False):
 			if machine in htmls and html in htmls[machine]:
 				machine_list.append(machine)
 				if machine == 'C64':
-					# all C64 combos are valid for C128 as well
+					# all C64 combos are valid for C128 anc C65 as well
 					machine_list.append('C128')
+					machine_list.append('C65')
 		if len(machine_list) == len(machines):
 			machines_string = 'ALL'
 		else:

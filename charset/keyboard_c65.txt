@@ -1,1 +1,11 @@
-keyboard_c64.txt
+scan    NO_SCROLL TAB    ALT     HELP    f9      f11     f13     ESC
+
+exclude 2 # ALT
+
+regular FF 09 08 84 10 16 19 1B
+
+shift   FF 1A 08 84 15 17 1A 1B
+
+cbm     FF 18 08 84 15 17 1A 1B
+
+ctrl    FF 09 08 84 FF FF FF 1B
