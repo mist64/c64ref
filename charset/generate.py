@@ -154,11 +154,13 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, 
 		description_html = '<span class="char-txt"{}>{}<br /></span>'.format(color_html, description)
 		#description_html = '<span class="char-txt"{}><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></span>'.format(color_html, description)
 
-	link_html = ''
+	link_html1 = ''
+	link_html2 = ''
 	if link:
-		link_html = 'type="button" onclick="test(\'{}\')"'.format(link)
+		link_html1 = 'type="button" onclick="test(\'{}\')"'.format(link)
+		link_html2 = link
 
-	return '<div class="char-box {}" id="{}" {}><span class="char-img char-{}"></span>{}</div>'.format(inverted, link, link_html, hex(scrcode7), description_html)
+	return '<div class="char-box {}" id="{}" {}><span class="char-img char-{}"></span>{}</div>'.format(inverted, link_html2, link_html1, hex(scrcode7), description_html)
 
 ####################################################################
 
