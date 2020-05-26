@@ -445,7 +445,7 @@ for scrcode in range(0, 256):
 	for eff_scrcode in scrcode_list:
 		for petscii in petscii_from_scrcode[eff_scrcode]:
 			print('<tr>')
-			print('<td>${:02X}</td><td>{}</tt></td>'.format(petscii, petscii))
+			print('<td><a href="#petscii_table_{:02x}">${:02X}</a></td><td>{}</tt></td>'.format(petscii, petscii, petscii))
 
 			print('<td>')
 			(combined_keyboard_html, _) = combined_keyboard_html_from_petscii(petscii, False)
@@ -476,7 +476,6 @@ for scrcode in range(0, 256):
 
 # PETSCII Boxes
 for petscii in range(0, 256):
-
 	print('<div id="info_petscii_{}">'.format(hex(petscii)))
 	print('<h2>PETSCII ${:02X} (dec {})</h2>'.format(petscii, petscii))
 	scrcode = scrcode_from_petscii[petscii]
@@ -499,6 +498,8 @@ for petscii in range(0, 256):
 		alt_text = ' (alt code ${:02X})'.format(other_petscii)
 	print('<li>Keyboard{}:<br/>'.format(alt_text))
 	print(combined_keyboard_html)
+	print('</li>')
+	print('<li><a href="#petscii_table_{:02x}">Table: ${:02X}</a></li>'.format(petscii, petscii))
 
 	print('</tr>')
 	print('</table>')
@@ -512,7 +513,7 @@ print('<tr><th>PETSCII</th><th>C16 Keyboard</th><th>C64 Keyboard</th><th>C128 Ke
 for petscii in range(0, 256):
 	print('<tr>')
 
-	print('<td>${:02X}</td>'.format(petscii))
+	print('<td><a name="petscii_table_{:02x}">${:02X}</td>'.format(petscii, petscii))
 
 	scrcode = scrcode_from_petscii[petscii]
 
