@@ -65,6 +65,36 @@ def modifiers_and_scancodes_html_from_petscii(petscii, machine = 'C64'):
 
 	return (modifiers_and_scancodes_html, other_petscii)
 
+def combined_keyboard_html_from_petscii(petscii):
+	# collect keyboard combinations for all machines
+	htmls = {}
+	html_set = []
+	for machine in machines:
+		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, machine)
+		if other_petscii == None and len(modifiers_and_scancodes_html) > 0:
+			htmls[machine] = modifiers_and_scancodes_html
+			html_set.extend(modifiers_and_scancodes_html)
+
+	html_set = list(set(html_set))
+	combined_htmls = {}
+	for html in html_set: # for each keyboard combination
+		machine_list = []
+		for machine in machines:
+			if machine in htmls and html in htmls[machine]:
+				machine_list.append(machine)
+		machines_string = '/'.join(machine_list)
+		combined_htmls[machines_string] = html
+
+	#print('xxx', combined_htmls)
+
+	combined_keyboard_html = ''
+	for machines_string in combined_htmls.keys():
+		combined_keyboard_html += '<b>' + machines_string + '</b></br>'
+		combined_keyboard_html += '{}<br/>'.format(combined_htmls[machines_string])
+
+
+	return combined_keyboard_html
+
 def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None):
 	scrcode7 = scrcode & 0x7f
 	if scrcode >= 0x80:
@@ -208,8 +238,8 @@ description_from_unicode = {}
 unicode_from_petscii = []
 unicode_from_petscii.append({})
 for line in open('C64IPRI.TXT'):
-	line = line.split('#')[0].rstrip()
-	if len(line) == 0:
+	line = line.rstrip()
+	if len(line) == 0 or line.startswith('#'):
 		continue
 	petscii = int(line[2:4], 16)
 	unicode = int(line[7:12], 16)
@@ -217,8 +247,8 @@ for line in open('C64IPRI.TXT'):
 	description_from_unicode[unicode] = line[14:]
 unicode_from_petscii.append({})
 for line in open('C64IALT.TXT'):
-	line = line.split('#')[0].rstrip()
-	if len(line) == 0:
+	line = line.rstrip()
+	if len(line) == 0 or line.startswith('#'):
 		continue
 	petscii = int(line[2:4], 16)
 	unicode = int(line[7:12], 16)
@@ -376,12 +406,8 @@ for scrcode in range(0, 256):
 			print('<tr>')
 			print('<td>${:02X}</td><td>{}</tt></td>'.format(petscii, petscii))
 
-			(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii)
-
 			print('<td>')
-			if other_petscii == None and len(modifiers_and_scancodes_html) > 0:
-				for html in modifiers_and_scancodes_html:
-					print('{}<br/>'.format(html))
+			print(combined_keyboard_html_from_petscii(petscii))
 			print('</td>')
 			print('<td>')
 			if run == 0:
