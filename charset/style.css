@@ -56,25 +56,26 @@
 
 .char-txt {
     position: relative;
-    top: -8px;
     margin:0px;
     padding:0px;
-    height: 32px;
-    width: 32px;
+    height: 25px;
+    width: 25px;
+    top: -9px;
+    left: -1px;
     filter: invert(100%);
     z-index: 21;
     background-color: #9999;
-    border: 0px solid cyan;
+    border: 4px solid pink;
     display: block;
     overflow: hidden;
 	white-space: nowrap;
 	text-overflow: clip;
 	color: white;
+	text-shadow: 1px 1px black;
 	font-weight: bold;
 	font-size: xx-small;
 	vertical-align: top;
 	text-align: center;
-
 }
 
 /* Visual Keys */

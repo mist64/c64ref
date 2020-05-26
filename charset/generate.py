@@ -80,7 +80,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None):
 			hex_color = '#0008'
 		else:
 			hex_color += 'E0'
-		color_html = ' style="background-color: {};"'.format(hex_color)
+		color_html = ' style="background-color: {}; border-color:{};"'.format(hex_color, hex_color)
 		description_html = '<span class="char-txt"{}>{}<br /></span>'.format(color_html, description)
 
 	return '<div class="char-box {}"><span class="char-img char-{}"></span>{}</div>'.format(inverted, hex(scrcode7), description_html)
