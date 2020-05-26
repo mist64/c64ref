@@ -109,13 +109,17 @@ description_from_control_code_symbol = {
 	'COL_BROWN':        ('Brn', 'Set text color to Brown'),
 	'COL_CYAN':         ('Cyn', 'Set text color to Cyan'),
 	'COL_DARK_BLUE':    ('DkBlu', 'Set text color to Dark Blue'),
+	'COL_DARK_CYAN':    ('DkCyn', 'Set text color to Dark Cyan'),
+	'COL_DARK_PURPLE':  ('DkPur', 'Set text color to Dark Purple'),
+	'COL_DARK_YELLOW':  ('DkYel', 'Set text color to Dark Yellow'),
 	'COL_GREEN':        ('Grn', 'Set text color to Green'),
-	'COL_GREY_1':       ('Gry1', 'Set text color to Gray 1'),
-	'COL_GREY_2':       ('Gry2', 'Set text color to Gray 2'),
-	'COL_GREY_3':       ('Gry3', 'Set text color to Gray 3'),
-	'COL_LIGHT_GRN':    ('LtGrn', 'Set text color to Light Green'),
+	'COL_DARK_GRAY':    ('DkGry', 'Set text color to Dark Gray'),
+	'COL_MEDIUM_GRAY':  ('MdGry', 'Set text color to Medium Gray'),
+	'COL_LIGHT_GRAY':   ('LtGry', 'Set text color to Light Gray'),
 	'COL_LIGHT_BLUE':   ('LBlu', 'Set text color to Light Blue'),
+	'COL_LIGHT_CYAN':   ('LtCyn', 'Set text color to Light Cyan'),
 	'COL_LIGHT_GREEN':  ('LGrn', 'Set text color to Light Green'),
+	'COL_LIGHT_GRN':    ('LtGrn', 'Set text color to Light Green'),
 	'COL_LIGHT_RED':    ('LRed', 'Set text color to Light Red'),
 	'COL_ORANGE':       ('Orng', 'Set text color to Orange'),
 	'COL_PINK':         ('Pink', 'Set text color to Pink'),
@@ -132,8 +136,8 @@ description_from_control_code_symbol = {
 	'DEL':              ('DEL', 'Delete'),
 	'DIS_CASE_SWITCH':  ('Disable Case', 'Disable Case-Switching Keys'),
 	'ENA_CASE_SWITCH':  ('Enable Case', 'Enable Case-Switching Keys'),
-	'FLASH_ON':         ('Flash On', 'Flash On'),
 	'FLASH_OFF':        ('Flash Off', 'Flash Off'),
+	'FLASH_ON':         ('Flash On', 'Flash On'),
 	'INST':             ('INST', 'Insert'),
 	'KEY_F1':           ('f1', 'f1 key'),
 	'KEY_F2':           ('f2', 'f2 key'),
@@ -150,10 +154,17 @@ description_from_control_code_symbol = {
 	'SHIFT_RETURN':     ('SHIFT RETURN', 'Disabled Return'),
 	'UPPER_CASE':       ('Upper Case', 'Switch to upper case'),
 
+	'UNDERLINE_ON': ('Underline On', 'Underline On'),
+	'UNDERLINE_OFF': ('Underline Off', 'Underline Off'),
+	'LINE_FEED': ('LF', 'Line Feed'),
+	'ENA_MODE_SWITCH': ('Enable Mode', 'Enable Mode Switch'),
+	'DIS_MODE_SWITCH': ('Disable Mode', 'Disable Mode Switch'),
+	'TAB_SET_CLR': ('Tab set/clr', 'Tab set/clear'),
+	'ESC': ('ESC', 'Escape'),
 }
 description_from_control_code = {}
 symbol_from_control_code = {}
-for machine in ['C64', 'TED']:
+for machine in ['C64', 'C128', 'TED']:
 	symbol_from_control_code[machine] = {}
 	description_from_control_code[machine] = {}
 	for line in open('control_codes_{}.txt'.format(machine.lower())):
@@ -161,7 +172,7 @@ for machine in ['C64', 'TED']:
 		if len(line) == 0:
 			continue
 		petscii = int(line[0:2], 16)
-		symbol = line[3:]
+		symbol = line[3:].split(' ')[0] # XXX there may be more
 		symbol_from_control_code[machine][petscii] = symbol
 		if len(symbol) > 0:
 			description_from_control_code[machine][petscii] = description_from_control_code_symbol[symbol]
@@ -172,7 +183,7 @@ for machine in ['C64', 'TED']:
 #
 color_index_from_color_name = {}
 hex_color_from_color_index = {}
-for machine in ['C64', 'TED']:
+for machine in ['C64', 'C128', 'TED']:
 	color_index_from_color_name[machine] = {}
 	hex_color_from_color_index[machine] = {}
 	color_index = 0
@@ -439,7 +450,7 @@ for petscii in range(0, 256):
 		print('<td>{}</td>'.format(description_from_unicode[unicode]))
 
 	else:
-		for machine in ['C64', 'TED']: #machines:
+		for machine in ['C64', 'C128', 'TED']: #machines:
 			description = description_from_control_code[machine].get(petscii)
 			if description:
 				(_, description) = description
