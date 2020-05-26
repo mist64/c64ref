@@ -1,0 +1,21 @@
+scan    ^V      ^D      :       STOP    9       6       3       ^DF
+scan    ^B1     /       ^U      HOME    M       SPACE   X       RVS
+scan    ^B2     ^P      ^O      ^B0     COMMA   N       V       Z
+scan    ^B3     SHIFT   ^Y      ^AE      .       B       C      SHIFT
+scan    ^B4     ]       O       CRSR↓   U       T       E       Q
+scan    DEL     P       I       ─       Y       R       W       ^I
+scan    ^B6     [       L       RETURN  J       G       D       A
+scan    ^B5     £       K       ;       H       F       S       ^9B
+scan    ^B9     ^F      π       ^B7     ^B0     7       4       1
+scan    ^E      ^N      CRSR→   ^B8     -       8       5       2
+
+regular 16 04 3A 03 39 36 33 DF
+regular B1 2F 15 13 4D 20 58 12
+regular B2 10 0F B0 2C 4E 56 5A
+regular B3 00 19 AE 2E 42 43 00
+regular B4 5D 4F 11 55 54 45 51
+regular 14 50 49 C0 59 52 57 09
+regular B6 5B 4C 0D 4A 47 44 41
+regular B5 5C 4B 3B 48 46 53 9B
+regular B9 06 DE B7 B0 37 34 31
+regular 05 0E 1D B8 2D 38 35 32                     
