@@ -163,6 +163,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, 
 ####################################################################
 
 machines = ['VIC-20', 'C64', 'C128', 'C65', 'TED']
+#machines.append('CBM2')
 
 #
 # generate petscii_from_scrcode mapping
@@ -412,7 +413,7 @@ print('      <div id="petscii_overview">')
 
 
 
-machine = 'C64'
+machine = 'TED'
 
 for petscii in range(0, 256):
 	scrcode = scrcode_from_petscii[petscii]
@@ -427,8 +428,8 @@ for petscii in range(0, 256):
 	hex_color = None
 	if not is_petscii_printable(petscii):
 		symbol = symbol_from_control_code[machine][petscii]
-		if symbol in color_index_from_color_name['C64']:
-			hex_color = hex_color_from_color_index['C64'][color_index_from_color_name['C64'][symbol]]
+		if symbol in color_index_from_color_name[machine]:
+			hex_color = hex_color_from_color_index[machine][color_index_from_color_name[machine][symbol]]
 	print(pixel_char_html_from_scrcode(scrcode, description, hex_color, 'petscii_' + hex(petscii)))
 	if petscii & 15 == 15:
 		print('<br />')
