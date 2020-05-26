@@ -60,12 +60,12 @@
     padding:0px;
     height: 32px;
     width: 32px;
-    top: -8px;
-    left: -0px;
+    top: -9px;
+    left: -1px;
     filter: invert(100%);
     z-index: 21;
     background-color: #9999;
-    border: 0px solid pink;
+    border: 1px solid pink;
     display: block;
     overflow: hidden;
 	white-space: nowrap;
