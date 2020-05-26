@@ -99,7 +99,7 @@ for c in range(0, 128):
 	petscii_from_scrcode.append(result)
 
 #
-# read control code descriptions
+# Read Control Code Descriptions
 #
 description_from_control_code_symbol = {
 	'CLEAR':            ('CLR', 'Clear'),
@@ -157,18 +157,37 @@ for machine in ['C64', 'TED']:
 	symbol_from_control_code[machine] = {}
 	description_from_control_code[machine] = {}
 	for line in open('control_codes_{}.txt'.format(machine.lower())):
-		line = line.rstrip()
-		if len(line) != 0:
-			petscii = int(line[0:2], 16)
-			symbol = line[3:]
-			symbol_from_control_code[machine][petscii] = symbol
-			if len(symbol) > 0:
-				description_from_control_code[machine][petscii] = description_from_control_code_symbol[symbol]
+		line = line.split('#')[0].rstrip()
+		if len(line) == 0:
+			continue
+		petscii = int(line[0:2], 16)
+		symbol = line[3:]
+		symbol_from_control_code[machine][petscii] = symbol
+		if len(symbol) > 0:
+			description_from_control_code[machine][petscii] = description_from_control_code_symbol[symbol]
 
 
-
-
-
+#
+# Read Palettes
+#
+color_index_from_color_name = {}
+hex_color_from_color_index = {}
+for machine in ['C64', 'TED']:
+	color_index_from_color_name[machine] = {}
+	hex_color_from_color_index[machine] = {}
+	color_index = 0
+	for line in open('palette_{}.txt'.format(machine.lower())):
+		line = line.split('#')[0].rstrip()
+		if len(line) == 0:
+			continue
+		values = line.split(' ')
+		while '' in values:
+			values.remove('')
+		hex_color = '#' + values[0]
+		color_name = values[1]
+		color_index_from_color_name[machine][color_name] = color_index
+		hex_color_from_color_index[machine][color_index] = hex_color
+		color_index += 1
 
 #
 # read PETSCII -> Unicode
@@ -177,8 +196,8 @@ description_from_unicode = {}
 unicode_from_petscii = []
 unicode_from_petscii.append({})
 for line in open('C64IPRI.TXT'):
-	line = line.rstrip()
-	if line.startswith('#') or len(line) == 0:
+	line = line.split('#')[0].rstrip()
+	if len(line) == 0:
 		continue
 	petscii = int(line[2:4], 16)
 	unicode = int(line[7:12], 16)
@@ -186,8 +205,8 @@ for line in open('C64IPRI.TXT'):
 	description_from_unicode[unicode] = line[14:]
 unicode_from_petscii.append({})
 for line in open('C64IALT.TXT'):
-	line = line.rstrip()
-	if line.startswith('#') or len(line) == 0:
+	line = line.split('#')[0].rstrip()
+	if len(line) == 0:
 		continue
 	petscii = int(line[2:4], 16)
 	unicode = int(line[7:12], 16)
@@ -237,85 +256,6 @@ for machine in machines:
 			values = [int(v, 16) for v in values]
 			petscii_from_scancode[machine][key].extend(values)
 
-
-color_index_from_color_name = {}
-hex_color_from_color_index = {}
-
-color_index_from_color_name['C64'] = {
-	'COL_BLACK':        0,
-	'COL_WHITE':        1,
-	'COL_RED':          2,
-	'COL_CYAN':         3,
-	'COL_PURPLE':       4,
-	'COL_GREEN':        5,
-	'COL_BLUE':         6,
-	'COL_YELLOW':       7,
-	'COL_ORANGE':       8,
-	'COL_BROWN':        9,
-	'COL_LIGHT_RED':   10,
-	'COL_GREY_1':      11,
-	'COL_GREY_2':      12,
-	'COL_LIGHT_GREEN': 13,
-	'COL_LIGHT_BLUE':  14,
-	'COL_GREY_3':      15,
-}
-
-hex_color_from_color_index['C64'] = [
-	'#000000',
-	'#ffffff',
-	'#813338',
-	'#75cec8',
-	'#8e3c97',
-	'#56ac4d',
-	'#2e2c9b',
-	'#edf171',
-	'#8e5029',
-	'#553800',
-	'#c46c71',
-	'#4a4a4a',
-	'#7b7b7b',
-	'#a9ff9f',
-	'#706deb',
-	'#b2b2b2',
-]
-
-color_index_from_color_name['TED'] = {
-	'COL_BLACK':         0,
-	'COL_WHITE':         1,
-	'COL_RED':           2,
-	'COL_CYAN':          3,
-	'COL_PURPLE':        4,
-	'COL_GREEN':         5,
-	'COL_BLUE':          6,
-	'COL_YELLOW':        7,
-	'COL_ORANGE':        8,
-	'COL_BROWN':         9,
-	'COL_YELLOW_GREEN': 10,
-	'COL_PINK':         11,
-	'COL_BLUE_GREEN':   12,
-	'COL_LIGHT_BLUE':   13,
-	'COL_DARK_BLUE':    14,
-	'COL_LIGHT_GRN':    15,
-}
-
-hex_color_from_color_index['TED'] = [
-	'#000000',
-	'#ffffff',
-	'#a04b43',
-	'#95e0e6',
-	'#b56cf7',
-	'#3d8d00',
-	'#8a7eff',
-	'#ffff87',
-	'#c18a40',
-	'#775c00',
-	'#afc81c',
-	'#fba8f4',
-	'#7ad282',
-	'#afc6ff',
-	'#5735d8',
-	'#a3cd21',
-]
 
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
 print('<html>')
