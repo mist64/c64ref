@@ -236,22 +236,22 @@ for machine in machines:
 
 
 color_index_from_color_name = {
-	'COL_BLACK':     0,
-	'COL_WHITE':     1,
-	'COL_RED':       2,
-	'COL_CYAN':      3,
-	'COL_GREEN':     5,
-	'COL_PURPLE':    4,
-	'COL_BLUE':      6,
-	'COL_YELLOW':    7,
-	'COL_ORANGE':    8,
-	'COL_BROWN':     9,
-	'COL_LT_RED':   10,
-	'COL_GREY_1':   11,
-	'COL_GREY_2':   12,
-	'COL_LT_GREEN': 13,
-	'COL_LT_BLUE':  14,
-	'COL_GREY_3':   15,
+	'COL_BLACK':        0,
+	'COL_WHITE':        1,
+	'COL_RED':          2,
+	'COL_CYAN':         3,
+	'COL_GREEN':        5,
+	'COL_PURPLE':       4,
+	'COL_BLUE':         6,
+	'COL_YELLOW':       7,
+	'COL_ORANGE':       8,
+	'COL_BROWN':        9,
+	'COL_LIGHT_RED':   10,
+	'COL_GREY_1':      11,
+	'COL_GREY_2':      12,
+	'COL_LIGHT_GREEN': 13,
+	'COL_LIGHT_BLUE':  14,
+	'COL_GREY_3':      15,
 }
 
 hex_color_from_color_index = [
@@ -458,12 +458,12 @@ for petscii in range(0, 256):
 			(_, description) = description
 		color_html = ''
 		symbol = symbol_from_control_code[petscii]
-		if symbol in color_index_from_color_name:
-			hex_color = hex_color_from_color_index[color_index_from_color_name[symbol]]
-			color_html = 'bgcolor="{}"'.format(hex_color)
 		if not description:
 			description = ''
-		print('<td {} colspan="3">{}</td>'.format(color_html, description))
+		if symbol in color_index_from_color_name:
+			hex_color = hex_color_from_color_index[color_index_from_color_name[symbol]]
+			description = '<span style="background-color:{}; border: solid gray 1px; width: 1em; height: 1em; display: inline-block;"> </span> '.format(hex_color) + description
+		print('<td colspan="3">{}</td>'.format(description))
 
 
 
