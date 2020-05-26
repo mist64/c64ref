@@ -124,11 +124,11 @@ description_from_control_code_symbol = {
 	'COL_WHITE':        ('Wht', 'Set text color to White'),
 	'COL_YELLOW':       ('Yel', 'Set text color to Yellow'),
 	'COL_YELLOW_GREEN': ('YlGrn', 'Set text color to Yellow Green'),
-	'CRSR_DOWN':        ('↓', 'Cursor Down'),
+	'CRSR_DOWN':        ('Crsr ↓', 'Cursor Down'),
 	'CRSR_HOME':        ('HOME', 'Cursor Home'),
-	'CRSR_LEFT':        ('←', 'Cursor Left'),
-	'CRSR_RIGHT':       ('→', 'Cursor Right'),
-	'CRSR_UP':          ('↑', 'Cursor Up'),
+	'CRSR_LEFT':        ('Crsr ←', 'Cursor Left'),
+	'CRSR_RIGHT':       ('Crsr →', 'Cursor Right'),
+	'CRSR_UP':          ('Crsr ↑', 'Cursor Up'),
 	'DEL':              ('DEL', 'Delete'),
 	'DIS_CASE_SWITCH':  ('Disable Case', 'Disable Case-Switching Keys'),
 	'ENA_CASE_SWITCH':  ('Enable Case', 'Enable Case-Switching Keys'),
@@ -327,13 +327,13 @@ print('<div id="petscii-overview">')
 
 for petscii in range(0, 256):
 	scrcode = scrcode_from_petscii[petscii]
-	description = description_from_control_code.get(petscii)
-	if description:
-		(description, _) = description
-	if not description:
-		description = ''
-	if is_petscii_printable(petscii):
-		description= None
+	description = None
+	if not is_petscii_printable(petscii):
+		description = description_from_control_code.get(petscii)
+		if description:
+			(description, _) = description
+		if not description:
+			description = ''
 
 	hex_color = None
 	if not is_petscii_printable(petscii):
