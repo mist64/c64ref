@@ -82,6 +82,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None):
 			hex_color += 'E0'
 		color_html = ' style="background-color: {}; border-color:{};"'.format(hex_color, hex_color)
 		description_html = '<span class="char-txt"{}>{}<br /></span>'.format(color_html, description)
+		#description_html = '<span class="char-txt"{}><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></span>'.format(color_html, description)
 
 	return '<div class="char-box {}"><span class="char-img char-{}"></span>{}</div>'.format(inverted, hex(scrcode7), description_html)
 
@@ -110,17 +111,17 @@ description_from_control_code_symbol = {
 	'COL_CYAN':         ('Cyn', 'Set text color to Cyan'),
 	'COL_DARK_BLUE':    ('DkBlu', 'Set text color to Dark Blue'),
 	'COL_DARK_CYAN':    ('DkCyn', 'Set text color to Dark Cyan'),
+	'COL_DARK_GRAY':    ('DkGry', 'Set text color to Dark Gray'),
 	'COL_DARK_PURPLE':  ('DkPur', 'Set text color to Dark Purple'),
 	'COL_DARK_YELLOW':  ('DkYel', 'Set text color to Dark Yellow'),
 	'COL_GREEN':        ('Grn', 'Set text color to Green'),
-	'COL_DARK_GRAY':    ('DkGry', 'Set text color to Dark Gray'),
-	'COL_MEDIUM_GRAY':  ('MdGry', 'Set text color to Medium Gray'),
-	'COL_LIGHT_GRAY':   ('LtGry', 'Set text color to Light Gray'),
 	'COL_LIGHT_BLUE':   ('LBlu', 'Set text color to Light Blue'),
 	'COL_LIGHT_CYAN':   ('LtCyn', 'Set text color to Light Cyan'),
+	'COL_LIGHT_GRAY':   ('LtGry', 'Set text color to Light Gray'),
 	'COL_LIGHT_GREEN':  ('LGrn', 'Set text color to Light Green'),
 	'COL_LIGHT_GRN':    ('LtGrn', 'Set text color to Light Green'),
 	'COL_LIGHT_RED':    ('LRed', 'Set text color to Light Red'),
+	'COL_MEDIUM_GRAY':  ('MdGry', 'Set text color to Medium Gray'),
 	'COL_ORANGE':       ('Orng', 'Set text color to Orange'),
 	'COL_PINK':         ('Pink', 'Set text color to Pink'),
 	'COL_PURPLE':       ('Pur', 'Set text color to Purple'),
@@ -135,7 +136,10 @@ description_from_control_code_symbol = {
 	'CRSR_UP':          ('Crsr ↑', 'Cursor Up'),
 	'DEL':              ('DEL', 'Delete'),
 	'DIS_CASE_SWITCH':  ('Disable Case', 'Disable Case-Switching Keys'),
+	'DIS_MODE_SWITCH':  ('Disable Mode', 'Disable Mode Switch'),
 	'ENA_CASE_SWITCH':  ('Enable Case', 'Enable Case-Switching Keys'),
+	'ENA_MODE_SWITCH':  ('Enable Mode', 'Enable Mode Switch'),
+	'ESC':              ('ESC', 'Escape'),
 	'FLASH_OFF':        ('Flash Off', 'Flash Off'),
 	'FLASH_ON':         ('Flash On', 'Flash On'),
 	'INST':             ('INST', 'Insert'),
@@ -147,20 +151,17 @@ description_from_control_code_symbol = {
 	'KEY_F6':           ('f6', 'f6 key'),
 	'KEY_F7':           ('f7', 'f7 key'),
 	'KEY_F8':           ('f8', 'f8 key'),
+	'LINE_FEED':        ('LF', 'Line Feed'),
 	'LOWER_CASE':       ('Lower Case', 'Switch to lower case'),
 	'RETURN':           ('RETURN', 'Return'),
+	'RUN':              ('RUN', 'RUN'),
 	'RVS_OFF':          ('RVS Off', 'Reverse Off'),
 	'RVS_ON':           ('RVS On', 'Reverse On'),
 	'SHIFT_RETURN':     ('SHIFT RETURN', 'Disabled Return'),
+	'TAB_SET_CLR':      ('Tab set/clr', 'Tab set/clear'),
+	'UNDERLINE_OFF':    ('Underline Off', 'Underline Off'),
+	'UNDERLINE_ON':     ('Underline On', 'Underline On'),
 	'UPPER_CASE':       ('Upper Case', 'Switch to upper case'),
-
-	'UNDERLINE_ON': ('Underline On', 'Underline On'),
-	'UNDERLINE_OFF': ('Underline Off', 'Underline Off'),
-	'LINE_FEED': ('LF', 'Line Feed'),
-	'ENA_MODE_SWITCH': ('Enable Mode', 'Enable Mode Switch'),
-	'DIS_MODE_SWITCH': ('Disable Mode', 'Disable Mode Switch'),
-	'TAB_SET_CLR': ('Tab set/clr', 'Tab set/clear'),
-	'ESC': ('ESC', 'Escape'),
 }
 description_from_control_code = {}
 symbol_from_control_code = {}
