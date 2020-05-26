@@ -295,17 +295,14 @@ print('<body>')
 print('<div class="body">')
 print('<h1>C64 Charset</h1>')
 
-print('<div id="current-image">')
-print('	<img src="43627586.png" />')
-print('</div>')
+#print('<div id="current-image">')
+#print('	<img src="43627586.png" />')
+#print('</div>')
 
 print('<div id="screencode-overview">')
 
 for scrcode in range(0, 256):
-	inverted = ''
-	if scrcode >= 0x80:
-		inverted = 'inverted'
-	print('<div id="{}" type="button" class="char-box {}" onclick="test(\'{}\')"><span class="char-img char-{}"></span></div>'.format(hex(scrcode), inverted, hex(scrcode), hex(scrcode & 0x7f)))
+	print(pixel_char_html_from_scrcode(scrcode))
 	if scrcode & 15 == 15:
 		print('<br />')
 
