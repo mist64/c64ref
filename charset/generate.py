@@ -158,9 +158,9 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, 
 	link_html2 = ''
 	if link:
 		link_html1 = 'type="button" onclick="test(\'{}\')"'.format(link)
-		link_html2 = link
+		link_html2 = 'id="{}"'.format(link)
 
-	return '<div class="char-box {}" id="{}" {}><span class="char-img char-{}"></span>{}</div>'.format(inverted, link_html2, link_html1, hex(scrcode7), description_html)
+	return '<div class="char-box {}" {} {}><span class="char-img char-{}"></span>{}</div>'.format(inverted, link_html2, link_html1, hex(scrcode7), description_html)
 
 ####################################################################
 
