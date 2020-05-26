@@ -65,13 +65,13 @@ def modifiers_and_scancodes_html_from_petscii(petscii, machine = 'C64'):
 
 	return (modifiers_and_scancodes_html, other_petscii)
 
-def combined_keyboard_html_from_petscii(petscii):
+def combined_keyboard_html_from_petscii(petscii, other_ok = False):
 	# collect keyboard combinations for all machines
 	htmls = {}
 	html_set = []
 	for machine in machines:
 		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, machine)
-		if other_petscii == None and len(modifiers_and_scancodes_html) > 0:
+		if (other_petscii == None or other_ok) and len(modifiers_and_scancodes_html) > 0:
 			htmls[machine] = modifiers_and_scancodes_html
 			html_set.extend(modifiers_and_scancodes_html)
 
@@ -81,6 +81,9 @@ def combined_keyboard_html_from_petscii(petscii):
 		machine_list = []
 		for machine in machines:
 			if machine in htmls and html in htmls[machine]:
+				if machine == 'C64':
+					# all C64 combos are valid for C128 as well
+					machine = 'C64/C128'
 				machine_list.append(machine)
 		machines_string = '/'.join(machine_list)
 		if machines_string in combined_htmls:
@@ -99,9 +102,9 @@ def combined_keyboard_html_from_petscii(petscii):
 			combined_keyboard_html += '{}<br/>'.format(h)
 
 
-	return combined_keyboard_html
+	return (combined_keyboard_html, other_petscii)
 
-def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, link_prefix = 'scrcode'):
+def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, link = 'scrcode_0x0'):
 	scrcode7 = scrcode & 0x7f
 	if scrcode >= 0x80:
 		inverted = 'inverted'
@@ -120,7 +123,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, 
 		description_html = '<span class="char-txt"{}>{}<br /></span>'.format(color_html, description)
 		#description_html = '<span class="char-txt"{}><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></span>'.format(color_html, description)
 
-	return '<div class="char-box {}" id="{}_{}" type="button" onclick="test(\'{}_{}\')"><span class="char-img char-{}"></span>{}</div>'.format(inverted, link_prefix, hex(scrcode), link_prefix, hex(scrcode), hex(scrcode7), description_html)
+	return '<div class="char-box {}" id="{}" type="button" onclick="test(\'{}\')"><span class="char-img char-{}"></span>{}</div>'.format(inverted, link, link, hex(scrcode7), description_html)
 
 ####################################################################
 
@@ -343,7 +346,7 @@ print('<div">')
 print('<div id="screencode_overview">')
 
 for scrcode in range(0, 256):
-	print(pixel_char_html_from_scrcode(scrcode, link_prefix = 'scrcode'))
+	print(pixel_char_html_from_scrcode(scrcode, link = 'scrcode_' + hex(scrcode)))
 	if scrcode & 15 == 15:
 		print('<br />')
 
@@ -381,7 +384,7 @@ for petscii in range(0, 256):
 		symbol = symbol_from_control_code[machine][petscii]
 		if symbol in color_index_from_color_name['C64']:
 			hex_color = hex_color_from_color_index['C64'][color_index_from_color_name['C64'][symbol]]
-	print(pixel_char_html_from_scrcode(scrcode, description, hex_color, 'petscii'))
+	print(pixel_char_html_from_scrcode(scrcode, description, hex_color, 'petscii_' + hex(petscii)))
 	if petscii & 15 == 15:
 		print('<br />')
 
@@ -415,7 +418,7 @@ for scrcode in range(0, 256):
 			print('<td>${:02X}</td><td>{}</tt></td>'.format(petscii, petscii))
 
 			print('<td>')
-			combined_keyboard_html = combined_keyboard_html_from_petscii(petscii)
+			(combined_keyboard_html, _) = combined_keyboard_html_from_petscii(petscii, False)
 			if combined_keyboard_html:
 				print(combined_keyboard_html)
 			else:
@@ -453,23 +456,19 @@ for petscii in range(0, 256):
 		if description:
 			(_, description) = description
 		if not description:
-			description = ''
-		print('<li>Description: {}</li>'.format(description))
+			description = '&lt;undefined&gt;'
+		print('<li>Control code: {}</li>'.format(description))
 
 	print('<li>PETSCII hex: ${:02X}</li>'.format(petscii))
 	print('<li>PETSCII dec: {}</li>'.format(petscii))
 	print('<li>Screencode: ${:02X}</li>'.format(scrcode))
 
-	(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii)
-
-	if len(modifiers_and_scancodes_html) > 0:
-		alt_text = ''
-		if other_petscii:
-			alt_text = ' (alt code ${:02X})'.format(other_petscii)
-		print('<li>Keyboard{}:<ul>'.format(alt_text))
-		for html in modifiers_and_scancodes_html:
-			print('<li>{}</li>'.format(html))
-		print('</ul></li>')
+	(combined_keyboard_html, other_petscii) = combined_keyboard_html_from_petscii(petscii, True)
+	alt_text = ''
+	if other_petscii:
+		alt_text = ' (alt code ${:02X})'.format(other_petscii)
+	print('<li>Keyboard{}:<br/>'.format(alt_text))
+	print(combined_keyboard_html)
 
 	print('</tr>')
 	print('</table>')
