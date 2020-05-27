@@ -86,12 +86,12 @@ function unicodeSwitch(index) {
 	}
 }
 
-function charsetSwitch(index) {
+function charsetSwitch(filename) {
 	//console.log(document.styleSheets)
 	items = document.getElementsByClassName('char-img')
 	//console.log(items.style)
 	for (i = 0; i < items.length; i++) {
 		var currentItem = items[i];
-		currentItem.style.backgroundImage = 'url(371145055.png)'
+		currentItem.style.backgroundImage = 'url(' + filename + ')'
 	}
 }

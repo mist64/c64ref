@@ -128,7 +128,7 @@ nav label:active {
 
 .char-img {
     position: relative;
-    background-image: url(43627586.png);
+    background-image: url(png/c64_us_upper.png);
     background-repeat: no-repeat;
     background-color: #f00;
     transform: scale(4, 4);
