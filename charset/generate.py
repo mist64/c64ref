@@ -424,7 +424,15 @@ print('</div>')
 
 print('<table class="checkbox_table">')
 for i in range(0, len(machines)):
-	print('<tr><td><input type="checkbox" id="checkbox_' + str(i) + '" checked onclick="toggleMachine(\'' + machines[i] + '\', document.getElementById(\'checkbox_' + str(i) + '\').checked);" /></td><td style="white-space: nowrap;"><b>' + machines[i] + '</b></tr>')
+	currentMachine = machines[i];
+	deselection = list(machines);
+	deselection.remove(currentMachine);
+	
+	print('<tr>')
+	print(' <td><input type="radio" name="radios"  id="radio_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'radio_' + currentMachine + '\').checked, [\'{}\']);" /></td>'.format("','".join(deselection)))
+	print(' <td><input type="checkbox" id="checkbox_' + currentMachine + '" checked onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'checkbox_' + currentMachine + '\').checked);" /></td>')
+	print(' <td style="white-space: nowrap;"><b>' + machines[i] + '</b>')
+	print('</tr>')
 print('</table>')
 
 print('<div style="display: none">')
