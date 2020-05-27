@@ -290,7 +290,7 @@ nav label:active {
 	background-color: hsl(var(--info-hue), 100%, 80%);
 }
 
-.additional-info table th, .item7 table td {
+.additional-info table th, .additional-info table td {
 	border: solid 1px gray;
 	padding: 4px;
 }

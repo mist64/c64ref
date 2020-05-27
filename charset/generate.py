@@ -436,8 +436,8 @@ for scrcode in range(0, 256):
 	petscii = petscii_from_scrcode[scrcode & 0x7f][0]
 
 	print('<div id="info_scrcode_{}">'.format(hex(scrcode)))
+	print(' <div class="grid-container">')
 
-	print('<div class="grid-container">')
 	print('  <div class="scrcode-image">')
 	print(pixel_char_html_from_scrcode(scrcode))
 	print('  </div>')
@@ -452,20 +452,18 @@ for scrcode in range(0, 256):
 	print('  <div class="unicode-title info-title">Unicode</div>')
 
 	print('  <div class="unicode-description">')
-	print('    U+{:04X}<br/>'.format(unicode))
-	print('    {}'.format(description_from_unicode[unicode]))
+	print('   U+{:04X}<br/>'.format(unicode))
+	print('   {}'.format(description_from_unicode[unicode]))
 	if is_reverse:
-		print('    <br/>+ reverse')
+		print('   <br/>+ reverse')
 	print('  </div>')
-
 
 	print('  <div class="additional-info">')
 	
-	print('<table>')
-	print('<tr><th colspan="2">PETSCII <th rowspan="2">Keyboard</th><th rowspan="2">Mode</th></tr>')
-	print('<tr><th>hex</th><th>dec</th></tr>')
+	print('   <table>')
+	print('    <tr><th colspan="2">PETSCII <th rowspan="2">Keyboard</th><th rowspan="2">Mode</th></tr>')
+	print('    <tr><th>hex</th><th>dec</th></tr>')
 
-	
 	run = 0
 	if is_reverse:
 		scrcode_list = [scrcode7, scrcode]
@@ -473,16 +471,16 @@ for scrcode in range(0, 256):
 		scrcode_list = [scrcode]
 	for eff_scrcode in scrcode_list:
 		for petscii in petscii_from_scrcode[eff_scrcode]:
-			print('<tr>')
-			print('<td><a href="#petscii_table_{:02x}">${:02X}</a></td><td>{}</td>'.format(petscii, petscii, petscii))
+			print('    <tr>')
+			print('     <td><a href="#petscii_table_{:02x}">${:02X}</a></td><td>{}</td>'.format(petscii, petscii, petscii))
 
-			print('<td>')
+			print('     <td>')
 
 			(all_keyboard_html, _) = all_keyboard_html_from_petscii(petscii, False)
 			print(all_keyboard_html)
 
-			print('</td>')
-			print('<td>')
+			print('     </td>')
+			print('     <td>')
 			if run == 0:
 				if is_reverse:
 					print('reverse')
@@ -490,14 +488,14 @@ for scrcode in range(0, 256):
 					print('plain')
 			else:
 				print('quote mode')
-			print('</td>')
+			print('     </td>')
 
-			print('</tr>')
+			print('    </tr>')
 		run += 1
-	print('</table>')
+
+	print('   </table>')
 	print('  </div>')
-	
-	print('</div>')
+	print(' </div>')
 	print('</div>')
 
 
