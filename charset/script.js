@@ -65,6 +65,23 @@ function toggleMachine(machine, checked, deselectionArray=[]) {
 	}
 }
 
+function showHide(items1, items2) {
+	var i;
+	for (i = 0; i < items1.length; i++) {
+		var currentItem = items1[i];
+		currentItem.style.display = null;
+	}
+	var i;
+	for (i = 0; i < items2.length; i++) {
+		var currentItem = items2[i];
+		currentItem.style.display = "none";
+	}
+}
 
+function unicodeLower() {
+	showHide(document.getElementsByClassName("unicode_lower"), document.getElementsByClassName("unicode_upper"));
+}
 
-
+function unicodeUpper() {
+	showHide(document.getElementsByClassName("unicode_upper"), document.getElementsByClassName("unicode_lower"));
+}

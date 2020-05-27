@@ -594,14 +594,19 @@ for petscii in range(0, 256):
 
 print('</div>');
 
+print('<table border="1"><tr>')
+print('<td><a href="javascript:void(0)" onclick="unicodeUpper();">Upper/Graphics</a></td>')
+print('<td><a href="javascript:void(0)" onclick="unicodeLower();">Lower/Upper</a></td>')
+print('</tr></table>')
+
 # PETSCII Table
 print('<table border="1">')
 print('<tr>')
 print('<th>PETSCII</th>')
 print('<th>Screen Code</th>')
 print('<th>Char</th>')
-print('<th colspan="3">Unicode Upper</th>')
-print('<th colspan="3">Unicode Lower</th>')
+print('<th colspan="3" class="unicode_upper">Unicode Upper</th>')
+print('<th colspan="3" class="unicode_lower" style="display: none;">Unicode Lower</th>')
 i = 0
 for machine in machines:
 	print('<th class="{}" style="background: var(--title-color-{})">{}<br/>Keyboard</th>'.format(machine, i+1, machine))
@@ -624,16 +629,16 @@ for petscii in range(0, 256):
 
 	if is_petscii_printable(petscii):
 		unicode = unicode_from_petscii[0][petscii]
-		print('<td><span class="unicode-box">&#x{:x};</span></td>'.format(unicode))
-		print('<td>U+{:04X}</td>'.format(unicode))
-		print('<td>{}</td>'.format(description_from_unicode[unicode]))
+		print('<td class="unicode_upper"><span class="unicode-box">&#x{:x};</span></td>'.format(unicode))
+		print('<td class="unicode_upper">U+{:04X}</td>'.format(unicode))
+		print('<td class="unicode_upper">{}</td>'.format(description_from_unicode[unicode]))
 
 		unicode = unicode_from_petscii[1][petscii]
-		print('<td><span class="unicode-box">&#x{:x};</span></td>'.format(unicode))
-		print('<td>U+{:04X}</td>'.format(unicode))
-		print('<td>{}</td>'.format(description_from_unicode[unicode]))
+		print('<td class="unicode_lower" style="display: none;"><span class="unicode-box">&#x{:x};</span></td>'.format(unicode))
+		print('<td class="unicode_lower" style="display: none;">U+{:04X}</td>'.format(unicode))
+		print('<td class="unicode_lower" style="display: none;">{}</td>'.format(description_from_unicode[unicode]))
 	else:
-		print('<td colspan="6"></td>')
+		print('<td colspan="3"></td>')
 
 	# keyboard
 	i = 0
