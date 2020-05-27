@@ -75,7 +75,7 @@ def all_keyboard_html_from_petscii(petscii, other_ok = False):
 				for html in modifiers_and_scancodes_html:
 					all_keyboard_html += '{}<br/>'.format(html)
 			else:
-				all_keyboard_html += '-'
+				all_keyboard_html += ' -'
 		all_keyboard_html += '</div>'
 	return (all_keyboard_html, other_petscii)
 
@@ -598,12 +598,18 @@ print('</div>');
 print('<table border="1">')
 print('<tr>')
 print('<th>PETSCII</th>')
-for machine in machines:
-	print('<th class="{}">{} Keyboard</th>'.format(machine, machine))
-print('<th>Screencode</th>')
-print('<th>Character</th>')
+print('<th>Screen Code</th>')
+print('<th>Char</th>')
 print('<th colspan="3">Unicode Upper</th>')
 print('<th colspan="3">Unicode Lower</th>')
+i = 0
+for machine in machines:
+	print('<th class="{}" style="background: var(--title-color-{})">{}<br/>Keyboard</th>'.format(machine, i+1, machine))
+	i += 1
+i = 0
+for machine in machines:
+	print('<th class="{}" style="background: var(--title-color-{})">{}<br/>Control Code</th>'.format(machine, i+1, machine))
+	i += 1
 print('</tr>')
 for petscii in range(0, 256):
 	print('<tr>')
@@ -611,16 +617,6 @@ for petscii in range(0, 256):
 	print('<td><a id="petscii_table_{:02x}">${:02X}</a></td>'.format(petscii, petscii))
     
 	scrcode = scrcode_from_petscii[petscii]
-
-	# keyboard
-	for machine in machines:
-		print('<td class="{}">'.format(machine))
-		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, machine)
-		if len(modifiers_and_scancodes_html) > 0:
-			if not other_petscii:
-				for html in modifiers_and_scancodes_html:
-					print('{}<br/>'.format(html))
-		print('</td>')
 
 	print('<td>${:02X}</td>'.format(scrcode))
 
@@ -636,8 +632,28 @@ for petscii in range(0, 256):
 		print('<td><span class="unicode-box">&#x{:x};</span></td>'.format(unicode))
 		print('<td>U+{:04X}</td>'.format(unicode))
 		print('<td>{}</td>'.format(description_from_unicode[unicode]))
+	else:
+		print('<td colspan="6"></td>')
+
+	# keyboard
+	i = 0
+	for machine in machines:
+		print('<td class="{}" style="background: var(--light-color-{})">'.format(machine, i+1))
+		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, machine)
+		if len(modifiers_and_scancodes_html) > 0:
+			if not other_petscii:
+				for html in modifiers_and_scancodes_html:
+					print('{}<br/>'.format(html))
+		print('</td>')
+		i += 1
+
+
+	if is_petscii_printable(petscii):
+		for machine in machines:
+			print('<td></td>')
 
 	else:
+		i = 0
 		for machine in machines:
 			description = description_from_control_code[machine].get(petscii)
 			if description:
@@ -649,7 +665,8 @@ for petscii in range(0, 256):
 			if symbol in color_index_from_color_name[machine]:
 				hex_color = hex_color_from_color_index[machine][color_index_from_color_name[machine][symbol]]
 				description = '<span style="background-color:{}; border: solid gray 1px; width: 1em; height: 1em; display: inline-block;"> </span> '.format(hex_color) + description
-			print('<td class="{}">{}</td>'.format(machine, description))
+			print('<td class="{}" style="background: var(--light-color-{})">{}</td>'.format(machine, i+1, description))
+			i += 1
 
 
 
