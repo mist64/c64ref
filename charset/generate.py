@@ -164,8 +164,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, 
 
 ####################################################################
 
-machines = ['VIC-20', 'C64', 'C128', 'C65', 'TED']
-machines.append('PET')
+machines = ['PET', 'VIC-20', 'C64', 'C128', 'C65', 'TED']
 #machines.append('CBM2')
 
 #
@@ -215,10 +214,10 @@ description_from_control_code_symbol = {
 	'CRSR_RIGHT':       ('Crsr →', 'Cursor Right'),
 	'CRSR_UP':          ('Crsr ↑', 'Cursor Up'),
 	'DEL':              ('DEL', 'Delete'),
-	'DIS_CASE_SWITCH':  ('Disable Case', 'Disable Case-Switching Keys'),
-	'DIS_MODE_SWITCH':  ('Disable Mode', 'Disable Mode Switch'),
-	'ENA_CASE_SWITCH':  ('Enable Case', 'Enable Case-Switching Keys'),
-	'ENA_MODE_SWITCH':  ('Enable Mode', 'Enable Mode Switch'),
+	'DIS_CASE_SWITCH':  ('Lock Case', 'Disable Case-Switching Keys'),
+	'DIS_MODE_SWITCH':  ('Lock Mode', 'Disable Mode Switch'),
+	'ENA_CASE_SWITCH':  ('Unlock Case', 'Enable Case-Switching Keys'),
+	'ENA_MODE_SWITCH':  ('Unlock Mode', 'Enable Mode Switch'),
 	'ESC':              ('ESC', 'Escape'),
 	'FLASH_OFF':        ('Flash Off', 'Flash Off'),
 	'FLASH_ON':         ('Flash On', 'Flash On'),
@@ -514,7 +513,7 @@ for scrcode in range(0, 256):
 				else:
 					print('plain')
 			else:
-				print('control code in quote mode')
+				print('quote mode')
 			print('</td>')
 
 			print('</tr>')
@@ -615,7 +614,7 @@ print('</div>');
 
 # PETSCII Table
 print('<table border="1">')
-print('<tr><th>PETSCII</th><th>C16 Keyboard</th><th>C64 Keyboard</th><th>C128 Keyboard</th><th>C65 Keyboard</th><th>C16, Plus/4 Keyboard</th><th>Screencode</th><th>Character</th><th colspan="3">Unicode Upper</th><th colspan="3">Unicode Lower</th></tr>')
+print('<tr><th>PETSCII</th><th>PET Keyboard<th>VIC-20 Keyboard</th><th>C64 Keyboard</th><th>C128 Keyboard</th><th>C65 Keyboard</th><th>C16, Plus/4 Keyboard</th><th>Screencode</th><th>Character</th><th colspan="3">Unicode Upper</th><th colspan="3">Unicode Lower</th></tr>')
 for petscii in range(0, 256):
 	print('<tr>')
 
