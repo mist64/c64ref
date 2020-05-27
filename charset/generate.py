@@ -357,6 +357,7 @@ for machine in machines:
 			values = [int(v, 16) for v in values]
 			petscii_from_scancode[machine][key].extend(values)
 
+
 ####################################################################
 
 
