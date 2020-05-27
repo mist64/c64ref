@@ -157,10 +157,10 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, 
 	link_html1 = ''
 	link_html2 = ''
 	if link:
-		link_html1 = 'type="button" onclick="test(\'{}\')"'.format(link)
-		link_html2 = 'id="{}"'.format(link)
+		link_html1 = ' onclick="test(\'{}\')"'.format(link)
+		link_html2 = ' id="{}"'.format(link)
 
-	return '<div class="char-box {}" {} {}><span class="char-img char-{}"></span>{}</div>'.format(inverted, link_html2, link_html1, hex(scrcode7), description_html)
+	return '<div class="char-box {}"{}{}><span class="char-img char-{}"></span>{}</div>'.format(inverted, link_html2, link_html1, hex(scrcode7), description_html)
 
 ####################################################################
 
@@ -358,16 +358,18 @@ for machine in machines:
 
 ####################################################################
 
-print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
-print('<html>')
+
+print('<!DOCTYPE html>')
+print('<html lang="en-US">')
 print('<head>')
+print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
 print('<title>Character Set | Ultimate C64 Reference</title>')
 print('')
-print('<script language="javascript" src="script.js"></script>')
+print('<script src="script.js"></script>')
 print('')
 print('<link rel="stylesheet" href="../style.css">')
 print('<link rel="stylesheet" href="style.css">')
-print('<style type="text/css">')
+print('<style>')
 print('')
 
 for c in range(0, 128):
@@ -615,8 +617,8 @@ print('<tr><th>PETSCII</th><th>C16 Keyboard</th><th>C64 Keyboard</th><th>C128 Ke
 for petscii in range(0, 256):
 	print('<tr>')
 
-	print('<td><a name="petscii_table_{:02x}">${:02X}</td>'.format(petscii, petscii))
-
+	print('<td><a id="petscii_table_{:02x}">${:02X}</a></td>'.format(petscii, petscii))
+    
 	scrcode = scrcode_from_petscii[petscii]
 
 	# keyboard
