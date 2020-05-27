@@ -94,7 +94,6 @@ def combined_description_from_control_code(petscii):
 	machines_without_function = list(machines) # copy
 	for machine in machines_with_function:
 		machines_without_function.remove(machine)
-#	print('xxx', machines_without_function)
 	if len(machines_without_function) > 0:
 		description_to_machines['no function'] = machines_without_function
 
@@ -268,24 +267,24 @@ for machine in machines:
 # read PETSCII -> Unicode
 #
 description_from_unicode = {}
-unicode_from_petscii = []
-unicode_from_petscii.append({})
+unicode_from_petscii = {}
+unicode_from_petscii['upper'] = {}
 for line in open('C64IPRI.TXT'):
 	line = line.rstrip()
 	if len(line) == 0 or line.startswith('#'):
 		continue
 	petscii = int(line[2:4], 16)
 	unicode = int(line[7:12], 16)
-	unicode_from_petscii[0][petscii] = unicode
+	unicode_from_petscii['upper'][petscii] = unicode
 	description_from_unicode[unicode] = line[14:]
-unicode_from_petscii.append({})
+unicode_from_petscii['lower'] = {}
 for line in open('C64IALT.TXT'):
 	line = line.rstrip()
 	if len(line) == 0 or line.startswith('#'):
 		continue
 	petscii = int(line[2:4], 16)
 	unicode = int(line[7:12], 16)
-	unicode_from_petscii[1][petscii] = unicode
+	unicode_from_petscii['lower'][petscii] = unicode
 	description_from_unicode[unicode] = line[14:]
 
 #
@@ -457,16 +456,22 @@ for scrcode in range(0, 256):
 	print('{}'.format(scrcode))
 	print('  </div>')
 
-	unicode = unicode_from_petscii[0][petscii]
-	print('  <div class="unicode-image"><span class="unicode-box">&#x{:x};</span></div>'.format(unicode))
-	print('  <div class="unicode-title info-title">Unicode</div>')
+	for unicode_map in ['upper', 'lower']:
+		display = ''
+		if unicode_map != 'upper':
+			display = ' style="display: none;"'
+		print('<div class="unicode_{}" {}>'.format(unicode_map, display))
+		unicode = unicode_from_petscii[unicode_map][petscii]
+		print('  <div class="unicode-image"><span class="unicode-box">&#x{:x};</span></div>'.format(unicode))
+		print('  <div class="unicode-title info-title">Unicode</div>')
 
-	print('  <div class="unicode-description">')
-	print('   U+{:04X}<br/>'.format(unicode))
-	print('   {}'.format(description_from_unicode[unicode]))
-	if is_reverse:
-		print('   <br/>+ reverse')
-	print('  </div>')
+		print('  <div class="unicode-description">')
+		print('   U+{:04X}<br/>'.format(unicode))
+		print('   {}'.format(description_from_unicode[unicode]))
+		if is_reverse:
+			print('   <br/>+ reverse')
+		print('  </div>')
+		print('</div>')
 
 	print('  <div class="additional-info">')
 	
@@ -536,14 +541,20 @@ for petscii in range(0, 256):
 	print('  </div>')
 
 	if is_petscii_printable(petscii):
-		unicode = unicode_from_petscii[0][petscii]
-		print('  <div class="unicode-image"><span class="unicode-box">&#x{:x};</span></div>'.format(unicode))
-		print('  <div class="unicode-title info-title">Unicode</div>')
+		for unicode_map in ['upper', 'lower']:
+			display = ''
+			if unicode_map != 'upper':
+				display = ' style="display: none;"'
+			print('<div class="unicode_{}" {}>'.format(unicode_map, display))
+			unicode = unicode_from_petscii[unicode_map][petscii]
+			print('  <div class="unicode-image"><span class="unicode-box">&#x{:x};</span></div>'.format(unicode))
+			print('  <div class="unicode-title info-title">Unicode</div>')
 
-		print('  <div class="unicode-description">')
-		print('   U+{:04X}<br/>'.format(unicode))
-		print('   {}'.format(description_from_unicode[unicode]))
-		print('  </div>')
+			print('  <div class="unicode-description">')
+			print('   U+{:04X}<br/>'.format(unicode))
+			print('   {}'.format(description_from_unicode[unicode]))
+			print('  </div>')
+			print('</div>')
 
 	else:
 		description = combined_description_from_control_code(petscii)
@@ -729,12 +740,12 @@ for petscii in range(0, 256):
 	print('<td>{}</td>'.format(pixel_char_html_from_scrcode(scrcode)))
 
 	if is_petscii_printable(petscii):
-		unicode = unicode_from_petscii[0][petscii]
+		unicode = unicode_from_petscii['upper'][petscii]
 		print('<td class="unicode_upper"><span class="unicode-box">&#x{:x};</span></td>'.format(unicode))
 		print('<td class="unicode_upper">U+{:04X}</td>'.format(unicode))
 		print('<td class="unicode_upper">{}</td>'.format(description_from_unicode[unicode]))
 
-		unicode = unicode_from_petscii[1][petscii]
+		unicode = unicode_from_petscii['lower'][petscii]
 		print('<td class="unicode_lower" style="display: none;"><span class="unicode-box">&#x{:x};</span></td>'.format(unicode))
 		print('<td class="unicode_lower" style="display: none;">U+{:04X}</td>'.format(unicode))
 		print('<td class="unicode_lower" style="display: none;">{}</td>'.format(description_from_unicode[unicode]))
