@@ -78,10 +78,20 @@ function showHide(items1, items2) {
 	}
 }
 
-function unicodeLower() {
-	showHide(document.getElementsByClassName("unicode_lower"), document.getElementsByClassName("unicode_upper"));
+function unicodeSwitch(index) {
+	if (index == 0) {
+		showHide(document.getElementsByClassName("unicode_upper"), document.getElementsByClassName("unicode_lower"));
+	} else if (index == 1) {
+		showHide(document.getElementsByClassName("unicode_lower"), document.getElementsByClassName("unicode_upper"));
+	}
 }
 
-function unicodeUpper() {
-	showHide(document.getElementsByClassName("unicode_upper"), document.getElementsByClassName("unicode_lower"));
+function charsetSwitch(index) {
+	//console.log(document.styleSheets)
+	items = document.getElementsByClassName('char-img')
+	//console.log(items.style)
+	for (i = 0; i < items.length; i++) {
+		var currentItem = items[i];
+		currentItem.style.backgroundImage = 'url(371145055.png)'
+	}
 }

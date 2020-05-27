@@ -594,10 +594,31 @@ for petscii in range(0, 256):
 
 print('</div>');
 
-print('<table border="1"><tr>')
-print('<td><a href="javascript:void(0)" onclick="unicodeUpper();">Upper/Graphics</a></td>')
-print('<td><a href="javascript:void(0)" onclick="unicodeLower();">Lower/Upper</a></td>')
-print('</tr></table>')
+charsets = [
+	('pet_us_upper.png', "PET", "", "upper", ""),
+	('pet_us_lower.png', "PET", "", "lower", ""),
+	('vic-20_us_upper.png', "VIC-20", "", "upper", ""),
+	('vic-20_us_lower.png', "VIC-20", "", "lower", ""),
+	('c64_us_upper.png', "C64/C16/C128", "", "upper", ""),
+	('c64_us_lower.png', "C64", "", "lower", ""),
+]
+
+print('<label for="charset">Character Set</label>')
+print('<select name="charset" id="charset" onChange="charsetSwitch(this.options[this.selectedIndex].value);">')
+for (filename, machine, locale, type, version) in charsets:
+	if filename == 'c64_us_upper.png':
+		selected = 'selected'
+	else:
+		selected = ''
+	print('  <option value="{}" {}>{} {} {} {}</option>'.format(filename, selected, machine, locale, type, version))
+print('</select>')
+print('<br/>')
+print('<label for="unicode">Unicode Map</label>')
+print('<select name="unicode" id="unicode" onChange="unicodeSwitch(this.selectedIndex);">')
+print('  <option value="us_upper">US Upper Case</option>')
+print('  <option value="us_lower">US Lower Case</option>')
+print('</select>')
+
 
 # PETSCII Table
 print('<table border="1">')
