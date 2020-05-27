@@ -16,3 +16,20 @@ function test(element) {
 	var infoBox = document.getElementById("info_box");
 	infoBox.innerHTML = currentInfo.innerHTML;
 }
+
+function toggleMachine(machine, checked) {
+	var items = document.getElementsByClassName(machine);
+	var i;
+	for (i = 0; i < items.length; i++) {
+		var currentItem = items[i];
+		if (checked) {
+			currentItem.style.display = null;
+		} else {
+			currentItem.style.display = "none";
+		}
+	}
+}
+
+
+
+

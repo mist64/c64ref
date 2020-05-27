@@ -356,9 +356,7 @@ for machine in machines:
 			values = [int(v, 16) for v in values]
 			petscii_from_scancode[machine][key].extend(values)
 
-
 ####################################################################
-
 
 print('<!DOCTYPE html>')
 print('<html lang="en-US">')
@@ -392,6 +390,10 @@ print('<h1>C64 Charset</h1>')
 #print('	<img src="43627586.png" />')
 #print('</div>')
 
+print('<table class="checkbox_table">')
+for i in range(0, len(machines)):
+	print('<tr><td><input type="checkbox" id="checkbox_' + str(i) + '" checked onclick="toggleMachine(\'' + machines[i] + '\', document.getElementById(\'checkbox_' + str(i) + '\').checked);" /></td><td style="white-space: nowrap;"><b>' + machines[i] + '</b></tr>')
+print('</table>')
 
 print('<div class="tabbed">')
 print('')
@@ -624,7 +626,7 @@ for petscii in range(0, 256):
 
 	# keyboard
 	for machine in machines:
-		print('<td>')
+		print('<td class="{}">'.format(machine))
 		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, machine)
 		if len(modifiers_and_scancodes_html) > 0:
 			if not other_petscii:
