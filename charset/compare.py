@@ -45,7 +45,7 @@ frendly_name_for_crc = {
 	2267404205: ("PET", "German", "upper", ""),
 	619984985:  ("PET", "German", "lower", ""), # "from VICE"; sane layout
 	3068260560: ("PET", "German", "lower", "alt"), # less sane layout
-	3794189463: ("PET", "German", "lower", "alt"), # 8296D
+	3794189463: ("PET", "German", "lower", "alt2"), # 8296D
 
 	453258916:  ("C128", "German", "upper", ""), # extra characters in last graphics row
 	18896184:   ("C128", "German", "lower", ""), # extra characters graphics
