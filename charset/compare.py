@@ -220,10 +220,7 @@ for filename_in in sys.argv[1:]:
 
 		#write_png(charset, filename_base + '_{}.png'.format(index))
 		#write_png(charset, str(binascii.crc32(charset)) + '.png'.format(index))
-
-		crc = binascii.crc32(charset)
-		filename = friendly_filename_for_crc(crc)
-		#write_png(charset, filename)
+		#write_png(charset, friendly_filename_for_crc(binascii.crc32(charset)))
 
 
 		start_offset += 1024

@@ -595,19 +595,25 @@ for petscii in range(0, 256):
 print('</div>');
 
 charsets = [
+	('c64_us_upper.png', 'C64/C16/C128', '', 'upper', ''),
+	('c64_us_lower.png', 'C64', '', 'lower', ''),
+	('---', 'PET Style', '', '', ''),
 	('pet_us_upper.png', 'PET', '', 'upper', ''),
 	('pet_us_lower.png', 'PET', '', 'lower', ''),
 	('pet_us_lower_swapped.png', 'PET', '', 'lower', 'swapped'),
 	('vic-20_us_upper.png', 'VIC-20', '', 'upper', ''),
 	('vic-20_us_lower.png', 'VIC-20', '', 'lower', ''),
+	('---', 'C64 Style', '', '', ''),
 	('c64_us_upper.png', 'C64/C16/C128', '', 'upper', ''),
 	('c64_us_upper_alt.png', 'C64', '', 'upper', 'alt'),
 	('c64_us_lower.png', 'C64', '', 'lower', ''),
 	('c64_us_lower_alt.png', 'C64', '', 'lower', 'alt'),
 	('c16_us_lower.png', 'C16', '', 'lower', ''),
 	('c128_us_lower.png', 'C128', '', 'lower', ''),
+	('---', 'LCD Style', '', '', ''),
 	('lcd_us_upper.png', 'LCD', '', 'upper', ''),
 	('lcd_us_lower.png', 'LCD', '', 'lower', ''),
+	('---', 'PET Style Localized', '', '', ''),
 	('vic-20_danish_upper.png', 'VIC-20', 'Danish', 'upper', ''),
 	('vic-20_danish_lower.png', 'VIC-20', 'Danish', 'lower', ''),
 	('c128_danish_upper.png', 'C128', 'Danish', 'upper', ''),
@@ -653,6 +659,7 @@ charsets = [
 	('c128_swiss_upper_alt.png', 'C128', 'Swiss', 'upper', 'alt'),
 	('c128_swiss_lower.png', 'C128', 'Swiss', 'lower', ''),
 	('c128_swiss_lower_alt.png', 'C128', 'Swiss', 'lower', 'alt'),
+	('---', 'C64 Style Localized', '', '', ''),
 	('c64_danish_upper.png', 'C64', 'Danish', 'upper', ''),
 	('c64_danish_upper_alt.png', 'C64', 'Danish', 'upper', 'alt'),
 	('c64_danish_lower.png', 'C64', 'Danish', 'lower', ''),
@@ -669,9 +676,11 @@ charsets = [
 	('c64_swedish_lower_alt.png', 'C64', 'Swedish', 'lower', 'alt'),
 	('c64_swedish_lower_2.png', 'C64', 'Swedish', 'lower', '2'),
 	('c64_swedish_lower_2alt.png', 'C64', 'Swedish', 'lower', '2alt'),
+	('---', 'PET Other', '', '', ''),
 	('superpet_us_ascii.png', 'SuperPET', '', 'ASCII', ''),
 	('superpet_swedish_ascii.png', 'SuperPET', 'Swedish', 'ASCII', ''),
 	('superpet_us_apl.png', 'SuperPET', '', 'APL', ''),
+	('---', 'Other', '', '', ''),
 	('c64_japanese_upper.png', 'C64', 'Japanese', 'upper', ''),
 	('c64_japanese_upper-kanji.png', 'C64', 'Japanese', 'upper-Kanji', ''),
 	('c64_turkish_upper.png', 'C64', 'Turkish', 'upper', ''),
@@ -684,12 +693,21 @@ charsets = [
 
 print('<label for="charset">Character Set</label>')
 print('<select name="charset" id="charset" onChange="charsetSwitch(this.options[this.selectedIndex].value);">')
+seen_selected = False
 for (filename, machine, locale, type, version) in charsets:
-	if filename == 'c64_us_upper.png':
-		selected = 'selected'
+	if filename == '---':
+		print('  <option disabled>------------------------------</option>')
+		print('  <option disabled>{}</option>'.format(machine))
+		print('  <option disabled>------------------------------</option>')
 	else:
-		selected = ''
-	print('  <option value="png/{}" {}>{} {} {} {}</option>'.format(filename, selected, machine, locale, type, version))
+		if locale == '':
+			locale = 'US'
+		if filename == 'c64_us_upper.png' and not seen_selected:
+			seen_selected = True
+			selected = 'selected'
+		else:
+			selected = ''
+		print('  <option value="png/{}" {}>{} {} {} ({})</option>'.format(filename, selected, locale, type, version, machine))
 print('</select>')
 print('<br/>')
 print('<label for="unicode">Unicode Map</label>')
@@ -754,8 +772,7 @@ for petscii in range(0, 256):
 
 
 	if is_petscii_printable(petscii):
-		for machine in machines:
-			print('<td></td>')
+		print('<td colspan="{}"></td>'.format(len(machines)))
 
 	else:
 		i = 0
