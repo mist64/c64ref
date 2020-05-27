@@ -438,6 +438,8 @@ print('</table>')
 print('<div style="display: none">')
 
 # Screencode Boxes
+print('<div id="screencode_boxes">')
+
 for scrcode in range(0, 256):
 	scrcode7 = scrcode & 0x7f
 	is_reverse = scrcode >= 0x80
@@ -506,93 +508,74 @@ for scrcode in range(0, 256):
 	print(' </div>')
 	print('</div>')
 
-
-
-
+print('</div>')
 
 
 # PETSCII Boxes
+print('<div id="petscii_boxes">')
+
 for petscii in range(0, 256):
 	scrcode = scrcode_from_petscii[petscii]
 
 	print('<div id="info_petscii_{}">'.format(hex(petscii)))
+	print(' <div class="grid-container petscii_boxes">')
 
-	print('<table border="1">')
+	print('  <div class="petscii-title info-title">PETSCII</div>')
+	print('  <div class="petscii-description">')
+	print('   <a href="#petscii_table_{:02x}">${:02X}</a><br/>'.format(petscii, petscii))
+	print('   {}'.format(petscii))
+	print('  </div>')
 
-	print('<tr>')
-	print('<td width="50%">')
+	print('  <div class="scrcode-image">')
 	print(pixel_char_html_from_scrcode(scrcode))
-	print('</td>')
+	print('  </div>')
+	print('  <div class="scrcode-title info-title">Screencode</div>')
+	print('  <div class="scrcode-description">')
+	print('   ${:02X}'.format(scrcode))
+	print('   {}'.format(scrcode))
+	print('  </div>')
+
 	if is_petscii_printable(petscii):
-		print('<td width="50%">')
 		unicode = unicode_from_petscii[0][petscii]
-		print('<span class="unicode-box">&#x{:x};</span>'.format(unicode))
-		print('</td>')
+		print('  <div class="unicode-image"><span class="unicode-box">&#x{:x};</span></div>'.format(unicode))
+		print('  <div class="unicode-title info-title">Unicode</div>')
+
+		print('  <div class="unicode-description">')
+		print('   U+{:04X}<br/>'.format(unicode))
+		print('   {}'.format(description_from_unicode[unicode]))
+		print('  </div>')
+
 	else:
-		print('<td width="50%" rowspan="5">')
-
 		description = combined_description_from_control_code(petscii)
-		print('Control code:<br/>{}'.format(description))
 
-		print('</td>')
-	print('</tr>')
+		print('  <div class="control-title info-title">Control code</div>')
 
-	print('<tr>')
-	print('<td>')
-	print('PETSCII')
-	print('</td>')
-	if is_petscii_printable(petscii):
-		print('<td>')
-		print('Unicode')
-		print('</td>')
-	print('</tr>')
-
-	print('<tr>')
-	print('<td>')
-	print('<a href="#petscii_table_{:02x}">${:02X}</a><br/>'.format(petscii, petscii))
-	print('{}'.format(petscii))
-	print('</td>')
-	if is_petscii_printable(petscii):
-		print('<td rowspan="3">')
-		print('U+{:04X}<br/>'.format(unicode))
-		print('{}'.format(description_from_unicode[unicode]))
-		print('</td>')
-	print('</tr>')
-
-
-	print('<tr>')
-	print('<td>')
-	print('Screencode')
-	print('</td>')
-	print('</tr>')
-
-	print('<tr>')
-	print('<td>')
-	print('${:02X}'.format(scrcode))
-	print('</td>')
-	print('</tr>')
+		print('  <div class="control-description">')
+		print('   {}'.format(description))
+		print('  </div>')
+		
+	print('  <div class="additional-info">')
 
 	(all_keyboard_html, other_petscii) = all_keyboard_html_from_petscii(petscii, is_petscii_printable(petscii))
 
-	print('<tr>')
-	print('<td colspan="2">')
-	print('Keyboard')
+	print('   <div><span class="info-title">')
+	print('    Keyboard</span>')
 	if other_petscii:
-		print(' (alt code ${:02X})<br/>'.format(other_petscii))
-	print('</td>')
-	print('</tr>')
+		print('    (alt code ${:02X})<br/>'.format(other_petscii))
+	print('    </div>')
 
-	print('<tr>')
-	print('<td colspan="2">')
+	print('    <div>')
 	print(all_keyboard_html)
-	print('</td>')
-	print('</tr>')
-	print('</table>')
+	print('   </div>')
 
+	print('  </div>')
 
+	print(' </div>')
 	print('</div>');
 
 print('</div>');
+print('</div>');
+
 
 charsets = [
 	('c64_us_upper.png', 'C64/C16/C128', '', 'upper', ''),

@@ -191,7 +191,7 @@ nav label:active {
 
 .grid-container {
 	display: grid;
-	grid-template-columns: 6em 6em 10em 10em;
+	grid-template-columns: 12em 20em;
 	grid-gap: 0px;
 	background-color: hsl(var(--info-hue), 80%, 80%);
 }
@@ -207,9 +207,17 @@ nav label:active {
 	border-right: 1px solid gray;
 }
 
+.petscii-title,
+.petscii-description {
+	background-color: hsl(var(--info-hue), 100%, 75%);
+	border-right: 1px solid gray;
+}
+
 .unicode-image,
 .unicode-title,
-.unicode-description {
+.unicode-description,
+.control-title,
+.control-description {
 	background-color: hsl(var(--info-hue), 100%, 90%);
 }
 
@@ -217,7 +225,6 @@ nav label:active {
 	background-color: hsl(var(--info-hue), 100%, 80%);
 	border-top: 1px solid gray;
 
-	grid-area: additionalInfo;
 	grid-row: 4;
 	grid-column: 1 / span 4;
 }
@@ -229,45 +236,82 @@ nav label:active {
 }
 
 .scrcode-image {
-	grid-area: charImg;
 	grid-row: 1;
-	grid-column: 1 / span 2;
+	grid-column: 1;
 	text-align: center;
 	vertical-align: middle;
 }
 
 .scrcode-title {
-	grid-area: charTitle;
 	grid-row:2;
-	grid-column: 1 / span 2;
+	grid-column: 1;
 }
 
 .scrcode-description {
-	grid-area: charDesc;
 	grid-row: 3;
-	grid-column: 1 / span 2;
+	grid-column: 1;
 }
 
 
 .unicode-image {
-	grid-area: unicodeImg;
-	grid-area: charDesc;
 	grid-row: 1;
-	grid-column: 3 / span 2;
+	grid-column: 2;
 	text-align: center;
 	vertical-align: middle;
 }
 
 .unicode-title {
-	grid-area: unicodeTitle;
 	grid-row: 2;
-	grid-column: 3 / span 2;
+	grid-column: 2;
 }
 
 .unicode-description {
-	grid-area: unicodeDesc;
 	grid-row: 3;
-	grid-column: 3 / span 2;
+	grid-column: 2;
+}
+
+
+.petscii-title {
+	grid-row:2;
+	grid-column: 1;
+}
+
+.petscii-description {
+	grid-row: 3;
+	grid-column: 1;
+}
+
+.control-title {
+	grid-row:1;
+	grid-column: 2;
+	display: flex; 
+	justify-content: flex-start; 
+	align-items: flex-end;
+}
+
+.control-description {
+	grid-row: 2 / span 4;
+	grid-column: 2;
+}
+
+.petscii_boxes .scrcode-title {
+	grid-row:4;
+	grid-column: 1;
+}
+
+.petscii_boxes .scrcode-description {
+	grid-row: 5;
+	grid-column: 1;
+}
+
+.petscii_boxes .unicode-description {
+	grid-row: 3 / span 3;
+	grid-column: 2;
+}
+
+.petscii_boxes .additional-info {
+	grid-row: 6;
+	grid-column: 1 / span 2;
 }
 
 
