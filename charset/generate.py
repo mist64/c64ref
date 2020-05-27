@@ -438,20 +438,20 @@ for scrcode in range(0, 256):
 	print('<div id="info_scrcode_{}">'.format(hex(scrcode)))
 
 	print('<div class="grid-container">')
-	print('  <div class="item1">')
+	print('  <div class="scrcode-image">')
 	print(pixel_char_html_from_scrcode(scrcode))
 	print('  </div>')
-	print('  <div class="item2">Screencode</div>')
-	print('  <div class="item3">')
+	print('  <div class="scrcode-title info-title">Screencode</div>')
+	print('  <div class="scrcode-description">')
 	print('${:02X}<br/>'.format(scrcode))
 	print('{}'.format(scrcode))
 	print('  </div>')
 
 	unicode = unicode_from_petscii[0][petscii]
-	print('  <div class="item4"><span class="unicode-box">&#x{:x};</span></div>'.format(unicode))
-	print('  <div class="item5">Unicode</div>')
+	print('  <div class="unicode-image"><span class="unicode-box">&#x{:x};</span></div>'.format(unicode))
+	print('  <div class="unicode-title info-title">Unicode</div>')
 
-	print('  <div class="item6">')
+	print('  <div class="unicode-description">')
 	print('    U+{:04X}<br/>'.format(unicode))
 	print('    {}'.format(description_from_unicode[unicode]))
 	if is_reverse:
@@ -459,7 +459,7 @@ for scrcode in range(0, 256):
 	print('  </div>')
 
 
-	print('  <div class="item7">')
+	print('  <div class="additional-info">')
 	
 	print('<table>')
 	print('<tr><th colspan="2">PETSCII <th rowspan="2">Keyboard</th><th rowspan="2">Mode</th></tr>')
