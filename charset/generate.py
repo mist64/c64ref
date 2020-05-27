@@ -65,45 +65,19 @@ def modifiers_and_scancodes_html_from_petscii(petscii, machine = 'C64'):
 
 	return (modifiers_and_scancodes_html, other_petscii)
 
-def combined_keyboard_html_from_petscii(petscii, other_ok = False):
-	# collect keyboard combinations for all machines
-	htmls = {}
-	html_set = []
+def all_keyboard_html_from_petscii(petscii, other_ok = False):
+	all_keyboard_html = ''
 	for machine in machines:
+		all_keyboard_html += '<div class="{}"><b>{}</b>:'.format(machine, machine)
 		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, machine)
-		if (other_petscii == None or other_ok) and len(modifiers_and_scancodes_html) > 0:
-			htmls[machine] = modifiers_and_scancodes_html
-			html_set.extend(modifiers_and_scancodes_html)
-
-	html_set = list(set(html_set))
-	combined_htmls = {}
-	for html in html_set: # for each keyboard combination
-		machine_list = []
-		for machine in machines:
-			if machine in htmls and html in htmls[machine]:
-				machine_list.append(machine)
-		if len(machine_list) == len(machines):
-			machines_string = 'All'
-		else:
-			machines_string = '/'.join(machine_list)
-		if machines_string in combined_htmls:
-			combined_htmls[machines_string].append(html)
-		else:
-			combined_htmls[machines_string] = [html]
-
-	#print('xxx', combined_htmls)
-
-	combined_keyboard_html = ''
-	keys = list(combined_htmls.keys())
-	keys.sort()
-	for machines_string in keys:
-		combined_keyboard_html += '<b>' + machines_string + '</b><br/>'
-		for h in combined_htmls[machines_string]:
-			combined_keyboard_html += '{}<br/>'.format(h)
-
-
-	return (combined_keyboard_html, other_petscii)
-
+		if len(modifiers_and_scancodes_html) > 0:
+			if other_ok or not other_petscii:
+				for html in modifiers_and_scancodes_html:
+					all_keyboard_html += '{}<br/>'.format(html)
+			else:
+				all_keyboard_html += '-'
+		all_keyboard_html += '</div>'
+	return (all_keyboard_html, other_petscii)
 
 def combined_description_from_control_code(petscii):
 	description_to_machines = {}
@@ -390,11 +364,6 @@ print('<h1>C64 Charset</h1>')
 #print('	<img src="43627586.png" />')
 #print('</div>')
 
-print('<table class="checkbox_table">')
-for i in range(0, len(machines)):
-	print('<tr><td><input type="checkbox" id="checkbox_' + str(i) + '" checked onclick="toggleMachine(\'' + machines[i] + '\', document.getElementById(\'checkbox_' + str(i) + '\').checked);" /></td><td style="white-space: nowrap;"><b>' + machines[i] + '</b></tr>')
-print('</table>')
-
 print('<div class="tabbed">')
 print('')
 print('   <input checked="checked" id="tab_screencode" type="radio" name="tabs" />')
@@ -408,7 +377,7 @@ print('')
 print('   <figure>')
 print('      <div id="screencode_overview">')
 
-
+# Screencode Table
 for scrcode in range(0, 256):
 	print(pixel_char_html_from_scrcode(scrcode, link = 'scrcode_' + hex(scrcode)))
 	if scrcode & 15 == 15:
@@ -423,6 +392,7 @@ print('      <div id="petscii_overview">')
 
 machine = 'TED'
 
+# PETSCII Table
 for petscii in range(0, 256):
 	scrcode = scrcode_from_petscii[petscii]
 	description = None
@@ -451,6 +421,11 @@ print('</div>')
 print('<div id="info_box"></div>')
 
 print('</div>')
+
+print('<table class="checkbox_table">')
+for i in range(0, len(machines)):
+	print('<tr><td><input type="checkbox" id="checkbox_' + str(i) + '" checked onclick="toggleMachine(\'' + machines[i] + '\', document.getElementById(\'checkbox_' + str(i) + '\').checked);" /></td><td style="white-space: nowrap;"><b>' + machines[i] + '</b></tr>')
+print('</table>')
 
 print('<div style="display: none">')
 
@@ -502,11 +477,10 @@ for scrcode in range(0, 256):
 			print('<td><a href="#petscii_table_{:02x}">${:02X}</a></td><td>{}</td>'.format(petscii, petscii, petscii))
 
 			print('<td>')
-			(combined_keyboard_html, _) = combined_keyboard_html_from_petscii(petscii, False)
-			if combined_keyboard_html:
-				print(combined_keyboard_html)
-			else:
-				print('-')
+
+			(all_keyboard_html, _) = all_keyboard_html_from_petscii(petscii, False)
+			print(all_keyboard_html)
+
 			print('</td>')
 			print('<td>')
 			if run == 0:
@@ -592,7 +566,7 @@ for petscii in range(0, 256):
 	print('</td>')
 	print('</tr>')
 
-	(combined_keyboard_html, other_petscii) = combined_keyboard_html_from_petscii(petscii, is_petscii_printable(petscii))
+	(all_keyboard_html, other_petscii) = all_keyboard_html_from_petscii(petscii, is_petscii_printable(petscii))
 
 	print('<tr>')
 	print('<td colspan="2">')
@@ -604,7 +578,7 @@ for petscii in range(0, 256):
 
 	print('<tr>')
 	print('<td colspan="2">')
-	print(combined_keyboard_html)
+	print(all_keyboard_html)
 	print('</td>')
 	print('</tr>')
 	print('</table>')
@@ -616,7 +590,15 @@ print('</div>');
 
 # PETSCII Table
 print('<table border="1">')
-print('<tr><th>PETSCII</th><th>PET Keyboard<th>VIC-20 Keyboard</th><th>C64 Keyboard</th><th>C128 Keyboard</th><th>C65 Keyboard</th><th>C16, Plus/4 Keyboard</th><th>Screencode</th><th>Character</th><th colspan="3">Unicode Upper</th><th colspan="3">Unicode Lower</th></tr>')
+print('<tr>')
+print('<th>PETSCII</th>')
+for machine in machines:
+	print('<th class="{}">{} Keyboard</th>'.format(machine, machine))
+print('<th>Screencode</th>')
+print('<th>Character</th>')
+print('<th colspan="3">Unicode Upper</th>')
+print('<th colspan="3">Unicode Lower</th>')
+print('</tr>')
 for petscii in range(0, 256):
 	print('<tr>')
 
@@ -661,7 +643,7 @@ for petscii in range(0, 256):
 			if symbol in color_index_from_color_name[machine]:
 				hex_color = hex_color_from_color_index[machine][color_index_from_color_name[machine][symbol]]
 				description = '<span style="background-color:{}; border: solid gray 1px; width: 1em; height: 1em; display: inline-block;"> </span> '.format(hex_color) + description
-			print('<td>{}</td>'.format(description))
+			print('<td class="{}">{}</td>'.format(machine, description))
 
 
 
