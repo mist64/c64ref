@@ -126,6 +126,15 @@ nav label:active {
     background-color: #0f0;
 }
 
+.char-box16 {
+    border: 1px solid gray;
+    display: inline-block;
+    padding:0px;
+    height: 8px;
+    width: 128px;
+    background-color: #0f0;
+}
+
 .char-img {
     position: relative;
     background-image: url(png/c64_us_upper.png);
@@ -135,6 +144,22 @@ nav label:active {
     transform-origin: 0% 0%;
     height: 8px;
     width: 8px;
+    margin:0px;
+    padding:0px;
+    border: 0px;
+    display: block;
+    image-rendering: pixelated;
+    z-index: 20;
+}
+
+.char-img16 {
+    position: relative;
+    background-image: url(png/c64_us_upper.png);
+    background-repeat: no-repeat;
+    background-color: #f00;
+    transform-origin: 0% 0%;
+    height: 8px;
+    width: 128px;
     margin:0px;
     padding:0px;
     border: 0px;

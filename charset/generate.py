@@ -108,7 +108,7 @@ def combined_description_from_control_code(petscii):
 	return combined_description
 
 
-def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, link = None):
+def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, link = None, filename = None):
 	scrcode7 = scrcode & 0x7f
 	if scrcode >= 0x80:
 		inverted = 'inverted'
@@ -134,6 +134,11 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, 
 		link_html2 = ' id="{}"'.format(link)
 
 	return '<div class="char-box {}"{}{}><span class="char-img char-{}"></span>{}</div>'.format(inverted, link_html2, link_html1, hex(scrcode7), description_html)
+
+def displayname_for_charset_details(machine, locale, type, version):
+	if locale == '':
+		locale = 'US'
+	return '{} {} {} ({})'.format(locale, type, version, machine)
 
 ####################################################################
 
@@ -348,6 +353,11 @@ for c in range(0, 128):
 	x = (c & 15) * -8
 	y = (c >> 4) * -8
 	print('.char-{} {{ background-position:    {}px    {}px; }}'.format(hex(c), x, y))
+
+for c in range(0, 16):
+	x = 0
+	y = c * -8
+	print('.char16-{} {{ background-position:    {}px    {}px; }}'.format(hex(c), x, y))
 
 print('')
 print('</style>')
@@ -626,6 +636,8 @@ charsets = [
 	('pet_japanese_upper.png', 'PET/VIC-20', 'Japanese', 'upper', ''),
 	('pet_japanese_upper_bug.png', 'PET/VIC-20', 'Japanese', 'upper', 'bug'),
 	('vic-20_japanese_upper-kanji.png', 'VIC-20', 'Japanese', 'upper-Kanji', ''),
+	('c64_japanese_upper.png', 'C64', 'Japanese', 'upper', ''),
+	('c64_japanese_upper-kanji.png', 'C64', 'Japanese', 'upper-Kanji', ''),
 	('pet_norwegian_upper.png', 'PET', 'Norwegian', 'upper', ''),
 	('pet_norwegian_lower.png', 'PET', 'Norwegian', 'lower', ''),
 	('c128_norwegian_lower.png', 'C128', 'Norwegian', 'lower', ''),
@@ -679,8 +691,6 @@ charsets = [
 	('superpet_us_ascii.png', 'SuperPET', '', 'ASCII', ''),
 	('superpet_swedish_ascii.png', 'SuperPET', 'Swedish', 'ASCII', ''),
 	('superpet_us_apl.png', 'SuperPET', '', 'APL', ''),
-	('c64_japanese_upper.png', 'C64', 'Japanese', 'upper', ''),
-	('c64_japanese_upper-kanji.png', 'C64', 'Japanese', 'upper-Kanji', ''),
 	('c64_turkish_upper.png', 'C64', 'Turkish', 'upper', ''),
 	('c64_turkish_lower.png', 'C64', 'Turkish', 'lower', ''),
 	('c64_us_upper_buggy1.png', 'C64', '', 'upper', 'buggy1'),
@@ -696,14 +706,13 @@ for (filename, machine, locale, type, version) in charsets:
 	if filename == '---':
 		print('  <optgroup label="{}">'.format(machine))
 	else:
-		if locale == '':
-			locale = 'US'
 		if filename == 'c64_us_upper.png' and not seen_selected:
 			seen_selected = True
 			selected = 'selected'
 		else:
 			selected = ''
-		print('  <option value="png/{}" {}>{} {} {} ({})</option>'.format(filename, selected, locale, type, version, machine))
+		displayname = displayname_for_charset_details(machine, locale, type, version)
+		print('  <option value="png/{}" {}>{}</option>'.format(filename, selected, displayname))
 print('</select>')
 print('<br/>')
 print('<label for="unicode">Unicode Map</label>')
@@ -711,6 +720,28 @@ print('<select name="unicode" id="unicode" onChange="unicodeSwitch(this.selected
 print('  <option value="us_upper">US Upper Case</option>')
 print('  <option value="us_lower">US Lower Case</option>')
 print('</select>')
+
+
+
+# Charset Table
+print('<table border="1">')
+for (filename, machine, locale, type, version) in charsets:
+	print('<tr>')
+	if filename == '---':
+		print('<td colspan="2">')
+		print('<b>{}</b>'.format(machine))
+		print('</td>')
+	else:
+		print('<td>')
+		print(displayname_for_charset_details(machine, locale, type, version))
+		print('</td>')
+		print('<td>')
+		for line in range(0, 8):
+			print('<div class="char-box16"><span class="char-img16 char16-{}" style="background-image: url(png/{});"></span></div>'.format(hex(line), filename))
+		print('</td>')
+	print('</tr>')
+print('</table>')
+
 
 
 # PETSCII Table
