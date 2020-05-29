@@ -589,8 +589,13 @@ print('</div>');
 
 
 charsets = [
+	('---', 'Common', '', '', ''),
+	('vic-20_us_upper.png', 'VIC-20', '', 'upper', ''),
+	('vic-20_us_lower.png', 'VIC-20', '', 'lower', ''),
 	('c64_us_upper.png', 'C64/C16/C128', '', 'upper', ''),
 	('c64_us_lower.png', 'C64', '', 'lower', ''),
+	('c16_us_lower.png', 'C16', '', 'lower', ''),
+	('c128_us_lower.png', 'C128', '', 'lower', ''),
 	('---', 'PET Style', '', '', ''),
 	('pet_us_upper.png', 'PET', '', 'upper', ''),
 	('pet_us_lower.png', 'PET', '', 'lower', ''),
@@ -689,9 +694,7 @@ print('<select name="charset" id="charset" onChange="charsetSwitch(this.options[
 seen_selected = False
 for (filename, machine, locale, type, version) in charsets:
 	if filename == '---':
-		print('  <option disabled>------------------------------</option>')
-		print('  <option disabled>{}</option>'.format(machine))
-		print('  <option disabled>------------------------------</option>')
+		print('  <optgroup label="{}">'.format(machine))
 	else:
 		if locale == '':
 			locale = 'US'
