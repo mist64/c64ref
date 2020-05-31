@@ -517,7 +517,7 @@ print('<!DOCTYPE html>')
 print('<html lang="en-US">')
 print('<head>')
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
-print('<title>Character Set | Ultimate C64 Reference</title>')
+print('<title>Character Set / PETSCII / Keyboard | Ultimate C64 Reference</title>')
 print('')
 print('<script src="script.js"></script>')
 print('')
@@ -884,7 +884,7 @@ charsets = [
 	('c64_us_lower_buggy1.png', 'C64', '', 'lower', 'buggy1'),
 ]
 
-print('<label for="charset">Character Set</label>')
+print('<label for="charset">Character Set</label></br>')
 print('<select name="charset" id="charset" onChange="charsetSwitch(this.options[this.selectedIndex].value);">')
 seen_selected = False
 for (filename, machine, locale, type, version) in charsets:
@@ -900,7 +900,7 @@ for (filename, machine, locale, type, version) in charsets:
 		print('  <option value="png/{}" {}>{}</option>'.format(filename, selected, displayname))
 print('</select>')
 print('<br/>')
-print('<label for="unicode">Unicode Map</label>')
+print('<label for="unicode">Unicode Map</label></br>')
 print('<select name="unicode" id="unicode" onChange="unicodeSwitch(this.selectedIndex);">')
 print('  <option value="us_upper">US Upper Case</option>')
 print('  <option value="us_lower">US Lower Case</option>')
