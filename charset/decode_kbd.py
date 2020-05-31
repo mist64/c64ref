@@ -6,6 +6,9 @@ ROUND = 5
 
 machine = 'TED'
 
+print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
+
+
 def flood_fill(x, y):
 	#print(':',x,y)
 	c = layout_lines[y][x]
@@ -20,6 +23,8 @@ def flood_fill(x, y):
 	flood_fill(x, y + 1)
 	flood_fill(x, y - 1)
 
+description_from_scancode = {}
+description_from_scancode[machine] = []
 layout_lines = []
 for line in open('keyboard_{}.txt'.format(machine.lower())):
 	line = line.split('#')[0].rstrip()
@@ -29,7 +34,15 @@ for line in open('keyboard_{}.txt'.format(machine.lower())):
 	line = line[8:]
 	if key == 'layout':
 		layout_lines.append(line)
+	elif key == 'cap':
+		values = line.split(' ')
+		while '' in values:
+			values.remove('')
+		values = [d.replace('HASH', '#') for d in values]
+		description_from_scancode[machine].extend(values)
+
 print('<pre>')
+print(description_from_scancode)
 for line in layout_lines:
 	print(line)
 print('</pre>')
@@ -115,8 +128,14 @@ for scancode in cells_from_scancode.keys():
 		width *= SCALE
 		height *= SCALE
 
+		description = description_from_scancode[machine][scancode]
+
 		svg += '<rect x="{}" y="{}" rx="{}" ry="{}" width="{}" height="{}" style="stroke:black;fill:none;"/>\n'.format(minx, miny, ROUND, ROUND, width, height)
-		svg += '<text x="{}" y="{}" font-family="Helvetica" font-size="8" fill="black">{:02X}</text>'.format(minx, miny, scancode)
+		svg += '<text text-anchor="middle" font-family="Helvetica" font-size="12" fill="black">'
+		svg += '<tspan x="{}" y="{}">{}</tspan>'.format(minx + width/2, miny + height/2, description)
+		svg += '</text>'
+
+#		svg += '<text x="{}" y="{}" font-family="Helvetica" font-size="8" fill="black">{:02X}</text>'.format(minx, miny, scancode)
 svg += '      </svg>'
 print(svg)
 
