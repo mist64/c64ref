@@ -14,6 +14,9 @@
 #tab_petscii:checked ~ figure #petscii_overview {
 	display: block;
 }
+#tab_keyboard:checked ~ figure #keyboard_overview {
+	display: block;
+}
 
 
 
