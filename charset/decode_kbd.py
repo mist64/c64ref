@@ -28,6 +28,7 @@ cap_replacements = {
 machines = ['PET', 'VIC-20', 'C64', 'C128', 'C65', 'TED', 'CBM2']
 
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
+print('<script src="script.js"></script>')
 
 def flood_fill(x, y):
 	#print(':',x,y)
@@ -127,6 +128,7 @@ for machine in machines:
 	for scancode in cells_from_scancode.keys():
 		cells = cells_from_scancode[scancode]
 
+
 		for cell in cells:
 			#print(cell)
 
@@ -178,10 +180,13 @@ for machine in machines:
 				font_size = FONT_SIZE1
 				font_vadjust = FONT_VADJUST1
 
-			svg += '<rect x="{}" y="{}" rx="{}" ry="{}" width="{}" height="{}" style="stroke:black;fill:none;"/>\n'.format(minx, miny, ROUND, ROUND, width, height)
-			svg += '<text text-anchor="middle" font-family="Helvetica" font-size="{}" fill="black">'.format(font_size)
+			svg += '<a xlink:href="javascript:void(0)" onclick="highlight(\'{}\',{});">'.format(machine, scancode)
+			svg += '<rect class="keyrect keyrect_{}_{}" x="{}" y="{}" rx="{}" ry="{}" width="{}" height="{}" style="stroke:black;fill:white;"/>\n'.format(machine, scancode, minx, miny, ROUND, ROUND, width, height)
+			svg += '<text class="keytext keytext_{}_{}" text-anchor="middle" font-family="Helvetica" font-size="{}" fill="black">'.format(machine, scancode, font_size)
 			svg += '<tspan x="{}" y="{}">{}</tspan>'.format(minx + width/2, miny + height/2 + font_vadjust, description)
 			svg += '</text>'
+			svg += '</a>'
+
 	svg += '      </svg>'
 	print(svg)
 

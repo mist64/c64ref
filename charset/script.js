@@ -95,3 +95,26 @@ function charsetSwitch(filename) {
 		currentItem.style.backgroundImage = 'url(' + filename + ')'
 	}
 }
+
+function highlight(machine, scancode) {
+	items = document.getElementsByClassName('keyrect')
+	for (i = 0; i < items.length; i++) {
+		var currentItem = items[i];
+		currentItem.style.fill = 'white';
+	}
+	items = document.getElementsByClassName('keyrect_' + machine + '_' + scancode)
+	for (i = 0; i < items.length; i++) {
+		var currentItem = items[i];
+		currentItem.style.fill = 'gray';
+	}
+	items = document.getElementsByClassName('keytext')
+	for (i = 0; i < items.length; i++) {
+		var currentItem = items[i];
+		currentItem.style.fill = 'black';
+	}
+	items = document.getElementsByClassName('keytext_' + machine + '_' + scancode)
+	for (i = 0; i < items.length; i++) {
+		var currentItem = items[i];
+		currentItem.style.fill = 'white';
+	}
+}
