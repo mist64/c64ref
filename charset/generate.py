@@ -43,154 +43,134 @@ def flood_fill(x, y):
 	flood_fill(x, y + 1)
 	flood_fill(x, y - 1)
 
-def keyboard():
+def keyboard_layout_html(machine, ll):
 	global layout_lines
 	global cells
 
+	layout_lines = ll
+
 	html = ''
-	html += '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />'
-	html += '<script src="script.js"></script>'
 
-	description_from_scancode = {}
-	for machine in machines:
-		description_from_scancode[machine] = []
-		layout_lines = []
-		for line in open('keyboard_{}.txt'.format(machine.lower())):
-			line = line.split('#')[0].rstrip()
-			if len(line) == 0:
-				continue
-			key = line[:8].rstrip()
-			line = line[8:]
-			if key == 'layout':
-				layout_lines.append(line)
-			elif key == 'cap':
-				values = line.split(' ')
-				while '' in values:
-					values.remove('')
-				values = [d.replace('HASH', '#') for d in values]
-				description_from_scancode[machine].extend(values)
+	cells_from_scancode = {}
 
-		cells_from_scancode = {}
-
-		for y in range(0, len(layout_lines)):
-			for x in range(0, len(layout_lines[y])):
-				c = layout_lines[y][x]
-				if c != '+' and c != '|' and c != '-' and c != 'X':
-					# we found a key!
-					scancode = ''
-					for x2 in range(x, len(layout_lines[y])):
-						c = layout_lines[y][x2]
-						if c == '+' or c == '|' or c == '-':
-							break
-						scancode += c
-					scancode = scancode.lstrip().rstrip()
-					if scancode == '':
-						continue # empty area
-					if scancode[0] == '/':
-						scancode = int(scancode[1:], 16) | 128
-					elif scancode == '...':
-						scancode = -1 # key does no produce a scancode
-					elif scancode == 'NMI':
-						scancode = -2 # NMI key
-					else:
-						scancode = int(scancode, 16)
-					# mark all cells as seen
-					cells = []
-					flood_fill(x, y)
-					if scancode in cells_from_scancode:
-						cells_from_scancode[scancode].append(cells)
-					else:
-						cells_from_scancode[scancode] = [cells]
-
-		html += '<div class="{}">'.format(machine)
-		html += '<h2>{}</h2>'.format(machine)
-
-		total_width = 0
-
-		for line in layout_lines:
-			if len(line) > total_width:
-				total_width = len(line)
-
-		total_width *= SCALE
-		total_height = len(layout_lines) * VSCALE * SCALE
-
-		svg = '<svg id="svgelem" width="{}" height="{}" xmlns="http://www.w3.org/2000/svg">'.format(total_width, total_height)
-		svg += '<!-- This SVG was generated from a textual description. Check out c64ref on GitHub for more information. -->'
-		for scancode in cells_from_scancode.keys():
-			cells = cells_from_scancode[scancode]
-
-
-			for cell in cells:
-				minx = None
-				miny = None
-				maxx = None
-				maxy = None
-				for (x, y) in cell:
-					if (not minx) or x < minx:
-						minx = x
-					if (not miny) or y < miny:
-						miny = y
-					if (not maxx) or x > maxx:
-						maxx = x
-					if (not maxy) or y > maxy:
-						maxy = y
-				width = maxx - minx + 2
-				height = maxy - miny + 2
-
-				miny *= VSCALE
-				height *= VSCALE
-
-				minx *= SCALE
-				miny *= SCALE
-				width *= SCALE
-				height *= SCALE
-
-				minx += HINSET
-				miny += VINSET
-				width -= HINSET*2
-				height -= VINSET*2
-
-				if scancode == -2:
-					description = 'RESTORE'
-				elif scancode >= 0 and scancode < len(description_from_scancode[machine]):
-					description = description_from_scancode[machine][scancode]
+	for y in range(0, len(layout_lines)):
+		for x in range(0, len(layout_lines[y])):
+			c = layout_lines[y][x]
+			if c != '+' and c != '|' and c != '-' and c != 'X':
+				# we found a key!
+				scancode = ''
+				for x2 in range(x, len(layout_lines[y])):
+					c = layout_lines[y][x2]
+					if c == '+' or c == '|' or c == '-':
+						break
+					scancode += c
+				scancode = scancode.lstrip().rstrip()
+				if scancode == '':
+					continue # empty area
+				if scancode[0] == '/':
+					scancode = int(scancode[1:], 16) | 128 # XXX handle
+				elif scancode == '...':
+					scancode = -1 # key does no produce a scancode
+				elif scancode == 'NMI':
+					scancode = -2 # NMI key
 				else:
-					description = ''
-				if description in cap_replacements:
-					description = cap_replacements[description]
-				if description.startswith('[') and description.endswith(']'):
-					description = description[1:-1]
-				#description = description.replace('_', '\r')
-
-				if len(description) > FONT_LEN_CUTOFF and not description in BIG_WHITELIST:
-					font_size = FONT_SIZE2
-					font_vadjust = FONT_VADJUST2
+					scancode = int(scancode, 16)
+				# mark all cells as seen
+				cells = []
+				flood_fill(x, y)
+				if scancode in cells_from_scancode:
+					cells_from_scancode[scancode].append(cells)
 				else:
-					font_size = FONT_SIZE1
-					font_vadjust = FONT_VADJUST1
+					cells_from_scancode[scancode] = [cells]
 
-				if height > width:
-					style = 'style="writing-mode: tb; glyph-orientation-vertical: 0; letter-spacing: -1;"'
-					font_vadjust = 0
-				else:
-					style = ''
+	html += '<div class="{}">'.format(machine)
+	html += '<h2>{}</h2>'.format(machine)
 
-				if len(petscii_from_scancode[machine]['regular']) > scancode:
-					petscii = petscii_from_scancode[machine]['regular'][scancode]
-				else:
-					# happens in auto-shifted ("or 128") case
-					petscii = 0
+	total_width = 0
 
-				svg += '<a xlink:href="javascript:void(0)" onclick="highlight_key(\'{}\',{}, \'petscii_{}\');">'.format(machine, scancode, hex(petscii))
-				svg += '<rect class="keyrect keyrect_{}_{}" x="{}" y="{}" rx="{}" ry="{}" width="{}" height="{}" style="stroke:black;fill:white;"/>\n'.format(machine, scancode, minx, miny, ROUND, ROUND, width, height)
-				svg += '<text class="keytext keytext_{}_{}" text-anchor="middle" font-family="Helvetica" font-size="{}" {} fill="black">'.format(machine, scancode, font_size, style)
-				svg += '<tspan x="{}" y="{}">{}</tspan>'.format(minx + width/2, miny + height/2 + font_vadjust, description)
-				svg += '</text>'
-				svg += '</a>'
+	for line in layout_lines:
+		if len(line) > total_width:
+			total_width = len(line)
 
-		svg += '      </svg>'
-		html += svg
-		html += '</div>'
+	total_width *= SCALE
+	total_height = len(layout_lines) * VSCALE * SCALE
+
+	svg = '<svg id="svgelem" width="{}" height="{}" xmlns="http://www.w3.org/2000/svg">'.format(total_width, total_height)
+	svg += '<!-- This SVG was generated from a textual description. Check out c64ref on GitHub for more information. -->'
+	for scancode in cells_from_scancode.keys():
+		cells = cells_from_scancode[scancode]
+
+		for cell in cells:
+			minx = None
+			miny = None
+			maxx = None
+			maxy = None
+			for (x, y) in cell:
+				if (not minx) or x < minx:
+					minx = x
+				if (not miny) or y < miny:
+					miny = y
+				if (not maxx) or x > maxx:
+					maxx = x
+				if (not maxy) or y > maxy:
+					maxy = y
+			width = maxx - minx + 2
+			height = maxy - miny + 2
+
+			miny *= VSCALE
+			height *= VSCALE
+
+			minx *= SCALE
+			miny *= SCALE
+			width *= SCALE
+			height *= SCALE
+
+			minx += HINSET
+			miny += VINSET
+			width -= HINSET*2
+			height -= VINSET*2
+
+			if scancode == -2:
+				description = 'RESTORE'
+			elif scancode >= 0 and scancode < len(description_from_scancode[machine]):
+				description = description_from_scancode[machine][scancode]
+			else:
+				description = ''
+			if description in cap_replacements:
+				description = cap_replacements[description]
+			if description.startswith('[') and description.endswith(']'):
+				description = description[1:-1]
+			#description = description.replace('_', '\r')
+
+			if len(description) > FONT_LEN_CUTOFF and not description in BIG_WHITELIST:
+				font_size = FONT_SIZE2
+				font_vadjust = FONT_VADJUST2
+			else:
+				font_size = FONT_SIZE1
+				font_vadjust = FONT_VADJUST1
+
+			if height > width:
+				style = 'style="writing-mode: tb; glyph-orientation-vertical: 0; letter-spacing: -1;"'
+				font_vadjust = 0
+			else:
+				style = ''
+
+			if len(petscii_from_scancode[machine]['regular']) > scancode:
+				petscii = petscii_from_scancode[machine]['regular'][scancode]
+			else:
+				# XXX happens in auto-shifted ("or 128") case
+				petscii = 0
+
+			svg += '<a xlink:href="javascript:void(0)" onclick="highlight_key(\'{}\',{}, \'petscii_{}\');">'.format(machine, scancode, hex(petscii))
+			svg += '<rect class="keyrect keyrect_{}_{}" x="{}" y="{}" rx="{}" ry="{}" width="{}" height="{}" style="stroke:black;fill:white;"/>\n'.format(machine, scancode, minx, miny, ROUND, ROUND, width, height)
+			svg += '<text class="keytext keytext_{}_{}" text-anchor="middle" font-family="Helvetica" font-size="{}" {} fill="black">'.format(machine, scancode, font_size, style)
+			svg += '<tspan x="{}" y="{}">{}</tspan>'.format(minx + width/2, miny + height/2 + font_vadjust, description)
+			svg += '</text>'
+			svg += '</a>'
+
+	svg += '      </svg>'
+	html += svg
+	html += '</div>'
 	return html
 
 ####################################################################
@@ -500,6 +480,7 @@ description_from_modifier = {
 petscii_from_scancode = {}
 description_from_scancode = {}
 excluded_scancodes = {}
+keyboard_layout = {}
 for machine in machines:
 	description_from_scancode[machine] = []
 	excluded_scancodes[machine] = []
@@ -508,6 +489,7 @@ for machine in machines:
 	petscii_from_scancode[machine]['shift'] = []
 	petscii_from_scancode[machine]['cbm'] = []
 	petscii_from_scancode[machine]['ctrl'] = []
+	keyboard_layout[machine] = []
 	for line in open('keyboard_{}.txt'.format(machine.lower())):
 		line = line.split('#')[0].rstrip()
 		if len(line) == 0:
@@ -518,7 +500,7 @@ for machine in machines:
 		while '' in values:
 			values.remove('')
 		if key == 'layout':
-			pass # ignore
+			keyboard_layout[machine].append(line)
 		elif key == 'cap':
 			values = [d.replace('HASH', '#') for d in values]
 			description_from_scancode[machine].extend(values)
@@ -621,7 +603,8 @@ for petscii in range(0, 256):
 print('      </div>')
 
 print('      <div id="keyboard_overview">')
-print(keyboard())
+for machine in machines:
+	print(keyboard_layout_html(machine, keyboard_layout[machine]))
 print('      </div>')
 
 
