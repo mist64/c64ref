@@ -19,10 +19,10 @@ cap     C=       S       F       H       K       :       =       f3
 cap     Q        E       T       U       O       @       ↑       f5
 cap     2        4       6       8       0       -       HOME    f7
 
-exclude 10 # CTRL
-exclude 19 # L SHIFT
-exclude 26 # R SHIFT
-exclude 28 # C=
+mod     10 # CTRL
+mod     19 # L SHIFT
+mod     26 # R SHIFT
+mod     28 # C=
 
 regular 31 33 35 37 39 2B 5C 14
 regular 5F 57 52 59 49 50 2A 0D

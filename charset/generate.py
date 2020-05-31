@@ -328,7 +328,7 @@ for machine in machines:
 		elif key == 'cap':
 			values = [d.replace('HASH', '#') for d in values]
 			description_from_scancode[machine].extend(values)
-		elif key == 'exclude':
+		elif key == 'mod':
 			values = [int(v, 16) for v in values]
 			excluded_scancodes[machine].extend(values)
 		else:

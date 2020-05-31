@@ -24,11 +24,11 @@ cap     £        *       ;       HOME    R.SHIFT =       ↑       /
 cap     1        ←       CTRL    2       SPACE   C=      Q       STOP
 cap     NO_SCROLL TAB    ALT     HELP    f9      f11     f13     ESC
 
-exclude 0F # L SHIFT
-exclude 34 # R SHIFT
-exclude 3A # CTRL
-exclude 3D # C=
-exclude 42 # ALT
+mod     0F # L SHIFT
+mod     34 # R SHIFT
+mod     3A # CTRL
+mod     3D # C=
+mod     42 # ALT
 
 regular 14 0D 1D 88 85 86 87 11
 regular 33 57 41 34 5A 53 45 01

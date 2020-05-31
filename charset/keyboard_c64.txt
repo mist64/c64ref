@@ -19,10 +19,10 @@ cap     +        P       L       -       .       :       @       ,
 cap     £        *       ;       HOME    R.SHIFT =       ↑       /
 cap     1        ←       CTRL    2       SPACE   C=      Q       STOP
 
-exclude 0F # L SHIFT
-exclude 34 # R SHIFT
-exclude 3A # CTRL
-exclude 3D # C=
+mod     0F # L SHIFT
+mod     34 # R SHIFT
+mod     3A # CTRL
+mod     3D # C=
 
 regular 14 0D 1D 88 85 86 87 11
 regular 33 57 41 34 5A 53 45 01
