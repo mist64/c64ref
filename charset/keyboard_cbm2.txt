@@ -14,22 +14,22 @@ layout   +----+--+--++---+---+---+---+---+---+---+---+--++-----+---+ +-+---+---+
 layout        | 05  |                35                 |            |  65 |6D |75 |   |
 layout        +-----+-----------------------------------+            +-----+---+---+---+
            
-scan    f1       ESC     TAB     ---     SHIFT   CONTROL ---     ---
-scan    f2       1       Q       A       Z       ---     ---     ---
-scan    f3       2       W       S       X       C       ---     ---
-scan    f4       3       E       D       F       V       ---     ---
-scan    f5       4       R       T       G       B       ---     ---
-scan    f6       5       6       Y       H       N       ---     ---
-scan    f7       7       U       J       M       SPACE   ---     ---
-scan    f8       8       I       K       ,       .       ---     ---
-scan    f9       9       O       L       ;       /       ---     ---
-scan    f10      0       -       P       [       '       ---     ---
-scan    CRSR↓    =       ←       ]       RETURN  π       ---     ---
-scan    CRSR↑    CRSR←   CRSR→   DEL     C=      ---     ---     ---
-scan    HOME     [?]     [7]     [4]     [1]     [0]     ---     ---
-scan    RVS      [CE]    [8]     [5]     [2]     [.]     ---     ---
-scan    GRAPH    [*]     [9]     [6]     [3]     [00]    ---     ---
-scan    STOP     [/]     [-]     [+]     [ENTER] ---     ---     ---
+cap     f1       ESC     TAB     ---     SHIFT   CONTROL ---     ---
+cap     f2       1       Q       A       Z       ---     ---     ---
+cap     f3       2       W       S       X       C       ---     ---
+cap     f4       3       E       D       F       V       ---     ---
+cap     f5       4       R       T       G       B       ---     ---
+cap     f6       5       6       Y       H       N       ---     ---
+cap     f7       7       U       J       M       SPACE   ---     ---
+cap     f8       8       I       K       ,       .       ---     ---
+cap     f9       9       O       L       ;       /       ---     ---
+cap     f10      0       -       P       [       '       ---     ---
+cap     CRSR↓    =       ←       ]       RETURN  π       ---     ---
+cap     CRSR↑    CRSR←   CRSR→   DEL     C=      ---     ---     ---
+cap     HOME     [?]     [7]     [4]     [1]     [0]     ---     ---
+cap     RVS      [CE]    [8]     [5]     [2]     [.]     ---     ---
+cap     GRAPH    [*]     [9]     [6]     [3]     [00]    ---     ---
+cap     STOP     [/]     [-]     [+]     [ENTER] ---     ---     ---
 
 regular E0 1B 09 FF 00 01 FF FF
 regular E1 31 51 41 5A FF FF FF

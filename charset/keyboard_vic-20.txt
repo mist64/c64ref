@@ -10,14 +10,14 @@ layout  +---+-----++--+---+---+---+---+---+---+---+---++--+-----+---+---+     +-
 layout             |                20                 |
 layout             +-----------------------------------+
 
-scan    1        3       5       7       9       +       £       DEL
-scan    ←        W       R       Y       I       P       *       RETURN
-scan    CTRL     A       D       G       J       L       ;       ←CRSR→
-scan    STOP     L.SHIFT X       V       N       ,       /       ↑CRSR↓
-scan    SPACE    Z       C       B       M       .       R.SHIFT f1
-scan    C=       S       F       H       K       :       =       f3
-scan    Q        E       T       U       O       @       ↑       f5
-scan    2        4       6       8       0       -       HOME    f7
+cap     1        3       5       7       9       +       £       DEL
+cap     ←        W       R       Y       I       P       *       RETURN
+cap     CTRL     A       D       G       J       L       ;       ←CRSR→
+cap     STOP     L.SHIFT X       V       N       ,       /       ↑CRSR↓
+cap     SPACE    Z       C       B       M       .       R.SHIFT f1
+cap     C=       S       F       H       K       :       =       f3
+cap     Q        E       T       U       O       @       ↑       f5
+cap     2        4       6       8       0       -       HOME    f7
 
 exclude 10 # CTRL
 exclude 19 # L SHIFT

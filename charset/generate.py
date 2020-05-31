@@ -325,8 +325,7 @@ for machine in machines:
 			values.remove('')
 		if key == 'layout':
 			pass # ignore
-		elif key == 'scan':
-			values = [d.replace('COMMA', ',') for d in values]
+		elif key == 'cap':
 			values = [d.replace('HASH', '#') for d in values]
 			description_from_scancode[machine].extend(values)
 		elif key == 'exclude':

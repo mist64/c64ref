@@ -10,16 +10,16 @@ layout  +---+---+---+---+---+---+---+---+---+---+---+    +---+---+---+---+
 layout  |0F |07 |0E |06 |0D |   05  |04 |0B |03 |0A |    |09 |02 |08 |01 |
 layout  +---+---+---+---+---+---+---+---+---+---+---+    +---+---+---+---+
 
-scan    =       .       ---     STOP    <       SPACE   [       RVS
-scan    -       0       R.SHIFT >       ---     ]       @       L.SHIFT
-scan    +       2       ---     ?       ,       N       V       X
-scan    3       1       RETURN  ;       M       B       C       Z
-scan    *       5       ---     :       K       H       F       S
-scan    6       4       ---     L       J       G       D       A
-scan    /       8       ---     P       I       Y       R       W
-scan    9       7       ↑       O       U       T       E       Q
-scan    DEL     CRSR↓   ---     )       \       '       $       "
-scan    CRSR→   HOME    ←       (       &       %       HASH    !
+cap     =       .       ---     STOP    <       SPACE   [       RVS
+cap     -       0       R.SHIFT >       ---     ]       @       L.SHIFT
+cap     +       2       ---     ?       ,       N       V       X
+cap     3       1       RETURN  ;       M       B       C       Z
+cap     *       5       ---     :       K       H       F       S
+cap     6       4       ---     L       J       G       D       A
+cap     /       8       ---     P       I       Y       R       W
+cap     9       7       ↑       O       U       T       E       Q
+cap     DEL     CRSR↓   ---     )       \       '       $       "
+cap     CRSR→   HOME    ←       (       &       %       HASH    !
 
 exclude 0A # R.SHIFT
 exclude 0F # L.SHIFT

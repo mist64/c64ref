@@ -44,14 +44,14 @@ layout            |                3C                 |             +-+-+-+-+
 layout            +-----------------------------------+               |28 |
 layout                                                                +---+
 
-scan    DEL      RETURN  £       HELP    f1      f2      f3      @
-scan    3        W       A       4       Z       S       E       SHIFT
-scan    5        R       D       6       C       F       T       X
-scan    7        Y       G       8       B       H       U       V
-scan    9        I       J       0       M       K       O       N
-scan    CRSR↓    P       L       CRSR↑   .       :       -       ,
-scan    CRSR←    *       ;       CRSR→   ESCAPE  =       +       /
-scan    1        HOME    CTRL    2       SPACE   C=      Q       STOP
+cap     DEL      RETURN  £       HELP    f1      f2      f3      @
+cap     3        W       A       4       Z       S       E       SHIFT
+cap     5        R       D       6       C       F       T       X
+cap     7        Y       G       8       B       H       U       V
+cap     9        I       J       0       M       K       O       N
+cap     CRSR↓    P       L       CRSR↑   .       :       -       ,
+cap     CRSR←    *       ;       CRSR→   ESCAPE  =       +       /
+cap     1        HOME    CTRL    2       SPACE   C=      Q       STOP
 
 exclude 0F # L SHIFT
 exclude 34 # R SHIFT

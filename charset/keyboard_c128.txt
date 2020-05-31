@@ -14,17 +14,17 @@ layout  +---+-----+---+---+---+---+---+---+---+---+---+---+-----+---+---+   +---
 layout                |                3C                 |
 layout                +-----------------------------------+
 
-scan    DEL      RETURN  ←CRSR→  f7      f1      f3      f5      ↑CRSR↓
-scan    3        W       A       4       Z       S       E       L.SHIFT
-scan    5        R       D       6       C       F       T       X
-scan    7        Y       G       8       B       H       U       V
-scan    9        I       J       0       M       K       O       N
-scan    +        P       L       -       .       :       @       COMMA
-scan    £        *       ;       HOME    R.SHIFT =       ↑       /
-scan    1        ←       CTRL    2       SPACE   C=      Q       STOP
-scan    HELP     [8]     [5]     TAB     [2]     [4]     [7]     [1]
-scan    ESC      [+]     [-]   LINE_FEED [ENTER] [6]     [9]     [3]
-scan    ALT      [0]     [.]     CRSR↑   CRSR↓   CRSR←   CRSR→   NO_SCROLL
+cap     DEL      RETURN  ←CRSR→  f7      f1      f3      f5      ↑CRSR↓
+cap     3        W       A       4       Z       S       E       L.SHIFT
+cap     5        R       D       6       C       F       T       X
+cap     7        Y       G       8       B       H       U       V
+cap     9        I       J       0       M       K       O       N
+cap     +        P       L       -       .       :       @       ,
+cap     £        *       ;       HOME    R.SHIFT =       ↑       /
+cap     1        ←       CTRL    2       SPACE   C=      Q       STOP
+cap     HELP     [8]     [5]     TAB     [2]     [4]     [7]     [1]
+cap     ESC      [+]     [-]   LINE_FEED [ENTER] [6]     [9]     [3]
+cap     ALT      [0]     [.]     CRSR↑   CRSR↓   CRSR←   CRSR→   NO_SCROLL
 
 exclude 0F # L SHIFT
 exclude 34 # R SHIFT
