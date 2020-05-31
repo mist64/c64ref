@@ -1,13 +1,23 @@
 #!/usr/bin/python3
 
-VSCALE = 4/3
+VSCALE = 2
 SCALE = 10
 ROUND = 5
+FONT_SIZE = 12
+FONT_VADJUST = 4
 
-machine = 'TED'
+cap_replacements = {
+	'L.SHIFT': 'SHIFT',
+	'R.SHIFT': 'SHIFT',
+	'CRSR↑': '↑',
+	'CRSR↓': '↓',
+	'CRSR←': '←',
+	'CRSR→': '→',
+}
+
+machines = ['PET', 'VIC-20', 'C64', 'C128', 'C65', 'TED', 'CBM2']
 
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
-
 
 def flood_fill(x, y):
 	#print(':',x,y)
@@ -24,118 +34,128 @@ def flood_fill(x, y):
 	flood_fill(x, y - 1)
 
 description_from_scancode = {}
-description_from_scancode[machine] = []
-layout_lines = []
-for line in open('keyboard_{}.txt'.format(machine.lower())):
-	line = line.split('#')[0].rstrip()
-	if len(line) == 0:
-		continue
-	key = line[:8].rstrip()
-	line = line[8:]
-	if key == 'layout':
-		layout_lines.append(line)
-	elif key == 'cap':
-		values = line.split(' ')
-		while '' in values:
-			values.remove('')
-		values = [d.replace('HASH', '#') for d in values]
-		description_from_scancode[machine].extend(values)
+for machine in machines:
+	description_from_scancode[machine] = []
+	layout_lines = []
+	for line in open('keyboard_{}.txt'.format(machine.lower())):
+		line = line.split('#')[0].rstrip()
+		if len(line) == 0:
+			continue
+		key = line[:8].rstrip()
+		line = line[8:]
+		if key == 'layout':
+			layout_lines.append(line)
+		elif key == 'cap':
+			values = line.split(' ')
+			while '' in values:
+				values.remove('')
+			values = [d.replace('HASH', '#') for d in values]
+			description_from_scancode[machine].extend(values)
 
-print('<pre>')
-print(description_from_scancode)
-for line in layout_lines:
-	print(line)
-print('</pre>')
+	#print('<pre>')
+	#print(description_from_scancode)
+	#for line in layout_lines:
+	#	print(line)
+	#print('</pre>')
 
-cells_from_scancode = {}
+	cells_from_scancode = {}
 
-for y in range(0, len(layout_lines)):
-	for x in range(0, len(layout_lines[y])):
-		c = layout_lines[y][x]
-		if c != '+' and c != '|' and c != '-' and c != 'X':
-			# we found a key!
-			#print(x, y)
-			scancode = ''
-			for x2 in range(x, len(layout_lines[y])):
-				c = layout_lines[y][x2]
-				if c == '+' or c == '|' or c == '-':
-					break
-				scancode += c
-			scancode = scancode.lstrip().rstrip()
-			if scancode == '':
-				continue # empty area
-			if scancode[0] == '/':
-				scancode = int(scancode[1:], 16) | 128
+	for y in range(0, len(layout_lines)):
+		for x in range(0, len(layout_lines[y])):
+			c = layout_lines[y][x]
+			if c != '+' and c != '|' and c != '-' and c != 'X':
+				# we found a key!
+				#print(x, y)
+				scancode = ''
+				for x2 in range(x, len(layout_lines[y])):
+					c = layout_lines[y][x2]
+					if c == '+' or c == '|' or c == '-':
+						break
+					scancode += c
+				scancode = scancode.lstrip().rstrip()
+				if scancode == '':
+					continue # empty area
+				if scancode[0] == '/':
+					scancode = int(scancode[1:], 16) | 128
+				elif scancode == '...':
+					scancode = -1 # key does no produce a scancode
+				else:
+					scancode = int(scancode, 16)
+				#print('scancode', hex(scancode))
+				# mark all cells as seen
+				cells = []
+				flood_fill(x, y)
+				#print(cells)
+				if scancode in cells_from_scancode:
+					cells_from_scancode[scancode].append(cells)
+				else:
+					cells_from_scancode[scancode] = [cells]
+
+	#print('<pre>')
+	#for line in layout_lines:
+	#	print(line)
+	#print('</pre>')
+
+	#print(cells_from_scancode)
+
+	print('<br/>')
+	print('<hr/>')
+
+	total_width = 0
+
+	for line in layout_lines:
+		if len(line) > total_width:
+			total_width = len(line)
+
+	total_width *= SCALE
+	total_height = len(layout_lines) * VSCALE * SCALE
+
+	svg = '<svg id="svgelem" width="{}" height="{}" xmlns="http://www.w3.org/2000/svg">'.format(total_width, total_height)
+	svg += '<!-- This SVG was generated from a textual description. Check out c64ref on GitHub for more information. -->'
+	for scancode in cells_from_scancode.keys():
+		cells = cells_from_scancode[scancode]
+
+		for cell in cells:
+			#print(cell)
+
+			minx = None
+			miny = None
+			maxx = None
+			maxy = None
+			for (x, y) in cell:
+				if (not minx) or x < minx:
+					minx = x
+				if (not miny) or y < miny:
+					miny = y
+				if (not maxx) or x > maxx:
+					maxx = x
+				if (not maxy) or y > maxy:
+					maxy = y
+			width = maxx - minx + 2
+			height = maxy - miny + 2
+
+			miny *= VSCALE
+			height *= VSCALE
+
+			minx *= SCALE
+			miny *= SCALE
+			width *= SCALE
+			height *= SCALE
+
+			if scancode >= 0 and scancode < len(description_from_scancode[machine]):
+				description = description_from_scancode[machine][scancode]
 			else:
-				scancode = int(scancode, 16)
-			#print('scancode', hex(scancode))
-			# mark all cells as seen
-			cells = []
-			flood_fill(x, y)
-			#print(cells)
-			if scancode in cells_from_scancode:
-				cells_from_scancode[scancode].append(cells)
-			else:
-				cells_from_scancode[scancode] = [cells]
+				description = ''
+			if description in cap_replacements:
+				description = cap_replacements[description]
+			#description = description.replace('_', '\r')
 
-print('<pre>')
-for line in layout_lines:
-	print(line)
-print('</pre>')
+			svg += '<rect x="{}" y="{}" rx="{}" ry="{}" width="{}" height="{}" style="stroke:black;fill:none;"/>\n'.format(minx, miny, ROUND, ROUND, width, height)
+			svg += '<text text-anchor="middle" font-family="Helvetica" font-size="{}" fill="black">'.format(FONT_SIZE)
+			svg += '<tspan x="{}" y="{}">{}</tspan>'.format(minx + width/2, miny + height/2 + FONT_VADJUST, description)
+			svg += '</text>'
 
-#print(cells_from_scancode)
-
-print('<br/>')
-print('<hr/>')
-
-total_width = 0
-
-for line in layout_lines:
-    if len(line) > total_width:
-        total_width = len(line)
-
-total_width *= SCALE
-total_height = len(layout_lines) * VSCALE * SCALE
-
-svg = '      <svg id="svgelem" width="{}" height="{}" xmlns="http://www.w3.org/2000/svg">'.format(total_width, total_height)
-for scancode in cells_from_scancode.keys():
-	cells = cells_from_scancode[scancode]
-
-	for cell in cells:
-		#print(cell)
-
-		minx = None
-		miny = None
-		maxx = None
-		maxy = None
-		for (x, y) in cell:
-			if (not minx) or x < minx:
-				minx = x
-			if (not miny) or y < miny:
-				miny = y
-			if (not maxx) or x > maxx:
-				maxx = x
-			if (not maxy) or y > maxy:
-				maxy = y
-		width = maxx - minx + 2
-		height = maxy - miny + 2
-
-		miny *= VSCALE
-		height *= VSCALE
-
-		minx *= SCALE
-		miny *= SCALE
-		width *= SCALE
-		height *= SCALE
-
-		description = description_from_scancode[machine][scancode]
-
-		svg += '<rect x="{}" y="{}" rx="{}" ry="{}" width="{}" height="{}" style="stroke:black;fill:none;"/>\n'.format(minx, miny, ROUND, ROUND, width, height)
-		svg += '<text text-anchor="middle" font-family="Helvetica" font-size="12" fill="black">'
-		svg += '<tspan x="{}" y="{}">{}</tspan>'.format(minx + width/2, miny + height/2, description)
-		svg += '</text>'
-
-#		svg += '<text x="{}" y="{}" font-family="Helvetica" font-size="8" fill="black">{:02X}</text>'.format(minx, miny, scancode)
-svg += '      </svg>'
-print(svg)
+	#		svg += '<text x="{}" y="{}" font-family="Helvetica" font-size="8" fill="black">{:02X}</text>'.format(minx, miny, scancode)
+	svg += '      </svg>'
+	print(svg)
 
