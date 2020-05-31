@@ -102,8 +102,7 @@ def keyboard():
 					else:
 						cells_from_scancode[scancode] = [cells]
 
-		html += '<br/>'
-		html += '<hr/>'
+		html += '<div class="{}">'.format(machine)
 		html += '<h2>{}</h2>'.format(machine)
 
 		total_width = 0
@@ -191,6 +190,7 @@ def keyboard():
 
 		svg += '      </svg>'
 		html += svg
+		html += '</div>'
 	return html
 
 ####################################################################
@@ -562,7 +562,6 @@ print('</head>')
 print('<body>')
 
 print('<div class="body">')
-print('<h1>C64 Charset</h1>')
 
 #print('<div id="current-image">')
 #print('	<img src="43627586.png" />')
@@ -575,7 +574,7 @@ print('   <input id="tab_petscii" type="radio" name="tabs" />')
 print('   <input id="tab_keyboard" type="radio" name="tabs" />')
 print('')
 print('   <nav>')
-print('      <label for="tab_screencode">Screencodes</label>')
+print('      <label for="tab_screencode">Character Set</label>')
 print('      <label for="tab_petscii">PETSCII</label>')
 print('      <label for="tab_keyboard">Keyboard</label>')
 print('   </nav>')
