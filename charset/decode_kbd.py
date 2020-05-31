@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 
-machine = 'C65'
+VSCALE = 4/3
+SCALE = 10
+ROUND = 5
+
+machine = 'TED'
 
 def flood_fill(x, y):
 	#print(':',x,y)
@@ -71,13 +75,48 @@ print('</pre>')
 print('<br/>')
 print('<hr/>')
 
-svg = '      <svg id="svgelem" width="800" height="200" xmlns="http://www.w3.org/2000/svg">'
+total_width = 0
+
+for line in layout_lines:
+    if len(line) > total_width:
+        total_width = len(line)
+
+total_width *= SCALE
+total_height = len(layout_lines) * VSCALE * SCALE
+
+svg = '      <svg id="svgelem" width="{}" height="{}" xmlns="http://www.w3.org/2000/svg">'.format(total_width, total_height)
 for scancode in cells_from_scancode.keys():
 	cells = cells_from_scancode[scancode]
+
 	for cell in cells:
 		#print(cell)
+
+		minx = None
+		miny = None
+		maxx = None
+		maxy = None
 		for (x, y) in cell:
-			svg += '<rect x="{}" y="{}" width="{}" height="{}" style="fill:blue;"/>\n'.format(x*10, y*10, 10, 10)
+			if (not minx) or x < minx:
+				minx = x
+			if (not miny) or y < miny:
+				miny = y
+			if (not maxx) or x > maxx:
+				maxx = x
+			if (not maxy) or y > maxy:
+				maxy = y
+		width = maxx - minx + 2
+		height = maxy - miny + 2
+
+		miny *= VSCALE
+		height *= VSCALE
+
+		minx *= SCALE
+		miny *= SCALE
+		width *= SCALE
+		height *= SCALE
+
+		svg += '<rect x="{}" y="{}" rx="{}" ry="{}" width="{}" height="{}" style="stroke:black;fill:none;"/>\n'.format(minx, miny, ROUND, ROUND, width, height)
+		svg += '<text x="{}" y="{}" font-family="Helvetica" font-size="8" fill="black">{:02X}</text>'.format(minx, miny, scancode)
 svg += '      </svg>'
 print(svg)
 
