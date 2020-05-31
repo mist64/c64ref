@@ -3,8 +3,13 @@
 VSCALE = 2
 SCALE = 10
 ROUND = 5
-FONT_SIZE = 12
-FONT_VADJUST = 4
+INSET = 1
+FONT_SIZE1 = 18
+FONT_SIZE2 = 11.5
+FONT_VADJUST1 = 7
+FONT_VADJUST2 = 4
+FONT_LEN_CUTOFF = 1
+BIG_WHITELIST = ['00', 'CE']
 
 cap_replacements = {
 	'L.SHIFT': 'SHIFT',
@@ -13,6 +18,11 @@ cap_replacements = {
 	'CRSR↓': '↓',
 	'CRSR←': '←',
 	'CRSR→': '→',
+	'↑CRSR↓': '↑↓',
+	'←CRSR→': '←→',
+	'LINE_FEED': 'LF',
+	'NO_SCROLL': 'SCRL',
+	'GRAPH': 'GRPH',
 }
 
 machines = ['PET', 'VIC-20', 'C64', 'C128', 'C65', 'TED', 'CBM2']
@@ -79,6 +89,8 @@ for machine in machines:
 					scancode = int(scancode[1:], 16) | 128
 				elif scancode == '...':
 					scancode = -1 # key does no produce a scancode
+				elif scancode == 'NMI':
+					scancode = -2 # NMI key
 				else:
 					scancode = int(scancode, 16)
 				#print('scancode', hex(scancode))
@@ -142,20 +154,34 @@ for machine in machines:
 			width *= SCALE
 			height *= SCALE
 
-			if scancode >= 0 and scancode < len(description_from_scancode[machine]):
+			minx += INSET
+			miny += INSET
+			width -= INSET*2
+			height -= INSET*2
+
+			if scancode == -2:
+				description = 'RESTORE'
+			elif scancode >= 0 and scancode < len(description_from_scancode[machine]):
 				description = description_from_scancode[machine][scancode]
 			else:
 				description = ''
 			if description in cap_replacements:
 				description = cap_replacements[description]
+			if description.startswith('[') and description.endswith(']'):
+				description = description[1:-1]
 			#description = description.replace('_', '\r')
 
-			svg += '<rect x="{}" y="{}" rx="{}" ry="{}" width="{}" height="{}" style="stroke:black;fill:none;"/>\n'.format(minx, miny, ROUND, ROUND, width, height)
-			svg += '<text text-anchor="middle" font-family="Helvetica" font-size="{}" fill="black">'.format(FONT_SIZE)
-			svg += '<tspan x="{}" y="{}">{}</tspan>'.format(minx + width/2, miny + height/2 + FONT_VADJUST, description)
-			svg += '</text>'
+			if len(description) > FONT_LEN_CUTOFF and not description in BIG_WHITELIST:
+				font_size = FONT_SIZE2
+				font_vadjust = FONT_VADJUST2
+			else:
+				font_size = FONT_SIZE1
+				font_vadjust = FONT_VADJUST1
 
-	#		svg += '<text x="{}" y="{}" font-family="Helvetica" font-size="8" fill="black">{:02X}</text>'.format(minx, miny, scancode)
+			svg += '<rect x="{}" y="{}" rx="{}" ry="{}" width="{}" height="{}" style="stroke:black;fill:none;"/>\n'.format(minx, miny, ROUND, ROUND, width, height)
+			svg += '<text text-anchor="middle" font-family="Helvetica" font-size="{}" fill="black">'.format(font_size)
+			svg += '<tspan x="{}" y="{}">{}</tspan>'.format(minx + width/2, miny + height/2 + font_vadjust, description)
+			svg += '</text>'
 	svg += '      </svg>'
 	print(svg)
 

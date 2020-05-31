@@ -50,7 +50,7 @@ cap     5        R       D       6       C       F       T       X
 cap     7        Y       G       8       B       H       U       V
 cap     9        I       J       0       M       K       O       N
 cap     CRSR↓    P       L       CRSR↑   .       :       -       ,
-cap     CRSR←    *       ;       CRSR→   ESCAPE  =       +       /
+cap     CRSR←    *       ;       CRSR→   ESC     =       +       /
 cap     1        HOME    CTRL    2       SPACE   C=      Q       STOP
 
 exclude 0F # L SHIFT
