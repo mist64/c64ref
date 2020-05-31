@@ -18,8 +18,8 @@ cap     *       5       ---     :       K       H       F       S
 cap     6       4       ---     L       J       G       D       A
 cap     /       8       ---     P       I       Y       R       W
 cap     9       7       ↑       O       U       T       E       Q
-cap     DEL     CRSR↓   ---     )       \       '       $       "
-cap     CRSR→   HOME    ←       (       &       %       HASH    !
+cap     DEL     ↑CRSR↓  ---     )       \       '       $       "
+cap     ←CRSR→  HOME    ←       (       &       %       HASH    !
 
 mod     0A # R.SHIFT
 mod     0F # L.SHIFT

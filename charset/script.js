@@ -1,4 +1,5 @@
 function test(element) {
+	console.log(element);
 	var box = document.getElementById(element);
 	box.classList.add("highlighted");
 	
@@ -96,7 +97,7 @@ function charsetSwitch(filename) {
 	}
 }
 
-function highlight(machine, scancode) {
+function highlight_key(machine, scancode, petscii) {
 	items = document.getElementsByClassName('keyrect')
 	for (i = 0; i < items.length; i++) {
 		var currentItem = items[i];
@@ -117,4 +118,5 @@ function highlight(machine, scancode) {
 		var currentItem = items[i];
 		currentItem.style.fill = 'white';
 	}
+	test(petscii);
 }

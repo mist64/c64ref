@@ -176,7 +176,13 @@ def keyboard():
 				else:
 					style = ''
 
-				svg += '<a xlink:href="javascript:void(0)" onclick="highlight(\'{}\',{});">'.format(machine, scancode)
+				if len(petscii_from_scancode[machine]['regular']) > scancode:
+					petscii = petscii_from_scancode[machine]['regular'][scancode]
+				else:
+					# happens in auto-shifted ("or 128") case
+					petscii = 0
+
+				svg += '<a xlink:href="javascript:void(0)" onclick="highlight_key(\'{}\',{}, \'petscii_{}\');">'.format(machine, scancode, hex(petscii))
 				svg += '<rect class="keyrect keyrect_{}_{}" x="{}" y="{}" rx="{}" ry="{}" width="{}" height="{}" style="stroke:black;fill:white;"/>\n'.format(machine, scancode, minx, miny, ROUND, ROUND, width, height)
 				svg += '<text class="keytext keytext_{}_{}" text-anchor="middle" font-family="Helvetica" font-size="{}" {} fill="black">'.format(machine, scancode, font_size, style)
 				svg += '<tspan x="{}" y="{}">{}</tspan>'.format(minx + width/2, miny + height/2 + font_vadjust, description)
@@ -186,7 +192,6 @@ def keyboard():
 		svg += '      </svg>'
 		html += svg
 	return html
-
 
 ####################################################################
 
@@ -332,7 +337,7 @@ def displayname_for_charset_details(machine, locale, type, version):
 ####################################################################
 
 machines = ['PET', 'VIC-20', 'C64', 'C128', 'C65', 'TED']
-#machines.append('CBM2')
+machines.append('CBM2')
 
 #
 # generate petscii_from_scrcode mapping
