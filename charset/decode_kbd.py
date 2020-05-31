@@ -113,6 +113,7 @@ for machine in machines:
 
 	print('<br/>')
 	print('<hr/>')
+	print('<h2>{}</h2>'.format(machine))
 
 	total_width = 0
 
@@ -180,9 +181,15 @@ for machine in machines:
 				font_size = FONT_SIZE1
 				font_vadjust = FONT_VADJUST1
 
+			if height > width:
+				style = 'style="writing-mode: tb; glyph-orientation-vertical: 0; letter-spacing: -1;"'
+				font_vadjust = 0
+			else:
+				style = ''
+
 			svg += '<a xlink:href="javascript:void(0)" onclick="highlight(\'{}\',{});">'.format(machine, scancode)
 			svg += '<rect class="keyrect keyrect_{}_{}" x="{}" y="{}" rx="{}" ry="{}" width="{}" height="{}" style="stroke:black;fill:white;"/>\n'.format(machine, scancode, minx, miny, ROUND, ROUND, width, height)
-			svg += '<text class="keytext keytext_{}_{}" text-anchor="middle" font-family="Helvetica" font-size="{}" fill="black">'.format(machine, scancode, font_size)
+			svg += '<text class="keytext keytext_{}_{}" text-anchor="middle" font-family="Helvetica" font-size="{}" {} fill="black">'.format(machine, scancode, font_size, style)
 			svg += '<tspan x="{}" y="{}">{}</tspan>'.format(minx + width/2, miny + height/2 + font_vadjust, description)
 			svg += '</text>'
 			svg += '</a>'
