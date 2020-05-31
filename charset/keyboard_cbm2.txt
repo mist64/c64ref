@@ -1,84 +1,100 @@
-scan    f1       ESC     TAB     NULL    SHIFT   CONTROL
-scan    f2       1       Q       A       Z       NULL
-scan    f3       2       W       S       X       C
-scan    f4       3       E       D       F       V
-scan    f5       4       R       T       G       B
-scan    f6       5       6       Y       H       N
-scan    f7       7       U       J       M       SPACE
-scan    f8       8       I       K       COMMA   .
-scan    f9       9       O       L       ;       /
-scan    f10      0       -       P       [       '
-scan    CRSR↓    =       ←       ]       RETURN  π
-scan    CRSR↑    CRSR←   CRSR→   DEL     C=       NULL
-scan    HOME     [?]     [7]     [4]     [1]     [0]
-scan    RVS      [CE]    [8]     [5]     [2]     [.]
-scan    GRAPH    [*]     [9]     [6]     [3]     [00]
-scan    STOP     [/]     [-]     [+]     [ENTER] NULL
+layout  +---+---+---+---+---+---+---+---+---+---+ +---+---+---+---+    +---+---+---+---+
+layout  |00 |08 |10 |18 |20 |28 |30 |38 |40 |48 | |50 |58 |59 |5A |    |60 |68 |70 |78 |
+layout  +---+---+---+---+---+---+---+---+---+---+ +---+---+---+---+    +---+---+---+---+
+layout  
+layout  +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+  +---+---+---+---+
+layout  |01 |09 |11 |19 |21 |29 |2A |31 |39 |41 |49 |4A |51 |52 |5B |  |61 |69 |71 |79 |
+layout  +---+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+--++  +---+---+---+---+
+layout  | 02  |0A |12 |1A |22 |23 |2B |32 |3A |42 |4B |4C |53 | 54 |   |62 |6A |72 |7A |
+layout  ++----++--++--++--++--++--++--++--++--++--++--++--++--+    |   +---+---+---+---+
+layout   | 04  |0B |13 |1B |1C |24 |2C |33 |3B |43 |44 |4D |55 |   |   |63 |6B |73 |7B |
+layout   +-----+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+---+---+   +---+---+---+---+
+layout   |   04  |0C |14 |15 |1D |25 |2D |34 |3C |3D |45 |  04 |5C |   |64 |6C |74 |7C |
+layout   +----+--+--++---+---+---+---+---+---+---+---+--++-----+---+ +-+---+---+---+   |
+layout        | 05  |                35                 |            |  65 |6D |75 |   |
+layout        +-----+-----------------------------------+            +-----+---+---+---+
+           
+scan    f1       ESC     TAB     ---     SHIFT   CONTROL ---     ---
+scan    f2       1       Q       A       Z       ---     ---     ---
+scan    f3       2       W       S       X       C       ---     ---
+scan    f4       3       E       D       F       V       ---     ---
+scan    f5       4       R       T       G       B       ---     ---
+scan    f6       5       6       Y       H       N       ---     ---
+scan    f7       7       U       J       M       SPACE   ---     ---
+scan    f8       8       I       K       ,       .       ---     ---
+scan    f9       9       O       L       ;       /       ---     ---
+scan    f10      0       -       P       [       '       ---     ---
+scan    CRSR↓    =       ←       ]       RETURN  π       ---     ---
+scan    CRSR↑    CRSR←   CRSR→   DEL     C=      ---     ---     ---
+scan    HOME     [?]     [7]     [4]     [1]     [0]     ---     ---
+scan    RVS      [CE]    [8]     [5]     [2]     [.]     ---     ---
+scan    GRAPH    [*]     [9]     [6]     [3]     [00]    ---     ---
+scan    STOP     [/]     [-]     [+]     [ENTER] ---     ---     ---
 
-regular E0 1B 09 FF 00 01
-regular E1 31 51 41 5A FF
-regular E2 32 57 53 58 43
-regular E3 33 45 44 46 56
-regular E4 34 52 54 47 42
-regular E5 35 36 59 48 4E
-regular E6 37 55 4A 4D 20
-regular E7 38 49 4B 2C 2E
-regular E8 39 4F 4C 3B 2F
-regular E9 30 2D 50 5B 27
-regular 11 3D 5F 5D 0D DE
-regular 91 9D 1D 14 02 FF
-regular 13 3F 37 34 31 30
-regular 12 04 38 35 32 2E
-regular 8E 2A 39 36 33 30
-regular 03 2F 2D 2B 0D FF
+regular E0 1B 09 FF 00 01 FF FF
+regular E1 31 51 41 5A FF FF FF
+regular E2 32 57 53 58 43 FF FF
+regular E3 33 45 44 46 56 FF FF
+regular E4 34 52 54 47 42 FF FF
+regular E5 35 36 59 48 4E FF FF
+regular E6 37 55 4A 4D 20 FF FF
+regular E7 38 49 4B 2C 2E FF FF
+regular E8 39 4F 4C 3B 2F FF FF
+regular E9 30 2D 50 5B 27 FF FF
+regular 11 3D 5F 5D 0D DE FF FF
+regular 91 9D 1D 14 02 FF FF FF
+regular 13 3F 37 34 31 30 FF FF
+regular 12 04 38 35 32 2E FF FF
+regular 8E 2A 39 36 33 30 FF FF
+regular 03 2F 2D 2B 0D FF FF FF
 
-shift   EA 1B 89 FF 00 01
-shift   EB 21 D1 C1 DA FF
-shift   EC 40 D7 D3 D8 C3
-shift   ED 23 C5 C4 C6 D6
-shift   EE 24 D2 D4 C7 C2
-shift   EF 25 5E D9 C8 CE
-shift   F0 26 D5 CA CD A0
-shift   F1 2A C9 CB 3C 3E
-shift   F2 28 CF CC 3A 3F
-shift   F3 29 2D D0 5B 22
-shift   11 2B 5C 5D 8D DE
-shift   91 9D 1D 94 82 FF
-shift   93 3F 37 34 31 30
-shift   92 84 38 35 32 2E
-shift   0E 2A 39 36 33 30
-shift   83 2F 2D 2B 8D FF
+shift   EA 1B 89 FF 00 01 FF FF
+shift   EB 21 D1 C1 DA FF FF FF
+shift   EC 40 D7 D3 D8 C3 FF FF
+shift   ED 23 C5 C4 C6 D6 FF FF
+shift   EE 24 D2 D4 C7 C2 FF FF
+shift   EF 25 5E D9 C8 CE FF FF
+shift   F0 26 D5 CA CD A0 FF FF
+shift   F1 2A C9 CB 3C 3E FF FF
+shift   F2 28 CF CC 3A 3F FF FF
+shift   F3 29 2D D0 5B 22 FF FF
+shift   11 2B 5C 5D 8D DE FF FF
+shift   91 9D 1D 94 82 FF FF FF
+shift   93 3F 37 34 31 30 FF FF
+shift   92 84 38 35 32 2E FF FF
+shift   0E 2A 39 36 33 30 FF FF
+shift   83 2F 2D 2B 8D FF FF FF
 
-cbm     EA 1B 89 FF 00 01
-cbm     EB 21 D1 C1 DA FF
-cbm     EC 40 D7 D3 D8 C0
-cbm     ED 23 C5 C4 C6 C3
-cbm     EE 24 D2 D4 C7 C2
-cbm     EF 25 5E D9 C8 DD
-cbm     F0 26 D5 CA CD A0
-cbm     F1 2A C9 CB 3C 3E
-cbm     F2 28 CF D6 3A 3F
-cbm     F3 29 2D D0 5B 22
-cbm     11 2B 5C 5D 8D DE
-cbm     91 9D 1A 94 82 FF
-cbm     93 3F 37 34 31 30
-cbm     92 04 38 35 32 2E
-cbm     0E 2A 39 36 33 30
-cbm     83 2F 2D 2B 8D FF
+cbm     EA 1B 89 FF 00 01 FF FF
+cbm     EB 21 D1 C1 DA FF FF FF
+cbm     EC 40 D7 D3 D8 C0 FF FF
+cbm     ED 23 C5 C4 C6 C3 FF FF
+cbm     EE 24 D2 D4 C7 C2 FF FF
+cbm     EF 25 5E D9 C8 DD FF FF
+cbm     F0 26 D5 CA CD A0 FF FF
+cbm     F1 2A C9 CB 3C 3E FF FF
+cbm     F2 28 CF D6 3A 3F FF FF
+cbm     F3 29 2D D0 5B 22 FF FF
+cbm     11 2B 5C 5D 8D DE FF FF
+cbm     91 9D 1A 94 82 FF FF FF
+cbm     93 3F 37 34 31 30 FF FF
+cbm     92 04 38 35 32 2E FF FF
+cbm     0E 2A 39 36 33 30 FF FF
+cbm     83 2F 2D 2B 8D FF FF FF
 
-ctrl    FF FF FF FF FF FF
-ctrl    FF A1 11 01 1A FF
-ctrl    FF A2 17 13 18 03
-ctrl    FF A3 05 04 06 16
-ctrl    FF A4 12 14 07 02
-ctrl    FF A5 A7 19 08 0E
-ctrl    FF BE 15 0A 0D FF
-ctrl    FF BB 09 0B CE FF
-ctrl    FF BF 0F 0C DC FF
-ctrl    FF AC BC 10 CC A8
-ctrl    FF A9 DF BA FF A6
-ctrl    FF FF FF FF FF FF
-ctrl    FF B7 B4 B1 B0 AD
-ctrl    FF B8 B5 B2 AE BD
-ctrl    FF B9 B6 B3 DB FF
-ctrl    FF AF AA AB FF FF
+ctrl    FF FF FF FF FF FF FF FF
+ctrl    FF A1 11 01 1A FF FF FF
+ctrl    FF A2 17 13 18 03 FF FF
+ctrl    FF A3 05 04 06 16 FF FF
+ctrl    FF A4 12 14 07 02 FF FF
+ctrl    FF A5 A7 19 08 0E FF FF
+ctrl    FF BE 15 0A 0D FF FF FF
+ctrl    FF BB 09 0B CE FF FF FF
+ctrl    FF BF 0F 0C DC FF FF FF
+ctrl    FF AC BC 10 CC A8 FF FF
+ctrl    FF A9 DF BA FF A6 FF FF
+ctrl    FF FF FF FF FF FF FF FF
+ctrl    FF B7 B4 B1 B0 AD FF FF
+ctrl    FF B8 B5 B2 AE BD FF FF
+ctrl    FF B9 B6 B3 DB FF FF FF
+ctrl    FF AF AA AB FF FF FF FF
