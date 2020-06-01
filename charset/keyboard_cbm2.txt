@@ -32,8 +32,8 @@ cap     GRAPH    [*]     [9]     [6]     [3]     [00]    ---     ---
 cap     STOP     [/]     [-]     [+]     [ENTER] ---     ---     ---
 
 mod     04 shift
-mod     05 shift
-mod     54 cbm
+mod     05 ctrl
+mod     5C cbm
 
 regular E0 1B 09 FF 00 01 FF FF
 regular E1 31 51 41 5A FF FF FF
