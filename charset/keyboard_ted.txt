@@ -49,10 +49,10 @@ cap     CRSR↓    P       L       CRSR↑   .       :       -       ,
 cap     CRSR←    *       ;       CRSR→   ESC     =       +       /
 cap     1        HOME    CTRL    2       SPACE   C=      Q       STOP
 
-mod     0F # L SHIFT
-mod     34 # R SHIFT
-mod     3A # CTRL
-mod     3D # C=
+mod     0F shift # left
+mod     34 shift # right
+mod     3A ctrl
+mod     3D cbm
 
 regular 14 0D 5C 8C 85 89 86 40
 regular 33 57 41 34 5A 53 45 01

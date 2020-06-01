@@ -26,11 +26,11 @@ cap     HELP     [8]     [5]     TAB     [2]     [4]     [7]     [1]
 cap     ESC      [+]     [-]   LINE_FEED [ENTER] [6]     [9]     [3]
 cap     ALT      [0]     [.]     CRSR↑   CRSR↓   CRSR←   CRSR→   NO_SCROLL
 
-mod     0F # L SHIFT
-mod     34 # R SHIFT
-mod     3A # CTRL
-mod     3D # C=
-mod     50 # ALT
+mod     0F shift # left
+mod     34 shift # right
+mod     3A ctrl
+mod     3D cbm
+mod     50 alt
 
 regular 14 0D 1D 88 85 86 87 11 
 regular 33 57 41 34 5A 53 45 01 

@@ -97,6 +97,8 @@ function charsetSwitch(filename) {
 	}
 }
 
+var modifier = 'regular';
+
 function highlight_key(machine, scancode, petscii, is_modifier) {
 	items = document.getElementsByClassName('keyrect')
 	for (i = 0; i < items.length; i++) {

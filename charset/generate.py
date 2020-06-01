@@ -161,7 +161,7 @@ def keyboard_layout_html(machine, ll):
 				# XXX happens in auto-shifted ("or 128") case
 				petscii = 0
 
-			if scancode in modifier_scancodes[machine]:
+			if scancode in modifier_scancodes[machine].keys():
 				is_modifier = 1
 			else:
 				is_modifier = 0
@@ -210,7 +210,7 @@ def modifiers_and_scancodes_from_petscii(petscii, machine):
 	modifiers_and_scancodes = []
 	for modifier in description_from_modifier.keys():
 		for scancode in range(0, len(petscii_from_scancode[machine][modifier])):
-			if scancode in modifier_scancodes[machine]:
+			if scancode in modifier_scancodes[machine].keys():
 				continue
 			p2 = petscii_from_scancode[machine][modifier][scancode]
 			if p2 != 0xff and p2 == petscii:
@@ -493,7 +493,7 @@ modifier_scancodes = {}
 keyboard_layout = {}
 for machine in machines:
 	description_from_scancode[machine] = []
-	modifier_scancodes[machine] = []
+	modifier_scancodes[machine] = {}
 	petscii_from_scancode[machine] = {}
 	petscii_from_scancode[machine]['regular'] = []
 	petscii_from_scancode[machine]['shift'] = []
@@ -515,8 +515,9 @@ for machine in machines:
 			values = [d.replace('HASH', '#') for d in values]
 			description_from_scancode[machine].extend(values)
 		elif key == 'mod':
-			values = [int(v, 16) for v in values]
-			modifier_scancodes[machine].extend(values)
+			scancode = int(values[0], 16)
+			cap = values[1]
+			modifier_scancodes[machine][scancode] = cap
 		else:
 			values = [int(v, 16) for v in values]
 			petscii_from_scancode[machine][key].extend(values)

@@ -21,8 +21,8 @@ cap     9       7       ↑       O       U       T       E       Q
 cap     DEL     ↑CRSR↓  ---     )       \       '       $       "
 cap     ←CRSR→  HOME    ←       (       &       %       HASH    !
 
-mod     0A # R.SHIFT
-mod     0F # L.SHIFT
+mod     0A shift # right
+mod     0F shift # left
 
 regular 3D 2E FF 03 3C 20 5B 12
 regular 2D 30 00 3E FF 5D 40 00
