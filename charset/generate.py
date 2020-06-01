@@ -96,7 +96,7 @@ def keyboard_layout_html(machine, ll):
 	total_width *= SCALE
 	total_height = len(layout_lines) * VSCALE * SCALE
 
-	svg = '<svg id="svgelem" width="{}" height="{}" xmlns="http://www.w3.org/2000/svg">'.format(total_width, total_height)
+	svg = '<svg width="{}" height="{}" xmlns="http://www.w3.org/2000/svg">'.format(total_width, total_height)
 	svg += '<!-- This SVG was generated from a textual description. Check out c64ref on GitHub for more information. -->'
 	for scancode in cells_from_scancode.keys():
 		cells = cells_from_scancode[scancode]
@@ -149,6 +149,13 @@ def keyboard_layout_html(machine, ll):
 			else:
 				font_size = FONT_SIZE1
 				font_vadjust = FONT_VADJUST1
+
+			if description == '&':
+				description = '&amp;'
+			elif description == '<':
+				description = '&lt;'
+			elif description == '>':
+				description = '&gt;'
 
 			if height > width:
 				style = 'style="writing-mode: tb; glyph-orientation-vertical: 0; letter-spacing: -1;"'
