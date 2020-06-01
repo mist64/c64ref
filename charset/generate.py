@@ -96,7 +96,7 @@ def keyboard_layout_html(machine, ll):
 	total_width *= SCALE
 	total_height = len(layout_lines) * VSCALE * SCALE
 
-	svg = '<svg id="svgelem" width="{}" height="{}" xmlns="http://www.w3.org/2000/svg">'.format(total_width, total_height)
+	svg = '<svg width="{}" height="{}" xmlns="http://www.w3.org/2000/svg">'.format(total_width, total_height)
 	svg += '<!-- This SVG was generated from a textual description. Check out c64ref on GitHub for more information. -->'
 	for scancode in cells_from_scancode.keys():
 		cells = cells_from_scancode[scancode]
@@ -149,6 +149,13 @@ def keyboard_layout_html(machine, ll):
 			else:
 				font_size = FONT_SIZE1
 				font_vadjust = FONT_VADJUST1
+
+			if description == '&':
+				description = '&amp;'
+			elif description == '<':
+				description = '&lt;'
+			elif description == '>':
+				description = '&gt;'
 
 			if height > width:
 				style = 'style="writing-mode: tb; glyph-orientation-vertical: 0; letter-spacing: -1;"'
@@ -219,11 +226,11 @@ def modifiers_and_scancodes_from_petscii(petscii, machine):
 				modifiers_and_scancodes.append((modifier, scancode))
 	return modifiers_and_scancodes
 
-def modifiers_and_scancodes_html_from_petscii(petscii, scrcode, machine = 'C64'):
+def modifiers_and_scancodes_html_from_petscii(petscii, scrcode, other_ok = True, machine = 'C64'):
 	modifiers_and_scancodes_html = []
 	modifiers_and_scancodes = modifiers_and_scancodes_from_petscii(petscii, machine)
 	other_petscii = None
-	if len(modifiers_and_scancodes) == 0 and scrcode is not None:
+	if other_ok and len(modifiers_and_scancodes) == 0 and scrcode is not None:
 		for check_petscii in petscii_from_scrcode[scrcode & 0x7f]:
 			if check_petscii != petscii:
 				other_petscii = check_petscii
@@ -247,19 +254,27 @@ def modifiers_and_scancodes_html_from_petscii(petscii, scrcode, machine = 'C64')
 	return (modifiers_and_scancodes_html, other_petscii)
 
 def all_keyboard_html_from_petscii(petscii, scrcode, other_ok = False):
-	all_keyboard_html = ''
+	all_modifiers_and_scancodes_html = {}
 	for machine in machines:
-		all_keyboard_html += '<div class="{}"><b>{}</b>:'.format(machine, machine)
-		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, scrcode, machine)
-		if not other_ok:
-			other_petscii = None
-		if len(modifiers_and_scancodes_html) > 0 and not other_petscii:
-			for html in modifiers_and_scancodes_html:
-					all_keyboard_html += '{}<br/>'.format(html)
+		all_modifiers_and_scancodes_html[machine] = []
+		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, scrcode, other_ok, machine)
+		if len(modifiers_and_scancodes_html) > 0:
+			html = ''
+			for h in modifiers_and_scancodes_html:
+					html += '{}<br/>'.format(h)
 		else:
-			all_keyboard_html += ' -'
-		all_keyboard_html += '</div>'
-	return (all_keyboard_html, other_petscii)
+			html = ' -'
+		all_modifiers_and_scancodes_html[machine] = html
+
+	if len(set(all_modifiers_and_scancodes_html.values())) == 1:
+		return (all_modifiers_and_scancodes_html[machines[0]], other_petscii)
+	else:
+		all_keyboard_html = ''
+		for machine in machines:
+			all_keyboard_html += '<div class="{}"><b>{}</b>:'.format(machine, machine)
+			all_keyboard_html += all_modifiers_and_scancodes_html[machine]
+			all_keyboard_html += '</div>'
+		return (all_keyboard_html, other_petscii)
 
 def combined_description_from_control_code(petscii):
 	description_to_machines = {}
@@ -341,6 +356,8 @@ for c in range(0, 256):
 # Read Control Code Descriptions
 #
 description_from_control_code_symbol = {
+	'BELL_TONE':        ('BEL', 'Bell Tone'),
+	'CE':               ('CE', 'Clear Entry'),
 	'CLEAR':            ('CLR', 'Clear'),
 	'COL_BLACK':        ('Blk', 'Set text color to black'),
 	'COL_BLUE':         ('Blu', 'Set text color to Blue'),
@@ -373,15 +390,25 @@ description_from_control_code_symbol = {
 	'CRSR_RIGHT':       ('Crsr →', 'Cursor Right'),
 	'CRSR_UP':          ('Crsr ↑', 'Cursor Up'),
 	'DEL':              ('DEL', 'Delete'),
+	'DEL_LINE':         ('DEL Line', 'Delete Line'),
 	'DIS_CASE_SWITCH':  ('Lock Case', 'Disable Case-Switching Keys'),
 	'DIS_MODE_SWITCH':  ('Lock Mode', 'Disable Mode Switch'),
 	'ENA_CASE_SWITCH':  ('Unlock Case', 'Enable Case-Switching Keys'),
 	'ENA_MODE_SWITCH':  ('Unlock Mode', 'Enable Mode Switch'),
+	'ERASE_TO_BEGIN':   ('Erase Line ←', 'Erase to Begining of Line'),
+	'ERASE_TO_END':     ('Erase Line →', 'Erase to End of Line'),
 	'ESC':              ('ESC', 'Escape'),
-	'FLASH_OFF':        ('Flash Off', 'Flash Off'),
-	'FLASH_ON':         ('Flash On', 'Flash On'),
+	'FLASH_OFF':        ('FLASH Off', 'Flash Off'),
+	'FLASH_ON':         ('FLASH On', 'Flash On'),
+	'HELP':             ('HELP', 'HELP'),
+	'INSERT_LINE':      ('INST Line', 'Insert Line'),
 	'INST':             ('INST', 'Insert'),
 	'KEY_F1':           ('f1', 'f1 key'),
+	'KEY_F10':          ('f10', 'f10 key'),
+	'KEY_F11':          ('f11', 'f11 key'),
+	'KEY_F12':          ('f12', 'f12 key'),
+	'KEY_F13':          ('f13', 'f13 key'),
+	'KEY_F14':          ('f14', 'f14 key'),
 	'KEY_F2':           ('f2', 'f2 key'),
 	'KEY_F3':           ('f3', 'f3 key'),
 	'KEY_F4':           ('f4', 'f4 key'),
@@ -390,37 +417,25 @@ description_from_control_code_symbol = {
 	'KEY_F7':           ('f7', 'f7 key'),
 	'KEY_F8':           ('f8', 'f8 key'),
 	'KEY_F9':           ('f9', 'f9 key'),
-	'KEY_F10':          ('f10', 'f10 key'),
-	'KEY_F11':          ('f11', 'f11 key'),
-	'KEY_F12':          ('f12', 'f12 key'),
-	'KEY_F13':          ('f13', 'f13 key'),
-	'KEY_F14':          ('f14', 'f14 key'),
 	'LINE_FEED':        ('LF', 'Line Feed'),
-	'LOWER_CASE':       ('Lower Case', 'Switch to lower case'),
+	'LOWER_CASE':       ('LOWER', 'Switch to lower case'),
 	'RETURN':           ('RETURN', 'Return'),
 	'RUN':              ('RUN', 'RUN'),
 	'RVS_OFF':          ('RVS Off', 'Reverse Off'),
 	'RVS_ON':           ('RVS On', 'Reverse On'),
+	'SCROLL_DOWN':      ('Scroll Down', 'Scroll Down'),
+	'SCROLL_UP':        ('Scroll Up', 'Scroll Up'),
+	'SET_TAB':          ('Set TAB', 'Set TAB'),
+	'SHIFT_CE':         ('SHIFT CE', 'SHIFT Clear Entry'),
 	'SHIFT_RETURN':     ('SHIFT RETURN', 'Disabled Return'),
 	'STOP':             ('STOP', 'STOP'),
+	'TAB':              ('TAB', 'Forward TAB'),
 	'TAB_SET_CLR':      ('Tab set/clr', 'Tab set/clear'),
-	'UNDERLINE_OFF':    ('Underline Off', 'Underline Off'),
-	'UNDERLINE_ON':     ('Underline On', 'Underline On'),
-	'UPPER_CASE':       ('Upper Case', 'Switch to upper case'),
-	'BELL_TONE': ('BEL', 'Bell Tone'),
-	'TAB': ('TAB', 'Forward TAB'),
-	'HELP': ('HELP', 'HELP'),
-	'CE': ('CE', 'CE'),
-	'WINDOW_TOP': ('Window Top', 'Window Top'),
-	'WINDOW_BOTTOM': ('Window Bottom', 'Window Bottom'),
-	'CLEAR_ENTRY': ('Clear Entry', 'Clear Entry'),
-	'INSERT_LINE': ('INSERT_LINE', 'INSERT_LINE'),
-	'ERASE_TO_END': ('ERASE_TO_END', 'ERASE_TO_END'),
-	'SCROLL_UP': ('SCROLL_UP', 'SCROLL_UP'),
-	'SET_TAB': ('SET_TAB', 'SET_TAB'),
-	'DEL_LINE': ('DEL_LINE', 'DEL_LINE'),
-	'ERASE_TO_BEGIN': ('ERASE_TO_BEGIN', 'ERASE_TO_BEGIN'),
-	'SCROLL_DOWN': ('SCROLL_DOWN', 'SCROLL_DOWN'),
+	'UNDERLINE_OFF':    ('ULINE Off', 'Underline Off'),
+	'UNDERLINE_ON':     ('ULINE On', 'Underline On'),
+	'UPPER_CASE':       ('UPPER', 'Switch to upper case'),
+	'WINDOW_BOTTOM':    ('WIN BOT', 'Window Bottom'),
+	'WINDOW_TOP':       ('WIN TOP', 'Window Top'),
 }
 description_from_control_code = {}
 symbol_from_control_code = {}
@@ -536,103 +551,103 @@ for machine in machines:
 
 charsets = [
 	('---', 'Common', '', '', ''),
-	('vic-20_us_upper.png', 'VIC-20', '', 'upper', ''),
-	('vic-20_us_lower.png', 'VIC-20', '', 'lower', ''),
-	('c64_us_upper.png', 'C64/C16/C128', '', 'upper', ''),
-	('c64_us_lower.png', 'C64', '', 'lower', ''),
-	('c16_us_lower.png', 'C16', '', 'lower', ''),
-	('c128_us_lower.png', 'C128', '', 'lower', ''),
+	('vic-20_us_upper', 'VIC-20', '', 'upper', ''),
+	('vic-20_us_lower', 'VIC-20', '', 'lower', ''),
+	('c64_us_upper', 'C64/C16/C128', '', 'upper', ''),
+	('c64_us_lower', 'C64', '', 'lower', ''),
+	('c16_us_lower', 'C16', '', 'lower', ''),
+	('c128_us_lower', 'C128', '', 'lower', ''),
 	('---', 'PET Style', '', '', ''),
-	('pet_us_upper.png', 'PET', '', 'upper', ''),
-	('pet_us_lower.png', 'PET', '', 'lower', ''),
-	('pet_us_lower_swapped.png', 'PET', '', 'lower', 'swapped'),
-	('vic-20_us_upper.png', 'VIC-20', '', 'upper', ''),
-	('vic-20_us_lower.png', 'VIC-20', '', 'lower', ''),
+	('pet_us_upper', 'PET', '', 'upper', ''),
+	('pet_us_lower', 'PET', '', 'lower', ''),
+	('pet_us_lower_swapped', 'PET', '', 'lower', 'swapped'),
+	('vic-20_us_upper', 'VIC-20', '', 'upper', ''),
+	('vic-20_us_lower', 'VIC-20', '', 'lower', ''),
 	('---', 'PET Style Localized', '', '', ''),
-	('vic-20_danish_upper.png', 'VIC-20', 'Danish', 'upper', ''),
-	('vic-20_danish_lower.png', 'VIC-20', 'Danish', 'lower', ''),
-	('c128_danish_upper.png', 'C128', 'Danish', 'upper', ''),
-	('c128_danish_lower.png', 'C128', 'Danish', 'lower', ''),
-	('pet_french_upper.png', 'PET', 'French', 'upper', ''),
-	('c128_french_upper.png', 'C128', 'French', 'upper', ''),
-	('c128_french_upper_alt.png', 'C128', 'French', 'upper', 'alt'),
-	('c128_french_lower.png', 'C128', 'French', 'lower', ''),
-	('c128_french_lower_alt.png', 'C128', 'French', 'lower', 'alt'),
-	('pet_french_lower.png', 'PET', 'French', 'lower', ''),
-	('pet_german_upper.png', 'PET', 'German', 'upper', ''),
-	('pet_german_lower.png', 'PET', 'German', 'lower', ''),
-	('pet_german_lower_alt.png', 'PET', 'German', 'lower', 'alt'),
-	('pet_german_lower_alt2.png', 'PET', 'German', 'lower', 'alt'),
-	('c128_german_upper.png', 'C128', 'German', 'upper', ''),
-	('c128_german_lower.png', 'C128', 'German', 'lower', ''),
-	('pet_greek_upper.png', 'PET', 'Greek', 'upper', ''),
-	('pet_greek_lower.png', 'PET', 'Greek', 'lower', ''),
-	('pet_hungarian_upper.png', 'PET', 'Hungarian', 'upper', ''),
-	('pet_hungarian_lower.png', 'PET', 'Hungarian', 'lower', ''),
-	('pet_japanese_upper.png', 'PET/VIC-20', 'Japanese', 'upper', ''),
-	('pet_japanese_upper_bug.png', 'PET/VIC-20', 'Japanese', 'upper', 'bug'),
-	('vic-20_japanese_upper-kanji.png', 'VIC-20', 'Japanese', 'upper-Kanji', ''),
-	('c64_japanese_upper.png', 'C64', 'Japanese', 'upper', ''),
-	('c64_japanese_upper-kanji.png', 'C64', 'Japanese', 'upper-Kanji', ''),
-	('pet_norwegian_upper.png', 'PET', 'Norwegian', 'upper', ''),
-	('pet_norwegian_lower.png', 'PET', 'Norwegian', 'lower', ''),
-	('c128_norwegian_lower.png', 'C128', 'Norwegian', 'lower', ''),
-	('c128_norwegian_lower_alt.png', 'C128', 'Norwegian', 'lower', 'alt'),
-	('c128_norwegian_upper.png', 'C128', 'Norwegian', 'upper', ''),
-	('c128_norwegian_upper_bugs.png', 'C128', 'Norwegian', 'upper', 'bugs'),
-	('c128_norwegian_upper_alt.png', 'C128', 'Norwegian', 'upper', 'alt'),
-	('c128_norwegian_upper_alt-bugs.png', 'C128', 'Norwegian', 'upper', 'alt-bugs'),
-	('c128_norwegian_lower.png', 'C128', 'Norwegian', 'lower', ''),
-	('c128_norwegian_lower_alt.png', 'C128', 'Norwegian', 'lower', 'alt'),
-	('pet_russian_upper.png', 'PET', 'Russian', 'upper', ''),
-	('c128_spanish_upper.png', 'C128', 'Spanish', 'upper', ''),
-	('c128_spanish_upper_alt.png', 'C128', 'Spanish', 'upper', 'alt'),
-	('c128_spanish_lower.png', 'C128', 'Spanish', 'lower', ''),
-	('c128_spanish_lower_alt.png', 'C128', 'Spanish', 'lower', 'alt'),
-	('pet_swedish_upper.png', 'PET/VIC-20', 'Swedish', 'upper', ''),
-	('pet_swedish_lower.png', 'PET/VIC-20', 'Swedish', 'lower', ''),
-	('vic-20_swedish_lower_alt.png', 'VIC-20', 'Swedish', 'lower', 'alt'),
-	('c128_swiss_upper.png', 'C128', 'Swiss', 'upper', ''),
-	('c128_swiss_upper_alt.png', 'C128', 'Swiss', 'upper', 'alt'),
-	('c128_swiss_lower.png', 'C128', 'Swiss', 'lower', ''),
-	('c128_swiss_lower_alt.png', 'C128', 'Swiss', 'lower', 'alt'),
+	('vic-20_danish_upper', 'VIC-20', 'Danish', 'upper', ''),
+	('vic-20_danish_lower', 'VIC-20', 'Danish', 'lower', ''),
+	('c128_danish_upper', 'C128', 'Danish', 'upper', ''),
+	('c128_danish_lower', 'C128', 'Danish', 'lower', ''),
+	('pet_french_upper', 'PET', 'French', 'upper', ''),
+	('c128_french_upper', 'C128', 'French', 'upper', ''),
+	('c128_french_upper_alt', 'C128', 'French', 'upper', 'alt'),
+	('c128_french_lower', 'C128', 'French', 'lower', ''),
+	('c128_french_lower_alt', 'C128', 'French', 'lower', 'alt'),
+	('pet_french_lower', 'PET', 'French', 'lower', ''),
+	('pet_german_upper', 'PET', 'German', 'upper', ''),
+	('pet_german_lower', 'PET', 'German', 'lower', ''),
+	('pet_german_lower_alt', 'PET', 'German', 'lower', 'alt'),
+	('pet_german_lower_alt2', 'PET', 'German', 'lower', 'alt'),
+	('c128_german_upper', 'C128', 'German', 'upper', ''),
+	('c128_german_lower', 'C128', 'German', 'lower', ''),
+	('pet_greek_upper', 'PET', 'Greek', 'upper', ''),
+	('pet_greek_lower', 'PET', 'Greek', 'lower', ''),
+	('pet_hungarian_upper', 'PET', 'Hungarian', 'upper', ''),
+	('pet_hungarian_lower', 'PET', 'Hungarian', 'lower', ''),
+	('pet_japanese_upper', 'PET/VIC-20', 'Japanese', 'upper', ''),
+	('pet_japanese_upper_bug', 'PET/VIC-20', 'Japanese', 'upper', 'bug'),
+	('vic-20_japanese_upper-kanji', 'VIC-20', 'Japanese', 'upper-Kanji', ''),
+	('c64_japanese_upper', 'C64', 'Japanese', 'upper', ''),
+	('c64_japanese_upper-kanji', 'C64', 'Japanese', 'upper-Kanji', ''),
+	('pet_norwegian_upper', 'PET', 'Norwegian', 'upper', ''),
+	('pet_norwegian_lower', 'PET', 'Norwegian', 'lower', ''),
+	('c128_norwegian_lower', 'C128', 'Norwegian', 'lower', ''),
+	('c128_norwegian_lower_alt', 'C128', 'Norwegian', 'lower', 'alt'),
+	('c128_norwegian_upper', 'C128', 'Norwegian', 'upper', ''),
+	('c128_norwegian_upper_bugs', 'C128', 'Norwegian', 'upper', 'bugs'),
+	('c128_norwegian_upper_alt', 'C128', 'Norwegian', 'upper', 'alt'),
+	('c128_norwegian_upper_alt-bugs', 'C128', 'Norwegian', 'upper', 'alt-bugs'),
+	('c128_norwegian_lower', 'C128', 'Norwegian', 'lower', ''),
+	('c128_norwegian_lower_alt', 'C128', 'Norwegian', 'lower', 'alt'),
+	('pet_russian_upper', 'PET', 'Russian', 'upper', ''),
+	('c128_spanish_upper', 'C128', 'Spanish', 'upper', ''),
+	('c128_spanish_upper_alt', 'C128', 'Spanish', 'upper', 'alt'),
+	('c128_spanish_lower', 'C128', 'Spanish', 'lower', ''),
+	('c128_spanish_lower_alt', 'C128', 'Spanish', 'lower', 'alt'),
+	('pet_swedish_upper', 'PET/VIC-20', 'Swedish', 'upper', ''),
+	('pet_swedish_lower', 'PET/VIC-20', 'Swedish', 'lower', ''),
+	('vic-20_swedish_lower_alt', 'VIC-20', 'Swedish', 'lower', 'alt'),
+	('c128_swiss_upper', 'C128', 'Swiss', 'upper', ''),
+	('c128_swiss_upper_alt', 'C128', 'Swiss', 'upper', 'alt'),
+	('c128_swiss_lower', 'C128', 'Swiss', 'lower', ''),
+	('c128_swiss_lower_alt', 'C128', 'Swiss', 'lower', 'alt'),
 	('---', 'C64 Style', '', '', ''),
-	('c64_us_upper.png', 'C64/C16/C128', '', 'upper', ''),
-	('c64_us_upper_alt.png', 'C64', '', 'upper', 'alt'),
-	('c64_us_lower.png', 'C64', '', 'lower', ''),
-	('c64_us_lower_alt.png', 'C64', '', 'lower', 'alt'),
-	('c16_us_lower.png', 'C16', '', 'lower', ''),
-	('c128_us_lower.png', 'C128', '', 'lower', ''),
+	('c64_us_upper', 'C64/C16/C128', '', 'upper', ''),
+	('c64_us_upper_alt', 'C64', '', 'upper', 'alt'),
+	('c64_us_lower', 'C64', '', 'lower', ''),
+	('c64_us_lower_alt', 'C64', '', 'lower', 'alt'),
+	('c16_us_lower', 'C16', '', 'lower', ''),
+	('c128_us_lower', 'C128', '', 'lower', ''),
 	('---', 'C64 Style Localized', '', '', ''),
-	('c64_danish_upper.png', 'C64', 'Danish', 'upper', ''),
-	('c64_danish_upper_alt.png', 'C64', 'Danish', 'upper', 'alt'),
-	('c64_danish_lower.png', 'C64', 'Danish', 'lower', ''),
-	('c64_danish_lower_alt.png', 'C64', 'Danish', 'lower', 'alt'),
-	('c16_hungarian_upper.png', 'C16', 'Hungarian', 'upper', ''),
-	('c16_hungarian_lower.png', 'C16', 'Hungarian', 'lower', ''),
-	('c64_spanish_upper.png', 'C64', 'Spanish', 'upper', ''),
-	('c64_spanish_lower.png', 'C64', 'Spanish', 'lower', ''),
-	('c64_swedish_upper.png', 'C64', 'Swedish', 'upper', ''),
-	('c64_swedish_upper_bugs.png', 'C64', 'Swedish', 'upper', 'bugs'),
-	('c64_swedish_upper_alt.png', 'C64', 'Swedish', 'upper', 'alt'),
-	('c64_swedish_upper_alt2.png', 'C64', 'Swedish', 'upper', 'alt2'),
-	('c64_swedish_lower.png', 'C64', 'Swedish', 'lower', ''),
-	('c64_swedish_lower_alt.png', 'C64', 'Swedish', 'lower', 'alt'),
-	('c64_swedish_lower_2.png', 'C64', 'Swedish', 'lower', '2'),
-	('c64_swedish_lower_2alt.png', 'C64', 'Swedish', 'lower', '2alt'),
+	('c64_danish_upper', 'C64', 'Danish', 'upper', ''),
+	('c64_danish_upper_alt', 'C64', 'Danish', 'upper', 'alt'),
+	('c64_danish_lower', 'C64', 'Danish', 'lower', ''),
+	('c64_danish_lower_alt', 'C64', 'Danish', 'lower', 'alt'),
+	('c16_hungarian_upper', 'C16', 'Hungarian', 'upper', ''),
+	('c16_hungarian_lower', 'C16', 'Hungarian', 'lower', ''),
+	('c64_spanish_upper', 'C64', 'Spanish', 'upper', ''),
+	('c64_spanish_lower', 'C64', 'Spanish', 'lower', ''),
+	('c64_swedish_upper', 'C64', 'Swedish', 'upper', ''),
+	('c64_swedish_upper_bugs', 'C64', 'Swedish', 'upper', 'bugs'),
+	('c64_swedish_upper_alt', 'C64', 'Swedish', 'upper', 'alt'),
+	('c64_swedish_upper_alt2', 'C64', 'Swedish', 'upper', 'alt2'),
+	('c64_swedish_lower', 'C64', 'Swedish', 'lower', ''),
+	('c64_swedish_lower_alt', 'C64', 'Swedish', 'lower', 'alt'),
+	('c64_swedish_lower_2', 'C64', 'Swedish', 'lower', '2'),
+	('c64_swedish_lower_2alt', 'C64', 'Swedish', 'lower', '2alt'),
 	('---', 'LCD Style', '', '', ''),
-	('lcd_us_upper.png', 'LCD', '', 'upper', ''),
-	('lcd_us_lower.png', 'LCD', '', 'lower', ''),
+	('lcd_us_upper', 'LCD', '', 'upper', ''),
+	('lcd_us_lower', 'LCD', '', 'lower', ''),
 	('---', 'Other', '', '', ''),
-	('superpet_us_ascii.png', 'SuperPET', '', 'ASCII', ''),
-	('superpet_swedish_ascii.png', 'SuperPET', 'Swedish', 'ASCII', ''),
-	('superpet_us_apl.png', 'SuperPET', '', 'APL', ''),
-	('c64_turkish_upper.png', 'C64', 'Turkish', 'upper', ''),
-	('c64_turkish_lower.png', 'C64', 'Turkish', 'lower', ''),
-	('c64_us_upper_buggy1.png', 'C64', '', 'upper', 'buggy1'),
-	('c64_us_upper_buggy2.png', 'C64', '', 'upper', 'buggy2'),
-	('c64_us_lower_buggy1.png', 'C64', '', 'lower', 'buggy1'),
-	('c64_us_lower_buggy1.png', 'C64', '', 'lower', 'buggy1'),
+	('superpet_us_ascii', 'SuperPET', '', 'ASCII', ''),
+	('superpet_swedish_ascii', 'SuperPET', 'Swedish', 'ASCII', ''),
+	('superpet_us_apl', 'SuperPET', '', 'APL', ''),
+	('c64_turkish_upper', 'C64', 'Turkish', 'upper', ''),
+	('c64_turkish_lower', 'C64', 'Turkish', 'lower', ''),
+	('c64_us_upper_buggy1', 'C64', '', 'upper', 'buggy1'),
+	('c64_us_upper_buggy2', 'C64', '', 'upper', 'buggy2'),
+	('c64_us_lower_buggy1', 'C64', '', 'lower', 'buggy1'),
+	('c64_us_lower_buggy1', 'C64', '', 'lower', 'buggy1'),
 ]
 
 ####################################################################
@@ -676,7 +691,7 @@ def html_div_overview_screencode(id, css_class):
 
 def html_div_overview_petscii(id, css_class):
 
-	machine = 'TED'
+	machine = 'C64'
 
 	print('<div id="' + id + '" class="'+ css_class +'">')
 
@@ -865,7 +880,7 @@ def html_div_info_petscii(id):
 			
 		print('    <div class="additional-info">')
 
-		(all_keyboard_html, other_petscii) = all_keyboard_html_from_petscii(petscii, is_petscii_printable(petscii))
+		(all_keyboard_html, other_petscii) = all_keyboard_html_from_petscii(petscii, scrcode, other_ok = is_petscii_printable(petscii))
 
 		print('        <div><span class="info-title">Keyboard</span>')
 
@@ -895,13 +910,13 @@ def html_div_selection_charset(id, charsets):
 		if filename == '---':
 			print('    <optgroup label="{}">'.format(machine))
 		else:
-			if filename == 'c64_us_upper.png' and not seen_selected:
+			if filename == 'c64_us_upper' and not seen_selected:
 				seen_selected = True
 				selected = 'selected'
 			else:
 				selected = ''
 			displayname = displayname_for_charset_details(machine, locale, type, version)
-			print('    <option value="png/{}" {}>{}</option>'.format(filename, selected, displayname))
+			print('    <option value="png/{}.png" {}>{}</option>'.format(filename, selected, displayname))
 	print('</select>')
 	print('')
 	print('<br/>')
@@ -919,24 +934,38 @@ def html_div_table_charset(id, css_class,  charsets):
 
 	print('<div id="' + id + '" class="'+ css_class +'">')
 
+	print('<label for="case">Case</label></br>')
+	print('<select name="case" id="case" onChange="caseSwitch(this.selectedIndex);">')
+	print('    <option value="all">All</option>')
+	print('    <option value="upper">Upper Case</option>')
+	print('    <option value="lower">Lower Case</option>')
+	print('</select>')
+
 	# Charset Table
 	print('<table>')
 
 	for (filename, machine, locale, type, version) in charsets:
-		print('    <tr>')
 		if filename == '---':
+			print('    <tr>')
 			print('        <td colspan="2">')
 			print('            <b>{}</b>'.format(machine))
 			print('        </td>')
+			print('    </tr>')
 		else:
+			if 'upper' in type:
+				case = 'table_upper'
+			else:
+				case = 'table_lower'
+			print('    <tr class="{}">'.format(case))
 			print('        <td>')
 			print(displayname_for_charset_details(machine, locale, type, version))
+			print('<span style="float: right;"><a href="bin/{}.bin">.bin</a></span>'.format(filename))
 			print('        </td>')
 			print('        <td>')
 			for line in range(0, 8):
-				print('        <div class="char-box16"><span class="char-img16 char16-{}" style="background-image: url(png/{});"></span></div>'.format(hex(line), filename))
+				print('        <div class="char-box16"><span class="char-img16 char16-{}" style="background-image: url(png/{}.png);"></span></div>'.format(hex(line), filename))
 			print('        </td>')
-		print('    </tr>')
+			print('    </tr>')
 
 	print('</table>')
 	print('</div>')
@@ -994,7 +1023,7 @@ def html_div_table_petscii(id, css_class):
 		i = 0
 		for machine in machines:
 			print('        <td class="{}" style="background: var(--light-color-{})">'.format(machine, i+1))
-			(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, scrcode, machine)
+			(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, scrcode, True, machine)
 			if len(modifiers_and_scancodes_html) > 0:
 				if not other_petscii:
 					for html in modifiers_and_scancodes_html:

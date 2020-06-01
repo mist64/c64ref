@@ -1,21 +1,25 @@
 function test(element) {
-	console.log(element);
-	var box = document.getElementById(element);
-	box.classList.add("highlighted");
-	
-	var boxes = document.getElementsByClassName("char-box highlighted");
-	var i;
-	for (i = 0; i < boxes.length; i++) {
-		var currentBox = boxes[i];
-		if (currentBox != box) {
-			currentBox.classList.remove("highlighted");
+	if (element == null) {
+		var infoBox = document.getElementById("info_box");
+		infoBox.innerHTML = '';
+	} else {
+		var box = document.getElementById(element);
+		box.classList.add("highlighted");
+
+		var boxes = document.getElementsByClassName("char-box highlighted");
+		var i;
+		for (i = 0; i < boxes.length; i++) {
+			var currentBox = boxes[i];
+			if (currentBox != box) {
+				currentBox.classList.remove("highlighted");
+			}
 		}
+
+		var infoId = "info_".concat(element) ;
+		var currentInfo = document.getElementById(infoId);
+		var infoBox = document.getElementById("info_box");
+		infoBox.innerHTML = currentInfo.innerHTML;
 	}
-	
-	var infoId = "info_".concat(element) ;
-	var currentInfo = document.getElementById(infoId);
-	var infoBox = document.getElementById("info_box");
-	infoBox.innerHTML = currentInfo.innerHTML;
 }
 
 function toggleMachine(machine, checked, deselectionArray=[]) {
@@ -66,24 +70,44 @@ function toggleMachine(machine, checked, deselectionArray=[]) {
 	}
 }
 
-function showHide(items1, items2) {
+function showItems(name) {
+	items = document.getElementsByClassName(name)
 	var i;
-	for (i = 0; i < items1.length; i++) {
-		var currentItem = items1[i];
+	for (i = 0; i < items.length; i++) {
+		var currentItem = items[i];
 		currentItem.style.display = null;
 	}
+}
+
+function hideItems(name) {
+	items = document.getElementsByClassName(name)
 	var i;
-	for (i = 0; i < items2.length; i++) {
-		var currentItem = items2[i];
+	for (i = 0; i < items.length; i++) {
+		var currentItem = items[i];
 		currentItem.style.display = "none";
 	}
 }
 
 function unicodeSwitch(index) {
 	if (index == 0) {
-		showHide(document.getElementsByClassName("unicode_upper"), document.getElementsByClassName("unicode_lower"));
+		showItems("unicode_upper");
+		hideItems("unicode_lower");
 	} else if (index == 1) {
-		showHide(document.getElementsByClassName("unicode_lower"), document.getElementsByClassName("unicode_upper"));
+		hideItems("unicode_upper");
+		showItems("unicode_lower");
+	}
+}
+
+function caseSwitch(index) {
+	if (index == 0) {
+		showItems("table_upper");
+		showItems("table_lower");
+	} else if (index == 1) {
+		showItems("table_upper");
+		hideItems("table_lower");
+	} else if (index == 2) {
+		hideItems("table_upper");
+		showItems("table_lower");
 	}
 }
 
@@ -113,7 +137,11 @@ function highlight_key(machine, scancode, petscii_regular, petscii_shift, petsci
 		} else if (gmodifier == 'ctrl') {
 			petscii = petscii_ctrl;
 		}
-		test(petscii);
+		if (petscii != 'petscii_0xff') {
+			test(petscii);
+		} else {
+			test(null)
+		}
 		gmodifier = 'regular';
 	} else {
 		// a modifier was pressed
