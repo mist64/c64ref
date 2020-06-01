@@ -552,7 +552,7 @@ def html_header_css():
 	print('</style>')
 
 
-def html_div_screencode_overview(id):
+def html_div_overview_screencode(id):
 
 	print('<div id="' + id + '">')
 
@@ -565,7 +565,7 @@ def html_div_screencode_overview(id):
 	print('</div>')
 
 
-def html_div_petscii_overview(id):
+def html_div_overview_petscii(id):
 
 	machine = 'TED'
 
@@ -594,7 +594,7 @@ def html_div_petscii_overview(id):
 	print('</div>')
 	
 	
-def html_div_keyboard_overview(id):
+def html_div_overview_keyboard(id):
 	
 	print('<div id="' + id + '">')
 
@@ -604,7 +604,7 @@ def html_div_keyboard_overview(id):
 	print('</div>')
 	
 	
-def html_div_machine_selection(id):
+def html_div_selection_machine(id):
 
 	print('<div id="' + id + '">')
 	print('<table class="checkbox_table">')
@@ -780,6 +780,147 @@ def html_div_info_petscii(id):
 	print('</div>')
 
 
+def html_div_selection_charset(id, charsets):
+
+	print('<div id="' + id + '">')
+
+	print('<label for="charset">Character Set</label></br>')
+	print('<select name="charset" id="charset" onChange="charsetSwitch(this.options[this.selectedIndex].value);">')
+	seen_selected = False
+	for (filename, machine, locale, type, version) in charsets:
+		if filename == '---':
+			print('    <optgroup label="{}">'.format(machine))
+		else:
+			if filename == 'c64_us_upper.png' and not seen_selected:
+				seen_selected = True
+				selected = 'selected'
+			else:
+				selected = ''
+			displayname = displayname_for_charset_details(machine, locale, type, version)
+			print('    <option value="png/{}" {}>{}</option>'.format(filename, selected, displayname))
+	print('</select>')
+	print('')
+	print('<br/>')
+	print('')
+	print('<label for="unicode">Unicode Map</label></br>')
+	print('<select name="unicode" id="unicode" onChange="unicodeSwitch(this.selectedIndex);">')
+	print('    <option value="us_upper">US Upper Case</option>')
+	print('    <option value="us_lower">US Lower Case</option>')
+	print('</select>')
+
+	print('</div>')
+
+
+def html_div_table_charset(id, charsets):
+
+	print('<div id="' + id + '">')
+
+	# Charset Table
+	print('<table border="1">')
+
+	for (filename, machine, locale, type, version) in charsets:
+		print('    <tr>')
+		if filename == '---':
+			print('        <td colspan="2">')
+			print('            <b>{}</b>'.format(machine))
+			print('        </td>')
+		else:
+			print('        <td>')
+			print(displayname_for_charset_details(machine, locale, type, version))
+			print('        </td>')
+			print('        <td>')
+			for line in range(0, 8):
+				print('        <div class="char-box16"><span class="char-img16 char16-{}" style="background-image: url(png/{});"></span></div>'.format(hex(line), filename))
+			print('        </td>')
+		print('    </tr>')
+
+	print('</table>')
+	print('</div>')
+
+
+def html_div_table_petscii(id):
+	print('<div id="' + id + '">')
+
+	# PETSCII Table
+
+	print('<table border="1">')
+
+	print('    <tr>')
+	print('        <th>PETSCII</th>')
+	print('        <th>Screen Code</th>')
+	print('        <th>Char</th>')
+	print('        <th colspan="3" class="unicode_upper">Unicode Upper</th>')
+	print('        <th colspan="3" class="unicode_lower" style="display: none;">Unicode Lower</th>')
+	i = 0
+	for machine in machines:
+		print('        <th class="{}" style="background: var(--title-color-{})">{}<br/>Keyboard</th>'.format(machine, i+1, machine))
+		i += 1
+	i = 0
+	for machine in machines:
+		print('        <th class="{}" style="background: var(--title-color-{})">{}<br/>Control Code</th>'.format(machine, i+1, machine))
+		i += 1
+	print('    </tr>')
+
+	for petscii in range(0, 256):
+		print('    <tr>')
+
+		print('        <td><a id="petscii_table_{:02x}">${:02X}</a></td>'.format(petscii, petscii))
+		
+		scrcode = scrcode_from_petscii[petscii]
+
+		print('        <td>${:02X}</td>'.format(scrcode))
+		print('        <td>{}</td>'.format(pixel_char_html_from_scrcode(scrcode)))
+
+		if is_petscii_printable(petscii):
+			unicode = unicode_from_petscii['upper'][petscii]
+			print('        <td class="unicode_upper"><span class="unicode-box">&#x{:x};</span></td>'.format(unicode))
+			print('        <td class="unicode_upper">U+{:04X}</td>'.format(unicode))
+			print('        <td class="unicode_upper">{}</td>'.format(description_from_unicode[unicode]))
+
+			unicode = unicode_from_petscii['lower'][petscii]
+			print('        <td class="unicode_lower" style="display: none;"><span class="unicode-box">&#x{:x};</span></td>'.format(unicode))
+			print('        <td class="unicode_lower" style="display: none;">U+{:04X}</td>'.format(unicode))
+			print('        <td class="unicode_lower" style="display: none;">{}</td>'.format(description_from_unicode[unicode]))
+		else:
+			print('        <td colspan="3"></td>')
+
+		# Keyboard
+		i = 0
+		for machine in machines:
+			print('        <td class="{}" style="background: var(--light-color-{})">'.format(machine, i+1))
+			(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, scrcode, machine)
+			if len(modifiers_and_scancodes_html) > 0:
+				if not other_petscii:
+					for html in modifiers_and_scancodes_html:
+						print('            {}<br/>'.format(html))
+			print('        </td>')
+			i += 1
+
+
+		if is_petscii_printable(petscii):
+			print('        <td colspan="{}"></td>'.format(len(machines)))
+
+		else:
+			i = 0
+			for machine in machines:
+				description = description_from_control_code[machine].get(petscii)
+				if description:
+					(_, description) = description
+				color_html = ''
+				symbol = symbol_from_control_code[machine][petscii]
+				if not description:
+					description = ''
+				if symbol in color_index_from_color_name[machine]:
+					hex_color = hex_color_from_color_index[machine][color_index_from_color_name[machine][symbol]]
+					description = '<span style="background-color:{}; border: solid gray 1px; width: 1em; height: 1em; display: inline-block;"> </span> '.format(hex_color) + description
+				print('        <td class="{}" style="background: var(--light-color-{})">{}</td>'.format(machine, i+1, description))
+				i += 1
+
+		print('    </tr>')
+
+	print('</table>')
+	print('</div>')
+
 ####################################################################
 
 
@@ -821,19 +962,19 @@ print('   </nav>')
 print('')
 print('   <figure>')
 
-html_div_screencode_overview("screencode_overview")
-html_div_petscii_overview("petscii_overview")
-html_div_keyboard_overview("keyboard_overview")
+html_div_overview_screencode("screencode_overview")
+html_div_overview_petscii("petscii_overview")
+html_div_overview_keyboard("keyboard_overview")
 
 print('   </figure>')
 
-print('</div>')
+print('</div>')#tabbed
 
 print('<div id="info_box"></div>')
 
-print('</div>')
+print('</div>')#body
 
-html_div_machine_selection("machine_selection")
+html_div_selection_machine("machine_selection")
 
 print('<div style="display: none">')
 
@@ -945,129 +1086,11 @@ charsets = [
 	('c64_us_lower_buggy1.png', 'C64', '', 'lower', 'buggy1'),
 ]
 
-print('<label for="charset">Character Set</label></br>')
-print('<select name="charset" id="charset" onChange="charsetSwitch(this.options[this.selectedIndex].value);">')
-seen_selected = False
-for (filename, machine, locale, type, version) in charsets:
-	if filename == '---':
-		print('  <optgroup label="{}">'.format(machine))
-	else:
-		if filename == 'c64_us_upper.png' and not seen_selected:
-			seen_selected = True
-			selected = 'selected'
-		else:
-			selected = ''
-		displayname = displayname_for_charset_details(machine, locale, type, version)
-		print('  <option value="png/{}" {}>{}</option>'.format(filename, selected, displayname))
-print('</select>')
-print('<br/>')
-print('<label for="unicode">Unicode Map</label></br>')
-print('<select name="unicode" id="unicode" onChange="unicodeSwitch(this.selectedIndex);">')
-print('  <option value="us_upper">US Upper Case</option>')
-print('  <option value="us_lower">US Lower Case</option>')
-print('</select>')
 
+html_div_selection_charset("charset_selection", charsets)
+html_div_table_charset("charset_table", charsets)
 
-
-# Charset Table
-print('<table border="1">')
-for (filename, machine, locale, type, version) in charsets:
-	print('<tr>')
-	if filename == '---':
-		print('<td colspan="2">')
-		print('<b>{}</b>'.format(machine))
-		print('</td>')
-	else:
-		print('<td>')
-		print(displayname_for_charset_details(machine, locale, type, version))
-		print('</td>')
-		print('<td>')
-		for line in range(0, 8):
-			print('<div class="char-box16"><span class="char-img16 char16-{}" style="background-image: url(png/{});"></span></div>'.format(hex(line), filename))
-		print('</td>')
-	print('</tr>')
-print('</table>')
-
-
-
-# PETSCII Table
-print('<table border="1">')
-print('<tr>')
-print('<th>PETSCII</th>')
-print('<th>Screen Code</th>')
-print('<th>Char</th>')
-print('<th colspan="3" class="unicode_upper">Unicode Upper</th>')
-print('<th colspan="3" class="unicode_lower" style="display: none;">Unicode Lower</th>')
-i = 0
-for machine in machines:
-	print('<th class="{}" style="background: var(--title-color-{})">{}<br/>Keyboard</th>'.format(machine, i+1, machine))
-	i += 1
-i = 0
-for machine in machines:
-	print('<th class="{}" style="background: var(--title-color-{})">{}<br/>Control Code</th>'.format(machine, i+1, machine))
-	i += 1
-print('</tr>')
-for petscii in range(0, 256):
-	print('<tr>')
-
-	print('<td><a id="petscii_table_{:02x}">${:02X}</a></td>'.format(petscii, petscii))
-    
-	scrcode = scrcode_from_petscii[petscii]
-
-	print('<td>${:02X}</td>'.format(scrcode))
-
-	print('<td>{}</td>'.format(pixel_char_html_from_scrcode(scrcode)))
-
-	if is_petscii_printable(petscii):
-		unicode = unicode_from_petscii['upper'][petscii]
-		print('<td class="unicode_upper"><span class="unicode-box">&#x{:x};</span></td>'.format(unicode))
-		print('<td class="unicode_upper">U+{:04X}</td>'.format(unicode))
-		print('<td class="unicode_upper">{}</td>'.format(description_from_unicode[unicode]))
-
-		unicode = unicode_from_petscii['lower'][petscii]
-		print('<td class="unicode_lower" style="display: none;"><span class="unicode-box">&#x{:x};</span></td>'.format(unicode))
-		print('<td class="unicode_lower" style="display: none;">U+{:04X}</td>'.format(unicode))
-		print('<td class="unicode_lower" style="display: none;">{}</td>'.format(description_from_unicode[unicode]))
-	else:
-		print('<td colspan="3"></td>')
-
-	# keyboard
-	i = 0
-	for machine in machines:
-		print('<td class="{}" style="background: var(--light-color-{})">'.format(machine, i+1))
-		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, scrcode, machine)
-		if len(modifiers_and_scancodes_html) > 0:
-			if not other_petscii:
-				for html in modifiers_and_scancodes_html:
-					print('{}<br/>'.format(html))
-		print('</td>')
-		i += 1
-
-
-	if is_petscii_printable(petscii):
-		print('<td colspan="{}"></td>'.format(len(machines)))
-
-	else:
-		i = 0
-		for machine in machines:
-			description = description_from_control_code[machine].get(petscii)
-			if description:
-				(_, description) = description
-			color_html = ''
-			symbol = symbol_from_control_code[machine][petscii]
-			if not description:
-				description = ''
-			if symbol in color_index_from_color_name[machine]:
-				hex_color = hex_color_from_color_index[machine][color_index_from_color_name[machine][symbol]]
-				description = '<span style="background-color:{}; border: solid gray 1px; width: 1em; height: 1em; display: inline-block;"> </span> '.format(hex_color) + description
-			print('<td class="{}" style="background: var(--light-color-{})">{}</td>'.format(machine, i+1, description))
-			i += 1
-
-
-
-	print('</tr>')
-
-print('</table>')
+html_div_table_petscii("petscii_table")
 
 print('</body>')
 print('</html>')
