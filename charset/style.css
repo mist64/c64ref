@@ -11,13 +11,10 @@
 /* via https://www.mediaevent.de/tutorial/css-tabs.html */
 
 #tab_screencode:checked ~ figure #screencode_overview,
-#tab_petscii:checked ~ figure #petscii_overview {
-	display: block;
-}
+#tab_petscii:checked ~ figure #petscii_overview,
 #tab_keyboard:checked ~ figure #keyboard_overview {
 	display: block;
 }
-
 
 
 /* Tabs mit radio-Buttons */
@@ -67,7 +64,8 @@ nav label:active {
 }
 
 #tab_screencode:checked ~ nav label[for="tab_screencode"],
-#tab_petscii:checked ~ nav label[for="tab_petscii"] {
+#tab_petscii:checked ~ nav label[for="tab_petscii"],
+#tab_keyboard:checked ~ nav label[for="tab_keyboard"] {
 	background: var(--box-background);
 	color: black;
 	position: relative;
@@ -76,7 +74,8 @@ nav label:active {
 }
 
 #tab_screencode:checked ~ nav label[for="tab_screencode"]:after,
-#tab_petscii:checked ~ nav label[for="tab_petscii"]:after {
+#tab_petscii:checked ~ nav label[for="tab_petscii"]:after, 
+#tab_keyboard:checked ~ nav label[for="tab_keyboard"]:after {
 	content: "";
 	display: block;
 	position: absolute;
