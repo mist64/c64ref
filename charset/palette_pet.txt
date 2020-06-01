@@ -1,1 +1,1 @@
-palette_c64.txt
+# empty
