@@ -1046,36 +1046,48 @@ print('</head>')
 
 print('<body>')
 print('<div class="body">')
-print('<div class="tabbed">')
 
+print('   <div style="float: right; background:pink;">')
+html_div_selection_machine("machine_selection")
+html_div_selection_charset("charset_selection", charsets)
+print('   </div>')
+
+print('<div class="tabbed">')
 print('')
 print('   <input checked="checked" id="tab_screencode" type="radio" name="tabs" />')
 print('   <input id="tab_petscii" type="radio" name="tabs" />')
 print('   <input id="tab_keyboard" type="radio" name="tabs" />')
 print('')
 print('   <nav>')
-print('      <label for="tab_screencode">Character Set</label>')
-print('      <label for="tab_petscii">PETSCII</label>')
-print('      <label for="tab_keyboard">Keyboard</label>')
+print('      <label for="tab_screencode">Character Set</label><!--')
+print('       --><label for="tab_petscii">PETSCII</label><!--')
+print('       --><label for="tab_keyboard">Keyboard</label><!-- -->')
 print('   </nav>')
 print('')
 
 print('   <figure>')
-html_div_overview_screencode("screencode_overview")
-html_div_overview_petscii("petscii_overview")
-html_div_overview_keyboard("keyboard_overview")
-print('   </figure>')
 
-html_div_selection_machine("machine_selection")
-html_div_selection_charset("charset_selection", charsets)
+# Screencodes and Character Sets
+print('      <div id="screencode">')
+html_div_overview_screencode("screencode_overview")
+html_div_table_charset("charset_table", charsets)
+print('      </div>');
+
+# PETSCII
+print(      '<div id="petscii">')
+html_div_overview_petscii("petscii_overview")
+html_div_table_petscii("petscii_table")
+print(      '</div>');
+
+# Keyboards
+print(      '<div id="keyboard">')
+html_div_overview_keyboard("keyboard_overview")
+print('      </div>');
+
+print('   </figure>')
 print('</div>')#tabbed
 
 print('<div id="info_box"></div>')
-
-
-html_div_table_charset("charset_table", charsets)
-html_div_table_petscii("petscii_table")
-
 
 print('<div style="display: none">')
 html_div_info_screencode("screencode_boxes")

@@ -10,9 +10,9 @@
 
 /* via https://www.mediaevent.de/tutorial/css-tabs.html */
 
-#tab_screencode:checked ~ figure #screencode_overview,
-#tab_petscii:checked ~ figure #petscii_overview,
-#tab_keyboard:checked ~ figure #keyboard_overview {
+#tab_screencode:checked ~ figure #screencode,
+#tab_petscii:checked ~ figure #petscii,
+#tab_keyboard:checked ~ figure #keyboard {
 	display: block;
 }
 
@@ -42,7 +42,7 @@
 /* Character Tables: Navigation Styling */
 
 nav label {
-	float: left;
+	display: inline-block;
 	padding: 15px 15px;
 	border-top: 1px solid var(--box-border);
 	border-right: 1px solid  var(--box-border);
