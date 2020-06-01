@@ -252,7 +252,9 @@ def all_keyboard_html_from_petscii(petscii, scrcode, other_ok = False):
 		all_keyboard_html += '<div class="{}"><b>{}</b>:'.format(machine, machine)
 		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, scrcode, machine)
 		if not other_ok:
-			other_petscii = None
+			if other_petscii is not None:
+				modifiers_and_scancodes_html = []
+				other_petscii = None
 		if len(modifiers_and_scancodes_html) > 0 and not other_petscii:
 			for html in modifiers_and_scancodes_html:
 					all_keyboard_html += '{}<br/>'.format(html)
