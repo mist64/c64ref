@@ -328,7 +328,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, 
 		else:
 			hex_color += 'E0'
 		color_html = ' style="background-color: {}; border-color:{};"'.format(hex_color, hex_color)
-		description_html = '<span class="char-txt"{}>{}<br /></span>'.format(color_html, description)
+		description_html = '<span class="char-txt"{}>{}<br/></span>'.format(color_html, description)
 		#description_html = '<span class="char-txt"{}><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></span>'.format(color_html, description)
 
 	link_html1 = ''
@@ -683,24 +683,24 @@ def html_header_css():
 	print('</style>')
 
 
-def html_div_overview_screencode(id):
+def html_div_overview_screencode(id, css_class):
 
-	print('<div id="' + id + '">')
+	print('<div id="' + id + '" class="'+ css_class +'">')
 
 	# Screencode Table
 	for scrcode in range(0, 256):
 		print(pixel_char_html_from_scrcode(scrcode, link = 'scrcode_' + hex(scrcode)))
 		if scrcode & 15 == 15:
-			print('<br />')
+			print('<br/>')
 
 	print('</div>')
 
 
-def html_div_overview_petscii(id):
+def html_div_overview_petscii(id, css_class):
 
 	machine = 'C64'
 
-	print('<div id="' + id + '">')
+	print('<div id="' + id + '" class="'+ css_class +'">')
 
 	# PETSCII Table
 	for petscii in range(0, 256):
@@ -720,14 +720,14 @@ def html_div_overview_petscii(id):
 				hex_color = hex_color_from_color_index[machine][color_index_from_color_name[machine][symbol]]
 		print(pixel_char_html_from_scrcode(scrcode, description, hex_color, 'petscii_' + hex(petscii)))
 		if petscii & 15 == 15:
-			print('<br />')
+			print('<br/>')
 
 	print('</div>')
 	
 	
-def html_div_overview_keyboard(id):
+def html_div_overview_keyboard(id, css_class):
 	
-	print('<div id="' + id + '">')
+	print('<div id="' + id + '" class="'+ css_class +'">')
 
 	for machine in machines:
 		print(keyboard_layout_html(machine, keyboard_layout[machine]))
@@ -869,7 +869,7 @@ def html_div_info_petscii(id):
 				if unicode_map != 'upper':
 					display = ' style="display: none;"'
 				unicode = unicode_from_petscii[unicode_map][petscii]
-				print('    <div class="unicode-image unicode_{}"{}"><span class="unicode-box">&#x{:x};</span></div>'.format(unicode_map, display, unicode))
+				print('    <div class="unicode-image unicode_{}"{}><span class="unicode-box">&#x{:x};</span></div>'.format(unicode_map, display, unicode))
 				print('    <div class="unicode-title unicode_{} info-title"{}>Unicode</div>'.format(unicode_map, display))
 
 				print('    <div class="unicode-description unicode_{}"{}>'.format(unicode_map, display))
@@ -910,7 +910,7 @@ def html_div_selection_charset(id, charsets):
 
 	print('<div id="' + id + '">')
 
-	print('<label for="charset">Character Set</label></br>')
+	print('<label for="charset">Character Set</label><br/>')
 	print('<select name="charset" id="charset" onChange="charsetSwitch(this.options[this.selectedIndex].value);">')
 	seen_selected = False
 	for (filename, machine, locale, type, version) in charsets:
@@ -928,7 +928,7 @@ def html_div_selection_charset(id, charsets):
 	print('')
 	print('<br/>')
 	print('')
-	print('<label for="unicode">Unicode Map</label></br>')
+	print('<label for="unicode">Unicode Map</label><br/>')
 	print('<select name="unicode" id="unicode" onChange="unicodeSwitch(this.selectedIndex);">')
 	print('    <option value="us_upper">US Upper Case</option>')
 	print('    <option value="us_lower">US Lower Case</option>')
@@ -937,11 +937,11 @@ def html_div_selection_charset(id, charsets):
 	print('</div>')
 
 
-def html_div_table_charset(id, charsets):
+def html_div_table_charset(id, css_class,  charsets):
 
-	print('<div id="' + id + '">')
+	print('<div id="' + id + '" class="'+ css_class +'">')
 
-	print('<label for="case">Case</label></br>')
+	print('<label for="case">Case</label><br/>')
 	print('<select name="case" id="case" onChange="caseSwitch(this.selectedIndex);">')
 	print('    <option value="all">All</option>')
 	print('    <option value="upper">Upper Case</option>')
@@ -949,7 +949,7 @@ def html_div_table_charset(id, charsets):
 	print('</select>')
 
 	# Charset Table
-	print('<table border="1">')
+	print('<table>')
 
 	for (filename, machine, locale, type, version) in charsets:
 		if filename == '---':
@@ -978,10 +978,11 @@ def html_div_table_charset(id, charsets):
 	print('</div>')
 
 
-def html_div_table_petscii(id):
-	print('<div id="' + id + '">')
+def html_div_table_petscii(id, css_class):
 
-	print('<label for="unicode">Show</label></br>')
+	print('<div id="' + id + '" class="'+ css_class +'">')
+
+	print('<label for="unicode">Show</label><br/>')
 	print('<select name="petscii_show" id="petscii_show" onChange="petsciiTableSwitch(this.selectedIndex);">')
 	print('    <option value="petscii_keyboard">Keyboard</option>')
 	print('    <option value="petscii_control">Control Codes</option>')
@@ -990,8 +991,7 @@ def html_div_table_petscii(id):
 
 	# PETSCII Table
 
-
-	print('<table border="1">')
+	print('<table>')
 
 	print('    <tr>')
 	print('        <th>PETSCII</th>')
@@ -1030,7 +1030,8 @@ def html_div_table_petscii(id):
 			print('        <td class="unicode_lower" style="display: none;">U+{:04X}</td>'.format(unicode))
 			print('        <td class="unicode_lower" style="display: none;">{}</td>'.format(description_from_unicode[unicode]))
 		else:
-			print('        <td colspan="3"></td>')
+			print('        <td colspan="3" class="unicode_upper"></td>')
+			print('        <td colspan="3" class="unicode_lower" style="display: none;"></td>')
 
 		# Keyboard
 		i = 0
@@ -1090,37 +1091,42 @@ print('</head>')
 
 print('<body>')
 print('<div class="body">')
-print('<div class="tabbed">')
 
+print('   <div class="info_container">')
+html_div_selection_machine("machine_selection")
+html_div_selection_charset("charset_selection", charsets)
+print('   </div>')
+
+print('<div class="tabbed">')
 print('')
 print('   <input checked="checked" id="tab_screencode" type="radio" name="tabs" />')
 print('   <input id="tab_petscii" type="radio" name="tabs" />')
 print('   <input id="tab_keyboard" type="radio" name="tabs" />')
 print('')
 print('   <nav>')
-print('      <label for="tab_screencode">Character Set</label>')
-print('      <label for="tab_petscii">PETSCII</label>')
-print('      <label for="tab_keyboard">Keyboard</label>')
+print('      <label for="tab_screencode">Character Set</label><!--')
+print('       --><label for="tab_petscii">PETSCII</label><!--')
+print('       --><label for="tab_keyboard">Keyboard</label><!-- -->')
 print('   </nav>')
 print('')
 
 print('   <figure>')
-html_div_overview_screencode("screencode_overview")
-html_div_overview_petscii("petscii_overview")
-html_div_overview_keyboard("keyboard_overview")
-print('   </figure>')
 
-html_div_selection_machine("machine_selection")
-html_div_selection_charset("charset_selection", charsets)
+# Screencodes and Character Sets
+
+html_div_overview_screencode("screencode_overview", "screencode_group")
+html_div_overview_petscii("petscii_overview", "petscii_group")
+html_div_overview_keyboard("keyboard_overview", "keyboard_group")
+
+print('   <hr style="clear: both; display: none;" />')
+
+html_div_table_charset("charset_table", "screencode_group", charsets)
+html_div_table_petscii("petscii_table", "petscii_group")
+
+print('   </figure>')
 print('</div>')#tabbed
 
 print('<div id="info_box"></div>')
-
-
-html_div_table_charset("charset_table", charsets)
-
-html_div_table_petscii("petscii_table")
-
 
 print('<div style="display: none">')
 html_div_info_screencode("screencode_boxes")

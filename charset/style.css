@@ -6,29 +6,46 @@
 	--info-hue : 200;
 }
 
+#charset_table > table,
+#petscii_table > table {
+	border-collapse: collapse;
+}
+
+#charset_table > table,
+#charset_table > table th,
+#charset_table > table td,
+#petscii_table > table, 
+#petscii_table > table th, 
+#petscii_table > table td {
+	border: solid black 1px;
+}
+
+
 /* Character Tables */
 
 /* via https://www.mediaevent.de/tutorial/css-tabs.html */
 
-#tab_screencode:checked ~ figure #screencode_overview,
-#tab_petscii:checked ~ figure #petscii_overview,
-#tab_keyboard:checked ~ figure #keyboard_overview {
+#tab_screencode:checked ~ figure .screencode_group,
+#tab_petscii:checked ~ figure .petscii_group,
+#tab_keyboard:checked ~ figure .keyboard_group {
 	display: block;
 }
 
 
 /* Tabs mit radio-Buttons */
 .tabbed {
-	display: inline-block;
+	display: block;
 }
 .tabbed figure { 
 	display: block;
 	margin: 0px;
-	clear: both;
+	clear: none;
 }
 
 .tabbed > input,
-.tabbed figure > div { display: none; }
+.tabbed figure > div {
+	display: none;
+}
 
 .tabbed figure > div {
 	background: var(--box-background);
@@ -38,18 +55,22 @@
 	margin: 0px;
 }
 
+.info_container {
+	float: right;
+}
+
 
 /* Character Tables: Navigation Styling */
 
 nav label {
-	float: left;
+	display: inline-block;
 	padding: 15px 15px;
 	border-top: 1px solid var(--box-border);
 	border-right: 1px solid  var(--box-border);
 	background: hsl(210,0%,70%);
 	color: hsl(210,0%,30%);
 	text-align: center;
-	width: 28%;
+	width: 200px;
 }
 
 nav label:nth-child(1) { border-left: 1px solid var(--box-border); }
