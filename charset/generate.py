@@ -404,6 +404,10 @@ description_from_control_code_symbol = {
 	'BELL_TONE': ('BEL', 'Bell Tone'),
 	'TAB': ('TAB', 'Forward TAB'),
 	'HELP': ('HELP', 'HELP'),
+	'CE': ('CE', 'CE'),
+	'WINDOW_TOP': ('Window Top', 'Window Top'),
+	'WINDOW_BOTTOM': ('Window Bottom', 'Window Bottom'),
+	'CLEAR_ENTRY': ('Clear Entry', 'Clear Entry'),
 }
 description_from_control_code = {}
 symbol_from_control_code = {}
