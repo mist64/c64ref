@@ -44,6 +44,18 @@ def flood_fill(x, y):
 	flood_fill(x, y + 1)
 	flood_fill(x, y - 1)
 
+def html_encode(s1):
+	s2 = ''
+	for c in s1:
+		if c == '&':
+			c = '&amp;'
+		elif c == '<':
+			c = '&lt;'
+		elif c == '>':
+			c = '&gt;'
+		s2 += c
+	return s2
+
 def keyboard_layout_html(machine, ll):
 	global layout_lines
 	global cells
@@ -150,12 +162,7 @@ def keyboard_layout_html(machine, ll):
 				font_size = FONT_SIZE1
 				font_vadjust = FONT_VADJUST1
 
-			if description == '&':
-				description = '&amp;'
-			elif description == '<':
-				description = '&lt;'
-			elif description == '>':
-				description = '&gt;'
+			description = html_encode(description)
 
 			if height > width:
 				style = 'style="writing-mode: tb; glyph-orientation-vertical: 0; letter-spacing: -1;"'
@@ -249,7 +256,7 @@ def modifiers_and_scancodes_html_from_petscii(petscii, scrcode, other_ok = True,
 				m = '<span class="key-box">{}</span> + '.format(m)
 			else:
 				m = ''
-			modifiers_and_scancodes_html.append('<div class="key-box">{}<span class="key-box">{}</span></div>'.format(m, d))
+			modifiers_and_scancodes_html.append('<div class="key-box">{}<span class="key-box">{}</span></div>'.format(m, html_encode(d)))
 
 	return (modifiers_and_scancodes_html, other_petscii)
 
