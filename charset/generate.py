@@ -661,9 +661,9 @@ def html_header_css():
 	print('</style>')
 
 
-def html_div_overview_screencode(id):
+def html_div_overview_screencode(id, css_class):
 
-	print('<div id="' + id + '">')
+	print('<div id="' + id + '" class="'+ css_class +'">')
 
 	# Screencode Table
 	for scrcode in range(0, 256):
@@ -674,11 +674,11 @@ def html_div_overview_screencode(id):
 	print('</div>')
 
 
-def html_div_overview_petscii(id):
+def html_div_overview_petscii(id, css_class):
 
 	machine = 'TED'
 
-	print('<div id="' + id + '">')
+	print('<div id="' + id + '" class="'+ css_class +'">')
 
 	# PETSCII Table
 	for petscii in range(0, 256):
@@ -703,9 +703,9 @@ def html_div_overview_petscii(id):
 	print('</div>')
 	
 	
-def html_div_overview_keyboard(id):
+def html_div_overview_keyboard(id, css_class):
 	
-	print('<div id="' + id + '">')
+	print('<div id="' + id + '" class="'+ css_class +'">')
 
 	for machine in machines:
 		print(keyboard_layout_html(machine, keyboard_layout[machine]))
@@ -915,9 +915,9 @@ def html_div_selection_charset(id, charsets):
 	print('</div>')
 
 
-def html_div_table_charset(id, charsets):
+def html_div_table_charset(id, css_class,  charsets):
 
-	print('<div id="' + id + '">')
+	print('<div id="' + id + '" class="'+ css_class +'">')
 
 	# Charset Table
 	print('<table>')
@@ -942,8 +942,9 @@ def html_div_table_charset(id, charsets):
 	print('</div>')
 
 
-def html_div_table_petscii(id):
-	print('<div id="' + id + '">')
+def html_div_table_petscii(id, css_class):
+
+	print('<div id="' + id + '" class="'+ css_class +'">')
 
 	# PETSCII Table
 
@@ -1047,7 +1048,7 @@ print('</head>')
 print('<body>')
 print('<div class="body">')
 
-print('   <div style="float: right; background:pink;">')
+print('   <div class="info_container">')
 html_div_selection_machine("machine_selection")
 html_div_selection_charset("charset_selection", charsets)
 print('   </div>')
@@ -1068,21 +1069,15 @@ print('')
 print('   <figure>')
 
 # Screencodes and Character Sets
-print('      <div id="screencode">')
-html_div_overview_screencode("screencode_overview")
-html_div_table_charset("charset_table", charsets)
-print('      </div>');
 
-# PETSCII
-print(      '<div id="petscii">')
-html_div_overview_petscii("petscii_overview")
-html_div_table_petscii("petscii_table")
-print(      '</div>');
+html_div_overview_screencode("screencode_overview", "screencode_group")
+html_div_overview_petscii("petscii_overview", "petscii_group")
+html_div_overview_keyboard("keyboard_overview", "keyboard_group")
 
-# Keyboards
-print(      '<div id="keyboard">')
-html_div_overview_keyboard("keyboard_overview")
-print('      </div>');
+print('   <hr style="clear: both; display: none;" />')
+
+html_div_table_charset("charset_table", "screencode_group", charsets)
+html_div_table_petscii("petscii_table", "petscii_group")
 
 print('   </figure>')
 print('</div>')#tabbed

@@ -25,25 +25,27 @@
 
 /* via https://www.mediaevent.de/tutorial/css-tabs.html */
 
-#tab_screencode:checked ~ figure #screencode,
-#tab_petscii:checked ~ figure #petscii,
-#tab_keyboard:checked ~ figure #keyboard {
+#tab_screencode:checked ~ figure .screencode_group,
+#tab_petscii:checked ~ figure .petscii_group,
+#tab_keyboard:checked ~ figure .keyboard_group {
 	display: block;
 }
 
 
 /* Tabs mit radio-Buttons */
 .tabbed {
-	display: inline-block;
+	display: block;
 }
 .tabbed figure { 
 	display: block;
 	margin: 0px;
-	clear: both;
+	clear: none;
 }
 
 .tabbed > input,
-.tabbed figure > div { display: none; }
+.tabbed figure > div {
+	display: none;
+}
 
 .tabbed figure > div {
 	background: var(--box-background);
@@ -51,6 +53,10 @@
 	border: 1px solid var(--box-border);
 	padding: 20px 0px 20px 15px;
 	margin: 0px;
+}
+
+.info_container {
+	float: right;
 }
 
 
@@ -64,7 +70,7 @@ nav label {
 	background: hsl(210,0%,70%);
 	color: hsl(210,0%,30%);
 	text-align: center;
-	width: 28%;
+	width: 200px;
 }
 
 nav label:nth-child(1) { border-left: 1px solid var(--box-border); }
