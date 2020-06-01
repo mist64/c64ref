@@ -522,6 +522,8 @@ for machine in machines:
 		else:
 			values = [int(v, 16) for v in values]
 			petscii_from_scancode[machine][key].extend(values)
+	while keyboard_layout[machine][0] == '':
+		keyboard_layout[machine] = keyboard_layout[machine][1:]
 
 ####################################################################
 
