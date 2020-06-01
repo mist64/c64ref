@@ -247,21 +247,30 @@ def modifiers_and_scancodes_html_from_petscii(petscii, scrcode, machine = 'C64')
 	return (modifiers_and_scancodes_html, other_petscii)
 
 def all_keyboard_html_from_petscii(petscii, scrcode, other_ok = False):
-	all_keyboard_html = ''
+	all_modifiers_and_scancodes_html = {}
 	for machine in machines:
-		all_keyboard_html += '<div class="{}"><b>{}</b>:'.format(machine, machine)
+		all_modifiers_and_scancodes_html[machine] = []
 		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, scrcode, machine)
-		if not other_ok:
-			if other_petscii is not None:
-				modifiers_and_scancodes_html = []
-				other_petscii = None
-		if len(modifiers_and_scancodes_html) > 0 and not other_petscii:
-			for html in modifiers_and_scancodes_html:
-					all_keyboard_html += '{}<br/>'.format(html)
+		if not other_ok and other_petscii is not None:
+			modifiers_and_scancodes_html = []
+			other_petscii = None
+		if len(modifiers_and_scancodes_html) > 0:
+			html = ''
+			for h in modifiers_and_scancodes_html:
+					html += '{}<br/>'.format(h)
 		else:
-			all_keyboard_html += ' -'
-		all_keyboard_html += '</div>'
-	return (all_keyboard_html, other_petscii)
+			html = ' -'
+		all_modifiers_and_scancodes_html[machine] = html
+
+	if len(set(all_modifiers_and_scancodes_html.values())) == 1:
+		return (all_modifiers_and_scancodes_html[machines[0]], other_petscii)
+	else:
+		all_keyboard_html = ''
+		for machine in machines:
+			all_keyboard_html += '<div class="{}"><b>{}</b>:'.format(machine, machine)
+			all_keyboard_html += all_modifiers_and_scancodes_html[machine]
+			all_keyboard_html += '</div>'
+		return (all_keyboard_html, other_petscii)
 
 def combined_description_from_control_code(petscii):
 	description_to_machines = {}
