@@ -6,6 +6,10 @@
 	--info-hue : 200;
 }
 
+body {
+	margin: 4px;
+}
+
 #charset_table > table,
 #petscii_table > table {
 	border-collapse: collapse;

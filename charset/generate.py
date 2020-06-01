@@ -1090,7 +1090,6 @@ html_header_css()
 print('</head>')
 
 print('<body>')
-print('<div class="body">')
 
 print('   <div class="info_container">')
 html_div_selection_machine("machine_selection")
@@ -1132,7 +1131,6 @@ html_div_info_screencode("screencode_boxes")
 html_div_info_petscii("petscii_boxes")
 print('</div>');
 
-print('</div>')#body
 print('</body>')
 print('</html>')
 
