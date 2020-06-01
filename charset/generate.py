@@ -747,7 +747,7 @@ def html_div_selection_machine(id):
 		
 		print('<tr>')
 		print(' <td><input type="radio" name="radios"  id="radio_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'radio_' + currentMachine + '\').checked, [\'{}\']);" /></td>'.format("','".join(deselection)))
-		print(' <td><input type="checkbox" id="checkbox_' + currentMachine + '" checked onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'checkbox_' + currentMachine + '\').checked);" /></td>')
+		print(' <td><input type="checkbox" id="checkbox_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'checkbox_' + currentMachine + '\').checked);" /></td>')
 		print(' <td style="white-space: nowrap;"><b>' + machines[i] + '</b>')
 		print('</tr>')
 
@@ -1083,6 +1083,15 @@ print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
 print('<title>Character Set / PETSCII / Keyboard | Ultimate C64 Reference</title>')
 print('')
 print('<script src="script.js"></script>')
+
+print('<script language="javascript">')
+print('    window.onload = init;')
+print('    function init() {')
+print('        document.getElementById(\'radio_C64\').click();')
+print('    }')
+print('</script>')
+print('')
+
 print('')
 
 html_header_css()
