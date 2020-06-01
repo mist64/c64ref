@@ -927,16 +927,29 @@ def html_div_table_charset(id, charsets):
 
 	print('<div id="' + id + '">')
 
+	print('<label for="case">Case</label></br>')
+	print('<select name="case" id="case" onChange="caseSwitch(this.selectedIndex);">')
+	print('    <option value="all">All</option>')
+	print('    <option value="upper">Upper Case</option>')
+	print('    <option value="lower">Lower Case</option>')
+	print('</select>')
+
 	# Charset Table
 	print('<table border="1">')
 
 	for (filename, machine, locale, type, version) in charsets:
-		print('    <tr>')
 		if filename == '---':
+			print('    <tr>')
 			print('        <td colspan="2">')
 			print('            <b>{}</b>'.format(machine))
 			print('        </td>')
+			print('    </tr>')
 		else:
+			if 'upper' in type:
+				case = 'table_upper'
+			else:
+				case = 'table_lower'
+			print('    <tr class="{}">'.format(case))
 			print('        <td>')
 			print(displayname_for_charset_details(machine, locale, type, version))
 			print('        </td>')
@@ -944,7 +957,7 @@ def html_div_table_charset(id, charsets):
 			for line in range(0, 8):
 				print('        <div class="char-box16"><span class="char-img16 char16-{}" style="background-image: url(png/{});"></span></div>'.format(hex(line), filename))
 			print('        </td>')
-		print('    </tr>')
+			print('    </tr>')
 
 	print('</table>')
 	print('</div>')
@@ -1082,6 +1095,7 @@ print('<div id="info_box"></div>')
 
 
 html_div_table_charset("charset_table", charsets)
+
 html_div_table_petscii("petscii_table")
 
 

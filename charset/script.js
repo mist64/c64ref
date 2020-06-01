@@ -70,24 +70,44 @@ function toggleMachine(machine, checked, deselectionArray=[]) {
 	}
 }
 
-function showHide(items1, items2) {
+function showItems(name) {
+	items = document.getElementsByClassName(name)
 	var i;
-	for (i = 0; i < items1.length; i++) {
-		var currentItem = items1[i];
+	for (i = 0; i < items.length; i++) {
+		var currentItem = items[i];
 		currentItem.style.display = null;
 	}
+}
+
+function hideItems(name) {
+	items = document.getElementsByClassName(name)
 	var i;
-	for (i = 0; i < items2.length; i++) {
-		var currentItem = items2[i];
+	for (i = 0; i < items.length; i++) {
+		var currentItem = items[i];
 		currentItem.style.display = "none";
 	}
 }
 
 function unicodeSwitch(index) {
 	if (index == 0) {
-		showHide(document.getElementsByClassName("unicode_upper"), document.getElementsByClassName("unicode_lower"));
+		showItems("unicode_upper");
+		hideItems("unicode_lower");
 	} else if (index == 1) {
-		showHide(document.getElementsByClassName("unicode_lower"), document.getElementsByClassName("unicode_upper"));
+		hideItems("unicode_upper");
+		showItems("unicode_lower");
+	}
+}
+
+function caseSwitch(index) {
+	if (index == 0) {
+		showItems("table_upper");
+		showItems("table_lower");
+	} else if (index == 1) {
+		showItems("table_upper");
+		hideItems("table_lower");
+	} else if (index == 2) {
+		hideItems("table_upper");
+		showItems("table_lower");
 	}
 }
 
