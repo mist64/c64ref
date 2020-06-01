@@ -155,18 +155,19 @@ def keyboard_layout_html(machine, ll):
 			else:
 				style = ''
 
-			if len(petscii_from_scancode[machine]['regular']) > scancode:
-				petscii = petscii_from_scancode[machine]['regular'][scancode]
-			else:
-				# XXX happens in auto-shifted ("or 128") case
-				petscii = 0
+			petscii = {}
+			for modifier in description_from_modifier.keys():
+				if len(petscii_from_scancode[machine][modifier]) > scancode:
+					petscii[modifier] = petscii_from_scancode[machine][modifier][scancode]
+				else:
+					# XXX happens in auto-shifted ("or 128") case
+					petscii[modifier] = 0
 
-			if scancode in modifier_scancodes[machine].keys():
-				is_modifier = 1
-			else:
-				is_modifier = 0
+			modifier = modifier_scancodes[machine].get(scancode)
+			if not modifier:
+				modifier = ''
 
-			svg += '<a xlink:href="javascript:void(0)" onclick="highlight_key(\'{}\',{}, \'petscii_{}\', {});">'.format(machine, scancode, hex(petscii), is_modifier)
+			svg += '<a xlink:href="javascript:void(0)" onclick="highlight_key(\'{}\',{}, \'petscii_{}\', \'petscii_{}\', \'petscii_{}\', \'petscii_{}\', \'{}\');">'.format(machine, scancode, hex(petscii['regular']), hex(petscii['shift']), hex(petscii['cbm']), hex(petscii['ctrl']), modifier)
 			svg += '<rect class="keyrect keyrect_{}_{}" x="{}" y="{}" rx="{}" ry="{}" width="{}" height="{}" style="stroke:black;fill:white;"/>\n'.format(machine, scancode, minx, miny, ROUND, ROUND, width, height)
 			svg += '<text class="keytext keytext_{}_{}" text-anchor="middle" font-family="Helvetica" font-size="{}" {} fill="black">'.format(machine, scancode, font_size, style)
 			svg += '<tspan x="{}" y="{}">{}</tspan>'.format(minx + width/2, miny + height/2 + font_vadjust, description)

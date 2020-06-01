@@ -97,30 +97,51 @@ function charsetSwitch(filename) {
 	}
 }
 
-var modifier = 'regular';
+var gmodifier = 'regular';
 
-function highlight_key(machine, scancode, petscii, is_modifier) {
-	items = document.getElementsByClassName('keyrect')
-	for (i = 0; i < items.length; i++) {
-		var currentItem = items[i];
-		currentItem.style.fill = 'white';
+function highlight_key(machine, scancode, petscii_regular, petscii_shift, petscii_cbm, petscii_ctrl, modifier) {
+	clear_all = false;
+	if (modifier == '') {
+		// a printabe key was pressed
+		if (gmodifier == 'regular') {
+			petscii = petscii_regular;
+			clear_all = true;
+		} else if (gmodifier == 'shift') {
+			petscii = petscii_shift;
+		} else if (gmodifier == 'cbm') {
+			petscii = petscii_cbm;
+		} else if (gmodifier == 'ctrl') {
+			petscii = petscii_ctrl;
+		}
+		test(petscii);
+		gmodifier = 'regular';
+	} else {
+		// a modifier was pressed
+		clear_all = true;
+		gmodifier = modifier
 	}
+
+	if (clear_all) {
+		items = document.getElementsByClassName('keyrect')
+		for (i = 0; i < items.length; i++) {
+			var currentItem = items[i];
+			currentItem.style.fill = 'white';
+		}
+		items = document.getElementsByClassName('keytext')
+		for (i = 0; i < items.length; i++) {
+			var currentItem = items[i];
+			currentItem.style.fill = 'black';
+		}
+	}
+
 	items = document.getElementsByClassName('keyrect_' + machine + '_' + scancode)
 	for (i = 0; i < items.length; i++) {
 		var currentItem = items[i];
 		currentItem.style.fill = 'gray';
 	}
-	items = document.getElementsByClassName('keytext')
-	for (i = 0; i < items.length; i++) {
-		var currentItem = items[i];
-		currentItem.style.fill = 'black';
-	}
 	items = document.getElementsByClassName('keytext_' + machine + '_' + scancode)
 	for (i = 0; i < items.length; i++) {
 		var currentItem = items[i];
 		currentItem.style.fill = 'white';
-	}
-	if (!is_modifier) {
-		test(petscii);
 	}
 }
