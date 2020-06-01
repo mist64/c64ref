@@ -219,7 +219,7 @@ def modifiers_and_scancodes_from_petscii(petscii, machine):
 				modifiers_and_scancodes.append((modifier, scancode))
 	return modifiers_and_scancodes
 
-def modifiers_and_scancodes_html_from_petscii(petscii, machine = 'C64'):
+def modifiers_and_scancodes_html_from_petscii(petscii, scrcode, machine = 'C64'):
 	modifiers_and_scancodes_html = []
 	modifiers_and_scancodes = modifiers_and_scancodes_from_petscii(petscii, machine)
 	other_petscii = None
@@ -246,11 +246,11 @@ def modifiers_and_scancodes_html_from_petscii(petscii, machine = 'C64'):
 
 	return (modifiers_and_scancodes_html, other_petscii)
 
-def all_keyboard_html_from_petscii(petscii, other_ok = False):
+def all_keyboard_html_from_petscii(petscii, scrcode, other_ok = False):
 	all_keyboard_html = ''
 	for machine in machines:
 		all_keyboard_html += '<div class="{}"><b>{}</b>:'.format(machine, machine)
-		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, machine)
+		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, scrcode, machine)
 		if not other_ok:
 			other_petscii = None
 		if len(modifiers_and_scancodes_html) > 0 and not other_petscii:
@@ -683,7 +683,7 @@ def html_div_info_screencode(id):
 
 				print('                <td>')
 
-				(all_keyboard_html, _) = all_keyboard_html_from_petscii(petscii, False)
+				(all_keyboard_html, _) = all_keyboard_html_from_petscii(petscii, scrcode, False)
 				print(all_keyboard_html)
 
 				print('                </td>')
@@ -1035,7 +1035,7 @@ for petscii in range(0, 256):
 	i = 0
 	for machine in machines:
 		print('<td class="{}" style="background: var(--light-color-{})">'.format(machine, i+1))
-		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, machine)
+		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, scrcode, machine)
 		if len(modifiers_and_scancodes_html) > 0:
 			if not other_petscii:
 				for html in modifiers_and_scancodes_html:
