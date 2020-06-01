@@ -306,7 +306,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, 
 		else:
 			hex_color += 'E0'
 		color_html = ' style="background-color: {}; border-color:{};"'.format(hex_color, hex_color)
-		description_html = '<span class="char-txt"{}>{}<br /></span>'.format(color_html, description)
+		description_html = '<span class="char-txt"{}>{}<br/></span>'.format(color_html, description)
 		#description_html = '<span class="char-txt"{}><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></span>'.format(color_html, description)
 
 	link_html1 = ''
@@ -669,7 +669,7 @@ def html_div_overview_screencode(id, css_class):
 	for scrcode in range(0, 256):
 		print(pixel_char_html_from_scrcode(scrcode, link = 'scrcode_' + hex(scrcode)))
 		if scrcode & 15 == 15:
-			print('<br />')
+			print('<br/>')
 
 	print('</div>')
 
@@ -698,7 +698,7 @@ def html_div_overview_petscii(id, css_class):
 				hex_color = hex_color_from_color_index[machine][color_index_from_color_name[machine][symbol]]
 		print(pixel_char_html_from_scrcode(scrcode, description, hex_color, 'petscii_' + hex(petscii)))
 		if petscii & 15 == 15:
-			print('<br />')
+			print('<br/>')
 
 	print('</div>')
 	
@@ -847,7 +847,7 @@ def html_div_info_petscii(id):
 				if unicode_map != 'upper':
 					display = ' style="display: none;"'
 				unicode = unicode_from_petscii[unicode_map][petscii]
-				print('    <div class="unicode-image unicode_{}"{}"><span class="unicode-box">&#x{:x};</span></div>'.format(unicode_map, display, unicode))
+				print('    <div class="unicode-image unicode_{}"{}><span class="unicode-box">&#x{:x};</span></div>'.format(unicode_map, display, unicode))
 				print('    <div class="unicode-title unicode_{} info-title"{}>Unicode</div>'.format(unicode_map, display))
 
 				print('    <div class="unicode-description unicode_{}"{}>'.format(unicode_map, display))
@@ -888,7 +888,7 @@ def html_div_selection_charset(id, charsets):
 
 	print('<div id="' + id + '">')
 
-	print('<label for="charset">Character Set</label></br>')
+	print('<label for="charset">Character Set</label><br/>')
 	print('<select name="charset" id="charset" onChange="charsetSwitch(this.options[this.selectedIndex].value);">')
 	seen_selected = False
 	for (filename, machine, locale, type, version) in charsets:
@@ -906,7 +906,7 @@ def html_div_selection_charset(id, charsets):
 	print('')
 	print('<br/>')
 	print('')
-	print('<label for="unicode">Unicode Map</label></br>')
+	print('<label for="unicode">Unicode Map</label><br/>')
 	print('<select name="unicode" id="unicode" onChange="unicodeSwitch(this.selectedIndex);">')
 	print('    <option value="us_upper">US Upper Case</option>')
 	print('    <option value="us_lower">US Lower Case</option>')
@@ -987,7 +987,8 @@ def html_div_table_petscii(id, css_class):
 			print('        <td class="unicode_lower" style="display: none;">U+{:04X}</td>'.format(unicode))
 			print('        <td class="unicode_lower" style="display: none;">{}</td>'.format(description_from_unicode[unicode]))
 		else:
-			print('        <td colspan="3"></td>')
+			print('        <td colspan="3" class="unicode_upper"></td>')
+			print('        <td colspan="3" class="unicode_lower" style="display: none;"></td>')
 
 		# Keyboard
 		i = 0
