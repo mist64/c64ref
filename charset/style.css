@@ -6,6 +6,21 @@
 	--info-hue : 200;
 }
 
+#charset_table > table,
+#petscii_table > table {
+	border-collapse: collapse;
+}
+
+#charset_table > table,
+#charset_table > table th,
+#charset_table > table td,
+#petscii_table > table, 
+#petscii_table > table th, 
+#petscii_table > table td {
+	border: solid black 1px;
+}
+
+
 /* Character Tables */
 
 /* via https://www.mediaevent.de/tutorial/css-tabs.html */

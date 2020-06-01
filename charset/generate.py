@@ -920,7 +920,7 @@ def html_div_table_charset(id, charsets):
 	print('<div id="' + id + '">')
 
 	# Charset Table
-	print('<table border="1">')
+	print('<table>')
 
 	for (filename, machine, locale, type, version) in charsets:
 		print('    <tr>')
@@ -947,7 +947,7 @@ def html_div_table_petscii(id):
 
 	# PETSCII Table
 
-	print('<table border="1">')
+	print('<table>')
 
 	print('    <tr>')
 	print('        <th>PETSCII</th>')
