@@ -57,6 +57,39 @@
 
 .info_container {
 	float: right;
+	background: lightgray;
+	border: 1px solid var(--box-border);
+}
+
+.info_container > div {
+	display: inline-block;
+	margin: 1em;
+}
+
+#machine_selection {
+	float: right;
+}
+
+#charset_selection {
+}
+
+
+/* Info Box */
+
+#info_box:empty {
+	display: none;
+}
+
+
+#info_box {
+	padding: 0em;
+	margin: 1em;
+	display: block;
+	background: var(--box-background);
+	border: 1px solid gray;
+	border-radius: 4px;
+	overflow: hidden;
+	vertical-align: top;
 }
 
 
@@ -213,25 +246,6 @@ nav label:active {
 	font-size: xx-small;
 	vertical-align: top;
 	text-align: center;
-}
-
-
-/* Info Box */
-
-#info_box:empty {
-	display: none;
-}
-
-
-#info_box {
-	padding: 0em;
-	margin: 1em;
-	display: inline-block;
-	background: var(--box-background);
-	border: 1px solid gray;
-	border-radius: 4px;
-	overflow: hidden;
-	vertical-align: top;
 }
 
 

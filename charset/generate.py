@@ -1095,6 +1095,7 @@ print('<div class="body">')
 print('   <div class="info_container">')
 html_div_selection_machine("machine_selection")
 html_div_selection_charset("charset_selection", charsets)
+print('      <div id="info_box"></div>')
 print('   </div>')
 
 print('<div class="tabbed">')
@@ -1118,15 +1119,13 @@ html_div_overview_screencode("screencode_overview", "screencode_group")
 html_div_overview_petscii("petscii_overview", "petscii_group")
 html_div_overview_keyboard("keyboard_overview", "keyboard_group")
 
-print('   <hr style="clear: both; display: none;" />')
+print('   <hr style="clear: both; float: none; color: #0000; background: #0000; border: 0px;" />')
 
 html_div_table_charset("charset_table", "screencode_group", charsets)
 html_div_table_petscii("petscii_table", "petscii_group")
 
 print('   </figure>')
 print('</div>')#tabbed
-
-print('<div id="info_box"></div>')
 
 print('<div style="display: none">')
 html_div_info_screencode("screencode_boxes")
