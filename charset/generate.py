@@ -974,7 +974,15 @@ def html_div_table_charset(id, charsets):
 def html_div_table_petscii(id):
 	print('<div id="' + id + '">')
 
+	print('<label for="unicode">Show</label></br>')
+	print('<select name="petscii_show" id="petscii_show" onChange="petsciiTableSwitch(this.selectedIndex);">')
+	print('    <option value="petscii_keyboard">Keyboard</option>')
+	print('    <option value="petscii_control">Control Codes</option>')
+	print('    <option value="petscii_both" selected>Both</option>')
+	print('</select>')
+
 	# PETSCII Table
+
 
 	print('<table border="1">')
 
@@ -986,11 +994,11 @@ def html_div_table_petscii(id):
 	print('        <th colspan="3" class="unicode_lower" style="display: none;">Unicode Lower</th>')
 	i = 0
 	for machine in machines:
-		print('        <th class="{}" style="background: var(--title-color-{})">{}<br/>Keyboard</th>'.format(machine, i+1, machine))
+		print('        <th class="petscii_keyboard {}" style="background: var(--title-color-{})">{}<br/>Keyboard</th>'.format(machine, i+1, machine))
 		i += 1
 	i = 0
 	for machine in machines:
-		print('        <th class="{}" style="background: var(--title-color-{})">{}<br/>Control Code</th>'.format(machine, i+1, machine))
+		print('        <th class="petscii_control {}" style="background: var(--title-color-{})">{}<br/>Control Code</th>'.format(machine, i+1, machine))
 		i += 1
 	print('    </tr>')
 
@@ -1020,7 +1028,7 @@ def html_div_table_petscii(id):
 		# Keyboard
 		i = 0
 		for machine in machines:
-			print('        <td class="{}" style="background: var(--light-color-{})">'.format(machine, i+1))
+			print('        <td class="petscii_keyboard {}" style="background: var(--light-color-{})">'.format(machine, i+1))
 			(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, scrcode, True, machine)
 			if len(modifiers_and_scancodes_html) > 0:
 				if not other_petscii:
@@ -1046,7 +1054,7 @@ def html_div_table_petscii(id):
 				if symbol in color_index_from_color_name[machine]:
 					hex_color = hex_color_from_color_index[machine][color_index_from_color_name[machine][symbol]]
 					description = '<span style="background-color:{}; border: solid gray 1px; width: 1em; height: 1em; display: inline-block;"> </span> '.format(hex_color) + description
-				print('        <td class="{}" style="background: var(--light-color-{})">{}</td>'.format(machine, i+1, description))
+				print('        <td class="petscii_control {}" style="background: var(--light-color-{})">{}</td>'.format(machine, i+1, description))
 				i += 1
 
 		print('    </tr>')

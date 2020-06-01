@@ -111,6 +111,19 @@ function caseSwitch(index) {
 	}
 }
 
+function petsciiTableSwitch(index) {
+	if (index == 0) {
+		showItems("petscii_keyboard");
+		hideItems("petscii_control");
+	} else if (index == 1) {
+		hideItems("petscii_keyboard");
+		showItems("petscii_control");
+	} else if (index == 2) {
+		showItems("petscii_keyboard");
+		showItems("petscii_control");
+	}
+}
+
 function charsetSwitch(filename) {
 	//console.log(document.styleSheets)
 	items = document.getElementsByClassName('char-img')
