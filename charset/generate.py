@@ -28,6 +28,7 @@ cap_replacements = {
 	'LINE_FEED': 'LF',
 	'NO_SCROLL': 'SCRL',
 	'GRAPH': 'GRPH',
+	'REPEAT': 'RPT',
 }
 
 def flood_fill(x, y):

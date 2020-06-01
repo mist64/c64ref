@@ -1,36 +1,57 @@
 layout   +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+ +---+---+---+
-layout   | ← | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0 | : | - | ^ | R |STP| | 7 | 8 | 9 |
+layout   |07 |47 |4F |06 |46 |4E |05 |45 |4D |04 |44 |02 |4C |42 |4A |03 | |43 |4B |40 |
 layout   +---+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ +---+---+---+
-layout   | TAB | Q | W | E | R | T | Y | U | I | O | P | [ | \ | D |DEL|   | 4 | 5 | 6 |
+layout   | 2F  |27 |2E |26 |2D |25 |2C |24 |2A |22 |29 |21 |2B |23 |28 |   |20 |38 |30 |
 layout  +---+--++--++--++--++--++--++--++--++--++--++--++--++--++--+---++  +---+---+---+
-layout  |ESC|SHL| A | S | D | F | G | H | J | K | L | ; | @ | ] | RET   |  | 1 | 2 | 3 |
+layout  |3F |1F |37 |3E |36 |3D |35 |3C |34 |3A |32 |39 |31 |3B |  33   |  |08 |10 |18 |
 layout  +---+---+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+---+---+---+  +---+---+---+
-layout  |RVS|SHIFT| Z | X | C | V | B | N | M | , | . | / |SHIFT|REP|HOM|  |   0   | . |
+layout  |0F | 1F  |17 |0E |1E |16 |1D |15 |0C |14 |1C |09 | 19  |11 |0B |  |  13   |1B |
 layout  +---+-----++--+---+---+---+---+---+---+---+---++--+-----+---+---+  +-------+---+
-layout             |                                   |
+layout             |                0D                 |
 layout             +-----------------------------------+
 
-cap     ^V      ---     :       STOP    9       6       3       ←
-cap     [1]     /       ^U      HOME    M       SPACE   X       RVS
-cap     [2]     REPEAT  ^O      [0]     ,       N       V       Z
-cap     [3]     R.SHIFT ^Y      [.]     .       B       C       L.SHIFT
+cap     ---     ---     :       STOP    9       6       3       ←
+cap     [1]     /       ---     HOME    M       SPACE   X       RVS
+cap     [2]     REPEAT  ---     [0]     ,       N       V       Z
+cap     [3]     R.SHIFT ---     [.]     .       B       C       L.SHIFT
 cap     [4]     [       O       ↑CRSR↓  U       T       E       Q
 cap     DEL     P       I       \       Y       R       W       TAB
 cap     [6]     @       L       RETURN  J       G       D       A
 cap     [5]     ;       K       ]       H       F       S       ESC
 cap     [9]     ---     ↑       [7]     0       7       4       1
-cap     .       ^N      ←CRSR→  [8]     -       8       5       2
+cap     ---     ---     ←CRSR→  [8]     -       8       5       2
 
-#mod     0A shift # right
-#mod     0F shift # left
+mod     1F shift # left
+mod     19 shift # right
+mod     11 repeat
 
-regular 16 04 3A 03 39 36 33 DF
-regular B1 2F 15 13 4D 20 58 12
-regular B2 10 0F B0 2C 4E 56 5A
-regular B3 00 19 AE 2E 42 43 00
-regular B4 DB 4F 11 55 54 45 51
-regular 14 50 49 DC 59 52 57 09
-regular B6 C0 4C 0D 4A 47 44 41
-regular B5 3B 4B DD 48 46 53 9B
-regular B9 06 DE B7 B0 37 34 31
-regular 05 0E 1D B8 2D 38 35 32
+# The two tables are based on the original ROM tables;
+# also at http://www.6502.org/users/andre/petindex/keyboards.html
+# and http://web.mit.edu/jhawk/mnt/ss.b/vice-0.12.0/doc/PETdoc
+
+# a = a & 0x7F
+regular 16 04 3A 03 39 36 33 5F
+regular 31 2F 15 13 4D 20 58 12
+regular 32 10 0F 30 2C 4E 56 5A
+regular 33 00 19 2E 2E 42 43 00
+regular 34 5B 4F 11 55 54 45 51
+regular 14 50 49 5C 59 52 57 09
+regular 36 40 4C 0D 4A 47 44 41
+regular 35 3B 4B 5D 48 46 53 1B
+regular 39 06 5E 37 30 37 34 31
+regular 05 0E 1D 38 2D 38 35 32
+
+# if a > 0x20 and a < 0x40:
+#         a = a ^ 0x10
+# else:
+#         a = a ^ 0x80
+shift   96 84 2A 83 29 26 23 5F
+shift   31 3F 95 93 CD A0 D8 92
+shift   32 90 8F 30 3C CE D6 DA
+shift   33 80 99 2E 3E C2 C3 80
+shift   34 5B CF 91 D5 D4 C5 D1
+shift   94 D0 C9 5C D9 D2 D7 89
+shift   36 40 CC 8D CA C7 C4 C1
+shift   35 2B CB 5D C8 C6 D3 1B
+shift   39 86 5E 37 30 27 24 21
+shift   85 8E 9D 38 3D 28 25 22
