@@ -1084,7 +1084,7 @@ print('<title>Character Set / PETSCII / Keyboard | Ultimate C64 Reference</title
 print('')
 print('<script src="script.js"></script>')
 
-print('<script language="javascript">')
+print('<script>')
 print('    window.onload = init;')
 print('    function init() {')
 print('        document.getElementById(\'radio_C64\').click();')
