@@ -1,21 +1,25 @@
 function test(element) {
-	console.log(element);
-	var box = document.getElementById(element);
-	box.classList.add("highlighted");
-	
-	var boxes = document.getElementsByClassName("char-box highlighted");
-	var i;
-	for (i = 0; i < boxes.length; i++) {
-		var currentBox = boxes[i];
-		if (currentBox != box) {
-			currentBox.classList.remove("highlighted");
+	if (element == null) {
+		var infoBox = document.getElementById("info_box");
+		infoBox.innerHTML = '';
+	} else {
+		var box = document.getElementById(element);
+		box.classList.add("highlighted");
+
+		var boxes = document.getElementsByClassName("char-box highlighted");
+		var i;
+		for (i = 0; i < boxes.length; i++) {
+			var currentBox = boxes[i];
+			if (currentBox != box) {
+				currentBox.classList.remove("highlighted");
+			}
 		}
+
+		var infoId = "info_".concat(element) ;
+		var currentInfo = document.getElementById(infoId);
+		var infoBox = document.getElementById("info_box");
+		infoBox.innerHTML = currentInfo.innerHTML;
 	}
-	
-	var infoId = "info_".concat(element) ;
-	var currentInfo = document.getElementById(infoId);
-	var infoBox = document.getElementById("info_box");
-	infoBox.innerHTML = currentInfo.innerHTML;
 }
 
 function toggleMachine(machine, checked, deselectionArray=[]) {
@@ -113,7 +117,11 @@ function highlight_key(machine, scancode, petscii_regular, petscii_shift, petsci
 		} else if (gmodifier == 'ctrl') {
 			petscii = petscii_ctrl;
 		}
-		test(petscii);
+		if (petscii != 'petscii_0xff') {
+			test(petscii);
+		} else {
+			test(null)
+		}
 		gmodifier = 'regular';
 	} else {
 		// a modifier was pressed

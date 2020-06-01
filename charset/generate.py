@@ -219,11 +219,11 @@ def modifiers_and_scancodes_from_petscii(petscii, machine):
 				modifiers_and_scancodes.append((modifier, scancode))
 	return modifiers_and_scancodes
 
-def modifiers_and_scancodes_html_from_petscii(petscii, scrcode, machine = 'C64'):
+def modifiers_and_scancodes_html_from_petscii(petscii, scrcode, other_ok = True, machine = 'C64'):
 	modifiers_and_scancodes_html = []
 	modifiers_and_scancodes = modifiers_and_scancodes_from_petscii(petscii, machine)
 	other_petscii = None
-	if len(modifiers_and_scancodes) == 0 and scrcode is not None:
+	if other_ok and len(modifiers_and_scancodes) == 0 and scrcode is not None:
 		for check_petscii in petscii_from_scrcode[scrcode & 0x7f]:
 			if check_petscii != petscii:
 				other_petscii = check_petscii
@@ -250,10 +250,7 @@ def all_keyboard_html_from_petscii(petscii, scrcode, other_ok = False):
 	all_modifiers_and_scancodes_html = {}
 	for machine in machines:
 		all_modifiers_and_scancodes_html[machine] = []
-		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, scrcode, machine)
-		if not other_ok and other_petscii is not None:
-			modifiers_and_scancodes_html = []
-			other_petscii = None
+		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, scrcode, other_ok, machine)
 		if len(modifiers_and_scancodes_html) > 0:
 			html = ''
 			for h in modifiers_and_scancodes_html:
@@ -876,7 +873,7 @@ def html_div_info_petscii(id):
 			
 		print('    <div class="additional-info">')
 
-		(all_keyboard_html, other_petscii) = all_keyboard_html_from_petscii(petscii, is_petscii_printable(petscii))
+		(all_keyboard_html, other_petscii) = all_keyboard_html_from_petscii(petscii, scrcode, other_ok = is_petscii_printable(petscii))
 
 		print('        <div><span class="info-title">Keyboard</span>')
 
@@ -1003,7 +1000,7 @@ def html_div_table_petscii(id):
 		i = 0
 		for machine in machines:
 			print('        <td class="{}" style="background: var(--light-color-{})">'.format(machine, i+1))
-			(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, scrcode, machine)
+			(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, scrcode, True, machine)
 			if len(modifiers_and_scancodes_html) > 0:
 				if not other_petscii:
 					for html in modifiers_and_scancodes_html:
