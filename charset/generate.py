@@ -324,8 +324,7 @@ def displayname_for_charset_details(machine, locale, type, version):
 
 ####################################################################
 
-machines = ['PET', 'VIC-20', 'C64', 'C128', 'C65', 'TED']
-machines.append('CBM2')
+machines = ['PET', 'PETB', 'VIC-20', 'C64', 'C128', 'C65', 'TED', 'CBM2']
 
 #
 # generate petscii_from_scrcode mapping
