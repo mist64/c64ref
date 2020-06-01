@@ -846,15 +846,13 @@ def html_div_info_petscii(id):
 				display = ''
 				if unicode_map != 'upper':
 					display = ' style="display: none;"'
-				print('    <div class="unicode_{}" {}>'.format(unicode_map, display))
 				unicode = unicode_from_petscii[unicode_map][petscii]
-				print('        <div class="unicode-image"><span class="unicode-box">&#x{:x};</span></div>'.format(unicode))
-				print('        <div class="unicode-title info-title">Unicode</div>')
+				print('    <div class="unicode-image unicode_{}"{}"><span class="unicode-box">&#x{:x};</span></div>'.format(unicode_map, display, unicode))
+				print('    <div class="unicode-title unicode_{} info-title"{}>Unicode</div>'.format(unicode_map, display))
 
-				print('        <div class="unicode-description">')
-				print('            U+{:04X}<br/>'.format(unicode))
-				print('            {}'.format(description_from_unicode[unicode]))
-				print('        </div>')
+				print('    <div class="unicode-description unicode_{}"{}>'.format(unicode_map, display))
+				print('        U+{:04X}<br/>'.format(unicode))
+				print('        {}'.format(description_from_unicode[unicode]))
 				print('    </div>')
 
 		else:
