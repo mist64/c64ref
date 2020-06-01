@@ -1,0 +1,62 @@
+layout  # Chicklet
+layout  +---+---+---+---+---+---+---+---+---+---+---+    +---+---+---+---+
+layout  |4F |47 |4E |46 |4D |45 |4C |44 |4B |43 |4A |    |49 |41 |48 |40 |
+layout  +---+---+---+---+---+---+---+---+---+---+---+    +---+---+---+---+
+layout  |3F |37 |3E |36 |3D |35 |3C |34 |3B |33 |3A |    |39 |31 |38 |30 |
+layout  +---+---+---+---+---+---+---+---+---+---+---+    +---+---+---+---+
+layout  |2F |27 |2E |26 |2D |25 |2C |24 |2B |23 |1A |    |29 |21 |28 |20 |
+layout  +---+---+---+---+---+---+---+---+---+---+   +    +---+---+---+---+
+layout  |1F |17 |1E |16 |1D |15 |1C |14 |1B |13 |   |    |19 |11 |18 |10 |
+layout  +---+---+---+---+---+---+---+---+---+---+---+    +---+---+---+---+
+layout  |0F |07 |0E |06 |0D |   05  |04 |0B |03 |0A |    |09 |01 |08 |00 |
+layout  +---+---+---+---+---+---+---+---+---+---+---+    +---+---+---+---+
+layout  # Graphics
+layout  +---+---+---+---+---+---+---+---+---+---+---+---+---+---+     +---+---+---+---+
+layout  |0E |4F |47 |4E |46 |4D |45 |4C |44 |4B |43 |4A |06 |0D |     |49 |41 |48 |40 |
+layout  +---+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   +---+---+---+---+
+layout  |07   |3F |37 |3E |36 |3D |35 |3C |34 |3B |33 |3A |04 |0B |   |39 |31 |38 |30 |
+layout  +-----++--++--++--++--++--++--++--++--++--++--++--++--+--++   +---+---+---+---+
+layout   |0F   |2F |27 |2E |26 |2D |25 |2C |24 |2B |23 |03 | 1A  |    |29 |21 |28 |20 |
+layout   +-----+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-----+    +---+---+---+---+
+layout   |  0F   |1F |17 |1E |16 |1D |15 |1C |14 |1B |13 |  0A   |    |19 |11 |18 |10 |
+layout   +-------+-+-+---+---+---+---+---+---+---+---+-+-+-------+    +---+---+---+---+
+layout             |                   05              |              |09 |01 |08 |00 |
+layout             +-----------------------------------+              +---+---+---+---+
+
+cap     =       .       ---     STOP    <       SPACE   [       RVS
+cap     -       0       R.SHIFT >       ---     ]       @       L.SHIFT
+cap     +       2       ---     ?       ,       N       V       X
+cap     3       1       RETURN  ;       M       B       C       Z
+cap     *       5       ---     :       K       H       F       S
+cap     6       4       ---     L       J       G       D       A
+cap     /       8       ---     P       I       Y       R       W
+cap     9       7       ↑       O       U       T       E       Q
+cap     DEL     ↑CRSR↓  ---     )       \       '       $       "
+cap     ←CRSR→  HOME    ←       (       &       %       HASH    !
+
+mod     0A shift # right
+mod     0F shift # left
+
+regular 3D 2E FF 03 3C 20 5B 12
+regular 2D 30 00 3E FF 5D 40 00
+regular 2B 32 FF 3F 2C 4E 56 58
+regular 33 31 0D 3B 4D 42 43 5A
+regular 2A 35 FF 3A 4B 48 46 53
+regular 36 34 FF 4C 4A 47 44 41
+regular 2F 38 FF 50 49 59 52 57
+regular 39 37 5E 4F 55 54 45 51
+regular 14 11 FF 29 5C 27 24 22
+regular 1D 13 5F 28 26 25 23 21
+
+# this was generated from the table above
+# by adding $80 to all non-$FF values
+shift   BD AE FF 83 BC A0 DB 92
+shift   AD B0 80 BE FF DD C0 80
+shift   AB B2 FF BF AC CE D6 D8
+shift   B3 B1 8D BB CD C2 C3 DA
+shift   AA B5 FF BA CB C8 C6 D3
+shift   B6 B4 FF CC CA C7 C4 C1
+shift   AF B8 FF D0 C9 D9 D2 D7
+shift   B9 B7 DE CF D5 D4 C5 D1
+shift   94 91 FF A9 DC A7 A4 A2
+shift   9D 93 DF A8 A6 A5 A3 A1
