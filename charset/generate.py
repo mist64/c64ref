@@ -941,7 +941,7 @@ def html_div_table_charset(id, css_class,  charsets):
 
 	print('<div id="' + id + '" class="'+ css_class +'">')
 
-	print('<label for="case">Case</label></br>')
+	print('<label for="case">Case</label><br/>')
 	print('<select name="case" id="case" onChange="caseSwitch(this.selectedIndex);">')
 	print('    <option value="all">All</option>')
 	print('    <option value="upper">Upper Case</option>')
@@ -982,7 +982,7 @@ def html_div_table_petscii(id, css_class):
 
 	print('<div id="' + id + '" class="'+ css_class +'">')
 
-	print('<label for="unicode">Show</label></br>')
+	print('<label for="unicode">Show</label><br/>')
 	print('<select name="petscii_show" id="petscii_show" onChange="petsciiTableSwitch(this.selectedIndex);">')
 	print('    <option value="petscii_keyboard">Keyboard</option>')
 	print('    <option value="petscii_control">Control Codes</option>')
