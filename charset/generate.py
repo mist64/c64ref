@@ -244,12 +244,13 @@ def all_keyboard_html_from_petscii(petscii, other_ok = False):
 	for machine in machines:
 		all_keyboard_html += '<div class="{}"><b>{}</b>:'.format(machine, machine)
 		(modifiers_and_scancodes_html, other_petscii) = modifiers_and_scancodes_html_from_petscii(petscii, machine)
-		if len(modifiers_and_scancodes_html) > 0:
-			if other_ok or not other_petscii:
-				for html in modifiers_and_scancodes_html:
+		if not other_ok:
+			other_petscii = None
+		if len(modifiers_and_scancodes_html) > 0 and not other_petscii:
+			for html in modifiers_and_scancodes_html:
 					all_keyboard_html += '{}<br/>'.format(html)
-			else:
-				all_keyboard_html += ' -'
+		else:
+			all_keyboard_html += ' -'
 		all_keyboard_html += '</div>'
 	return (all_keyboard_html, other_petscii)
 
