@@ -324,7 +324,7 @@ def displayname_for_charset_details(machine, locale, type, version):
 
 ####################################################################
 
-machines = ['PET', 'PETB', 'VIC-20', 'C64', 'C128', 'C65', 'TED', 'CBM2']
+machines = ['PET-N', 'PET-B', 'VIC-20', 'C64', 'C128', 'C65', 'TED', 'CBM2']
 
 #
 # generate petscii_from_scrcode mapping
@@ -414,6 +414,13 @@ description_from_control_code_symbol = {
 	'WINDOW_TOP': ('Window Top', 'Window Top'),
 	'WINDOW_BOTTOM': ('Window Bottom', 'Window Bottom'),
 	'CLEAR_ENTRY': ('Clear Entry', 'Clear Entry'),
+	'INSERT_LINE': ('INSERT_LINE', 'INSERT_LINE'),
+	'ERASE_TO_END': ('ERASE_TO_END', 'ERASE_TO_END'),
+	'SCROLL_UP': ('SCROLL_UP', 'SCROLL_UP'),
+	'SET_TAB': ('SET_TAB', 'SET_TAB'),
+	'DEL_LINE': ('DEL_LINE', 'DEL_LINE'),
+	'ERASE_TO_BEGIN': ('ERASE_TO_BEGIN', 'ERASE_TO_BEGIN'),
+	'SCROLL_DOWN': ('SCROLL_DOWN', 'SCROLL_DOWN'),
 }
 description_from_control_code = {}
 symbol_from_control_code = {}
