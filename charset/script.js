@@ -97,7 +97,7 @@ function charsetSwitch(filename) {
 	}
 }
 
-function highlight_key(machine, scancode, petscii) {
+function highlight_key(machine, scancode, petscii, is_modifier) {
 	items = document.getElementsByClassName('keyrect')
 	for (i = 0; i < items.length; i++) {
 		var currentItem = items[i];
@@ -118,5 +118,7 @@ function highlight_key(machine, scancode, petscii) {
 		var currentItem = items[i];
 		currentItem.style.fill = 'white';
 	}
-	test(petscii);
+	if (!is_modifier) {
+		test(petscii);
+	}
 }

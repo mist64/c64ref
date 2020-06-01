@@ -161,7 +161,12 @@ def keyboard_layout_html(machine, ll):
 				# XXX happens in auto-shifted ("or 128") case
 				petscii = 0
 
-			svg += '<a xlink:href="javascript:void(0)" onclick="highlight_key(\'{}\',{}, \'petscii_{}\');">'.format(machine, scancode, hex(petscii))
+			if scancode in modifier_scancodes[machine]:
+				is_modifier = 1
+			else:
+				is_modifier = 0
+
+			svg += '<a xlink:href="javascript:void(0)" onclick="highlight_key(\'{}\',{}, \'petscii_{}\', {});">'.format(machine, scancode, hex(petscii), is_modifier)
 			svg += '<rect class="keyrect keyrect_{}_{}" x="{}" y="{}" rx="{}" ry="{}" width="{}" height="{}" style="stroke:black;fill:white;"/>\n'.format(machine, scancode, minx, miny, ROUND, ROUND, width, height)
 			svg += '<text class="keytext keytext_{}_{}" text-anchor="middle" font-family="Helvetica" font-size="{}" {} fill="black">'.format(machine, scancode, font_size, style)
 			svg += '<tspan x="{}" y="{}">{}</tspan>'.format(minx + width/2, miny + height/2 + font_vadjust, description)
@@ -205,7 +210,7 @@ def modifiers_and_scancodes_from_petscii(petscii, machine):
 	modifiers_and_scancodes = []
 	for modifier in description_from_modifier.keys():
 		for scancode in range(0, len(petscii_from_scancode[machine][modifier])):
-			if scancode in excluded_scancodes[machine]:
+			if scancode in modifier_scancodes[machine]:
 				continue
 			p2 = petscii_from_scancode[machine][modifier][scancode]
 			if p2 != 0xff and p2 == petscii:
@@ -484,11 +489,11 @@ description_from_modifier = {
 
 petscii_from_scancode = {}
 description_from_scancode = {}
-excluded_scancodes = {}
+modifier_scancodes = {}
 keyboard_layout = {}
 for machine in machines:
 	description_from_scancode[machine] = []
-	excluded_scancodes[machine] = []
+	modifier_scancodes[machine] = []
 	petscii_from_scancode[machine] = {}
 	petscii_from_scancode[machine]['regular'] = []
 	petscii_from_scancode[machine]['shift'] = []
@@ -511,7 +516,7 @@ for machine in machines:
 			description_from_scancode[machine].extend(values)
 		elif key == 'mod':
 			values = [int(v, 16) for v in values]
-			excluded_scancodes[machine].extend(values)
+			modifier_scancodes[machine].extend(values)
 		else:
 			values = [int(v, 16) for v in values]
 			petscii_from_scancode[machine][key].extend(values)
