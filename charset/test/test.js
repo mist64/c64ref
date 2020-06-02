@@ -9,7 +9,7 @@ function init() {
 		if (arrayBuffer) {
 			var byteArray = new Uint8Array(arrayBuffer);
 			all_svg = "";
-			for (i = 0; i < 10; i++) {
+			for (i = 0; i < 256; i++) {
 				svg = svgFromCharBin(byteArray.slice(i*8,i*8+8));
 				all_svg += svg;
 			}
@@ -21,8 +21,11 @@ function init() {
 }
 
 function svgFromCharBin(bin) {
+	size = '1em';
+	bgcolor = '#2E2C9B';
+	fgcolor = '#706DEB';
 	svg = "";
-	svg = "<svg shape-rendering=\"crispEdges\" viewBox=\"0 -.5 8 8\" xmlns=\"http://www.w3.org/2000/svg\"><path stroke=\"#000\" d=\"";
+	svg = "<svg width=\"" + size + "\" height=\""+ size + "\" style=\"background-color:" + bgcolor + "\" shape-rendering=\"crispEdges\" viewBox=\"0 -.5 8 8\" xmlns=\"http://www.w3.org/2000/svg\"><path stroke=\"" + fgcolor + "\" d=\"";
 	for (y = 0; y < 8; y++) {
 		byte = bin[y];
 		is_first = true;
