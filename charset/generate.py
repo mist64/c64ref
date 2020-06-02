@@ -681,7 +681,7 @@ def html_header_css():
 
 def html_div_overview_screencode(id, css_class):
 
-	print('<div id="' + id + '" class="'+ css_class +'">')
+	print('<div style="background:#888;" id="' + id + '" class="'+ css_class +'">')
 
 	# Screencode Table
 	for scrcode in range(0, 256):
@@ -696,7 +696,7 @@ def html_div_overview_petscii(id, css_class):
 
 	machine = 'C64'
 
-	print('<div id="' + id + '" class="'+ css_class +'">')
+	print('<div style="background:#888;" id="' + id + '" class="'+ css_class +'">')
 
 	# PETSCII Table
 	for petscii in range(0, 256):
@@ -924,7 +924,7 @@ def html_div_selection_charset(id, charsets):
 			else:
 				selected = ''
 			displayname = displayname_for_charset_details(machine, locale, type, version)
-			print('        <option value="png/{}.png" {}>{}</option>'.format(filename, selected, displayname))
+			print('        <option value="bin/{}.bin" {}>{}</option>'.format(filename, selected, displayname))
 	print('    </optgroup>')
 	print('</select>')
 	print('')

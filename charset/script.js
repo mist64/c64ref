@@ -35,6 +35,14 @@ function loadCharset(filename, fgcolor, bgcolor) {
 	req.send(null);
 }
 
+function charsetSwitch(filename) {
+	console.log(filename);
+	fgcolor = '#706DEB';
+	bgcolor = '#2E2C9B';
+	loadCharset(filename, fgcolor, bgcolor);
+}
+
+
 function test(element) {
 	if (element == null) {
 		var infoBox = document.getElementById("info_box");
@@ -179,16 +187,6 @@ function petsciiTableSwitch(index) {
 				currentItem.style.display = "none";
 			}
 		}
-	}
-}
-
-function charsetSwitch(filename) {
-	//console.log(document.styleSheets)
-	items = document.getElementsByClassName('char-img')
-	//console.log(items.style)
-	for (i = 0; i < items.length; i++) {
-		var currentItem = items[i];
-		currentItem.style.backgroundImage = 'url(' + filename + ')'
 	}
 }
 

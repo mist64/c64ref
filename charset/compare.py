@@ -153,7 +153,6 @@ def friendly_filename_for_crc(crc):
 	filename = machine.split('/')[0] + '_' + locale + '_' + type
 	if version != '':
 		filename += '_' + version
-	filename += '.png'
 	return filename.lower()
 
 def write_png(charset, filename_out):
@@ -220,7 +219,9 @@ for filename_in in sys.argv[1:]:
 
 		#write_png(charset, filename_base + '_{}.png'.format(index))
 		#write_png(charset, str(binascii.crc32(charset)) + '.png'.format(index))
-		#write_png(charset, friendly_filename_for_crc(binascii.crc32(charset)))
+		#write_png(charset, friendly_filename_for_crc(binascii.crc32(charset)) + '.png')
+
+		open(friendly_filename_for_crc(binascii.crc32(charset)) + '.bin', "wb").write(charset)
 
 
 		start_offset += 1024
