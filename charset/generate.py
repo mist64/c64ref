@@ -315,7 +315,7 @@ def combined_description_from_control_code(petscii):
 def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, link = None, filename = None):
 	scrcode7 = scrcode & 0x7f
 	if scrcode >= 0x80:
-		inverted = 'inverted'
+		inverted = ' inverted'
 	else:
 		inverted = ''
 
@@ -337,7 +337,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, 
 		link_html1 = ' onclick="test(\'{}\')"'.format(link)
 		link_html2 = ' id="{}"'.format(link)
 
-	return '<div class="char-box {}"{}{}><span class="char-img char-{}"></span>{}</div>'.format(inverted, link_html2, link_html1, hex(scrcode7), description_html)
+	return '<div class="char-box{}"{}{}><span class="char-img char-{}"></span>{}</div>'.format(inverted, link_html2, link_html1, hex(scrcode7), description_html)
 
 def displayname_for_charset_details(machine, locale, type, version):
 	if locale == '':
@@ -738,20 +738,20 @@ def html_div_overview_keyboard(id, css_class):
 def html_div_selection_machine(id):
 
 	print('<div id="' + id + '">')
-	print('<table class="checkbox_table">')
+	print('  <table class="checkbox_table">')
 
 	for i in range(0, len(machines)):
 		currentMachine = machines[i];
 		deselection = list(machines);
 		deselection.remove(currentMachine);
 		
-		print('<tr>')
-		print(' <td><input type="radio" name="radios"  id="radio_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'radio_' + currentMachine + '\').checked, [\'{}\']);" /></td>'.format("','".join(deselection)))
-		print(' <td><input type="checkbox" id="checkbox_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'checkbox_' + currentMachine + '\').checked);" /></td>')
-		print(' <td style="white-space: nowrap;"><b>' + machines[i] + '</b>')
-		print('</tr>')
+		print('    <tr>')
+		print('        <td><input type="radio" name="radios"  id="radio_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'radio_' + currentMachine + '\').checked, [\'{}\']);" /></td>'.format("','".join(deselection)))
+		print('        <td><input type="checkbox" id="checkbox_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'checkbox_' + currentMachine + '\').checked);" /></td>')
+		print('        <td style="white-space: nowrap;"><b>' + machines[i] + '</b>')
+		print('    </tr>')
 
-	print('</table>')
+	print('  </table>')
 	print('</div>')
 
 
@@ -913,9 +913,14 @@ def html_div_selection_charset(id, charsets):
 	print('<label for="charset">Character Set</label><br/>')
 	print('<select name="charset" id="charset" onChange="charsetSwitch(this.options[this.selectedIndex].value);">')
 	seen_selected = False
+	last_machine = ''
 	for (filename, machine, locale, type, version) in charsets:
 		if filename == '---':
+			if last_machine != '':
+				print('    </optgroup>')
+			last_machine = machine
 			print('    <optgroup label="{}">'.format(machine))
+				
 		else:
 			if filename == 'c64_us_upper' and not seen_selected:
 				seen_selected = True
@@ -923,7 +928,8 @@ def html_div_selection_charset(id, charsets):
 			else:
 				selected = ''
 			displayname = displayname_for_charset_details(machine, locale, type, version)
-			print('    <option value="png/{}.png" {}>{}</option>'.format(filename, selected, displayname))
+			print('        <option value="png/{}.png" {}>{}</option>'.format(filename, selected, displayname))
+	print('    </optgroup>')
 	print('</select>')
 	print('')
 	print('<br/>')
