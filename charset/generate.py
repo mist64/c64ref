@@ -314,10 +314,6 @@ def combined_description_from_control_code(petscii):
 
 def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, link = None, filename = None):
 	scrcode7 = scrcode & 0x7f
-	if scrcode >= 0x80:
-		inverted = ' inverted'
-	else:
-		inverted = ''
 
 	description_html = ''
 	color_html = ''
@@ -337,7 +333,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, 
 		link_html1 = ' onclick="test(\'{}\')"'.format(link)
 		link_html2 = ' id="{}"'.format(link)
 
-	return '<div class="char-box{}"{}{}><span class="char-img char-{}"></span>{}</div>'.format(inverted, link_html2, link_html1, hex(scrcode7), description_html)
+	return '<div class="char-box"{}{}><span class="scrcode_{:02x}"></span>{}</div>'.format(link_html2, link_html1, scrcode, description_html)
 
 def displayname_for_charset_details(machine, locale, type, version):
 	if locale == '':
@@ -1089,14 +1085,7 @@ print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
 print('<title>Character Set / PETSCII / Keyboard | Ultimate C64 Reference</title>')
 print('')
 print('<script src="script.js"></script>')
-
-print('<script>')
-print('    window.onload = init;')
-print('    function init() {')
-print('        document.getElementById(\'radio_C64\').click();')
-print('    }')
-print('</script>')
-print('')
+print('<script src="charset.js"></script>')
 
 print('')
 

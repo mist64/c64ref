@@ -1,3 +1,40 @@
+window.onload = init;
+
+function init() {
+	document.getElementById("radio_C64").click();
+
+	fgcolor = '#706DEB';
+	bgcolor = '#2E2C9B';
+	loadCharset("chargen", fgcolor, bgcolor);
+}
+
+function loadCharset(filename, fgcolor, bgcolor) {
+	var req = new XMLHttpRequest();
+	req.open("GET", filename, true);
+	req.responseType = "arraybuffer";
+
+	req.onload = function (oEvent) {
+		var arrayBuffer = req.response;
+		if (arrayBuffer) {
+			var byteArray = new Uint8Array(arrayBuffer);
+			for (i = 0; i < 256; i++) {
+				size = '2em';
+				if (i < 128) {
+					svg = svgFromCharBin(byteArray.slice(i*8,i*8+8), size, fgcolor, bgcolor);
+				} else {
+					svg = svgFromCharBin(byteArray.slice((i & 0x7f)*8,(i & 0x7f)*8+8), size, bgcolor, fgcolor);
+				}
+				className = "scrcode_" + ("0" + i.toString(16)).substr(-2);
+				items = document.getElementsByClassName(className);
+				for (j = 0; j < items.length; j++) {
+					items[j].innerHTML = svg;
+				}
+			}
+		}
+	};
+	req.send(null);
+}
+
 function test(element) {
 	if (element == null) {
 		var infoBox = document.getElementById("info_box");
@@ -55,7 +92,7 @@ function toggleMachine(machine, checked, deselectionArray=[]) {
 
 	/* update radio button and checkbox selection state */
 	if (deselectionArray.length == 0) {
-	    var radioList = document.getElementsByName("radios");
+		var radioList = document.getElementsByName("radios");
 		var y;
 		for (y = 0; y < radioList.length; y++) {
 			var currentRadio = radioList[y];

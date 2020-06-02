@@ -195,23 +195,6 @@ nav label:active {
     background-color: #0f0;
 }
 
-.char-img {
-    position: relative;
-    background-image: url(png/c64_us_upper.png);
-    background-repeat: no-repeat;
-    background-color: #f00;
-    transform: scale(4, 4);
-    transform-origin: 0% 0%;
-    height: 8px;
-    width: 8px;
-    margin:0px;
-    padding:0px;
-    border: 0px;
-    display: block;
-    image-rendering: pixelated;
-    z-index: 20;
-}
-
 .char-img16 {
     position: relative;
     background-image: url(png/c64_us_upper.png);
