@@ -48,7 +48,7 @@ links = [
 ]
 
 descriptions = [
-	'<i>Commodore 64 Programmer\'s Reference Guide</i>, ISBN ISBN 0-672-22056-3',
+	'<i>Commodore 64 Programmer\'s Reference Guide</i>, ISBN 0-672-22056-3',
 	'<i>COMPUTE!\'s VIC-20 and Commodore 64 Tool Kit: Kernal</i> by Dan Heeb, ISBN 0942386337',
 	'<i>Machine Language Routines for the Commodore 64 and 128</i> by Todd D Heimarck and Patrick Parrish, ISBN 0874550858',
 	'<i>Mapping the Commodore 64</i> by Sheldon Leemon, ISBN 0-942386-23-X',

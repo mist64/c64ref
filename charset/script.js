@@ -68,6 +68,15 @@ function toggleMachine(machine, checked, deselectionArray=[]) {
 		currentCheckbox.checked = true;
 
 	}
+
+	// hide PETSCII table columns that are disabled
+	var item = document.getElementById("petscii_show");
+	index = item.selectedIndex;
+	if (index == 0) {
+		hideItems("petscii_control");
+	} else if (index == 1) {
+		hideItems("petscii_keyboard");
+	}
 }
 
 function showItems(name) {
@@ -121,6 +130,18 @@ function petsciiTableSwitch(index) {
 	} else if (index == 2) {
 		showItems("petscii_keyboard");
 		showItems("petscii_control");
+	}
+	// hide machines that are disabled
+	var items = document.getElementsByClassName("machine_checkbox");
+	for (i = 0; i < items.length; i++) {
+		if (!items[i].checked) {
+			machine = items[i].id.substring(9);
+			var items2 = document.getElementsByClassName(machine);
+			for (j = 0; j < items2.length; j++) {
+				var currentItem = items2[j];
+				currentItem.style.display = "none";
+			}
+		}
 	}
 }
 

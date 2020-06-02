@@ -747,7 +747,7 @@ def html_div_selection_machine(id):
 		
 		print('    <tr>')
 		print('        <td><input type="radio" name="radios"  id="radio_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'radio_' + currentMachine + '\').checked, [\'{}\']);" /></td>'.format("','".join(deselection)))
-		print('        <td><input type="checkbox" id="checkbox_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'checkbox_' + currentMachine + '\').checked);" /></td>')
+		print('        <td><input class="machine_checkbox" type="checkbox" id="checkbox_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'checkbox_' + currentMachine + '\').checked);" /></td>')
 		print('        <td style="white-space: nowrap;"><b>' + machines[i] + '</b>')
 		print('    </tr>')
 
