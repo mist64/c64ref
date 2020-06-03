@@ -10,10 +10,20 @@ const colorsets = [
 	{ fg: '#000000', bg: '#B2B2B2'}, // TED: lt.green on gray
 ];
 
+const scales = [
+	{ h: 4, v: 4 },
+	{ h: 4*0.955, v: 4 },
+	{ h: 4*0.75, v: 4 },
+	{ h: 2, v: 4 },
+	{ h: 4, v: 2 },
+];
+
 var gSheet;
 var gfgcolor = colorsets[0]['fg'];
 var gbgcolor = colorsets[0]['bg'];
 var gcharset = "bin/c64_us_upper.bin";
+var ghscale = 4;
+var gvscale = 4;
 
 function init() {
 	gSheet = document.createElement('style')
@@ -25,8 +35,12 @@ function init() {
 }
 
 function setBackgroundImage(backgroundImage) {
-//	console.log(backgroundImage);
-	gSheet.innerHTML = ".char-img { background-image: " + backgroundImage + "; }";
+	css = "";
+	css += ".char-img {";
+	css += "    background-image: " + backgroundImage + ";";
+	css += "        transform: scale(" + ghscale + ", " + gvscale + ");";
+	css += "}";
+	gSheet.innerHTML = css;
 }
 
 function updateCharset() {
@@ -62,7 +76,11 @@ function colorsetSwitch(index) {
 	updateCharset();
 }
 
-
+function aspectratioSwitch(index) {
+	ghscale = scales[index]['h'];
+	gvscale = scales[index]['v'];
+	updateCharset();
+}
 
 function test(element) {
 	if (element == null) {

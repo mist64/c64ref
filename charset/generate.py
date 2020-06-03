@@ -947,6 +947,17 @@ def html_div_selection_charset(id, charsets):
 	print('    <option value="colorset_6">C65</option>')
 	print('    <option value="colorset_7">TED</option>')
 	print('</select>')
+	print('')
+	print('<br/>')
+	print('')
+	print('<label for="aspectratio">Aspect Ratio</label><br/>')
+	print('<select name="aspectratio" id="aspectratio" onChange="aspectratioSwitch(this.selectedIndex);">')
+	print('    <option value="aspectratio_1">Square</option>')
+	print('    <option value="aspectratio_2">0.955:1 (C64 PAL)</option>')
+	print('    <option value="aspectratio_3">0.75:1 (C64 NTSC)</option>')
+	print('    <option value="aspectratio_5">1:2 (C128)</option>')
+	print('    <option value="aspectratio_4">2:1 (VIC-20)</option>')
+	print('</select>')
 
 	print('</div>')
 

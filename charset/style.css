@@ -183,7 +183,6 @@ nav label:active {
     padding:0px;
     height: 32px;
     width: 32px;
-    background-color: #0f0;
 }
 
 .char-box16 {
@@ -198,8 +197,6 @@ nav label:active {
 .char-img {
     position: relative;
     background-repeat: no-repeat;
-    background-color: #f00;
-    transform: scale(4, 4);
     transform-origin: 0% 0%;
     height: 8px;
     width: 8px;
