@@ -316,13 +316,10 @@ def pixel_char_html_from_scrcode(scrcode, description = None, link = None, filen
 	scrcode7 = scrcode & 0x7f
 
 	description_html = ''
-	color_html = ''
 		
 	if description is not None:
-		hex_color = '#0008'
-		color_html = ' style="background-color: {}; border-color:{};"'.format(hex_color, hex_color)
-		description_html = '<span class="char-txt"{}>{}<br/></span>'.format(color_html, description)
-		#description_html = '<span class="char-txt"{}><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></span>'.format(color_html, description)
+		description_html = '<div class="char-txt">{}<br/></div>'.format(description)
+		#description_html = '<div class="char-txt"><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></div>'.format(description)
 
 	link_html1 = ''
 	link_html2 = ''
@@ -330,7 +327,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, link = None, filen
 		link_html1 = ' onclick="test(\'{}\')"'.format(link)
 		link_html2 = ' id="{}"'.format(link)
 
-	return '<div class="char-box"{}{}><span class="char-img char-{}"></span>{}</div>'.format(link_html2, link_html1, hex(scrcode), description_html)
+	return '<div class="char-box"{}{}><div class="char-img char-{}"></div>{}</div>'.format(link_html2, link_html1, hex(scrcode), description_html)
 
 def displayname_for_charset_details(machine, locale, type, version):
 	if locale == '':
@@ -713,11 +710,11 @@ def html_div_overview_petscii(id, css_class):
 				symbol = symbol_from_control_code[machine][petscii]
 				if symbol in color_index_from_color_name[machine]:
 					hex_color = hex_color_from_color_index[machine][color_index_from_color_name[machine][symbol]]
-					hex_color += 'E0'
+					hex_color += 'A0'
 				else:
-					hex_color = '#0008'
+					hex_color = '#00000080'
 
-				d = '<span style="background-color: {};{}" class="control_codes control_codes_{}"{}>{}</span>'.format(hex_color, display, machine, machine, d);
+				d = '<div style="background-color: {}; border-color:{}; {}" class="control_codes control_codes_{}">{}</div>'.format(hex_color, hex_color[:-2], display, machine, d);
 				description += d
 
 		print(pixel_char_html_from_scrcode(scrcode, description, 'petscii_' + hex(petscii)))
