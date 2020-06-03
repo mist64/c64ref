@@ -103,7 +103,7 @@ nav label {
 	display: inline-block;
 	padding: 15px 15px;
 	border-top: 1px solid var(--box-border);
-	border-right: 1px solid  var(--box-border);
+	border-right: 1px solid	 var(--box-border);
 	background: hsl(210,0%,70%);
 	color: hsl(210,0%,30%);
 	text-align: center;
@@ -151,19 +151,14 @@ nav label:active {
 
 
 .char-box {
+	position: relative;
 	border: solid 4px #0000;
-    display: inline-block;
-    margin: -3px;
-    padding:0px;
-    height: 32px;
-    width: 32px;
-}
-
-.char-box128 {
-    display: inline-block;
-    padding:0px;
-    height: 8px;
-    width: 1024px;
+	display: inline-block;
+	margin: -3px;
+	padding: 0px;
+	height: 32px;
+	width: 32px;
+	z-index: 19;
 }
 
 .highlighted {
@@ -171,55 +166,74 @@ nav label:active {
 }
 
 .char-img {
-    position: relative;
-    background-repeat: no-repeat;
-    transform-origin: 0% 0%;
-    height: 8px;
-    width: 8px;
-    margin:0px;
-    padding:0px;
-    border: 0px;
-    display: block;
-    z-index: 20;
-}
+	transform-origin: 0% 0%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 8px;
+	height: 8px;
 
-.char-img128 {
-    position: relative;
-    background-repeat: no-repeat;
-    transform-origin: 0% 0%;
-    height: 8px;
-    width: 1024px;
-    margin:0px;
-    padding:0px;
-    border: 0px;
-    display: block;
-    image-rendering: pixelated;
-    z-index: 20;
+	background-repeat: no-repeat;
+	z-index: 20;
 }
 
 .char-txt {
-    position: relative;
-    margin:0px;
-    padding:0px;
-    height: 32px;
-    width: 32px;
-    top: -9px;
-    left: -1px;
-    z-index: 21;
-    background-color: #0008;
-    border: 1px solid #0008;
-    display: block;
-    overflow: hidden;
-	white-space: nowrap;
-	text-overflow: clip;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+
+	z-index: 21;
+}
+
+.char-txt div {
+	border: solid 1px;
+	margin: -1px;
+
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	height: 100%;
+	
 	color: white;
 	text-shadow: 1px 1px black;
 	font-weight: bold;
 	font-size: xx-small;
-	vertical-align: top;
+	vertical-align: middle;
 	text-align: center;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+  
+	overflow: hidden;
+	white-space: normal;
+	text-overflow: clip;
 }
 
+/* */
+
+.char-box128 {
+	display: inline-block;
+	padding:0px;
+	height: 8px;
+	width: 1024px;
+}
+
+
+.char-img128 {
+	position: relative;
+	background-repeat: no-repeat;
+	transform-origin: 0% 0%;
+	height: 8px;
+	width: 1024px;
+	margin:0px;
+	padding:0px;
+	border: 0px;
+	display: block;
+	z-index: 20;
+}
 
 /* Info Box Grid */
 
@@ -387,27 +401,27 @@ nav label:active {
 /* Visual Keys */
 
 span.unicode-box {
-    background-color: lightgray;
-    color: black;
-    border: 2px solid dimgray;
-    border-radius: 1px;
-    padding: 1px;
-    margin: 0px;
+	background-color: lightgray;
+	color: black;
+	border: 2px solid dimgray;
+	border-radius: 1px;
+	padding: 1px;
+	margin: 0px;
 }
 
 
 span.key-box {
-    background-color: black;
-    color: white;
-    border: 1px solid gray;
-    border-radius: 4px;
-    padding: 2px 8px;
+	background-color: black;
+	color: white;
+	border: 1px solid gray;
+	border-radius: 4px;
+	padding: 2px 8px;
 }
 
 div.key-box {
-    font-family: monospace;
-    padding: 0px;
-    margin: 0px;
-    white-space: nowrap;
+	font-family: monospace;
+	padding: 0px;
+	margin: 0px;
+	white-space: nowrap;
 }
  
