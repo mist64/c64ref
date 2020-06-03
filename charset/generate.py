@@ -683,7 +683,7 @@ def html_div_overview_screencode(id, css_class):
 
 	print('<div style="background:#888;" id="' + id + '" class="'+ css_class +'">')
 
-	# Screencode Table
+	# Screen Code Table
 	for scrcode in range(0, 256):
 		print(pixel_char_html_from_scrcode(scrcode, link = 'scrcode_' + hex(scrcode)))
 		if scrcode & 15 == 15:
@@ -755,7 +755,7 @@ def html_div_info_screencode(id):
 
 	print('<div id="' + id + '">')
 
-	# Screencode Boxes
+	# Screen Code Boxes
 	for scrcode in range(0, 256):
 		scrcode7 = scrcode & 0x7f
 		is_reverse = scrcode >= 0x80
@@ -767,7 +767,7 @@ def html_div_info_screencode(id):
 		print('    <div class="scrcode-image">')
 		print(pixel_char_html_from_scrcode(scrcode))
 		print('    </div>')
-		print('    <div class="scrcode-title info-title">Screencode</div>')
+		print('    <div class="scrcode-title info-title">Screen Code</div>')
 		print('    <div class="scrcode-description">')
 		print('        ${:02X}<br/>'.format(scrcode))
 		print('        {}'.format(scrcode))
@@ -853,7 +853,7 @@ def html_div_info_petscii(id):
 		print('    <div class="scrcode-image">')
 		print(pixel_char_html_from_scrcode(scrcode))
 		print('    </div>')
-		print('    <div class="scrcode-title info-title">Screencode</div>')
+		print('    <div class="scrcode-title info-title">Screen Code</div>')
 		print('    <div class="scrcode-description">')
 		print('        ${:02X}'.format(scrcode))
 		print('        {}'.format(scrcode))
@@ -934,6 +934,19 @@ def html_div_selection_charset(id, charsets):
 	print('<select name="unicode" id="unicode" onChange="unicodeSwitch(this.selectedIndex);">')
 	print('    <option value="us_upper">US Upper Case</option>')
 	print('    <option value="us_lower">US Lower Case</option>')
+	print('</select>')
+	print('')
+	print('<br/>')
+	print('')
+	print('<label for="color_set">Color Set</label><br/>')
+	print('<select name="color_set" id="color_set" onChange="colorsetSwitch(this.selectedIndex);">')
+	print('    <option value="colorset_1">Black on White</option>')
+	print('    <option value="colorset_2">PET</option>')
+	print('    <option value="colorset_3">VIC-20</option>')
+	print('    <option value="colorset_4">C64</option>')
+	print('    <option value="colorset_5">C128</option>')
+	print('    <option value="colorset_6">C65</option>')
+	print('    <option value="colorset_7">TED</option>')
 	print('</select>')
 
 	print('</div>')
@@ -1116,7 +1129,7 @@ print('')
 
 print('   <figure>')
 
-# Screencodes and Character Sets
+# Screen Codes and Character Sets
 
 html_div_overview_screencode("screencode_overview", "screencode_group")
 html_div_overview_petscii("petscii_overview", "petscii_group")

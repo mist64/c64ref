@@ -1,16 +1,25 @@
 window.onload = init;
 
+const colorsets = [
+	{ fg: '#000000', bg: '#FFFFFF'}, // black on white
+	{ fg: '#4DF600', bg: '#000000'}, // PET: green on black
+	{ fg: '#2E2C9B', bg: '#FFFFFF'}, // VIC-20: blue on white
+	{ fg: '#706DEB', bg: '#2E2C9B'}, // C64: lt.blue on blue
+	{ fg: '#A9FF9F', bg: '#7B7B7B'}, // C128: lt.green on gray
+	{ fg: '#FFFFFF', bg: '#2E2C9B'}, // C65: white on blue
+	{ fg: '#000000', bg: '#B2B2B2'}, // TED: lt.green on gray
+];
+
 var gSheet;
+var gfgcolor = colorsets[0]['fg'];
+var gbgcolor = colorsets[0]['bg'];
+var gcharset = "bin/c64_us_upper.bin";
 
 function init() {
 	gSheet = document.createElement('style')
 	document.body.appendChild(gSheet);
 
-//	setBackgroundImage("url(png/c64_us_upper.png)");
-
-	fgcolor = '#706DEB';
-	bgcolor = '#2E2C9B';
-	loadCharset("bin/c64_us_upper.bin", fgcolor, bgcolor);
+	updateCharset();
 
 	document.getElementById("radio_C64").click();
 }
@@ -18,6 +27,10 @@ function init() {
 function setBackgroundImage(backgroundImage) {
 //	console.log(backgroundImage);
 	gSheet.innerHTML = ".char-img { background-image: " + backgroundImage + "; }";
+}
+
+function updateCharset() {
+	loadCharset(gcharset, gfgcolor, gbgcolor);
 }
 
 function loadCharset(filename, fgcolor, bgcolor) {
@@ -38,11 +51,17 @@ function loadCharset(filename, fgcolor, bgcolor) {
 }
 
 function charsetSwitch(filename) {
-	console.log(filename);
-	fgcolor = '#706DEB';
-	bgcolor = '#2E2C9B';
-	loadCharset(filename, fgcolor, bgcolor);
+	gcharset = filename;
+	updateCharset();
 }
+
+
+function colorsetSwitch(index) {
+	gfgcolor = colorsets[index]['fg'];
+	gbgcolor = colorsets[index]['bg'];
+	updateCharset();
+}
+
 
 
 function test(element) {
