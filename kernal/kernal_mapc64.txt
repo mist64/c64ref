@@ -338,7 +338,7 @@ $FFD2  CHROUT  Output a Byte
 $FFD5  LOAD    Load RAM from a Device
                
                The routine jumps through a RAM vector at 816 ($330).  LOAD is used to
-               transfer data froma device directly to RAM.  It can also be used to
+               transfer data from a device directly to RAM.  It can also be used to
                verify RAM, comparing its contents to those of a disk or tape file.
                To choose between these operations you must set the Accumulator with a
                0 for LOAD, or a 1 for VERIFY.

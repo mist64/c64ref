@@ -215,7 +215,7 @@ print('<a href="https://github.com/mist64/c64ref" class="github-corner" aria-lab
 
 print('<div class="topnav">')
 print('    <h1>Ultimate Commodore 64 Reference</h1> ')
-#print('    <a href="#">KERNAL API</a><!-- kernal/ -->')
+print('    <a href="../kernal/">KERNAL API</a><!-- kernal/ -->')
 print('    <a href="../c64disasm/">ROM Disassembly</a><!-- c64disasm/ -->')
 print('    <a class="active" href="../c64mem/">Memory Map</a><!-- c64mem/ -->')
 #print('    <a href="#">I/O Map</a><!-- c64io/ -->')
