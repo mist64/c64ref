@@ -31,6 +31,8 @@ function init() {
 
 	updateCharset();
 
+	setAllCharsets()
+
 	document.getElementById("radio_C64").click();
 }
 
@@ -80,6 +82,35 @@ function aspectratioSwitch(index) {
 	ghscale = scales[index]['h'];
 	gvscale = scales[index]['v'];
 	updateCharset();
+}
+
+function setAllCharsets() {
+	items = document.getElementsByClassName('char-img128');
+	for (var i = 0; i < items.length; i++) {
+		var item = items[i];
+		var filename = item.id;
+
+		var makeRequest = function(item) {
+			var req = new XMLHttpRequest();
+			req.open("GET", filename, true);
+			req.responseType = "arraybuffer";
+			req.onload = function(data) {
+				// extraInfo is accessible here
+				reply = data.target.response;
+				var arrayBuffer = req.response;
+				if (arrayBuffer) {
+					var byteArray = new Uint8Array(arrayBuffer);
+					scale = 1;
+					svg = svgFromCharBin(byteArray, scale, '#000000', '#FFFFFF');
+					item.style.backgroundImage = "url('data:image/svg+xml;utf8," + svg + "')";
+				}
+			};
+			req.send(null);
+		};
+		makeRequest(item);
+
+
+	}
 }
 
 function test(element) {

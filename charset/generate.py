@@ -994,8 +994,7 @@ def html_div_table_charset(id, css_class,  charsets):
 			print('<span style="float: right;"><a href="bin/{}.bin">.bin</a></span>'.format(filename))
 			print('        </td>')
 			print('        <td>')
-			for line in range(0, 8):
-				print('        <div class="char-box16"><span class="char-img16 char16-{}" style="background-image: url(png/{}.png);"></span></div>'.format(hex(line), filename))
+			print('        <div class="char-box128"><span class="char-img128" id="bin/{}.bin"></span></div>'.format(filename))
 			print('        </td>')
 			print('    </tr>')
 
