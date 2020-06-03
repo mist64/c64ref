@@ -43,7 +43,7 @@ function loadCharset(filename, fgcolor, bgcolor) {
 		if (arrayBuffer) {
 			var byteArray = new Uint8Array(arrayBuffer);
 			scale = 2;
-			svg = svgFromCharBin(byteArray, 8 * 128, scale, fgcolor, bgcolor);
+			svg = svgFromCharBin(byteArray, scale, fgcolor, bgcolor);
 			setBackgroundImage("url('data:image/svg+xml;utf8," + svg + "')");
 		}
 	};

@@ -667,8 +667,8 @@ def html_header_css():
 	print('')
 
 	for c in range(0, 128):
-		y = c * -8
-		print('    .char-{} {{ background-position:    0px    {}px; }}'.format(hex(c), y))
+		x = c * -8
+		print('    .char-{} {{ background-position:    {}px    0px; }}'.format(hex(c), x))
 
 	for c in range(0, 16):
 		x = 0
