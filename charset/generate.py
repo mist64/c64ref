@@ -861,7 +861,7 @@ def html_div_info_petscii(id):
 		print('    </div>')
 		print('    <div class="scrcode-title info-title">Screen Code</div>')
 		print('    <div class="scrcode-description">')
-		print('        ${:02X}'.format(scrcode))
+		print('        ${:02X}<br/>'.format(scrcode))
 		print('        {}'.format(scrcode))
 		print('    </div>')
 
