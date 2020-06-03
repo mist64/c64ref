@@ -10,6 +10,10 @@ body {
 	margin: 4px;
 }
 
+#petscii_table td {
+    vertical-align: top;
+}
+
 #charset_table > table,
 #petscii_table > table {
 	border-collapse: collapse;
@@ -149,7 +153,6 @@ nav label:active {
 
 /* Character Boxes */
 
-
 .char-box {
 	position: relative;
 	border: solid 4px #0000;
@@ -175,6 +178,16 @@ nav label:active {
 
 	background-repeat: no-repeat;
 	z-index: 20;
+}
+
+
+.scrcode-image .char-box {
+	height: 64px;
+	width: 64px;
+}
+
+.scrcode-image .char-img {
+	transform: scale(8);
 }
 
 .char-txt {
@@ -401,30 +414,38 @@ nav label:active {
 /* Visual Keys */
 
 span.unicode-box {
-	background-color: lightgray;
+	display: inline-block;
+	background-color: white;
 	color: black;
 	border: 2px solid dimgray;
-	border-radius: 1px;
+	border-radius: 2px;
 	padding: 1px;
-	margin: 0px;
+	margin: 2px;
+	font-family: monospace;
+	font-size: larger;
+	font-weight: bolder;
 }
 
 
 span.key-box {
+	display: inline-block;
 	background-color: black;
 	color: white;
-	border: 1px solid gray;
+	border: 1px solid lightgray;
 	border-radius: 4px;
 	padding: 2px 8px;
+	font-family: monospace;
 }
 
 div.key-box {
-	font-family: monospace;
-	padding: 0px;
-	margin: 0px;
+	margin: 4px 8px;
+	text-align: left;
 	white-space: nowrap;
 }
  
+
+/* Other */
+
 #charset_table .header {
 	background: #ccc;
 	font-weight: bold;

@@ -268,7 +268,7 @@ def all_keyboard_html_from_petscii(petscii, scrcode, other_ok = False):
 		if len(modifiers_and_scancodes_html) > 0:
 			html = ''
 			for h in modifiers_and_scancodes_html:
-					html += '{}<br/>'.format(h)
+					html += '{}'.format(h)
 		else:
 			html = ' -'
 		all_modifiers_and_scancodes_html[machine] = html
@@ -1120,7 +1120,7 @@ def html_div_table_petscii(id, css_class):
 			if len(modifiers_and_scancodes_html) > 0:
 				if not other_petscii:
 					for html in modifiers_and_scancodes_html:
-						print('            {}<br/>'.format(html))
+						print('            {}'.format(html))
 			print('        </td>')
 			i += 1
 
