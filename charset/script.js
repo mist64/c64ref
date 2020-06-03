@@ -11,11 +11,11 @@ const colorsets = [
 ];
 
 const scales = [
-	{ h: 4, v: 4 },
-	{ h: 4*0.955, v: 4 },
-	{ h: 4*0.75, v: 4 },
-	{ h: 2, v: 4 },
-	{ h: 4, v: 2 },
+	{ h: 4, v: 4 },       // Square
+	{ h: 4*0.955, v: 4 }, // C64 PAL
+	{ h: 4*0.75, v: 4 },  // C64 NTSC
+	{ h: 2, v: 4 },       // C128
+	{ h: 4, v: 2 },       // VIC-20
 ];
 
 var gSheet;
@@ -160,6 +160,63 @@ function toggleMachine(machine, checked, deselectionArray=[]) {
 		hideItems("petscii_control");
 	} else if (index == 1) {
 		hideItems("petscii_keyboard");
+	}
+
+	if (deselectionArray.length != 0) {
+		aspectratio
+
+		switch (machine) {
+			case 'PET-N':
+			case 'PET-B':
+			case 'CBM2':
+				gcharset = 'bin/pet_us_upper.bin';
+				colindex = 1;
+				scalesindex = 0;
+				break;
+			case 'VIC-20':
+				gcharset = 'bin/vic-20_us_upper.bin';
+				colindex = 2;
+				scalesindex = 4;
+				break;
+			case 'C64':
+				gcharset = 'bin/c64_us_upper.bin';
+				colindex = 3;
+				scalesindex = 1;
+				break;
+			case 'C128':
+				gcharset = 'bin/c64_us_upper.bin';
+				colindex = 4;
+				scalesindex = 1;
+				break;
+			case 'C65':
+				gcharset = 'bin/c64_us_upper.bin';
+				colindex = 5;
+				scalesindex = 0;
+				break;
+			case 'TED':
+				gcharset = 'bin/c64_us_upper.bin';
+				colindex = 6;
+				scalesindex = 0;
+				break;
+		}
+		gfgcolor = colorsets[colindex]['fg'];
+		gbgcolor = colorsets[colindex]['bg'];
+		ghscale = scales[scalesindex]['h'];
+		gvscale = scales[scalesindex]['v'];
+		updateCharset();
+
+		document.getElementById("color_set").selectedIndex = colindex;
+		document.getElementById("aspectratio").selectedIndex = scalesindex;
+
+		var sel = document.getElementById('charset');
+		var opts = sel.options;
+		for (var opt, j = 0; opt = opts[j]; j++) {
+			if (opt.value == gcharset) {
+				sel.selectedIndex = j;
+				break;
+			}
+		}
+
 	}
 }
 

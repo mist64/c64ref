@@ -556,9 +556,9 @@ charsets = [
 	('---', 'Common', '', '', ''),
 	('vic-20_us_upper', 'VIC-20', '', 'upper', ''),
 	('vic-20_us_lower', 'VIC-20', '', 'lower', ''),
-	('c64_us_upper', 'C64/C16/C128', '', 'upper', ''),
+	('c64_us_upper', 'C64/TED/C128', '', 'upper', ''),
 	('c64_us_lower', 'C64', '', 'lower', ''),
-	('c16_us_lower', 'C16', '', 'lower', ''),
+	('ted_us_lower', 'TED', '', 'lower', ''),
 	('c128_us_lower', 'C128', '', 'lower', ''),
 	('---', 'PET Style', '', '', ''),
 	('pet_us_upper', 'PET', '', 'upper', ''),
@@ -615,19 +615,19 @@ charsets = [
 	('c128_swiss_lower', 'C128', 'Swiss', 'lower', ''),
 	('c128_swiss_lower_alt', 'C128', 'Swiss', 'lower', 'alt'),
 	('---', 'C64 Style', '', '', ''),
-	('c64_us_upper', 'C64/C16/C128', '', 'upper', ''),
+	('c64_us_upper', 'C64/TED/C128', '', 'upper', ''),
 	('c64_us_upper_alt', 'C64', '', 'upper', 'alt'),
 	('c64_us_lower', 'C64', '', 'lower', ''),
 	('c64_us_lower_alt', 'C64', '', 'lower', 'alt'),
-	('c16_us_lower', 'C16', '', 'lower', ''),
+	('ted_us_lower', 'TED', '', 'lower', ''),
 	('c128_us_lower', 'C128', '', 'lower', ''),
 	('---', 'C64 Style Localized', '', '', ''),
 	('c64_danish_upper', 'C64', 'Danish', 'upper', ''),
 	('c64_danish_upper_alt', 'C64', 'Danish', 'upper', 'alt'),
 	('c64_danish_lower', 'C64', 'Danish', 'lower', ''),
 	('c64_danish_lower_alt', 'C64', 'Danish', 'lower', 'alt'),
-	('c16_hungarian_upper', 'C16', 'Hungarian', 'upper', ''),
-	('c16_hungarian_lower', 'C16', 'Hungarian', 'lower', ''),
+	('ted_hungarian_upper', 'TED', 'Hungarian', 'upper', ''),
+	('ted_hungarian_lower', 'TED', 'Hungarian', 'lower', ''),
 	('c64_spanish_upper', 'C64', 'Spanish', 'upper', ''),
 	('c64_spanish_lower', 'C64', 'Spanish', 'lower', ''),
 	('c64_swedish_upper', 'C64', 'Swedish', 'upper', ''),
@@ -955,7 +955,7 @@ def html_div_selection_charset(id, charsets):
 	print('    <option value="aspectratio_1">Square</option>')
 	print('    <option value="aspectratio_2">0.955:1 (C64 PAL)</option>')
 	print('    <option value="aspectratio_3">0.75:1 (C64 NTSC)</option>')
-	print('    <option value="aspectratio_5">1:2 (C128)</option>')
+	print('    <option value="aspectratio_5">1:2 (C128 VDC)</option>')
 	print('    <option value="aspectratio_4">2:1 (VIC-20)</option>')
 	print('</select>')
 
