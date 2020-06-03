@@ -69,6 +69,12 @@ function loadCharset(filename, fgcolor, bgcolor) {
 function charsetSwitch(filename) {
 	gcharset = filename;
 	updateCharset();
+
+	if (gcharset.includes('upper')) {
+		unicodeSwitch(0);
+	} else {
+		unicodeSwitch(1);
+	}
 }
 
 
