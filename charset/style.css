@@ -414,12 +414,16 @@ nav label:active {
 /* Visual Keys */
 
 span.unicode-box {
-	background-color: lightgray;
+	display: inline-block;
+	background-color: white;
 	color: black;
 	border: 2px solid dimgray;
-	border-radius: 1px;
+	border-radius: 2px;
 	padding: 1px;
-	margin: 0px;
+	margin: 2px;
+	font-family: monospace;
+	font-size: larger;
+	font-weight: bolder;
 }
 
 
