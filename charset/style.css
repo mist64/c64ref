@@ -149,7 +149,6 @@ nav label:active {
 
 /* Character Boxes */
 
-
 .char-box {
 	position: relative;
 	border: solid 4px #0000;
@@ -175,6 +174,16 @@ nav label:active {
 
 	background-repeat: no-repeat;
 	z-index: 20;
+}
+
+
+.scrcode-image .char-box {
+	height: 64px;
+	width: 64px;
+}
+
+.scrcode-image .char-img {
+	transform: scale(8);
 }
 
 .char-txt {
@@ -425,6 +434,8 @@ div.key-box {
 	white-space: nowrap;
 }
  
+
+/* Other */
 #charset_table .header {
 	background: #ccc;
 	font-weight: bold;
