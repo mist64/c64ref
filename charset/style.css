@@ -425,3 +425,7 @@ div.key-box {
 	white-space: nowrap;
 }
  
+#charset_table .header {
+	background: #ccc;
+	font-weight: bold;
+}

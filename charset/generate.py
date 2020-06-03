@@ -1030,8 +1030,8 @@ def html_div_table_charset(id, css_class, charsets):
 	for (filename, machine, locale, type, version) in charsets:
 		if filename == '---':
 			print('    <tr>')
-			print('        <td colspan="2">')
-			print('            <b>{}</b>'.format(machine))
+			print('        <td colspan="2" class="header">')
+			print('            {}'.format(machine))
 			print('        </td>')
 			print('    </tr>')
 		else:
