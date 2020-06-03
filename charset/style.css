@@ -149,48 +149,25 @@ nav label:active {
 
 /* Character Boxes */
 
-.inverted {
-    filter: invert(100%) 
-}
-
-.highlighted {
-    box-shadow: 2px 2px 0px 0px black;
-    filter:
-        /* white to off-white */
-        sepia(100%)
-        /* off-white to yellow */
-        saturate(1000%)
-        /* do whatever you want with yellow */
-        hue-rotate(100deg);
-}
-
-.highlighted.inverted {
-    filter:
-	    invert(100%) 
-        /* white to off-white */
-        sepia(100%)
-        /* off-white to yellow */
-        saturate(1000%)
-        /* do whatever you want with yellow */
-        hue-rotate(100deg);
-}
-
 
 .char-box {
-    border: 1px solid gray;
+	border: solid 4px #0000;
     display: inline-block;
-    margin: 2px;
+    margin: -3px;
     padding:0px;
     height: 32px;
     width: 32px;
 }
 
 .char-box128 {
-    border: 1px solid gray;
     display: inline-block;
     padding:0px;
     height: 8px;
     width: 1024px;
+}
+
+.highlighted {
+	border-color: yellow;
 }
 
 .char-img {
@@ -203,7 +180,6 @@ nav label:active {
     padding:0px;
     border: 0px;
     display: block;
-    image-rendering: pixelated;
     z-index: 20;
 }
 
