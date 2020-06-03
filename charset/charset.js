@@ -30,5 +30,7 @@ function svgPathFromBin(bin) {
 }
 
 function svgFromCharBin(bin, scale, fgcolor, bgcolor) {
+	fgcolor = fgcolor.replace("#", "%23");
+	bgcolor = bgcolor.replace("#", "%23");
 	return "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" + 256 * 8 + "\" height=\"8\" style=\"background-color:" + bgcolor + "\" shape-rendering=\"crispEdges\" viewBox=\"0 -.5 " + 256 * 8 + " 8\"><path stroke=\"" + fgcolor + "\" d=\"" + svgPathFromBin(bin) + "\"/></svg>";
 }
