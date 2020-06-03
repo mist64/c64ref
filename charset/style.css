@@ -424,6 +424,7 @@ span.unicode-box {
 	font-family: monospace;
 	font-size: larger;
 	font-weight: bolder;
+	white-space: pre;
 }
 
 
