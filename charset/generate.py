@@ -333,8 +333,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, 
 		link_html1 = ' onclick="test(\'{}\')"'.format(link)
 		link_html2 = ' id="{}"'.format(link)
 
-#	return '<div class="char-box"{}{}><span class="scrcode_{:02x}"></span>{}</div>'.format(link_html2, link_html1, scrcode, description_html)
-	return '<div class="char-box"{}{}><span class="char-img char-{}"></span>{}</div>'.format(link_html2, link_html1, hex(scrcode7), description_html)
+	return '<div class="char-box"{}{}><span class="char-img char-{}"></span>{}</div>'.format(link_html2, link_html1, hex(scrcode), description_html)
 
 def displayname_for_charset_details(machine, locale, type, version):
 	if locale == '':
@@ -666,7 +665,7 @@ def html_header_css():
 	print('<style>')
 	print('')
 
-	for c in range(0, 128):
+	for c in range(0, 256):
 		x = c * -8
 		print('    .char-{} {{ background-position:    {}px    0px; }}'.format(hex(c), x))
 

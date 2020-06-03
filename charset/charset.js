@@ -1,8 +1,11 @@
 function svgPathFromBin(bin) {
 	svg = "";
-	for (var y = 0; y < 128 * 8; y++) {
+	for (var y = 0; y < 256 * 8; y++) {
 		ty = y & 7;
-		byte = bin[y];
+		byte = bin[y & 0x3ff];
+		if (y & (0x80 << 3)) {
+			byte ^= 0xff;
+		}
 		is_first = true;
 		prev = -1;
 		count = 1;
@@ -27,5 +30,5 @@ function svgPathFromBin(bin) {
 }
 
 function svgFromCharBin(bin, scale, fgcolor, bgcolor) {
-	return "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" + 128 * 8 + "\" height=\"8\" style=\"background-color:" + bgcolor + "\" shape-rendering=\"crispEdges\" viewBox=\"0 -.5 " + 128 * 8 + " 8\"><path stroke=\"" + fgcolor + "\" d=\"" + svgPathFromBin(bin) + "\"/></svg>";
+	return "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" + 256 * 8 + "\" height=\"8\" style=\"background-color:" + bgcolor + "\" shape-rendering=\"crispEdges\" viewBox=\"0 -.5 " + 256 * 8 + " 8\"><path stroke=\"" + fgcolor + "\" d=\"" + svgPathFromBin(bin) + "\"/></svg>";
 }
