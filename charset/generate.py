@@ -336,7 +336,7 @@ def displayname_for_charset_details(machine, locale, type, version):
 
 ####################################################################
 
-machines = ['PET-N', 'PET-B', 'VIC-20', 'C64', 'C128', 'C65', 'TED', 'CBM2']
+machines = ['PET-N', 'PET-B', 'CBM2', 'VIC-20', 'C64', 'C128', 'C65', 'TED']
 
 #
 # generate petscii_from_scrcode mapping
@@ -1178,9 +1178,9 @@ print('<a href="https://github.com/mist64/c64ref" class="github-corner" aria-lab
 print('<div class="topnav">')
 print('    <h1>Ultimate Commodore 64 Reference</h1> ')
 print('    <a href="../kernal/">KERNAL API</a><!-- kernal/ -->')
-print('    <a class="active" href="../c64disasm/">ROM Disassembly</a><!-- c64disasm/ -->')
+print('    <a href="../c64disasm/">ROM Disassembly</a><!-- c64disasm/ -->')
 print('    <a href="../c64mem/">Memory Map</a><!-- c64mem/ -->')
-print('    <a href="../charset/">Charset/PETSCII/Keyboard</a><!-- charset/ -->')
+print('    <a class="active" href="../charset/">Charset/PETSCII/Keyboard</a><!-- charset/ -->')
 #print('    <a href="#">I/O Map</a><!-- c64io/ -->')
 #print('    <a href="#">6502 CPU</a><!-- 6502/ -->')
 print('    <a class="home" href="https://www.pagetable.com/">pagetable.com</a>')

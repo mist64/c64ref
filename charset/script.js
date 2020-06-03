@@ -19,8 +19,8 @@ const scales = [
 ];
 
 var gSheet;
-var gfgcolor = colorsets[0]['fg'];
-var gbgcolor = colorsets[0]['bg'];
+var gfgcolor = colorsets[3]['fg'];
+var gbgcolor = colorsets[3]['bg'];
 var gcharset = "bin/c64_us_upper.bin";
 var ghscale = 4;
 var gvscale = 4;
