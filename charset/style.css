@@ -229,7 +229,6 @@ nav label:active {
     width: 32px;
     top: -9px;
     left: -1px;
-    filter: invert(100%);
     z-index: 21;
     background-color: #9999;
     border: 1px solid pink;

@@ -84,6 +84,11 @@ function aspectratioSwitch(index) {
 	updateCharset();
 }
 
+function controlcodesSwitch(machine) {
+	hideItems("control_codes");
+	showItems("control_codes_" + machine);
+}
+
 function setAllCharsets() {
 	items = document.getElementsByClassName('char-img128');
 	for (var i = 0; i < items.length; i++) {
@@ -194,8 +199,6 @@ function toggleMachine(machine, checked, deselectionArray=[]) {
 	}
 
 	if (deselectionArray.length != 0) {
-		aspectratio
-
 		switch (machine) {
 			case 'PET-N':
 			case 'PET-B':
@@ -236,6 +239,8 @@ function toggleMachine(machine, checked, deselectionArray=[]) {
 		gvscale = scales[scalesindex]['v'];
 		updateCharset();
 
+		controlcodesSwitch(machine);
+
 		document.getElementById("color_set").selectedIndex = colindex;
 		document.getElementById("aspectratio").selectedIndex = scalesindex;
 
@@ -243,6 +248,15 @@ function toggleMachine(machine, checked, deselectionArray=[]) {
 		var opts = sel.options;
 		for (var opt, j = 0; opt = opts[j]; j++) {
 			if (opt.value == gcharset) {
+				sel.selectedIndex = j;
+				break;
+			}
+		}
+
+		var sel = document.getElementById('controlcodes');
+		var opts = sel.options;
+		for (var opt, j = 0; opt = opts[j]; j++) {
+			if (opt.value == machine) {
 				sel.selectedIndex = j;
 				break;
 			}

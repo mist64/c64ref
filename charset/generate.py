@@ -312,17 +312,14 @@ def combined_description_from_control_code(petscii):
 	return combined_description
 
 
-def pixel_char_html_from_scrcode(scrcode, description = None, hex_color = None, link = None, filename = None):
+def pixel_char_html_from_scrcode(scrcode, description = None, link = None, filename = None):
 	scrcode7 = scrcode & 0x7f
 
 	description_html = ''
 	color_html = ''
 		
 	if description is not None:
-		if hex_color is None:
-			hex_color = '#0008'
-		else:
-			hex_color += 'E0'
+		hex_color = '#0008'
 		color_html = ' style="background-color: {}; border-color:{};"'.format(hex_color, hex_color)
 		description_html = '<span class="char-txt"{}>{}<br/></span>'.format(color_html, description)
 		#description_html = '<span class="char-txt"{}><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></span>'.format(color_html, description)
@@ -693,8 +690,6 @@ def html_div_overview_screencode(id, css_class):
 
 def html_div_overview_petscii(id, css_class):
 
-	machine = 'C64'
-
 	print('<div style="background:#888;" id="' + id + '" class="'+ css_class +'">')
 
 	# PETSCII Table
@@ -702,18 +697,30 @@ def html_div_overview_petscii(id, css_class):
 		scrcode = scrcode_from_petscii[petscii]
 		description = None
 		if not is_petscii_printable(petscii):
-			description = description_from_control_code[machine].get(petscii)
-			if description:
-				(description, _) = description
-			if not description:
-				description = ''
+			description = ''
+			for machine in machines:
+				d = description_from_control_code[machine].get(petscii)
+				if d:
+					(d, _) = d
+				if not d:
+					d = ''
 
-		hex_color = None
-		if not is_petscii_printable(petscii):
-			symbol = symbol_from_control_code[machine][petscii]
-			if symbol in color_index_from_color_name[machine]:
-				hex_color = hex_color_from_color_index[machine][color_index_from_color_name[machine][symbol]]
-		print(pixel_char_html_from_scrcode(scrcode, description, hex_color, 'petscii_' + hex(petscii)))
+				if machine == 'C64':
+					display = ''
+				else:
+					display = ' display: none;'
+
+				symbol = symbol_from_control_code[machine][petscii]
+				if symbol in color_index_from_color_name[machine]:
+					hex_color = hex_color_from_color_index[machine][color_index_from_color_name[machine][symbol]]
+					hex_color += 'E0'
+				else:
+					hex_color = '#0008'
+
+				d = '<span style="background-color: {};{}" class="control_codes control_codes_{}"{}>{}</span>'.format(hex_color, display, machine, machine, d);
+				description += d
+
+		print(pixel_char_html_from_scrcode(scrcode, description, 'petscii_' + hex(petscii)))
 		if petscii & 15 == 15:
 			print('<br/>')
 
@@ -933,6 +940,14 @@ def html_div_selection_charset(id, charsets):
 	print('<select name="unicode" id="unicode" onChange="unicodeSwitch(this.selectedIndex);">')
 	print('    <option value="us_upper">US Upper Case</option>')
 	print('    <option value="us_lower">US Lower Case</option>')
+	print('</select>')
+	print('')
+	print('<br/>')
+	print('')
+	print('<label for="controlcodes">Control Codes</label><br/>')
+	print('<select name="controlcodes" id="controlcodes" onChange="controlcodesSwitch(this.options[this.selectedIndex].value);">')
+	for machine in machines:
+		print('    <option value="{}">{}</option>'.format(machine, machine))
 	print('</select>')
 	print('')
 	print('<br/>')
