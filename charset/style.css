@@ -10,6 +10,10 @@ body {
 	margin: 4px;
 }
 
+#petscii_table td {
+    vertical-align: top;
+}
+
 #charset_table > table,
 #petscii_table > table {
 	border-collapse: collapse;
@@ -420,22 +424,24 @@ span.unicode-box {
 
 
 span.key-box {
+	display: inline-block;
 	background-color: black;
 	color: white;
-	border: 1px solid gray;
+	border: 1px solid lightgray;
 	border-radius: 4px;
 	padding: 2px 8px;
+	font-family: monospace;
 }
 
 div.key-box {
-	font-family: monospace;
-	padding: 0px;
-	margin: 0px;
+	margin: 4px 8px;
+	text-align: left;
 	white-space: nowrap;
 }
  
 
 /* Other */
+
 #charset_table .header {
 	background: #ccc;
 	font-weight: bold;
