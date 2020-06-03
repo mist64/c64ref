@@ -316,13 +316,10 @@ def pixel_char_html_from_scrcode(scrcode, description = None, link = None, filen
 	scrcode7 = scrcode & 0x7f
 
 	description_html = ''
-	color_html = ''
 		
 	if description is not None:
-		hex_color = '#0008'
-		color_html = ' style="background-color: {}; border-color:{};"'.format(hex_color, hex_color)
-		description_html = '<span class="char-txt"{}>{}<br/></span>'.format(color_html, description)
-		#description_html = '<span class="char-txt"{}><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></span>'.format(color_html, description)
+		description_html = '<span class="char-txt">{}<br/></span>'.format(description)
+		#description_html = '<span class="char-txt"><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></span>'.format(description)
 
 	link_html1 = ''
 	link_html2 = ''

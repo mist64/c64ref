@@ -206,8 +206,8 @@ nav label:active {
     top: -9px;
     left: -1px;
     z-index: 21;
-    background-color: #9999;
-    border: 1px solid pink;
+    background-color: #0008;
+    border: 1px solid #0008;
     display: block;
     overflow: hidden;
 	white-space: nowrap;
