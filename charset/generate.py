@@ -751,6 +751,10 @@ def html_div_selection_machine(id):
 		print('    </tr>')
 
 	print('  </table>')
+
+	selection = "','".join(list(machines))
+	print(' <button type="button" onclick="checkMachines([\'{}\'], true)">All</button>'.format(selection))
+	print(' <button type="button" onclick="checkMachines([\'{}\'], false)">None</button>'.format(selection))
 	print('</div>')
 
 

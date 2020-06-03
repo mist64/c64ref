@@ -196,6 +196,14 @@ function test(element) {
 	}
 }
 
+function checkMachines(selectionArray, checked) {
+	var x;
+	for (x = 0; x < selectionArray.length; x++) {
+		var currentMachine = selectionArray[x];
+		toggleMachine(currentMachine, checked, []);
+	}
+}
+
 function toggleMachine(machine, checked, deselectionArray=[]) {
 
 	/* hide everything in the deselection array */
@@ -228,6 +236,10 @@ function toggleMachine(machine, checked, deselectionArray=[]) {
 	}
 
 	/* update radio button and checkbox selection state */
+	var currentCheckboxId = "checkbox_".concat(machine);
+	var currentCheckbox = document.getElementById(currentCheckboxId);
+	currentCheckbox.checked = checked;
+
 	if (deselectionArray.length == 0) {
 		var radioList = document.getElementsByName("radios");
 		var y;
@@ -235,12 +247,6 @@ function toggleMachine(machine, checked, deselectionArray=[]) {
 			var currentRadio = radioList[y];
 			currentRadio.checked = false;
 		}
-
-	} else {
-		var currentCheckboxId = "checkbox_".concat(machine);
-		var currentCheckbox = document.getElementById(currentCheckboxId);
-		currentCheckbox.checked = true;
-
 	}
 
 	// hide PETSCII table columns that are disabled
@@ -315,7 +321,6 @@ function toggleMachine(machine, checked, deselectionArray=[]) {
 				break;
 			}
 		}
-
 	}
 }
 
