@@ -1,11 +1,23 @@
 window.onload = init;
 
+var gSheet;
+
 function init() {
-	document.getElementById("radio_C64").click();
+	gSheet = document.createElement('style')
+	document.body.appendChild(gSheet);
+
+//	setBackgroundImage("url(png/c64_us_upper.png)");
 
 	fgcolor = '#706DEB';
 	bgcolor = '#2E2C9B';
-	loadCharset("chargen", fgcolor, bgcolor);
+	loadCharset("bin/c64_us_upper.bin", fgcolor, bgcolor);
+
+	document.getElementById("radio_C64").click();
+}
+
+function setBackgroundImage(backgroundImage) {
+//	console.log(backgroundImage);
+	gSheet.innerHTML = ".char-img { background-image: " + backgroundImage + "; }";
 }
 
 function loadCharset(filename, fgcolor, bgcolor) {
@@ -17,19 +29,9 @@ function loadCharset(filename, fgcolor, bgcolor) {
 		var arrayBuffer = req.response;
 		if (arrayBuffer) {
 			var byteArray = new Uint8Array(arrayBuffer);
-			for (i = 0; i < 256; i++) {
-				size = '2em';
-				if (i < 128) {
-					svg = svgFromCharBin(byteArray.slice(i*8,i*8+8), size, fgcolor, bgcolor);
-				} else {
-					svg = svgFromCharBin(byteArray.slice((i & 0x7f)*8,(i & 0x7f)*8+8), size, bgcolor, fgcolor);
-				}
-				className = "scrcode_" + ("0" + i.toString(16)).substr(-2);
-				items = document.getElementsByClassName(className);
-				for (j = 0; j < items.length; j++) {
-					items[j].innerHTML = svg;
-				}
-			}
+			scale = 2;
+			svg = svgFromCharBin(byteArray, 8 * 128, scale, fgcolor, bgcolor);
+			setBackgroundImage("url('data:image/svg+xml;utf8," + svg + "')");
 		}
 	};
 	req.send(null);

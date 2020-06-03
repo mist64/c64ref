@@ -1,6 +1,6 @@
-function svgPathFromBin(bin) {
+function svgPathFromBin(bin, height) {
 	svg = "";
-	for (y = 0; y < 8; y++) {
+	for (y = 0; y < height; y++) {
 		byte = bin[y];
 		is_first = true;
 		prev = -1;
@@ -24,6 +24,21 @@ function svgPathFromBin(bin) {
 	return svg;
 }
 
-function svgFromCharBin(bin, size, fgcolor, bgcolor) {
-	return "<svg width=\"" + size + "\" height=\""+ size + "\" style=\"background-color:" + bgcolor + "\" shape-rendering=\"crispEdges\" viewBox=\"0 -.5 8 8\"><path stroke=\"" + fgcolor + "\" d=\"" + svgPathFromBin(bin) + "\"/></svg>";
+function svgFromCharBin(bin, height, scale, fgcolor, bgcolor) {
+//	var xmlns = "http://www.w3.org/2000/svg";
+//
+//	var svg = document.createElementNS(xmlns, "svg");
+//	svg.style.backgroundColor = bgcolor;
+//	svg.setAttributeNS(null, "width", (8 * scale) + "em");
+//	svg.setAttributeNS(null, "height", (height * scale) + "em");
+//	svg.setAttributeNS(null, "shapeRendering", "crispEdges");
+//	svg.setAttributeNS(null, "viewBox", "0 -.5 8 8");
+//
+//	var path = document.createElementNS(xmlns, "path");
+//	path.setAttributeNS(null, 'stroke', fgcolor);
+//	path.setAttributeNS(null, 'd', svgPathFromBin(bin));
+//	svg.appendChild(path);
+//	return svg;
+
+	return "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"8\" height=\"" + height + "\" style=\"background-color:" + bgcolor + "\" shape-rendering=\"crispEdges\" viewBox=\"0 -.5 8 " + height + "\"><path stroke=\"" + fgcolor + "\" d=\"" + svgPathFromBin(bin, height) + "\"/></svg>";
 }
