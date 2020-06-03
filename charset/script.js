@@ -31,7 +31,7 @@ function init() {
 
 	updateCharset();
 
-	setAllCharsets()
+	populateCharsetTable('char-img128')
 
 	document.getElementById("radio_C64").click();
 }
@@ -95,8 +95,8 @@ function controlcodesSwitch(machine) {
 	showItems("control_codes_" + machine);
 }
 
-function setAllCharsets() {
-	items = document.getElementsByClassName('char-img128');
+function populateCharsetTable(className) {
+	items = document.getElementsByClassName(className);
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
 		var filename = item.id;
@@ -119,9 +119,14 @@ function setAllCharsets() {
 			req.send(null);
 		};
 		makeRequest(item);
-
-
 	}
+}
+
+function charsetCompareSwitch(index, filename) {
+	className = 'charset_cmp_' + index;
+	item = document.getElementsByClassName(className)[0];
+	item.id = filename;
+	populateCharsetTable(className);
 }
 
 function test(element) {

@@ -907,32 +907,37 @@ def html_div_info_petscii(id):
 
 	print('</div>')
 
+def html_select_charset(id, default, onChange):
+	html = ''
+	html += '<select name="charset" id="{}" onChange="{}">'.format(id, onChange)
+	seen_selected = False
+	last_machine = ''
+	for (filename, machine, locale, type, version) in charsets:
+		if filename == '---':
+			if last_machine != '':
+				html += '    </optgroup>'
+			last_machine = machine
+			html += '    <optgroup label="{}">'.format(machine)
+
+		else:
+			if filename == default and not seen_selected:
+				seen_selected = True
+				selected = 'selected'
+			else:
+				selected = ''
+			displayname = displayname_for_charset_details(machine, locale, type, version)
+			html += '        <option value="bin/{}.bin" {}>{}</option>'.format(filename, selected, displayname)
+	html += '    </optgroup>'
+	html += '</select>'
+	return html
 
 def html_div_selection_charset(id, charsets):
 
 	print('<div id="' + id + '">')
 
 	print('<label for="charset">Character Set</label><br/>')
-	print('<select name="charset" id="charset" onChange="charsetSwitch(this.options[this.selectedIndex].value);">')
-	seen_selected = False
-	last_machine = ''
-	for (filename, machine, locale, type, version) in charsets:
-		if filename == '---':
-			if last_machine != '':
-				print('    </optgroup>')
-			last_machine = machine
-			print('    <optgroup label="{}">'.format(machine))
-				
-		else:
-			if filename == 'c64_us_upper' and not seen_selected:
-				seen_selected = True
-				selected = 'selected'
-			else:
-				selected = ''
-			displayname = displayname_for_charset_details(machine, locale, type, version)
-			print('        <option value="bin/{}.bin" {}>{}</option>'.format(filename, selected, displayname))
-	print('    </optgroup>')
-	print('</select>')
+	print(html_select_charset('charset', 'c64_us_upper', 'charsetSwitch(this.options[this.selectedIndex].value);'))
+
 #	print('')
 #	print('<br/>')
 #	print('')
@@ -977,18 +982,42 @@ def html_div_selection_charset(id, charsets):
 	print('</div>')
 
 
-def html_div_table_charset(id, css_class,  charsets):
+def html_div_table_charset_compare(id, css_class, charsets):
 
 	print('<div id="' + id + '" class="'+ css_class +'">')
 
-	print('<label for="case">Case</label><br/>')
+	print('<table>')
+
+	i = 0
+	for (filename, machine, locale, type, version) in charsets[1:3]:
+		print('    <tr>')
+		print('        <td>')
+
+
+		print(html_select_charset('charset_compare_select', filename, 'charsetCompareSwitch({}, this.options[this.selectedIndex].value);'.format(i)))
+
+		print('        </td>')
+		print('        <td>')
+		print('        <div class="char-box128"><span class="char-img128 charset_cmp_{}" id="bin/{}.bin"></span></div>'.format(i, filename))
+		print('        </td>')
+		print('    </tr>')
+		i += 1
+
+	print('</table>')
+	print('</div>')
+
+
+def html_div_table_charset(id, css_class, charsets):
+
+	print('<div id="' + id + '" class="'+ css_class +'">')
+
+	print('<label for="case">Filter: </label>')
 	print('<select name="case" id="case" onChange="caseSwitch(this.selectedIndex);">')
 	print('    <option value="all">All</option>')
 	print('    <option value="upper">Upper Case</option>')
 	print('    <option value="lower">Lower Case</option>')
 	print('</select>')
 
-	# Charset Table
 	print('<table>')
 
 	for (filename, machine, locale, type, version) in charsets:
@@ -1161,6 +1190,7 @@ html_div_overview_keyboard("keyboard_overview", "keyboard_group")
 
 print('   <hr style="clear: both; float: none; color: #0000; background: #0000; border: 0px;" />')
 
+html_div_table_charset_compare("charset_compare_table", "screencode_group", charsets)
 html_div_table_charset("charset_table", "screencode_group", charsets)
 html_div_table_petscii("petscii_table", "petscii_group")
 
