@@ -988,21 +988,31 @@ def html_div_table_charset_compare(id, css_class, charsets):
 
 	print('<table>')
 
-	i = 0
-	for (filename, machine, locale, type, version) in charsets[1:3]:
+	charset1 = 'c64_us_lower'
+	charset2 = 'ted_us_lower'
+	for i in range(0, 3):
 		print('    <tr>')
-		print('        <td>')
 
+		if i == 0 or i == 2:
+			print('        <td>')
+			if i == 0:
+				filename = charset1
+				cmpindex = 0
+			else:
+				filename = charset2
+				cmpindex = 1
+			print(html_select_charset('charset_compare_select', filename, 'charsetCompareSwitch({}, this.options[this.selectedIndex].value);'.format(cmpindex)))
+			print('        </td>')
+			print('        <td>')
+			print('        <div class="char-box128"><span class="char-img128 charset_cmp_{}" id="bin/{}.bin"></span></div>'.format(cmpindex, filename))
+			print('        </td>')
+		else:
+			print('        <td style="float: right; font-size: smaller;">XOR</td>')
+			print('        <td>')
+			print('        <div class="char-box128"><span class="char-img128" id="charset_cmp"></span></div>')
+			print('        </td>')
 
-		print(html_select_charset('charset_compare_select', filename, 'charsetCompareSwitch({}, this.options[this.selectedIndex].value);'.format(i)))
-
-		print('        </td>')
-		print('        <td>')
-		print('        <div class="char-box128"><span class="char-img128 charset_cmp_{}" id="bin/{}.bin"></span></div>'.format(i, filename))
-		print('        </td>')
 		print('    </tr>')
-		i += 1
-
 	print('</table>')
 	print('</div>')
 

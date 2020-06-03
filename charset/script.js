@@ -31,7 +31,9 @@ function init() {
 
 	updateCharset();
 
-	populateCharsetTable('char-img128')
+	populateCharsetTable('char-img128');
+
+	xorCharsets();
 
 	document.getElementById("radio_C64").click();
 }
@@ -100,6 +102,9 @@ function populateCharsetTable(className) {
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
 		var filename = item.id;
+		if (filename == 'charset_cmp') {
+			continue;
+		}
 
 		var makeRequest = function(item) {
 			var req = new XMLHttpRequest();
@@ -127,6 +132,44 @@ function charsetCompareSwitch(index, filename) {
 	item = document.getElementsByClassName(className)[0];
 	item.id = filename;
 	populateCharsetTable(className);
+	xorCharsets();
+}
+
+function xorCharsets() {
+	filename1 = document.getElementsByClassName('charset_cmp_0')[0].id;
+	filename2 = document.getElementsByClassName('charset_cmp_1')[0].id;
+	console.log(filename1);
+	console.log(filename2);
+
+	var req1 = new XMLHttpRequest();
+	req1.open("GET", filename1, true);
+	req1.responseType = "arraybuffer";
+
+	req1.onload = function (oEvent) {
+		var arrayBuffer1 = req1.response;
+		if (arrayBuffer1) {
+			var req2 = new XMLHttpRequest();
+			req2.open("GET", filename2, true);
+			req2.responseType = "arraybuffer";
+
+			req2.onload = function (oEvent) {
+				var arrayBuffer2 = req2.response;
+				if (arrayBuffer2) {
+					var byteArray1 = new Uint8Array(arrayBuffer1);
+					var byteArray2 = new Uint8Array(arrayBuffer2);
+					for (var i = 0; i < 1024; i++) {
+						byteArray1[i] ^= byteArray2[i];
+					}
+					item = document.getElementById('charset_cmp');
+					scale = 1;
+					svg = svgFromCharBin(byteArray1, scale, '#000000', '#FFFFFF');
+					item.style.backgroundImage = "url('data:image/svg+xml;utf8," + svg + "')";
+				}
+			};
+			req2.send(null);
+		}
+	};
+	req1.send(null);
 }
 
 function test(element) {
