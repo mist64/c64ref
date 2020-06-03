@@ -225,7 +225,7 @@ nav label:active {
 
 .grid-container {
 	display: grid;
-	grid-template-columns: 12em 20em;
+	grid-template-columns: 30% 70%;
 	grid-gap: 0px;
 	background-color: hsl(var(--info-hue), 80%, 80%);
 }
