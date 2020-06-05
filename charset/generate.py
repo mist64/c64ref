@@ -305,10 +305,10 @@ def combined_description_from_control_code(petscii):
 	combined_description = ''
 	for description in description_to_machines.keys():
 		if len(description_to_machines[description]) != len(machines):
-			machines_string = '<b>' + '/'.join(description_to_machines[description]) + '</b>: '
+			machines_string = '<p><b>' + '/'.join(description_to_machines[description]) + '</b>: '
 		else:
-			machines_string = ''
-		combined_description += machines_string + description + '<br/>'
+			machines_string = '<p>'
+		combined_description += machines_string + description + '</p>'
 	return combined_description
 
 
