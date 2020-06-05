@@ -182,7 +182,7 @@ nav label:active {
 
 .tabbed {
 	display: grid;
-	grid-template-columns: 26em auto;
+	grid-template-columns: 27em auto;
 	grid-template-rows: 3em auto auto auto;
 	grid-gap: 0.4em;
 	align-items: start;
