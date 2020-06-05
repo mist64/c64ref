@@ -8,7 +8,6 @@
 
 body {
 	margin: 0px;
-	min-width: 1166px;
 }
 
 #petscii_table td {
@@ -37,13 +36,20 @@ body {
 	padding: 10px 10px 10px 10px;
 }
 
+#screencode_overview,
+#petscii_overview,
+#keyboard_overview,
+nav {
+	margin-left: 10px;
+}
+
 /* Character Tables */
 
 /* via https://www.mediaevent.de/tutorial/css-tabs.html */
 
-#tab_screencode:checked ~ figure .screencode_group,
-#tab_petscii:checked ~ figure .petscii_group,
-#tab_keyboard:checked ~ figure .keyboard_group {
+#tab_screencode:checked ~ div.screencode_group,
+#tab_petscii:checked ~ div.petscii_group,
+#tab_keyboard:checked ~ div.keyboard_group {
 	display: inline-block;
 }
 
@@ -51,6 +57,7 @@ body {
 /* Tabs mit radio-Buttons */
 .tabbed {
 	display: inline-block;
+	min-width: 1170px;
 }
 
 .tabbed figure { 
@@ -64,7 +71,9 @@ body {
 	width: auto;
 }
 
-.tabbed > input,
+.tabbed input#tab_screencode,
+.tabbed input#tab_petscii,
+.tabbed input#tab_keyboard,
 .tabbed figure > div {
 	display: none;
 }
@@ -78,6 +87,7 @@ body {
 .tabbed figure > div.info_container {	
 	display: inline-block;
 	vertical-align: top;
+	float: left;
 }
 
 .info_container {
@@ -116,6 +126,9 @@ body {
 
 /* Character Tables: Navigation Styling */
 
+nav {
+	display: inline-block;
+}
 nav label {
 	display: inline-block;
 	padding: 15px;

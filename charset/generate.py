@@ -1189,6 +1189,15 @@ print('</div>')
 
 print('<div class="tabbed">')
 
+print('   <figure>')
+
+print('   <div class="info_container">')
+html_div_selection_machine("machine_selection")
+html_div_selection_charset("charset_selection", charsets)
+print('      <div id="info_box"></div>')
+print('   </div>')
+
+
 print('')
 print('   <input checked="checked" id="tab_screencode" type="radio" name="tabs" />')
 print('   <input id="tab_petscii" type="radio" name="tabs" />')
@@ -1198,22 +1207,14 @@ print('   <nav>')
 print('      <label for="tab_screencode">Character Set</label><!--')
 print('       --><label for="tab_petscii">PETSCII</label><!--')
 print('       --><label for="tab_keyboard">Keyboard</label><!-- -->')
-print('   </nav>')
+print('   </nav><br />')
 print('')
-
-print('   <figure>')
 
 # Screen Codes and Character Sets
 
 html_div_overview_screencode("screencode_overview", "screencode_group")
 html_div_overview_petscii("petscii_overview", "petscii_group")
 html_div_overview_keyboard("keyboard_overview", "keyboard_group")
-
-print('   <div class="info_container">')
-html_div_selection_machine("machine_selection")
-html_div_selection_charset("charset_selection", charsets)
-print('      <div id="info_box"></div>')
-print('   </div>')
 
 print('   <hr style="clear: both; float: none; width: 0px; height: 0px; border: none;" />')
 
