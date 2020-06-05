@@ -8,6 +8,7 @@
 
 body {
 	margin: 0px;
+	min-width: 1166px;
 }
 
 #petscii_table td {
@@ -49,7 +50,9 @@ body {
 
 /* Tabs mit radio-Buttons */
 .tabbed {
+	display: inline-block;
 }
+
 .tabbed figure { 
 	display: block;
 	background: var(--box-background);
@@ -72,8 +75,12 @@ body {
 	margin: 10px 0px;
 }
 
+.tabbed figure > div.info_container {	
+	display: inline-block;
+	vertical-align: top;
+}
+
 .info_container {
-	float: right;
 	background: lightgray;
 	border: 1px solid var(--box-border);
 }
