@@ -672,6 +672,21 @@ def html_header_css():
 	print('</style>')
 
 
+def html_navigation(id): #navigation
+
+	print('    <input checked="checked" id="tab_screencode" type="radio" name="tabs" />')
+	print('    <input id="tab_petscii" type="radio" name="tabs" />')
+	print('    <input id="tab_keyboard" type="radio" name="tabs" />')
+
+	print('<div id="' + id + '">')
+	print('    <nav>')
+	print('        <label for="tab_screencode">Character Set</label><!--')
+	print('        --><label for="tab_petscii">PETSCII</label><!--')
+	print('        --><label for="tab_keyboard">Keyboard</label><!-- -->')
+	print('    </nav>')
+	print('</div>')
+
+
 def html_div_overview_screencode(id, css_class): # screencode_overview
 
 	print('<div id="' + id + '" class="'+ css_class +'">')
@@ -1197,18 +1212,7 @@ html_div_selection_charset("charset_selection", charsets)
 print('      <div id="info_box"></div>')
 print('   </div>')
 
-
-print('')
-print('   <input checked="checked" id="tab_screencode" type="radio" name="tabs" />')
-print('   <input id="tab_petscii" type="radio" name="tabs" />')
-print('   <input id="tab_keyboard" type="radio" name="tabs" />')
-print('')
-print('   <nav>')
-print('      <label for="tab_screencode">Character Set</label><!--')
-print('       --><label for="tab_petscii">PETSCII</label><!--')
-print('       --><label for="tab_keyboard">Keyboard</label><!-- -->')
-print('   </nav><br />')
-print('')
+html_navigation("navigation")
 
 # Screen Codes and Character Sets
 

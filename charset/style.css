@@ -47,9 +47,9 @@ nav {
 
 /* via https://www.mediaevent.de/tutorial/css-tabs.html */
 
-#tab_screencode:checked ~ div.screencode_group,
-#tab_petscii:checked ~ div.petscii_group,
-#tab_keyboard:checked ~ div.keyboard_group {
+#tab_screencode:checked ~ .screencode_group,
+#tab_petscii:checked ~ .petscii_group,
+#tab_keyboard:checked ~ .keyboard_group {
 	display: inline-block;
 }
 
@@ -126,9 +126,10 @@ nav {
 
 /* Character Tables: Navigation Styling */
 
-nav {
+.tabbed figure > div#navigation {
 	display: inline-block;
 }
+
 nav label {
 	display: inline-block;
 	padding: 15px;
