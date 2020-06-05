@@ -15,6 +15,16 @@ body {
 
 /* Table Styling */
 
+#petscii_table_div,
+#charset_compare_table_div,
+#charset_table_div {
+	border-top: solid 1px gray;
+	padding-top: 0.5em;
+	margin-top: 0.5em;
+}
+
+
+#charset_table_div > table,
 #petscii_table_div td {
     vertical-align: top;
 }
@@ -30,11 +40,14 @@ body {
 #petscii_table_div > table, 
 #petscii_table_div > table th, 
 #petscii_table_div > table td {
-	border: solid black 1px;
+	border: solid 1px var(--box-border);;
 }
 
-#charset_table_div .header {
-	background: #ccc;
+h2,
+.header {
+	padding: 0.2em 0.5em;
+	background: #555;
+	color: white;
 	font-weight: bold;
 }
 
@@ -44,6 +57,14 @@ body {
 #petscii_overview {
 	background: #888;
 	padding: 10px 10px 10px 10px;
+}
+
+#keyboard_overview {
+	margin: 10px;
+}
+
+#keyboard_overview > div {
+	
 }
 
 /* Tabs */ 
@@ -63,17 +84,15 @@ div.keyboard_group {
 input#tab_screencode:checked ~ div.screencode_group,
 input#tab_petscii:checked ~ div.petscii_group,
 input#tab_keyboard:checked ~ div.keyboard_group {
-	display: inline-block;
+	display: block;
 }
 
 
 .tabbed {
-	display: block;
-/* 	display: grid; */
-
 	min-width: 1170px;
 
 	background: var(--box-background);
+	
 	border: solid 1px var(--box-border);
 	border-width: 1px 0px 1px 1px;
 	margin: 0px;
@@ -83,14 +102,16 @@ input#tab_keyboard:checked ~ div.keyboard_group {
 /* Settings */
 
 #settings {
+	display: block;
 	vertical-align: top;
 	background: lightgray;
 	border: 1px solid var(--box-border);
 }
 
 #settings > div {
+	vertical-align: top;
 	display: inline-block;
-	margin: 1em;
+	margin: 0.4em;
 }
 
 
@@ -103,22 +124,20 @@ input#tab_keyboard:checked ~ div.keyboard_group {
 
 #info_box {
 	padding: 0em;
-	margin: 1em;
+	margin: 2px;
 	display: block;
 	background: var(--box-background);
-	border: 1px solid gray;
+	border: 1px solid var(--box-border);;
 }
 
 
 /* Navigation */
 
-/* div#navigation */
-
 nav label {
 	display: inline-block;
 	padding: 15px;
 	border-top: 1px solid var(--box-border);
-	border-right: 1px solid	 var(--box-border);
+	border-right: 1px solid var(--box-border);
 	background: hsl(210,0%,70%);
 	color: hsl(210,0%,30%);
 	text-align: center;
@@ -158,6 +177,73 @@ nav label:active {
 	left: 0;
 	bottom: -2px;
 }
+
+/* Tab Grid Layout */
+
+.tabbed {
+	display: grid;
+	grid-template-columns: 26em auto;
+	grid-template-rows: 3em auto auto auto;
+	grid-gap: 0.4em;
+	align-items: start;
+	justify-items: start;
+}
+
+#settings {
+	grid-column: 1;
+	grid-row: 1 / span 2;
+/*	align-self: stretch; */
+	justify-self: stretch;
+}
+
+div#navigation {
+	grid-column: 2;
+	grid-row: 1;
+
+	border-bottom: 1px solid var(--box-border);	
+	justify-self: stretch;
+}
+
+
+#screencode_overview {
+	grid-column: 2;
+	grid-row: 2;
+}
+
+#petscii_overview {
+	grid-column: 2;
+	grid-row: 2;
+}
+
+#keyboard_overview {
+	grid-column: 2;
+	grid-row: 2;
+}
+
+
+#charset_compare_table_div {
+	grid-column: 1 / span 2;
+	grid-row: 3;
+}
+
+#charset_table_div {
+	grid-column: 1 / span 2;
+	grid-row: 6;
+}
+
+#petscii_table_div {
+	grid-column: 1 / span 2;
+	grid-row: 3 / span 2;
+}
+
+
+#charset_compare_table_div, 
+#charset_table_div,
+#petscii_table_div {
+	align-self: center;
+	justify-self: stretch;
+}
+
 
 
 /*********************************************************/

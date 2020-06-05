@@ -677,7 +677,8 @@ def html_div_settings(id): #settings
 
 	html_div_selection_machine("machine_selection")
 	html_div_selection_charset("charset_selection", charsets)
-	
+	print('    <div id="info_box"></div>')
+
 	print('</div>')
 
 
@@ -1085,7 +1086,7 @@ def html_div_table_petscii(id, css_class): #petscii_table_div
 
 	print('<div id="' + id + '" class="'+ css_class +'">')
 
-	print('<label for="unicode">Show</label><br/>')
+	print('<label for="unicode">Show: </label>')
 	print('<select name="petscii_show" id="petscii_show" onChange="petsciiTableSwitch(this.selectedIndex);">')
 	print('    <option value="petscii_keyboard">Keyboard</option>')
 	print('    <option value="petscii_control">Control Codes</option>')
@@ -1214,8 +1215,6 @@ print('</div>')
 print('<div class="tabbed">')
 
 html_div_settings("settings")
-
-print('    <div id="info_box"></div>')
 
 html_div_navigation("navigation")
 
