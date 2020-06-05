@@ -192,7 +192,7 @@ nav label:active {
 #settings {
 	grid-column: 1;
 	grid-row: 1 / span 2;
-/*	align-self: stretch; */
+	align-self: stretch; 
 	justify-self: stretch;
 }
 
