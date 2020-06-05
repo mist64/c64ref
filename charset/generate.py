@@ -671,12 +671,21 @@ def html_header_css():
 	print('')
 	print('</style>')
 
+def html_div_settings(id): #settings
 
-def html_navigation(id): #navigation
+	print('<div id="' + id + '">')
 
-	print('    <input checked="checked" id="tab_screencode" type="radio" name="tabs" />')
-	print('    <input id="tab_petscii" type="radio" name="tabs" />')
-	print('    <input id="tab_keyboard" type="radio" name="tabs" />')
+	html_div_selection_machine("machine_selection")
+	html_div_selection_charset("charset_selection", charsets)
+	
+	print('</div>')
+
+
+def html_div_navigation(id): #navigation
+
+	print('<input checked="checked" id="tab_screencode" type="radio" name="tabs" />')
+	print('<input id="tab_petscii" type="radio" name="tabs" />')
+	print('<input id="tab_keyboard" type="radio" name="tabs" />')
 
 	print('<div id="' + id + '">')
 	print('    <nav>')
@@ -998,7 +1007,7 @@ def html_div_selection_charset(id, charsets):
 	print('</div>')
 
 
-def html_div_table_charset_compare(id, css_class, charsets): #charset_compare_table
+def html_div_table_charset_compare(id, css_class, charsets): #charset_compare_table_div
 
 	print('<div id="' + id + '" class="'+ css_class +'">')
 
@@ -1033,7 +1042,7 @@ def html_div_table_charset_compare(id, css_class, charsets): #charset_compare_ta
 	print('</div>')
 
 
-def html_div_table_charset(id, css_class, charsets): #charset_table
+def html_div_table_charset(id, css_class, charsets): #charset_table_div
 
 	print('<div id="' + id + '" class="'+ css_class +'">')
 
@@ -1072,7 +1081,7 @@ def html_div_table_charset(id, css_class, charsets): #charset_table
 	print('</div>')
 
 
-def html_div_table_petscii(id, css_class): #petscii_table
+def html_div_table_petscii(id, css_class): #petscii_table_div
 
 	print('<div id="' + id + '" class="'+ css_class +'">')
 
@@ -1204,15 +1213,11 @@ print('</div>')
 
 print('<div class="tabbed">')
 
-print('   <figure>')
+html_div_settings("settings")
 
-print('   <div class="info_container">')
-html_div_selection_machine("machine_selection")
-html_div_selection_charset("charset_selection", charsets)
-print('      <div id="info_box"></div>')
-print('   </div>')
+print('    <div id="info_box"></div>')
 
-html_navigation("navigation")
+html_div_navigation("navigation")
 
 # Screen Codes and Character Sets
 
@@ -1220,13 +1225,10 @@ html_div_overview_screencode("screencode_overview", "screencode_group")
 html_div_overview_petscii("petscii_overview", "petscii_group")
 html_div_overview_keyboard("keyboard_overview", "keyboard_group")
 
-print('   <hr style="clear: both; float: none; width: 0px; height: 0px; border: none;" />')
+html_div_table_charset_compare("charset_compare_table_div", "screencode_group", charsets)
+html_div_table_charset("charset_table_div", "screencode_group", charsets)
+html_div_table_petscii("petscii_table_div", "petscii_group")
 
-html_div_table_charset_compare("charset_compare_table", "screencode_group", charsets)
-html_div_table_charset("charset_table", "screencode_group", charsets)
-html_div_table_petscii("petscii_table", "petscii_group")
-
-print('   </figure>')
 print('</div>')#tabbed
 
 print('<div style="display: none">')

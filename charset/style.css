@@ -6,29 +6,39 @@
 	--info-hue : 200;
 }
 
+
+/* General */
+
 body {
 	margin: 0px;
 }
 
-#petscii_table td {
+/* Table Styling */
+
+#petscii_table_div td {
     vertical-align: top;
 }
 
-#charset_table > table,
-#petscii_table > table {
+#charset_table_div > table,
+#petscii_table_div > table {
 	border-collapse: collapse;
 }
 
-#charset_table > table,
-#charset_table > table th,
-#charset_table > table td,
-#petscii_table > table, 
-#petscii_table > table th, 
-#petscii_table > table td {
+#charset_table_div > table,
+#charset_table_div > table th,
+#charset_table_div > table td,
+#petscii_table_div > table, 
+#petscii_table_div > table th, 
+#petscii_table_div > table td {
 	border: solid black 1px;
 }
 
-/* Tabs */ 
+#charset_table_div .header {
+	background: #ccc;
+	font-weight: bold;
+}
+
+/* Overview Styling */ 
 
 #screencode_overview,
 #petscii_overview {
@@ -36,75 +46,51 @@ body {
 	padding: 10px 10px 10px 10px;
 }
 
-#screencode_overview,
-#petscii_overview,
-#keyboard_overview,
-nav {
-	margin-left: 10px;
-}
-
-/* Character Tables */
-
+/* Tabs */ 
 /* via https://www.mediaevent.de/tutorial/css-tabs.html */
 
-#tab_screencode:checked ~ .screencode_group,
-#tab_petscii:checked ~ .petscii_group,
-#tab_keyboard:checked ~ .keyboard_group {
+
+input#tab_screencode,
+input#tab_petscii,
+input#tab_keyboard,
+div.screencode_group,
+div.petscii_group,
+div.keyboard_group {
+	display: none;
+}
+
+
+input#tab_screencode:checked ~ div.screencode_group,
+input#tab_petscii:checked ~ div.petscii_group,
+input#tab_keyboard:checked ~ div.keyboard_group {
 	display: inline-block;
 }
 
 
-/* Tabs mit radio-Buttons */
 .tabbed {
-	display: inline-block;
-	min-width: 1170px;
-}
-
-.tabbed figure { 
 	display: block;
+/* 	display: grid; */
+
+	min-width: 1170px;
+
 	background: var(--box-background);
 	border: solid 1px var(--box-border);
 	border-width: 1px 0px 1px 1px;
 	margin: 0px;
 	padding: 10px 20px;
-	clear: none;
-	width: auto;
 }
 
-.tabbed input#tab_screencode,
-.tabbed input#tab_petscii,
-.tabbed input#tab_keyboard,
-.tabbed figure > div {
-	display: none;
-}
+/* Settings */
 
-.tabbed figure > div {
-/*	border: 1px solid var(--box-border); */
-	padding: 0px;
-	margin: 10px 0px;
-}
-
-.tabbed figure > div.info_container {	
-	display: inline-block;
+#settings {
 	vertical-align: top;
-	float: left;
-}
-
-.info_container {
 	background: lightgray;
 	border: 1px solid var(--box-border);
 }
 
-.info_container > div {
+#settings > div {
 	display: inline-block;
 	margin: 1em;
-}
-
-#machine_selection {
-}
-
-#charset_selection {
-	float: right;
 }
 
 
@@ -124,11 +110,9 @@ nav {
 }
 
 
-/* Character Tables: Navigation Styling */
+/* Navigation */
 
-.tabbed figure > div#navigation {
-	display: inline-block;
-}
+/* div#navigation */
 
 nav label {
 	display: inline-block;
@@ -152,9 +136,9 @@ nav label:active {
 	font-weight: bold;
 }
 
-#tab_screencode:checked ~ nav label[for="tab_screencode"],
-#tab_petscii:checked ~ nav label[for="tab_petscii"],
-#tab_keyboard:checked ~ nav label[for="tab_keyboard"] {
+#tab_screencode:checked ~ div nav label[for="tab_screencode"],
+#tab_petscii:checked ~ div nav label[for="tab_petscii"],
+#tab_keyboard:checked ~ div nav label[for="tab_keyboard"] {
 	background: var(--box-background);
 	color: black;
 	position: relative;
@@ -162,9 +146,9 @@ nav label:active {
 	font-weight: bold;
 }
 
-#tab_screencode:checked ~ nav label[for="tab_screencode"]:after,
-#tab_petscii:checked ~ nav label[for="tab_petscii"]:after, 
-#tab_keyboard:checked ~ nav label[for="tab_keyboard"]:after {
+#tab_screencode:checked ~ div nav label[for="tab_screencode"]:after,
+#tab_petscii:checked ~ div nav label[for="tab_petscii"]:after, 
+#tab_keyboard:checked ~ div nav label[for="tab_keyboard"]:after {
 	content: "";
 	display: block;
 	position: absolute;
@@ -176,7 +160,7 @@ nav label:active {
 }
 
 
-
+/*********************************************************/
 
 /* Character Boxes */
 
@@ -252,11 +236,9 @@ nav label:active {
 	text-overflow: clip;
 }
 
-/* */
 
-#charset_table, 
-#charset_compare_table {
-}
+/* #charset_compare_table_div */
+
 .char-box128 {
 	position: relative;
 	padding:0px;
@@ -280,6 +262,7 @@ nav label:active {
 	padding:0px;
 	border: 0px;
 }
+
 
 /* Info Box Grid */
 
@@ -444,7 +427,7 @@ nav label:active {
 
 
 
-/* Visual Keys */
+/* Visual Keys and Unicode */
 
 #info_box span.unicode-box {
 	font-size: 3em;
@@ -482,10 +465,3 @@ div.key-box {
 	white-space: nowrap;
 }
  
-
-/* Other */
-
-#charset_table .header {
-	background: #ccc;
-	font-weight: bold;
-}
