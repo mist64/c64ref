@@ -7,7 +7,7 @@
 }
 
 body {
-	margin: 4px;
+	margin: 0px;
 }
 
 #petscii_table td {
@@ -33,6 +33,7 @@ body {
 #screencode_overview,
 #petscii_overview {
 	background: #888;
+	padding: 10px 10px 10px 10px;
 }
 
 /* Character Tables */
@@ -103,8 +104,6 @@ body {
 	display: block;
 	background: var(--box-background);
 	border: 1px solid gray;
-	border-radius: 4px;
-	vertical-align: top;
 }
 
 
@@ -118,7 +117,7 @@ nav label {
 	background: hsl(210,0%,70%);
 	color: hsl(210,0%,30%);
 	text-align: center;
-	width: 200px;
+	width: 8em;
 }
 
 nav label:nth-child(1) { border-left: 1px solid var(--box-border); }
@@ -148,11 +147,11 @@ nav label:active {
 	content: "";
 	display: block;
 	position: absolute;
-	height: 2px;
+	height: 3px;
 	width: 100%;
 	background: var(--box-background);
 	left: 0;
-	bottom: -1px;
+	bottom: -2px;
 }
 
 
@@ -425,6 +424,11 @@ nav label:active {
 
 
 /* Visual Keys */
+
+#info_box span.unicode-box {
+	font-size: 3em;
+	font-weight: 900;
+}
 
 span.unicode-box {
 	display: inline-block;
