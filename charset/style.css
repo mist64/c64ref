@@ -28,6 +28,12 @@ body {
 	border: solid black 1px;
 }
 
+/* Tabs */ 
+
+#screencode_overview,
+#petscii_overview {
+	background: #888;
+}
 
 /* Character Tables */
 
@@ -36,18 +42,22 @@ body {
 #tab_screencode:checked ~ figure .screencode_group,
 #tab_petscii:checked ~ figure .petscii_group,
 #tab_keyboard:checked ~ figure .keyboard_group {
-	display: block;
+	display: inline-block;
 }
 
 
 /* Tabs mit radio-Buttons */
 .tabbed {
-	display: block;
 }
 .tabbed figure { 
 	display: block;
+	background: var(--box-background);
+	border: solid 1px var(--box-border);
+	border-width: 1px 0px 1px 1px;
 	margin: 0px;
+	padding: 10px 20px;
 	clear: none;
+	width: auto;
 }
 
 .tabbed > input,
@@ -56,11 +66,9 @@ body {
 }
 
 .tabbed figure > div {
-	background: var(--box-background);
-	width: 100%;
-	border: 1px solid var(--box-border);
-	padding: 20px 0px 20px 15px;
-	margin: 0px;
+/*	border: 1px solid var(--box-border); */
+	padding: 0px;
+	margin: 10px 0px;
 }
 
 .info_container {
@@ -96,7 +104,6 @@ body {
 	background: var(--box-background);
 	border: 1px solid gray;
 	border-radius: 4px;
-	overflow: hidden;
 	vertical-align: top;
 }
 
@@ -105,7 +112,7 @@ body {
 
 nav label {
 	display: inline-block;
-	padding: 15px 15px;
+	padding: 15px;
 	border-top: 1px solid var(--box-border);
 	border-right: 1px solid	 var(--box-border);
 	background: hsl(210,0%,70%);
@@ -227,8 +234,11 @@ nav label:active {
 
 /* */
 
+#charset_table, 
+#charset_compare_table {
+}
 .char-box128 {
-	display: inline-block;
+	position: relative;
 	padding:0px;
 	height: 8px;
 	width: 1024px;
@@ -236,23 +246,26 @@ nav label:active {
 
 
 .char-img128 {
-	position: relative;
-	background-repeat: no-repeat;
 	transform-origin: 0% 0%;
-	height: 8px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
 	width: 1024px;
+	height: 8px;
+
+	background-repeat: no-repeat;
+	z-index: 20;
+
 	margin:0px;
 	padding:0px;
 	border: 0px;
-	display: block;
-	z-index: 20;
 }
 
 /* Info Box Grid */
 
 .grid-container {
 	display: grid;
-	grid-template-columns: 30% 70%;
+	grid-template-columns: 10em 15em;
 	grid-gap: 0px;
 	background-color: hsl(var(--info-hue), 80%, 80%);
 }
@@ -287,7 +300,7 @@ nav label:active {
 	border-top: 1px solid gray;
 
 	grid-row: 4;
-	grid-column: 1 / span 4;
+	grid-column: 1 / span 2;
 }
 
 .info-title {

@@ -672,9 +672,9 @@ def html_header_css():
 	print('</style>')
 
 
-def html_div_overview_screencode(id, css_class):
+def html_div_overview_screencode(id, css_class): # screencode_overview
 
-	print('<div style="background:#888;" id="' + id + '" class="'+ css_class +'">')
+	print('<div id="' + id + '" class="'+ css_class +'">')
 
 	# Screen Code Table
 	for scrcode in range(0, 256):
@@ -685,9 +685,9 @@ def html_div_overview_screencode(id, css_class):
 	print('</div>')
 
 
-def html_div_overview_petscii(id, css_class):
+def html_div_overview_petscii(id, css_class): #petscii_overview
 
-	print('<div style="background:#888;" id="' + id + '" class="'+ css_class +'">')
+	print('<div id="' + id + '" class="'+ css_class +'">')
 
 	# PETSCII Table
 	for petscii in range(0, 256):
@@ -724,7 +724,7 @@ def html_div_overview_petscii(id, css_class):
 	print('</div>')
 	
 	
-def html_div_overview_keyboard(id, css_class):
+def html_div_overview_keyboard(id, css_class): #keyboard_overview
 	
 	print('<div id="' + id + '" class="'+ css_class +'">')
 
@@ -983,7 +983,7 @@ def html_div_selection_charset(id, charsets):
 	print('</div>')
 
 
-def html_div_table_charset_compare(id, css_class, charsets):
+def html_div_table_charset_compare(id, css_class, charsets): #charset_compare_table
 
 	print('<div id="' + id + '" class="'+ css_class +'">')
 
@@ -1005,12 +1005,12 @@ def html_div_table_charset_compare(id, css_class, charsets):
 			print(html_select_charset('charset_compare_select', filename, 'charsetCompareSwitch({}, this.options[this.selectedIndex].value);'.format(cmpindex)))
 			print('        </td>')
 			print('        <td>')
-			print('        <div class="char-box128"><span class="char-img128 charset_cmp_{}" id="bin/{}.bin"></span></div>'.format(cmpindex, filename))
+			print('        <div class="char-box128"><div class="char-img128 charset_cmp_{}" id="bin/{}.bin"></div></div>'.format(cmpindex, filename))
 			print('        </td>')
 		else:
 			print('        <td style="float: right; font-size: smaller;">XOR</td>')
 			print('        <td>')
-			print('        <div class="char-box128"><span class="char-img128" id="charset_cmp"></span></div>')
+			print('        <div class="char-box128"><div class="char-img128" id="charset_cmp"></div></div>')
 			print('        </td>')
 
 		print('    </tr>')
@@ -1018,7 +1018,7 @@ def html_div_table_charset_compare(id, css_class, charsets):
 	print('</div>')
 
 
-def html_div_table_charset(id, css_class, charsets):
+def html_div_table_charset(id, css_class, charsets): #charset_table
 
 	print('<div id="' + id + '" class="'+ css_class +'">')
 
@@ -1049,7 +1049,7 @@ def html_div_table_charset(id, css_class, charsets):
 			print('<span style="float: right;"><a href="bin/{}.bin">.bin</a></span>'.format(filename))
 			print('        </td>')
 			print('        <td>')
-			print('        <div class="char-box128"><span class="char-img128" id="bin/{}.bin"></span></div>'.format(filename))
+			print('        <div class="char-box128"><div class="char-img128" id="bin/{}.bin"></div></div>'.format(filename))
 			print('        </td>')
 			print('    </tr>')
 
@@ -1057,7 +1057,7 @@ def html_div_table_charset(id, css_class, charsets):
 	print('</div>')
 
 
-def html_div_table_petscii(id, css_class):
+def html_div_table_petscii(id, css_class): #petscii_table
 
 	print('<div id="' + id + '" class="'+ css_class +'">')
 
@@ -1213,7 +1213,7 @@ html_div_overview_screencode("screencode_overview", "screencode_group")
 html_div_overview_petscii("petscii_overview", "petscii_group")
 html_div_overview_keyboard("keyboard_overview", "keyboard_group")
 
-print('   <hr style="clear: both; float: none; color: #0000; background: #0000; border: 0px;" />')
+print('   <hr style="clear: both; float: none; width: 0px; height: 0px; border: none;" />')
 
 html_div_table_charset_compare("charset_compare_table", "screencode_group", charsets)
 html_div_table_charset("charset_table", "screencode_group", charsets)
