@@ -6,29 +6,52 @@
 	--info-hue : 200;
 }
 
+
+/* General */
+
 body {
 	margin: 0px;
 }
 
-#petscii_table td {
+/* Table Styling */
+
+#petscii_table_div,
+#charset_compare_table_div,
+#charset_table_div {
+	border-top: solid 1px gray;
+	padding-top: 0.5em;
+	margin-top: 0.5em;
+}
+
+
+#charset_table_div > table,
+#petscii_table_div td {
     vertical-align: top;
 }
 
-#charset_table > table,
-#petscii_table > table {
+#charset_table_div > table,
+#petscii_table_div > table {
 	border-collapse: collapse;
 }
 
-#charset_table > table,
-#charset_table > table th,
-#charset_table > table td,
-#petscii_table > table, 
-#petscii_table > table th, 
-#petscii_table > table td {
-	border: solid black 1px;
+#charset_table_div > table,
+#charset_table_div > table th,
+#charset_table_div > table td,
+#petscii_table_div > table, 
+#petscii_table_div > table th, 
+#petscii_table_div > table td {
+	border: solid 1px var(--box-border);;
 }
 
-/* Tabs */ 
+h2,
+.header {
+	padding: 0.2em 0.5em;
+	background: #555;
+	color: white;
+	font-weight: bold;
+}
+
+/* Overview Styling */ 
 
 #screencode_overview,
 #petscii_overview {
@@ -36,75 +59,59 @@ body {
 	padding: 10px 10px 10px 10px;
 }
 
-#screencode_overview,
-#petscii_overview,
-#keyboard_overview,
-nav {
-	margin-left: 10px;
+#keyboard_overview {
+	margin: 10px;
 }
 
-/* Character Tables */
+#keyboard_overview > div {
+	
+}
 
+/* Tabs */ 
 /* via https://www.mediaevent.de/tutorial/css-tabs.html */
 
-#tab_screencode:checked ~ div.screencode_group,
-#tab_petscii:checked ~ div.petscii_group,
-#tab_keyboard:checked ~ div.keyboard_group {
-	display: inline-block;
+
+input#tab_screencode,
+input#tab_petscii,
+input#tab_keyboard,
+div.screencode_group,
+div.petscii_group,
+div.keyboard_group {
+	display: none;
 }
 
 
-/* Tabs mit radio-Buttons */
-.tabbed {
-	display: inline-block;
-	min-width: 1170px;
-}
-
-.tabbed figure { 
+input#tab_screencode:checked ~ div.screencode_group,
+input#tab_petscii:checked ~ div.petscii_group,
+input#tab_keyboard:checked ~ div.keyboard_group {
 	display: block;
+}
+
+
+.tabbed {
+	min-width: 1170px;
+
 	background: var(--box-background);
+	
 	border: solid 1px var(--box-border);
 	border-width: 1px 0px 1px 1px;
 	margin: 0px;
 	padding: 10px 20px;
-	clear: none;
-	width: auto;
 }
 
-.tabbed input#tab_screencode,
-.tabbed input#tab_petscii,
-.tabbed input#tab_keyboard,
-.tabbed figure > div {
-	display: none;
-}
+/* Settings */
 
-.tabbed figure > div {
-/*	border: 1px solid var(--box-border); */
-	padding: 0px;
-	margin: 10px 0px;
-}
-
-.tabbed figure > div.info_container {	
-	display: inline-block;
+#settings {
+	display: block;
 	vertical-align: top;
-	float: left;
-}
-
-.info_container {
 	background: lightgray;
 	border: 1px solid var(--box-border);
 }
 
-.info_container > div {
+#settings > div {
+	vertical-align: top;
 	display: inline-block;
-	margin: 1em;
-}
-
-#machine_selection {
-}
-
-#charset_selection {
-	float: right;
+	margin: 0.4em;
 }
 
 
@@ -117,23 +124,20 @@ nav {
 
 #info_box {
 	padding: 0em;
-	margin: 1em;
+	margin: 2px;
 	display: block;
 	background: var(--box-background);
-	border: 1px solid gray;
+	border: 1px solid var(--box-border);;
 }
 
 
-/* Character Tables: Navigation Styling */
+/* Navigation */
 
-nav {
-	display: inline-block;
-}
 nav label {
 	display: inline-block;
 	padding: 15px;
 	border-top: 1px solid var(--box-border);
-	border-right: 1px solid	 var(--box-border);
+	border-right: 1px solid var(--box-border);
 	background: hsl(210,0%,70%);
 	color: hsl(210,0%,30%);
 	text-align: center;
@@ -151,9 +155,9 @@ nav label:active {
 	font-weight: bold;
 }
 
-#tab_screencode:checked ~ nav label[for="tab_screencode"],
-#tab_petscii:checked ~ nav label[for="tab_petscii"],
-#tab_keyboard:checked ~ nav label[for="tab_keyboard"] {
+#tab_screencode:checked ~ div nav label[for="tab_screencode"],
+#tab_petscii:checked ~ div nav label[for="tab_petscii"],
+#tab_keyboard:checked ~ div nav label[for="tab_keyboard"] {
 	background: var(--box-background);
 	color: black;
 	position: relative;
@@ -161,9 +165,9 @@ nav label:active {
 	font-weight: bold;
 }
 
-#tab_screencode:checked ~ nav label[for="tab_screencode"]:after,
-#tab_petscii:checked ~ nav label[for="tab_petscii"]:after, 
-#tab_keyboard:checked ~ nav label[for="tab_keyboard"]:after {
+#tab_screencode:checked ~ div nav label[for="tab_screencode"]:after,
+#tab_petscii:checked ~ div nav label[for="tab_petscii"]:after, 
+#tab_keyboard:checked ~ div nav label[for="tab_keyboard"]:after {
 	content: "";
 	display: block;
 	position: absolute;
@@ -174,8 +178,75 @@ nav label:active {
 	bottom: -2px;
 }
 
+/* Tab Grid Layout */
+
+.tabbed {
+	display: grid;
+	grid-template-columns: 27em auto;
+	grid-template-rows: 3em auto auto auto;
+	grid-gap: 0.4em;
+	align-items: start;
+	justify-items: start;
+}
+
+#settings {
+	grid-column: 1;
+	grid-row: 1 / span 2;
+/*	align-self: stretch; */
+	justify-self: stretch;
+}
+
+div#navigation {
+	grid-column: 2;
+	grid-row: 1;
+
+	border-bottom: 1px solid var(--box-border);	
+	justify-self: stretch;
+}
 
 
+#screencode_overview {
+	grid-column: 2;
+	grid-row: 2;
+}
+
+#petscii_overview {
+	grid-column: 2;
+	grid-row: 2;
+}
+
+#keyboard_overview {
+	grid-column: 2;
+	grid-row: 2;
+}
+
+
+#charset_compare_table_div {
+	grid-column: 1 / span 2;
+	grid-row: 3;
+}
+
+#charset_table_div {
+	grid-column: 1 / span 2;
+	grid-row: 6;
+}
+
+#petscii_table_div {
+	grid-column: 1 / span 2;
+	grid-row: 3 / span 2;
+}
+
+
+#charset_compare_table_div, 
+#charset_table_div,
+#petscii_table_div {
+	align-self: center;
+	justify-self: stretch;
+}
+
+
+
+/*********************************************************/
 
 /* Character Boxes */
 
@@ -251,11 +322,9 @@ nav label:active {
 	text-overflow: clip;
 }
 
-/* */
 
-#charset_table, 
-#charset_compare_table {
-}
+/* #charset_compare_table_div */
+
 .char-box128 {
 	position: relative;
 	padding:0px;
@@ -279,6 +348,7 @@ nav label:active {
 	padding:0px;
 	border: 0px;
 }
+
 
 /* Info Box Grid */
 
@@ -443,7 +513,7 @@ nav label:active {
 
 
 
-/* Visual Keys */
+/* Visual Keys and Unicode */
 
 #info_box span.unicode-box {
 	font-size: 3em;
@@ -481,10 +551,3 @@ div.key-box {
 	white-space: nowrap;
 }
  
-
-/* Other */
-
-#charset_table .header {
-	background: #ccc;
-	font-weight: bold;
-}
