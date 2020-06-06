@@ -101,6 +101,10 @@ function convert( components )
         color[ i ] = Math.round( color[ i ] );
     }
 
+    color.y = components.y;
+    color.u = components.u;
+    color.v = components.v;
+
     return color;
 }
 
@@ -117,43 +121,58 @@ function hexFromComponent(c) {
 function hexFromRGB(r, g, b) {
 	return "#" + hexFromComponent(r) + hexFromComponent(g) + hexFromComponent(b);
 }
-function RGBfromHex(hex) {
-	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-	return result ? {
-		r: parseInt(result[1], 16),
-		g: parseInt(result[2], 16),
-		b: parseInt(result[3], 16)
-	} : null;
-}
 
 function yFromRGB(r, g, b) {
 	return (0.2126 * r + 0.7152 * g + 0.0722 * b) | 0;
 }
 
 function init() {
+	refresh();
+}
+
+function refresh() {
+	sort = document.getElementById("sortby").selectedIndex;
+	levels_prefix = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
+
 	colors = []
 	for (var i = 0; i < 16; i++) {
-		c = convert(compose(i, "mc", 50, 100, 50));
-		hexcolor = hexFromRGB(c['r'], c['g'], c['b']);
-		console.log(hexcolor);
-		colors.push(hexcolor);
+		c = convert(compose(i, levels_prefix, 50, 100, 50));
+		c.index = i;
+		colors.push(c);
 	}
+//	console.log(colors);
 
+	function compare_y(a, b) {
+		let comparison = 0;
+		if (a.y > b.y) {
+			comparison = 1;
+		} else if (a.y < b.y) {
+			comparison = -1;
+		}
+		return comparison;
+	}
+	function compare_index(a, b) {
+		let comparison = 0;
+		if (a.index > b.index) {
+			comparison = 1;
+		} else if (a.index < b.index) {
+			comparison = -1;
+		}
+		return comparison;
+	}
+	if (sort == 0) {
+		colors.sort(compare_y);
+	} else {
+		colors.sort(compare_index);
+	}
 
 	for (var i = 0; i < 16; i++) {
-		hexcolor = colors[i];
-		r = parseInt(hexcolor.substring(1,3), 16);
-		g = parseInt(hexcolor.substring(3,5), 16);
-		b = parseInt(hexcolor.substring(5,7), 16);
-		gray = yFromRGB(r, g, b);
-//		console.log(gray);
-//		console.log(HSBfromRGB(r, g, b));
-
-		lhexcolor = hexFromRGB(gray, gray, gray);
+		c = colors[i];
+		hexcolor = hexFromRGB(c.r, c.g, c.b);
+		y = (c.y / 307.2 * 255) | 0;
+		yhexcolor = hexFromRGB(y, y, y);
 		document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
-		document.getElementById("lcol"+i).style = 'background-color: ' + lhexcolor;
+		document.getElementById("ycol"+i).style = 'background-color: ' + yhexcolor;
 	}
-
-
 }
 
