@@ -33,6 +33,11 @@ cap_replacements = {
 	'CAPS_LOCK': 'CAPS',
 }
 
+cap_autoshift_map = {
+	'↑CRSR↓': '↑',
+	'←CRSR→': '←',
+}
+
 def flood_fill(x, y):
 	c = layout_lines[y][x]
 	if c == '+' or c == '|' or c == '-' or c == 'X':
@@ -83,7 +88,9 @@ def keyboard_layout_html(machine, ll):
 				if scancode == '':
 					continue # empty area
 				if scancode[0] == '/':
-					scancode = int(scancode[1:], 16) | 128 # XXX handle
+					# the C65 keyboard has LEFT and UP keys that
+					# simulate SHIFT and RIGHT/DOWN
+					scancode = int(scancode[1:], 16) | 0x10000
 				elif scancode == '...':
 					scancode = -1 # key does no produce a scancode
 				else:
@@ -143,10 +150,13 @@ def keyboard_layout_html(machine, ll):
 			width -= HINSET*2
 			height -= VINSET*2
 
-			if scancode >= 0 and scancode < len(description_from_scancode[machine]):
-				description = description_from_scancode[machine][scancode]
+			rscancode = scancode & 0xffff
+			if rscancode >= 0 and rscancode < len(description_from_scancode[machine]):
+				description = description_from_scancode[machine][rscancode]
 			else:
 				description = ''
+			if scancode & 0x10000 and description in cap_autoshift_map:
+				description = cap_autoshift_map[description]
 			if description in cap_replacements:
 				description = cap_replacements[description]
 			if description.startswith('[') and description.endswith(']'):
@@ -170,10 +180,12 @@ def keyboard_layout_html(machine, ll):
 
 			petscii = {}
 			for modifier in description_from_modifier.keys():
-				if len(petscii_from_scancode[machine][modifier]) > scancode:
+				if scancode & 0x10000:
+					# keys that press SHIFT internally
+					petscii[modifier] = petscii_from_scancode[machine]['shift'][scancode & 0xffff]
+				elif len(petscii_from_scancode[machine][modifier]) > scancode:
 					petscii[modifier] = petscii_from_scancode[machine][modifier][scancode]
 				else:
-					# XXX happens in auto-shifted ("or 128") case
 					petscii[modifier] = 0xff
 
 			modifier = modifier_scancodes[machine].get(scancode)
