@@ -64,13 +64,16 @@
 </select>
 <br/>
 <label for="brightness">Brightness</label>
-<input id="brightness" type="range" min="1" max="100" value="50" class="slider" id="myRange" oninput="refresh();">
+<input id="brightness" type="range" min="1" max="100" class="slider" oninput="refresh();">
 <br/>
 <label for="contrast">Contrast</label>
-<input id="contrast" type="range" min="1" max="200" value="100" class="slider" id="myRange" oninput="refresh();">
+<input id="contrast" type="range" min="1" max="200" class="slider" oninput="refresh();">
 <br/>
 <label for="saturation">Saturation</label>
-<input id="saturation" type="range" min="1" max="100" value="50" class="slider" id="myRange" oninput="refresh();">
+<input id="saturation" type="range" min="1" max="100" class="slider" oninput="refresh();">
+<br/>
+<label for="gamma">Gamma</label>
+<input id="gamma" type="range" min="10" max="30" class="slider" oninput="refresh();">
 
 <br/>
 <button type="button" onclick="reset();">Reset</button>

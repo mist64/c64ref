@@ -76,7 +76,7 @@ function compose( index, revision, brightness, contrast, saturation )
     return components;
 }
 
-function convert( components )
+function convert( components, source )
 {
     // matrix transformation
 
@@ -88,7 +88,6 @@ function convert( components )
 
     // gamma correction
 
-    var source = 2.8;                            // PAL
     var target = 2.2;                            // sRGB
 
     for ( var i in color )
@@ -127,6 +126,7 @@ function yFromRGB(r, g, b) {
 }
 
 function init() {
+	reset();
 	refresh();
 }
 
@@ -136,14 +136,14 @@ function refresh() {
 	brightness = document.getElementById("brightness").value;
 	contrast = document.getElementById("contrast").value;
 	saturation = document.getElementById("saturation").value;
+	gamma = document.getElementById("gamma").value / 10;
 
 	colors = []
 	for (var i = 0; i < 16; i++) {
-		c = convert(compose(i, revision, brightness, contrast, saturation));
+		c = convert(compose(i, revision, brightness, contrast, saturation), gamma);
 		c.index = i;
 		colors.push(c);
 	}
-//	console.log(colors);
 
 	function compare_y(a, b) {
 		let comparison = 0;
@@ -174,7 +174,7 @@ function refresh() {
 		c = colors[i];
 		hexcolor = hexFromRGB(c.r, c.g, c.b);
 		text_hexcolors += hexcolor + '\n';
-		y = (c.y / 307.2 * 255) | 0;
+		y = (Math.max(c.y, 0) / 307.2 * 255) | 0;
 		yhexcolor = hexFromRGB(y, y, y);
 		document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
 		document.getElementById("ycol"+i).style = 'background-color: ' + yhexcolor;
@@ -186,6 +186,7 @@ function reset() {
 	document.getElementById("brightness").value = 50;
 	document.getElementById("contrast").value = 100;
 	document.getElementById("saturation").value = 50;
+	document.getElementById("gamma").value = 28; // PAL: 2.8
 	refresh();
 }
 
