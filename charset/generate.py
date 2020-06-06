@@ -29,6 +29,8 @@ cap_replacements = {
 	'NO_SCROLL': 'SCRL',
 	'GRAPH': 'GRPH',
 	'REPEAT': 'RPT',
+	'40/80_DISPLAY': '40/80',
+	'CAPS_LOCK': 'CAPS',
 }
 
 def flood_fill(x, y):
@@ -84,8 +86,6 @@ def keyboard_layout_html(machine, ll):
 					scancode = int(scancode[1:], 16) | 128 # XXX handle
 				elif scancode == '...':
 					scancode = -1 # key does no produce a scancode
-				elif scancode == 'NMI':
-					scancode = -2 # NMI key
 				else:
 					scancode = int(scancode, 16)
 				# mark all cells as seen
@@ -143,9 +143,7 @@ def keyboard_layout_html(machine, ll):
 			width -= HINSET*2
 			height -= VINSET*2
 
-			if scancode == -2:
-				description = 'RESTORE'
-			elif scancode >= 0 and scancode < len(description_from_scancode[machine]):
+			if scancode >= 0 and scancode < len(description_from_scancode[machine]):
 				description = description_from_scancode[machine][scancode]
 			else:
 				description = ''
@@ -176,13 +174,13 @@ def keyboard_layout_html(machine, ll):
 					petscii[modifier] = petscii_from_scancode[machine][modifier][scancode]
 				else:
 					# XXX happens in auto-shifted ("or 128") case
-					petscii[modifier] = 0
+					petscii[modifier] = 0xff
 
 			modifier = modifier_scancodes[machine].get(scancode)
 			if not modifier:
 				modifier = ''
 
-			svg += '<a xlink:href="javascript:void(0)" onclick="highlight_key(\'{}\',{}, \'petscii_{}\', \'petscii_{}\', \'petscii_{}\', \'petscii_{}\', \'{}\');">'.format(machine, scancode, hex(petscii['regular']), hex(petscii['shift']), hex(petscii['cbm']), hex(petscii['ctrl']), modifier)
+			svg += '<a xlink:href="javascript:void(0)" onclick="highlight_key(\'{}\',{}, \'petscii_{}\',\'petscii_{}\',\'petscii_{}\',\'petscii_{}\', \'{}\');">'.format(machine, scancode, hex(petscii['regular']), hex(petscii['shift']), hex(petscii['cbm']), hex(petscii['ctrl']), modifier)
 			svg += '<rect class="keyrect keyrect_{}_{}" x="{}" y="{}" rx="{}" ry="{}" width="{}" height="{}" style="stroke:black;fill:white;"/>\n'.format(machine, scancode, minx, miny, ROUND, ROUND, width, height)
 			svg += '<text class="keytext keytext_{}_{}" text-anchor="middle" font-family="Helvetica" font-size="{}" {} fill="black">'.format(machine, scancode, font_size, style)
 			svg += '<tspan x="{}" y="{}">{}</tspan>'.format(minx + width/2, miny + height/2 + font_vadjust, description)
@@ -531,7 +529,7 @@ for machine in machines:
 			values.remove('')
 		if key == 'layout':
 			keyboard_layout[machine].append(line)
-		elif key == 'cap':
+		elif key == 'cap' or key == 'capx':
 			values = [d.replace('HASH', '#') for d in values]
 			description_from_scancode[machine].extend(values)
 		elif key == 'mod':
@@ -539,7 +537,13 @@ for machine in machines:
 			cap = values[1]
 			modifier_scancodes[machine][scancode] = cap
 		else:
-			values = [int(v, 16) for v in values]
+			v1 = values
+			values = []
+			for v in v1:
+				if v.startswith('X'):
+					values.append(-int(v[1:], 16))
+				else:
+					values.append(int(v, 16))
 			petscii_from_scancode[machine][key].extend(values)
 	while keyboard_layout[machine][0] == '':
 		keyboard_layout[machine] = keyboard_layout[machine][1:]
