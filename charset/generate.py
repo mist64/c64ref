@@ -263,6 +263,8 @@ def modifiers_and_scancodes_html_from_petscii(petscii, scrcode, other_ok = True,
 			d = description_from_scancode[machine][scancode]
 			if d is None:
 				d = '${:02X}'.format(scancode)
+			else:
+				d = d.replace('_', ' ')
 
 			if m:
 				m = '<span class="key-box">{}</span> + '.format(m)
@@ -1257,6 +1259,29 @@ print('<div style="display: none">')
 html_div_info_screencode("screencode_boxes")
 html_div_info_petscii("petscii_boxes")
 print('</div>');
+
+print('<hr/>')
+print('<h2>Notes<a name="notes"/></h2>')
+print('<ul>')
+print('<li>')
+print('PET-N is a PET with a ROM version below 4 (i.e. base set of control codes) and a "normal" (chicklet or graphics) keyboard. PET-B is a PET 8xxx with a ROM version of 4 (i.e. extended set of control codes) and a business keyboard. The graphics keyboard also existed for the later PETs, and early PETs could be upgraded with newer ROMs, but for the sake of simplicity, I limitied the PET series to these two systems.')
+print('</li>')
+print('<li>')
+print('The colors in the C128 control codes are the VDC ones. In VIC-II mode, the colors match the C64 ones.')
+print('</li>')
+print('<li>')
+print('The character sets have been taken from <a href="http://www.zimmers.net/anonftp/pub/cbm/firmware/characters/">zimmers.net</a> and <a href="http://www.6502.org/users/sjgray/computer/cbmchr/cbmchr.html">sjgray\'s page</a>. Each ROM image has been split into individual character sets, reverse versions have been normalized, and duplicates have been eliminated. See the "compare.py" script in the repository for details.')
+print('</li>')
+print('<li>')
+print('The regular and reverse versions of the C64 system characater sets differ in the \'@\' symbol, and some other machines have various differences and sometimes bugs (flipped bits) in their copies. For simplicity, the viewer is using a single variant for both regular and reverse. You can select the alternative/buggy version in the charset picker.')
+print('</li>')
+print('<li>')
+print('The PETSCII to Unicode conversion is done using the mappings from the <a href="https://en.wikipedia.org/wiki/Symbols_for_Legacy_Computing">Symbols for Legacy Computing</a> additions to Unicode; <a href="https://www.unicode.org/L2/L2019/19025-aux-mappings.zip">19025-aux-mappings.zip</a>. As of mid 2020, common operating systems don\'t support all symbls yet.')
+print('</li>')
+print('<li>')
+print('Note that some keyboard keys (VIC-20/C64/C128/C65: <span class="key-box">RESTORE</span>, C128/C65: <span class="key-box">CAPS LOCK</span>, C128: <span class="key-box">40/80 DISPLAY</span>) produce no scancode, and therefore no PETSCII code. Other keys (C128/C65: <span class="key-box">NO SCROLL</span>) produce a scancode, but no PETSCII code.')
+print('</li>')
+print('</ul>')
 
 print('</body>')
 print('</html>')
