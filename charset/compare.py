@@ -221,7 +221,7 @@ for filename_in in sys.argv[1:]:
 		#write_png(charset, str(binascii.crc32(charset)) + '.png'.format(index))
 		#write_png(charset, friendly_filename_for_crc(binascii.crc32(charset)) + '.png')
 
-		open(friendly_filename_for_crc(binascii.crc32(charset)) + '.bin', "wb").write(charset)
+		#open(friendly_filename_for_crc(binascii.crc32(charset)) + '.bin', "wb").write(charset)
 
 
 		start_offset += 1024
