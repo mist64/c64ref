@@ -132,11 +132,14 @@ function init() {
 
 function refresh() {
 	sort = document.getElementById("sortby").selectedIndex;
-	levels_prefix = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
+	revision = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
+	brightness = document.getElementById("brightness").value;
+	contrast = document.getElementById("contrast").value;
+	saturation = document.getElementById("saturation").value;
 
 	colors = []
 	for (var i = 0; i < 16; i++) {
-		c = convert(compose(i, levels_prefix, 50, 100, 50));
+		c = convert(compose(i, revision, brightness, contrast, saturation));
 		c.index = i;
 		colors.push(c);
 	}
@@ -166,13 +169,23 @@ function refresh() {
 		colors.sort(compare_index);
 	}
 
+	text_hexcolors = '';
 	for (var i = 0; i < 16; i++) {
 		c = colors[i];
 		hexcolor = hexFromRGB(c.r, c.g, c.b);
+		text_hexcolors += hexcolor + '\n';
 		y = (c.y / 307.2 * 255) | 0;
 		yhexcolor = hexFromRGB(y, y, y);
 		document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
 		document.getElementById("ycol"+i).style = 'background-color: ' + yhexcolor;
 	}
+	document.getElementById("hexcolors").innerHTML = text_hexcolors;
+}
+
+function reset() {
+	document.getElementById("brightness").value = 50;
+	document.getElementById("contrast").value = 100;
+	document.getElementById("saturation").value = 50;
+	refresh();
 }
 

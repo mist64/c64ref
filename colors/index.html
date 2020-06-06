@@ -62,5 +62,21 @@
     <option value="lumalevels0">5 (6569R1)</option>
     <option selected value="lumalevels1">9 (6569R3/4/5, 8565R2)</option>
 </select>
+<br/>
+<label for="brightness">Brightness</label>
+<input id="brightness" type="range" min="1" max="100" value="50" class="slider" id="myRange" oninput="refresh();">
+<br/>
+<label for="contrast">Contrast</label>
+<input id="contrast" type="range" min="1" max="200" value="100" class="slider" id="myRange" oninput="refresh();">
+<br/>
+<label for="saturation">Saturation</label>
+<input id="saturation" type="range" min="1" max="100" value="50" class="slider" id="myRange" oninput="refresh();">
+
+<br/>
+<button type="button" onclick="reset();">Reset</button>
+
+<pre id="hexcolors">
+
+</pre>
 
 </body>
