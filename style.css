@@ -69,10 +69,13 @@ a {
     color: var(--border-color);
 }
 
-div.body {
+div.main {
     padding: 8px;
 }
 
+h1 {
+	font-size: large;
+}
 
 /* Navigation */
 
@@ -87,10 +90,10 @@ div.body {
 .topnav a, .topnav h1 {
     float: left;
     text-align: center;
-    padding: 14px 16px;
+    padding: 8px 10px;
     margin: 0px;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 13px;
 }
 
 .topnav a {
@@ -100,7 +103,7 @@ div.body {
 }
 
 .topnav a:hover {
-    background-color: var(--main-background);
+    background-color: #abb;
     color: black;
 }
 

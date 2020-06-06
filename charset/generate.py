@@ -1204,7 +1204,7 @@ print('<!DOCTYPE html>')
 print('<html lang="en-US">')
 print('<head>')
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
-print('<title>Character Set / PETSCII / Keyboard | Ultimate C64 Reference</title>')
+print('<title>Charset · PETSCII · Keyboard | Ultimate C64 Reference</title>')
 print('')
 print('<script src="script.js"></script>')
 print('<script src="charset.js"></script>')
@@ -1222,14 +1222,17 @@ print('<a href="https://github.com/mist64/c64ref" class="github-corner" aria-lab
 
 print('<div class="topnav">')
 print('    <h1>Ultimate Commodore 64 Reference</h1> ')
-print('    <a href="../kernal/">KERNAL API</a><!-- kernal/ -->')
-print('    <a href="../c64disasm/">ROM Disassembly</a><!-- c64disasm/ -->')
-print('    <a href="../c64mem/">Memory Map</a><!-- c64mem/ -->')
-print('    <a class="active" href="../charset/">Charset/PETSCII/Keyboard</a><!-- charset/ -->')
-#print('    <a href="#">I/O Map</a><!-- c64io/ -->')
-#print('    <a href="#">6502 CPU</a><!-- 6502/ -->')
+print('    <a href="../kernal/">KERNAL API</a>')
+print('    <a href="../c64disasm/">ROM Disassembly</a>')
+print('    <a href="../c64mem/">Memory Map</a>')
+print('    <a class="active" href="#">Charset · PETSCII · Keyboard</a>')
+#print('    <a  href="../c64io/">I/O Map</a>')
+#print('    <a href="#">6502 CPU</a>')
 print('    <a class="home" href="https://www.pagetable.com/">pagetable.com</a>')
 print('</div>')
+
+print('<div class="main">')
+print('<h1>Character Set · PETSCII · Keyboard</h1>')
 
 f = os.popen('git log -1 --pretty=format:%h .')
 revision = f.read()
@@ -1237,6 +1240,7 @@ f = os.popen('git log -1 --date=short --pretty=format:%cd .')
 date = f.read()
 print('<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>. Revision ' + revision + ', ' + date + '</i></p>')
 
+print('</div>')
 print('<div class="tabbed">')
 
 html_div_settings("settings")
@@ -1261,6 +1265,9 @@ html_div_info_petscii("petscii_boxes")
 print('</div>');
 
 print('<hr/>')
+
+print('<div class="main">')
+
 print('<h2>Notes<a name="notes"/></h2>')
 print('<ul>')
 print('<li>')
@@ -1283,6 +1290,7 @@ print('Note that some keyboard keys (VIC-20/C64/C128/C65: <span class="key-box">
 print('</li>')
 print('</ul>')
 
+print('</div>')
 print('</body>')
 print('</html>')
 
