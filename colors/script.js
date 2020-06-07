@@ -342,14 +342,13 @@ function colorspaceHTML(mapped_colors) {
 	return html;
 }
 
-function combineColors(c0,c1,c2) {
-	// equalize hue of the two colors
-	hsl1 = HSLfromRGB(c1.r, c1.g, c1.b);
-	hsl2 = HSLfromRGB(c2.r, c2.g, c2.b);
+function combineColors(c1, c2, gamma) {
+	// create two colors with the average UV, but kepping their respective Y
+	u = (c1.u + c2.u) / 2;
+	v = (c1.v + c2.v) / 2;
 
-	fc1 = RGBfromHSL(c0.h, c0.s, hsl1.l);
-	fc2 = RGBfromHSL(c0.h, c0.s, hsl2.l);
-
+	fc1 = convert({ y: c1.y, u: u, v: v }, 2.8);
+	fc2 = convert({ y: c2.y, u: u, v: v }, 2.8);
 	return { c1: fc1, c2: fc2 };
 }
 
@@ -445,7 +444,7 @@ function refresh() {
 					cm.description = '' + c1.index + '/' + c2.index;
 					cm.component1 = c1;
 					cm.component2 = c2;
-					fixedColors = combineColors(cm,c1,c2);
+					fixedColors = combineColors(c1, c2, gamma);
 					cm.fixedComponent1 = fixedColors.c1;
 					cm.fixedComponent2 = fixedColors.c2;
 					colors.push(cm);
@@ -512,7 +511,7 @@ function refresh() {
 	// fill cells with colors
 	//
 	text_hexcolors = '';
-	text_hsbcolors = '';
+//	text_hsbcolors = '';
 	for (var i = 0; i < colors.length; i++) {
 		c = colors[i];
 
@@ -522,12 +521,12 @@ function refresh() {
 		document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
 
 		// line 3
-		hsbcolor = HSVfromRGB(c.r, c.g, c.v);
-		if (hsbcolor.h) {
-			text_hsbcolors += '' + hsbcolor.h.toFixed(2) + ' ' + hsbcolor.s.toFixed(2) + ' ' + hsbcolor.v.toFixed(2) + '\n';
-		} else {
-			hsbcolor += '-\n';
-		}
+//		hsbcolor = HSVfromRGB(c.r, c.g, c.v);
+//		if (hsbcolor.h) {
+//			text_hsbcolors += '' + hsbcolor.h.toFixed(2) + ' ' + hsbcolor.s.toFixed(2) + ' ' + hsbcolor.v.toFixed(2) + '\n';
+//		} else {
+//			hsbcolor += '-\n';
+//		}
 		y = (Math.max(c.y, 0) / 307.2 * 255) | 0;
 		yhexcolor = hexFromRGB(y, y, y);
 		document.getElementById("ycol"+i).style = 'background-color: ' + yhexcolor;
@@ -553,7 +552,7 @@ function refresh() {
 	// fill hex colors table
 	//
 	document.getElementById("hexcolors").innerHTML = text_hexcolors;
-	document.getElementById("hsbcolors").innerHTML = text_hsbcolors;
+//	document.getElementById("hsbcolors").innerHTML = text_hsbcolors;
 }
 
 function reset() {
