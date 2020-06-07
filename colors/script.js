@@ -192,14 +192,14 @@ function RGBfromHSL(h,s,l) {
 }
 
 function colorspaceSVG(mapped_colors) {
-	var res = 16;
+	var res = 32;
 	var svgs = '';
 	for (var z = 0; z < res; z++) {
 		var paths = '';
 		for (var y = 0; y < res; y++) {
 			for (var x = 0; x < res; x++) {
-				h = x * 360 / res;
-				s = z * 100 / res;
+				h = z * 360 / res;
+				s = x * 100 / res;
 				l = y * 100 / res;
 				rgb = RGBfromHSL(h, s, l);
 				var r = rgb.r;
@@ -224,7 +224,7 @@ function colorspaceSVG(mapped_colors) {
 				paths += '<path stroke="' + fgcolor + '" d="M' + x + ' ' + y + 'h' + width + '"/>'
 			}
 		}
-		svgs += '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" shape-rendering="auto" viewBox="0 -.5 ' + res + ' ' + res + '">' + paths + '</svg>';
+		svgs += '<svg xmlns="http://www.w3.org/2000/svg" width="' + res + '" height="' + res + '" shape-rendering="auto" viewBox="0 -.5 ' + res + ' ' + res + '">' + paths + '</svg>';
 	}
 	return svgs;
 }
