@@ -255,13 +255,13 @@ function colorspaceHTML(mapped_colors) {
 				var b = rgb.b;
 				if (mapped_colors) {
 					var cr = null;
-					var mindist = null;
+					var mindist = 999;
 					for (var i = 0; i < colors.length; i++) {
 						c = colors[i];
 						var lab1 = LabFromRGB(c.r, c.g, c.b);
 						var lab2 = LabFromRGB(r, g, b);
 						var dist = deltaE(lab1, lab2);
-						if (!mindist || dist < mindist) {
+						if (dist < mindist) {
 							mindist = dist;
 							cr = c;
 						}
