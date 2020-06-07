@@ -138,12 +138,12 @@ function HSVfromRGB(r, g, b) {
 	} else {
 		s = 0;
 		h = -1;
-		return [h, s, v];
+		return { h: h, s: s, v: v };
 	}
 	if (max == min) {
 		h = 0;
 		s = 0;
-		return [h, s, v];
+		return { h: h, s: s, v: v };
 	}
 	if (r == max) {
 		h = (g - b) / delta;
@@ -157,6 +157,29 @@ function HSVfromRGB(r, g, b) {
 		h += 360;
 	}
 	return { h: h, s: s, v: v };
+}
+function RGBfromHSV(h, s, v) {
+   var i;
+   var f, p, q, t;
+   if (s == 0 ) {
+	return { r: v, g: v, b: v};
+   }
+   h /= 60;
+   i = Math.floor( h );
+   f = h - i;
+   p = v * ( 1 - s );
+   q = v * ( 1 - s * f );
+   t = v * ( 1 - s * ( 1 - f ) );
+   switch( i ) {
+      case 0: r = v; g = t; b = p; break;
+      case 1: r = q; g = v; b = p; break;
+      case 2: r = p; g = v; b = t; break;
+      case 3: r = p; g = q; b = v; break;
+      case 4: r = t; g = p; b = v; break;
+      default:  // case 5:
+         r = v; g = p; b = q; break;
+   }
+   return { r: r, g: g, b: b};
 }
 
 // https://css-tricks.com/converting-color-spaces-in-javascript/
@@ -189,6 +212,40 @@ function RGBfromHSL(h,s,l) {
   b = Math.round((b + m) * 255);
 
   return { r: r, g: g, b: b };
+}
+function HSLfromRGB(r,g,b) {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+
+  let cmin = Math.min(r,g,b),
+      cmax = Math.max(r,g,b),
+      delta = cmax - cmin,
+      h = 0,
+      s = 0,
+      l = 0;
+  if (delta == 0)
+    h = 0;
+  else if (cmax == r)
+    h = ((g - b) / delta) % 6;
+  else if (cmax == g)
+    h = (b - r) / delta + 2;
+  else
+    h = (r - g) / delta + 4;
+
+  h = Math.round(h * 60);
+
+  if (h < 0)
+      h += 360;
+
+  l = (cmax + cmin) / 2;
+
+  s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+
+  s = +(s * 100).toFixed(1);
+  l = +(l * 100).toFixed(1);
+
+  return { h: h, s: s, l: l };
 }
 
 // https://github.com/antimatter15/rgb-lab
@@ -285,13 +342,23 @@ function colorspaceHTML(mapped_colors) {
 	return html;
 }
 
+function combineColors(c0,c1,c2) {
+	// equalize hue of the two colors
+	hsl1 = HSLfromRGB(c1.r, c1.g, c1.b);
+	hsl2 = HSLfromRGB(c2.r, c2.g, c2.b);
+
+	fc1 = RGBfromHSL(c0.h, c0.s, hsl1.l);
+	fc2 = RGBfromHSL(c0.h, c0.s, hsl2.l);
+
+	return { c1: fc1, c2: fc2 };
+}
+
 function svgForColors(c1, c2) {
-	var size = 32;
+	var height = 32;
 	var hexcolor1 = hexFromRGB(c1.r, c1.g, c1.b);
 	var hexcolor2 = hexFromRGB(c2.r, c2.g, c2.b);
-	console.log(hexcolor2);
-	var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="' + size + '" shape-rendering="auto" viewBox="0 -.5 1 ' + size + '">'
-	for (var j = 0; j < size / 2; j++ ) {
+	var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="' + height + '" shape-rendering="auto" viewBox="0 -.5 1 ' + height + '">'
+	for (var j = 0; j < height / 2; j++ ) {
 		svg += '<path stroke="' + hexcolor1 + '" d="M0 '+(j*2)+'h1"></path>'
 		svg += '<path stroke="' + hexcolor2 + '" d="M0 '+(j*2+1)+'h1"></path>'
 	}
@@ -371,11 +438,16 @@ function refresh() {
 					cm.g = ((c1.g + c2.g) / 2) | 0;
 					cm.b = ((c1.b + c2.b) / 2) | 0;
 					cm.y = ((c1.y + c2.y) / 2) | 0;
-					cm.h = HSVfromRGB(cm.r, cm.g, cm.b).h;
+					hsl = HSLfromRGB(cm.r, cm.g, cm.b);
+					cm.h = hsl.h;
+					cm.s = hsl.s;
 					cm.index = colors.length;
 					cm.description = '' + c1.index + '/' + c2.index;
 					cm.component1 = c1;
 					cm.component2 = c2;
+					fixedColors = combineColors(cm,c1,c2);
+					cm.fixedComponent1 = fixedColors.c1;
+					cm.fixedComponent2 = fixedColors.c2;
 					colors.push(cm);
 				}
 			}
@@ -461,8 +533,8 @@ function refresh() {
 		document.getElementById("ycol"+i).style = 'background-color: ' + yhexcolor;
 
 		// line 2
-		component1 = c.component1;
-		component2 = c.component2;
+		component1 = c.fixedComponent1;
+		component2 = c.fixedComponent2;
 		if (!component1) {
 			component1 = c;
 			component2 = c;
