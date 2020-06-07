@@ -242,31 +242,30 @@ function colorspaceHTML(mapped_colors) {
 		style = 'display: none;';
 	}
 	html = '<div id="' + id + '" style="' + style +'">';
-	var res = 32;
+	var yres = 32;
 	var zres = 5;
 	var scale = 4;
 	for (var z = 0; z < zres; z++) {
 		var paths = '';
-		for (var y = 0; y < res; y++) {
-			for (var x = 0; x < res; x++) {
-				h = x * 360 / res;
+		for (var y = 0; y < yres; y++) {
+			var xres = z ? 32 : 8;
+			for (var x = 0; x < xres; x++) {
+				h = x * 360 / xres;
 				s = z * 100 / zres;
-				l = y * 100 / res;
+				l = y * 100 / yres;
 				rgb = RGBfromHSL(h, s, l);
 				var r = rgb.r;
 				var g = rgb.g;
 				var b = rgb.b;
 				if (mapped_colors) {
 					var cr = null;
-					var mindist = 99999;
+					var mindist = null;
 					for (var i = 0; i < colors.length; i++) {
 						c = colors[i];
 						var lab1 = LabFromRGB(c.r, c.g, c.b);
 						var lab2 = LabFromRGB(r, g, b);
 						var dist = deltaE(lab1, lab2);
-
-//						var dist = Math.sqrt((c.r - r)*(c.r - r)+(c.g - g)*(c.g - g)+(c.b - b)*(c.b - b));
-						if (dist < mindist) {
+						if (!mindist || dist < mindist) {
 							mindist = dist;
 							cr = c;
 						}
@@ -279,7 +278,7 @@ function colorspaceHTML(mapped_colors) {
 				paths += '<path stroke="' + fgcolor + '" d="M' + x + ' ' + y + 'h' + width + '"/>'
 			}
 		}
-		html += '<svg xmlns="http://www.w3.org/2000/svg" style="border: 1px solid black;" width="' + res * scale + '" height="' + res * scale + '" shape-rendering="auto" viewBox="0 -.5 ' + res + ' ' + res + '">' + paths + '</svg>&nbsp;';
+		html += '<svg xmlns="http://www.w3.org/2000/svg" style="border: 1px solid black;" width="' + xres * scale + '" height="' + yres * scale + '" shape-rendering="auto" viewBox="0 -.5 ' + xres + ' ' + yres + '">' + paths + '</svg>&nbsp;';
 	}
 	html += '</div>';
 	return html;

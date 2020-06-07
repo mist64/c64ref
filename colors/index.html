@@ -26,6 +26,13 @@
 		<tr id="row2"></tr>
 	</table>
 
+	<label for="sortby">Sort by</label>
+	<select name="sortby" id="sortby" onChange="refresh();">
+	    <option value="sortby0">Luma</option>
+	    <option value="sortby1">Hue</option>
+	    <option value="sortby2">Palette Order</option>
+	</select>
+	<br/>
 	<br/>
 	<div id="colorspace" onmousedown="hideColorspace(true);" onmouseup="hideColorspace(false);">
 	</div>
@@ -35,13 +42,6 @@
 	    <option value="mixedcols0">None</option>
 	    <option value="mixedcols1">Same Luma</option>
 	    <option value="mixedcols2">All</option>
-	</select>
-	<br/>
-	<label for="sortby">Sort by</label>
-	<select name="sortby" id="sortby" onChange="refresh();">
-	    <option value="sortby0">Luma</option>
-	    <option value="sortby1">Hue</option>
-	    <option value="sortby2">Palette Order</option>
 	</select>
 	<br/>
 	<label for="lumalevels">Luma Levels</label>
