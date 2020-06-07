@@ -233,15 +233,9 @@ function deltaE(labA, labB){
   var i = deltaLKlsl * deltaLKlsl + deltaCkcsc * deltaCkcsc + deltaHkhsh * deltaHkhsh;
   return i < 0 ? 0 : Math.sqrt(i);
 }
+
 function colorspaceHTML(mapped_colors) {
-	if (mapped_colors) {
-		id = 'colorspace_mapped';
-		style = '';
-	} else {
-		id = 'colorspace_rgb';
-		style = 'display: none;';
-	}
-	html = '<div id="' + id + '" style="' + style +'">';
+	html = '';
 	var yres = 32;
 	var zres = 5;
 	var scale = 4;
@@ -249,6 +243,8 @@ function colorspaceHTML(mapped_colors) {
 		var paths = '';
 		for (var y = 0; y < yres; y++) {
 			var xres = z ? 32 : 8;
+			var prevcolor = null;
+			var count = 0;
 			for (var x = 0; x < xres; x++) {
 				h = x * 360 / xres;
 				s = z * 100 / zres;
@@ -274,17 +270,24 @@ function colorspaceHTML(mapped_colors) {
 				} else {
 					var fgcolor = hexFromRGB(r, g, b);
 				}
-				width = 1;
-				paths += '<path stroke="' + fgcolor + '" d="M' + x + ' ' + y + 'h' + width + '"/>'
+				if (!prevcolor || fgcolor == prevcolor) {
+					count++;
+				} else {
+					paths += '<path stroke="' + prevcolor + '" d="M' + (x - count) + ' ' + y + 'h' + count + '"/>'
+					count = 1;
+				}
+				prevcolor = fgcolor;
 			}
+			paths += '<path stroke="' + prevcolor + '" d="M' + (x - count) + ' ' + y + 'h' + count + '"/>'
 		}
 		html += '<svg xmlns="http://www.w3.org/2000/svg" style="border: 1px solid black;" width="' + xres * scale + '" height="' + yres * scale + '" shape-rendering="auto" viewBox="0 -.5 ' + xres + ' ' + yres + '">' + paths + '</svg>&nbsp;';
 	}
-	html += '</div>';
 	return html;
 }
 
 function init() {
+	document.getElementById("colorspace_rgb").innerHTML = colorspaceHTML(false);
+	document.getElementById("colorspace_rgb").style = 'display: none;';
 	reset();
 	refresh();
 }
@@ -394,9 +397,7 @@ function refresh() {
 //		document.getElementById("col"+i).innerHTML = c.index;
 	}
 
-	var svg = colorspaceHTML(false) + colorspaceHTML(true);
-	document.getElementById("colorspace").innerHTML = svg;
-
+	document.getElementById("colorspace_mapped").innerHTML = colorspaceHTML(true);
 
 	//
 	// fill hex colors table
