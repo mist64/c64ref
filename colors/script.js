@@ -193,11 +193,11 @@ function RGBfromHSL(h,s,l) {
 
 // https://github.com/antimatter15/rgb-lab
 // MIT-licensed
-function rgb2lab(rgb){
-  var r = rgb[0] / 255,
-      g = rgb[1] / 255,
-      b = rgb[2] / 255,
-      x, y, z;
+function LabFromRGB(r, g, b) {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  var x, y, z;
 
   r = (r > 0.04045) ? Math.pow((r + 0.055) / 1.055, 2.4) : r / 12.92;
   g = (g > 0.04045) ? Math.pow((g + 0.055) / 1.055, 2.4) : g / 12.92;
@@ -211,17 +211,17 @@ function rgb2lab(rgb){
   y = (y > 0.008856) ? Math.pow(y, 1/3) : (7.787 * y) + 16/116;
   z = (z > 0.008856) ? Math.pow(z, 1/3) : (7.787 * z) + 16/116;
 
-  return [(116 * y) - 16, 500 * (x - y), 200 * (y - z)]
+  return {l: (116 * y) - 16, a: 500 * (x - y), b: 200 * (y - z)};
 }
 // calculate the perceptual distance between colors in CIELAB
 // https://github.com/antimatter15/rgb-lab
 // https://github.com/THEjoezack/ColorMine/blob/master/ColorMine/ColorSpaces/Comparisons/Cie94Comparison.cs
 function deltaE(labA, labB){
-  var deltaL = labA[0] - labB[0];
-  var deltaA = labA[1] - labB[1];
-  var deltaB = labA[2] - labB[2];
-  var c1 = Math.sqrt(labA[1] * labA[1] + labA[2] * labA[2]);
-  var c2 = Math.sqrt(labB[1] * labB[1] + labB[2] * labB[2]);
+  var deltaL = labA.l - labB.l;
+  var deltaA = labA.a - labB.a;
+  var deltaB = labA.b - labB.b;
+  var c1 = Math.sqrt(labA.a * labA.a + labA.b * labA.b);
+  var c2 = Math.sqrt(labB.a * labB.a + labB.b * labB.b);
   var deltaC = c1 - c2;
   var deltaH = deltaA * deltaA + deltaB * deltaB - deltaC * deltaC;
   deltaH = deltaH < 0 ? 0 : Math.sqrt(deltaH);
@@ -252,8 +252,8 @@ function colorspaceSVG(mapped_colors) {
 					var mindist = 99999;
 					for (var i = 0; i < colors.length; i++) {
 						c = colors[i];
-						var lab1 = rgb2lab([c.r, c.g, c.b]);
-						var lab2 = rgb2lab([r, g, b]);
+						var lab1 = LabFromRGB(c.r, c.g, c.b);
+						var lab2 = LabFromRGB(r, g, b);
 						var dist = deltaE(lab1, lab2);
 
 //						var dist = Math.sqrt((c.r - r)*(c.r - r)+(c.g - g)*(c.g - g)+(c.b - b)*(c.b - b));
