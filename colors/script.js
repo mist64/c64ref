@@ -126,7 +126,7 @@ function yFromRGB(r, g, b) {
 }
 
 // https://wisotop.de/rgb-nach-hsv.php
-function HSBfromRGB(r, g, b) {
+function HSVfromRGB(r, g, b) {
 	var h, s, v;
 	var min, max, delta;
 	min = Math.min(r, g, b);
@@ -306,7 +306,7 @@ function refresh() {
 		var c = convert(compose(i, revision, brightness, contrast, saturation), gamma);
 		c.index = i;
 		c.description = i;
-		c.h = HSBfromRGB(c.r, c.g, c.b).h;
+		c.h = HSVfromRGB(c.r, c.g, c.b).h;
 		colors.push(c);
 	}
 
@@ -314,18 +314,39 @@ function refresh() {
 	// create mixed colors
 	//
 	if (mixedcols) {
+		var lumas = [];
+		for (var i = 0; i < colors.length; i++) {
+			y = colors[i].y;
+			if (!lumas.includes(y)) {
+				lumas.push(y);
+			}
+		}
+		function compare(a, b) {
+			return a - b;
+		}
+		lumas.sort(compare);
 		var l = colors.length;
 		for (var i = 0; i < l; i++) {
 			var c1 = colors[i];
 			for (var j = i+1; j < l; j++) {
 				var c2 = colors[j];
-				if (mixedcols == 2 || c1.y == c2.y) {
+				var add = false;
+				if (mixedcols == 1 && c1.y == c2.y) {
+					add = true;
+				}
+				if (mixedcols == 2 && Math.abs(lumas.indexOf(c1.y) - lumas.indexOf(c2.y)) <= 1) {
+					add = true;
+				}
+				if (mixedcols == 3) {
+					add = true;
+				}
+				if (add) {
 					var cm = {}
 					cm.r = ((c1.r + c2.r) / 2) | 0;
 					cm.g = ((c1.g + c2.g) / 2) | 0;
 					cm.b = ((c1.b + c2.b) / 2) | 0;
 					cm.y = ((c1.y + c2.y) / 2) | 0;
-					cm.h = HSBfromRGB(cm.r, cm.g, cm.b).h;
+					cm.h = HSVfromRGB(cm.r, cm.g, cm.b).h;
 					cm.index = colors.length;
 					cm.description = '' + c1.index + '/' + c2.index;
 					colors.push(cm);
@@ -386,10 +407,17 @@ function refresh() {
 	// fill cells with colors
 	//
 	text_hexcolors = '';
+	text_hsbcolors = '';
 	for (var i = 0; i < colors.length; i++) {
 		c = colors[i];
 		hexcolor = hexFromRGB(c.r, c.g, c.b);
 		text_hexcolors += hexcolor + '\n';
+		hsbcolor = HSVfromRGB(c.r, c.g, c.v);
+		if (hsbcolor.h) {
+			text_hsbcolors += '' + hsbcolor.h.toFixed(2) + ' ' + hsbcolor.s.toFixed(2) + ' ' + hsbcolor.v.toFixed(2) + '\n';
+		} else {
+			hsbcolor += '-\n';
+		}
 		y = (Math.max(c.y, 0) / 307.2 * 255) | 0;
 		yhexcolor = hexFromRGB(y, y, y);
 		document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
@@ -403,6 +431,7 @@ function refresh() {
 	// fill hex colors table
 	//
 	document.getElementById("hexcolors").innerHTML = text_hexcolors;
+	document.getElementById("hsbcolors").innerHTML = text_hsbcolors;
 }
 
 function reset() {

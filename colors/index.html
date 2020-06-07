@@ -43,7 +43,8 @@
 	<select name="mixedcols" id="mixedcols" onChange="refresh();">
 	    <option value="mixedcols0">None</option>
 	    <option value="mixedcols1">Same Luma</option>
-	    <option value="mixedcols2">All</option>
+	    <option value="mixedcols2">Neighboring Luma</option>
+	    <option value="mixedcols3">All</option>
 	</select>
 	<br/>
 	<label for="lumalevels">Luma Levels</label>
@@ -80,9 +81,13 @@
 	<br/>
 	<button type="button" onclick="reset();">Reset</button>
 
-	<pre id="hexcolors">
+	<table border="1">
+		<tr>
+			<td><pre id="hexcolors"></pre>
+			<td><pre id="hsbcolors"></pre>
+		</tr>
+	</table>
 
-	</pre>
 
 </body>
 
