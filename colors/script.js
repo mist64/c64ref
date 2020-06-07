@@ -233,15 +233,24 @@ function deltaE(labA, labB){
   var i = deltaLKlsl * deltaLKlsl + deltaCkcsc * deltaCkcsc + deltaHkhsh * deltaHkhsh;
   return i < 0 ? 0 : Math.sqrt(i);
 }
-function colorspaceSVG(mapped_colors) {
+function colorspaceHTML(mapped_colors) {
+	if (mapped_colors) {
+		id = 'colorspace_mapped';
+		style = '';
+	} else {
+		id = 'colorspace_rgb';
+		style = 'display: none;';
+	}
+	html = '<div id="' + id + '" style="' + style +'">';
 	var res = 32;
-	var svgs = '';
-	for (var z = 0; z < res; z++) {
+	var zres = 5;
+	var scale = 4;
+	for (var z = 0; z < zres; z++) {
 		var paths = '';
 		for (var y = 0; y < res; y++) {
 			for (var x = 0; x < res; x++) {
-				h = z * 360 / res;
-				s = x * 100 / res;
+				h = x * 360 / res;
+				s = z * 100 / zres;
 				l = y * 100 / res;
 				rgb = RGBfromHSL(h, s, l);
 				var r = rgb.r;
@@ -270,9 +279,10 @@ function colorspaceSVG(mapped_colors) {
 				paths += '<path stroke="' + fgcolor + '" d="M' + x + ' ' + y + 'h' + width + '"/>'
 			}
 		}
-		svgs += '<svg xmlns="http://www.w3.org/2000/svg" width="' + res + '" height="' + res + '" shape-rendering="auto" viewBox="0 -.5 ' + res + ' ' + res + '">' + paths + '</svg>';
+		html += '<svg xmlns="http://www.w3.org/2000/svg" style="border: 1px solid black;" width="' + res * scale + '" height="' + res * scale + '" shape-rendering="auto" viewBox="0 -.5 ' + res + ' ' + res + '">' + paths + '</svg>&nbsp;';
 	}
-	return svgs;
+	html += '</div>';
+	return html;
 }
 
 function init() {
@@ -385,9 +395,8 @@ function refresh() {
 //		document.getElementById("col"+i).innerHTML = c.index;
 	}
 
-//	var svg = colorspaceSVG(false) + '<br/>' + colorspaceSVG(true);
-	var svg = colorspaceSVG(true);
-	document.getElementById("gamut").innerHTML = svg;
+	var svg = colorspaceHTML(false) + colorspaceHTML(true);
+	document.getElementById("colorspace").innerHTML = svg;
 
 
 	//
@@ -404,3 +413,12 @@ function reset() {
 	refresh();
 }
 
+function hideColorspace(hide) {
+	if (hide) {
+		document.getElementById("colorspace_mapped").style.display = 'none';
+		document.getElementById("colorspace_rgb").style.display = '';
+	} else {
+		document.getElementById("colorspace_mapped").style.display = '';
+		document.getElementById("colorspace_rgb").style.display = 'none';
+	}
+}
