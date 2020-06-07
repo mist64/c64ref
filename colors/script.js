@@ -125,13 +125,48 @@ function yFromRGB(r, g, b) {
 	return (0.2126 * r + 0.7152 * g + 0.0722 * b) | 0;
 }
 
+// https://wisotop.de/rgb-nach-hsv.php
+function HSBfromRGB(r, g, b) {
+	var h, s, v;
+	var min, max, delta;
+	min = Math.min(r, g, b);
+	max = Math.max(r, g, b);
+	v = max;
+	delta = max - min;
+	if (max != 0 ) {
+		s = delta / max;
+	} else {
+		s = 0;
+		h = -1;
+		return [h, s, v];
+	}
+	if (max == min) {
+		h = 0;
+		s = 0;
+		return [h, s, v];
+	}
+	if (r == max) {
+		h = (g - b) / delta;
+	} else if (g == max) {
+		h = 2 + ( b - r ) / delta;
+	} else {
+		h = 4 + ( r - g ) / delta;
+	}
+	h *= 60;
+	if (h < 0) {
+		h += 360;
+	}
+	return { h: h, s: s, v: v };
+}
+
+
 function init() {
 	reset();
 	refresh();
 }
 
 function refresh() {
-	sort = document.getElementById("sortby").selectedIndex;
+	sortby = document.getElementById("sortby").selectedIndex;
 	revision = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
 	brightness = document.getElementById("brightness").value;
 	contrast = document.getElementById("contrast").value;
@@ -142,29 +177,35 @@ function refresh() {
 	for (var i = 0; i < 16; i++) {
 		c = convert(compose(i, revision, brightness, contrast, saturation), gamma);
 		c.index = i;
+		hsb = HSBfromRGB(c.r, c.g, c.b);
+		c.h = hsb.h;
+//		console.log(c.h);
 		colors.push(c);
 	}
 
 	function compare_y(a, b) {
-		let comparison = 0;
-		if (a.y > b.y) {
-			comparison = 1;
-		} else if (a.y < b.y) {
-			comparison = -1;
+		return a.y - b.y;
+	}
+	function compare_h(a, b) {
+		console.log(a.h, b.h);
+		if (!a.h && !b.h) {
+			return a.y - b.y;
 		}
-		return comparison;
+		if (!a.h) {
+			return -1;
+		}
+		if (!b.h) {
+			return 1;
+		}
+		return a.h - b.h;
 	}
 	function compare_index(a, b) {
-		let comparison = 0;
-		if (a.index > b.index) {
-			comparison = 1;
-		} else if (a.index < b.index) {
-			comparison = -1;
-		}
-		return comparison;
+		return a.index - b.index;
 	}
-	if (sort == 0) {
+	if (sortby == 0) {
 		colors.sort(compare_y);
+	} else if (sortby == 1) {
+		colors.sort(compare_h);
 	} else {
 		colors.sort(compare_index);
 	}
@@ -178,6 +219,10 @@ function refresh() {
 		yhexcolor = hexFromRGB(y, y, y);
 		document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
 		document.getElementById("ycol"+i).style = 'background-color: ' + yhexcolor;
+
+//		if (c.h) {
+//			document.getElementById("col"+i).innerHTML = c.h.toFixed(2);
+//		}
 	}
 	document.getElementById("hexcolors").innerHTML = text_hexcolors;
 }
