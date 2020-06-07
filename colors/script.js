@@ -255,7 +255,9 @@ function refresh() {
 		row2.appendChild(td);
 	}
 
+	//
 	// fill cells with colors
+	//
 	text_hexcolors = '';
 	for (var i = 0; i < colors.length; i++) {
 		c = colors[i];
@@ -267,6 +269,35 @@ function refresh() {
 		document.getElementById("ycol"+i).style = 'background-color: ' + yhexcolor;
 //		document.getElementById("col"+i).innerHTML = c.index;
 	}
+	var paths = '';
+	for (var y = 0; y < 32; y++) {
+		for (var x = 0; x < 32; x++) {
+			var r = x * 8;
+			var g = y * 8;
+			var b = 128;
+			var cr = null;
+			var mindist = 99999;
+			for (var i = 0; i < colors.length; i++) {
+				c = colors[i];
+				dist = Math.sqrt((c.r - r)*(c.r - r)+(c.g - g)*(c.g - g)+(c.b - b)*(c.b - b));
+				if (dist < mindist) {
+					mindist = dist;
+					cr = c;
+				}
+			}
+			var fgcolor = hexFromRGB(cr.r, cr.g, cr.b);
+//			var fgcolor = hexFromRGB(r, g, b);
+			width = 1;
+			paths += '<path stroke="' + fgcolor + '" d="M' + x + ' ' + y + 'h' + width + '"/>'
+		}
+	}
+	var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" shape-rendering="auto" viewBox="0 -.5 32 32">' + paths + '</svg>';
+	document.getElementById("gamut").innerHTML = svg;
+
+
+	//
+	// fill hex colors table
+	//
 	document.getElementById("hexcolors").innerHTML = text_hexcolors;
 }
 

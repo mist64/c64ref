@@ -26,57 +26,61 @@
 		<tr id="row2"></tr>
 	</table>
 
-<label for="mixedcols">Mixed colors</label>
-<select name="mixedcols" id="mixedcols" onChange="refresh();">
-    <option value="mixedcols0">None</option>
-    <option value="mixedcols1">Same Luma</option>
-    <option value="mixedcols2">All</option>
-</select>
-<br/>
-<label for="sortby">Sort by</label>
-<select name="sortby" id="sortby" onChange="refresh();">
-    <option value="sortby0">Luma</option>
-    <option value="sortby1">Hue</option>
-    <option value="sortby2">Palette Order</option>
-</select>
-<br/>
-<label for="lumalevels">Luma Levels</label>
-<select name="lumalevels" id="lumalevels" onChange="refresh();">
-    <option value="lumalevels0">5 (6569R1)</option>
-    <option selected value="lumalevels1">9 (6569R3/4/5, 8565R2)</option>
-</select>
-<br/>
-<label for="brightness">Brightness</label>
-<input id="brightness" type="range" min="1" max="100" class="slider" list="slbrightness" oninput="refresh();">
-<datalist id="slbrightness">
-    <option>50</option>
-</datalist>
-<br/>
-<label for="contrast">Contrast</label>
-<input id="contrast" type="range" min="1" max="200" class="slider" list="slcontrast" oninput="refresh();">
-<datalist id="slcontrast">
-    <option>100</option>
-</datalist>
-<br/>
-<label for="saturation">Saturation</label>
-<input id="saturation" type="range" min="1" max="100" class="slider" list="slsaturation" oninput="refresh();">
-<datalist id="slsaturation">
-    <option>50</option>
-</datalist>
-<br/>
-<label for="gamma">Gamma</label>
-<input id="gamma" type="range" min="22" max="28" class="slider" list="slgamma" oninput="refresh();">
-<datalist id="slgamma">
-    <option>22</option>
-    <option>28</option>
-</datalist>
+	<br/>
+	<div id="gamut">
+	</div>
 
-<br/>
-<button type="button" onclick="reset();">Reset</button>
+	<label for="mixedcols">Mixed colors</label>
+	<select name="mixedcols" id="mixedcols" onChange="refresh();">
+	    <option value="mixedcols0">None</option>
+	    <option value="mixedcols1">Same Luma</option>
+	    <option value="mixedcols2">All</option>
+	</select>
+	<br/>
+	<label for="sortby">Sort by</label>
+	<select name="sortby" id="sortby" onChange="refresh();">
+	    <option value="sortby0">Luma</option>
+	    <option value="sortby1">Hue</option>
+	    <option value="sortby2">Palette Order</option>
+	</select>
+	<br/>
+	<label for="lumalevels">Luma Levels</label>
+	<select name="lumalevels" id="lumalevels" onChange="refresh();">
+	    <option value="lumalevels0">5 (6569R1)</option>
+	    <option selected value="lumalevels1">9 (6569R3/4/5, 8565R2)</option>
+	</select>
+	<br/>
+	<label for="brightness">Brightness</label>
+	<input id="brightness" type="range" min="1" max="100" class="slider" list="slbrightness" oninput="refresh();">
+	<datalist id="slbrightness">
+	    <option>50</option>
+	</datalist>
+	<br/>
+	<label for="contrast">Contrast</label>
+	<input id="contrast" type="range" min="1" max="200" class="slider" list="slcontrast" oninput="refresh();">
+	<datalist id="slcontrast">
+	    <option>100</option>
+	</datalist>
+	<br/>
+	<label for="saturation">Saturation</label>
+	<input id="saturation" type="range" min="1" max="100" class="slider" list="slsaturation" oninput="refresh();">
+	<datalist id="slsaturation">
+	    <option>50</option>
+	</datalist>
+	<br/>
+	<label for="gamma">Gamma</label>
+	<input id="gamma" type="range" min="22" max="28" class="slider" list="slgamma" oninput="refresh();">
+	<datalist id="slgamma">
+	    <option>22</option>
+	    <option>28</option>
+	</datalist>
 
-<pre id="hexcolors">
+	<br/>
+	<button type="button" onclick="reset();">Reset</button>
 
-</pre>
+	<pre id="hexcolors">
+
+	</pre>
 
 </body>
 
