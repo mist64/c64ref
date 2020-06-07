@@ -166,6 +166,7 @@ function init() {
 }
 
 function refresh() {
+	mixedcols = document.getElementById("mixedcols").selectedIndex;
 	sortby = document.getElementById("sortby").selectedIndex;
 	revision = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
 	brightness = document.getElementById("brightness").value;
@@ -175,13 +176,40 @@ function refresh() {
 
 	colors = []
 	for (var i = 0; i < 16; i++) {
-		c = convert(compose(i, revision, brightness, contrast, saturation), gamma);
+		var c = convert(compose(i, revision, brightness, contrast, saturation), gamma);
 		c.index = i;
-		hsb = HSBfromRGB(c.r, c.g, c.b);
-		c.h = hsb.h;
+		c.description = i;
+		c.h = HSBfromRGB(c.r, c.g, c.b).h;
 		colors.push(c);
 	}
 
+	//
+	// create mixed colors
+	//
+	if (mixedcols) {
+		var l = colors.length;
+		for (var i = 0; i < l; i++) {
+			var c1 = colors[i];
+			for (var j = i+1; j < l; j++) {
+				var c2 = colors[j];
+				if (mixedcols == 2 || c1.y == c2.y) {
+					var cm = {}
+					cm.r = ((c1.r + c2.r) / 2) | 0;
+					cm.g = ((c1.g + c2.g) / 2) | 0;
+					cm.b = ((c1.b + c2.b) / 2) | 0;
+					cm.y = ((c1.y + c2.y) / 2) | 0;
+					cm.h = HSBfromRGB(cm.r, cm.g, cm.b).h;
+					cm.index = colors.length;
+					cm.description = '' + c1.index + '/' + c2.index;
+					colors.push(cm);
+				}
+			}
+		}
+	}
+
+	//
+	// sort
+	//
 	function compare_y(a, b) {
 		return a.y - b.y;
 	}
@@ -209,7 +237,9 @@ function refresh() {
 		colors.sort(compare_index);
 	}
 
+	//
 	// create cells
+	//
 	row1 = document.getElementById("row1");
 	row1.innerHTML = '';
 	row2 = document.getElementById("row2");
@@ -235,6 +265,7 @@ function refresh() {
 		yhexcolor = hexFromRGB(y, y, y);
 		document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
 		document.getElementById("ycol"+i).style = 'background-color: ' + yhexcolor;
+//		document.getElementById("col"+i).innerHTML = c.index;
 	}
 	document.getElementById("hexcolors").innerHTML = text_hexcolors;
 }
