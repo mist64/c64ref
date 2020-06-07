@@ -114,7 +114,7 @@ function convert( components, source )
 
 // https://stackoverflow.com/questions/5623838
 function hexFromComponent(c) {
-	var hex = c.toString(16);
+	var hex = (c | 0).toString(16);
 	return hex.length == 1 ? "0" + hex : hex;
 }
 function hexFromRGB(r, g, b) {
@@ -285,6 +285,20 @@ function colorspaceHTML(mapped_colors) {
 	return html;
 }
 
+function svgForColors(c1, c2) {
+	var size = 32;
+	var hexcolor1 = hexFromRGB(c1.r, c1.g, c1.b);
+	var hexcolor2 = hexFromRGB(c2.r, c2.g, c2.b);
+	console.log(hexcolor2);
+	var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="' + size + '" shape-rendering="auto" viewBox="0 -.5 1 ' + size + '">'
+	for (var j = 0; j < size / 2; j++ ) {
+		svg += '<path stroke="' + hexcolor1 + '" d="M0 '+(j*2)+'h1"></path>'
+		svg += '<path stroke="' + hexcolor2 + '" d="M0 '+(j*2+1)+'h1"></path>'
+	}
+	svg += '</svg>'
+	return svg;
+}
+
 function init() {
 	document.getElementById("colorspace_rgb").innerHTML = colorspaceHTML(false);
 	document.getElementById("colorspace_rgb").style = 'display: none;';
@@ -360,6 +374,8 @@ function refresh() {
 					cm.h = HSVfromRGB(cm.r, cm.g, cm.b).h;
 					cm.index = colors.length;
 					cm.description = '' + c1.index + '/' + c2.index;
+					cm.component1 = c1;
+					cm.component2 = c2;
 					colors.push(cm);
 				}
 			}
@@ -403,6 +419,8 @@ function refresh() {
 	row1.innerHTML = '';
 	row2 = document.getElementById("row2");
 	row2.innerHTML = '';
+	row3 = document.getElementById("row3");
+	row3.innerHTML = '';
 	for (var i = 0; i < colors.length; i++) {
 		var td = document.createElement("td");
 		td.className='colbox'
@@ -410,8 +428,12 @@ function refresh() {
 		row1.appendChild(td);
 		td = document.createElement("td");
 		td.className='colbox'
-		td.id='ycol' + i;
+		td.id='mcol' + i;
 		row2.appendChild(td);
+		td = document.createElement("td");
+		td.className='colbox'
+		td.id='ycol' + i;
+		row3.appendChild(td);
 	}
 
 	//
@@ -421,8 +443,13 @@ function refresh() {
 	text_hsbcolors = '';
 	for (var i = 0; i < colors.length; i++) {
 		c = colors[i];
+
+		// line 1
 		hexcolor = hexFromRGB(c.r, c.g, c.b);
 		text_hexcolors += hexcolor + '\n';
+		document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
+
+		// line 3
 		hsbcolor = HSVfromRGB(c.r, c.g, c.v);
 		if (hsbcolor.h) {
 			text_hsbcolors += '' + hsbcolor.h.toFixed(2) + ' ' + hsbcolor.s.toFixed(2) + ' ' + hsbcolor.v.toFixed(2) + '\n';
@@ -431,9 +458,19 @@ function refresh() {
 		}
 		y = (Math.max(c.y, 0) / 307.2 * 255) | 0;
 		yhexcolor = hexFromRGB(y, y, y);
-		document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
 		document.getElementById("ycol"+i).style = 'background-color: ' + yhexcolor;
-//		document.getElementById("col"+i).innerHTML = c.index;
+
+		// line 2
+		component1 = c.component1;
+		component2 = c.component2;
+		if (!component1) {
+			component1 = c;
+			component2 = c;
+		}
+		svg = svgForColors(component1, component2);
+		svg = svg.replace("#", "%23");
+		image = "url('data:image/svg+xml;utf8," + svg + "')";
+		document.getElementById("mcol"+i).style.backgroundImage = image;
 	}
 
 	document.getElementById("numcol").innerHTML = colors.length;
