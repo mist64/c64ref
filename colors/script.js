@@ -293,17 +293,37 @@ function init() {
 }
 
 function refresh() {
-	mixedcols = document.getElementById("mixedcols").selectedIndex;
 	sortby = document.getElementById("sortby").selectedIndex;
-	revision = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
+	lumalevels = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
+
+	mixedcols = document.getElementById("mixedcols").checked;
+	lumathreshold = document.getElementById("lumathreshold").value;
 	brightness = document.getElementById("brightness").value;
 	contrast = document.getElementById("contrast").value;
 	saturation = document.getElementById("saturation").value;
 	gamma = document.getElementById("gamma").value / 10;
 
+	document.getElementById("lumathreshold_val").innerHTML = lumathreshold;
+	document.getElementById("brightness_val").innerHTML = brightness;
+	document.getElementById("contrast_val").innerHTML = contrast;
+	document.getElementById("saturation_val").innerHTML = saturation;
+	document.getElementById("gamma_val").innerHTML = gamma;
+
+
+
+	lumathreshold_div = document.getElementById("lumathreshold_div");
+	if (!mixedcols) {
+		lumathreshold_div.style.pointerEvents = 'none';
+		lumathreshold_div.style.opacity = '0.5';
+		document.getElementById("lumathreshold").value = 0;
+	} else {
+		lumathreshold_div.style.pointerEvents = null;
+		lumathreshold_div.style.opacity = null;
+	}
+
 	colors = []
 	for (var i = 0; i < 16; i++) {
-		var c = convert(compose(i, revision, brightness, contrast, saturation), gamma);
+		var c = convert(compose(i, lumalevels, brightness, contrast, saturation), gamma);
 		c.index = i;
 		c.description = i;
 		c.h = HSVfromRGB(c.r, c.g, c.b).h;
@@ -314,6 +334,7 @@ function refresh() {
 	// create mixed colors
 	//
 	if (mixedcols) {
+
 		var lumas = [];
 		for (var i = 0; i < colors.length; i++) {
 			y = colors[i].y;
@@ -330,17 +351,7 @@ function refresh() {
 			var c1 = colors[i];
 			for (var j = i+1; j < l; j++) {
 				var c2 = colors[j];
-				var add = false;
-				if (mixedcols == 1 && c1.y == c2.y) {
-					add = true;
-				}
-				if (mixedcols == 2 && Math.abs(lumas.indexOf(c1.y) - lumas.indexOf(c2.y)) <= 1) {
-					add = true;
-				}
-				if (mixedcols == 3) {
-					add = true;
-				}
-				if (add) {
+				if (mixedcols && Math.abs(c1.y - c2.y) <= lumathreshold) {
 					var cm = {}
 					cm.r = ((c1.r + c2.r) / 2) | 0;
 					cm.g = ((c1.g + c2.g) / 2) | 0;
@@ -425,6 +436,8 @@ function refresh() {
 //		document.getElementById("col"+i).innerHTML = c.index;
 	}
 
+	document.getElementById("numcol").innerHTML = colors.length;
+
 	document.getElementById("colorspace_mapped").innerHTML = colorspaceHTML(true);
 
 	//
@@ -435,6 +448,7 @@ function refresh() {
 }
 
 function reset() {
+	document.getElementById("lumathreshold").value = 0;
 	document.getElementById("brightness").value = 50;
 	document.getElementById("contrast").value = 100;
 	document.getElementById("saturation").value = 50;
