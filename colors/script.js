@@ -179,7 +179,6 @@ function refresh() {
 		c.index = i;
 		hsb = HSBfromRGB(c.r, c.g, c.b);
 		c.h = hsb.h;
-//		console.log(c.h);
 		colors.push(c);
 	}
 
@@ -187,8 +186,8 @@ function refresh() {
 		return a.y - b.y;
 	}
 	function compare_h(a, b) {
-		console.log(a.h, b.h);
 		if (!a.h && !b.h) {
+			// both gray? then sort by Y
 			return a.y - b.y;
 		}
 		if (!a.h) {
@@ -210,8 +209,25 @@ function refresh() {
 		colors.sort(compare_index);
 	}
 
+	// create cells
+	row1 = document.getElementById("row1");
+	row1.innerHTML = '';
+	row2 = document.getElementById("row2");
+	row2.innerHTML = '';
+	for (var i = 0; i < colors.length; i++) {
+		var td = document.createElement("td");
+		td.className='colbox'
+		td.id='col' + i;
+		row1.appendChild(td);
+		td = document.createElement("td");
+		td.className='colbox'
+		td.id='ycol' + i;
+		row2.appendChild(td);
+	}
+
+	// fill cells with colors
 	text_hexcolors = '';
-	for (var i = 0; i < 16; i++) {
+	for (var i = 0; i < colors.length; i++) {
 		c = colors[i];
 		hexcolor = hexFromRGB(c.r, c.g, c.b);
 		text_hexcolors += hexcolor + '\n';
@@ -219,10 +235,6 @@ function refresh() {
 		yhexcolor = hexFromRGB(y, y, y);
 		document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
 		document.getElementById("ycol"+i).style = 'background-color: ' + yhexcolor;
-
-//		if (c.h) {
-//			document.getElementById("col"+i).innerHTML = c.h.toFixed(2);
-//		}
 	}
 	document.getElementById("hexcolors").innerHTML = text_hexcolors;
 }
