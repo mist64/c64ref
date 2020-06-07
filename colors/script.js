@@ -159,6 +159,75 @@ function HSBfromRGB(r, g, b) {
 	return { h: h, s: s, v: v };
 }
 
+// https://css-tricks.com/converting-color-spaces-in-javascript/
+function RGBfromHSL(h,s,l) {
+  // Must be fractions of 1
+  s /= 100;
+  l /= 100;
+
+  let c = (1 - Math.abs(2 * l - 1)) * s,
+      x = c * (1 - Math.abs((h / 60) % 2 - 1)),
+      m = l - c/2,
+      r = 0,
+      g = 0,
+      b = 0;
+  if (0 <= h && h < 60) {
+    r = c; g = x; b = 0;
+  } else if (60 <= h && h < 120) {
+    r = x; g = c; b = 0;
+  } else if (120 <= h && h < 180) {
+    r = 0; g = c; b = x;
+  } else if (180 <= h && h < 240) {
+    r = 0; g = x; b = c;
+  } else if (240 <= h && h < 300) {
+    r = x; g = 0; b = c;
+  } else if (300 <= h && h < 360) {
+    r = c; g = 0; b = x;
+  }
+  r = Math.round((r + m) * 255);
+  g = Math.round((g + m) * 255);
+  b = Math.round((b + m) * 255);
+
+  return { r: r, g: g, b: b };
+}
+
+function colorspaceSVG(mapped_colors) {
+	var res = 16;
+	var svgs = '';
+	for (var z = 0; z < res; z++) {
+		var paths = '';
+		for (var y = 0; y < res; y++) {
+			for (var x = 0; x < res; x++) {
+				h = x * 360 / res;
+				s = z * 100 / res;
+				l = y * 100 / res;
+				rgb = RGBfromHSL(h, s, l);
+				var r = rgb.r;
+				var g = rgb.g;
+				var b = rgb.b;
+				if (mapped_colors) {
+					var cr = null;
+					var mindist = 99999;
+					for (var i = 0; i < colors.length; i++) {
+						c = colors[i];
+						dist = Math.sqrt((c.r - r)*(c.r - r)+(c.g - g)*(c.g - g)+(c.b - b)*(c.b - b));
+						if (dist < mindist) {
+							mindist = dist;
+							cr = c;
+						}
+					}
+					var fgcolor = hexFromRGB(cr.r, cr.g, cr.b);
+				} else {
+					var fgcolor = hexFromRGB(r, g, b);
+				}
+				width = 1;
+				paths += '<path stroke="' + fgcolor + '" d="M' + x + ' ' + y + 'h' + width + '"/>'
+			}
+		}
+		svgs += '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" shape-rendering="auto" viewBox="0 -.5 ' + res + ' ' + res + '">' + paths + '</svg>';
+	}
+	return svgs;
+}
 
 function init() {
 	reset();
@@ -269,29 +338,8 @@ function refresh() {
 		document.getElementById("ycol"+i).style = 'background-color: ' + yhexcolor;
 //		document.getElementById("col"+i).innerHTML = c.index;
 	}
-	var paths = '';
-	for (var y = 0; y < 32; y++) {
-		for (var x = 0; x < 32; x++) {
-			var r = x * 8;
-			var g = y * 8;
-			var b = 128;
-			var cr = null;
-			var mindist = 99999;
-			for (var i = 0; i < colors.length; i++) {
-				c = colors[i];
-				dist = Math.sqrt((c.r - r)*(c.r - r)+(c.g - g)*(c.g - g)+(c.b - b)*(c.b - b));
-				if (dist < mindist) {
-					mindist = dist;
-					cr = c;
-				}
-			}
-			var fgcolor = hexFromRGB(cr.r, cr.g, cr.b);
-//			var fgcolor = hexFromRGB(r, g, b);
-			width = 1;
-			paths += '<path stroke="' + fgcolor + '" d="M' + x + ' ' + y + 'h' + width + '"/>'
-		}
-	}
-	var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" shape-rendering="auto" viewBox="0 -.5 32 32">' + paths + '</svg>';
+
+	var svg = colorspaceSVG(false) + '<br/>' + colorspaceSVG(true);
 	document.getElementById("gamut").innerHTML = svg;
 
 
