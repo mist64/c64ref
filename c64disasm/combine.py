@@ -90,12 +90,13 @@ for i in range(0, files):
 		linenumber[i] = linenumber[i] + 1
 
 
-print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
-print('<html>')
+print('<!DOCTYPE html>')
+print('<html lang="en-US">')
 print('<head>')
+print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
 print('<title>BASIC & KERNAL ROM Disassembly | Ultimate C64 Reference</title>')
 print('')
-print('<script language="javascript">')
+print('<script>')
 print('    window.onload = init;')
 print('    function init() {')
 print('        var tbl = document.getElementById("disassembly_table");')
@@ -122,7 +123,7 @@ print('    }')
 print('</script>')
 print('')
 print('<link rel="stylesheet" href="../style.css">')
-print('<style type="text/css">')
+print('<style>')
 print('')
 print('h3 {')
 print('    font-family: serif;')
@@ -217,7 +218,7 @@ while(True):
 	print('<tr>')
 	print('<th class="left_column">')
 	if has_address:
-		print('<a name="' + hexaddress + '" />')
+		print('<a id="' + hexaddress + '"></a>')
 	print('<span class="com">' + asm + '</span></th>')
 
 	for i in range(0, files):
