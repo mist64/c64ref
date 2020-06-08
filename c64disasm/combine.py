@@ -36,7 +36,7 @@ descriptions = [
 ]
 
 def cross_reference(string, symbols):
-	hex_numbers = re.findall(r'(?<!#)\$[0-9A-F][0-9A-F]+', string)
+	hex_numbers = list(set(re.findall(r'(?<!#)\$[0-9A-Fa-f][0-9A-Fa-f]+', string)))
 	for hex_number in hex_numbers:
 		dec_number = int(hex_number[1:], 16)
 		if dec_number < 0x0400:
@@ -213,7 +213,7 @@ while(True):
 		asmaddress = int(hexaddress, 16)
 		has_address = True
 
-	asm = cross_reference(asm, symbols)
+	asm = cross_reference(asm, [])
 
 	print('<tr>')
 	print('<th class="left_column">')
