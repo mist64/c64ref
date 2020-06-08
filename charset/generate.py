@@ -321,7 +321,7 @@ def combined_description_from_control_code(petscii):
 		if len(description_to_machines[description]) != len(machines):
 			machines_string = '<dt>' + '/'.join(description_to_machines[description]) + ':</dt><dd>'
 		else:
-			machines_string = '<dd>'
+			machines_string = '<dt></dt><dd>'
 		combined_description += machines_string + description + '</dd>'
 	combined_description += '</dl>'
 	return combined_description
