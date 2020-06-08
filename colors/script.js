@@ -628,11 +628,11 @@ function refresh() {
 			}
 			var hexcolor1 = hexFromRGB(component1.r, component1.g, component1.b);
 			var hexcolor2 = hexFromRGB(component2.r, component2.g, component2.b);
-			svg = '<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32" style="background-color: ' + hexcolor1 + ';"><polygon points="0,0 0,32 32,32" style="fill:' + hexcolor2 + '" /></svg>';
+			svg = '<svg xmlns="http://www.w3.org/2000/svg" height="1" width="16" style="background-color: ' + hexcolor1 + ';"><polygon points="0,0 8,0 8,1 0,1" style="fill:' + hexcolor2 + '" /></svg>';
 			svg = svg.replace(/#/g, '%23');
 			image = "url('data:image/svg+xml;utf8," + svg + "')";
 			document.getElementById("ccol"+i).style.backgroundImage = image;
-//			document.getElementById("ccol"+i).style.backgroundSize = '100% 100%';
+			document.getElementById("ccol"+i).style.backgroundSize = '100%';
 		}
 		if (showeffcol) {
 			document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
