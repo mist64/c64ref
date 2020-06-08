@@ -293,13 +293,13 @@ function deltaE(labA, labB){
 
 function colorspaceHTML(mapped_colors) {
 	html = '';
-	var yres = 32;
+	var yres = 64;
 	var zres = 5;
-	var scale = 4;
+	var scale = 1;
 	for (var z = 0; z < zres; z++) {
 		var paths = '';
 		for (var y = 0; y < yres; y++) {
-			var xres = z ? 32 : 8;
+			var xres = z ? yres : 8;
 			var prevcolor = null;
 			var count = 0;
 			for (var x = 0; x < xres; x++) {
@@ -323,7 +323,17 @@ function colorspaceHTML(mapped_colors) {
 							cr = c;
 						}
 					}
-					var fgcolor = hexFromRGB(cr.r, cr.g, cr.b);
+					if (cr.component1) {
+						c1 = cr.fixedComponent1;
+						c2 = cr.fixedComponent2;
+						if ((x & 1) ^ (y & 1)) {
+							var fgcolor = hexFromRGB(c1.r, c1.g, c1.b);
+						} else {
+							var fgcolor = hexFromRGB(c2.r, c2.g, c2.b);
+						}
+					} else {
+						var fgcolor = hexFromRGB(cr.r, cr.g, cr.b);
+					}
 				} else {
 					var fgcolor = hexFromRGB(r, g, b);
 				}
@@ -387,6 +397,7 @@ function svgForColors(c1, c2, mixingstyle) {
 }
 
 var gSheet;
+var colors;
 
 function init() {
 	gSheet = document.createElement('style')
@@ -405,7 +416,7 @@ function refresh() {
 
 	lumalevels = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
 	mixedcols = document.getElementById("mixedcols").checked;
-	lumathreshold = document.getElementById("lumathreshold").value;
+	maxlumadiff = document.getElementById("maxlumadiff").value;
 	brightness = document.getElementById("brightness").value;
 	contrast = document.getElementById("contrast").value;
 	saturation = document.getElementById("saturation").value;
@@ -414,7 +425,7 @@ function refresh() {
 	//
 	// copy slider values to text fields
 	//
-	document.getElementById("lumathreshold_val").innerHTML = lumathreshold;
+	document.getElementById("maxlumadiff_val").innerHTML = maxlumadiff;
 	document.getElementById("brightness_val").innerHTML = brightness;
 	document.getElementById("contrast_val").innerHTML = contrast;
 	document.getElementById("saturation_val").innerHTML = saturation;
@@ -423,14 +434,14 @@ function refresh() {
 	//
 	// enable disable luma threshold slider
 	//
-	lumathreshold_div = document.getElementById("lumathreshold_div");
+	maxlumadiff_div = document.getElementById("maxlumadiff_div");
 	if (!mixedcols) {
-		lumathreshold_div.style.pointerEvents = 'none';
-		lumathreshold_div.style.opacity = '0.5';
-		document.getElementById("lumathreshold").value = 0;
+		maxlumadiff_div.style.pointerEvents = 'none';
+		maxlumadiff_div.style.opacity = '0.5';
+		document.getElementById("maxlumadiff").value = 0;
 	} else {
-		lumathreshold_div.style.pointerEvents = null;
-		lumathreshold_div.style.opacity = null;
+		maxlumadiff_div.style.pointerEvents = null;
+		maxlumadiff_div.style.opacity = null;
 	}
 
 	//
@@ -461,28 +472,43 @@ function refresh() {
 			return a - b;
 		}
 		lumas.sort(compare);
+
 		var l = colors.length;
-		for (var i = 0; i < l; i++) {
-			var c1 = colors[i];
-			for (var j = i+1; j < l; j++) {
-				var c2 = colors[j];
-				if (mixedcols && Math.abs(c1.y - c2.y) <= lumathreshold) {
-					var cm = {}
-					cm.r = ((c1.r + c2.r) / 2) | 0;
-					cm.g = ((c1.g + c2.g) / 2) | 0;
-					cm.b = ((c1.b + c2.b) / 2) | 0;
-					cm.y = ((c1.y + c2.y) / 2) | 0;
-					hsl = HSLfromRGB(cm.r, cm.g, cm.b);
-					cm.h = hsl.h;
-					cm.s = hsl.s;
-					cm.index = colors.length;
-					cm.description = '' + c1.index + '/' + c2.index;
-					cm.component1 = c1;
-					cm.component2 = c2;
-					fixedColors = combineColors(c1, c2, gamma);
-					cm.fixedComponent1 = fixedColors.c1;
-					cm.fixedComponent2 = fixedColors.c2;
-					colors.push(cm);
+		for (var lthreshold = 0; lthreshold <= maxlumadiff; lthreshold += 10) {
+			l2 = colors.length;
+			for (var i = 0; i < l; i++) {
+				var c1 = colors[i];
+				for (var j = i+1; j < l; j++) {
+					var c2 = colors[j];
+					var lumadiff = Math.abs(c1.y - c2.y);
+					if (lumadiff <= lthreshold) {
+						var exists = false;
+						for (var k = l; k < l2; k++) {
+							if (colors[k].component1.index == i && colors[k].component2.index == j) {
+								exists = true;
+								break;
+							}
+						}
+						if (exists) {
+							continue;
+						}
+						var cm = {}
+						cm.r = ((c1.r + c2.r) / 2) | 0;
+						cm.g = ((c1.g + c2.g) / 2) | 0;
+						cm.b = ((c1.b + c2.b) / 2) | 0;
+						cm.y = ((c1.y + c2.y) / 2) | 0;
+						hsl = HSLfromRGB(cm.r, cm.g, cm.b);
+						cm.h = hsl.h;
+						cm.s = hsl.s;
+						cm.index = colors.length;
+						cm.description = '' + c1.index + '/' + c2.index;
+						cm.component1 = c1;
+						cm.component2 = c2;
+						fixedColors = combineColors(c1, c2, gamma);
+						cm.fixedComponent1 = fixedColors.c1;
+						cm.fixedComponent2 = fixedColors.c2;
+						colors.push(cm);
+					}
 				}
 			}
 		}
@@ -495,7 +521,6 @@ function refresh() {
 		return a.y - b.y;
 	}
 	function compare_h(a, b) {
-//		console.log(a, b);
 		if (a.h <= 0 && b.h <= 0) {
 			// both gray? then sort by Y
 			return a.y - b.y;
@@ -561,7 +586,9 @@ function refresh() {
 	// fill cells with colors
 	//
 	text_hexcolors = '';
-//	text_hsbcolors = '';
+	text_basic = '';
+	basic_lineno = 100;
+	basic_line = '';
 	for (var i = 0; i < colors.length; i++) {
 		c = colors[i];
 
@@ -569,17 +596,6 @@ function refresh() {
 		hexcolor = hexFromRGB(c.r, c.g, c.b);
 		text_hexcolors += hexcolor + '\n';
 		document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
-
-		// line 3
-//		hsbcolor = HSVfromRGB(c.r, c.g, c.v);
-//		if (hsbcolor.h) {
-//			text_hsbcolors += '' + hsbcolor.h.toFixed(2) + ' ' + hsbcolor.s.toFixed(2) + ' ' + hsbcolor.v.toFixed(2) + '\n';
-//		} else {
-//			hsbcolor += '-\n';
-//		}
-		y = (Math.max(c.y, 0) / 307.2 * 255) | 0;
-		yhexcolor = hexFromRGB(y, y, y);
-		document.getElementById("ycol"+i).style = 'background-color: ' + yhexcolor;
 
 		// line 2
 		component1 = c.fixedComponent1;
@@ -592,7 +608,45 @@ function refresh() {
 		svg = svg.replace(/#/g, '%23');
 		image = "url('data:image/svg+xml;utf8," + svg + "')";
 		document.getElementById("mcol"+i).style.backgroundImage = image;
+
+		// line 3
+		y = (Math.max(c.y, 0) / 307.2 * 255) | 0;
+		yhexcolor = hexFromRGB(y, y, y);
+		document.getElementById("ycol"+i).style = 'background-color: ' + yhexcolor;
+
+		// BASIC
+		if (basic_line.length) {
+			basic_line += ',';
+		}
+		var i1 = null, i2 = null;
+		if (c.component1) {
+			i1 = c.component1.index;
+			i2 = c.component2.index;
+		} else {
+			i1 = c.index;
+			i2 = c.index;
+		}
+		basic_line += '' + (i1 << 4 | i2);
+		if (basic_line.length > 65) {
+			text_basic += '' + basic_lineno + ' data' + basic_line + '\n';
+			basic_lineno += 10;
+			basic_line = '';
+		}
 	}
+	text_basic += '' + basic_lineno + ' data' + basic_line + '\n';
+
+	text_basic += '200 v=53248:g=8192:s=1024:?chr$(147);' + '\n';
+	text_basic += '210 fori=0to999:pokes+i,0:next' + '\n';
+	text_basic += '220 x=170:y=85:fori=gtog+1087step2:pokei,x:pokei+1,y:next' + '\n';
+	text_basic += '230 pokev+32,0' + '\n';
+	text_basic += '240 pokev+17,peek(v+17)or(11*16)' + '\n';
+	text_basic += '250 pokev+22,peek(v+22)and(255-16)' + '\n';
+	text_basic += '260 pokev+24,peek(v+24)or8' + '\n';
+	text_basic += '270 fori=0to' + (colors.length - 1) + ':reada:pokes+i,a:next' + '\n';
+	text_basic += '290 goto290' + '\n';
+	text_basic += 'run' + '\n';
+	text_basic += '\n';
+
 
 	document.getElementById("numcol").innerHTML = colors.length;
 
@@ -602,12 +656,12 @@ function refresh() {
 	// fill hex colors table
 	//
 	document.getElementById("hexcolors").innerHTML = text_hexcolors;
-//	document.getElementById("hsbcolors").innerHTML = text_hsbcolors;
+	document.getElementById("text_basic").innerHTML = text_basic;
 }
 
 function reset() {
 	document.getElementById("mixedcols").checked = 0;
-	document.getElementById("lumathreshold").value = 0;
+	document.getElementById("maxlumadiff").value = 0;
 	document.getElementById("brightness").value = 50;
 	document.getElementById("contrast").value = 100;
 	document.getElementById("saturation").value = 50;
