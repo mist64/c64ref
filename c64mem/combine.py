@@ -86,12 +86,13 @@ for i in range(0, files):
 			break
 		linenumber[i] = linenumber[i] + 1
 
-print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
-print('<html>')
+print('<!DOCTYPE html>')
+print('<html lang="en-US">')
 print('<head>')
+print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
 print('<title>Memory Map | Ultimate C64 Reference</title>')
 print('')
-print('<script language="javascript">')
+print('<script>')
 print('    window.onload = init;')
 print('    function init() {')
 print('        var tbl = document.getElementById("disassembly_table");')
@@ -163,7 +164,7 @@ address_width=6.4
 label_width=4
 decimal_width=5
 
-print('<style type="text/css">')
+print('<style>')
 print('')
 print('div.disassembly_container_with_dec {')
 print('    padding: 1em 0em 1em ' + str(address_width + label_width + decimal_width + 1.6) + 'em;')
@@ -236,8 +237,8 @@ for i in range(0, len(filenames)):
 print('</table>')
 
 print('<p>')
-print('<input type="checkbox" id="checkbox_decimal" name="checkbox_decimal" onclick="toggleDecimal(document.getElementById(\'checkbox_decimal\').checked);">')
-print('<label for="checkbox_decimal">Show Decimal Address</label></input>')
+print('<input type="checkbox" id="checkbox_decimal" name="checkbox_decimal" onclick="toggleDecimal(document.getElementById(\'checkbox_decimal\').checked);" />')
+print('<label for="checkbox_decimal">Show Decimal Address</label>')
 print('<br />')
 print('<button id="toggle_details_button" onclick="closeAll()">Hide All Details</button>')
 print('</p>')
@@ -322,7 +323,7 @@ while(True):
 	else:
 		r = range(address1, address1 + 1)
 	for address in r:
-		anchors += '<a name="{:04X}"/>'.format(address)
+		anchors += '<a id="{:04X}"></a>'.format(address)
 	if address1 == last_address1 and address2 == last_address2:
 		print('<th class="left_column" style="visibility:hidden;"> ' + anchors + ' </th>')
 	else:
@@ -335,7 +336,7 @@ while(True):
 	if len(symbol) == 0:
 		print('<th class="label_column" style="visibility:hidden;"> </th>')
 	else:
-		print('<th class="label_column">' + symbol + ' <a name="' + symbol + '"/> </th>')
+		print('<th class="label_column">' + symbol + ' <a id="' + symbol + '"></a></th>')
 
 	# print decimal
 	if address1 == last_address1 and address2 == last_address2:
@@ -404,12 +405,15 @@ while(True):
 			print('<details open>')
 
 		if len(headings) or is_collapsible:
-			print('<b>')
 			all_text = ''
 			if is_collapsible:
 				print('<summary>')
+				print('<b>')
 				if not len(headings):
 					print('…')
+			else:
+				print('<b>')
+
 			previous_heading = ''
 			for heading in headings:
 				if previous_heading.endswith('.'):

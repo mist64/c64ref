@@ -187,12 +187,13 @@ for filename in filenames:
 
 	sources.append(calls)
 
-print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
-print('<html>')
+print('<!DOCTYPE html>')
+print('<html lang="en-US">')
 print('<head>')
+print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
 print('<title>KERNAL API | Ultimate C64 Reference</title>')
 print('')
-print('<script language="javascript">')
+print('<script>')
 print('    window.onload = init;')
 print('    function init() {')
 print('        var tbl = document.getElementById("disassembly_table");')
@@ -265,7 +266,7 @@ label_width=4
 cat_width=4.6
 decimal_width=5
 
-print('<style type="text/css">')
+print('<style>')
 print('')
 print('div.disassembly_container_with_dec {')
 print('    padding: 1em 0em 1em ' + str(address_width + label_width + cat_width + decimal_width + 2) + 'em;')
@@ -351,8 +352,8 @@ for i in range(0, len(filenames)):
 print('</table>')
 
 print('<p>')
-print('<input type="checkbox" id="checkbox_decimal" name="checkbox_decimal" onclick="toggleDecimal(document.getElementById(\'checkbox_decimal\').checked);">')
-print('<label for="checkbox_decimal">Show Decimal Address</label></input>')
+print('<input type="checkbox" id="checkbox_decimal" name="checkbox_decimal" onclick="toggleDecimal(document.getElementById(\'checkbox_decimal\').checked);" />')
+print('<label for="checkbox_decimal">Show Decimal Address</label>')
 print('<br />')
 print('<button id="toggle_details_button" onclick="closeAll()">Hide All Details</button>')
 print('</p>')
@@ -406,10 +407,10 @@ for address in all_addresses:
 
 	border_color = '--cat-color-' + categories[address].lower();
 	print('<tr>')
-	anchor = '<a name="{:04X}"/>'.format(address)
-	anchor += '<a name="{}"/>'.format(symbol)
+	anchor = '<a id="{:04X}"></a>'.format(address)
+	anchor += '<a id="{}"></a>'.format(symbol)
 	hex_address = '${:04X}'.format(address)
-	print('<th class="left_column"> ' + anchor + hex_address + ' </th>')
+	print('<th class="left_column"> ' + anchor + hex_address + '</th>')
 	print('<th class="label_column"> ' + symbol + '</th>')
 	category = categories[address]
 	if address in rom_calls:
