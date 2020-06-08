@@ -66,6 +66,9 @@ dd {
 	margin-left: 0.7em;
 } 
 
+dl dd:first-child {
+	margin-top: 0.7em;
+}
 
 /* Overview Styling */ 
 
