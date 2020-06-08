@@ -427,7 +427,12 @@ div#navigation {
 .info-title {
 	font-weight: bold;
 	text-align: left;
-	text-decoration: underline;
+	text-decoration: none;
+	background: hsl(var(--info-hue), 100%, 40%);
+	padding-left: 8px;
+	padding-top: 6px;
+	border-left: 8px solid hsl(var(--info-hue), 100%, 20%);
+	color: white;
 }
 
 .scrcode-image {
