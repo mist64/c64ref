@@ -1048,7 +1048,7 @@ def html_div_table_charset_compare(id, css_class, charsets): #charset_compare_ta
 			else:
 				filename = charset2
 				cmpindex = 1
-			print(html_select_charset('charset_compare_select', filename, 'charsetCompareSwitch({}, this.options[this.selectedIndex].value);'.format(cmpindex)))
+			print(html_select_charset('charset_compare_select' + str(i), filename, 'charsetCompareSwitch({}, this.options[this.selectedIndex].value);'.format(cmpindex)))
 			print('        </td>')
 			print('        <td>')
 			print('        <div class="char-box128"><div class="char-img128 charset_cmp_{}" id="bin/{}.bin"></div></div>'.format(cmpindex, filename))
@@ -1107,7 +1107,7 @@ def html_div_table_petscii(id, css_class): #petscii_table_div
 
 	print('<div id="' + id + '" class="'+ css_class +'">')
 
-	print('<label for="unicode">Show: </label>')
+	print('<label for="petscii_show">Show: </label>')
 	print('<select name="petscii_show" id="petscii_show" onChange="petsciiTableSwitch(this.selectedIndex);">')
 	print('    <option value="petscii_keyboard">Keyboard</option>')
 	print('    <option value="petscii_control">Control Codes</option>')
@@ -1269,7 +1269,7 @@ print('<hr/>')
 
 print('<div class="main">')
 
-print('<h2>Notes<a name="notes"/></h2>')
+print('<h2>Notes<a id="notes"></a></h2>')
 print('<ul>')
 print('<li>')
 print('PET-N is a PET with a ROM version below 4 (i.e. base set of control codes) and a "normal" (chicklet or graphics) keyboard. PET-B is a PET 8xxx with a ROM version of 4 (i.e. extended set of control codes) and a business keyboard. The graphics keyboard also existed for the later PETs, and early PETs could be upgraded with newer ROMs, but for the sake of simplicity, I limitied the PET series to these two systems.')
