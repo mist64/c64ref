@@ -184,6 +184,14 @@
 				</tr>
 				<tr>
 					<td>
+						<label for="showcomponents">Show components</label>
+					</td>
+					<td>
+						<input checked type="checkbox" id="showcomponents" onclick="refresh()">
+					</td>
+				</tr>
+				<tr>
+					<td>
 						<label for="showeffcol">Show effective color</label>
 					</td>
 					<td>
@@ -213,6 +221,7 @@
 	<p><span id="numcol"></span> colors</p>
 
 	<table id="colors">
+		<tr id="row0"></tr>
 		<tr id="row1"></tr>
 		<tr id="row2"></tr>
 		<tr id="row3"></tr>

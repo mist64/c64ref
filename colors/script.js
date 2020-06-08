@@ -430,6 +430,7 @@ function refresh() {
 	sortby = document.getElementById("sortby").selectedIndex;
 	mixingstyle = document.getElementById("mixingstyle").selectedIndex;
 	boxsize = document.getElementById("boxsize").value;
+	showcomponents = document.getElementById("showcomponents").checked;
 	showeffcol = document.getElementById("showeffcol").checked;
 	showmixedcol = document.getElementById("showmixedcol").checked;
 	showluma = document.getElementById("showluma").checked;
@@ -573,6 +574,8 @@ function refresh() {
 	//
 	// create cells
 	//
+	row0 = document.getElementById("row0");
+	row0.innerHTML = '';
 	row1 = document.getElementById("row1");
 	row1.innerHTML = '';
 	row2 = document.getElementById("row2");
@@ -580,6 +583,12 @@ function refresh() {
 	row3 = document.getElementById("row3");
 	row3.innerHTML = '';
 	for (var i = 0; i < colors.length; i++) {
+		if (showcomponents) {
+			var td = document.createElement("td");
+			td.className='colbox'
+			td.id='ccol' + i;
+			row0.appendChild(td);
+		}
 		if (showeffcol) {
 			var td = document.createElement("td");
 			td.className='colbox'
@@ -610,7 +619,21 @@ function refresh() {
 	for (var i = 0; i < colors.length; i++) {
 		c = colors[i];
 		hexcolor = hexFromRGB(c.r, c.g, c.b);
-
+		if (showcomponents) {
+			component1 = c.component1;
+			component2 = c.component2;
+			if (!component1) {
+				component1 = c;
+				component2 = c;
+			}
+			var hexcolor1 = hexFromRGB(component1.r, component1.g, component1.b);
+			var hexcolor2 = hexFromRGB(component2.r, component2.g, component2.b);
+			svg = '<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32" style="background-color: ' + hexcolor1 + ';"><polygon points="0,0 0,32 32,32" style="fill:' + hexcolor2 + '" /></svg>';
+			svg = svg.replace(/#/g, '%23');
+			image = "url('data:image/svg+xml;utf8," + svg + "')";
+			document.getElementById("ccol"+i).style.backgroundImage = image;
+//			document.getElementById("ccol"+i).style.backgroundSize = '100% 100%';
+		}
 		if (showeffcol) {
 			document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
 		}
@@ -641,8 +664,13 @@ function refresh() {
 		}
 		var i1 = null, i2 = null;
 		if (c.component1) {
-			i1 = c.component1.index;
-			i2 = c.component2.index;
+			if (c.component1.y > c.component2.y) {
+				i1 = c.component1.index;
+				i2 = c.component2.index;
+			} else {
+				i1 = c.component2.index;
+				i2 = c.component1.index;
+			}
 		} else {
 			i1 = c.index;
 			i2 = c.index;
