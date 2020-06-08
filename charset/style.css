@@ -375,21 +375,16 @@ div#navigation {
 	background-color: hsl(var(--info-hue), 80%, 80%);
 }
 
-.grid-container > div {
-	padding: 4px;
-}
 
 .scrcode-image,
 .scrcode-title,
 .scrcode-description {
 	background-color: hsl(var(--info-hue), 100%, 70%);
-	border-right: 1px solid gray;
 }
 
 .petscii-title,
 .petscii-description {
 	background-color: hsl(var(--info-hue), 100%, 75%);
-	border-right: 1px solid gray;
 }
 
 .unicode-image,
@@ -398,6 +393,8 @@ div#navigation {
 .control-title,
 .control-description {
 	background-color: hsl(var(--info-hue), 100%, 90%);
+	border-left: 1px solid gray;
+}
 }
 
 .additional-info {
@@ -469,7 +466,7 @@ div#navigation {
 }
 
 .control-description {
-	grid-row: 2 / span 4;
+	grid-row: 2 / span 5;
 	grid-column: 2;
 }
 
@@ -484,12 +481,12 @@ div#navigation {
 }
 
 .petscii_boxes .unicode-description {
-	grid-row: 3 / span 3;
+	grid-row: 3 / span 4;
 	grid-column: 2;
 }
 
 .petscii_boxes .additional-info {
-	grid-row: 6;
+	grid-row: 7;
 	grid-column: 1 / span 2;
 }
 
