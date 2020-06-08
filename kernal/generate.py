@@ -117,7 +117,7 @@ irq_calls = [
 ]
 
 def cross_reference(string):
-	hex_numbers = re.findall(r'\$[0-9A-F][0-9A-F][0-9A-F][0-9A-F]', string)
+	hex_numbers = list(set(re.findall(r'\$[0-9A-F][0-9A-F][0-9A-F][0-9A-F]', string)))
 	for hex_number in hex_numbers:
 		dec_number = int(hex_number[1:], 16)
 		if dec_number < 0x0400:
