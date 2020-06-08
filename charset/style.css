@@ -467,12 +467,12 @@ div#navigation {
 
 
 .petscii-title {
-	grid-row:2;
+	grid-row:3;
 	grid-column: 1;
 }
 
 .petscii-description {
-	grid-row: 3;
+	grid-row: 4;
 	grid-column: 1;
 }
 
@@ -485,27 +485,37 @@ div#navigation {
 }
 
 .control-description {
-	grid-row: 2 / span 5;
+	grid-row: 2 / span 6;
 	grid-column: 2;
+}
+
+.petscii_boxes .scrcode-image {
+	grid-row: 1 / span 2;
 }
 
 .petscii_boxes .scrcode-title {
-	grid-row:4;
-	grid-column: 1;
+	grid-row: 5;
 }
 
 .petscii_boxes .scrcode-description {
-	grid-row: 5;
+	grid-row: 6;
 	grid-column: 1;
 }
 
+.petscii_boxes .unicode-image {
+	grid-row: 1 / span 2;
+}
+
+.petscii_boxes .unicode-title {
+	grid-row: 3;
+}
+
 .petscii_boxes .unicode-description {
-	grid-row: 3 / span 4;
-	grid-column: 2;
+	grid-row: 4 / span 4;
 }
 
 .petscii_boxes .additional-info {
-	grid-row: 7;
+	grid-row: 8;
 	grid-column: 1 / span 2;
 }
 
