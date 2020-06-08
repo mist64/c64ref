@@ -51,6 +51,22 @@ h2,
 	font-weight: bold;
 }
 
+dl {
+	margin-top: 0em;
+	margin-bottom: 0.5em;
+}
+
+dt {
+	margin-top: 0.7em;
+	margin-left: 0.2em;
+	font-weight: bold;
+}
+
+dd {
+	margin-left: 0.7em;
+} 
+
+
 /* Overview Styling */ 
 
 #screencode_overview,

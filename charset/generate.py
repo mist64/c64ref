@@ -316,13 +316,14 @@ def combined_description_from_control_code(petscii):
 		description_to_machines['<i>no function</i>'] = machines_without_function
 
 
-	combined_description = ''
+	combined_description = '<dl>'
 	for description in description_to_machines.keys():
 		if len(description_to_machines[description]) != len(machines):
-			machines_string = '<p><b>' + '/'.join(description_to_machines[description]) + '</b>: <br />'
+			machines_string = '<dt>' + '/'.join(description_to_machines[description]) + ':</dt><dd>'
 		else:
-			machines_string = '<p>'
-		combined_description += machines_string + description + '</p>'
+			machines_string = '<dd>'
+		combined_description += machines_string + description + '</dd>'
+	combined_description += '</dl>'
 	return combined_description
 
 
