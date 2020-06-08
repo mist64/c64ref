@@ -395,6 +395,25 @@ div#navigation {
 	background-color: hsl(var(--info-hue), 100%, 90%);
 	border-left: 1px solid gray;
 }
+
+.scrcode-title,
+.petscii-title,
+.unicode-title,
+.control-title,
+.additional-info .info-title {
+	padding: 4px;
+	padding-left: 0.3em;
+}
+
+
+.scrcode-description,
+.petscii-description,
+.unicode-description,
+.control-description,
+.additional-info div {
+	padding: 4px;
+	padding-top: 2px;
+	padding-left: 0.7em;
 }
 
 .additional-info {

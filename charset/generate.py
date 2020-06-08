@@ -938,10 +938,10 @@ def html_div_info_petscii(id):
 
 		(all_keyboard_html, other_petscii) = all_keyboard_html_from_petscii(petscii, scrcode, other_ok = is_petscii_printable(petscii))
 
-		print('        <div><span class="info-title">Keyboard</span>')
+		print('        <div class="info-title">Keyboard')
 
 		if other_petscii:
-			print('            (alt code ${:02X})<br/>'.format(other_petscii))
+			print('            (alt code ${:02X})'.format(other_petscii))
 		print('        </div>')
 
 		print('        <div>')
