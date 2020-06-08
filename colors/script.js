@@ -291,7 +291,7 @@ function deltaE(labA, labB){
   return i < 0 ? 0 : Math.sqrt(i);
 }
 
-function colorspaceHTML(mapped_colors) {
+function colorspaceHTML(mapped_colors, mixingstyle) {
 	html = '';
 	var yres = 64;
 	var zres = 5;
@@ -326,7 +326,16 @@ function colorspaceHTML(mapped_colors) {
 					if (cr.component1) {
 						c1 = cr.fixedComponent1;
 						c2 = cr.fixedComponent2;
-						if ((x & 1) ^ (y & 1)) {
+						if (mixingstyle == 0) {
+							condition = y & 1;
+						} else if (mixingstyle == 1) {
+							condition = x & 1;
+						} else if (mixingstyle == 2) {
+							condition = (x & 1) ^ (y & 1);
+						} else if (mixingstyle == 3) {
+							condition = ((x >> 1) & 1) ^ (y & 1);
+						}
+						if (condition) {
 							var fgcolor = hexFromRGB(c1.r, c1.g, c1.b);
 						} else {
 							var fgcolor = hexFromRGB(c2.r, c2.g, c2.b);
@@ -401,19 +410,15 @@ var colors;
 
 function init() {
 	gSheet = document.createElement('style')
-	document.body.appendChild(gSheet);
+	document.head.appendChild(gSheet);
 
-	document.getElementById("colorspace_rgb").innerHTML = colorspaceHTML(false);
+	document.getElementById("colorspace_rgb").innerHTML = colorspaceHTML(false, 0);
 	document.getElementById("colorspace_rgb").style = 'display: none;';
 	reset();
 	refresh();
 }
 
 function refresh() {
-	boxsize = document.getElementById("boxsize").value;
-	sortby = document.getElementById("sortby").selectedIndex;
-	mixingstyle = document.getElementById("mixingstyle").selectedIndex;
-
 	lumalevels = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
 	mixedcols = document.getElementById("mixedcols").checked;
 	maxlumadiff = document.getElementById("maxlumadiff").value;
@@ -421,6 +426,13 @@ function refresh() {
 	contrast = document.getElementById("contrast").value;
 	saturation = document.getElementById("saturation").value;
 	gamma = document.getElementById("gamma").value / 10;
+
+	sortby = document.getElementById("sortby").selectedIndex;
+	mixingstyle = document.getElementById("mixingstyle").selectedIndex;
+	boxsize = document.getElementById("boxsize").value;
+	showeffcol = document.getElementById("showeffcol").checked;
+	showmixedcol = document.getElementById("showmixedcol").checked;
+	showluma = document.getElementById("showluma").checked;
 
 	//
 	// copy slider values to text fields
@@ -568,18 +580,24 @@ function refresh() {
 	row3 = document.getElementById("row3");
 	row3.innerHTML = '';
 	for (var i = 0; i < colors.length; i++) {
-		var td = document.createElement("td");
-		td.className='colbox'
-		td.id='col' + i;
-		row1.appendChild(td);
-		td = document.createElement("td");
-		td.className='colbox'
-		td.id='mcol' + i;
-		row2.appendChild(td);
-		td = document.createElement("td");
-		td.className='colbox'
-		td.id='ycol' + i;
-		row3.appendChild(td);
+		if (showeffcol) {
+			var td = document.createElement("td");
+			td.className='colbox'
+			td.id='col' + i;
+			row1.appendChild(td);
+		}
+		if (showmixedcol) {
+			td = document.createElement("td");
+			td.className='colbox'
+			td.id='mcol' + i;
+			row2.appendChild(td);
+		}
+		if (showluma) {
+			td = document.createElement("td");
+			td.className='colbox'
+			td.id='ycol' + i;
+			row3.appendChild(td);
+		}
 	}
 
 	//
@@ -591,28 +609,31 @@ function refresh() {
 	basic_line = '';
 	for (var i = 0; i < colors.length; i++) {
 		c = colors[i];
-
-		// line 1
 		hexcolor = hexFromRGB(c.r, c.g, c.b);
-		text_hexcolors += hexcolor + '\n';
-		document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
 
-		// line 2
-		component1 = c.fixedComponent1;
-		component2 = c.fixedComponent2;
-		if (!component1) {
-			component1 = c;
-			component2 = c;
+		if (showeffcol) {
+			document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
 		}
-		svg = svgForColors(component1, component2, mixingstyle);
-		svg = svg.replace(/#/g, '%23');
-		image = "url('data:image/svg+xml;utf8," + svg + "')";
-		document.getElementById("mcol"+i).style.backgroundImage = image;
+		if (showmixedcol) {
+			component1 = c.fixedComponent1;
+			component2 = c.fixedComponent2;
+			if (!component1) {
+				component1 = c;
+				component2 = c;
+			}
+			svg = svgForColors(component1, component2, mixingstyle);
+			svg = svg.replace(/#/g, '%23');
+			image = "url('data:image/svg+xml;utf8," + svg + "')";
+			document.getElementById("mcol"+i).style.backgroundImage = image;
+		}
+		if (showluma) {
+			y = (Math.max(c.y, 0) / 307.2 * 255) | 0;
+			yhexcolor = hexFromRGB(y, y, y);
+			document.getElementById("ycol"+i).style = 'background-color: ' + yhexcolor;
+		}
 
-		// line 3
-		y = (Math.max(c.y, 0) / 307.2 * 255) | 0;
-		yhexcolor = hexFromRGB(y, y, y);
-		document.getElementById("ycol"+i).style = 'background-color: ' + yhexcolor;
+		// hex colors
+		text_hexcolors += hexcolor + '\n';
 
 		// BASIC
 		if (basic_line.length) {
@@ -635,9 +656,9 @@ function refresh() {
 	}
 	text_basic += '' + basic_lineno + ' data' + basic_line + '\n';
 
-	text_basic += '200 v=53248:g=8192:s=1024:?chr$(147);' + '\n';
+	text_basic += '200 v=53248:g=8192:s=1024' + '\n';
 	text_basic += '210 fori=0to999:pokes+i,0:next' + '\n';
-	text_basic += '220 x=170:y=85:fori=gtog+1087step2:pokei,x:pokei+1,y:next' + '\n';
+	text_basic += '220 p=170:q=85:fori=gtog+1087step2:pokei,p:pokei+1,q:next' + '\n';
 	text_basic += '230 pokev+32,0' + '\n';
 	text_basic += '240 pokev+17,peek(v+17)or(11*16)' + '\n';
 	text_basic += '250 pokev+22,peek(v+22)and(255-16)' + '\n';
@@ -650,18 +671,17 @@ function refresh() {
 
 	document.getElementById("numcol").innerHTML = colors.length;
 
-	document.getElementById("colorspace_mapped").innerHTML = colorspaceHTML(true);
+	document.getElementById("colorspace_mapped").innerHTML = colorspaceHTML(true, mixingstyle);
 
 	//
-	// fill hex colors table
+	// fill text fields
 	//
 	document.getElementById("hexcolors").innerHTML = text_hexcolors;
-	document.getElementById("text_basic").innerHTML = text_basic;
+	document.getElementById("text_basic_lower").innerHTML = text_basic;
+	document.getElementById("text_basic_upper").innerHTML = text_basic.toUpperCase();
 }
 
 function reset() {
-	document.getElementById("mixedcols").checked = 0;
-	document.getElementById("maxlumadiff").value = 0;
 	document.getElementById("brightness").value = 50;
 	document.getElementById("contrast").value = 100;
 	document.getElementById("saturation").value = 50;
@@ -677,4 +697,52 @@ function hideColorspace(hide) {
 		document.getElementById("colorspace_mapped").style.display = '';
 		document.getElementById("colorspace_rgb").style.display = 'none';
 	}
+}
+
+function preset(numcol) {
+	var maxlumadiff;
+	switch (numcol) {
+		case 16:
+			maxlumadiff = -1;
+			break;
+		case 23:
+			maxlumadiff = 0;
+			break;
+		case 39:
+			maxlumadiff = 35;
+			break;
+		case 55:
+			maxlumadiff = 48;
+			break;
+		case 71:
+			maxlumadiff = 70;
+			break;
+		case 136:
+			maxlumadiff = 310;
+			break;
+	}
+	if (maxlumadiff >= 0) {
+		document.getElementById("mixedcols").checked = true;
+		document.getElementById("maxlumadiff").value = maxlumadiff;
+	} else {
+		document.getElementById("mixedcols").checked = false;
+	}
+	refresh();
+}
+
+function toggleCase() {
+	if (document.getElementById("text_basic_lower").style.display == '') {
+		document.getElementById("text_basic_lower").style.display = 'none';
+		document.getElementById("text_basic_upper").style.display = '';
+	} else {
+		document.getElementById("text_basic_lower").style.display = '';
+		document.getElementById("text_basic_upper").style.display = 'none';
+	}
+}
+
+function copyBASIC() {
+	var basic_text = document.getElementById("i_text_basic");
+	basic_text.value = document.getElementById("text_basic_lower").innerHTML;
+	basic_text.select();
+	document.execCommand('copy');
 }

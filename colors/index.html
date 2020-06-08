@@ -35,22 +35,22 @@
 	    <a class="home" href="https://www.pagetable.com/">pagetable.com</a>
 	</div>
 	<div class="main">
-	<h1>Colors</h1>
+	<h1>C64 Colors</h1>
 	<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>. Revision af75955, 2020-06-06</i></p>
 	</div>
 
 	<table border="1">
 		<tr><th>Palette</th><th>Monitor</th><th>Display</th><tr>
 		<tr><td>
-			<table border="1">
+			<table>
 				<tr>
 					<td>
-						<label for="lumalevels">Luma Levels</label>
+						<label for="lumalevels">VIC-II</label>
 					</td>
 					<td colspan="2">
 						<select name="lumalevels" id="lumalevels" onChange="refresh();">
-						    <option value="lumalevels0">5 (6569R1)</option>
-						    <option selected value="lumalevels1">9 (6569R3/4/5, 8565R2)</option>
+						    <option value="lumalevels0">OLD 6569R1 (5 luma levels; rare)</option>
+						    <option selected value="lumalevels1">NEW (9 luma levels)</option>
 						</select>
 					</td>
 				</tr>
@@ -73,9 +73,22 @@
 						<span id="maxlumadiff_val"></span>
 					</td>
 				</tr>
+				<tr>
+					<td>
+						Presets
+					</td>
+					<td>
+						<button type="button" onclick="preset(16);">16c</button>
+						<button type="button" onclick="preset(23);">23c</button>
+						<button type="button" onclick="preset(39);">39c</button>
+						<button type="button" onclick="preset(55);">55c</button>
+						<button type="button" onclick="preset(71);">71c</button>
+						<button type="button" onclick="preset(136);">136c</button>
+					</td>
+				</tr>
 			</table>
 		</td><td>
-			<table border="1">
+			<table>
 				<tr>
 					<td>
 						<label for="brightness">Brightness</label>
@@ -137,7 +150,7 @@
 
 			<button type="button" onclick="reset();">Reset</button>
 		</td><td>
-			<table border="1">
+			<table>
 				<tr>
 					<td>
 						<label for="sortby">Sort by</label>
@@ -170,6 +183,30 @@
 						<input id="boxsize" type="range" min="10" max="50" class="slider" oninput="refresh();">
 					</td>
 				</tr>
+				<tr>
+					<td>
+						<label for="showeffcol">Show effective color</label>
+					</td>
+					<td>
+						<input type="checkbox" id="showeffcol" onclick="refresh()">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="showmixedcol">Show mixed color</label>
+					</td>
+					<td>
+						<input checked type="checkbox" id="showmixedcol" onclick="refresh()">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="showluma">Show luma</label>
+					</td>
+					<td>
+						<input type="checkbox" id="showluma" onclick="refresh()">
+					</td>
+				</tr>
 			</table>
 		</td></tr>
 	</table>
@@ -193,8 +230,14 @@
 
 	<table border="1">
 		<tr>
-			<td><pre id="hexcolors"></pre>
-			<td><pre id="text_basic"></pre>
+			<td><pre id="hexcolors"></pre></td>
+			<td id="text_basic_all">
+				<pre id="text_basic_lower"></pre>
+				<pre id="text_basic_upper" style="display: none;"></pre>
+				<input type="hidden" id="i_text_basic"/>
+				<button type="button" onclick="toggleCase();">Toggle Case</button>
+				<button type="button" onclick="copyBASIC();">Copy</button>
+			</td>
 		</tr>
 	</table>
 
