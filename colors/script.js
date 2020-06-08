@@ -656,18 +656,20 @@ function refresh() {
 	}
 	text_basic += '' + basic_lineno + ' data' + basic_line + '\n';
 
-	text_basic += '200 v=53248:g=8192:s=1024' + '\n';
-	text_basic += '210 fori=0to999:pokes+i,0:next' + '\n';
-	text_basic += '220 p=170:q=85:fori=gtog+1087step2:pokei,p:pokei+1,q:next' + '\n';
-	text_basic += '230 pokev+32,0' + '\n';
-	text_basic += '240 pokev+17,peek(v+17)or(11*16)' + '\n';
-	text_basic += '250 pokev+22,peek(v+22)and(255-16)' + '\n';
-	text_basic += '260 pokev+24,peek(v+24)or8' + '\n';
-	text_basic += '270 fori=0to' + (colors.length - 1) + ':reada:pokes+i,a:next' + '\n';
-	text_basic += '290 goto290' + '\n';
+	text_basic += '200 v=53248:g=8192:s0=1024:s1=s0+200:s2=s0+2*200:s3=s0+3*200' + '\n';
+	text_basic += '210 fori=0to999:pokes0+i,0:next' + '\n';
+	text_basic += '220 p=170:q=p:fori=g+1600tog+1600+1087step2:pokei,p:pokei+1,q:next' + '\n';
+	text_basic += '230 p=0:q=255:fori=gtog+1087step2:pokei,p:pokei+1,q:next' + '\n';
+	text_basic += '240 p=170:q=85:fori=g+2*1600tog+2*1600+1087step2:pokei,p:pokei+1,q:next' + '\n';
+	text_basic += '250 p=51:q=204:fori=g+3*1600tog+3*1600+1087step2:pokei,p:pokei+1,q:next' + '\n';
+	text_basic += '260 pokev+32,0' + '\n';
+	text_basic += '270 pokev+17,peek(v+17)or(11*16)' + '\n';
+	text_basic += '280 pokev+22,peek(v+22)and(255-16)' + '\n';
+	text_basic += '290 pokev+24,peek(v+24)or8' + '\n';
+	text_basic += '300 fori=0to' + (colors.length - 1) + ':reada:pokes0+i,a:pokes1+i,a:pokes2+i,a:pokes3+i,a:next' + '\n';
+	text_basic += '310 goto310' + '\n';
 	text_basic += 'run' + '\n';
 	text_basic += '\n';
-
 
 	document.getElementById("numcol").innerHTML = colors.length;
 
@@ -742,7 +744,13 @@ function toggleCase() {
 
 function copyBASIC() {
 	var basic_text = document.getElementById("i_text_basic");
-	basic_text.value = document.getElementById("text_basic_lower").innerHTML;
+	if (document.getElementById("text_basic_lower").style.display == '') {
+		basic_text.value = document.getElementById("text_basic_lower").innerHTML;
+	} else {
+		basic_text.value = document.getElementById("text_basic_upper").innerHTML;
+	}
+	basic_text.type = 'text';
 	basic_text.select();
 	document.execCommand('copy');
+	basic_text.type = 'hidden';
 }
