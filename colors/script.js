@@ -346,22 +346,43 @@ function combineColors(c1, c2, gamma) {
 	// create two colors with the average UV, but kepping their respective Y
 	u = (c1.u + c2.u) / 2;
 	v = (c1.v + c2.v) / 2;
-
 	fc1 = convert({ y: c1.y, u: u, v: v }, 2.8);
 	fc2 = convert({ y: c2.y, u: u, v: v }, 2.8);
-	return { c1: fc1, c2: fc2 };
+	if (fc1.y > fc2.y) {
+		return { c1: fc1, c2: fc2 };
+	} else {
+		return { c1: fc2, c2: fc1 };
+	}
 }
 
-function svgForColors(c1, c2) {
-	var height = 32;
+function svgForColors(c1, c2, mixingstyle) {
 	var hexcolor1 = hexFromRGB(c1.r, c1.g, c1.b);
 	var hexcolor2 = hexFromRGB(c2.r, c2.g, c2.b);
-	var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="' + height + '" shape-rendering="auto" viewBox="0 -.5 1 ' + height + '">'
-	for (var j = 0; j < height / 2; j++ ) {
-		svg += '<path stroke="' + hexcolor1 + '" d="M0 '+(j*2)+'h1"></path>'
-		svg += '<path stroke="' + hexcolor2 + '" d="M0 '+(j*2+1)+'h1"></path>'
+	if (mixingstyle == 0) {
+		var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="2" shape-rendering="auto" viewBox="0 -.5 1 2">'
+		svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
+		svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
+		svg += '</svg>'
+	} else if (mixingstyle == 1) {
+		var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="1" shape-rendering="auto" viewBox="0 -.5 2 1">'
+		svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
+		svg += '<path stroke="' + hexcolor2 + '" d="M1 0h1"></path>'
+		svg += '</svg>'
+	} else if (mixingstyle == 2) {
+		var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" shape-rendering="auto" viewBox="0 -.5 2 2">'
+		svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
+		svg += '<path stroke="' + hexcolor2 + '" d="M1 0h1"></path>'
+		svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
+		svg += '<path stroke="' + hexcolor1 + '" d="M1 1h1"></path>'
+		svg += '</svg>'
+	} else if (mixingstyle == 3) {
+		var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="2" shape-rendering="auto" viewBox="0 -.5 4 2">'
+		svg += '<path stroke="' + hexcolor1 + '" d="M0 0h2"></path>'
+		svg += '<path stroke="' + hexcolor2 + '" d="M2 0h2"></path>'
+		svg += '<path stroke="' + hexcolor2 + '" d="M0 1h2"></path>'
+		svg += '<path stroke="' + hexcolor1 + '" d="M2 1h2"></path>'
+		svg += '</svg>'
 	}
-	svg += '</svg>'
 	return svg;
 }
 
@@ -374,6 +395,7 @@ function init() {
 
 function refresh() {
 	sortby = document.getElementById("sortby").selectedIndex;
+	mixingstyle = document.getElementById("mixingstyle").selectedIndex;
 	lumalevels = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
 
 	mixedcols = document.getElementById("mixedcols").checked;
@@ -460,14 +482,15 @@ function refresh() {
 		return a.y - b.y;
 	}
 	function compare_h(a, b) {
-		if (!a.h && !b.h) {
+//		console.log(a, b);
+		if (a.h <= 0 && b.h <= 0) {
 			// both gray? then sort by Y
 			return a.y - b.y;
 		}
-		if (!a.h) {
+		if (a.h <= 0) {
 			return -1;
 		}
-		if (!b.h) {
+		if (b.h <= 0) {
 			return 1;
 		}
 		return a.h - b.h;
@@ -538,7 +561,7 @@ function refresh() {
 			component1 = c;
 			component2 = c;
 		}
-		svg = svgForColors(component1, component2);
+		svg = svgForColors(component1, component2, mixingstyle);
 		svg = svg.replace("#", "%23");
 		image = "url('data:image/svg+xml;utf8," + svg + "')";
 		document.getElementById("mcol"+i).style.backgroundImage = image;
@@ -556,6 +579,7 @@ function refresh() {
 }
 
 function reset() {
+	document.getElementById("mixedcols").checked = 0;
 	document.getElementById("lumathreshold").value = 0;
 	document.getElementById("brightness").value = 50;
 	document.getElementById("contrast").value = 100;
