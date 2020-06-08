@@ -589,7 +589,7 @@ function refresh() {
 			component2 = c;
 		}
 		svg = svgForColors(component1, component2, mixingstyle);
-		svg = svg.replace("#", "%23");
+		svg = svg.replace(/#/g, '%23');
 		image = "url('data:image/svg+xml;utf8," + svg + "')";
 		document.getElementById("mcol"+i).style.backgroundImage = image;
 	}
