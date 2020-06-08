@@ -30,18 +30,21 @@
 
 	<label for="sortby">Sort by</label>
 	<select name="sortby" id="sortby" onChange="refresh();">
-	    <option value="sortby0">Luma</option>
-	    <option value="sortby1">Hue</option>
+	    <option value="sortby0">Hue</option>
+	    <option value="sortby1">Luma</option>
 	    <option value="sortby2">Palette Order</option>
 	</select>
 	<br/>
 	<label for="mixingstyle">Mixing Style</label>
 	<select name="mixingstyle" id="mixingstyle" onChange="refresh();">
-	    <option value="mixingstyle0">Horizontal</option>
-	    <option value="mixingstyle1">Vertical</option>
+	    <option value="mixingstyle0">Alternating Lines</option>
+	    <option value="mixingstyle1">Alternating Columns</option>
 	    <option value="mixingstyle2">Checkered</option>
-	    <option value="mixingstyle3">Checkered 2x</option>
+	    <option value="mixingstyle3">Checkered h2x</option>
 	</select>
+	<br/>
+	<label for="boxsize">Size</label>
+	<input id="boxsize" type="range" min="10" max="50" class="slider" oninput="refresh();">
 	<br/>
 	<br/>
 	<div id="colorspace" onmousedown="hideColorspace(true);" onmouseup="hideColorspace(false);">

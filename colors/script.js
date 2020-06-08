@@ -358,24 +358,24 @@ function combineColors(c1, c2, gamma) {
 function svgForColors(c1, c2, mixingstyle) {
 	var hexcolor1 = hexFromRGB(c1.r, c1.g, c1.b);
 	var hexcolor2 = hexFromRGB(c2.r, c2.g, c2.b);
-	if (mixingstyle == 0) {
+	if (mixingstyle == 0) { // alternating lines
 		var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="2" shape-rendering="auto" viewBox="0 -.5 1 2">'
 		svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
 		svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
 		svg += '</svg>'
-	} else if (mixingstyle == 1) {
+	} else if (mixingstyle == 1) { // alternating columns
 		var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="1" shape-rendering="auto" viewBox="0 -.5 2 1">'
 		svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
 		svg += '<path stroke="' + hexcolor2 + '" d="M1 0h1"></path>'
 		svg += '</svg>'
-	} else if (mixingstyle == 2) {
+	} else if (mixingstyle == 2) { // checkered
 		var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" shape-rendering="auto" viewBox="0 -.5 2 2">'
 		svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
 		svg += '<path stroke="' + hexcolor2 + '" d="M1 0h1"></path>'
 		svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
 		svg += '<path stroke="' + hexcolor1 + '" d="M1 1h1"></path>'
 		svg += '</svg>'
-	} else if (mixingstyle == 3) {
+	} else if (mixingstyle == 3) { // checkered h2x
 		var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="2" shape-rendering="auto" viewBox="0 -.5 4 2">'
 		svg += '<path stroke="' + hexcolor1 + '" d="M0 0h2"></path>'
 		svg += '<path stroke="' + hexcolor2 + '" d="M2 0h2"></path>'
@@ -386,7 +386,12 @@ function svgForColors(c1, c2, mixingstyle) {
 	return svg;
 }
 
+var gSheet;
+
 function init() {
+	gSheet = document.createElement('style')
+	document.body.appendChild(gSheet);
+
 	document.getElementById("colorspace_rgb").innerHTML = colorspaceHTML(false);
 	document.getElementById("colorspace_rgb").style = 'display: none;';
 	reset();
@@ -394,10 +399,11 @@ function init() {
 }
 
 function refresh() {
+	boxsize = document.getElementById("boxsize").value;
 	sortby = document.getElementById("sortby").selectedIndex;
 	mixingstyle = document.getElementById("mixingstyle").selectedIndex;
-	lumalevels = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
 
+	lumalevels = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
 	mixedcols = document.getElementById("mixedcols").checked;
 	lumathreshold = document.getElementById("lumathreshold").value;
 	brightness = document.getElementById("brightness").value;
@@ -405,14 +411,18 @@ function refresh() {
 	saturation = document.getElementById("saturation").value;
 	gamma = document.getElementById("gamma").value / 10;
 
+	//
+	// copy slider values to text fields
+	//
 	document.getElementById("lumathreshold_val").innerHTML = lumathreshold;
 	document.getElementById("brightness_val").innerHTML = brightness;
 	document.getElementById("contrast_val").innerHTML = contrast;
 	document.getElementById("saturation_val").innerHTML = saturation;
 	document.getElementById("gamma_val").innerHTML = gamma;
 
-
-
+	//
+	// enable disable luma threshold slider
+	//
 	lumathreshold_div = document.getElementById("lumathreshold_div");
 	if (!mixedcols) {
 		lumathreshold_div.style.pointerEvents = 'none';
@@ -423,6 +433,9 @@ function refresh() {
 		lumathreshold_div.style.opacity = null;
 	}
 
+	//
+	// create Colodore palette
+	//
 	colors = []
 	for (var i = 0; i < 16; i++) {
 		var c = convert(compose(i, lumalevels, brightness, contrast, saturation), gamma);
@@ -499,12 +512,26 @@ function refresh() {
 		return a.index - b.index;
 	}
 	if (sortby == 0) {
-		colors.sort(compare_y);
-	} else if (sortby == 1) {
 		colors.sort(compare_h);
+	} else if (sortby == 1) {
+		colors.sort(compare_y);
 	} else {
 		colors.sort(compare_index);
 	}
+
+	//
+	// create css
+	//
+	css = '';
+	css += '.colbox {';
+	css += '  border: none;';
+	css += '  border-collapse: collapse;';
+	css += '  padding: 0px;';
+	css += '  margin: 0px;';
+	css += '  width: ' + boxsize + ';';
+	css += '  height: ' + boxsize + ';';
+	css += '}';
+	gSheet.innerHTML = css;
 
 	//
 	// create cells
