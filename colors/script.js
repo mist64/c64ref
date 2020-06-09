@@ -635,32 +635,32 @@ function refresh() {
 	row3.innerHTML = '';
 	for (var i = 0; i < colors.length; i++) {
 		if (showcomponents) {
-			if (i ==0) row0.innerHTML = '<td>C</td>';
 			var td = document.createElement("td");
 			td.className='colbox'
 			td.id='ccol' + i;
 			row0.appendChild(td);
+			if (i == colors.length - 1) row0.innerHTML += '<td>C</td>';
 		}
 		if (showeffcol) {
-			if (i ==0) row1.innerHTML = '<td>E</td>';
 			var td = document.createElement("td");
 			td.className='colbox'
 			td.id='col' + i;
 			row1.appendChild(td);
+			if (i == colors.length - 1) row1.innerHTML += '<td>E</td>';
 		}
 		if (showmixedcol) {
-			if (i ==0) row2.innerHTML = '<td>M</td>';
 			td = document.createElement("td");
 			td.className='colbox'
 			td.id='mcol' + i;
 			row2.appendChild(td);
+			if (i == colors.length - 1) row2.innerHTML += '<td>M</td>';
 		}
 		if (showluma) {
-			if (i ==0) row3.innerHTML = '<td>L</td>';
 			td = document.createElement("td");
 			td.className='colbox'
 			td.id='ycol' + i;
 			row3.appendChild(td);
+			if (i == colors.length - 1) row3.innerHTML += '<td>L</td>';
 		}
 	}
 
@@ -805,7 +805,27 @@ function refresh() {
 	// all colors table
 	//
 	allcoltab = document.getElementById("allcoltab");
-	allcoltab.innerHTML = '<tr><th>#</th><th>mix</th><th>index 1</th><th>index 2</th><th>c1</th><th>c2</th><th>luma dist</th><th>hex</th><th>R</th><th>G</th><th>B</th><th>H</th><th>S</th><th>L</th></tr>'
+	var html = '';
+	html += '<tr>';
+	html += '<th>#</th>';
+	html += '<th>mix</th>';
+	html += '<th>index 1</th>';
+	html += '<th>index 2</th>';
+	html += '<th>c1</th>';
+	html += '<th>c2</th>';
+	html += '<th>luma dist</th>';
+	html += '<th>Y</th>';
+	html += '<th>U</th>';
+	html += '<th>V</th>';
+	html += '<th>H</th>';
+	html += '<th>S</th>';
+	html += '<th>L</th>';
+	html += '<th>R</th>';
+	html += '<th>G</th>';
+	html += '<th>B</th>';
+	html += '<th>hex</th>';
+	html += '</tr>';
+	allcoltab.innerHTML = html;
 	for (var i = 0; i < colors.length; i++) {
 		var c = colors[i];
 		var ci1 = '';
@@ -856,8 +876,44 @@ function refresh() {
 		tr.appendChild(td);
 
 		td = document.createElement("td");
-		td.innerHTML = hexFromRGB(c.r, c.g, c.b);
-		td.style.fontFamily = 'monospace';
+		if (c.component1) {
+			y = (c.component1.y + c.component2.y) / 2;
+		} else {
+			y = c.y;
+		}
+		td.innerHTML = y.toFixed(1);
+		if (y < 128) {
+			td.style.color = 'white';
+		}
+		if (y > 255) {
+			y = 255;
+		}
+		td.style.backgroundColor = 'rgb(' + y + ',' + y + ',' + y + ')';
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		if (!c.component1) {
+			td.innerHTML = c.u.toFixed(1);
+		}
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		if (!c.component1) {
+			td.innerHTML = c.v.toFixed(1);
+		}
+		tr.appendChild(td);
+
+		hsl = HSLfromRGB(c.r, c.g, c.b);
+		td = document.createElement("td");
+		td.innerHTML = hsl.h;
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		td.innerHTML = hsl.s;
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		td.innerHTML = hsl.l;
 		tr.appendChild(td);
 
 		td = document.createElement("td");
@@ -872,20 +928,10 @@ function refresh() {
 		td.innerHTML = c.b;
 		tr.appendChild(td);
 
-		hsl = HSLfromRGB(c.r, c.g, c.b);
-
 		td = document.createElement("td");
-		td.innerHTML = hsl.h;
+		td.innerHTML = hexFromRGB(c.r, c.g, c.b);
+		td.style.fontFamily = 'monospace';
 		tr.appendChild(td);
-
-		td = document.createElement("td");
-		td.innerHTML = hsl.s;
-		tr.appendChild(td);
-
-		td = document.createElement("td");
-		td.innerHTML = hsl.l;
-		tr.appendChild(td);
-
 	}
 }
 
