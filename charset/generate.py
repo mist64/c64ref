@@ -1004,7 +1004,7 @@ def html_div_selection_charset(id, charsets):
 	print('')
 	print('<br/>')
 	print('')
-	print('<label for="color_set">Color Set</label><br/>')
+	print('<label for="color_set">Color Scheme</label><br/>')
 	print('<select name="color_set" id="color_set" onChange="colorsetSwitch(this.selectedIndex);">')
 	print('    <option value="colorset_1">Black on White</option>')
 	print('    <option value="colorset_2">PET</option>')
