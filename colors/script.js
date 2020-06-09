@@ -291,16 +291,18 @@ function deltaE(labA, labB){
   return i < 0 ? 0 : Math.sqrt(i);
 }
 
-function colorspaceHTML(mapped_colors, mixingstyle) {
-	html = '';
+function drawColorspace(id, mapped_colors, mixingstyle) {
 	var yres = 64;
 	var zres = 5;
 	var scale = 1;
 	for (var z = 0; z < zres; z++) {
-		var paths = '';
+		var xres = z ? yres : 8;
+		var canvas = document.getElementById(id+z);
+		canvas.width = xres;
+		canvas.height = yres;
+		var context = canvas.getContext('2d');
+		var imgData = context.getImageData(0, 0, xres, yres);
 		for (var y = 0; y < yres; y++) {
-			var xres = z ? yres : 8;
-			var prevcolor = null;
 			var count = 0;
 			for (var x = 0; x < xres; x++) {
 				h = x * 360 / xres;
@@ -325,29 +327,28 @@ function colorspaceHTML(mapped_colors, mixingstyle) {
 							condition = ((x >> 1) & 1) ^ (y & 1);
 						}
 						if (condition) {
-							var fgcolor = hexFromRGB(c1.r, c1.g, c1.b);
+							r = c1.r;
+							g = c1.g;
+							b = c1.b;
 						} else {
-							var fgcolor = hexFromRGB(c2.r, c2.g, c2.b);
+							r = c2.r;
+							g = c2.g;
+							b = c2.b;
 						}
 					} else {
-						var fgcolor = hexFromRGB(cr.r, cr.g, cr.b);
+						r = cr.r;
+						g = cr.g;
+						b = cr.b;
 					}
-				} else {
-					var fgcolor = hexFromRGB(r, g, b);
 				}
-				if (!prevcolor || fgcolor == prevcolor) {
-					count++;
-				} else {
-					paths += '<path stroke="' + prevcolor + '" d="M' + (x - count) + ' ' + y + 'h' + count + '"/>'
-					count = 1;
-				}
-				prevcolor = fgcolor;
+				imgData.data[4 * (y * xres + x)] = r;
+				imgData.data[4 * (y * xres + x) + 1] = g;
+				imgData.data[4 * (y * xres + x) + 2] = b;
+				imgData.data[4 * (y * xres + x) + 3] = 255;
 			}
-			paths += '<path stroke="' + prevcolor + '" d="M' + (x - count) + ' ' + y + 'h' + count + '"/>'
 		}
-		html += '<svg xmlns="http://www.w3.org/2000/svg" style="border: 1px solid black;" width="' + xres * scale + '" height="' + yres * scale + '" shape-rendering="auto" viewBox="0 -.5 ' + xres + ' ' + yres + '">' + paths + '</svg>&nbsp;';
+		context.putImageData(imgData, 0, 0);
 	}
-	return html;
 }
 
 function bestMatch(r, g, b) {
@@ -461,7 +462,7 @@ function init() {
 	gSheet = document.createElement('style')
 	document.head.appendChild(gSheet);
 
-	document.getElementById("colorspace_rgb").innerHTML = colorspaceHTML(false, 0);
+	drawColorspace("rgb_", false, 0);
 	document.getElementById("colorspace_rgb").style = 'display: none;';
 	reset();
 	refresh();
@@ -798,7 +799,7 @@ function refresh() {
 	//
 	// colorspace diagram
 	//
-	document.getElementById("colorspace_mapped").innerHTML = colorspaceHTML(true, mixingstyle);
+	drawColorspace("mapped_", true, mixingstyle);
 
 	//
 	// all colors table
