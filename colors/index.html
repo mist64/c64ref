@@ -38,6 +38,10 @@ table.paltab th {
 	vertical-align: middle;
 }
 
+#allcoltab td,th {
+	text-align: center;
+}
+
 </style>
 
 </head>
@@ -176,9 +180,9 @@ table.paltab th {
 					</td>
 					<td colspan="2">
 						<select name="sortby" id="sortby" onChange="refresh();">
-						    <option value="sortby0">Hue</option>
-						    <option value="sortby1">Luma</option>
-						    <option value="sortby2">Luma distance, index</option>
+						    <option value="sortby0">Luma distance, index</option>
+						    <option selected value="sortby1">Hue</option>
+						    <option value="sortby2">Luma</option>
 						</select>
 				</tr>
 				<tr>
@@ -235,6 +239,9 @@ table.paltab th {
 	</div>
 
 	<br/>
+
+	<table id="allcoltab" border="1">
+	</table>
 
 	<table border="1">
 		<tr>

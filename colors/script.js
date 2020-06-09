@@ -441,6 +441,19 @@ function svgForColors(c1, c2, mixingstyle) {
 	return svg;
 }
 
+function imageFromColor(c) {
+	component1 = c.fixedComponent1;
+	component2 = c.fixedComponent2;
+	if (!component1) {
+		component1 = c;
+		component2 = c;
+	}
+	svg = svgForColors(component1, component2, mixingstyle);
+	svg = svg.replace(/#/g, '%23');
+	image = "url('data:image/svg+xml;utf8," + svg + "')";
+	return image;
+}
+
 var gSheet;
 var colors;
 
@@ -502,6 +515,7 @@ function refresh() {
 		c.index = i;
 		c.description = i;
 		c.h = HSVfromRGB(c.r, c.g, c.b).h;
+		c.lumadiff = -1;
 		colors.push(c);
 	}
 
@@ -552,6 +566,7 @@ function refresh() {
 						cm.description = '' + c1.index + '/' + c2.index;
 						cm.component1 = c1;
 						cm.component2 = c2;
+						cm.lumadiff = lumadiff;
 						fixedColors = combineColors(c1, c2, gamma);
 						cm.fixedComponent1 = fixedColors.c1;
 						cm.fixedComponent2 = fixedColors.c2;
@@ -585,11 +600,11 @@ function refresh() {
 		return a.index - b.index;
 	}
 	if (sortby == 0) {
-		colors.sort(compare_h);
-	} else if (sortby == 1) {
-		colors.sort(compare_y);
-	} else {
 		colors.sort(compare_index);
+	} else if (sortby == 1) {
+		colors.sort(compare_h);
+	} else {
+		colors.sort(compare_y);
 	}
 
 	//
@@ -680,15 +695,7 @@ function refresh() {
 			document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
 		}
 		if (showmixedcol) {
-			component1 = c.fixedComponent1;
-			component2 = c.fixedComponent2;
-			if (!component1) {
-				component1 = c;
-				component2 = c;
-			}
-			svg = svgForColors(component1, component2, mixingstyle);
-			svg = svg.replace(/#/g, '%23');
-			image = "url('data:image/svg+xml;utf8," + svg + "')";
+			var image = imageFromColor(c);
 			document.getElementById("mcol"+i).style.backgroundImage = image;
 		}
 		if (showluma) {
@@ -792,6 +799,93 @@ function refresh() {
 	// colorspace diagram
 	//
 	document.getElementById("colorspace_mapped").innerHTML = colorspaceHTML(true, mixingstyle);
+
+	//
+	// all colors table
+	//
+	allcoltab = document.getElementById("allcoltab");
+	allcoltab.innerHTML = '<tr><th>#</th><th>mix</th><th>index 1</th><th>index 2</th><th>c1</th><th>c2</th><th>luma dist</th><th>hex</th><th>R</th><th>G</th><th>B</th><th>H</th><th>S</th><th>L</th></tr>'
+	for (var i = 0; i < colors.length; i++) {
+		var c = colors[i];
+		var ci1 = '';
+		var ci2 = '';
+		var imagem = imageFromColor(c);
+		var image1 = '';
+		var image2 = '';
+		if (c.component1) {
+			ci1 = c.component1.index;
+			ci2 = c.component2.index;
+			var image1 = imageFromColor(c.component1);
+			var image2 = imageFromColor(c.component2);
+		}
+
+		var tr = document.createElement("tr");
+		allcoltab.appendChild(tr);
+		var td;
+
+		td = document.createElement("td");
+		td.innerHTML = c.index;
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		td.className='colbox'
+		td.style.backgroundImage = imagem;
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		td.innerHTML = ci1;
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		td.innerHTML = ci2;
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		td.className='colbox'
+		td.style.backgroundImage = image1;
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		td.className='colbox'
+		td.style.backgroundImage = image2;
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		td.innerHTML = c.lumadiff >= 0 ? c.lumadiff.toFixed(1) : '';
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		td.innerHTML = hexFromRGB(c.r, c.g, c.b);
+		td.style.fontFamily = 'monospace';
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		td.innerHTML = c.r;
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		td.innerHTML = c.g;
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		td.innerHTML = c.b;
+		tr.appendChild(td);
+
+		hsl = HSLfromRGB(c.r, c.g, c.b);
+
+		td = document.createElement("td");
+		td.innerHTML = hsl.h;
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		td.innerHTML = hsl.s;
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		td.innerHTML = hsl.l;
+		tr.appendChild(td);
+
+	}
 }
 
 function reset() {
