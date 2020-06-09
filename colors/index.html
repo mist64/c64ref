@@ -17,7 +17,10 @@
 
 #colors {
 	border-spacing: 0px 0px;
-	border: 1px solid black;
+	border: none;
+}
+table {
+	border: none;
 }
 </style>
 
@@ -38,13 +41,25 @@
 	<h1>C64 Colors</h1>
 	<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>. Revision af75955, 2020-06-06</i></p>
 
-	<table border="1">
-		<tr><th>Palette</th><th>Monitor</th><th>Display</th><tr>
+	<h2>Generate Palette</h2>
+	<table>
+		<tr><th>Generic</th><th>Monitor</th><th>Misc</th><tr>
 		<tr><td>
-			<table border="1">
+			<table>
+				<tr>
+					<td colspan="3" style="background-color: black; color: white;">
+						<b>Presets</b>
+						<button type="button" onclick="preset(16);">16c</button>
+						<button type="button" onclick="preset(23);">23c</button>
+						<button type="button" onclick="preset(39);">39c</button>
+						<button type="button" onclick="preset(55);">55c</button>
+						<button type="button" onclick="preset(71);">71c</button>
+						<button type="button" onclick="preset(136);">136c</button>
+					</td>
+				</tr>
 				<tr>
 					<td>
-						<label for="lumalevels">VIC-II</label>
+						<label for="lumalevels">VIC-II Rev</label>
 					</td>
 					<td colspan="2">
 						<select name="lumalevels" id="lumalevels" onChange="refresh();">
@@ -57,7 +72,7 @@
 					<td>
 						<label for="mixedcols">Mixed Colors</label>
 					</td>
-					<td>
+					<td colspan="2">
 						<input type="checkbox" id="mixedcols" onclick="refresh()">
 					</td>
 				</tr>
@@ -72,19 +87,7 @@
 						<span id="maxlumadiff_val"></span>
 					</td>
 				</tr>
-				<tr>
-					<td>
-						Presets
-					</td>
-					<td>
-						<button type="button" onclick="preset(16);">16c</button>
-						<button type="button" onclick="preset(23);">23c</button>
-						<button type="button" onclick="preset(39);">39c</button>
-						<button type="button" onclick="preset(55);">55c</button>
-						<button type="button" onclick="preset(71);">71c</button>
-						<button type="button" onclick="preset(136);">136c</button>
-					</td>
-				</tr>
+				<tr><td colspan="3"><span id="numcol"></span> colors</td></tr>
 			</table>
 		</td><td>
 			<table>
@@ -154,7 +157,7 @@
 					<td>
 						<label for="sortby">Sort by</label>
 					</td>
-					<td>
+					<td colspan="2">
 						<select name="sortby" id="sortby" onChange="refresh();">
 						    <option value="sortby0">Hue</option>
 						    <option value="sortby1">Luma</option>
@@ -167,58 +170,61 @@
 					</td>
 					<td>
 						<select name="mixingstyle" id="mixingstyle" onChange="refresh();">
-						    <option value="mixingstyle0">Alternating Lines</option>
+						    <option selected value="mixingstyle0">Alternating Lines</option>
 						    <option value="mixingstyle1">Alternating Columns</option>
-						    <option selected value="mixingstyle2">Checkered</option>
+						    <option value="mixingstyle2">Checkered</option>
 						    <option value="mixingstyle3">Checkered h2x</option>
 						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="boxsize">Size</label>
-					</td>
-					<td>
-						<input id="boxsize" type="range" min="10" max="50" oninput="refresh();">
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="showcomponents">Show <u>C</u>omponents</label>
-					</td>
-					<td>
-						<input checked type="checkbox" id="showcomponents" onclick="refresh()">
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="showeffcol">Show <u>E</u>ffective Color</label>
-					</td>
-					<td>
-						<input type="checkbox" id="showeffcol" onclick="refresh()">
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="showmixedcol">Show <u>M</u>ixed Color</label>
-					</td>
-					<td>
-						<input checked type="checkbox" id="showmixedcol" onclick="refresh()">
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="showluma">Show <u>L</u>uma</label>
-					</td>
-					<td>
-						<input type="checkbox" id="showluma" onclick="refresh()">
 					</td>
 				</tr>
 			</table>
 		</td></tr>
 	</table>
 
-	<p><span id="numcol"></span> colors</p>
+
+	<h2>Display</h2>
+	<table>
+		<tr>
+			<td>
+				<label for="boxsize">Size</label>
+			</td>
+			<td>
+				<input id="boxsize" type="range" min="10" max="50" oninput="refresh();">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label for="showcomponents">Show <u>C</u>omponents</label>
+			</td>
+			<td>
+				<input type="checkbox" id="showcomponents" onclick="refresh()">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label for="showeffcol">Show <u>E</u>ffective Color</label>
+			</td>
+			<td>
+				<input type="checkbox" id="showeffcol" onclick="refresh()">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label for="showmixedcol">Show <u>M</u>ixed Color</label>
+			</td>
+			<td>
+				<input checked type="checkbox" id="showmixedcol" onclick="refresh()">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label for="showluma">Show <u>L</u>uma</label>
+			</td>
+			<td>
+				<input type="checkbox" id="showluma" onclick="refresh()">
+			</td>
+		</tr>
+	</table>
 
 	<table id="colors">
 		<tr id="row0"></tr>
@@ -238,18 +244,28 @@
 
 	<table border="1">
 		<tr>
-			<td><pre id="hexcolors"></pre></td>
-			<td id="text_basic_all">
-				<pre id="text_basic_lower"></pre>
-				<pre id="text_basic_upper" style="display: none;"></pre>
-				<textarea style="display: none;" id="i_text_basic"></textarea>
-				<button type="button" onclick="toggleCase();">Toggle Case</button>
-				<button type="button" onclick="copyBASIC();">Copy</button>
+			<td>
+				<button type="button" onclick="copyElement('hexcolors', 'hexcolors');">Copy</button>
+				<pre id="hexcolors"></pre>
+			</td>
+			<td>
+				<button type="button" onclick="toggleCase('text_basic1_lower', 'text_basic1_upper');">Toggle Case</button>
+				<button type="button" onclick="copyElement('text_basic1_lower', 'text_basic1_upper');">Copy</button>
+				<pre id="text_basic1_lower"></pre>
+				<pre id="text_basic1_upper" style="display: none;"></pre>
+			</td>
+			<td>
+				<button type="button" onclick="toggleCase('text_basic2_lower', 'text_basic2_upper');">Toggle Case</button>
+				<button type="button" onclick="copyElement('text_basic2_lower', 'text_basic2_upper');">Copy</button>
+				<pre id="text_basic2_lower"></pre>
+				<pre id="text_basic2_upper" style="display: none;"></pre>
 			</td>
 		</tr>
 	</table>
 
 	</div>
+
+	<textarea style="display: none;" id="i_text_basic"></textarea>
 
 </body>
 

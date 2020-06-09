@@ -1239,7 +1239,7 @@ f = os.popen('git log -1 --pretty=format:%h .')
 revision = f.read()
 f = os.popen('git log -1 --date=short --pretty=format:%cd .')
 date = f.read()
-print('<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>. Revision ' + revision + ', ' + date + '</i></p>')
+print('<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, Lisa Brodner, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>. Revision ' + revision + ', ' + date + '</i></p>')
 
 print('</div>')
 print('<div class="tabbed">')

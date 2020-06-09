@@ -361,6 +361,52 @@ function colorspaceHTML(mapped_colors, mixingstyle) {
 	return html;
 }
 
+function colorspaceScreen() {
+	bytes = [];
+	var yres = 25;
+	var scale = 1;
+	var paths = '';
+	for (var y = 0; y < yres; y++) {
+		var xres = 40;
+		for (var x = 0; x < xres; x++) {
+			h = x * 360 / xres;
+			s = x ? 100 : 0;
+			l = y * 100 / yres;
+			rgb = RGBfromHSL(h, s, l);
+			var r = rgb.r;
+			var g = rgb.g;
+			var b = rgb.b;
+
+			var cr;
+			var mindist = 999;
+			for (var i = 0; i < colors.length; i++) {
+				c = colors[i];
+				var lab1 = LabFromRGB(c.r, c.g, c.b);
+				var lab2 = LabFromRGB(r, g, b);
+				var dist = deltaE(lab1, lab2);
+				if (dist < mindist) {
+					mindist = dist;
+					cr = c;
+				}
+			}
+			if (cr.component1) {
+				if (fc1.y > fc2.y) {
+					var i1 = cr.component1.index;
+					var i2 = cr.component2.index;
+				} else {
+					var i1 = cr.component2.index;
+					var i2 = cr.component1.index;
+				}
+			} else {
+				var i1 = cr.index;
+				var i2 = cr.index;
+			}
+			bytes.push(i1 << 4 | i2);
+		}
+	}
+	return bytes;
+}
+
 function combineColors(c1, c2, gamma) {
 	// create two colors with the average UV, but kepping their respective Y
 	u = (c1.u + c2.u) / 2;
@@ -693,8 +739,8 @@ function refresh() {
 
 	text_basic += '200 v=53248:g=8192:s0=1024:s1=s0+200:s2=s0+2*200:s3=s0+3*200' + '\n';
 	text_basic += '210 fori=0to999:pokes0+i,0:next' + '\n';
-	text_basic += '220 p=170:q=p:fori=g+1600tog+1600+1087step2:pokei,p:pokei+1,q:next' + '\n';
-	text_basic += '230 p=0:q=255:fori=gtog+1087step2:pokei,p:pokei+1,q:next' + '\n';
+	text_basic += '220 p=0:q=255:fori=gtog+1087step2:pokei,p:pokei+1,q:next' + '\n';
+	text_basic += '230 p=170:q=p:fori=g+1600tog+1600+1087step2:pokei,p:pokei+1,q:next' + '\n';
 	text_basic += '240 p=170:q=85:fori=g+2*1600tog+2*1600+1087step2:pokei,p:pokei+1,q:next' + '\n';
 	text_basic += '250 p=51:q=204:fori=g+3*1600tog+3*1600+1087step2:pokei,p:pokei+1,q:next' + '\n';
 	text_basic += '260 pokev+32,0' + '\n';
@@ -706,16 +752,57 @@ function refresh() {
 	text_basic += 'run' + '\n';
 	text_basic += '\n';
 
-	document.getElementById("numcol").innerHTML = colors.length;
-
-	document.getElementById("colorspace_mapped").innerHTML = colorspaceHTML(true, mixingstyle);
+	//
+	// fill BASIC text field 1
+	//
+	document.getElementById("text_basic1_lower").innerHTML = text_basic;
+	document.getElementById("text_basic1_upper").innerHTML = text_basic.toUpperCase();
 
 	//
-	// fill text fields
+	// fill BASIC text field 2
+	//
+	bytes = colorspaceScreen();
+	text_basic = ''
+	basic_line = ''
+	basic_lineno = 0;
+	for (var i = 0; i < bytes.length; i++) {
+		if (basic_line.length) {
+			basic_line += ',';
+		}
+		basic_line += '' + bytes[i];
+		if (basic_line.length > 65) {
+			text_basic += '' + basic_lineno + ' data' + basic_line + '\n';
+			basic_lineno += 1;
+			basic_line = '';
+		}
+	}
+	text_basic += '' + basic_lineno + ' data' + basic_line + '\n';
+	text_basic += '200 v=53248:g=8192:s=1024' + '\n';
+	text_basic += '210 fori=0to999:reada:pokes+i,a:next' + '\n';
+	text_basic += '300 pokev+32,0' + '\n';
+	text_basic += '310 pokev+17,peek(v+17)or(11*16)' + '\n';
+	text_basic += '320 pokev+22,peek(v+22)and(255-16)' + '\n';
+	text_basic += '330 pokev+24,peek(v+24)or8' + '\n';
+	text_basic += '400 p=170:q=85:fori=gtog+7999step2:pokei,p:pokei+1,q:next' + '\n';
+	text_basic += '500 goto500' + '\n';
+	text_basic += 'run' + '\n';
+	document.getElementById("text_basic2_lower").innerHTML = text_basic;
+	document.getElementById("text_basic2_upper").innerHTML = text_basic.toUpperCase();
+
+	//
+	// fill hex text field
 	//
 	document.getElementById("hexcolors").innerHTML = text_hexcolors;
-	document.getElementById("text_basic_lower").innerHTML = text_basic;
-	document.getElementById("text_basic_upper").innerHTML = text_basic.toUpperCase();
+
+	//
+	// number of colors
+	//
+	document.getElementById("numcol").innerHTML = colors.length;
+
+	//
+	// colorspace diagram
+	//
+	document.getElementById("colorspace_mapped").innerHTML = colorspaceHTML(true, mixingstyle);
 }
 
 function reset() {
@@ -768,22 +855,22 @@ function preset(numcol) {
 	refresh();
 }
 
-function toggleCase() {
-	if (document.getElementById("text_basic_lower").style.display == '') {
-		document.getElementById("text_basic_lower").style.display = 'none';
-		document.getElementById("text_basic_upper").style.display = '';
+function toggleCase(id1, id2) {
+	if (document.getElementById(id1).style.display == '') {
+		document.getElementById(id1).style.display = 'none';
+		document.getElementById(id2).style.display = '';
 	} else {
-		document.getElementById("text_basic_lower").style.display = '';
-		document.getElementById("text_basic_upper").style.display = 'none';
+		document.getElementById(id1).style.display = '';
+		document.getElementById(id2).style.display = 'none';
 	}
 }
 
-function copyBASIC() {
+function copyElement(id1, id2) {
 	var basic_text = document.getElementById("i_text_basic");
-	if (document.getElementById("text_basic_lower").style.display == '') {
-		basic_text.value = document.getElementById("text_basic_lower").innerHTML;
+	if (document.getElementById(id1).style.display == '') {
+		basic_text.value = document.getElementById(id1).innerHTML;
 	} else {
-		basic_text.value = document.getElementById("text_basic_upper").innerHTML;
+		basic_text.value = document.getElementById(id2).innerHTML;
 	}
 	basic_text.style = '';
 	basic_text.select();
