@@ -41,7 +41,7 @@
 	<table border="1">
 		<tr><th>Palette</th><th>Monitor</th><th>Display</th><tr>
 		<tr><td>
-			<table>
+			<table border="1">
 				<tr>
 					<td>
 						<label for="lumalevels">VIC-II</label>
@@ -55,7 +55,7 @@
 				</tr>
 				<tr>
 					<td>
-						<label for="mixedcols">Mixed colors</label>
+						<label for="mixedcols">Mixed Colors</label>
 					</td>
 					<td>
 						<input type="checkbox" id="mixedcols" onclick="refresh()">
@@ -66,7 +66,7 @@
 						<label for="maxlumadiff">Max Luma Diff</label>
 					</td>
 					<td>
-						<input id="maxlumadiff" type="range" min="0" max="310" class="slider" oninput="refresh();">
+						<input id="maxlumadiff" style="width: 23em;" type="range" min="0" max="310" oninput="refresh();">
 					</td>
 					<td>
 						<span id="maxlumadiff_val"></span>
@@ -93,7 +93,7 @@
 						<label for="brightness">Brightness</label>
 					</td>
 					<td>
-						<input id="brightness" type="range" min="1" max="100" class="slider" list="slbrightness" oninput="refresh();">
+						<input id="brightness" type="range" min="1" max="100" list="slbrightness" oninput="refresh();">
 						<datalist id="slbrightness">
 						    <option>50</option>
 						</datalist>
@@ -107,7 +107,7 @@
 						<label for="contrast">Contrast</label>
 					</td>
 					<td>
-						<input id="contrast" type="range" min="1" max="200" class="slider" list="slcontrast" oninput="refresh();">
+						<input id="contrast" type="range" min="1" max="200" list="slcontrast" oninput="refresh();">
 						<datalist id="slcontrast">
 						    <option>100</option>
 						</datalist>
@@ -121,7 +121,7 @@
 						<label for="saturation">Saturation</label>
 					</td>
 					<td>
-						<input id="saturation" type="range" min="1" max="100" class="slider" list="slsaturation" oninput="refresh();">
+						<input id="saturation" type="range" min="1" max="100" list="slsaturation" oninput="refresh();">
 						<datalist id="slsaturation">
 						    <option>50</option>
 						</datalist>
@@ -135,7 +135,7 @@
 						<label for="gamma">Gamma</label>
 					</td>
 					<td>
-						<input id="gamma" type="range" min="22" max="28" class="slider" list="slgamma" oninput="refresh();">
+						<input id="gamma" type="range" min="22" max="28" list="slgamma" oninput="refresh();">
 						<datalist id="slgamma">
 						    <option>22</option>
 						    <option>28</option>
@@ -179,12 +179,12 @@
 						<label for="boxsize">Size</label>
 					</td>
 					<td>
-						<input id="boxsize" type="range" min="10" max="50" class="slider" oninput="refresh();">
+						<input id="boxsize" type="range" min="10" max="50" oninput="refresh();">
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<label for="showcomponents">Show components</label>
+						<label for="showcomponents">Show <u>C</u>omponents</label>
 					</td>
 					<td>
 						<input checked type="checkbox" id="showcomponents" onclick="refresh()">
@@ -192,7 +192,7 @@
 				</tr>
 				<tr>
 					<td>
-						<label for="showeffcol">Show effective color</label>
+						<label for="showeffcol">Show <u>E</u>ffective Color</label>
 					</td>
 					<td>
 						<input type="checkbox" id="showeffcol" onclick="refresh()">
@@ -200,7 +200,7 @@
 				</tr>
 				<tr>
 					<td>
-						<label for="showmixedcol">Show mixed color</label>
+						<label for="showmixedcol">Show <u>M</u>ixed Color</label>
 					</td>
 					<td>
 						<input checked type="checkbox" id="showmixedcol" onclick="refresh()">
@@ -208,7 +208,7 @@
 				</tr>
 				<tr>
 					<td>
-						<label for="showluma">Show luma</label>
+						<label for="showluma">Show <u>L</u>uma</label>
 					</td>
 					<td>
 						<input type="checkbox" id="showluma" onclick="refresh()">
@@ -242,7 +242,7 @@
 			<td id="text_basic_all">
 				<pre id="text_basic_lower"></pre>
 				<pre id="text_basic_upper" style="display: none;"></pre>
-				<input type="hidden" id="i_text_basic"/>
+				<textarea style="display: none;" id="i_text_basic"></textarea>
 				<button type="button" onclick="toggleCase();">Toggle Case</button>
 				<button type="button" onclick="copyBASIC();">Copy</button>
 			</td>

@@ -584,24 +584,28 @@ function refresh() {
 	row3.innerHTML = '';
 	for (var i = 0; i < colors.length; i++) {
 		if (showcomponents) {
+			if (i ==0) row0.innerHTML = '<td>C</td>';
 			var td = document.createElement("td");
 			td.className='colbox'
 			td.id='ccol' + i;
 			row0.appendChild(td);
 		}
 		if (showeffcol) {
+			if (i ==0) row1.innerHTML = '<td>E</td>';
 			var td = document.createElement("td");
 			td.className='colbox'
 			td.id='col' + i;
 			row1.appendChild(td);
 		}
 		if (showmixedcol) {
+			if (i ==0) row2.innerHTML = '<td>M</td>';
 			td = document.createElement("td");
 			td.className='colbox'
 			td.id='mcol' + i;
 			row2.appendChild(td);
 		}
 		if (showluma) {
+			if (i ==0) row3.innerHTML = '<td>L</td>';
 			td = document.createElement("td");
 			td.className='colbox'
 			td.id='ycol' + i;
@@ -628,7 +632,10 @@ function refresh() {
 			}
 			var hexcolor1 = hexFromRGB(component1.r, component1.g, component1.b);
 			var hexcolor2 = hexFromRGB(component2.r, component2.g, component2.b);
-			svg = '<svg xmlns="http://www.w3.org/2000/svg" height="1" width="16" style="background-color: ' + hexcolor1 + ';"><polygon points="0,0 8,0 8,1 0,1" style="fill:' + hexcolor2 + '" /></svg>';
+
+			var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="1" shape-rendering="auto" viewBox="0 -.5 16 1" style="background-color: ' + hexcolor1 + ';">'
+			svg += '<path stroke="' + hexcolor2 + '" d="M0 0h8"></path>'
+			svg += '</svg>'
 			svg = svg.replace(/#/g, '%23');
 			image = "url('data:image/svg+xml;utf8," + svg + "')";
 			document.getElementById("ccol"+i).style.backgroundImage = image;
@@ -757,6 +764,7 @@ function preset(numcol) {
 	} else {
 		document.getElementById("mixedcols").checked = false;
 	}
+	document.getElementById("lumalevels").selectedIndex = 1;
 	refresh();
 }
 
@@ -777,8 +785,8 @@ function copyBASIC() {
 	} else {
 		basic_text.value = document.getElementById("text_basic_upper").innerHTML;
 	}
-	basic_text.type = 'text';
+	basic_text.style = '';
 	basic_text.select();
 	document.execCommand('copy');
-	basic_text.type = 'hidden';
+	basic_text.style = 'display: none;';
 }
