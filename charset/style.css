@@ -51,6 +51,21 @@ h2,
 	font-weight: bold;
 }
 
+dl {
+	margin-top: 0em;
+	margin-bottom: 0.5em;
+}
+
+dt {
+	margin-top: 0.7em;
+	margin-left: 0.2em;
+	font-weight: bold;
+}
+
+dd {
+	margin-left: 0.7em;
+} 
+
 /* Overview Styling */ 
 
 #screencode_overview,
@@ -359,21 +374,16 @@ div#navigation {
 	background-color: hsl(var(--info-hue), 80%, 80%);
 }
 
-.grid-container > div {
-	padding: 4px;
-}
 
 .scrcode-image,
 .scrcode-title,
 .scrcode-description {
 	background-color: hsl(var(--info-hue), 100%, 70%);
-	border-right: 1px solid gray;
 }
 
 .petscii-title,
 .petscii-description {
 	background-color: hsl(var(--info-hue), 100%, 75%);
-	border-right: 1px solid gray;
 }
 
 .unicode-image,
@@ -382,6 +392,27 @@ div#navigation {
 .control-title,
 .control-description {
 	background-color: hsl(var(--info-hue), 100%, 90%);
+	border-left: 1px solid gray;
+}
+
+.scrcode-title,
+.petscii-title,
+.unicode-title,
+.control-title,
+.additional-info .info-title {
+	padding: 4px;
+	padding-left: 0.3em;
+}
+
+
+.scrcode-description,
+.petscii-description,
+.unicode-description,
+.control-description,
+.additional-info div {
+	padding: 4px;
+	padding-top: 2px;
+	padding-left: 0.7em;
 }
 
 .additional-info {
@@ -395,7 +426,12 @@ div#navigation {
 .info-title {
 	font-weight: bold;
 	text-align: left;
-	text-decoration: underline;
+	text-decoration: none;
+	background: hsl(var(--info-hue), 100%, 40%);
+	padding-left: 8px;
+	padding-top: 6px;
+	border-left: 8px solid hsl(var(--info-hue), 100%, 20%);
+	color: white;
 }
 
 .scrcode-image {
@@ -435,12 +471,12 @@ div#navigation {
 
 
 .petscii-title {
-	grid-row:2;
+	grid-row:3;
 	grid-column: 1;
 }
 
 .petscii-description {
-	grid-row: 3;
+	grid-row: 4;
 	grid-column: 1;
 }
 
@@ -453,27 +489,37 @@ div#navigation {
 }
 
 .control-description {
-	grid-row: 2 / span 4;
+	grid-row: 2 / span 6;
 	grid-column: 2;
+}
+
+.petscii_boxes .scrcode-image {
+	grid-row: 1 / span 2;
 }
 
 .petscii_boxes .scrcode-title {
-	grid-row:4;
-	grid-column: 1;
+	grid-row: 5;
 }
 
 .petscii_boxes .scrcode-description {
-	grid-row: 5;
+	grid-row: 6;
 	grid-column: 1;
 }
 
+.petscii_boxes .unicode-image {
+	grid-row: 1 / span 2;
+}
+
+.petscii_boxes .unicode-title {
+	grid-row: 3;
+}
+
 .petscii_boxes .unicode-description {
-	grid-row: 3 / span 3;
-	grid-column: 2;
+	grid-row: 4 / span 4;
 }
 
 .petscii_boxes .additional-info {
-	grid-row: 6;
+	grid-row: 8;
 	grid-column: 1 / span 2;
 }
 
