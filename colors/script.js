@@ -311,18 +311,7 @@ function colorspaceHTML(mapped_colors, mixingstyle) {
 				var g = rgb.g;
 				var b = rgb.b;
 				if (mapped_colors) {
-					var cr = null;
-					var mindist = 999;
-					for (var i = 0; i < colors.length; i++) {
-						c = colors[i];
-						var lab1 = LabFromRGB(c.r, c.g, c.b);
-						var lab2 = LabFromRGB(r, g, b);
-						var dist = deltaE(lab1, lab2);
-						if (dist < mindist) {
-							mindist = dist;
-							cr = c;
-						}
-					}
+					var cr = bestMatch(rgb.r, rgb.g, rgb.b);
 					if (cr.component1) {
 						c1 = cr.fixedComponent1;
 						c2 = cr.fixedComponent2;
@@ -361,6 +350,22 @@ function colorspaceHTML(mapped_colors, mixingstyle) {
 	return html;
 }
 
+function bestMatch(r, g, b) {
+	var cr;
+	var mindist = 999;
+	for (var i = 0; i < colors.length; i++) {
+		c = colors[i];
+		var lab1 = LabFromRGB(c.r, c.g, c.b);
+		var lab2 = LabFromRGB(r, g, b);
+		var dist = deltaE(lab1, lab2);
+		if (dist < mindist) {
+			mindist = dist;
+			cr = c;
+		}
+	}
+	return cr;
+}
+
 function colorspaceScreen() {
 	bytes = [];
 	var yres = 25;
@@ -373,22 +378,7 @@ function colorspaceScreen() {
 			s = x ? 100 : 0;
 			l = y * 100 / yres;
 			rgb = RGBfromHSL(h, s, l);
-			var r = rgb.r;
-			var g = rgb.g;
-			var b = rgb.b;
-
-			var cr;
-			var mindist = 999;
-			for (var i = 0; i < colors.length; i++) {
-				c = colors[i];
-				var lab1 = LabFromRGB(c.r, c.g, c.b);
-				var lab2 = LabFromRGB(r, g, b);
-				var dist = deltaE(lab1, lab2);
-				if (dist < mindist) {
-					mindist = dist;
-					cr = c;
-				}
-			}
+			var cr = bestMatch(rgb.r, rgb.g, rgb.b);
 			if (cr.component1) {
 				if (fc1.y > fc2.y) {
 					var i1 = cr.component1.index;
@@ -519,7 +509,6 @@ function refresh() {
 	// create mixed colors
 	//
 	if (mixedcols) {
-
 		var lumas = [];
 		for (var i = 0; i < colors.length; i++) {
 			y = colors[i].y;

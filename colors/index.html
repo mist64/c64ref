@@ -19,9 +19,25 @@
 	border-spacing: 0px 0px;
 	border: none;
 }
+
 table {
 	border: none;
 }
+
+table.paltab {
+	border: 1px solid black;
+}
+
+table.paltab th {
+	color: white;
+	text-shadow: 0px 1px black;
+	background-color: black;
+}
+
+#colors td {
+	vertical-align: middle;
+}
+
 </style>
 
 </head>
@@ -39,24 +55,25 @@ table {
 	</div>
 	<div class="main">
 	<h1>C64 Colors</h1>
-	<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>. Revision af75955, 2020-06-06</i></p>
+	<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>. Revision af75955, 2020-06-06; based on work by <a href="https://www.pepto.de/projects/colorvic/">pepto</a>.</i></p>
 
 	<h2>Generate Palette</h2>
-	<table>
-		<tr><th>Generic</th><th>Monitor</th><th>Misc</th><tr>
+	<table class="paltab">
+		<tr>
+			<th>
+				Generic
+				<button type="button" onclick="preset(16);">16c</button>
+				<button type="button" onclick="preset(23);">23c</button>
+				<button type="button" onclick="preset(39);">39c</button>
+				<button type="button" onclick="preset(55);">55c</button>
+				<button type="button" onclick="preset(71);">71c</button>
+				<button type="button" onclick="preset(136);">136c</button>
+			</th>
+			<th>Monitor</th>
+			<th>Misc</th>
+		</tr>
 		<tr><td>
 			<table>
-				<tr>
-					<td colspan="3" style="background-color: black; color: white;">
-						<b>Presets</b>
-						<button type="button" onclick="preset(16);">16c</button>
-						<button type="button" onclick="preset(23);">23c</button>
-						<button type="button" onclick="preset(39);">39c</button>
-						<button type="button" onclick="preset(55);">55c</button>
-						<button type="button" onclick="preset(71);">71c</button>
-						<button type="button" onclick="preset(136);">136c</button>
-					</td>
-				</tr>
 				<tr>
 					<td>
 						<label for="lumalevels">VIC-II Rev</label>
@@ -81,13 +98,13 @@ table {
 						<label for="maxlumadiff">Max Luma Diff</label>
 					</td>
 					<td>
-						<input id="maxlumadiff" style="width: 23em;" type="range" min="0" max="310" oninput="refresh();">
+						<input id="maxlumadiff" style="width: 20em;" type="range" min="0" max="310" oninput="refresh();">
 					</td>
 					<td>
 						<span id="maxlumadiff_val"></span>
 					</td>
 				</tr>
-				<tr><td colspan="3"><span id="numcol"></span> colors</td></tr>
+				<tr><td colspan="3"><b><span id="numcol"></span> colors</b></td></tr>
 			</table>
 		</td><td>
 			<table>
@@ -148,9 +165,9 @@ table {
 						<span id="gamma_val"></span>
 					</td>
 				</tr>
+				<tr><td colspan="3" style="text-align: center;"><button type="button" onclick="reset();">Reset</button></td></tr>
 			</table>
 
-			<button type="button" onclick="reset();">Reset</button>
 		</td><td>
 			<table>
 				<tr>
@@ -181,50 +198,25 @@ table {
 		</td></tr>
 	</table>
 
+	<h2>Linear View</h2>
 
-	<h2>Display</h2>
-	<table>
-		<tr>
-			<td>
-				<label for="boxsize">Size</label>
-			</td>
-			<td>
-				<input id="boxsize" type="range" min="10" max="50" oninput="refresh();">
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label for="showcomponents">Show <u>C</u>omponents</label>
-			</td>
-			<td>
-				<input type="checkbox" id="showcomponents" onclick="refresh()">
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label for="showeffcol">Show <u>E</u>ffective Color</label>
-			</td>
-			<td>
-				<input type="checkbox" id="showeffcol" onclick="refresh()">
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label for="showmixedcol">Show <u>M</u>ixed Color</label>
-			</td>
-			<td>
-				<input checked type="checkbox" id="showmixedcol" onclick="refresh()">
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label for="showluma">Show <u>L</u>uma</label>
-			</td>
-			<td>
-				<input type="checkbox" id="showluma" onclick="refresh()">
-			</td>
-		</tr>
-	</table>
+	<input type="checkbox" id="showcomponents" onclick="refresh()">
+	<label for="showcomponents"><u>C</u>omponents</label>
+
+	<input type="checkbox" id="showeffcol" onclick="refresh()">
+	<label for="showeffcol"><u>E</u>ffective Color</label>
+
+	<input checked type="checkbox" id="showmixedcol" onclick="refresh()">
+	<label for="showmixedcol"><u>M</u>ixed Color</label>
+
+	<input type="checkbox" id="showluma" onclick="refresh()">
+	<label for="showluma"><u>L</u>uma</label>
+
+<!--	<label for="boxsize">Size</label> -->
+	<input id="boxsize" type="range" min="10" max="50" oninput="refresh();">
+
+	<br/>
+	<br/>
 
 	<table id="colors">
 		<tr id="row0"></tr>
@@ -234,6 +226,8 @@ table {
 	</table>
 
 	<br/>
+
+	<h2>Colorspace Diagram</h2>
 
 	<div id="colorspace" onmousedown="hideColorspace(true);" onmouseup="hideColorspace(false);">
 		<div id="colorspace_rgb"></div>
@@ -269,13 +263,13 @@ table {
 
 </body>
 
-<!--
+<h2>References</h2>
 
-https://www.pepto.de/projects/colorvic/
-http://hitmen.c02.at/temp/palstuff/
-https://kodiak64.com/blog/luma-driven-graphics-on-c64
-https://ilesj.wordpress.com/2016/03/30/old-vic-ii-colors-and-color-blending/
-https://csdb.dk/forums/?roomid=13&topicid=90011&showallposts=1
-https://og2t.github.io/retro-palette-explorer/
-
--->
+<ul>
+<li><a href="https://www.pepto.de/projects/colorvic/">pepto: Calculating the color palette of the VIC II</a></li>
+<li><a href="http://hitmen.c02.at/temp/palstuff/">groepaz: Accurately reproducing the Video Output of a Commodore C64</a></li>
+<li><a href="https://kodiak64.com/blog/luma-driven-graphics-on-c64">Jon Woods: Luma-Driven Graphics on the Commodore 64</a></li>
+<li><a href="https://ilesj.wordpress.com/2016/03/30/old-vic-ii-colors-and-color-blending/">Ilkka Sjöstedt: Old VIC-II Colors and Color Blending</a></li>
+<li><a href="https://og2t.github.io/retro-palette-explorer/">Digger/Elysium: https://og2t.github.io/retro-palette-explorer/</a></li>
+<li><a href="https://csdb.dk/forums/?roomid=13&topicid=90011&showallposts=1">CSDb User Forums: Joe's 136 colors technique</a></li>
+</ul>
