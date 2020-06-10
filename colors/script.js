@@ -361,13 +361,13 @@ function drawColorspace(id, colorspaceMaps, mapped_colors, mixingstyle) {
 	}
 }
 
-function bestMatch(r, g, b) {
+function bestMatch(rgb) {
 	var cr;
 	var mindist = 999;
 	for (var i = 0; i < colors.length; i++) {
 		c = colors[i];
 		var lab1 = LabFromRGB(c.r, c.g, c.b);
-		var lab2 = LabFromRGB(r, g, b);
+		var lab2 = LabFromRGB(rgb.r, rgb.g, rgb.b);
 		var dist = deltaE(lab1, lab2);
 		if (dist < mindist) {
 			mindist = dist;
@@ -391,7 +391,7 @@ function getColorspaceMap(s) {
 			}
 			l = y * 100 / yres;
 			rgb = RGBfromHSL(h, fs, l);
-			var cr = bestMatch(rgb.r, rgb.g, rgb.b);
+			var cr = bestMatch(rgb);
 			colorspaceMap.push(cr);
 		}
 	}
@@ -510,6 +510,7 @@ function init() {
 		document.getElementById("gamma").value = urlParams.get('g') * 10;
 	}
 	if (urlParams.has('sortby')) {
+		console.log(urlParams.get('sortby'));
 		switch (urlParams.get('sortby')) {
 			case 'lumadiff':
 				document.getElementById("sortby").selectedIndex = 0;
@@ -589,8 +590,8 @@ function refresh() {
 	url += '&b=' + brightness;
 	url += '&c=' + contrast;
 	url += '&s=' + saturation;
-	url += '&g=' + (gamma / 10).toFixed(2);
-	url += '&sorby='
+	url += '&g=' + gamma.toFixed(1);
+	url += '&sortby='
 	switch (sortby) {
 		case 0:
 			url += 'lumadiff';
@@ -937,7 +938,7 @@ function refresh() {
 	html += '<th>index 2</th>';
 	html += '<th>c1</th>';
 	html += '<th>c2</th>';
-	html += '<th>luma dist</th>';
+	html += '<th>luma diff</th>';
 	html += '<th>Y</th>';
 	html += '<th>U</th>';
 	html += '<th>V</th>';
