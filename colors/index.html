@@ -251,8 +251,9 @@ tr:target {
 			<canvas id="mapped_1"></canvas>
 		</div>
 	</div>
+	<button type="button" onmousedown="hideColorspace(true);" onmouseup="hideColorspace(false);">Compare</button>
 
-	<br/>
+	<hr/>
 
 	<table id="allcoltab" border="1">
 	</table>
@@ -286,6 +287,13 @@ tr:target {
 
 </body>
 
+<h2>Notes</h2>
+
+<ul>
+<li>The mixed color previews average the chroma between two lines, approximating the effect on a real PAL system.</li>
+<li>On a real system, *alternating columns* and *checkered* will produce nasty vertical low-frequency color stripes ("GEOS effect") for larger areas. The same is true for *checkered 2x* for lower luma diffs. The previews do not account for this.</li>
+</ul>
+
 <h2>References</h2>
 
 <ul>
@@ -293,6 +301,6 @@ tr:target {
 <li><a href="http://hitmen.c02.at/temp/palstuff/">groepaz: Accurately reproducing the Video Output of a Commodore C64</a></li>
 <li><a href="https://kodiak64.com/blog/luma-driven-graphics-on-c64">Jon Woods: Luma-Driven Graphics on the Commodore 64</a></li>
 <li><a href="https://ilesj.wordpress.com/2016/03/30/old-vic-ii-colors-and-color-blending/">Ilkka Sjöstedt: Old VIC-II Colors and Color Blending</a></li>
-<li><a href="https://og2t.github.io/retro-palette-explorer/">Digger/Elysium: https://og2t.github.io/retro-palette-explorer/</a></li>
+<li><a href="https://og2t.github.io/retro-palette-explorer/">Digger/Elysium: Retro Palette Explorer</a></li>
 <li><a href="https://csdb.dk/forums/?roomid=13&topicid=90011&showallposts=1">CSDb User Forums: Joe's 136 colors technique</a></li>
 </ul>
