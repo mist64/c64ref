@@ -291,60 +291,66 @@ function deltaE(labA, labB){
   return i < 0 ? 0 : Math.sqrt(i);
 }
 
-function drawColorspace(id, mapped_colors, mixingstyle) {
-	var yres = 64;
-	var zres = 5;
-	var scale = 1;
-	for (var z = 0; z < zres; z++) {
-		var xres = z ? yres : 8;
+const SATURATION_A = 20;
+const SATURATION_B = 100;
+
+function drawColorspace(id, colorspaceScreens, mapped_colors, mixingstyle) {
+	var xres = 40;
+	var yres = 25;
+	var scale = 8;
+	for (var z = 0; z < 2; z++) {
 		var canvas = document.getElementById(id+z);
-		canvas.width = xres;
-		canvas.height = yres;
+		canvas.width = xres * scale;
+		canvas.height = yres * scale;
 		var context = canvas.getContext('2d');
-		var imgData = context.getImageData(0, 0, xres, yres);
+		var imgData = context.getImageData(0, 0, canvas.width, canvas.height);
 		for (var y = 0; y < yres; y++) {
-			var count = 0;
 			for (var x = 0; x < xres; x++) {
-				h = x * 360 / xres;
-				s = z * 100 / zres;
-				l = y * 100 / yres;
-				rgb = RGBfromHSL(h, s, l);
-				var r = rgb.r;
-				var g = rgb.g;
-				var b = rgb.b;
 				if (mapped_colors) {
-					var cr = bestMatch(rgb.r, rgb.g, rgb.b);
-					if (cr.component1) {
-						c1 = cr.fixedComponent1;
-						c2 = cr.fixedComponent2;
+					var i = colorspaceScreens[z][xres * y + x];
+					c1i = i >> 4;
+					c2i = i & 15;
+					c1 = basecolors[c1i];
+					c2 = basecolors[c2i];
+
+					var r1 = c1.r;
+					var g1 = c1.g;
+					var b1 = c1.b;
+					var r2 = c2.r;
+					var g2 = c2.g;
+					var b2 = c2.b;
+				} else {
+					h = x * 360 / xres;
+					s = z ? SATURATION_B : SATURATION_A;
+					l = y * 100 / yres;
+					rgb = RGBfromHSL(h, s, l);
+					var r1 = rgb.r;
+					var g1 = rgb.g;
+					var b1 = rgb.b;
+					var r2 = r1;
+					var g2 = g1;
+					var b2 = b1;
+				}
+				for (var x1 = 0; x1 < scale; x1++) {
+					for (var y1 = 0; y1 < scale; y1++) {
+						var fx = x * scale + x1;
+						var fy = y * scale + y1;
 						if (mixingstyle == 0) {
-							condition = y & 1;
+							condition = fy & 1;
 						} else if (mixingstyle == 1) {
-							condition = x & 1;
+							condition = fx & 1;
 						} else if (mixingstyle == 2) {
-							condition = (x & 1) ^ (y & 1);
+							condition = (fx & 1) ^ (fy & 1);
 						} else if (mixingstyle == 3) {
-							condition = ((x >> 1) & 1) ^ (y & 1);
+							condition = ((fx >> 1) & 1) ^ (fy & 1);
 						}
-						if (condition) {
-							r = c1.r;
-							g = c1.g;
-							b = c1.b;
-						} else {
-							r = c2.r;
-							g = c2.g;
-							b = c2.b;
-						}
-					} else {
-						r = cr.r;
-						g = cr.g;
-						b = cr.b;
+						var o = 4 * (fy * (xres * scale) + fx)
+						imgData.data[o] = condition ? r1 : r2;
+						imgData.data[o + 1] = condition ? g1 : g2;
+						imgData.data[o + 2] = condition ? b1 : b2;
+						imgData.data[o + 3] = 255;
 					}
 				}
-				imgData.data[4 * (y * xres + x)] = r;
-				imgData.data[4 * (y * xres + x) + 1] = g;
-				imgData.data[4 * (y * xres + x) + 2] = b;
-				imgData.data[4 * (y * xres + x) + 3] = 255;
 			}
 		}
 		context.putImageData(imgData, 0, 0);
@@ -367,16 +373,17 @@ function bestMatch(r, g, b) {
 	return cr;
 }
 
-function colorspaceScreen() {
-	bytes = [];
+function getColorspaceScreen(s) {
+	colorspaceScreen = [];
 	var yres = 25;
-	var scale = 1;
 	var paths = '';
 	for (var y = 0; y < yres; y++) {
 		var xres = 40;
 		for (var x = 0; x < xres; x++) {
 			h = x * 360 / xres;
-			s = x ? 100 : 0;
+			if (s < 0) {
+				s = x ? 100 : 0;
+			}
 			l = y * 100 / yres;
 			rgb = RGBfromHSL(h, s, l);
 			var cr = bestMatch(rgb.r, rgb.g, rgb.b);
@@ -392,10 +399,10 @@ function colorspaceScreen() {
 				var i1 = cr.index;
 				var i2 = cr.index;
 			}
-			bytes.push(i1 << 4 | i2);
+			colorspaceScreen.push(i1 << 4 | i2);
 		}
 	}
-	return bytes;
+	return colorspaceScreen;
 }
 
 function combineColors(c1, c2, gamma) {
@@ -457,12 +464,13 @@ function imageFromColor(c) {
 
 var gSheet;
 var colors;
+var basecolors;
 
 function init() {
 	gSheet = document.createElement('style')
 	document.head.appendChild(gSheet);
 
-	drawColorspace("rgb_", false, 0);
+	drawColorspace("rgb_", null, false, 0);
 	document.getElementById("colorspace_rgb").style = 'display: none;';
 	reset();
 	refresh();
@@ -519,6 +527,8 @@ function refresh() {
 		c.lumadiff = -1;
 		colors.push(c);
 	}
+
+	basecolors = colors.slice(); // copy
 
 	//
 	// create mixed colors
@@ -758,15 +768,15 @@ function refresh() {
 	//
 	// fill BASIC text field 2
 	//
-	bytes = colorspaceScreen();
+	var colorspaceScreenBASIC = getColorspaceScreen(-1);
 	text_basic = ''
 	basic_line = ''
 	basic_lineno = 0;
-	for (var i = 0; i < bytes.length; i++) {
+	for (var i = 0; i < colorspaceScreenBASIC.length; i++) {
 		if (basic_line.length) {
 			basic_line += ',';
 		}
-		basic_line += '' + bytes[i];
+		basic_line += '' + colorspaceScreenBASIC[i];
 		if (basic_line.length > 65) {
 			text_basic += '' + basic_lineno + ' data' + basic_line + '\n';
 			basic_lineno += 1;
@@ -799,7 +809,11 @@ function refresh() {
 	//
 	// colorspace diagram
 	//
-	drawColorspace("mapped_", true, mixingstyle);
+	var colorspaceScreens = [];
+	colorspaceScreens.push(getColorspaceScreen(SATURATION_A));
+	colorspaceScreens.push(getColorspaceScreen(SATURATION_B));
+
+	drawColorspace("mapped_", colorspaceScreens, true, mixingstyle);
 
 	//
 	// all colors table
