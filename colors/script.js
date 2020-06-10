@@ -307,9 +307,10 @@ function drawColorspace(id, colorspaceMaps, mapped_colors, mixingstyle) {
 		for (var y = 0; y < yres; y++) {
 			for (var x = 0; x < xres; x++) {
 				if (mapped_colors) {
-					var i = colorspaceMaps[z][xres * y + x];
-					c1i = i >> 4;
-					c2i = i & 15;
+					var c = colorspaceMaps[z][xres * y + x];
+					var comp = componentsFromColor(c);
+					c1i = comp.i1;
+					c2i = comp.i2;
 					c1 = basecolors[c1i];
 					c2 = basecolors[c2i];
 					combinedColors = combineColors(c1, c2, gamma);
@@ -378,31 +379,20 @@ function bestMatch(r, g, b) {
 
 function getColorspaceMap(s) {
 	colorspaceMap = [];
+	var xres = 40;
 	var yres = 25;
-	var paths = '';
 	for (var y = 0; y < yres; y++) {
-		var xres = 40;
 		for (var x = 0; x < xres; x++) {
 			h = x * 360 / xres;
 			if (s < 0) {
-				s = x ? 100 : 0;
+				var fs = x ? 100 : 0;
+			} else {
+				var fs = s;
 			}
 			l = y * 100 / yres;
-			rgb = RGBfromHSL(h, s, l);
+			rgb = RGBfromHSL(h, fs, l);
 			var cr = bestMatch(rgb.r, rgb.g, rgb.b);
-			if (cr.component1) {
-				if (fc1.y > fc2.y) {
-					var i1 = cr.component1.index;
-					var i2 = cr.component2.index;
-				} else {
-					var i1 = cr.component2.index;
-					var i2 = cr.component1.index;
-				}
-			} else {
-				var i1 = cr.index;
-				var i2 = cr.index;
-			}
-			colorspaceMap.push(i1 << 4 | i2);
+			colorspaceMap.push(cr);
 		}
 	}
 	return colorspaceMap;
@@ -463,6 +453,18 @@ function imageFromColor(c) {
 	svg = svg.replace(/#/g, '%23');
 	image = "url('data:image/svg+xml;utf8," + svg + "')";
 	return image;
+}
+
+function componentsFromColor(c) {
+	if (c.component1) {
+		if (c.component1.y > c.component2.y) {
+			return {i1: c.component1.index, i2: c.component2.index};
+		} else {
+			return {i1: c.component2.index, i2: c.component1.index};
+		}
+	} else {
+		return {i1: c.index, i2: c.index};
+	}
 }
 
 var gSheet;
@@ -779,13 +781,30 @@ function refresh() {
 		if (basic_line.length) {
 			basic_line += ',';
 		}
-		basic_line += '' + colorspaceMapBASIC[i];
+		var c = colorspaceMapBASIC[i];
+		var comp = componentsFromColor(c);
+		basic_line += '' + comp.i1 << 4 | comp.i2;
 		if (basic_line.length > 65) {
 			text_basic += '' + basic_lineno + ' data' + basic_line + '\n';
 			basic_lineno += 1;
 			basic_line = '';
 		}
 	}
+
+	if (mixingstyle == 0) {
+		var p = 0x00;
+		var q = 0xff;
+	} else if (mixingstyle == 1) {
+		var p = 0x55;
+		var q = 0x55;
+	} else if (mixingstyle == 2) {
+		var p = 0xaa;
+		var q = 0x55;
+	} else if (mixingstyle == 3) {
+		var p = 0x33;
+		var q = 0xcc;
+	}
+
 	text_basic += '' + basic_lineno + ' data' + basic_line + '\n';
 	text_basic += '200 v=53248:g=8192:s=1024' + '\n';
 	text_basic += '210 fori=0to999:reada:pokes+i,a:next' + '\n';
@@ -793,7 +812,7 @@ function refresh() {
 	text_basic += '310 pokev+17,peek(v+17)or(11*16)' + '\n';
 	text_basic += '320 pokev+22,peek(v+22)and(255-16)' + '\n';
 	text_basic += '330 pokev+24,peek(v+24)or8' + '\n';
-	text_basic += '400 p=170:q=85:fori=gtog+7999step2:pokei,p:pokei+1,q:next' + '\n';
+	text_basic += '400 p=' + p + ':q=' + q + ':fori=gtog+7999step2:pokei,p:pokei+1,q:next' + '\n';
 	text_basic += '500 goto500' + '\n';
 	text_basic += 'run' + '\n';
 	document.getElementById("text_basic2_lower").innerHTML = text_basic;
