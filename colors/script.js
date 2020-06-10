@@ -786,13 +786,11 @@ function refresh() {
 			var hexcolor1 = hexFromRGB(component1.r, component1.g, component1.b);
 			var hexcolor2 = hexFromRGB(component2.r, component2.g, component2.b);
 
-			var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="1" shape-rendering="auto" viewBox="0 -.5 16 1" style="background-color: ' + hexcolor1 + ';">'
-			svg += '<path stroke="' + hexcolor2 + '" d="M0 0h8"></path>'
-			svg += '</svg>'
-			svg = svg.replace(/#/g, '%23');
-			image = "url('data:image/svg+xml;utf8," + svg + "')";
-			document.getElementById("ccol"+i).style.backgroundImage = image;
-			document.getElementById("ccol"+i).style.backgroundSize = '100%';
+			html = '<table><tr>'
+			html += '<td class="thincolbox" style="background-color: ' + hexcolor1 + '"></td>'
+			html += '<td class="thincolbox" style="background-color: ' + hexcolor2 + '"></td>'
+			html += '</tr></table>';
+			document.getElementById("ccol"+i).innerHTML = html;
 		}
 		if (showeffcol) {
 			document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
