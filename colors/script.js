@@ -476,7 +476,6 @@ function init() {
 	reset();
 
 	const queryString = window.location.search;
-	console.log(queryString);
 	const urlParams = new URLSearchParams(queryString);
 	if (urlParams.has('levels')) {
 		switch (urlParams.get('levels')) {
@@ -580,6 +579,46 @@ function refresh() {
 		maxlumadiff_div.style.pointerEvents = null;
 		maxlumadiff_div.style.opacity = null;
 	}
+
+	//
+	// Create Link
+	//
+	url =  window.location.href.substring(0, window.location.href.length-window.location.search.length);
+	url += '?levels=' + (lumalevels == 'mc' ? '9' : '5');
+	url += '&lumadiff=' + (mixedcols ? maxlumadiff : -1);
+	url += '&b=' + brightness;
+	url += '&c=' + contrast;
+	url += '&s=' + saturation;
+	url += '&g=' + (gamma / 10).toFixed(2);
+	url += '&sorby='
+	switch (sortby) {
+		case 0:
+			url += 'lumadiff';
+			break;
+		case 1:
+			url += 'hue';
+			break;
+		case 2:
+			url += 'luma';
+			break;
+	}
+	url += '&mix='
+	switch (mixingstyle) {
+		case 0:
+			url += 'h';
+			break;
+		case 1:
+			url += 'v';
+			break;
+		case 2:
+			url += 'c';
+			break;
+		case 3:
+			url += 'c2';
+			break;
+	}
+	document.getElementById("collink").href = url;
+
 
 	//
 	// create Colodore palette
