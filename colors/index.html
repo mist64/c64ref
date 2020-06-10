@@ -56,6 +56,11 @@ tr:target {
 	background-color: white;
 }
 
+.code {
+	overflow: scroll;
+	height: 100px;
+}
+
 </style>
 
 </head>
@@ -193,7 +198,7 @@ tr:target {
 					</td>
 					<td colspan="2">
 						<select name="sortby" id="sortby" onChange="refresh();">
-						    <option value="sortby0">Luma distance, index</option>
+						    <option value="sortby0">Luma diff, index</option>
 						    <option selected value="sortby1">Hue</option>
 						    <option value="sortby2">Luma</option>
 						</select>
@@ -255,30 +260,36 @@ tr:target {
 
 	<hr/>
 
-	<table id="allcoltab" border="1">
-	</table>
-
-	<br/>
-
 	<table border="1">
 		<tr>
 			<td>
+				<div class="code">
 				<button type="button" onclick="copyElement('hexcolors', 'hexcolors');">Copy</button>
 				<pre id="hexcolors"></pre>
+				</div>
 			</td>
 			<td>
+				<div class="code">
 				<button type="button" onclick="toggleCase('text_basic1_lower', 'text_basic1_upper');">Toggle Case</button>
 				<button type="button" onclick="copyElement('text_basic1_lower', 'text_basic1_upper');">Copy</button>
 				<pre id="text_basic1_lower"></pre>
 				<pre id="text_basic1_upper" style="display: none;"></pre>
+				</div>
 			</td>
 			<td>
+				<div class="code">
 				<button type="button" onclick="toggleCase('text_basic2_lower', 'text_basic2_upper');">Toggle Case</button>
 				<button type="button" onclick="copyElement('text_basic2_lower', 'text_basic2_upper');">Copy</button>
 				<pre id="text_basic2_lower"></pre>
 				<pre id="text_basic2_upper" style="display: none;"></pre>
+				</div>
 			</td>
 		</tr>
+	</table>
+
+	<hr/>
+
+	<table id="allcoltab" border="1">
 	</table>
 
 	</div>
