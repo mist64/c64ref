@@ -467,14 +467,10 @@ function componentsFromColor(c) {
 	}
 }
 
-var gSheet;
 var colors;
 var basecolors;
 
 function init() {
-	gSheet = document.createElement('style')
-	document.head.appendChild(gSheet);
-
 	drawColorspace("rgb_", null, false, 0);
 	document.getElementById("colorspace_rgb").style = 'display: none;';
 	reset();
@@ -492,7 +488,6 @@ function refresh() {
 
 	sortby = document.getElementById("sortby").selectedIndex;
 	mixingstyle = document.getElementById("mixingstyle").selectedIndex;
-	boxsize = document.getElementById("boxsize").value;
 	showcomponents = document.getElementById("showcomponents").checked;
 	showeffcol = document.getElementById("showeffcol").checked;
 	showmixedcol = document.getElementById("showmixedcol").checked;
@@ -624,20 +619,6 @@ function refresh() {
 	}
 
 	//
-	// create css
-	//
-	css = '';
-	css += '.colbox {';
-	css += '  border: none;';
-	css += '  border-collapse: collapse;';
-	css += '  padding: 0px;';
-	css += '  margin: 0px;';
-	css += '  width: ' + boxsize + ';';
-	css += '  height: ' + boxsize + ';';
-	css += '}';
-	gSheet.innerHTML = css;
-
-	//
 	// create cells
 	//
 	row0 = document.getElementById("row0");
@@ -712,7 +693,9 @@ function refresh() {
 		}
 		if (showmixedcol) {
 			var image = imageFromColor(c);
-			document.getElementById("mcol"+i).style.backgroundImage = image;
+			var td = document.getElementById("mcol"+i);
+			td.style.backgroundImage = image;
+			td.innerHTML = '<a href="#color' + i + '">&nbsp;</a>';
 		}
 		if (showluma) {
 			y = (Math.max(c.y, 0) / 307.2 * 255) | 0;
@@ -881,7 +864,7 @@ function refresh() {
 		var td;
 
 		td = document.createElement("td");
-		td.innerHTML = c.index;
+		td.innerHTML = '<a id="color' + i + '">' + c.index + '</a>';
 		tr.appendChild(td);
 
 		td = document.createElement("td");
