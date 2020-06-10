@@ -6,6 +6,11 @@
 <link rel="stylesheet" href="../style.css">
 <script src="script.js"></script>
 <style>
+
+h2 {
+	font-size: medium;
+}
+
 .colbox {
 	border: none;
 	border-collapse: collapse;
@@ -57,8 +62,23 @@ table.paltab > tbody > tr > td {
 	vertical-align: middle;
 }
 
+#allcoltab th:nth-child(6n + 8),
+#allcoltab th:nth-child(6n + 9),
+#allcoltab th:nth-child(6n + 10),
+#allcoltab td:nth-child(6n + 8),
+#allcoltab td:nth-child(6n + 9),
+#allcoltab td:nth-child(6n + 10) {
+	background: #f0f8ff;
+}
+
+#allcoltab td:last-child {
+	font-family: monospace;
+}
+
 #allcoltab td,th {
 	text-align: center;
+	vertical-align: middle;
+	padding: 0px 6px;
 }
 
 tr:target {
@@ -106,7 +126,6 @@ li:target {
 				<button type="button" onclick="preset(71);">71c</button>
 				<button type="button" onclick="preset(136);">136c</button>
 			</th>
-			<th>Mixed Colors</th>
 			<th>Adjustments</th>
 		</tr>
 		<tr><td>
@@ -156,23 +175,6 @@ li:target {
 					<td colspan="3" style="text-align: center;">
 						<b><span id="numcol"></span> colors</b><br/>
 						<a id="collink">Link to this Palette</a>
-					</td>
-				</tr>
-			</table>
-		</td>
-		<td>
-			<table>
-				<tr>
-					<td>
-						<label for="mixingstyle">Mixing Style<sup><a href="#note1">1</a></sup></label>
-					</td>
-					<td>
-						<select name="mixingstyle" id="mixingstyle" onChange="refresh();">
-						    <option selected value="mixingstyle0">Alternating Lines</option>
-						    <option value="mixingstyle1">Alternating Columns</option>
-						    <option value="mixingstyle2">Checkered</option>
-						    <option value="mixingstyle3">Checkered h2x</option>
-						</select>
 					</td>
 				</tr>
 			</table>
@@ -246,6 +248,14 @@ li:target {
 	<hr/>
 	<h2>Palette</h2>
 
+	<label for="mixingstyle">Mixing Style<sup><a href="#note1">1</a></sup></label>
+	<select name="mixingstyle" id="mixingstyle" onChange="refresh();">
+	    <option selected value="mixingstyle0">Alternating Lines</option>
+	    <option value="mixingstyle1">Alternating Columns</option>
+	    <option value="mixingstyle2">Checkered</option>
+	    <option value="mixingstyle3">Checkered h2x</option>
+	</select>
+
 	<input type="checkbox" id="showcomponents" onclick="refresh()">
 	<label for="showcomponents"><u>C</u>omponents</label>
 
@@ -289,10 +299,10 @@ li:target {
 	<table border="1">
 		<tr>
 			<th>
-				Palette BASIC Generator
+				Palette BASIC Demo
 			</th>
 			<th>
-				Colorspace Diagram BASIC Generator
+				Colorspace Diagram BASIC Demo
 			</th>
 			<th>
 				Hex

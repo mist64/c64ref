@@ -779,18 +779,16 @@ function refresh() {
 		if (showcomponents) {
 			component1 = c.component1;
 			component2 = c.component2;
-			if (!component1) {
-				component1 = c;
-				component2 = c;
-			}
-			var hexcolor1 = hexFromRGB(component1.r, component1.g, component1.b);
-			var hexcolor2 = hexFromRGB(component2.r, component2.g, component2.b);
+			if (component1) {
+				var hexcolor1 = hexFromRGB(component1.r, component1.g, component1.b);
+				var hexcolor2 = hexFromRGB(component2.r, component2.g, component2.b);
 
-			html = '<table><tr>'
-			html += '<td class="thincolbox" style="background-color: ' + hexcolor1 + '"></td>'
-			html += '<td class="thincolbox" style="background-color: ' + hexcolor2 + '"></td>'
-			html += '</tr></table>';
-			document.getElementById("ccol"+i).innerHTML = html;
+				html = '<table><tr>'
+				html += '<td class="thincolbox" style="background-color: ' + hexcolor1 + '"></td>'
+				html += '<td class="thincolbox" style="background-color: ' + hexcolor2 + '"></td>'
+				html += '</tr></table>';
+				document.getElementById("ccol"+i).innerHTML = html;
+			}
 		}
 		if (showeffcol) {
 			document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
@@ -1054,7 +1052,6 @@ function refresh() {
 
 		td = document.createElement("td");
 		td.innerHTML = hexFromRGB(c.r, c.g, c.b);
-		td.style.fontFamily = 'monospace';
 		tr.appendChild(td);
 	}
 }
