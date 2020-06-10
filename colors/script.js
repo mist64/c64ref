@@ -932,7 +932,7 @@ function refresh() {
 	allcoltab = document.getElementById("allcoltab");
 	var html = '';
 	html += '<tr>';
-	html += '<th>#</th>';
+	html += '<th>#<sup><a href="#note3">3</a></sup></th>';
 	html += '<th>mix</th>';
 	html += '<th>index 1</th>';
 	html += '<th>index 2</th>';

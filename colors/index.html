@@ -56,8 +56,14 @@ tr:target {
 	background-color: white;
 }
 
+li:target {
+	color: black;
+	background-color: white;
+}
+
 .code {
 	overflow: scroll;
+	width: 300px;
 	height: 100px;
 }
 
@@ -129,7 +135,7 @@ tr:target {
 				<tr>
 					<td colspan="3" style="text-align: center;">
 						<b><span id="numcol"></span> colors</b><br/>
-						<a id="collink">Copy Link to this Color</a>
+						<a id="collink">Link to this Palette</a>
 					</td>
 				</tr>
 			</table>
@@ -210,7 +216,7 @@ tr:target {
 				</tr>
 				<tr>
 					<td>
-						<label for="mixingstyle">Mixing Style</label>
+						<label for="mixingstyle">Mixing Style<sup><a href="#note2">2</a></sup></label>
 					</td>
 					<td>
 						<select name="mixingstyle" id="mixingstyle" onChange="refresh();">
@@ -262,17 +268,23 @@ tr:target {
 		</div>
 	</div>
 	<button type="button" onmousedown="hideColorspace(true);" onmouseup="hideColorspace(false);">Compare</button>
+		<sup><a href="#note1">1</a></sup>
 
 	<hr/>
 
 	<table border="1">
 		<tr>
-			<td>
-				<div class="code">
-				<button type="button" onclick="copyElement('hexcolors', 'hexcolors');">Copy</button>
-				<pre id="hexcolors"></pre>
-				</div>
-			</td>
+			<th>
+				Color Line Generator
+			</th>
+			<th>
+				Colorspace Diagram Generator
+			</th>
+			<th>
+				Hex
+			</th>
+		</tr>
+		<tr>
 			<td>
 				<div class="code">
 				<button type="button" onclick="toggleCase('text_basic1_lower', 'text_basic1_upper');">Toggle Case</button>
@@ -289,6 +301,12 @@ tr:target {
 				<pre id="text_basic2_upper" style="display: none;"></pre>
 				</div>
 			</td>
+			<td>
+				<div class="code">
+				<button type="button" onclick="copyElement('hexcolors', 'hexcolors');">Copy</button>
+				<pre id="hexcolors"></pre>
+				</div>
+			</td>
 		</tr>
 	</table>
 
@@ -297,26 +315,29 @@ tr:target {
 	<table id="allcoltab" border="1">
 	</table>
 
-	</div>
 
 	<textarea style="display: none;" id="i_text_basic"></textarea>
 
+
+	<h2>Notes</h2>
+
+	<ol>
+	<li id="note1">The mixed color previews average the chroma between two lines, approximating the effect on a real PAL system.</li>
+	<li id="note2">On a real system, *alternating columns* and *checkered* will produce nasty vertical low-frequency color stripes ("GEOS effect") for larger areas. The same is true for *checkered 2x* for lower luma diffs. The previews do not account for this.</li>
+	<li id="note3">The color index is defined as follows: The 16 base colors have their natural indexes. Mixed colors are sorted first by luma diff, then by the index of the first component with the lower index, then by the component with the higher index.</span></li>
+	</ol>
+
+	<h2>References</h2>
+
+	<ul>
+	<li><a href="https://www.pepto.de/projects/colorvic/">pepto: Calculating the color palette of the VIC II</a></li>
+	<li><a href="http://hitmen.c02.at/temp/palstuff/">groepaz: Accurately reproducing the Video Output of a Commodore C64</a></li>
+	<li><a href="https://kodiak64.com/blog/luma-driven-graphics-on-c64">Jon Woods: Luma-Driven Graphics on the Commodore 64</a></li>
+	<li><a href="https://ilesj.wordpress.com/2016/03/30/old-vic-ii-colors-and-color-blending/">Ilkka Sjöstedt: Old VIC-II Colors and Color Blending</a></li>
+	<li><a href="https://og2t.github.io/retro-palette-explorer/">Digger/Elysium: Retro Palette Explorer</a></li>
+	<li><a href="https://csdb.dk/forums/?roomid=13&topicid=90011&showallposts=1">CSDb User Forums: Joe's 136 colors technique</a></li>
+	</ul>
+
+	</div>
+
 </body>
-
-<h2>Notes</h2>
-
-<ul>
-<li>The mixed color previews average the chroma between two lines, approximating the effect on a real PAL system.</li>
-<li>On a real system, *alternating columns* and *checkered* will produce nasty vertical low-frequency color stripes ("GEOS effect") for larger areas. The same is true for *checkered 2x* for lower luma diffs. The previews do not account for this.</li>
-</ul>
-
-<h2>References</h2>
-
-<ul>
-<li><a href="https://www.pepto.de/projects/colorvic/">pepto: Calculating the color palette of the VIC II</a></li>
-<li><a href="http://hitmen.c02.at/temp/palstuff/">groepaz: Accurately reproducing the Video Output of a Commodore C64</a></li>
-<li><a href="https://kodiak64.com/blog/luma-driven-graphics-on-c64">Jon Woods: Luma-Driven Graphics on the Commodore 64</a></li>
-<li><a href="https://ilesj.wordpress.com/2016/03/30/old-vic-ii-colors-and-color-blending/">Ilkka Sjöstedt: Old VIC-II Colors and Color Blending</a></li>
-<li><a href="https://og2t.github.io/retro-palette-explorer/">Digger/Elysium: Retro Palette Explorer</a></li>
-<li><a href="https://csdb.dk/forums/?roomid=13&topicid=90011&showallposts=1">CSDb User Forums: Joe's 136 colors technique</a></li>
-</ul>
