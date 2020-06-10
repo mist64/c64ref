@@ -860,11 +860,12 @@ function refresh() {
 		}
 
 		var tr = document.createElement("tr");
+		tr.id = 'color' + i;
 		allcoltab.appendChild(tr);
 		var td;
 
 		td = document.createElement("td");
-		td.innerHTML = '<a id="color' + i + '">' + c.index + '</a>';
+		td.innerHTML = c.index;
 		tr.appendChild(td);
 
 		td = document.createElement("td");
