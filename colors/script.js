@@ -294,7 +294,7 @@ function deltaE(labA, labB){
 const SATURATION_A = 20;
 const SATURATION_B = 100;
 
-function drawColorspace(id, colorspaceScreens, mapped_colors, mixingstyle) {
+function drawColorspace(id, colorspaceMaps, mapped_colors, mixingstyle) {
 	var xres = 40;
 	var yres = 25;
 	var scale = 8;
@@ -307,11 +307,14 @@ function drawColorspace(id, colorspaceScreens, mapped_colors, mixingstyle) {
 		for (var y = 0; y < yres; y++) {
 			for (var x = 0; x < xres; x++) {
 				if (mapped_colors) {
-					var i = colorspaceScreens[z][xres * y + x];
+					var i = colorspaceMaps[z][xres * y + x];
 					c1i = i >> 4;
 					c2i = i & 15;
 					c1 = basecolors[c1i];
 					c2 = basecolors[c2i];
+					combinedColors = combineColors(c1, c2, gamma);
+					c1 = combinedColors.c1;
+					c2 = combinedColors.c2;
 
 					var r1 = c1.r;
 					var g1 = c1.g;
@@ -373,8 +376,8 @@ function bestMatch(r, g, b) {
 	return cr;
 }
 
-function getColorspaceScreen(s) {
-	colorspaceScreen = [];
+function getColorspaceMap(s) {
+	colorspaceMap = [];
 	var yres = 25;
 	var paths = '';
 	for (var y = 0; y < yres; y++) {
@@ -399,10 +402,10 @@ function getColorspaceScreen(s) {
 				var i1 = cr.index;
 				var i2 = cr.index;
 			}
-			colorspaceScreen.push(i1 << 4 | i2);
+			colorspaceMap.push(i1 << 4 | i2);
 		}
 	}
-	return colorspaceScreen;
+	return colorspaceMap;
 }
 
 function combineColors(c1, c2, gamma) {
@@ -450,8 +453,8 @@ function svgForColors(c1, c2, mixingstyle) {
 }
 
 function imageFromColor(c) {
-	component1 = c.fixedComponent1;
-	component2 = c.fixedComponent2;
+	component1 = c.combinedComponent1;
+	component2 = c.combinedComponent2;
 	if (!component1) {
 		component1 = c;
 		component2 = c;
@@ -578,9 +581,9 @@ function refresh() {
 						cm.component1 = c1;
 						cm.component2 = c2;
 						cm.lumadiff = lumadiff;
-						fixedColors = combineColors(c1, c2, gamma);
-						cm.fixedComponent1 = fixedColors.c1;
-						cm.fixedComponent2 = fixedColors.c2;
+						combinedColors = combineColors(c1, c2, gamma);
+						cm.combinedComponent1 = combinedColors.c1;
+						cm.combinedComponent2 = combinedColors.c2;
 						colors.push(cm);
 					}
 				}
@@ -768,15 +771,15 @@ function refresh() {
 	//
 	// fill BASIC text field 2
 	//
-	var colorspaceScreenBASIC = getColorspaceScreen(-1);
+	var colorspaceMapBASIC = getColorspaceMap(-1);
 	text_basic = ''
 	basic_line = ''
 	basic_lineno = 0;
-	for (var i = 0; i < colorspaceScreenBASIC.length; i++) {
+	for (var i = 0; i < colorspaceMapBASIC.length; i++) {
 		if (basic_line.length) {
 			basic_line += ',';
 		}
-		basic_line += '' + colorspaceScreenBASIC[i];
+		basic_line += '' + colorspaceMapBASIC[i];
 		if (basic_line.length > 65) {
 			text_basic += '' + basic_lineno + ' data' + basic_line + '\n';
 			basic_lineno += 1;
@@ -809,11 +812,11 @@ function refresh() {
 	//
 	// colorspace diagram
 	//
-	var colorspaceScreens = [];
-	colorspaceScreens.push(getColorspaceScreen(SATURATION_A));
-	colorspaceScreens.push(getColorspaceScreen(SATURATION_B));
+	var colorspaceMaps = [];
+	colorspaceMaps.push(getColorspaceMap(SATURATION_A));
+	colorspaceMaps.push(getColorspaceMap(SATURATION_B));
 
-	drawColorspace("mapped_", colorspaceScreens, true, mixingstyle);
+	drawColorspace("mapped_", colorspaceMaps, true, mixingstyle);
 
 	//
 	// all colors table
