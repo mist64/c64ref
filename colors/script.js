@@ -412,7 +412,6 @@ function getColorspaceMap2() {
 		}
 		var y = Math.floor(Math.min((c.y - 70) * 1.4, (resy - 1) * 10) / 10);
 //		var y = Math.floor(c.s / 100 * resy);
-//		console.log(c.y, y);
 
 		while (colorspaceMap[y * scrx + x] != 0) {
 			x++;
@@ -432,26 +431,25 @@ function getColorspaceMap2() {
 function getColorspaceMap3() {
 	// put colors into gray and colored buckets
 	sortedColors = []
-	sortedColors[0] = [];
-	sortedColors[1] = [];
+	grays = [];
+	nongrays = [];
 	for (var i = 0; i < colors.length; i++) {
 		var c = colors[i];
-		if (c.s < 15) {
-			sortedColors[0].push(c);
+		if (c.s < 5) {
+			grays.push(c);
 		} else {
-			sortedColors[1].push(c);
+			nongrays.push(c);
 		}
 	}
-	console.log(sortedColors[0]);
-	sortedColors[0] = sortedColors[0].sort((a,b)=>a.y-b.y);
+//	console.log(nongrays);
+	grays = grays.sort((a,b)=>a.y-b.y);
 
 	hs = new Set();
-	for (var i = 0; i < sortedColors[1].length; i++) {
-		hs.add(Math.floor(sortedColors[1][i].h));
+	for (var i = 0; i < nongrays.length; i++) {
+		hs.add(Math.floor(nongrays[i].h));
 	}
 	hs = Array.from(hs);
 	hs = hs.sort((a,b)=>a-b);
-//	console.log(hs);
 
 	const numBuckets = 9;
 
@@ -459,44 +457,28 @@ function getColorspaceMap3() {
 	for (var i = 1; i < numBuckets + 1; i++) {
 		bucketThresholds.push(hs[(i / (numBuckets) * (hs.length - 1)) | 0]);
 	}
-//	console.log(bucketThresholds);
 
-	var sortedColors2 = [];
+	var nongraysByHue = [];
 
-	for (var hBucket = 0; hBucket < numBuckets; hBucket++) {
-		sortedColors2[hBucket] = [];
+	for (var hueBucket = 0; hueBucket < numBuckets; hueBucket++) {
+		nongraysByHue[hueBucket] = [];
 	}
-	for (var i = 0; i < colors.length; i++) {
-		for (var hBucket = 0; hBucket < numBuckets; hBucket++) {
-			var c = colors[i];
-			if (Math.floor(c.h) < bucketThresholds[hBucket]) {
-				sortedColors2[hBucket].push(c);
+	for (var i = 0; i < nongrays.length; i++) {
+		for (var hueBucket = 0; hueBucket < numBuckets; hueBucket++) {
+			var c = nongrays[i];
+			if (Math.floor(c.h) < bucketThresholds[hueBucket]) {
+				nongraysByHue[hueBucket].push(c);
 				break;
 			}
 		}
 	}
 
-	for (var hBucket = 0; hBucket < numBuckets; hBucket++) {
-		sortedColors2[hBucket] = sortedColors2[hBucket].sort((a,b)=>a.y-b.y);
+//	console.log(nongraysByHue);
+
+	for (var hueBucket = 0; hueBucket < numBuckets; hueBucket++) {
+		nongraysByHue[hueBucket] = nongraysByHue[hueBucket].sort((a,b)=>a.y-b.y);
 	}
-
-
-//	console.log(sortedColors2);
-
-////	for (var hBucket = 0; hBucket < numBuckets; hBucket++) {
-//		ss = new Set();
-//		var bucketColors = colors;
-//		for (var i = 0; i < bucketColors.length; i++) {
-//			var c = bucketColors[i];
-//			ss.add(Math.floor(colors[i].s));
-//		}
-//		ss = Array.from(ss);
-//		ss = ss.sort((a,b)=>a-b);
-//		ss = ss.slice(1, ss.length - 1); // remove black and white
-//		console.log(hBucket, ss);
-////	}
-
-
+//	console.log(nongraysByHue);
 
 
 
@@ -508,19 +490,18 @@ function getColorspaceMap3() {
 	const scrx = 40;
 
 	var x = 0;
-	for (var i = 0; i < sortedColors[0].length; i++) {
-		var c = sortedColors[0][i];
+	for (var i = 0; i < grays.length; i++) {
+		var c = grays[i];
 		y = 0;
 		colorspaceMap[y * scrx + x] = c;
 		x++;
 	}
 
-	for (var hBucket = 0; hBucket < numBuckets; hBucket++) {
+	for (var hueBucket = 0; hueBucket < numBuckets; hueBucket++) {
 		var x = 0;
-		var bucketColors = sortedColors2[hBucket];
-		for (var i = 0; i < bucketColors.length; i++) {
-			var c = bucketColors[i];
-			y = hBucket + 1;
+		for (var i = 0; i < nongraysByHue[hueBucket].length; i++) {
+			var c = nongraysByHue[hueBucket][i];
+			y = hueBucket + 2;
 			colorspaceMap[y * scrx + x] = c;
 			x++;
 		}
@@ -823,7 +804,7 @@ function refresh() {
 		var c = convert(compose(i, lumalevels, brightness, contrast, saturation), gamma);
 		c.index = i;
 		c.description = i;
-		var hsl = HSLfromRGB(c.r, c.g, c.b).h;
+		var hsl = HSLfromRGB(c.r, c.g, c.b);
 		c.h = hsl.h;
 		c.s = hsl.s;
 		c.lumadiff = -1;
@@ -873,7 +854,6 @@ function refresh() {
 		}
 		colors = colors_new;
 	}
-//	console.log(colors.length);
 
 
 	//
@@ -1123,7 +1103,6 @@ function refresh() {
 //	}
 //	usedColors = Array.from(usedColors);
 //	usedColors = usedColors.sort((a,b)=>a-b);
-//	console.log(usedColors);
 //	for (var j = 1; j < usedColors.length; j++) {
 //		var i = usedColors[j];
 //		colors[i].y = 0;
