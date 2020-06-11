@@ -415,7 +415,6 @@ function getColorspaceMap2() {
 //		console.log(c.y, y);
 
 		while (colorspaceMap[y * scrx + x] != 0) {
-			console.log('x');
 			x++;
 //			if (colorspaceMap[y * scrx + x] != 0) {
 //				y++;
@@ -427,6 +426,54 @@ function getColorspaceMap2() {
 		colorspaceMap[y * scrx + x + scrx] = c;
 		colorspaceMap[y * scrx + x + scrx + 1] = c;
 	}
+	return colorspaceMap;
+}
+
+function getColorspaceMap3() {
+	ys = [];//new Set();
+	for (var i = 0; i < colors.length; i++) {
+		ys.push(Math.floor(colors[i].y));
+	}
+	ys = Array.from(ys);
+	ys = ys.sort((a,b)=>a-b);
+	ys = ys.slice(1, ys.length - 1); // remove black and white
+	console.log(ys);
+
+	const numBuckets = 10;
+
+	var bucketThresholds = [];
+	for (var i = 1; i < numBuckets + 1; i++) {
+		bucketThresholds.push(ys[(i / (numBuckets) * (ys.length - 1)) | 0]);
+	}
+	console.log(bucketThresholds);
+
+	colorspaceMap = [];
+	for (var i = 0; i < 1000; i++) {
+		colorspaceMap.push(0);
+	}
+
+	const scrx = 40;
+
+	for (var j = 0; j < numBuckets; j++) {
+		var x = 0;
+		for (var i = 0; i < colors.length; i++) {
+			var c = colors[i];
+			if (Math.floor(c.y) > bucketThresholds[j]) {
+				continue;
+			}
+			if (j && Math.floor(c.y) <= bucketThresholds[j - 1]) {
+				continue;
+			}
+
+			y = j;
+			colorspaceMap[y * scrx + x] = c;
+//				colorspaceMap[y * scrx + x + 1] = c;
+//				colorspaceMap[y * scrx + x + scrx] = c;
+//				colorspaceMap[y * scrx + x + scrx + 1] = c;
+			x++;
+		}
+	}
+
 	return colorspaceMap;
 }
 
@@ -971,7 +1018,7 @@ function refresh() {
 	// Create Colorspace Diagram BASIC Demo
 	//
 //	var colorspaceMapBASIC = getColorspaceMap(-1);
-	var colorspaceMapBASIC = getColorspaceMap2();
+	var colorspaceMapBASIC = getColorspaceMap3();
 	var data = []
 	for (var i = 0; i < 1000; i++) {
 		var c = colorspaceMapBASIC[i];
@@ -1005,7 +1052,7 @@ function refresh() {
 	colorspaceMaps.push(getColorspaceMap(SATURATION_A));
 //	colorspaceMaps.push(getColorspaceMap(SATURATION_B));
 
-	colorspaceMaps.push(getColorspaceMap2());
+	colorspaceMaps.push(getColorspaceMap3());
 
 
 	drawColorspace("mapped_", colorspaceMaps, true, mixingstyle);
