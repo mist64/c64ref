@@ -309,28 +309,15 @@ function drawColorspace(id, colorspaceMaps, mapped_colors, mixingstyle) {
 				if (mapped_colors) {
 					var c = colorspaceMaps[z][xres * y + x];
 					var comp = componentsFromColor(c);
-					c1i = comp.i1;
-					c2i = comp.i2;
-					c1 = basecolors[c1i];
-					c2 = basecolors[c2i];
-
-					var r1 = c1.r;
-					var g1 = c1.g;
-					var b1 = c1.b;
-					var r2 = c2.r;
-					var g2 = c2.g;
-					var b2 = c2.b;
+					var c1 = comp.c1;
+					var c2 = comp.c2;
 				} else {
 					h = x * 360 / xres;
 					s = z ? SATURATION_B : SATURATION_A;
 					l = y * 100 / yres;
 					c = RGBfromHSL(h, s, l);
-					var r1 = c.r;
-					var g1 = c.g;
-					var b1 = c.b;
-					var r2 = r1;
-					var g2 = g1;
-					var b2 = b1;
+					var c1 = c;
+					var c2 = c;
 				}
 				for (var x1 = 0; x1 < scale; x1++) {
 					for (var y1 = 0; y1 < scale; y1++) {
@@ -346,13 +333,15 @@ function drawColorspace(id, colorspaceMaps, mapped_colors, mixingstyle) {
 							} else if (mixingstyle == 3) {
 								condition = ((fx >> 1) & 1) ^ (fy & 1);
 							}
+						} else if (c.f == .25) {
+							condition = !((fx & 1) | (fy & 1));
 						} else {
 							condition = (fx & 1) | (fy & 1);
 						}
 						var o = 4 * (fy * (xres * scale) + fx)
-						imgData.data[o] = condition ? r1 : r2;
-						imgData.data[o + 1] = condition ? g1 : g2;
-						imgData.data[o + 2] = condition ? b1 : b2;
+						imgData.data[o] = condition ? c1.r : c2.r;
+						imgData.data[o + 1] = condition ? c1.g : c2.g;
+						imgData.data[o + 2] = condition ? c1.b : c2.b;
 						imgData.data[o + 3] = 255;
 					}
 				}
@@ -379,6 +368,10 @@ function bestMatch(rgb) {
 }
 
 function getColorspaceMap(s) {
+	function f(x) {
+		return (Math.pow(x, 1.5));
+	}
+
 	colorspaceMap = [];
 	var xres = 40;
 	var yres = 25;
@@ -390,7 +383,7 @@ function getColorspaceMap(s) {
 			} else {
 				var fs = s;
 			}
-			l = y * 100 / yres;
+			l = f(y / yres) * yres * 100 / yres;
 			rgb = RGBfromHSL(h, fs, l);
 			var cr = bestMatch(rgb);
 			colorspaceMap.push(cr);
@@ -474,9 +467,9 @@ function imageFromColor(c) {
 
 function componentsFromColor(c) {
 	if (c.component1) {
-		return {i1: c.component1.index, i2: c.component2.index};
+		return {c1: c.component1, c2: c.component2};
 	} else {
-		return {i1: c.index, i2: c.index};
+		return {c1: c, c2: c};
 	}
 }
 
@@ -534,7 +527,6 @@ function createBASICProgram(data, comment) {
 }
 
 var colors;
-var basecolors;
 
 function init() {
 	drawColorspace("rgb_", null, false, 0);
@@ -700,8 +692,6 @@ function refresh() {
 		c.lumadiff = -1;
 		colors.push(c);
 	}
-
-	basecolors = colors.slice(); // copy
 
 	//
 	// create mixed colors
@@ -968,7 +958,7 @@ function refresh() {
 	for (var i = 0; i < colorspaceMapBASIC.length; i++) {
 		var c = colorspaceMapBASIC[i];
 		var comp = componentsFromColor(c);
-		data.push(comp.i1 << 4 | comp.i2);
+		data.push(comp.c1.index << 4 | comp.c2.index);
 		switch (c.f) {
 			case .25: data.push(0); break;
 			case .5:  data.push(1); break;
