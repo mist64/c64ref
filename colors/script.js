@@ -441,7 +441,7 @@ function getColorspaceMap3() {
 
 
 
-	var hueBucketThresholds = [ 20, 60, 90, 160, 200, 265, 330 ];
+	var hueBucketThresholds = [ 10, 60, 90, 160, 200, 260, 340 ];
 //	console.log(hueBucketThresholds);
 	const hueBuckets = hueBucketThresholds.length;
 
