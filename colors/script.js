@@ -291,64 +291,59 @@ function deltaE(labA, labB){
   return i < 0 ? 0 : Math.sqrt(i);
 }
 
-const SATURATION_A = 20;
-const SATURATION_B = 100;
-
-function drawColorspace(id, colorspaceMaps, mapped_colors, mixingstyle) {
+function drawColorspace(id, colorspaceMap, mapped_colors, mixingstyle) {
 	var xres = 40;
 	var yres = 25;
 	var scale = 8;
-	for (var z = 0; z < 2; z++) {
-		var canvas = document.getElementById(id+z);
-		canvas.width = xres * scale;
-		canvas.height = yres * scale;
-		var context = canvas.getContext('2d');
-		var imgData = context.getImageData(0, 0, canvas.width, canvas.height);
-		for (var y = 0; y < yres; y++) {
-			for (var x = 0; x < xres; x++) {
-				if (mapped_colors) {
-					var c = colorspaceMaps[z][xres * y + x];
-					var comp = componentsFromColor(c);
-					var c1 = comp.c1;
-					var c2 = comp.c2;
-				} else {
-					h = x * 360 / xres;
-					s = z ? SATURATION_B : SATURATION_A;
-					l = y * 100 / yres;
-					c = RGBfromHSL(h, s, l);
-					var c1 = c;
-					var c2 = c;
-				}
-				for (var x1 = 0; x1 < scale; x1++) {
-					for (var y1 = 0; y1 < scale; y1++) {
-						var fx = x * scale + x1;
-						var fy = y * scale + y1;
-						if (c.f == .5) {
-							if (mixingstyle == 0) {
-								condition = fy & 1;
-							} else if (mixingstyle == 1) {
-								condition = fx & 1;
-							} else if (mixingstyle == 2) {
-								condition = (fx & 1) ^ (fy & 1);
-							} else if (mixingstyle == 3) {
-								condition = ((fx >> 1) & 1) ^ (fy & 1);
-							}
-						} else if (c.f == .25) {
-							condition = !((fx & 1) | (fy & 1));
-						} else {
-							condition = (fx & 1) | (fy & 1);
+	var canvas = document.getElementById(id);
+	canvas.width = xres * scale;
+	canvas.height = yres * scale;
+	var context = canvas.getContext('2d');
+	var imgData = context.getImageData(0, 0, canvas.width, canvas.height);
+	for (var y = 0; y < yres; y++) {
+		for (var x = 0; x < xres; x++) {
+			if (mapped_colors) {
+				var c = colorspaceMap[xres * y + x];
+				var comp = componentsFromColor(c);
+				var c1 = comp.c1;
+				var c2 = comp.c2;
+			} else {
+				h = x * 360 / xres;
+				s = 100;
+				l = y * 100 / yres;
+				c = RGBfromHSL(h, s, l);
+				var c1 = c;
+				var c2 = c;
+			}
+			for (var x1 = 0; x1 < scale; x1++) {
+				for (var y1 = 0; y1 < scale; y1++) {
+					var fx = x * scale + x1;
+					var fy = y * scale + y1;
+					if (c.f == .5) {
+						if (mixingstyle == 0) {
+							condition = fy & 1;
+						} else if (mixingstyle == 1) {
+							condition = fx & 1;
+						} else if (mixingstyle == 2) {
+							condition = (fx & 1) ^ (fy & 1);
+						} else if (mixingstyle == 3) {
+							condition = ((fx >> 1) & 1) ^ (fy & 1);
 						}
-						var o = 4 * (fy * (xres * scale) + fx)
-						imgData.data[o] = condition ? c1.r : c2.r;
-						imgData.data[o + 1] = condition ? c1.g : c2.g;
-						imgData.data[o + 2] = condition ? c1.b : c2.b;
-						imgData.data[o + 3] = 255;
+					} else if (c.f == .25) {
+						condition = !((fx & 1) | (fy & 1));
+					} else {
+						condition = (fx & 1) | (fy & 1);
 					}
+					var o = 4 * (fy * (xres * scale) + fx)
+					imgData.data[o] = condition ? c1.r : c2.r;
+					imgData.data[o + 1] = condition ? c1.g : c2.g;
+					imgData.data[o + 2] = condition ? c1.b : c2.b;
+					imgData.data[o + 3] = 255;
 				}
 			}
 		}
-		context.putImageData(imgData, 0, 0);
 	}
+	context.putImageData(imgData, 0, 0);
 }
 
 function bestMatch(rgb) {
@@ -441,29 +436,13 @@ function getColorspaceMap3() {
 			nongrays.push(c);
 		}
 	}
-//	console.log(nongrays);
 	grays = grays.sort((a,b)=>a.y-b.y);
 
-//	hs = new Set();
-//	for (var i = 0; i < nongrays.length; i++) {
-//		hs.add(Math.floor(nongrays[i].h));
-//	}
-//	hs = Array.from(hs);
-//	hs = hs.sort((a,b)=>a-b);
-//
-//	const hueBuckets = 12;
-//
-//	var hueBucketThresholds = [];
-//	for (var i = 1; i < hueBuckets + 1; i++) {
-//		hueBucketThresholds.push(hs[(i / (hueBuckets) * (hs.length - 1)) | 0]);
-//	}
 
-	var hueBucketThresholds = [ 0, 30, 70, 120, 180, 240, 320, 360 ];
-	for (var i = 0; i < hueBucketThresholds.length - 1; i++) {
-		hueBucketThresholds[i] = (hueBucketThresholds[i] + hueBucketThresholds[i+1]) / 2;
-	}
-	hueBucketThresholds = hueBucketThresholds.splice(0, hueBucketThresholds.length - 1);
-	console.log(hueBucketThresholds);
+
+
+	var hueBucketThresholds = [ 20, 60, 90, 160, 200, 265, 330 ];
+//	console.log(hueBucketThresholds);
 	const hueBuckets = hueBucketThresholds.length;
 
 	var nongraysByHue = [];
@@ -479,7 +458,6 @@ function getColorspaceMap3() {
 				good = true;
 			}
 			if (Math.floor(c.h) < hueBucketThresholds[hueBucket]) {
-				console.log('x');
 				good = true;
 			}
 			if (good) {
@@ -492,7 +470,14 @@ function getColorspaceMap3() {
 //	console.log(nongraysByHue);
 
 	for (var hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
-		nongraysByHue[hueBucket] = nongraysByHue[hueBucket].sort((a,b)=>a.y-b.y);
+		function sort_hue(a,b) {
+//			if (a.s - b.s < 1) {
+				return a.y - b.y;
+//			} else {
+//				return a.s - b.s;
+//			}
+		}
+		nongraysByHue[hueBucket] = nongraysByHue[hueBucket].sort(sort_hue);
 	}
 //	console.log(nongraysByHue);
 
@@ -519,7 +504,7 @@ function getColorspaceMap3() {
 				x1 = i;
 				x2 = x1;
 			}
-			y = hueBucket;
+			y = 24 - hueBuckets + hueBucket;
 			for (var xx = x1; xx <= x2; xx++) {
 				colorspaceMap[y * scrx + xx] = c;
 			}
@@ -530,7 +515,6 @@ function getColorspaceMap3() {
 	var l = grays.length;
 	for (var i = 0; i < l; i++) {
 		var c = grays[i];
-		y = 0;
 		x1 = Math.floor(i / l * (scrx - 1));
 		if (spread) {
 			x2 = Math.floor((i + 1) / l * (scrx - 1));
@@ -538,9 +522,25 @@ function getColorspaceMap3() {
 			x1 = i;
 			x2 = x1;
 		}
-		y = hueBuckets + 1;
+		y = 24;
 		for (var xx = x1; xx <= x2; xx++) {
 			colorspaceMap[y * scrx + xx] = c;
+		}
+	}
+
+	function f(x) {
+		return Math.pow(x, 1.5);
+	}
+
+	var xres = 40;
+	var yres = 25 - hueBuckets - 2;
+	for (var y = 0; y < yres; y++) {
+		for (var x = 0; x < xres; x++) {
+			h = x * 360 / xres;
+			l = f(y / yres) * yres * 100 / yres;
+			rgb = RGBfromHSL(h, 100, l);
+			var c = bestMatch(rgb);
+			colorspaceMap[y * scrx + x] = c;
 		}
 	}
 
@@ -657,10 +657,10 @@ function createBASICProgram(data, comment) {
 
 	text += '200 v=53248:g=8192+16384:s=1024+16384' + '\n';
 
-	text += '210 t(0)=85:u(0)=0' + '\n';
-	text += '220 t(1)=0:u(1)=255' + '\n';
-	text += '230 t(2)=85:u(2)=255' + '\n';
-	text += '240 t(3)=0:u(3)=0' + '\n';
+	text += '240 t(0)=0:u(0)=0' + '\n';
+	text += '210 t(1)=85:u(1)=0' + '\n';
+	text += '220 t(2)=0:u(2)=255' + '\n';
+	text += '230 t(3)=85:u(3)=255' + '\n';
 
 	text += '300 poke56576,peek(56576)and254' + '\n';
 	text += '310 pokev+32,0' + '\n';
@@ -684,7 +684,7 @@ function createBASICProgram(data, comment) {
 var colors;
 
 function init() {
-	drawColorspace("rgb_", null, false, 0);
+	drawColorspace("rgb", null, false, 0);
 	document.getElementById("colorspace_rgb").style = 'display: none;';
 	reset();
 
@@ -1061,10 +1061,10 @@ function refresh() {
 		}
 		data.push(i1 << 4 | i2);
 		switch (c.f) {
-			case .25: data.push(0); break;
-			case .5:  data.push(1); break;
-			case .75: data.push(2); break;
-			default:  data.push(3); break;
+			case .25: data.push(1); break;
+			case .5:  data.push(2); break;
+			case .75: data.push(3); break;
+			default:  data.push(0); break;
 		}
 	}
 
@@ -1088,7 +1088,6 @@ function refresh() {
 	//
 	// Create Colorspace Diagram BASIC Demo
 	//
-//	var colorspaceMapBASIC = getColorspaceMap(-1);
 	var colorspaceMapBASIC = getColorspaceMap3();
 	var data = []
 	for (var i = 0; i < 1000; i++) {
@@ -1096,10 +1095,10 @@ function refresh() {
 		var comp = componentsFromColor(c);
 		data.push(comp.c1.index << 4 | comp.c2.index);
 		switch (c.f) {
-			case .25: data.push(0); break;
-			case .5:  data.push(1); break;
-			case .75: data.push(2); break;
-			default:  data.push(3); break;
+			case .25: data.push(1); break;
+			case .5:  data.push(2); break;
+			case .75: data.push(3); break;
+			default:  data.push(0); break;
 		}
 	}
 	text_basic = createBASICProgram(data, '');
@@ -1120,13 +1119,8 @@ function refresh() {
 	// colorspace diagram
 	//
 	var colorspaceMaps = [];
-	colorspaceMaps.push(getColorspaceMap(SATURATION_A));
-//	colorspaceMaps.push(getColorspaceMap(SATURATION_B));
 
-	colorspaceMaps.push(getColorspaceMap3());
-
-
-	drawColorspace("mapped_", colorspaceMaps, true, mixingstyle);
+	drawColorspace("mapped", getColorspaceMap3(), true, mixingstyle);
 
 //	// analyze how many colors are used in the diagram
 //	for (var i = 0; i < colors.length; i++) {
