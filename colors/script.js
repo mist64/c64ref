@@ -770,9 +770,6 @@ function refresh() {
 	// fill cells with colors
 	//
 	text_hexcolors = '';
-	text_basic = '';
-	basic_lineno = 100;
-	basic_line = '';
 	for (var i = 0; i < colors.length; i++) {
 		c = colors[i];
 		hexcolor = hexFromRGB(c.r, c.g, c.b);
@@ -807,7 +804,17 @@ function refresh() {
 
 		// hex colors
 		text_hexcolors += hexcolor + '\n';
+	}
 
+
+	//
+	// Create Palette BASIC Demo
+	//
+	text_basic = '0 rem ' + colors.length + ' colors\n';
+	basic_lineno = 100;
+	basic_line = '';
+	for (var i = 0; i < colors.length; i++) {
+		c = colors[i];
 		// BASIC
 		if (basic_line.length) {
 			basic_line += ',';
@@ -828,7 +835,7 @@ function refresh() {
 		basic_line += '' + (i1 << 4 | i2);
 		if (basic_line.length > 65) {
 			text_basic += '' + basic_lineno + ' data' + basic_line + '\n';
-			basic_lineno += 10;
+			basic_lineno += 1;
 			basic_line = '';
 		}
 	}
@@ -859,9 +866,24 @@ function refresh() {
 	// fill BASIC text field 2
 	//
 	var colorspaceMapBASIC = getColorspaceMap(-1);
-	text_basic = ''
+	text_basic = '0 rem ' + colors.length + ' colors, ';
+	switch (mixingstyle) {
+		case 0:
+			text_basic += 'alternating lines';
+			break;
+		case 1:
+			text_basic += 'alternating columns';
+			break;
+		case 2:
+			text_basic += 'checkered';
+			break;
+		case 3:
+			text_basic += 'checkered h2x';
+			break;
+	}
+	text_basic += '\n';
 	basic_line = ''
-	basic_lineno = 0;
+	basic_lineno = 100;
 	for (var i = 0; i < colorspaceMapBASIC.length; i++) {
 		if (basic_line.length) {
 			basic_line += ',';
@@ -876,18 +898,15 @@ function refresh() {
 		}
 	}
 
-	if (mixingstyle == 0) {
-		var p = 0x00;
-		var q = 0xff;
-	} else if (mixingstyle == 1) {
-		var p = 0x55;
-		var q = 0x55;
-	} else if (mixingstyle == 2) {
-		var p = 0xaa;
-		var q = 0x55;
-	} else if (mixingstyle == 3) {
-		var p = 0x33;
-		var q = 0xcc;
+	switch (mixingstyle) {
+		case 0:
+			var p = 0x00; var q = 0xff; break;
+		case 1:
+			var p = 0x55; var q = 0x55; break;
+		case 2:
+			var p = 0xaa; var q = 0x55; break;
+		case 3:
+			var p = 0x33; var q = 0xcc; break;
 	}
 
 	text_basic += '' + basic_lineno + ' data' + basic_line + '\n';
