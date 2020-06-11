@@ -467,6 +467,32 @@ function componentsFromColor(c) {
 	}
 }
 
+function createBASICDataLines(data) {
+	var text = '';
+	var line = '';
+	var lineno = 100;
+	var start_of_line = true;
+	for (var i = 0; i < data.length; i++) {
+		if (!start_of_line) {
+			line += ',';
+			start_of_line = false;
+		}
+		start_of_line = false;
+		var a = data[i];
+		if (a) {
+			line += '' + a;
+		}
+		if (line.length > 65) {
+			text += '' + lineno + ' data' + line + '\n';
+			lineno += 1;
+			line = '';
+			start_of_line = true;
+		}
+	}
+	text += '' + lineno + ' data' + line + '\n';
+	return text;
+}
+
 var colors;
 var basecolors;
 
@@ -810,15 +836,26 @@ function refresh() {
 	//
 	// Create Palette BASIC Demo
 	//
-	text_basic = '0 rem ' + colors.length + ' colors\n';
-	basic_lineno = 100;
-	basic_line = '';
+	text_basic_header = '0 rem ' + colors.length + ' colors\n';
+	text_basic_header += '1 rem sorted by ';
+	switch (sortby) {
+		case 0:
+			text_basic_header += 'lumadiff';
+			break;
+		case 1:
+			text_basic_header += 'hue';
+			break;
+		case 2:
+			text_basic_header += 'luma';
+			break;
+	}
+	text_basic_header += '\n';
+	text_basic = text_basic_header;
+	text_basic += '2 rem\n';
+
+	data = [];
 	for (var i = 0; i < colors.length; i++) {
 		c = colors[i];
-		// BASIC
-		if (basic_line.length) {
-			basic_line += ',';
-		}
 		var i1 = null, i2 = null;
 		if (c.component1) {
 			if (c.component1.y > c.component2.y) {
@@ -832,27 +869,22 @@ function refresh() {
 			i1 = c.index;
 			i2 = c.index;
 		}
-		basic_line += '' + (i1 << 4 | i2);
-		if (basic_line.length > 65) {
-			text_basic += '' + basic_lineno + ' data' + basic_line + '\n';
-			basic_lineno += 1;
-			basic_line = '';
-		}
+		data.push(i1 << 4 | i2);
 	}
-	text_basic += '' + basic_lineno + ' data' + basic_line + '\n';
+	text_basic += createBASICDataLines(data);
 
 	text_basic += '200 v=53248:g=8192:s0=1024:s1=s0+200:s2=s0+2*200:s3=s0+3*200' + '\n';
 	text_basic += '210 fori=0to999:pokes0+i,0:next' + '\n';
+	text_basic += '215 fori=0to' + (colors.length - 1) + ':reada:pokes0+i,a:pokes1+i,a:pokes2+i,a:pokes3+i,a:next' + '\n';
 	text_basic += '220 p=0:q=255:fori=gtog+1087step2:pokei,p:pokei+1,q:next' + '\n';
 	text_basic += '230 p=170:q=p:fori=g+1600tog+1600+1087step2:pokei,p:pokei+1,q:next' + '\n';
 	text_basic += '240 p=170:q=85:fori=g+2*1600tog+2*1600+1087step2:pokei,p:pokei+1,q:next' + '\n';
 	text_basic += '250 p=51:q=204:fori=g+3*1600tog+3*1600+1087step2:pokei,p:pokei+1,q:next' + '\n';
-	text_basic += '260 pokev+32,0' + '\n';
-	text_basic += '270 pokev+17,peek(v+17)or(11*16)' + '\n';
-	text_basic += '280 pokev+22,peek(v+22)and(255-16)' + '\n';
-	text_basic += '290 pokev+24,peek(v+24)or8' + '\n';
-	text_basic += '300 fori=0to' + (colors.length - 1) + ':reada:pokes0+i,a:pokes1+i,a:pokes2+i,a:pokes3+i,a:next' + '\n';
-	text_basic += '310 goto310' + '\n';
+	text_basic += '400 pokev+32,0' + '\n';
+	text_basic += '410 pokev+17,peek(v+17)or(11*16)' + '\n';
+	text_basic += '420 pokev+22,peek(v+22)and(255-16)' + '\n';
+	text_basic += '430 pokev+24,peek(v+24)or8' + '\n';
+	text_basic += '440 goto440' + '\n';
 	text_basic += 'run' + '\n';
 	text_basic += '\n';
 
@@ -866,7 +898,8 @@ function refresh() {
 	// fill BASIC text field 2
 	//
 	var colorspaceMapBASIC = getColorspaceMap(-1);
-	text_basic = '0 rem ' + colors.length + ' colors, ';
+	text_basic = text_basic_header;
+	text_basic += '2 rem mixing: '
 	switch (mixingstyle) {
 		case 0:
 			text_basic += 'alternating lines';
@@ -882,21 +915,16 @@ function refresh() {
 			break;
 	}
 	text_basic += '\n';
+	text_basic += '3 rem\n';
 	basic_line = ''
-	basic_lineno = 100;
+
+	var data = []
 	for (var i = 0; i < colorspaceMapBASIC.length; i++) {
-		if (basic_line.length) {
-			basic_line += ',';
-		}
 		var c = colorspaceMapBASIC[i];
 		var comp = componentsFromColor(c);
-		basic_line += '' + comp.i1 << 4 | comp.i2;
-		if (basic_line.length > 65) {
-			text_basic += '' + basic_lineno + ' data' + basic_line + '\n';
-			basic_lineno += 1;
-			basic_line = '';
-		}
+		data.push(comp.i1 << 4 | comp.i2);
 	}
+	text_basic += createBASICDataLines(data);
 
 	switch (mixingstyle) {
 		case 0:
@@ -909,7 +937,6 @@ function refresh() {
 			var p = 0x33; var q = 0xcc; break;
 	}
 
-	text_basic += '' + basic_lineno + ' data' + basic_line + '\n';
 	text_basic += '200 v=53248:g=8192:s=1024' + '\n';
 	text_basic += '210 fori=0to999:reada:pokes+i,a:next' + '\n';
 	text_basic += '300 pokev+32,0' + '\n';
