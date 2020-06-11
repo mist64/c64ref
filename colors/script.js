@@ -324,10 +324,10 @@ function drawColorspace(id, colorspaceMaps, mapped_colors, mixingstyle) {
 					h = x * 360 / xres;
 					s = z ? SATURATION_B : SATURATION_A;
 					l = y * 100 / yres;
-					rgb = RGBfromHSL(h, s, l);
-					var r1 = rgb.r;
-					var g1 = rgb.g;
-					var b1 = rgb.b;
+					c = RGBfromHSL(h, s, l);
+					var r1 = c.r;
+					var g1 = c.g;
+					var b1 = c.b;
 					var r2 = r1;
 					var g2 = g1;
 					var b2 = b1;
@@ -336,14 +336,18 @@ function drawColorspace(id, colorspaceMaps, mapped_colors, mixingstyle) {
 					for (var y1 = 0; y1 < scale; y1++) {
 						var fx = x * scale + x1;
 						var fy = y * scale + y1;
-						if (mixingstyle == 0) {
-							condition = fy & 1;
-						} else if (mixingstyle == 1) {
-							condition = fx & 1;
-						} else if (mixingstyle == 2) {
-							condition = (fx & 1) ^ (fy & 1);
-						} else if (mixingstyle == 3) {
-							condition = ((fx >> 1) & 1) ^ (fy & 1);
+						if (c.f == .5) {
+							if (mixingstyle == 0) {
+								condition = fy & 1;
+							} else if (mixingstyle == 1) {
+								condition = fx & 1;
+							} else if (mixingstyle == 2) {
+								condition = (fx & 1) ^ (fy & 1);
+							} else if (mixingstyle == 3) {
+								condition = ((fx >> 1) & 1) ^ (fy & 1);
+							}
+						} else {
+							condition = (fx & 1) & (1 - (fy & 1));
 						}
 						var o = 4 * (fy * (xres * scale) + fx)
 						imgData.data[o] = condition ? r1 : r2;
@@ -710,7 +714,7 @@ function refresh() {
 		//
 		var colors_new = []
 		for (var i = 0; i < colors.length; i++) {
-			if (colors[i].lumadiff < maxlumadiff) {
+			if (colors[i].lumadiff < maxlumadiff + .001) { // float ftw!
 				colors_new.push(colors[i]);
 			}
 		}
@@ -758,13 +762,13 @@ function refresh() {
 			return a.y - b.y;
 		}
 	}
-//	if (sortby == 0) {
-//		colors.sort(compare_lumadiff_index);
-//	} else if (sortby == 1) {
-//		colors.sort(compare_h);
-//	} else {
-//		colors.sort(compare_y);
-//	}
+	if (sortby == 0) {
+		colors.sort(compare_lumadiff_index);
+	} else if (sortby == 1) {
+		colors.sort(compare_h);
+	} else {
+		colors.sort(compare_y);
+	}
 
 	//
 	// create cells
@@ -823,8 +827,22 @@ function refresh() {
 				var hexcolor2 = hexFromRGB(component2.r, component2.g, component2.b);
 
 				html = '<table><tr>'
-				html += '<td class="thincolbox" style="background-color: ' + hexcolor1 + '"></td>'
-				html += '<td class="thincolbox" style="background-color: ' + hexcolor2 + '"></td>'
+				switch (c.f) {
+					case .25:
+						var style1 = 'thincolbox25';
+						var style2 = 'thincolbox75';
+						break;
+					case .5:
+						var style1 = 'thincolbox50';
+						var style2 = 'thincolbox50';
+						break;
+					case .75:
+						var style1 = 'thincolbox75';
+						var style2 = 'thincolbox25';
+						break;
+				}
+				html += '<td class="' + style1 + '" style="background-color: ' + hexcolor1 + '"></td>'
+				html += '<td class="' + style2 + '" style="background-color: ' + hexcolor2 + '"></td>'
 				html += '</tr></table>';
 				document.getElementById("ccol"+i).innerHTML = html;
 			}
