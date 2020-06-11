@@ -887,15 +887,11 @@ function refresh() {
 	text_basic += '440 goto440' + '\n';
 	text_basic += 'run' + '\n';
 	text_basic += '\n';
-
-	//
-	// fill BASIC text field 1
-	//
 	document.getElementById("text_basic1_lower").innerHTML = text_basic;
 	document.getElementById("text_basic1_upper").innerHTML = text_basic.toUpperCase();
 
 	//
-	// fill BASIC text field 2
+	// Create Colorspace Diagram BASIC Demo
 	//
 	var colorspaceMapBASIC = getColorspaceMap(-1);
 	text_basic = text_basic_header;
@@ -965,7 +961,6 @@ function refresh() {
 	var colorspaceMaps = [];
 	colorspaceMaps.push(getColorspaceMap(SATURATION_A));
 	colorspaceMaps.push(getColorspaceMap(SATURATION_B));
-
 	drawColorspace("mapped_", colorspaceMaps, true, mixingstyle);
 
 	//
