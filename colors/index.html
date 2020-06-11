@@ -77,6 +77,7 @@ table.paltab > tbody > tr > td {
 	padding: 4px;
 }
 
+
 table.code_table td {
 	padding: 4px;
 }
@@ -119,6 +120,21 @@ li:target {
 	height: 100px;
 }
 
+/* forcing td in relation to the one marked with vertical to behave differently */
+.vertical-adjust {
+	vertical-align: middle;
+}
+
+.vertical {
+   writing-mode: vertical-rl;
+   transform:rotate(180deg);
+   width: 1em;
+   padding: 2px;
+   margin: 0px;
+   border: solid 1.5px black;
+   font-weight: bold;
+}
+
 </style>
 
 </head>
@@ -142,19 +158,35 @@ li:target {
 		<tr>
 			<th>
 				Palette
-				<button type="button" onclick="preset(16);">16c</button>
-				<button type="button" onclick="preset(23);">23c</button>
-				<button type="button" onclick="preset(39);">39c</button>
-				<button type="button" onclick="preset(55);">55c</button>
-				<button type="button" onclick="preset(71);">71c</button>
-				<button type="button" onclick="preset(136);">136c</button>
 			</th>
 			<th>Adjustments</th>
 		</tr>
 		<tr><td>
 			<table>
 				<tr>
+					<td class="vertical-adjust" rowspan="3"><span class="vertical">PRESETS</span></td>
+					<td>Plain</td>
 					<td>
+						<button type="button" onclick="preset(0, 0);">16c</button>
+					</td>
+				</tr>
+				<tr>
+					<td class="vertical-adjust">50% Mix</td>
+					<td class="vertical-adjust">
+						<button type="button" onclick="preset(1, 0);">23c</button>
+						<button type="button" onclick="preset(1, 30);">39c</button>
+					</td>
+				</tr>
+				<tr style="border-bottom: 1px solid black;">
+					<td class="vertical-adjust">25/50/75% Mix</td>
+					<td class="vertical-adjust">
+						<button type="button" onclick="preset(2, 0);">37c</button>
+						<button type="button" onclick="preset(2, 20);">73c</button>
+						<button type="button" onclick="preset(2, 40);">133c</button>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
 						<label for="lumalevels">VIC-II Rev</label>
 					</td>
 					<td colspan="2">
@@ -165,7 +197,7 @@ li:target {
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td colspan="2">
 						<label for="mixedcols">Mixed Colors</label>
 					</td>
 					<td colspan="2">
@@ -176,8 +208,8 @@ li:target {
 						</select>
 					</td>
 				</tr>
-				<tr id="maxlumadiff_div">
-					<td>
+				<tr id="maxlumadiff_div" style="border-bottom: 1px solid black;">
+					<td colspan="2">
 						<label for="maxlumadiff">Max Luma Diff</label>
 					</td>
 					<td>
@@ -187,8 +219,8 @@ li:target {
 						<span id="maxlumadiff_val"></span>
 					</td>
 				</tr>
-				<tr>
-					<td>
+				<tr style="border-bottom: 1px solid black;">
+					<td colspan="2">
 						<label for="sortby">Sort by</label>
 					</td>
 					<td colspan="2">
@@ -200,7 +232,7 @@ li:target {
 					</td>
 				</tr>
 				<tr>
-					<td colspan="3" style="text-align: center;">
+					<td colspan="4" style="text-align: center;">
 						<b><span id="numcol"></span> colors</b><br/>
 						<a id="collink">Link to this Palette</a>
 					</td>

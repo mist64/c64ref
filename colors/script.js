@@ -1292,35 +1292,9 @@ function hideColorspace(hide) {
 	}
 }
 
-function preset(numcol) {
-	var maxlumadiff;
-	switch (numcol) {
-		case 16:
-			maxlumadiff = -1;
-			break;
-		case 23:
-			maxlumadiff = 0;
-			break;
-		case 39:
-			maxlumadiff = 10;
-			break;
-		case 55:
-			maxlumadiff = 20;
-			break;
-		case 71:
-			maxlumadiff = 30;
-			break;
-		case 136:
-			maxlumadiff = 40;
-			break;
-	}
-	if (maxlumadiff >= 0) {
-		document.getElementById("mixedcols").selectedIndex = 1;
-		document.getElementById("maxlumadiff").value = maxlumadiff / 10;
-	} else {
-		document.getElementById("mixedcols").selectedIndex = 0;
-	}
-	document.getElementById("lumalevels").selectedIndex = 1;
+function preset(mixedcols, maxlumadiff) {
+	document.getElementById("mixedcols").selectedIndex = mixedcols;
+	document.getElementById("maxlumadiff").value = maxlumadiff / 10;
 	refresh();
 }
 
