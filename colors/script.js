@@ -392,6 +392,44 @@ function getColorspaceMap(s) {
 	return colorspaceMap;
 }
 
+function getColorspaceMap2() {
+	colorspaceMap = [];
+	for (var i = 0; i < 1000; i++) {
+		colorspaceMap.push(0);
+	}
+
+	const scrx = 40;
+	const resx = 40;
+	const resy = 25;
+
+	for (var i = 0; i < colors.length; i++) {
+		var c = colors[i];
+		hsl = HSLfromRGB(c.r, c.g, c.b);
+		if (hsl.s == 0) {
+			x = 0;
+		} else {
+			x = Math.floor(c.h / 360 * (resx - 1) + 1);
+		}
+		var y = Math.floor(Math.min((c.y - 70) * 1.4, (resy - 1) * 10) / 10);
+//		var y = Math.floor(c.s / 100 * resy);
+//		console.log(c.y, y);
+
+		while (colorspaceMap[y * scrx + x] != 0) {
+			console.log('x');
+			x++;
+//			if (colorspaceMap[y * scrx + x] != 0) {
+//				y++;
+//			}
+		}
+
+		colorspaceMap[y * scrx + x] = c;
+		colorspaceMap[y * scrx + x + 1] = c;
+		colorspaceMap[y * scrx + x + scrx] = c;
+		colorspaceMap[y * scrx + x + scrx + 1] = c;
+	}
+	return colorspaceMap;
+}
+
 //function combineColors(c1, c2, f) {
 //	var hsl1 = HSLfromRGB(c1.r * f + c2.r * (1 - f), c1.g * f + c2.g * (1 - f), c1.b * f + c2.b * (1 - f));
 //	var hsl2 = HSLfromRGB(c2.r * f + c1.r * (1 - f), c2.g * f + c1.g * (1 - f), c2.b * f + c1.b * (1 - f));
@@ -740,9 +778,6 @@ function refresh() {
 	//
 	// Sort
 	//
-	function compare_y(a, b) {
-		return a.y - b.y;
-	}
 	function compare_h(a, b) {
 		if (a.h <= 0 && b.h <= 0) {
 			// both gray? then sort by Y
@@ -792,7 +827,7 @@ function refresh() {
 	} else if (sortby == 1) {
 		colors.sort(compare_h);
 	} else {
-		colors.sort(compare_y);
+		colors.sort((a,b)=>a.y-b.y);
 	}
 
 	//
@@ -935,28 +970,10 @@ function refresh() {
 	//
 	// Create Colorspace Diagram BASIC Demo
 	//
-	var colorspaceMapBASIC = getColorspaceMap(-1);
-//	text_basic += '2 rem mixing: '
-//	switch (mixingstyle) {
-//		case 0:
-//			text_basic += 'alternating lines';
-//			break;
-//		case 1:
-//			text_basic += 'alternating columns';
-//			break;
-//		case 2:
-//			text_basic += 'checkered';
-//			break;
-//		case 3:
-//			text_basic += 'checkered h2x';
-//			break;
-//	}
-//	text_basic += '\n';
-//	text_basic += '3 rem\n';
-//	basic_line = ''
-
+//	var colorspaceMapBASIC = getColorspaceMap(-1);
+	var colorspaceMapBASIC = getColorspaceMap2();
 	var data = []
-	for (var i = 0; i < colorspaceMapBASIC.length; i++) {
+	for (var i = 0; i < 1000; i++) {
 		var c = colorspaceMapBASIC[i];
 		var comp = componentsFromColor(c);
 		data.push(comp.c1.index << 4 | comp.c2.index);
@@ -986,8 +1003,30 @@ function refresh() {
 	//
 	var colorspaceMaps = [];
 	colorspaceMaps.push(getColorspaceMap(SATURATION_A));
-	colorspaceMaps.push(getColorspaceMap(SATURATION_B));
+//	colorspaceMaps.push(getColorspaceMap(SATURATION_B));
+
+	colorspaceMaps.push(getColorspaceMap2());
+
+
 	drawColorspace("mapped_", colorspaceMaps, true, mixingstyle);
+
+//	// analyze how many colors are used in the diagram
+//	for (var i = 0; i < colors.length; i++) {
+//		colors[i].localIndex = i;
+//	}
+//	var usedColors = new Set();
+//	for (var j = 0; j < 2; j++) {
+//		for (var i = 0 ; i < colorspaceMaps[j].length; i++) {
+//			usedColors.add(colorspaceMaps[j][i].localIndex);
+//		}
+//	}
+//	usedColors = Array.from(usedColors);
+//	usedColors = usedColors.sort((a,b)=>a-b);
+//	console.log(usedColors);
+//	for (var j = 1; j < usedColors.length; j++) {
+//		var i = usedColors[j];
+//		colors[i].y = 0;
+//	}
 
 	//
 	// all colors table
