@@ -435,7 +435,7 @@ function getColorspaceMap3() {
 	nongrays = [];
 	for (var i = 0; i < colors.length; i++) {
 		var c = colors[i];
-		if (c.s < 25) {
+		if (c.s < 15) {
 			grays.push(c);
 		} else {
 			nongrays.push(c);
@@ -444,19 +444,27 @@ function getColorspaceMap3() {
 //	console.log(nongrays);
 	grays = grays.sort((a,b)=>a.y-b.y);
 
-	hs = new Set();
-	for (var i = 0; i < nongrays.length; i++) {
-		hs.add(Math.floor(nongrays[i].h));
-	}
-	hs = Array.from(hs);
-	hs = hs.sort((a,b)=>a-b);
+//	hs = new Set();
+//	for (var i = 0; i < nongrays.length; i++) {
+//		hs.add(Math.floor(nongrays[i].h));
+//	}
+//	hs = Array.from(hs);
+//	hs = hs.sort((a,b)=>a-b);
+//
+//	const hueBuckets = 12;
+//
+//	var hueBucketThresholds = [];
+//	for (var i = 1; i < hueBuckets + 1; i++) {
+//		hueBucketThresholds.push(hs[(i / (hueBuckets) * (hs.length - 1)) | 0]);
+//	}
 
-	const hueBuckets = 12;
-
-	var hueBucketThresholds = [];
-	for (var i = 1; i < hueBuckets + 1; i++) {
-		hueBucketThresholds.push(hs[(i / (hueBuckets) * (hs.length - 1)) | 0]);
+	var hueBucketThresholds = [ 0, 30, 70, 120, 180, 240, 320, 360 ];
+	for (var i = 0; i < hueBucketThresholds.length - 1; i++) {
+		hueBucketThresholds[i] = (hueBucketThresholds[i] + hueBucketThresholds[i+1]) / 2;
 	}
+	hueBucketThresholds = hueBucketThresholds.splice(0, hueBucketThresholds.length - 1);
+	console.log(hueBucketThresholds);
+	const hueBuckets = hueBucketThresholds.length;
 
 	var nongraysByHue = [];
 
@@ -466,7 +474,15 @@ function getColorspaceMap3() {
 	for (var i = 0; i < nongrays.length; i++) {
 		for (var hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
 			var c = nongrays[i];
+			var good = false;
+			if (hueBucket == 0 && Math.floor(c.h) > hueBucketThresholds[hueBucketThresholds.length - 1]) {
+				good = true;
+			}
 			if (Math.floor(c.h) < hueBucketThresholds[hueBucket]) {
+				console.log('x');
+				good = true;
+			}
+			if (good) {
 				nongraysByHue[hueBucket].push(c);
 				break;
 			}
@@ -490,6 +506,7 @@ function getColorspaceMap3() {
 	const scrx = 40;
 
 	const spread = false;
+//	const spread = true;
 
 	for (var hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
 		var l = nongraysByHue[hueBucket].length;
