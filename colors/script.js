@@ -796,39 +796,57 @@ function refresh() {
 	url = window.location.href;
 	url =  url.split('?')[0];
 	url =  url.split('#')[0];
-	url += '?levels=' + (lumalevels == 'mc' ? '9' : '5');
-	url += '&mixedcols=' + mixedcols;
-	url += '&lumadiff=' + maxlumadiff;
-	url += '&b=' + brightness;
-	url += '&c=' + contrast;
-	url += '&s=' + saturation;
-	url += '&g=' + gamma.toFixed(1);
-	url += '&sortby='
-	switch (sortby) {
-		case 0:
-			url += 'lumadiff';
-			break;
-		case 1:
-			url += 'hue';
-			break;
-		case 2:
-			url += 'luma';
-			break;
+	if (lumalevels != 'mc') {
+		url += '?levels=' + (lumalevels == 'mc' ? '9' : '5');
 	}
-	url += '&mix='
-	switch (mixingstyle) {
-		case 0:
-			url += 'h';
-			break;
-		case 1:
-			url += 'v';
-			break;
-		case 2:
-			url += 'c';
-			break;
-		case 3:
-			url += 'c2';
-			break;
+	if (mixedcols != 0) {
+		url += '&mixedcols=' + mixedcols;
+	}
+	if (maxlumadiff != 0) {
+		url += '&lumadiff=' + maxlumadiff;
+	}
+	if (brightness != 50) {
+		url += '&b=' + brightness;
+	}
+	if (contrast != 100) {
+		url += '&c=' + contrast;
+	}
+	if (saturation != 50) {
+		url += '&s=' + saturation;
+	}
+	if (gamma != 2.8) {
+		url += '&g=' + gamma.toFixed(1);
+	}
+	if (sortby != 1) {
+		url += '&sortby='
+		switch (sortby) {
+			case 0:
+				url += 'lumadiff';
+				break;
+			case 1:
+				url += 'hue';
+				break;
+			case 2:
+				url += 'luma';
+				break;
+		}
+	}
+	if (mixingstyle != 0) {
+		url += '&mix='
+		switch (mixingstyle) {
+			case 0:
+				url += 'h';
+				break;
+			case 1:
+				url += 'v';
+				break;
+			case 2:
+				url += 'c';
+				break;
+			case 3:
+				url += 'c2';
+				break;
+		}
 	}
 	document.getElementById("collink").href = url;
 
@@ -1293,6 +1311,7 @@ function hideColorspace(hide) {
 }
 
 function preset(mixedcols, maxlumadiff) {
+	document.getElementById("lumalevels").selectedIndex = 1; // new VIC-II
 	document.getElementById("mixedcols").selectedIndex = mixedcols;
 	document.getElementById("maxlumadiff").value = maxlumadiff / 10;
 	refresh();
