@@ -347,7 +347,7 @@ function drawColorspace(id, colorspaceMaps, mapped_colors, mixingstyle) {
 								condition = ((fx >> 1) & 1) ^ (fy & 1);
 							}
 						} else {
-							condition = (fx & 1) & (1 - (fy & 1));
+							condition = (fx & 1) | (fy & 1);
 						}
 						var o = 4 * (fy * (xres * scale) + fx)
 						imgData.data[o] = condition ? r1 : r2;
@@ -474,18 +474,17 @@ function imageFromColor(c) {
 
 function componentsFromColor(c) {
 	if (c.component1) {
-		if (c.component1.y > c.component2.y) {
-			return {i1: c.component1.index, i2: c.component2.index};
-		} else {
-			return {i1: c.component2.index, i2: c.component1.index};
-		}
+		return {i1: c.component1.index, i2: c.component2.index};
 	} else {
 		return {i1: c.index, i2: c.index};
 	}
 }
 
-function createBASICDataLines(data) {
-	var text = '';
+function createBASICProgram(data, comment) {
+	var text = '0 rem ' + colors.length + ' colors\n';
+	text += '1 rem ' + comment + '\n';
+	text += '2 rem\n';
+
 	var line = '';
 	var lineno = 100;
 	var start_of_line = true;
@@ -499,14 +498,38 @@ function createBASICDataLines(data) {
 		if (a) {
 			line += '' + a;
 		}
-		if (line.length > 65) {
-			text += '' + lineno + ' data' + line + '\n';
+		if (line.length > 68) {
+			text += '' + lineno + 'data' + line + '\n';
 			lineno += 1;
 			line = '';
 			start_of_line = true;
 		}
 	}
-	text += '' + lineno + ' data' + line + '\n';
+	text += '' + lineno + 'data' + line + '\n';
+
+	text += '200 v=53248:g=8192+16384:s=1024+16384' + '\n';
+
+	text += '210 t(0)=85:u(0)=0' + '\n';
+	text += '220 t(1)=0:u(1)=255' + '\n';
+	text += '230 t(2)=85:u(2)=255' + '\n';
+	text += '240 t(3)=0:u(3)=0' + '\n';
+
+	text += '300 poke56576,peek(56576)and254' + '\n';
+	text += '310 pokev+32,0' + '\n';
+	text += '320 pokev+17,peek(v+17)or(11*16)' + '\n';
+	text += '330 pokev+22,peek(v+22)and(255-16)' + '\n';
+	text += '340 pokev+24,peek(v+24)or8' + '\n';
+
+	text += '400 fori=0to' + (data.length / 2 - 1) + ':reada:readb:pokes+i,a' + '\n';
+	text += '410 forj=g+i*8tog+i*8+7step2:pokej,t(b):pokej+1,u(b):next' + '\n';
+	text += '420 next' + '\n';
+
+	text += '430 fori=ito999:pokes+i,0:next' + '\n';
+
+	text += '640 goto640' + '\n';
+
+	text += 'run' + '\n';
+	text += '\n';
 	return text;
 }
 
@@ -535,7 +558,7 @@ function init() {
 		lumadiff = urlParams.get('lumadiff');
 		if (lumadiff >= 0) {
 			document.getElementById("mixedcols").checked = true;
-			document.getElementById("maxlumadiff").value = lumadiff;
+			document.getElementById("maxlumadiff").value = lumadiff / 10;
 		} else {
 			document.getElementById("mixedcols").checked = false;
 		}
@@ -588,7 +611,7 @@ function init() {
 function refresh() {
 	lumalevels = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
 	mixedcols = document.getElementById("mixedcols").checked;
-	maxlumadiff = parseInt(document.getElementById("maxlumadiff").value);
+	maxlumadiff = parseInt(document.getElementById("maxlumadiff").value) * 10;
 	brightness = document.getElementById("brightness").value;
 	contrast = document.getElementById("contrast").value;
 	saturation = document.getElementById("saturation").value;
@@ -743,7 +766,6 @@ function refresh() {
 		return a.h - b.h;
 	}
 	function compare_lumadiff_index(a, b) {
-		// XXX FIX!
 		if (!a.component1 && !b.component1) {
 			// both primary colors
 			return a.index - b.index;
@@ -882,74 +904,40 @@ function refresh() {
 	//
 	// Create Palette BASIC Demo
 	//
-	text_basic_header = '0 c=' + colors.length + ':rem colors\n';
-	text_basic_header += '1 rem sorted by ';
-	switch (sortby) {
-		case 0:
-			text_basic_header += 'luma diff';
-			break;
-		case 1:
-			text_basic_header += 'hue';
-			break;
-		case 2:
-			text_basic_header += 'luma';
-			break;
-	}
-	text_basic_header += '\n';
-	text_basic = text_basic_header;
-	text_basic += '2 rem\n';
-
 	data = [];
 	for (var i = 0; i < colors.length; i++) {
 		c = colors[i];
 		var i1 = null, i2 = null;
 		if (c.component1) {
-			if (c.component1.y > c.component2.y) {
-				i1 = c.component1.index;
-				i2 = c.component2.index;
-			} else {
-				i1 = c.component2.index;
-				i2 = c.component1.index;
-			}
+			i1 = c.component1.index;
+			i2 = c.component2.index;
 		} else {
 			i1 = c.index;
 			i2 = c.index;
 		}
 		data.push(i1 << 4 | i2);
 		switch (c.f) {
-			case .25:
-				data.push(0x55, 255);
-				break;
-			case .5:
-				data.push(0,255);
-				break;
-			case .75:
-				data.push(0x55, 0);
-				break;
-			default:
-				data.push(0,0);
-				break;
+			case .25: data.push(0); break;
+			case .5:  data.push(1); break;
+			case .75: data.push(2); break;
+			default:  data.push(3); break;
 		}
 	}
-	text_basic += createBASICDataLines(data);
 
-	text_basic += '200 v=53248:g=8192:s0=1024:s1=s0+200:s2=s0+2*200:s3=s0+3*200' + '\n';
+	var comment = 'sorted by ';
+	switch (sortby) {
+		case 0:
+			comment += 'luma diff';
+			break;
+		case 1:
+			comment += 'hue';
+			break;
+		case 2:
+			comment += 'luma';
+			break;
+	}
+	text_basic = createBASICProgram(data, comment);
 
-	text_basic += '300 pokev+32,0' + '\n';
-	text_basic += '310 pokev+17,peek(v+17)or(11*16)' + '\n';
-	text_basic += '320 pokev+22,peek(v+22)and(255-16)' + '\n';
-	text_basic += '330 pokev+24,peek(v+24)or8' + '\n';
-
-	text_basic += '400 fori=0toc-1:reada:readp:readq:pokes0+i,a' + '\n';
-	text_basic += '410 forj=g+i*8tog+i*8+7step2:pokej,p:pokej+1,q:next' + '\n';
-	text_basic += '420 next' + '\n';
-
-	text_basic += '430 fori=ito999:pokes0+i,0:next' + '\n';
-
-	text_basic += '640 goto640' + '\n';
-
-	text_basic += 'run' + '\n';
-	text_basic += '\n';
 	document.getElementById("text_basic1_lower").innerHTML = text_basic;
 	document.getElementById("text_basic1_upper").innerHTML = text_basic.toUpperCase();
 
@@ -957,54 +945,38 @@ function refresh() {
 	// Create Colorspace Diagram BASIC Demo
 	//
 	var colorspaceMapBASIC = getColorspaceMap(-1);
-	text_basic = text_basic_header;
-	text_basic += '2 rem mixing: '
-	switch (mixingstyle) {
-		case 0:
-			text_basic += 'alternating lines';
-			break;
-		case 1:
-			text_basic += 'alternating columns';
-			break;
-		case 2:
-			text_basic += 'checkered';
-			break;
-		case 3:
-			text_basic += 'checkered h2x';
-			break;
-	}
-	text_basic += '\n';
-	text_basic += '3 rem\n';
-	basic_line = ''
+//	text_basic += '2 rem mixing: '
+//	switch (mixingstyle) {
+//		case 0:
+//			text_basic += 'alternating lines';
+//			break;
+//		case 1:
+//			text_basic += 'alternating columns';
+//			break;
+//		case 2:
+//			text_basic += 'checkered';
+//			break;
+//		case 3:
+//			text_basic += 'checkered h2x';
+//			break;
+//	}
+//	text_basic += '\n';
+//	text_basic += '3 rem\n';
+//	basic_line = ''
 
 	var data = []
 	for (var i = 0; i < colorspaceMapBASIC.length; i++) {
 		var c = colorspaceMapBASIC[i];
 		var comp = componentsFromColor(c);
 		data.push(comp.i1 << 4 | comp.i2);
+		switch (c.f) {
+			case .25: data.push(0); break;
+			case .5:  data.push(1); break;
+			case .75: data.push(2); break;
+			default:  data.push(3); break;
+		}
 	}
-	text_basic += createBASICDataLines(data);
-
-	switch (mixingstyle) {
-		case 0:
-			var p = 0x00; var q = 0xff; break;
-		case 1:
-			var p = 0x55; var q = 0x55; break;
-		case 2:
-			var p = 0xaa; var q = 0x55; break;
-		case 3:
-			var p = 0x33; var q = 0xcc; break;
-	}
-
-	text_basic += '200 v=53248:g=8192:s=1024' + '\n';
-	text_basic += '210 fori=0to999:reada:pokes+i,a:next' + '\n';
-	text_basic += '300 pokev+32,0' + '\n';
-	text_basic += '310 pokev+17,peek(v+17)or(11*16)' + '\n';
-	text_basic += '320 pokev+22,peek(v+22)and(255-16)' + '\n';
-	text_basic += '330 pokev+24,peek(v+24)or8' + '\n';
-	text_basic += '400 p=' + p + ':q=' + q + ':fori=gtog+7999step2:pokei,p:pokei+1,q:next' + '\n';
-	text_basic += '500 goto500' + '\n';
-	text_basic += 'run' + '\n';
+	text_basic = createBASICProgram(data, '');
 	document.getElementById("text_basic2_lower").innerHTML = text_basic;
 	document.getElementById("text_basic2_upper").innerHTML = text_basic.toUpperCase();
 
@@ -1107,11 +1079,7 @@ function refresh() {
 		tr.appendChild(td);
 
 		td = document.createElement("td");
-		if (c.component1) {
-			y = (c.component1.y + c.component2.y) / 2;
-		} else {
-			y = c.y;
-		}
+		y = c.y;
 		td.innerHTML = y.toFixed(1);
 		if (y < 128) {
 			td.style.color = 'white';
@@ -1207,7 +1175,7 @@ function preset(numcol) {
 	}
 	if (maxlumadiff >= 0) {
 		document.getElementById("mixedcols").checked = true;
-		document.getElementById("maxlumadiff").value = maxlumadiff;
+		document.getElementById("maxlumadiff").value = maxlumadiff / 10;
 	} else {
 		document.getElementById("mixedcols").checked = false;
 	}
