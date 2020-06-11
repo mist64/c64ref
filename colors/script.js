@@ -749,17 +749,29 @@ function refresh() {
 			return a.index - b.index;
 		}
 		if (!a.component1) {
-			// primary color
+			// first is a primary color
 			return -1;
 		}
-		if (!a.component2) {
-			// primary color
-			return -1;
+		if (!b.component1) {
+			// second is a primary color
+			return 1;
 		}
-		if (a.y == b.y) {
-			return a.index - b.index;
+		var cmp = a.lumadiff - b.lumadiff;
+		if (cmp != 0) {
+			return cmp;
 		} else {
-			return a.y - b.y;
+			cmp = a.component1.index - b.component1.index;
+			if (cmp != 0) {
+				return cmp;
+			} else {
+				cmp = a.component2.index - b.component2.index;
+				if (cmp != 0) {
+					return cmp;
+				} else {
+					cmp = a.f - b.f;
+					return cmp;
+				}
+			}
 		}
 	}
 	if (sortby == 0) {
@@ -1024,6 +1036,7 @@ function refresh() {
 	html += '<th>mix</th>';
 	html += '<th>index 1</th>';
 	html += '<th>index 2</th>';
+	html += '<th>f</th>';
 	html += '<th>c1</th>';
 	html += '<th>c2</th>';
 	html += '<th>luma diff</th>';
@@ -1073,6 +1086,10 @@ function refresh() {
 
 		td = document.createElement("td");
 		td.innerHTML = ci2;
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		td.innerHTML = c.f ? c.f : '';
 		tr.appendChild(td);
 
 		td = document.createElement("td");
@@ -1176,16 +1193,16 @@ function preset(numcol) {
 			maxlumadiff = 0;
 			break;
 		case 39:
-			maxlumadiff = 35;
+			maxlumadiff = 10;
 			break;
 		case 55:
-			maxlumadiff = 48;
+			maxlumadiff = 20;
 			break;
 		case 71:
-			maxlumadiff = 70;
+			maxlumadiff = 30;
 			break;
 		case 136:
-			maxlumadiff = 310;
+			maxlumadiff = 40;
 			break;
 	}
 	if (maxlumadiff >= 0) {
