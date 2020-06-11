@@ -435,7 +435,7 @@ function getColorspaceMap3() {
 	nongrays = [];
 	for (var i = 0; i < colors.length; i++) {
 		var c = colors[i];
-		if (c.s < 5) {
+		if (c.s < 25) {
 			grays.push(c);
 		} else {
 			nongrays.push(c);
@@ -451,22 +451,22 @@ function getColorspaceMap3() {
 	hs = Array.from(hs);
 	hs = hs.sort((a,b)=>a-b);
 
-	const numBuckets = 9;
+	const hueBuckets = 12;
 
-	var bucketThresholds = [];
-	for (var i = 1; i < numBuckets + 1; i++) {
-		bucketThresholds.push(hs[(i / (numBuckets) * (hs.length - 1)) | 0]);
+	var hueBucketThresholds = [];
+	for (var i = 1; i < hueBuckets + 1; i++) {
+		hueBucketThresholds.push(hs[(i / (hueBuckets) * (hs.length - 1)) | 0]);
 	}
 
 	var nongraysByHue = [];
 
-	for (var hueBucket = 0; hueBucket < numBuckets; hueBucket++) {
+	for (var hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
 		nongraysByHue[hueBucket] = [];
 	}
 	for (var i = 0; i < nongrays.length; i++) {
-		for (var hueBucket = 0; hueBucket < numBuckets; hueBucket++) {
+		for (var hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
 			var c = nongrays[i];
-			if (Math.floor(c.h) < bucketThresholds[hueBucket]) {
+			if (Math.floor(c.h) < hueBucketThresholds[hueBucket]) {
 				nongraysByHue[hueBucket].push(c);
 				break;
 			}
@@ -475,7 +475,7 @@ function getColorspaceMap3() {
 
 //	console.log(nongraysByHue);
 
-	for (var hueBucket = 0; hueBucket < numBuckets; hueBucket++) {
+	for (var hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
 		nongraysByHue[hueBucket] = nongraysByHue[hueBucket].sort((a,b)=>a.y-b.y);
 	}
 //	console.log(nongraysByHue);
@@ -489,21 +489,41 @@ function getColorspaceMap3() {
 
 	const scrx = 40;
 
-	var x = 0;
-	for (var i = 0; i < grays.length; i++) {
-		var c = grays[i];
-		y = 0;
-		colorspaceMap[y * scrx + x] = c;
-		x++;
+	const spread = false;
+
+	for (var hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
+		var l = nongraysByHue[hueBucket].length;
+		for (var i = 0; i < l; i++) {
+			var c = nongraysByHue[hueBucket][i];
+			x1 = Math.floor(i / l * (scrx - 1));
+			if (spread) {
+				x2 = Math.floor((i + 1) / l * (scrx - 1));
+			} else {
+				x1 = i;
+				x2 = x1;
+			}
+			y = hueBucket;
+			for (var xx = x1; xx <= x2; xx++) {
+				colorspaceMap[y * scrx + xx] = c;
+			}
+		}
 	}
 
-	for (var hueBucket = 0; hueBucket < numBuckets; hueBucket++) {
-		var x = 0;
-		for (var i = 0; i < nongraysByHue[hueBucket].length; i++) {
-			var c = nongraysByHue[hueBucket][i];
-			y = hueBucket + 2;
-			colorspaceMap[y * scrx + x] = c;
-			x++;
+	var x = 0;
+	var l = grays.length;
+	for (var i = 0; i < l; i++) {
+		var c = grays[i];
+		y = 0;
+		x1 = Math.floor(i / l * (scrx - 1));
+		if (spread) {
+			x2 = Math.floor((i + 1) / l * (scrx - 1));
+		} else {
+			x1 = i;
+			x2 = x1;
+		}
+		y = hueBuckets + 1;
+		for (var xx = x1; xx <= x2; xx++) {
+			colorspaceMap[y * scrx + xx] = c;
 		}
 	}
 
