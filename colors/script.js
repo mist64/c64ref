@@ -546,14 +546,11 @@ function init() {
 				break;
 		}
 	}
+	if (urlParams.has('mixedcols')) {
+		document.getElementById("mixedcols").selectedIndex = urlParams.get('mixedcols');
+	}
 	if (urlParams.has('lumadiff')) {
-		lumadiff = urlParams.get('lumadiff');
-		if (lumadiff >= 0) {
-			document.getElementById("mixedcols").checked = true;
-			document.getElementById("maxlumadiff").value = lumadiff / 10;
-		} else {
-			document.getElementById("mixedcols").checked = false;
-		}
+		document.getElementById("maxlumadiff").value = urlParams.get('lumadiff') / 10;
 	}
 	if (urlParams.has('b')) {
 		document.getElementById("brightness").value = urlParams.get('b');
@@ -602,7 +599,7 @@ function init() {
 
 function refresh() {
 	lumalevels = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
-	mixedcols = document.getElementById("mixedcols").checked;
+	mixedcols = document.getElementById("mixedcols").selectedIndex;
 	maxlumadiff = parseInt(document.getElementById("maxlumadiff").value) * 10;
 	brightness = document.getElementById("brightness").value;
 	contrast = document.getElementById("contrast").value;
@@ -645,7 +642,8 @@ function refresh() {
 	url =  url.split('?')[0];
 	url =  url.split('#')[0];
 	url += '?levels=' + (lumalevels == 'mc' ? '9' : '5');
-	url += '&lumadiff=' + (mixedcols ? maxlumadiff : -1);
+	url += '&mixedcols=' + mixedcols;
+	url += '&lumadiff=' + maxlumadiff;
 	url += '&b=' + brightness;
 	url += '&c=' + contrast;
 	url += '&s=' + saturation;
@@ -704,6 +702,9 @@ function refresh() {
 				var c2 = colors[j];
 				lumadiff = Math.abs(c1.y - c2.y);
 				for (var f = .25; f <= .75; f += .25) {
+					if (mixedcols != 2 && f != .5) {
+						continue;
+					}
 					var cm = {}
 					cm.r = (c1.r * f + c2.r * (1 - f)) | 0;
 					cm.g = (c1.g * f + c2.g * (1 - f)) | 0;
@@ -1164,10 +1165,10 @@ function preset(numcol) {
 			break;
 	}
 	if (maxlumadiff >= 0) {
-		document.getElementById("mixedcols").checked = true;
+		document.getElementById("mixedcols").selectedIndex = 1;
 		document.getElementById("maxlumadiff").value = maxlumadiff / 10;
 	} else {
-		document.getElementById("mixedcols").checked = false;
+		document.getElementById("mixedcols").selectedIndex = 0;
 	}
 	document.getElementById("lumalevels").selectedIndex = 1;
 	refresh();

@@ -169,7 +169,11 @@ li:target {
 						<label for="mixedcols">Mixed Colors</label>
 					</td>
 					<td colspan="2">
-						<input type="checkbox" id="mixedcols" onclick="refresh()">
+						<select name="mixedcols" id="mixedcols" onChange="refresh();">
+						    <option value="mixedcols0">No</option>
+						    <option value="mixedcols1">50%</option>
+						    <option value="mixedcols2">25%/50%/75%</option>
+						</select>
 					</td>
 				</tr>
 				<tr id="maxlumadiff_div">
@@ -193,6 +197,7 @@ li:target {
 						    <option selected value="sortby1">Hue</option>
 						    <option value="sortby2">Luma</option>
 						</select>
+					</td>
 				</tr>
 				<tr>
 					<td colspan="3" style="text-align: center;">
