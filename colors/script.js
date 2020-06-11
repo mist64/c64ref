@@ -610,7 +610,9 @@ function refresh() {
 	//
 	// Create Link
 	//
-	url =  window.location.href.substring(0, window.location.href.length-window.location.search.length);
+	url = window.location.href;
+	url =  url.split('?')[0];
+	url =  url.split('#')[0];
 	url += '?levels=' + (lumalevels == 'mc' ? '9' : '5');
 	url += '&lumadiff=' + (mixedcols ? maxlumadiff : -1);
 	url += '&b=' + brightness;
@@ -666,18 +668,6 @@ function refresh() {
 	// create mixed colors
 	//
 	if (mixedcols) {
-		var lumas = [];
-		for (var i = 0; i < colors.length; i++) {
-			y = colors[i].y;
-			if (!lumas.includes(y)) {
-				lumas.push(y);
-			}
-		}
-		function compare(a, b) {
-			return a - b;
-		}
-		lumas.sort(compare);
-
 		var l = colors.length;
 		for (var lthreshold = 0; lthreshold <= maxlumadiff; lthreshold += 10) {
 			l2 = colors.length;
@@ -840,7 +830,7 @@ function refresh() {
 	text_basic_header += '1 rem sorted by ';
 	switch (sortby) {
 		case 0:
-			text_basic_header += 'lumadiff';
+			text_basic_header += 'luma diff';
 			break;
 		case 1:
 			text_basic_header += 'hue';
