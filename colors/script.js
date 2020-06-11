@@ -870,7 +870,7 @@ function refresh() {
 	//
 	// Create Palette BASIC Demo
 	//
-	text_basic_header = '0 rem ' + colors.length + ' colors\n';
+	text_basic_header = '0 c=' + colors.length + ':rem colors\n';
 	text_basic_header += '1 rem sorted by ';
 	switch (sortby) {
 		case 0:
@@ -904,21 +904,38 @@ function refresh() {
 			i2 = c.index;
 		}
 		data.push(i1 << 4 | i2);
+		switch (c.f) {
+			case .25:
+				data.push(0x55, 255);
+				break;
+			case .5:
+				data.push(0,255);
+				break;
+			case .75:
+				data.push(0x55, 0);
+				break;
+			default:
+				data.push(0,0);
+				break;
+		}
 	}
 	text_basic += createBASICDataLines(data);
 
 	text_basic += '200 v=53248:g=8192:s0=1024:s1=s0+200:s2=s0+2*200:s3=s0+3*200' + '\n';
-	text_basic += '210 fori=0to999:pokes0+i,0:next' + '\n';
-	text_basic += '215 fori=0to' + (colors.length - 1) + ':reada:pokes0+i,a:pokes1+i,a:pokes2+i,a:pokes3+i,a:next' + '\n';
-	text_basic += '220 p=0:q=255:fori=gtog+1087step2:pokei,p:pokei+1,q:next' + '\n';
-	text_basic += '230 p=170:q=p:fori=g+1600tog+1600+1087step2:pokei,p:pokei+1,q:next' + '\n';
-	text_basic += '240 p=170:q=85:fori=g+2*1600tog+2*1600+1087step2:pokei,p:pokei+1,q:next' + '\n';
-	text_basic += '250 p=51:q=204:fori=g+3*1600tog+3*1600+1087step2:pokei,p:pokei+1,q:next' + '\n';
-	text_basic += '400 pokev+32,0' + '\n';
-	text_basic += '410 pokev+17,peek(v+17)or(11*16)' + '\n';
-	text_basic += '420 pokev+22,peek(v+22)and(255-16)' + '\n';
-	text_basic += '430 pokev+24,peek(v+24)or8' + '\n';
-	text_basic += '440 goto440' + '\n';
+
+	text_basic += '300 pokev+32,0' + '\n';
+	text_basic += '310 pokev+17,peek(v+17)or(11*16)' + '\n';
+	text_basic += '320 pokev+22,peek(v+22)and(255-16)' + '\n';
+	text_basic += '330 pokev+24,peek(v+24)or8' + '\n';
+
+	text_basic += '400 fori=0toc-1:reada:readp:readq:pokes0+i,a' + '\n';
+	text_basic += '410 forj=g+i*8tog+i*8+7step2:pokej,p:pokej+1,q:next' + '\n';
+	text_basic += '420 next' + '\n';
+
+	text_basic += '430 fori=ito999:pokes0+i,0:next' + '\n';
+
+	text_basic += '640 goto640' + '\n';
+
 	text_basic += 'run' + '\n';
 	text_basic += '\n';
 	document.getElementById("text_basic1_lower").innerHTML = text_basic;
