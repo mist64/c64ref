@@ -430,39 +430,72 @@ function getColorspaceMap2() {
 }
 
 function getColorspaceMap3() {
-	ys = [];//new Set();
+	// put colors into gray and colored buckets
+	sortedColors = []
+	sortedColors[0] = [];
+	sortedColors[1] = [];
 	for (var i = 0; i < colors.length; i++) {
-		ys.push(Math.floor(colors[i].y));
+		var c = colors[i];
+		if (c.s < 15) {
+			sortedColors[0].push(c);
+		} else {
+			sortedColors[1].push(c);
+		}
 	}
-	ys = Array.from(ys);
-	ys = ys.sort((a,b)=>a-b);
-	ys = ys.slice(1, ys.length - 1); // remove black and white
-	console.log(ys);
+	console.log(sortedColors[0]);
+	sortedColors[0] = sortedColors[0].sort((a,b)=>a.y-b.y);
 
-	const numBuckets = 5;
+	hs = new Set();
+	for (var i = 0; i < sortedColors[1].length; i++) {
+		hs.add(Math.floor(sortedColors[1][i].h));
+	}
+	hs = Array.from(hs);
+	hs = hs.sort((a,b)=>a-b);
+//	console.log(hs);
+
+	const numBuckets = 9;
 
 	var bucketThresholds = [];
 	for (var i = 1; i < numBuckets + 1; i++) {
-		bucketThresholds.push(ys[(i / (numBuckets) * (ys.length - 1)) | 0]);
+		bucketThresholds.push(hs[(i / (numBuckets) * (hs.length - 1)) | 0]);
 	}
-	console.log(bucketThresholds);
+//	console.log(bucketThresholds);
 
-	var sortedColors = [];
+	var sortedColors2 = [];
 
-	for (var yBucket = 0; yBucket < numBuckets; yBucket++) {
-		sortedColors[yBucket] = [];
-		for (var i = 0; i < colors.length; i++) {
+	for (var hBucket = 0; hBucket < numBuckets; hBucket++) {
+		sortedColors2[hBucket] = [];
+	}
+	for (var i = 0; i < colors.length; i++) {
+		for (var hBucket = 0; hBucket < numBuckets; hBucket++) {
 			var c = colors[i];
-			if (Math.floor(c.y) > bucketThresholds[yBucket]) {
-				continue;
+			if (Math.floor(c.h) < bucketThresholds[hBucket]) {
+				sortedColors2[hBucket].push(c);
+				break;
 			}
-			if (yBucket && Math.floor(c.y) <= bucketThresholds[yBucket - 1]) {
-				continue;
-			}
-
-			sortedColors[yBucket].push(c);
 		}
 	}
+
+	for (var hBucket = 0; hBucket < numBuckets; hBucket++) {
+		sortedColors2[hBucket] = sortedColors2[hBucket].sort((a,b)=>a.y-b.y);
+	}
+
+
+//	console.log(sortedColors2);
+
+////	for (var hBucket = 0; hBucket < numBuckets; hBucket++) {
+//		ss = new Set();
+//		var bucketColors = colors;
+//		for (var i = 0; i < bucketColors.length; i++) {
+//			var c = bucketColors[i];
+//			ss.add(Math.floor(colors[i].s));
+//		}
+//		ss = Array.from(ss);
+//		ss = ss.sort((a,b)=>a-b);
+//		ss = ss.slice(1, ss.length - 1); // remove black and white
+//		console.log(hBucket, ss);
+////	}
+
 
 
 
@@ -474,16 +507,21 @@ function getColorspaceMap3() {
 
 	const scrx = 40;
 
-	for (var yBucket = 0; yBucket < numBuckets; yBucket++) {
+	var x = 0;
+	for (var i = 0; i < sortedColors[0].length; i++) {
+		var c = sortedColors[0][i];
+		y = 0;
+		colorspaceMap[y * scrx + x] = c;
+		x++;
+	}
+
+	for (var hBucket = 0; hBucket < numBuckets; hBucket++) {
 		var x = 0;
-		var bucketColors = sortedColors[yBucket];
+		var bucketColors = sortedColors2[hBucket];
 		for (var i = 0; i < bucketColors.length; i++) {
 			var c = bucketColors[i];
-			y = yBucket;
+			y = hBucket + 1;
 			colorspaceMap[y * scrx + x] = c;
-//				colorspaceMap[y * scrx + x + 1] = c;
-//				colorspaceMap[y * scrx + x + scrx] = c;
-//				colorspaceMap[y * scrx + x + scrx + 1] = c;
 			x++;
 		}
 	}
@@ -785,7 +823,9 @@ function refresh() {
 		var c = convert(compose(i, lumalevels, brightness, contrast, saturation), gamma);
 		c.index = i;
 		c.description = i;
-		c.h = HSVfromRGB(c.r, c.g, c.b).h;
+		var hsl = HSLfromRGB(c.r, c.g, c.b).h;
+		c.h = hsl.h;
+		c.s = hsl.s;
 		c.lumadiff = -1;
 		colors.push(c);
 	}
