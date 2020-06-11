@@ -313,9 +313,6 @@ function drawColorspace(id, colorspaceMaps, mapped_colors, mixingstyle) {
 					c2i = comp.i2;
 					c1 = basecolors[c1i];
 					c2 = basecolors[c2i];
-					combinedColors = combineColors(c1, c2, gamma);
-					c1 = combinedColors.c1;
-					c2 = combinedColors.c2;
 
 					var r1 = c1.r;
 					var g1 = c1.g;
@@ -398,58 +395,74 @@ function getColorspaceMap(s) {
 	return colorspaceMap;
 }
 
-function combineColors(c1, c2, gamma) {
-	// create two colors with the average UV, but kepping their respective Y
-	u = (c1.u + c2.u) / 2;
-	v = (c1.v + c2.v) / 2;
-	fc1 = convert({ y: c1.y, u: u, v: v }, 2.8);
-	fc2 = convert({ y: c2.y, u: u, v: v }, 2.8);
-	if (fc1.y > fc2.y) {
-		return { c1: fc1, c2: fc2 };
-	} else {
-		return { c1: fc2, c2: fc1 };
-	}
-}
+//function combineColors(c1, c2, f) {
+//	var hsl1 = HSLfromRGB(c1.r * f + c2.r * (1 - f), c1.g * f + c2.g * (1 - f), c1.b * f + c2.b * (1 - f));
+//	var hsl2 = HSLfromRGB(c2.r * f + c1.r * (1 - f), c2.g * f + c1.g * (1 - f), c2.b * f + c1.b * (1 - f));
+//
+//	var fc1 = RGBfromHSL(hsl1.h, hsl1.s, hsl1.l);
+//	var fc2 = RGBfromHSL(hsl2.h, hsl2.s, hsl2.l);
+//
+//	if (fc1.y > fc2.y) {
+//		return { c1: fc1, c2: fc2 };
+//	} else {
+//		return { c1: fc2, c2: fc1 };
+//	}
+//}
 
-function svgForColors(c1, c2, mixingstyle) {
+function svgForColors(c1, c2, f, mixingstyle) {
 	var hexcolor1 = hexFromRGB(c1.r, c1.g, c1.b);
 	var hexcolor2 = hexFromRGB(c2.r, c2.g, c2.b);
-	if (mixingstyle == 0) { // alternating lines
-		var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="2" shape-rendering="auto" viewBox="0 -.5 1 2">'
-		svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
-		svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
-		svg += '</svg>'
-	} else if (mixingstyle == 1) { // alternating columns
-		var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="1" shape-rendering="auto" viewBox="0 -.5 2 1">'
-		svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
-		svg += '<path stroke="' + hexcolor2 + '" d="M1 0h1"></path>'
-		svg += '</svg>'
-	} else if (mixingstyle == 2) { // checkered
+	if (f == .5) {
+		if (mixingstyle == 0) { // alternating lines
+			var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="2" shape-rendering="auto" viewBox="0 -.5 1 2">'
+			svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
+			svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
+			svg += '</svg>'
+		} else if (mixingstyle == 1) { // alternating columns
+			var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="1" shape-rendering="auto" viewBox="0 -.5 2 1">'
+			svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
+			svg += '<path stroke="' + hexcolor2 + '" d="M1 0h1"></path>'
+			svg += '</svg>'
+		} else if (mixingstyle == 2) { // checkered
+			var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" shape-rendering="auto" viewBox="0 -.5 2 2">'
+			svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
+			svg += '<path stroke="' + hexcolor2 + '" d="M1 0h1"></path>'
+			svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
+			svg += '<path stroke="' + hexcolor1 + '" d="M1 1h1"></path>'
+			svg += '</svg>'
+		} else if (mixingstyle == 3) { // checkered h2x
+			var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="2" shape-rendering="auto" viewBox="0 -.5 4 2">'
+			svg += '<path stroke="' + hexcolor1 + '" d="M0 0h2"></path>'
+			svg += '<path stroke="' + hexcolor2 + '" d="M2 0h2"></path>'
+			svg += '<path stroke="' + hexcolor2 + '" d="M0 1h2"></path>'
+			svg += '<path stroke="' + hexcolor1 + '" d="M2 1h2"></path>'
+			svg += '</svg>'
+		}
+	} else {
+		if (f == .75) {
+			var hexcolora = hexcolor1;
+			var hexcolorb = hexcolor2;
+		} else {
+			var hexcolora = hexcolor2;
+			var hexcolorb = hexcolor1;
+		}
 		var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" shape-rendering="auto" viewBox="0 -.5 2 2">'
-		svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
-		svg += '<path stroke="' + hexcolor2 + '" d="M1 0h1"></path>'
-		svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
-		svg += '<path stroke="' + hexcolor1 + '" d="M1 1h1"></path>'
-		svg += '</svg>'
-	} else if (mixingstyle == 3) { // checkered h2x
-		var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="2" shape-rendering="auto" viewBox="0 -.5 4 2">'
-		svg += '<path stroke="' + hexcolor1 + '" d="M0 0h2"></path>'
-		svg += '<path stroke="' + hexcolor2 + '" d="M2 0h2"></path>'
-		svg += '<path stroke="' + hexcolor2 + '" d="M0 1h2"></path>'
-		svg += '<path stroke="' + hexcolor1 + '" d="M2 1h2"></path>'
+		svg += '<path stroke="' + hexcolora + '" d="M0 0h1"></path>'
+		svg += '<path stroke="' + hexcolorb + '" d="M1 0h1"></path>'
+		svg += '<path stroke="' + hexcolora + '" d="M0 1h2"></path>'
 		svg += '</svg>'
 	}
 	return svg;
 }
 
 function imageFromColor(c) {
-	component1 = c.combinedComponent1;
-	component2 = c.combinedComponent2;
+	component1 = c.component1;
+	component2 = c.component2;
 	if (!component1) {
 		component1 = c;
 		component2 = c;
 	}
-	svg = svgForColors(component1, component2, mixingstyle);
+	svg = svgForColors(component1, component2, c.f, mixingstyle);
 	svg = svg.replace(/#/g, '%23');
 	image = "url('data:image/svg+xml;utf8," + svg + "')";
 	return image;
@@ -536,7 +549,6 @@ function init() {
 		document.getElementById("gamma").value = urlParams.get('g') * 10;
 	}
 	if (urlParams.has('sortby')) {
-		console.log(urlParams.get('sortby'));
 		switch (urlParams.get('sortby')) {
 			case 'lumadiff':
 				document.getElementById("sortby").selectedIndex = 0;
@@ -572,7 +584,7 @@ function init() {
 function refresh() {
 	lumalevels = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
 	mixedcols = document.getElementById("mixedcols").checked;
-	maxlumadiff = document.getElementById("maxlumadiff").value;
+	maxlumadiff = parseInt(document.getElementById("maxlumadiff").value);
 	brightness = document.getElementById("brightness").value;
 	contrast = document.getElementById("contrast").value;
 	saturation = document.getElementById("saturation").value;
@@ -669,49 +681,46 @@ function refresh() {
 	//
 	if (mixedcols) {
 		var l = colors.length;
-		for (var lthreshold = 0; lthreshold <= maxlumadiff; lthreshold += 10) {
-			l2 = colors.length;
-			for (var i = 0; i < l; i++) {
-				var c1 = colors[i];
-				for (var j = i+1; j < l; j++) {
-					var c2 = colors[j];
-					var lumadiff = Math.abs(c1.y - c2.y);
-					if (lumadiff <= lthreshold) {
-						var exists = false;
-						for (var k = l; k < l2; k++) {
-							if (colors[k].component1.index == i && colors[k].component2.index == j) {
-								exists = true;
-								break;
-							}
-						}
-						if (exists) {
-							continue;
-						}
-						var cm = {}
-						cm.r = ((c1.r + c2.r) / 2) | 0;
-						cm.g = ((c1.g + c2.g) / 2) | 0;
-						cm.b = ((c1.b + c2.b) / 2) | 0;
-						cm.y = ((c1.y + c2.y) / 2) | 0;
-						hsl = HSLfromRGB(cm.r, cm.g, cm.b);
-						cm.h = hsl.h;
-						cm.s = hsl.s;
-						cm.index = colors.length;
-						cm.description = '' + c1.index + '/' + c2.index;
-						cm.component1 = c1;
-						cm.component2 = c2;
-						cm.lumadiff = lumadiff;
-						combinedColors = combineColors(c1, c2, gamma);
-						cm.combinedComponent1 = combinedColors.c1;
-						cm.combinedComponent2 = combinedColors.c2;
-						colors.push(cm);
-					}
+		for (var i = 0; i < l; i++) {
+			var c1 = colors[i];
+			for (var j = i+1; j < l; j++) {
+				var c2 = colors[j];
+				lumadiff = Math.abs(c1.y - c2.y);
+				for (var f = .25; f <= .75; f += .25) {
+					var cm = {}
+					cm.r = (c1.r * f + c2.r * (1 - f)) | 0;
+					cm.g = (c1.g * f + c2.g * (1 - f)) | 0;
+					cm.b = (c1.b * f + c2.b * (1 - f)) | 0;
+					cm.y = (c1.y * f + c2.y * (1 - f)) | 0;
+					hsl = HSLfromRGB(cm.r, cm.g, cm.b);
+					cm.h = hsl.h;
+					cm.s = hsl.s;
+					cm.index = colors.length;
+					cm.f = f;
+					cm.component1 = c1;
+					cm.component2 = c2;
+					cm.lumadiff = lumadiff;
+					colors.push(cm);
 				}
 			}
 		}
+
+		//
+		// Filter
+		//
+		var colors_new = []
+		for (var i = 0; i < colors.length; i++) {
+			if (colors[i].lumadiff < maxlumadiff) {
+				colors_new.push(colors[i]);
+			}
+		}
+		colors = colors_new;
 	}
+//	console.log(colors.length);
+
 
 	//
-	// sort
+	// Sort
 	//
 	function compare_y(a, b) {
 		return a.y - b.y;
@@ -729,16 +738,33 @@ function refresh() {
 		}
 		return a.h - b.h;
 	}
-	function compare_index(a, b) {
-		return a.index - b.index;
+	function compare_lumadiff_index(a, b) {
+		// XXX FIX!
+		if (!a.component1 && !b.component1) {
+			// both primary colors
+			return a.index - b.index;
+		}
+		if (!a.component1) {
+			// primary color
+			return -1;
+		}
+		if (!a.component2) {
+			// primary color
+			return -1;
+		}
+		if (a.y == b.y) {
+			return a.index - b.index;
+		} else {
+			return a.y - b.y;
+		}
 	}
-	if (sortby == 0) {
-		colors.sort(compare_index);
-	} else if (sortby == 1) {
-		colors.sort(compare_h);
-	} else {
-		colors.sort(compare_y);
-	}
+//	if (sortby == 0) {
+//		colors.sort(compare_lumadiff_index);
+//	} else if (sortby == 1) {
+//		colors.sort(compare_h);
+//	} else {
+//		colors.sort(compare_y);
+//	}
 
 	//
 	// create cells
