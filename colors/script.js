@@ -439,13 +439,33 @@ function getColorspaceMap3() {
 	ys = ys.slice(1, ys.length - 1); // remove black and white
 	console.log(ys);
 
-	const numBuckets = 10;
+	const numBuckets = 5;
 
 	var bucketThresholds = [];
 	for (var i = 1; i < numBuckets + 1; i++) {
 		bucketThresholds.push(ys[(i / (numBuckets) * (ys.length - 1)) | 0]);
 	}
 	console.log(bucketThresholds);
+
+	var sortedColors = [];
+
+	for (var yBucket = 0; yBucket < numBuckets; yBucket++) {
+		sortedColors[yBucket] = [];
+		for (var i = 0; i < colors.length; i++) {
+			var c = colors[i];
+			if (Math.floor(c.y) > bucketThresholds[yBucket]) {
+				continue;
+			}
+			if (yBucket && Math.floor(c.y) <= bucketThresholds[yBucket - 1]) {
+				continue;
+			}
+
+			sortedColors[yBucket].push(c);
+		}
+	}
+
+
+
 
 	colorspaceMap = [];
 	for (var i = 0; i < 1000; i++) {
@@ -454,18 +474,12 @@ function getColorspaceMap3() {
 
 	const scrx = 40;
 
-	for (var j = 0; j < numBuckets; j++) {
+	for (var yBucket = 0; yBucket < numBuckets; yBucket++) {
 		var x = 0;
-		for (var i = 0; i < colors.length; i++) {
-			var c = colors[i];
-			if (Math.floor(c.y) > bucketThresholds[j]) {
-				continue;
-			}
-			if (j && Math.floor(c.y) <= bucketThresholds[j - 1]) {
-				continue;
-			}
-
-			y = j;
+		var bucketColors = sortedColors[yBucket];
+		for (var i = 0; i < bucketColors.length; i++) {
+			var c = bucketColors[i];
+			y = yBucket;
 			colorspaceMap[y * scrx + x] = c;
 //				colorspaceMap[y * scrx + x + 1] = c;
 //				colorspaceMap[y * scrx + x + scrx] = c;
