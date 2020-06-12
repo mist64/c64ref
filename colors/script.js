@@ -1,9 +1,9 @@
 // TODO:
 // * when drawing, sort paired colors by luma
-// * fix mixing pattern support
+// * fix pattern support
 // * add VIC and TED
 // * VICE VPL palette generation
-// * checkerboard pattern artifact
+// * emulate checkerboard pattern artifact
 
 window.onload = init;
 
@@ -326,25 +326,39 @@ function drawColorspace(id, colorspaceMap, mapped_colors, pattern) {
 				for (var y1 = 0; y1 < scale; y1++) {
 					var fx = x * scale + x1;
 					var fy = y * scale + y1;
-					switch (c.f) {
-						case 0.25:
-							condition = !((fy & 1) | ((fx & 1) ^ ((fy >> 1) & 1)));
-							break;
-						case 0.75:
-							condition = (fy & 1) | ((fx & 1) ^ ((fy >> 1) & 1));
-							break;
-						case .5:
-						default:
-							if (pattern == 0) {
-								condition = fy & 1;
-							} else if (pattern == 1) {
-								condition = fx & 1;
-							} else if (pattern == 2) {
-								condition = (fx & 1) ^ (fy & 1);
-							} else if (pattern == 3) {
-								condition = ((fx >> 1) & 1) ^ (fy & 1);
+					var condition;
+					switch (mixed) {
+						case 0: // don't care
+						case 1: // 50%
+							switch (pattern) {
+								case 0: // h
+									condition = fy & 1;
+									break;
+								case 1: // v
+									condition = fx & 1;
+									break;
+								case 2: // c
+									condition = (fx & 1) ^ (fy & 1);
+									break;
+								case 3: // c2
+									condition = ((fx >> 1) & 1) ^ (fy & 1);
+									break;
 							}
 							break;
+						case 2: // 25/50/75%
+						switch (c.f) {
+							case 0.25:
+								condition = !((fy & 1) | ((fx & 1) ^ ((fy >> 1) & 1)));
+								break;
+							case 0.75:
+								condition = (fy & 1) | ((fx & 1) ^ ((fy >> 1) & 1));
+								break;
+							case .5:
+							default: // solid
+								condition = fy & 1;
+								break;
+						}
+						break;
 					}
 					var o = 4 * (fy * (xres * scale) + fx)
 					imgData.data[o] = condition ? c1.r : c2.r;
@@ -672,10 +686,57 @@ function createBASICProgram(data, comment) {
 
 	text += '200 v=53248:g=8192+16384:s=1024+16384' + '\n';
 
-	text += '240 a(0)=0:b(0)=0:c(0)=0:d(0)=0' + '\n';
-	text += '210 a(1)=85:b(1)=0:c(1)=170:d(1)=0' + '\n';
-	text += '220 a(2)=0:b(2)=255:c(2)=0:d(2)=255' + '\n';
-	text += '230 a(3)=85:b(3)=255:c(3)=170:d(3)=255' + '\n';
+	console.log(mixed, pattern);
+	var bpattern;
+	switch (mixed) {
+		case 0: // don't care
+		case 1: // 50%
+			switch (pattern) {
+				case 0: // h
+					bpattern = [ 0x00, 0xff, 0x00, 0xff ];
+					break;
+				case 1: // v
+					bpattern = [ 0x55, 0x55, 0x55, 0x55 ];
+					break;
+				case 2: // c
+					bpattern = [ 0x55, 0xaa, 0x55, 0xaa ];
+					break;
+				case 3: // c2
+					bpattern = [ 0x33, 0xcc, 0x33, 0xcc ];
+					break;
+			}
+			break;
+		case 2: // 25/50/75%
+			switch (pattern) {
+				case 0: // v
+					bpattern = [
+						0x00, 0x00, 0x00, 0x00, // 0.00
+						0x55, 0x00, 0x55, 0x00, // 0.25
+						0x00, 0xff, 0x00, 0xff, // 0.50
+						0x55, 0xff, 0x55, 0xff, // 0.75
+					];
+					break;
+				case 1: // c
+					bpattern = [
+						0x00, 0x00, 0x00, 0x00, // 0.00
+						0x55, 0x00, 0xaa, 0x00, // 0.25
+						0x00, 0xff, 0x00, 0xff, // 0.50
+						0x55, 0xff, 0xaa, 0xff, // 0.75
+					];
+					break;
+			}
+			break;
+	}
+	console.log(bpattern);
+	if (bpattern.length == 4) {
+		bpattern = bpattern.concat(bpattern);
+		bpattern = bpattern.concat(bpattern);
+	}
+
+	text += '210 a(0)=' + bpattern[0] + ':b(0)=' + bpattern[1] + ':c(0)=' + bpattern[2] + ':d(0)=' + bpattern[3] + '' + '\n';
+	text += '220 a(1)=' + bpattern[4] + ':b(1)=' + bpattern[5] + ':c(1)=' + bpattern[6] + ':d(1)=' + bpattern[7] + '' + '\n';
+	text += '230 a(2)=' + bpattern[8] + ':b(2)=' + bpattern[9] + ':c(2)=' + bpattern[10] + ':d(2)=' + bpattern[11] + '' + '\n';
+	text += '240 a(3)=' + bpattern[12] + ':b(3)=' + bpattern[13] + ':c(3)=' + bpattern[14] + ':d(3)=' + bpattern[15] + '' + '\n';
 
 	text += '300 poke56576,peek(56576)and254' + '\n';
 	text += '310 pokev+32,0' + '\n';
@@ -718,7 +779,7 @@ function init() {
 		}
 	}
 	if (urlParams.has('mixed')) {
-		document.getElementById("mixedcols").selectedIndex = urlParams.get('mixed');
+		document.getElementById("mixed").selectedIndex = urlParams.get('mixed');
 	}
 	if (urlParams.has('lumadiff')) {
 		document.getElementById("maxlumadiff").value = urlParams.get('lumadiff') / 10;
@@ -770,7 +831,7 @@ function init() {
 
 function refresh() {
 	lumalevels = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
-	mixedcols = document.getElementById("mixedcols").selectedIndex;
+	mixed = document.getElementById("mixed").selectedIndex;
 	maxlumadiff = parseInt(document.getElementById("maxlumadiff").value) * 10;
 	brightness = document.getElementById("brightness").value;
 	contrast = document.getElementById("contrast").value;
@@ -797,7 +858,7 @@ function refresh() {
 	// enable disable luma threshold slider
 	//
 	maxlumadiff_div = document.getElementById("maxlumadiff_div");
-	if (!mixedcols) {
+	if (!mixed) {
 		maxlumadiff_div.style.pointerEvents = 'none';
 		maxlumadiff_div.style.opacity = '0.5';
 		document.getElementById("maxlumadiff").value = 0;
@@ -811,7 +872,7 @@ function refresh() {
 	//
 	args = {};
 	args['levels'] = lumalevels == 'mc' ? '9' : '5';
-	args['mixed'] = mixedcols;
+	args['mixed'] = mixed;
 	args['lumadiff'] = maxlumadiff;
 	switch (sortby) {
 		case 0:
@@ -887,7 +948,7 @@ function refresh() {
 	//
 	// create mixed colors
 	//
-	if (mixedcols) {
+	if (mixed) {
 		var l = colors.length;
 		for (var i = 0; i < l; i++) {
 			var c1 = colors[i];
@@ -895,7 +956,7 @@ function refresh() {
 				var c2 = colors[j];
 				lumadiff = Math.abs(c1.y - c2.y);
 				for (var f = .25; f <= .75; f += .25) {
-					if (mixedcols != 2 && f != .5) {
+					if (mixed != 2 && f != .5) {
 						continue;
 					}
 					var cm = {}
@@ -1328,9 +1389,9 @@ function hideColorspace(hide) {
 	}
 }
 
-function preset(mixedcols, maxlumadiff) {
+function preset(mixed, maxlumadiff) {
 	document.getElementById("lumalevels").selectedIndex = 1; // new VIC-II
-	document.getElementById("mixedcols").selectedIndex = mixedcols;
+	document.getElementById("mixed").selectedIndex = mixed;
 	document.getElementById("maxlumadiff").value = maxlumadiff / 10;
 	refresh();
 }
