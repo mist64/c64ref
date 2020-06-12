@@ -331,16 +331,16 @@ function drawColorspace(id, colorspaceMap, mapped_colors, pattern) {
 						case 0: // don't care
 						case 1: // 50%
 							switch (pattern) {
-								case 0: // h
+								case 'h': // h
 									condition = fy & 1;
 									break;
-								case 1: // v
+								case 'v': // v
 									condition = fx & 1;
 									break;
-								case 2: // c
+								case 'c': // c
 									condition = (fx & 1) ^ (fy & 1);
 									break;
-								case 3: // c2
+								case 'c2': // c2
 									condition = ((fx >> 1) & 1) ^ (fy & 1);
 									break;
 							}
@@ -468,7 +468,6 @@ function getColorspaceMap3() {
 
 
 	var hueBucketThresholds = [ 10, 60, 90, 160, 200, 260, 340 ];
-//	console.log(hueBucketThresholds);
 	const hueBuckets = hueBucketThresholds.length;
 
 	var nongraysByHue = [];
@@ -493,8 +492,6 @@ function getColorspaceMap3() {
 		}
 	}
 
-//	console.log(nongraysByHue);
-
 	for (var hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
 		function sort_hue(a,b) {
 //			if (a.s - b.s < 1) {
@@ -505,9 +502,6 @@ function getColorspaceMap3() {
 		}
 		nongraysByHue[hueBucket] = nongraysByHue[hueBucket].sort(sort_hue);
 	}
-//	console.log(nongraysByHue);
-
-
 
 	colorspaceMap = [];
 	for (var i = 0; i < 1000; i++) {
@@ -590,48 +584,93 @@ function getColorspaceMap3() {
 function svgForColors(c1, c2, f, pattern) {
 	var hexcolor1 = hexFromRGB(c1.r, c1.g, c1.b);
 	var hexcolor2 = hexFromRGB(c2.r, c2.g, c2.b);
-	if (f == .5) {
-		if (pattern == 0) { // alternating lines
-			var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="2" shape-rendering="auto" viewBox="0 -.5 1 2">'
-			svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
-			svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
-			svg += '</svg>'
-		} else if (pattern == 1) { // alternating columns
-			var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="1" shape-rendering="auto" viewBox="0 -.5 2 1">'
-			svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
-			svg += '<path stroke="' + hexcolor2 + '" d="M1 0h1"></path>'
-			svg += '</svg>'
-		} else if (pattern == 2) { // checkered
-			var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" shape-rendering="auto" viewBox="0 -.5 2 2">'
-			svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
-			svg += '<path stroke="' + hexcolor2 + '" d="M1 0h1"></path>'
-			svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
-			svg += '<path stroke="' + hexcolor1 + '" d="M1 1h1"></path>'
-			svg += '</svg>'
-		} else if (pattern == 3) { // checkered h2x
-			var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="2" shape-rendering="auto" viewBox="0 -.5 4 2">'
-			svg += '<path stroke="' + hexcolor1 + '" d="M0 0h2"></path>'
-			svg += '<path stroke="' + hexcolor2 + '" d="M2 0h2"></path>'
-			svg += '<path stroke="' + hexcolor2 + '" d="M0 1h2"></path>'
-			svg += '<path stroke="' + hexcolor1 + '" d="M2 1h2"></path>'
-			svg += '</svg>'
-		}
-	} else {
-		if (f == .75) {
-			var hexcolora = hexcolor1;
-			var hexcolorb = hexcolor2;
-		} else {
-			var hexcolora = hexcolor2;
-			var hexcolorb = hexcolor1;
-		}
-		var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="4" shape-rendering="auto" viewBox="0 -.5 2 4">'
-		svg += '<path stroke="' + hexcolora + '" d="M0 0h1"></path>'
-		svg += '<path stroke="' + hexcolorb + '" d="M1 0h1"></path>'
-		svg += '<path stroke="' + hexcolora + '" d="M0 1h2"></path>'
-		svg += '<path stroke="' + hexcolorb + '" d="M0 2h1"></path>'
-		svg += '<path stroke="' + hexcolora + '" d="M1 2h1"></path>'
-		svg += '<path stroke="' + hexcolora + '" d="M0 3h2"></path>'
-		svg += '</svg>'
+	switch (mixed) {
+		case 0:
+		case 1:
+			switch (pattern) {
+				case 'h':
+					var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="2" shape-rendering="auto" viewBox="0 -.5 1 2">'
+					svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
+					svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
+					svg += '</svg>'
+					break;
+				case 'v':
+					var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="1" shape-rendering="auto" viewBox="0 -.5 2 1">'
+					svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
+					svg += '<path stroke="' + hexcolor2 + '" d="M1 0h1"></path>'
+					svg += '</svg>'
+					break;
+				case 'c':
+					var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" shape-rendering="auto" viewBox="0 -.5 2 2">'
+					svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
+					svg += '<path stroke="' + hexcolor2 + '" d="M1 0h1"></path>'
+					svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
+					svg += '<path stroke="' + hexcolor1 + '" d="M1 1h1"></path>'
+					svg += '</svg>'
+					break;
+				case 'c2':
+					var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="2" shape-rendering="auto" viewBox="0 -.5 4 2">'
+					svg += '<path stroke="' + hexcolor1 + '" d="M0 0h2"></path>'
+					svg += '<path stroke="' + hexcolor2 + '" d="M2 0h2"></path>'
+					svg += '<path stroke="' + hexcolor2 + '" d="M0 1h2"></path>'
+					svg += '<path stroke="' + hexcolor1 + '" d="M2 1h2"></path>'
+					svg += '</svg>'
+					break;
+			}
+			break;
+		case 2:
+			if (f == .25 || f == .75) {
+				if (f == .75) {
+					var hexcolora = hexcolor1;
+					var hexcolorb = hexcolor2;
+				} else {
+					var hexcolora = hexcolor2;
+					var hexcolorb = hexcolor1;
+				}
+				switch (pattern) {
+					case 'v':
+						var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" shape-rendering="auto" viewBox="0 -.5 2 2">'
+						svg += '<path stroke="' + hexcolora + '" d="M0 0h1"></path>'
+						svg += '<path stroke="' + hexcolorb + '" d="M1 0h1"></path>'
+						svg += '<path stroke="' + hexcolora + '" d="M0 1h2"></path>'
+						svg += '</svg>'
+						break;
+					case 'v2':
+						var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="2" shape-rendering="auto" viewBox="0 -.5 4 2">'
+						svg += '<path stroke="' + hexcolora + '" d="M0 0h2"></path>'
+						svg += '<path stroke="' + hexcolorb + '" d="M2 0h2"></path>'
+						svg += '<path stroke="' + hexcolora + '" d="M0 1h4"></path>'
+						svg += '</svg>'
+						break;
+					case 'c':
+						var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="4" shape-rendering="auto" viewBox="0 -.5 2 4">'
+						svg += '<path stroke="' + hexcolora + '" d="M0 0h1"></path>'
+						svg += '<path stroke="' + hexcolorb + '" d="M1 0h1"></path>'
+						svg += '<path stroke="' + hexcolora + '" d="M0 1h2"></path>'
+						svg += '<path stroke="' + hexcolorb + '" d="M0 2h1"></path>'
+						svg += '<path stroke="' + hexcolora + '" d="M1 2h1"></path>'
+						svg += '<path stroke="' + hexcolora + '" d="M0 3h2"></path>'
+						svg += '</svg>'
+						break;
+					case 'c2':
+						var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" shape-rendering="auto" viewBox="0 -.5 4 4">'
+						svg += '<path stroke="' + hexcolora + '" d="M0 0h2"></path>'
+						svg += '<path stroke="' + hexcolorb + '" d="M2 0h2"></path>'
+						svg += '<path stroke="' + hexcolora + '" d="M0 1h4"></path>'
+						svg += '<path stroke="' + hexcolorb + '" d="M0 2h2"></path>'
+						svg += '<path stroke="' + hexcolora + '" d="M2 2h2"></path>'
+						svg += '<path stroke="' + hexcolora + '" d="M0 3h4"></path>'
+						svg += '</svg>'
+						break;
+				}
+			} else {
+				var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="2" shape-rendering="auto" viewBox="0 -.5 1 2">'
+				svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
+				svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
+				svg += '</svg>'
+				break;
+			}
+			break;
 	}
 	return svg;
 }
@@ -686,29 +725,29 @@ function createBASICProgram(data, comment) {
 
 	text += '200 v=53248:g=8192+16384:s=1024+16384' + '\n';
 
-	console.log(mixed, pattern);
 	var bpattern;
+	console.log(mixed, pattern);
 	switch (mixed) {
 		case 0: // don't care
 		case 1: // 50%
 			switch (pattern) {
-				case 0: // h
+				case 'h':
 					bpattern = [ 0x00, 0xff, 0x00, 0xff ];
 					break;
-				case 1: // v
+				case 'v':
 					bpattern = [ 0x55, 0x55, 0x55, 0x55 ];
 					break;
-				case 2: // c
+				case 'c':
 					bpattern = [ 0x55, 0xaa, 0x55, 0xaa ];
 					break;
-				case 3: // c2
+				case 'c2':
 					bpattern = [ 0x33, 0xcc, 0x33, 0xcc ];
 					break;
 			}
 			break;
 		case 2: // 25/50/75%
 			switch (pattern) {
-				case 0: // v
+				case 'v':
 					bpattern = [
 						0x00, 0x00, 0x00, 0x00, // 0.00
 						0x55, 0x00, 0x55, 0x00, // 0.25
@@ -716,7 +755,15 @@ function createBASICProgram(data, comment) {
 						0x55, 0xff, 0x55, 0xff, // 0.75
 					];
 					break;
-				case 1: // c
+				case 'v2':
+					bpattern = [
+						0x00, 0x00, 0x00, 0x00, // 0.00
+						0x33, 0x00, 0x33, 0x00, // 0.25
+						0x00, 0xff, 0x00, 0xff, // 0.50
+						0x33, 0xff, 0x33, 0xff, // 0.75
+					];
+					break;
+				case 'c':
 					bpattern = [
 						0x00, 0x00, 0x00, 0x00, // 0.00
 						0x55, 0x00, 0xaa, 0x00, // 0.25
@@ -724,10 +771,17 @@ function createBASICProgram(data, comment) {
 						0x55, 0xff, 0xaa, 0xff, // 0.75
 					];
 					break;
+				case 'c2':
+					bpattern = [
+						0x00, 0x00, 0x00, 0x00, // 0.00
+						0x33, 0x00, 0xcc, 0x00, // 0.25
+						0x00, 0xff, 0x00, 0xff, // 0.50
+						0x33, 0xff, 0xcc, 0xff, // 0.75
+					];
+					break;
 			}
 			break;
 	}
-	console.log(bpattern);
 	if (bpattern.length == 4) {
 		bpattern = bpattern.concat(bpattern);
 		bpattern = bpattern.concat(bpattern);
@@ -810,20 +864,7 @@ function init() {
 		}
 	}
 	if (urlParams.has('pattern')) {
-		switch (urlParams.get('pattern')) {
-			case 'h':
-				document.getElementById("pattern").selectedIndex = 0;
-				break;
-			case 'v':
-				document.getElementById("pattern").selectedIndex = 1;
-				break;
-			case 'c':
-				document.getElementById("pattern").selectedIndex = 2;
-				break;
-			case 'c2':
-				document.getElementById("pattern").selectedIndex = 3;
-				break;
-		}
+		document.getElementById("pattern").value = urlParams.get('pattern');
 	}
 
 	refresh();
@@ -839,7 +880,7 @@ function refresh() {
 	gamma = document.getElementById("gamma").value / 10;
 
 	sortby = document.getElementById("sortby").selectedIndex;
-	pattern = document.getElementById("pattern").selectedIndex;
+	pattern = document.getElementById("pattern").value;
 	showcomponents = document.getElementById("showcomponents").checked;
 	showeffcol = document.getElementById("showeffcol").checked;
 	showmixedcol = document.getElementById("showmixedcol").checked;
@@ -868,6 +909,40 @@ function refresh() {
 	}
 
 	//
+	// set up the mixing pattern selector
+	//
+	switch (mixed) {
+		case 0:
+			pattern_element = document.getElementById("pattern");
+			pattern_element.style.pointerEvents = 'none';
+			pattern_element.style.opacity = '0.5';
+			break;
+		case 1:
+			pattern_element = document.getElementById("pattern");
+			pattern_element.style.pointerEvents = null;
+			pattern_element.style.opacity = null;
+			pattern_element.options[0].disabled = false;
+			pattern_element.options[2].disabled = true;
+			if (pattern_element.value == 'v2') {
+				pattern_element.value = 'h';
+				pattern = pattern_element.value;
+			}
+			break;
+		case 2:
+			console.log('a');
+			pattern_element = document.getElementById("pattern");
+			pattern_element.style.pointerEvents = null;
+			pattern_element.style.opacity = null;
+			pattern_element.options[0].disabled = true;
+			pattern_element.options[2].disabled = false;
+			if (pattern_element.value == 'h') {
+				pattern_element.value = 'c';
+				pattern = pattern_element.value;
+			}
+			break;
+	}
+
+	//
 	// Create Link
 	//
 	args = {};
@@ -885,20 +960,7 @@ function refresh() {
 			args['sortby'] = 'luma';
 			break;
 	}
-	switch (pattern) {
-		case 0:
-			args['pattern'] = 'h';
-			break;
-		case 1:
-			args['pattern'] = 'v';
-			break;
-		case 2:
-			args['pattern'] = 'c';
-			break;
-		case 3:
-			args['pattern'] = 'c2';
-			break;
-	}
+	args['pattern'] = pattern;
 	if (brightness != 50) {
 		args['b'] = brightness;
 	}
