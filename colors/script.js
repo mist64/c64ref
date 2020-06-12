@@ -1,6 +1,5 @@
 // TODO:
 // * when drawing, sort paired colors by luma
-// * fix pattern support
 // * add VIC and TED
 // * VICE VPL palette generation
 // * emulate checkerboard pattern artifact
@@ -328,10 +327,10 @@ function drawColorspace(id, colorspaceMap, mapped_colors, pattern) {
 					var fy = y * scale + y1;
 					var condition;
 					switch (mixed) {
-						case 0: // solid
+						case '0': // solid
 							condition = true;
 							break;
-						case 1: // 50%
+						case '2': // 50%
 							switch (pattern) {
 								case 'h': // h
 									condition = fy & 1;
@@ -347,7 +346,7 @@ function drawColorspace(id, colorspaceMap, mapped_colors, pattern) {
 									break;
 							}
 							break;
-						case 2: // 25/50/75%
+						case '4': // 25/50/75%
 							if (c.f == 0.5) {
 								condition = fy & 1;
 							} else {
@@ -596,8 +595,8 @@ function svgForColors(c1, c2, f, pattern) {
 	var hexcolor1 = hexFromRGB(c1.r, c1.g, c1.b);
 	var hexcolor2 = hexFromRGB(c2.r, c2.g, c2.b);
 	switch (mixed) {
-		case 0:
-		case 1:
+		case '0':
+		case '2':
 			switch (pattern) {
 				case 'h':
 					var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="2" shape-rendering="auto" viewBox="0 -.5 1 2">'
@@ -629,7 +628,7 @@ function svgForColors(c1, c2, f, pattern) {
 					break;
 			}
 			break;
-		case 2:
+		case '4':
 			if (f == .25 || f == .75) {
 				if (f == .75) {
 					var hexcolora = hexcolor1;
@@ -725,22 +724,22 @@ function createBASICProgram(data, comment) {
 		if (a) {
 			line += '' + a;
 		}
-		if (line.length > 68) {
-			text += '' + lineno + 'data' + line + '\n';
+		if (line.length > 65) {
+			text += '' + lineno + ' data' + line + '\n';
 			lineno += 1;
 			line = '';
 			start_of_line = true;
 		}
 	}
-	text += '' + lineno + 'data' + line + '\n';
+	text += '' + lineno + ' data' + line + '\n';
 
 	text += '200 v=53248:g=8192+16384:s=1024+16384' + '\n';
 
 	var bpattern;
 	console.log(mixed, pattern);
 	switch (mixed) {
-		case 0: // don't care
-		case 1: // 50%
+		case '0': // don't care
+		case '2': // 50%
 			switch (pattern) {
 				case 'h':
 					bpattern = [ 0x00, 0xff, 0x00, 0xff ];
@@ -756,7 +755,7 @@ function createBASICProgram(data, comment) {
 					break;
 			}
 			break;
-		case 2: // 25/50/75%
+		case '4': // 25/50/75%
 			switch (pattern) {
 				case 'v':
 					bpattern = [
@@ -844,7 +843,7 @@ function init() {
 		}
 	}
 	if (urlParams.has('mixed')) {
-		document.getElementById("mixed").selectedIndex = urlParams.get('mixed');
+		document.getElementById("mixed").value = urlParams.get('mixed');
 	}
 	if (urlParams.has('lumadiff')) {
 		document.getElementById("maxlumadiff").value = urlParams.get('lumadiff') / 10;
@@ -885,7 +884,7 @@ var old_mixed;
 
 function refresh() {
 	lumalevels = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
-	mixed = document.getElementById("mixed").selectedIndex;
+	mixed = document.getElementById("mixed").value;
 	maxlumadiff = parseInt(document.getElementById("maxlumadiff").value) * 10;
 	brightness = document.getElementById("brightness").value;
 	contrast = document.getElementById("contrast").value;
@@ -913,7 +912,7 @@ function refresh() {
 	// enable disable luma threshold slider
 	//
 	maxlumadiff_div = document.getElementById("maxlumadiff_div");
-	if (!mixed) {
+	if (mixed == '0') {
 		maxlumadiff_div.style.pointerEvents = 'none';
 		maxlumadiff_div.style.opacity = '0.5';
 		document.getElementById("maxlumadiff").value = 0;
@@ -928,7 +927,7 @@ function refresh() {
 	if (mixed != old_mixed) {
 		old_mixed = mixed;
 		pattern_element = document.getElementById("pattern");
-		if (mixed == 0) {
+		if (mixed == '0') {
 			pattern_element.style.pointerEvents = 'none';
 			pattern_element.style.opacity = '0.5';
 		} else {
@@ -936,15 +935,15 @@ function refresh() {
 			pattern_element.style.opacity = null;
 		}
 		switch (mixed) {
-			case 0:
+			case '0':
 				pattern_element.value = 'h';
 				break;
-			case 1:
+			case '2':
 				pattern_element.options[0].disabled = false;
 				pattern_element.options[2].disabled = true;
 				pattern_element.value = 'h';
 				break;
-			case 2:
+			case '4':
 				pattern_element.options[0].disabled = true;
 				pattern_element.options[2].disabled = false;
 				pattern_element.value = 'c';
@@ -1021,7 +1020,7 @@ function refresh() {
 	//
 	// create mixed colors
 	//
-	if (mixed) {
+	if (mixed != '0') {
 		var l = colors.length;
 		for (var i = 0; i < l; i++) {
 			var c1 = colors[i];
@@ -1029,7 +1028,7 @@ function refresh() {
 				var c2 = colors[j];
 				lumadiff = Math.abs(c1.y - c2.y);
 				for (var f = .25; f <= .75; f += .25) {
-					if (mixed != 2 && f != .5) {
+					if (mixed != '4' && f != .5) {
 						continue;
 					}
 					var cm = {}
@@ -1464,7 +1463,7 @@ function hideColorspace(hide) {
 
 function preset(mixed, maxlumadiff) {
 	document.getElementById("lumalevels").selectedIndex = 1; // new VIC-II
-	document.getElementById("mixed").selectedIndex = mixed;
+	document.getElementById("mixed").value = mixed;
 	document.getElementById("maxlumadiff").value = maxlumadiff / 10;
 	refresh();
 }

@@ -167,22 +167,22 @@ li:target {
 					<td class="vertical-adjust" rowspan="3"><span class="vertical">PRESETS</span></td>
 					<td>Plain</td>
 					<td>
-						<button type="button" onclick="preset(0, 0);">16c</button>
+						<button type="button" onclick="preset('0', 0);">16c</button>
 					</td>
 				</tr>
 				<tr>
 					<td class="vertical-adjust">50% Mix</td>
 					<td class="vertical-adjust">
-						<button type="button" onclick="preset(1, 0);">23c</button>
-						<button type="button" onclick="preset(1, 30);">39c</button>
+						<button type="button" onclick="preset('2', 0);">23c</button>
+						<button type="button" onclick="preset('2', 30);">39c</button>
 					</td>
 				</tr>
 				<tr style="border-bottom: 1px solid black;">
 					<td class="vertical-adjust">25/50/75% Mix</td>
 					<td class="vertical-adjust">
-						<button type="button" onclick="preset(2, 0);">37c</button>
-						<button type="button" onclick="preset(2, 20);">73c</button>
-						<button type="button" onclick="preset(2, 40);">133c</button>
+						<button type="button" onclick="preset('4', 0);">37c</button>
+						<button type="button" onclick="preset('4', 20);">73c</button>
+						<button type="button" onclick="preset('4', 40);">133c</button>
 					</td>
 				</tr>
 				<tr>
@@ -202,9 +202,9 @@ li:target {
 					</td>
 					<td colspan="2">
 						<select name="mixed" id="mixed" onChange="refresh();">
-						    <option value="mixed0">No</option>
-						    <option value="mixed1">50%</option>
-						    <option value="mixed2">25%/50%/75%</option>
+						    <option value="0">No</option>
+						    <option value="2">50%</option>
+						    <option value="4">25%/50%/75%</option>
 						</select>
 					</td>
 				</tr>
