@@ -308,12 +308,12 @@ li:target {
 	<hr/>
 	<h2>Palette</h2>
 
-	<label for="mixingstyle">Mixing Style<sup><a href="#note1">1</a></sup></label>
-	<select name="mixingstyle" id="mixingstyle" onChange="refresh();">
-	    <option selected value="mixingstyle0">Alternating Lines</option>
-	    <option value="mixingstyle1">Alternating Columns</option>
-	    <option value="mixingstyle2">Checkered</option>
-	    <option value="mixingstyle3">Checkered h2x</option>
+	<label for="pattern">Mixing Pattern<sup><a href="#note1">1</a></sup></label>
+	<select name="pattern" id="pattern" onChange="refresh();">
+	    <option selected value="pattern0">Alternating Lines</option>
+	    <option value="pattern1">Alternating Columns</option>
+	    <option value="pattern2">Checkered</option>
+	    <option value="pattern3">Checkered h2x</option>
 	</select>
 
 	<input type="checkbox" id="showcomponents" onclick="refresh()">
@@ -340,7 +340,7 @@ li:target {
 
 	<br/>
 
-	<h2>Colorspace Diagram<sup><a href="#note2">2</a></sup></h2>
+	<h2>Colorspace Diagram</h2>
 
 	<div id="colorspace" onmousedown="hideColorspace(true);" onmouseup="hideColorspace(false);">
 		<div id="colorspace_rgb">
@@ -413,8 +413,7 @@ li:target {
 
 	<ol>
 	<li id="note1">On a real system, *alternating columns* and *checkered* will produce nasty vertical low-frequency color stripes ("GEOS effect") for larger areas. The same is true for *checkered 2x* for lower luma diffs. The previews do not account for this.</li>
-	<li id="note2">The mixed color previews average the chroma between two lines, approximating the effect on a real PAL system.</li>
-	<li id="note3">The color index is defined as follows: The 16 base colors have their natural indexes. Mixed colors are sorted first by luma diff, then by the index of the component with the lower index, then by the component with the higher index.</span></li>
+	<li id="note2">The color index is defined as follows: The 16 base colors have their natural indexes. Mixed colors are sorted first by luma diff, then by the index of the component with the lower index, then by the component with the higher index.</span></li>
 	</ol>
 
 	<h2>References</h2>

@@ -1,3 +1,9 @@
+// TODO:
+// * when drawing, sort paired colors by luma
+// * fix mixing style support
+// * add VIC and TED
+// * VICE VPL palette generation
+
 window.onload = init;
 
 // START
@@ -291,7 +297,7 @@ function deltaE(labA, labB){
   return i < 0 ? 0 : Math.sqrt(i);
 }
 
-function drawColorspace(id, colorspaceMap, mapped_colors, mixingstyle) {
+function drawColorspace(id, colorspaceMap, mapped_colors, pattern) {
 	var xres = 40;
 	var yres = 25;
 	var scale = 8;
@@ -320,13 +326,13 @@ function drawColorspace(id, colorspaceMap, mapped_colors, mixingstyle) {
 					var fx = x * scale + x1;
 					var fy = y * scale + y1;
 					if (c.f == .5) {
-						if (mixingstyle == 0) {
+						if (pattern == 0) {
 							condition = fy & 1;
-						} else if (mixingstyle == 1) {
+						} else if (pattern == 1) {
 							condition = fx & 1;
-						} else if (mixingstyle == 2) {
+						} else if (pattern == 2) {
 							condition = (fx & 1) ^ (fy & 1);
-						} else if (mixingstyle == 3) {
+						} else if (pattern == 3) {
 							condition = ((fx >> 1) & 1) ^ (fy & 1);
 						}
 					} else if (c.f == .25) {
@@ -561,28 +567,28 @@ function getColorspaceMap3() {
 //	}
 //}
 
-function svgForColors(c1, c2, f, mixingstyle) {
+function svgForColors(c1, c2, f, pattern) {
 	var hexcolor1 = hexFromRGB(c1.r, c1.g, c1.b);
 	var hexcolor2 = hexFromRGB(c2.r, c2.g, c2.b);
 	if (f == .5) {
-		if (mixingstyle == 0) { // alternating lines
+		if (pattern == 0) { // alternating lines
 			var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="2" shape-rendering="auto" viewBox="0 -.5 1 2">'
 			svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
 			svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
 			svg += '</svg>'
-		} else if (mixingstyle == 1) { // alternating columns
+		} else if (pattern == 1) { // alternating columns
 			var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="1" shape-rendering="auto" viewBox="0 -.5 2 1">'
 			svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
 			svg += '<path stroke="' + hexcolor2 + '" d="M1 0h1"></path>'
 			svg += '</svg>'
-		} else if (mixingstyle == 2) { // checkered
+		} else if (pattern == 2) { // checkered
 			var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" shape-rendering="auto" viewBox="0 -.5 2 2">'
 			svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
 			svg += '<path stroke="' + hexcolor2 + '" d="M1 0h1"></path>'
 			svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
 			svg += '<path stroke="' + hexcolor1 + '" d="M1 1h1"></path>'
 			svg += '</svg>'
-		} else if (mixingstyle == 3) { // checkered h2x
+		} else if (pattern == 3) { // checkered h2x
 			var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="2" shape-rendering="auto" viewBox="0 -.5 4 2">'
 			svg += '<path stroke="' + hexcolor1 + '" d="M0 0h2"></path>'
 			svg += '<path stroke="' + hexcolor2 + '" d="M2 0h2"></path>'
@@ -614,7 +620,7 @@ function imageFromColor(c) {
 		component1 = c;
 		component2 = c;
 	}
-	svg = svgForColors(component1, component2, c.f, mixingstyle);
+	svg = svgForColors(component1, component2, c.f, pattern);
 	svg = svg.replace(/#/g, '%23');
 	image = "url('data:image/svg+xml;utf8," + svg + "')";
 	return image;
@@ -701,8 +707,8 @@ function init() {
 				break;
 		}
 	}
-	if (urlParams.has('mixedcols')) {
-		document.getElementById("mixedcols").selectedIndex = urlParams.get('mixedcols');
+	if (urlParams.has('mixed')) {
+		document.getElementById("mixedcols").selectedIndex = urlParams.get('mixed');
 	}
 	if (urlParams.has('lumadiff')) {
 		document.getElementById("maxlumadiff").value = urlParams.get('lumadiff') / 10;
@@ -732,19 +738,19 @@ function init() {
 				break;
 		}
 	}
-	if (urlParams.has('mix')) {
-		switch (urlParams.get('mix')) {
+	if (urlParams.has('pattern')) {
+		switch (urlParams.get('pattern')) {
 			case 'h':
-				document.getElementById("mixingstyle").selectedIndex = 0;
+				document.getElementById("pattern").selectedIndex = 0;
 				break;
 			case 'v':
-				document.getElementById("mixingstyle").selectedIndex = 1;
+				document.getElementById("pattern").selectedIndex = 1;
 				break;
 			case 'c':
-				document.getElementById("mixingstyle").selectedIndex = 2;
+				document.getElementById("pattern").selectedIndex = 2;
 				break;
 			case 'c2':
-				document.getElementById("mixingstyle").selectedIndex = 3;
+				document.getElementById("pattern").selectedIndex = 3;
 				break;
 		}
 	}
@@ -762,7 +768,7 @@ function refresh() {
 	gamma = document.getElementById("gamma").value / 10;
 
 	sortby = document.getElementById("sortby").selectedIndex;
-	mixingstyle = document.getElementById("mixingstyle").selectedIndex;
+	pattern = document.getElementById("pattern").selectedIndex;
 	showcomponents = document.getElementById("showcomponents").checked;
 	showeffcol = document.getElementById("showeffcol").checked;
 	showmixedcol = document.getElementById("showmixedcol").checked;
@@ -793,59 +799,61 @@ function refresh() {
 	//
 	// Create Link
 	//
-	url = window.location.href;
-	url =  url.split('?')[0];
-	url =  url.split('#')[0];
-	if (lumalevels != 'mc') {
-		url += '?levels=' + (lumalevels == 'mc' ? '9' : '5');
+	args = {};
+	args['levels'] = lumalevels == 'mc' ? '9' : '5';
+	args['mixed'] = mixedcols;
+	args['lumadiff'] = maxlumadiff;
+	switch (sortby) {
+		case 0:
+			args['sortby'] = 'lumadiff';
+			break;
+		case 1:
+			args['sortby'] = 'hue';
+			break;
+		case 2:
+			args['sortby'] = 'luma';
+			break;
 	}
-	if (mixedcols != 0) {
-		url += '&mixedcols=' + mixedcols;
-	}
-	if (maxlumadiff != 0) {
-		url += '&lumadiff=' + maxlumadiff;
+	switch (pattern) {
+		case 0:
+			args['pattern'] = 'h';
+			break;
+		case 1:
+			args['pattern'] = 'v';
+			break;
+		case 2:
+			args['pattern'] = 'c';
+			break;
+		case 3:
+			args['pattern'] = 'c2';
+			break;
 	}
 	if (brightness != 50) {
-		url += '&b=' + brightness;
+		args['b'] = brightness;
 	}
 	if (contrast != 100) {
-		url += '&c=' + contrast;
+		args['c'] = contrast;
 	}
 	if (saturation != 50) {
-		url += '&s=' + saturation;
+		args['s'] = saturation;
 	}
 	if (gamma != 2.8) {
-		url += '&g=' + gamma.toFixed(1);
+		args['g'] = gamma.toFixed(1);
 	}
-	if (sortby != 1) {
-		url += '&sortby='
-		switch (sortby) {
-			case 0:
-				url += 'lumadiff';
-				break;
-			case 1:
-				url += 'hue';
-				break;
-			case 2:
-				url += 'luma';
-				break;
-		}
-	}
-	if (mixingstyle != 0) {
-		url += '&mix='
-		switch (mixingstyle) {
-			case 0:
-				url += 'h';
-				break;
-			case 1:
-				url += 'v';
-				break;
-			case 2:
-				url += 'c';
-				break;
-			case 3:
-				url += 'c2';
-				break;
+
+	url = window.location.href;
+	url = url.split('?')[0];
+	url = url.split('#')[0];
+	var i = 0;
+	if (Object.keys(args).length) {
+		for (var key in args) {
+			if (i == 0) {
+				url += '?'
+			} else {
+				url += '&'
+			}
+			url += key + '=' + args[key];
+			i++;
 		}
 	}
 	document.getElementById("collink").href = url;
@@ -1138,7 +1146,7 @@ function refresh() {
 	//
 	var colorspaceMaps = [];
 
-	drawColorspace("mapped", getColorspaceMap3(), true, mixingstyle);
+	drawColorspace("mapped", getColorspaceMap3(), true, pattern);
 
 //	// analyze how many colors are used in the diagram
 //	for (var i = 0; i < colors.length; i++) {
@@ -1163,7 +1171,7 @@ function refresh() {
 	allcoltab = document.getElementById("allcoltab");
 	var html = '';
 	html += '<tr>';
-	html += '<th>#<sup><a href="#note3">3</a></sup></th>';
+	html += '<th>#<sup><a href="#note2">2</a></sup></th>';
 	html += '<th>mix</th>';
 	html += '<th>index 1</th>';
 	html += '<th>index 2</th>';
