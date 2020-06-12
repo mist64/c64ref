@@ -326,20 +326,25 @@ function drawColorspace(id, colorspaceMap, mapped_colors, pattern) {
 				for (var y1 = 0; y1 < scale; y1++) {
 					var fx = x * scale + x1;
 					var fy = y * scale + y1;
-					if (c.f == .5) {
-						if (pattern == 0) {
-							condition = fy & 1;
-						} else if (pattern == 1) {
-							condition = fx & 1;
-						} else if (pattern == 2) {
-							condition = (fx & 1) ^ (fy & 1);
-						} else if (pattern == 3) {
-							condition = ((fx >> 1) & 1) ^ (fy & 1);
-						}
-					} else if (c.f == .25) {
-						condition = !((fx & 1) | (fy & 1));
-					} else {
-						condition = (fx & 1) | (fy & 1);
+					switch (c.f) {
+						case 0.25:
+							condition = !((fy & 1) | ((fx & 1) ^ ((fy >> 1) & 1)));
+							break;
+						case 0.75:
+							condition = (fy & 1) | ((fx & 1) ^ ((fy >> 1) & 1));
+							break;
+						case .5:
+						default:
+							if (pattern == 0) {
+								condition = fy & 1;
+							} else if (pattern == 1) {
+								condition = fx & 1;
+							} else if (pattern == 2) {
+								condition = (fx & 1) ^ (fy & 1);
+							} else if (pattern == 3) {
+								condition = ((fx >> 1) & 1) ^ (fy & 1);
+							}
+							break;
 					}
 					var o = 4 * (fy * (xres * scale) + fx)
 					imgData.data[o] = condition ? c1.r : c2.r;
@@ -605,10 +610,13 @@ function svgForColors(c1, c2, f, pattern) {
 			var hexcolora = hexcolor2;
 			var hexcolorb = hexcolor1;
 		}
-		var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" shape-rendering="auto" viewBox="0 -.5 2 2">'
+		var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="4" shape-rendering="auto" viewBox="0 -.5 2 4">'
 		svg += '<path stroke="' + hexcolora + '" d="M0 0h1"></path>'
 		svg += '<path stroke="' + hexcolorb + '" d="M1 0h1"></path>'
 		svg += '<path stroke="' + hexcolora + '" d="M0 1h2"></path>'
+		svg += '<path stroke="' + hexcolorb + '" d="M0 2h1"></path>'
+		svg += '<path stroke="' + hexcolora + '" d="M1 2h1"></path>'
+		svg += '<path stroke="' + hexcolora + '" d="M0 3h2"></path>'
 		svg += '</svg>'
 	}
 	return svg;
@@ -664,10 +672,10 @@ function createBASICProgram(data, comment) {
 
 	text += '200 v=53248:g=8192+16384:s=1024+16384' + '\n';
 
-	text += '240 a(0)=0:b(0)=0' + '\n';
-	text += '210 a(1)=85:b(1)=0' + '\n';
-	text += '220 a(2)=0:b(2)=255' + '\n';
-	text += '230 a(3)=85:b(3)=255' + '\n';
+	text += '240 a(0)=0:b(0)=0:c(0)=0:d(0)=0' + '\n';
+	text += '210 a(1)=85:b(1)=0:c(1)=170:d(1)=0' + '\n';
+	text += '220 a(2)=0:b(2)=255:c(2)=0:d(2)=255' + '\n';
+	text += '230 a(3)=85:b(3)=255:c(3)=170:d(3)=255' + '\n';
 
 	text += '300 poke56576,peek(56576)and254' + '\n';
 	text += '310 pokev+32,0' + '\n';
@@ -676,10 +684,11 @@ function createBASICProgram(data, comment) {
 	text += '340 pokev+24,peek(v+24)or8' + '\n';
 
 	text += '400 fori=0to' + (data.length / 2 - 1) + ':readx:ready:pokes+i,x' + '\n';
-	text += '410 forj=g+i*8tog+i*8+7step2:pokej,a(x):pokej+1,b(x):next' + '\n';
-	text += '420 next' + '\n';
+	text += '410 forj=g+i*8tog+i*8+7step4' + '\n';
+	text += '420 pokej,a(y):pokej+1,b(y):pokej+2,c(y):pokej+3,d(y):next' + '\n';
+	text += '430 next' + '\n';
 
-	text += '430 fori=ito999:pokes+i,0:next' + '\n';
+	text += '440 fori=ito999:pokes+i,0:next' + '\n';
 
 	text += '640 goto640' + '\n';
 
