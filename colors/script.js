@@ -706,7 +706,14 @@ function componentsFromColor(c) {
 }
 
 function createBASICProgram(data, comment) {
-	var text = '0 rem ' + colors.length + ' colors\n';
+	var text = '0 rem ' + colors.length + ' colors';
+	if (mixed == '2') {
+		text += ', 50% mixed';
+	} else if (mixed == '4') {
+		text += ', 25/50/75% mixed';
+	}
+	text += '\n';
+
 	text += '1 rem ' + comment + '\n';
 	text += '2 rem\n';
 
@@ -860,17 +867,7 @@ function init() {
 		document.getElementById("gamma").value = urlParams.get('g') * 10;
 	}
 	if (urlParams.has('sortby')) {
-		switch (urlParams.get('sortby')) {
-			case 'lumadiff':
-				document.getElementById("sortby").selectedIndex = 0;
-				break;
-			case 'hue':
-				document.getElementById("sortby").selectedIndex = 1;
-				break;
-			case 'luma':
-				document.getElementById("sortby").selectedIndex = 2;
-				break;
-		}
+		document.getElementById("sortby").value = urlParams.get('sortby');
 	}
 	if (urlParams.has('pattern')) {
 		document.getElementById("pattern").value = urlParams.get('pattern');
@@ -890,7 +887,7 @@ function refresh() {
 	saturation = document.getElementById("saturation").value;
 	gamma = document.getElementById("gamma").value / 10;
 
-	sortby = document.getElementById("sortby").selectedIndex;
+	sortby = document.getElementById("sortby").value;
 	showcomponents = document.getElementById("showcomponents").checked;
 	showeffcol = document.getElementById("showeffcol").checked;
 	showmixedcol = document.getElementById("showmixedcol").checked;
@@ -957,18 +954,10 @@ function refresh() {
 	args = {};
 	args['levels'] = lumalevels == 'mc' ? '9' : '5';
 	args['mixed'] = mixed;
-	args['lumadiff'] = lumadiff;
-	switch (sortby) {
-		case 0:
-			args['sortby'] = 'lumadiff';
-			break;
-		case 1:
-			args['sortby'] = 'hue';
-			break;
-		case 2:
-			args['sortby'] = 'luma';
-			break;
+	if (mixed != '0') {
+		args['lumadiff'] = lumadiff;
 	}
+	args['sortby'] = sortby;
 	args['pattern'] = pattern;
 	if (brightness != 50) {
 		args['b'] = brightness;
@@ -1107,11 +1096,11 @@ function refresh() {
 			}
 		}
 	}
-	if (sortby == 0) {
+	if (sortby == 'lumadiff') {
 		colors.sort(compare_lumadiff_index);
-	} else if (sortby == 1) {
+	} else if (sortby == 'hue') {
 		colors.sort(compare_h);
-	} else {
+	} else if (sortby == 'luma'){
 		colors.sort((a,b)=>a.y-b.y);
 	}
 
@@ -1237,16 +1226,20 @@ function refresh() {
 
 	var comment = 'sorted by ';
 	switch (sortby) {
-		case 0:
+		case 'lumadiff':
 			comment += 'luma diff';
 			break;
-		case 1:
+		case 'hue':
 			comment += 'hue';
 			break;
-		case 2:
+		case 'luma':
 			comment += 'luma';
 			break;
 	}
+	if (mixed != '0') {
+		comment += ', pattern "' + pattern + '"';
+	}
+
 	text_basic = createBASICProgram(data, comment);
 
 	document.getElementById("text_basic1_lower").innerHTML = text_basic;
@@ -1268,7 +1261,11 @@ function refresh() {
 			default:  data.push(0); break;
 		}
 	}
-	text_basic = createBASICProgram(data, '');
+	comment = '';
+	if (mixed != '0') {
+		comment = 'pattern "' + pattern + '"';
+	}
+	text_basic = createBASICProgram(data, comment);
 	document.getElementById("text_basic2_lower").innerHTML = text_basic;
 	document.getElementById("text_basic2_upper").innerHTML = text_basic.toUpperCase();
 
