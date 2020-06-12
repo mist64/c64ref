@@ -208,7 +208,7 @@ li:target {
 						</select>
 					</td>
 				</tr>
-				<tr id="maxlumadiff_div" style="border-bottom: 1px solid black;">
+				<tr>
 					<td colspan="2">
 						<label for="maxlumadiff">Max Luma Diff</label>
 					</td>
@@ -217,6 +217,20 @@ li:target {
 					</td>
 					<td>
 						<span id="maxlumadiff_val"></span>
+					</td>
+				</tr>
+				<tr id="maxlumadiff_div" style="border-bottom: 1px solid black;">
+					<td colspan="2">
+						<label for="pattern">Mixing Pattern<sup><a href="#note1">1</a></sup></label>
+					</td>
+					<td colspan="2">
+						<select name="pattern" id="pattern" onChange="refresh();">
+						    <option selected value="h">Alternating Lines</option>
+						    <option value="v">Alternating Columns</option>
+						    <option value="v2">Alternating Columns h2x</option>
+						    <option value="c">Checkered</option>
+						    <option value="c2">Checkered h2x</option>
+						</select>
 					</td>
 				</tr>
 				<tr style="border-bottom: 1px solid black;">
@@ -307,15 +321,6 @@ li:target {
 
 	<hr/>
 	<h2>Palette</h2>
-
-	<label for="pattern">Mixing Pattern<sup><a href="#note1">1</a></sup></label>
-	<select name="pattern" id="pattern" onChange="refresh();">
-	    <option selected value="h">Alternating Lines</option>
-	    <option value="v">Alternating Columns</option>
-	    <option value="v2">Alternating Columns 2x</option>
-	    <option value="c">Checkered</option>
-	    <option value="c2">Checkered h2x</option>
-	</select>
 
 	<input type="checkbox" id="showcomponents" onclick="refresh()">
 	<label for="showcomponents"><u>C</u>omponents</label>

@@ -328,7 +328,9 @@ function drawColorspace(id, colorspaceMap, mapped_colors, pattern) {
 					var fy = y * scale + y1;
 					var condition;
 					switch (mixed) {
-						case 0: // don't care
+						case 0: // solid
+							condition = true;
+							break;
 						case 1: // 50%
 							switch (pattern) {
 								case 'h': // h
@@ -346,19 +348,28 @@ function drawColorspace(id, colorspaceMap, mapped_colors, pattern) {
 							}
 							break;
 						case 2: // 25/50/75%
-						switch (c.f) {
-							case 0.25:
-								condition = !((fy & 1) | ((fx & 1) ^ ((fy >> 1) & 1)));
-								break;
-							case 0.75:
-								condition = (fy & 1) | ((fx & 1) ^ ((fy >> 1) & 1));
-								break;
-							case .5:
-							default: // solid
+							if (c.f == 0.5) {
 								condition = fy & 1;
-								break;
-						}
-						break;
+							} else {
+								switch (pattern) {
+									case 'v':
+										condition = ((fy & 1) | (fx & 1));
+										break;
+									case 'v2':
+										condition = ((fy & 1) | ((fx >> 1) & 1));
+										break;
+									case 'c':
+										condition = (fy & 1) | ((fx & 1) ^ ((fy >> 1) & 1));
+										break;
+									case 'c2':
+										condition = (fy & 1) | (((fx >> 1) & 1) ^ ((fy >> 1) & 1));
+										break;
+								}
+								if (c == .25) {
+									condition = !condition;
+								}
+							}
+							break;
 					}
 					var o = 4 * (fy * (xres * scale) + fx)
 					imgData.data[o] = condition ? c1.r : c2.r;
@@ -870,6 +881,8 @@ function init() {
 	refresh();
 }
 
+var old_mixed;
+
 function refresh() {
 	lumalevels = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
 	mixed = document.getElementById("mixed").selectedIndex;
@@ -880,11 +893,12 @@ function refresh() {
 	gamma = document.getElementById("gamma").value / 10;
 
 	sortby = document.getElementById("sortby").selectedIndex;
-	pattern = document.getElementById("pattern").value;
 	showcomponents = document.getElementById("showcomponents").checked;
 	showeffcol = document.getElementById("showeffcol").checked;
 	showmixedcol = document.getElementById("showmixedcol").checked;
 	showluma = document.getElementById("showluma").checked;
+
+	pattern = document.getElementById("pattern").value;
 
 	//
 	// copy slider values to text fields
@@ -911,35 +925,32 @@ function refresh() {
 	//
 	// set up the mixing pattern selector
 	//
-	switch (mixed) {
-		case 0:
-			pattern_element = document.getElementById("pattern");
+	if (mixed != old_mixed) {
+		old_mixed = mixed;
+		pattern_element = document.getElementById("pattern");
+		if (mixed == 0) {
 			pattern_element.style.pointerEvents = 'none';
 			pattern_element.style.opacity = '0.5';
-			break;
-		case 1:
-			pattern_element = document.getElementById("pattern");
+		} else {
 			pattern_element.style.pointerEvents = null;
 			pattern_element.style.opacity = null;
-			pattern_element.options[0].disabled = false;
-			pattern_element.options[2].disabled = true;
-			if (pattern_element.value == 'v2') {
+		}
+		switch (mixed) {
+			case 0:
 				pattern_element.value = 'h';
-				pattern = pattern_element.value;
-			}
-			break;
-		case 2:
-			console.log('a');
-			pattern_element = document.getElementById("pattern");
-			pattern_element.style.pointerEvents = null;
-			pattern_element.style.opacity = null;
-			pattern_element.options[0].disabled = true;
-			pattern_element.options[2].disabled = false;
-			if (pattern_element.value == 'h') {
+				break;
+			case 1:
+				pattern_element.options[0].disabled = false;
+				pattern_element.options[2].disabled = true;
+				pattern_element.value = 'h';
+				break;
+			case 2:
+				pattern_element.options[0].disabled = true;
+				pattern_element.options[2].disabled = false;
 				pattern_element.value = 'c';
-				pattern = pattern_element.value;
-			}
-			break;
+				break;
+		}
+		pattern = pattern_element.value;
 	}
 
 	//
