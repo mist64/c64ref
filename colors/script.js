@@ -296,71 +296,27 @@ function deltaE(labA, labB){
   return i < 0 ? 0 : Math.sqrt(i);
 }
 
-function drawColorspace(id, colorspaceMap, mapped_colors, pattern) {
+function drawScreen(screen) {
 	var xres = 40;
 	var yres = 25;
-	var scale = 8;
-	var canvas = document.getElementById(id);
-	canvas.width = xres * scale;
-	canvas.height = yres * scale;
+	var canvas = document.getElementById('colspace_diagram');
+	canvas.width = xres * 8;
+	canvas.height = yres * 8;
 	var context = canvas.getContext('2d');
 	var imgData = context.getImageData(0, 0, canvas.width, canvas.height);
+	var oo = 0;
 	for (var y = 0; y < yres; y++) {
 		for (var x = 0; x < xres; x++) {
-			var c = colorspaceMap[xres * y + x];
-			var comp = componentsFromColor(c);
-			var c1 = comp.c1;
-			var c2 = comp.c2;
-			for (var x1 = 0; x1 < scale; x1++) {
-				for (var y1 = 0; y1 < scale; y1++) {
-					var fx = x * scale + x1;
-					var fy = y * scale + y1;
-					var condition;
-					switch (mixed) {
-						case '0': // solid
-							condition = true;
-							break;
-						case '2': // 50%
-							switch (pattern) {
-								case 'h': // h
-									condition = fy & 1;
-									break;
-								case 'v': // v
-									condition = fx & 1;
-									break;
-								case 'c': // c
-									condition = (fx & 1) ^ (fy & 1);
-									break;
-								case 'c2': // c2
-									condition = ((fx >> 1) & 1) ^ (fy & 1);
-									break;
-							}
-							break;
-						case '4': // 25/50/75%
-							if (c.f == 0.5) {
-								condition = fy & 1;
-							} else {
-								switch (pattern) {
-									case 'v':
-										condition = ((fy & 1) | (fx & 1));
-										break;
-									case 'v2':
-										condition = ((fy & 1) | ((fx >> 1) & 1));
-										break;
-									case 'c':
-										condition = (fy & 1) | ((fx & 1) ^ ((fy >> 1) & 1));
-										break;
-									case 'c2':
-										condition = (fy & 1) | (((fx >> 1) & 1) ^ ((fy >> 1) & 1));
-										break;
-								}
-								if (c == .25) {
-									condition = !condition;
-								}
-							}
-							break;
-					}
-					var o = 4 * (fy * (xres * scale) + fx)
+			var a = screen.data[oo++];
+			var b = screen.data[oo++];
+			var c1 = colors[a >> 4];
+			var c2 = colors[a & 0xf];
+			for (var x1 = 0; x1 < 8; x1++) {
+				for (var y1 = 0; y1 < 8; y1++) {
+					var fx = x * 8 + x1;
+					var fy = y * 8 + y1;
+					var condition = ((screen.pattern[(b << 2) | (y1 & 3)]) >> (7 - x1)) & 1;
+					var o = 4 * (fy * (xres * 8) + fx)
 					imgData.data[o] = condition ? c1.r : c2.r;
 					imgData.data[o + 1] = condition ? c1.g : c2.g;
 					imgData.data[o + 2] = condition ? c1.b : c2.b;
@@ -1304,7 +1260,7 @@ function refresh() {
 	//
 	var colorspaceMaps = [];
 
-	drawColorspace("mapped", getColorspaceMap3(), true, pattern);
+	drawScreen(screen2);
 
 //	// analyze how many colors are used in the diagram
 //	for (var i = 0; i < colors.length; i++) {
