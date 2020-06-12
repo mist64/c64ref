@@ -794,6 +794,9 @@ function createBASICProgram(screen, comment) {
 	return text;
 }
 
+const lumadiff_limit1 = 5;
+const lumadiff_limit2 = 31;
+
 var colors;
 
 function init() {
@@ -816,7 +819,9 @@ function init() {
 		document.getElementById("mixed").value = urlParams.get('mixed');
 	}
 	if (urlParams.has('lumadiff')) {
-		document.getElementById("lumadiff").value = urlParams.get('lumadiff') / 10;
+		var lumadiff = urlParams.get('lumadiff') / 10;
+		document.getElementById("lumadiff").value = lumadiff;
+		document.getElementById("limit_lumadiff").checked = lumadiff <= lumadiff_limit1;
 	}
 	if (urlParams.has('b')) {
 		document.getElementById("brightness").value = urlParams.get('b');
@@ -843,6 +848,19 @@ function init() {
 var old_mixed;
 
 function refresh() {
+	//
+	// limit luma diff
+	//
+	limit_lumadiff = document.getElementById("limit_lumadiff").checked;
+	if (limit_lumadiff) {
+		document.getElementById("lumadiff").max = lumadiff_limit1;
+		if (document.getElementById("lumadiff").value > lumadiff_limit1) {
+			document.getElementById("lumadiff").value = lumadiff_limit1;
+		}
+	} else {
+		document.getElementById("lumadiff").max = lumadiff_limit2;
+	}
+
 	lumalevels = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
 	mixed = document.getElementById("mixed").value;
 	lumadiff = parseInt(document.getElementById("lumadiff").value) * 10;
@@ -1173,24 +1191,6 @@ function refresh() {
 	}
 
 	//
-	// Create Palette Screen
-	//
-	var screen1 = {};
-	screen1.pattern = bpattern;
-	screen1.data = [];
-	for (var i = 0; i < colors.length; i++) {
-		c = colors[i];
-		var comp = componentsFromColor(c);
-		screen1.data.push(comp.c1.index << 4 | comp.c2.index);
-		switch (c.f) {
-			case .25: screen1.data.push(1); break;
-			case .5:  screen1.data.push(2); break;
-			case .75: screen1.data.push(3); break;
-			default:  screen1.data.push(0); break;
-		}
-	}
-
-	//
 	// Create Colorspace Diagram Screen
 	//
 	var colorspaceMapBASIC = getColorspaceMap3();
@@ -1208,31 +1208,6 @@ function refresh() {
 			default:  screen2.data.push(0); break;
 		}
 	}
-
-	//
-	// Create Palette BASIC Demo
-	//
-
-	var comment = 'sorted by ';
-	switch (sortby) {
-		case 'lumadiff':
-			comment += 'luma diff';
-			break;
-		case 'hue':
-			comment += 'hue';
-			break;
-		case 'luma':
-			comment += 'luma';
-			break;
-	}
-	if (mixed != '0') {
-		comment += ', pattern "' + pattern + '"';
-	}
-
-	text_basic = createBASICProgram(screen1, comment);
-
-	document.getElementById("text_basic1_lower").innerHTML = text_basic;
-	document.getElementById("text_basic1_upper").innerHTML = text_basic.toUpperCase();
 
 	//
 	// Create Colorspace Diagram BASIC Demo

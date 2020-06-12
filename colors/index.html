@@ -206,6 +206,10 @@ li:target {
 						    <option value="2">50%</option>
 						    <option value="4">25%/50%/75%</option>
 						</select>
+						<span style="float: right;">
+							<input type="checkbox" id="limit_lumadiff" onclick="refresh()">
+							<label for="limit_lumadiff">Limit<sup><a href="#note_limit_lumadiff">(i)</a></sup> ↓</label>
+						</span>
 					</td>
 				</tr>
 				<tr id="lumadiff_div">
@@ -356,20 +360,13 @@ li:target {
 	<table class="code_table" border="1">
 		<tr>
 			<th>
-				Palette BASIC Demo
-			</th>
-			<th>
-				Colorspace Diagram BASIC Demo
+				BASIC Demo
 			</th>
 			<th>
 				Palette
 			</th>
 		</tr>
 		<tr>
-			<td style="text-align: center;">
-				<button type="button" onclick="toggleCase('text_basic1_lower', 'text_basic1_upper');">Toggle Case</button>
-				<button type="button" onclick="copyElement('text_basic1_lower', 'text_basic1_upper');">Copy</button>
-			</td>
 			<td style="text-align: center;">
 				<button type="button" onclick="toggleCase('text_basic2_lower', 'text_basic2_upper');">Toggle Case</button>
 				<button type="button" onclick="copyElement('text_basic2_lower', 'text_basic2_upper');">Copy</button>
@@ -379,12 +376,6 @@ li:target {
 			</td>
 		</tr>
 		<tr>
-			<td>
-				<div class="code">
-				<pre id="text_basic1_lower"></pre>
-				<pre id="text_basic1_upper" style="display: none;"></pre>
-				</div>
-			</td>
 			<td>
 				<div class="code">
 				<pre id="text_basic2_lower"></pre>
@@ -413,7 +404,9 @@ li:target {
 	<ul>
 	<li id="note_levels"><b>VIC-II Rev</b>: </li>
 	<li id="note_mixed"><b>Mixed Colors</b>: </li>
-	<li id="note_lumadiff"><b>Max Mula Diff</b>: </li>
+	<li id="note_lumadiff"><b>Max Luma Diff</b>: </li>
+	<li id="note_limit_lumadiff"><b>Limit Max Luma Diff</b>: </li>
+
 	<li id="note_pattern"><b>Mixing Pattern</b>: On a real system, *alternating columns* and *checkered* will produce nasty vertical low-frequency color stripes ("GEOS effect") for larger areas. The same is true for *checkered 2x* for lower luma diffs. The previews do not account for this.</li>
 	<li id="note_sortby"><b>Sort by</b>: The color index is defined as follows: The 16 base colors have their natural indexes. Mixed colors are sorted first by luma diff, then by the index of the component with the lower index, then by the component with the higher index.</span></li>
 	</ul>
