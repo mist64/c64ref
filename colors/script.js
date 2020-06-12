@@ -705,7 +705,70 @@ function componentsFromColor(c) {
 	}
 }
 
-function createBASICProgram(data, comment) {
+const bpatterns = {
+	'2': {
+		'h':
+			 [
+				0x00, 0x00, 0x00, 0x00, // 0.00
+				0, 0, 0, 0,             // 0.25 (unused)
+				0x00, 0xff, 0x00, 0xff, // 0.5
+				0, 0, 0, 0,             // 0.75 (unused)
+			],
+		'v':
+			[
+				0x00, 0x00, 0x00, 0x00, // 0.00
+				0, 0, 0, 0,             // 0.25 (unused)
+				0x55, 0x55, 0x55, 0x55, // 0.5
+				0, 0, 0, 0,             // 0.75 (unused)
+			],
+		'c':
+			[
+				0x00, 0x00, 0x00, 0x00, // 0.00
+				0, 0, 0, 0,             // 0.25 (unused)
+				0x55, 0xaa, 0x55, 0xaa, // 0.5
+				0, 0, 0, 0,             // 0.75 (unused)
+			],
+		'c2':
+			[
+				0x00, 0x00, 0x00, 0x00, // 0.00
+				0, 0, 0, 0,             // 0.25 (unused)
+				0x33, 0xcc, 0x33, 0xcc, // 0.5
+				0, 0, 0, 0,             // 0.75 (unused)
+			],
+		},
+	'4': {
+		'v':
+			[
+				0x00, 0x00, 0x00, 0x00, // 0.00
+				0x55, 0x00, 0x55, 0x00, // 0.25
+				0x00, 0xff, 0x00, 0xff, // 0.50
+				0x55, 0xff, 0x55, 0xff, // 0.75
+			],
+		'v2':
+			[
+				0x00, 0x00, 0x00, 0x00, // 0.00
+				0x33, 0x00, 0x33, 0x00, // 0.25
+				0x00, 0xff, 0x00, 0xff, // 0.50
+				0x33, 0xff, 0x33, 0xff, // 0.75
+			],
+		'c':
+			[
+				0x00, 0x00, 0x00, 0x00, // 0.00
+				0x55, 0x00, 0xaa, 0x00, // 0.25
+				0x00, 0xff, 0x00, 0xff, // 0.50
+				0x55, 0xff, 0xaa, 0xff, // 0.75
+			],
+		'c2':
+			[
+				0x00, 0x00, 0x00, 0x00, // 0.00
+				0x33, 0x00, 0xcc, 0x00, // 0.25
+				0x00, 0xff, 0x00, 0xff, // 0.50
+				0x33, 0xff, 0xcc, 0xff, // 0.75
+			],
+	}
+}
+
+function createBASICProgram(screen, comment) {
 	var text = '0 rem ' + colors.length + ' colors';
 	if (mixed == '2') {
 		text += ', 50% mixed';
@@ -720,13 +783,13 @@ function createBASICProgram(data, comment) {
 	var line = '';
 	var lineno = 100;
 	var start_of_line = true;
-	for (var i = 0; i < data.length; i++) {
+	for (var i = 0; i < screen.data.length; i++) {
 		if (!start_of_line) {
 			line += ',';
 			start_of_line = false;
 		}
 		start_of_line = false;
-		var a = data[i];
+		var a = screen.data[i];
 		if (a) {
 			line += '' + a;
 		}
@@ -741,76 +804,7 @@ function createBASICProgram(data, comment) {
 
 	text += '200 v=53248:g=8192+16384:s=1024+16384' + '\n';
 
-	const bpatterns = {
-		'2': {
-			'h':
-				 [
-					0x00, 0x00, 0x00, 0x00, // 0.00
-					0, 0, 0, 0,             // 0.25 (unused)
-					0x00, 0xff, 0x00, 0xff, // 0.5
-					0, 0, 0, 0,             // 0.75 (unused)
-				],
-			'v':
-				[
-					0x00, 0x00, 0x00, 0x00, // 0.00
-					0, 0, 0, 0,             // 0.25 (unused)
-					0x55, 0x55, 0x55, 0x55, // 0.5
-					0, 0, 0, 0,             // 0.75 (unused)
-				],
-			'c':
-				[
-					0x00, 0x00, 0x00, 0x00, // 0.00
-					0, 0, 0, 0,             // 0.25 (unused)
-					0x55, 0xaa, 0x55, 0xaa, // 0.5
-					0, 0, 0, 0,             // 0.75 (unused)
-				],
-			'c2':
-				[
-					0x00, 0x00, 0x00, 0x00, // 0.00
-					0, 0, 0, 0,             // 0.25 (unused)
-					0x33, 0xcc, 0x33, 0xcc, // 0.5
-					0, 0, 0, 0,             // 0.75 (unused)
-				],
-			},
-		'4': {
-			'v':
-				[
-					0x00, 0x00, 0x00, 0x00, // 0.00
-					0x55, 0x00, 0x55, 0x00, // 0.25
-					0x00, 0xff, 0x00, 0xff, // 0.50
-					0x55, 0xff, 0x55, 0xff, // 0.75
-				],
-			'v2':
-				[
-					0x00, 0x00, 0x00, 0x00, // 0.00
-					0x33, 0x00, 0x33, 0x00, // 0.25
-					0x00, 0xff, 0x00, 0xff, // 0.50
-					0x33, 0xff, 0x33, 0xff, // 0.75
-				],
-			'c':
-				[
-					0x00, 0x00, 0x00, 0x00, // 0.00
-					0x55, 0x00, 0xaa, 0x00, // 0.25
-					0x00, 0xff, 0x00, 0xff, // 0.50
-					0x55, 0xff, 0xaa, 0xff, // 0.75
-				],
-			'c2':
-				[
-					0x00, 0x00, 0x00, 0x00, // 0.00
-					0x33, 0x00, 0xcc, 0x00, // 0.25
-					0x00, 0xff, 0x00, 0xff, // 0.50
-					0x33, 0xff, 0xcc, 0xff, // 0.75
-				],
-		}
-	}
-
-	var bpattern;
-
-	if (mixed == '0') {
-		bpattern = bpatterns['2']['h'];
-	} else {
-		bpattern = bpatterns[mixed][pattern];
-	}
+	var bpattern = screen.pattern;
 
 	text += '210 a(0)=' + bpattern[0] + ':b(0)=' + bpattern[1] + ':c(0)=' + bpattern[2] + ':d(0)=' + bpattern[3] + '' + '\n';
 	text += '220 a(1)=' + bpattern[4] + ':b(1)=' + bpattern[5] + ':c(1)=' + bpattern[6] + ':d(1)=' + bpattern[7] + '' + '\n';
@@ -823,7 +817,7 @@ function createBASICProgram(data, comment) {
 	text += '330 pokev+22,peek(v+22)and(255-16)' + '\n';
 	text += '340 pokev+24,peek(v+24)or8' + '\n';
 
-	text += '400 fori=0to' + (data.length / 2 - 1) + ':readx:ready:pokes+i,x' + '\n';
+	text += '400 fori=0to' + (screen.data.length / 2 - 1) + ':readx:ready:pokes+i,x' + '\n';
 	text += '410 forj=g+i*8tog+i*8+7step4' + '\n';
 	text += '420 pokej,a(y):pokej+1,b(y):pokej+2,c(y):pokej+3,d(y):next' + '\n';
 	text += '430 next' + '\n';
@@ -1210,29 +1204,53 @@ function refresh() {
 		text_hexcolors += hexcolor + '\n';
 	}
 
+	var bpattern;
+	if (mixed == '0') {
+		bpattern = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	} else {
+		bpattern = bpatterns[mixed][pattern];
+	}
+
+	//
+	// Create Palette Screen
+	//
+	var screen1 = {};
+	screen1.pattern = bpattern;
+	screen1.data = [];
+	for (var i = 0; i < colors.length; i++) {
+		c = colors[i];
+		var comp = componentsFromColor(c);
+		screen1.data.push(comp.c1.index << 4 | comp.c2.index);
+		switch (c.f) {
+			case .25: screen1.data.push(1); break;
+			case .5:  screen1.data.push(2); break;
+			case .75: screen1.data.push(3); break;
+			default:  screen1.data.push(0); break;
+		}
+	}
+
+	//
+	// Create Colorspace Diagram Screen
+	//
+	var colorspaceMapBASIC = getColorspaceMap3();
+	var screen2 = {};
+	screen2.pattern = bpattern;
+	screen2.data = [];
+	for (var i = 0; i < 1000; i++) {
+		var c = colorspaceMapBASIC[i];
+		var comp = componentsFromColor(c);
+		screen2.data.push(comp.c1.index << 4 | comp.c2.index);
+		switch (c.f) {
+			case .25: screen2.data.push(1); break;
+			case .5:  screen2.data.push(2); break;
+			case .75: screen2.data.push(3); break;
+			default:  screen2.data.push(0); break;
+		}
+	}
 
 	//
 	// Create Palette BASIC Demo
 	//
-	data = [];
-	for (var i = 0; i < colors.length; i++) {
-		c = colors[i];
-		var i1 = null, i2 = null;
-		if (c.component1) {
-			i1 = c.component1.index;
-			i2 = c.component2.index;
-		} else {
-			i1 = c.index;
-			i2 = c.index;
-		}
-		data.push(i1 << 4 | i2);
-		switch (c.f) {
-			case .25: data.push(1); break;
-			case .5:  data.push(2); break;
-			case .75: data.push(3); break;
-			default:  data.push(0); break;
-		}
-	}
 
 	var comment = 'sorted by ';
 	switch (sortby) {
@@ -1250,7 +1268,7 @@ function refresh() {
 		comment += ', pattern "' + pattern + '"';
 	}
 
-	text_basic = createBASICProgram(data, comment);
+	text_basic = createBASICProgram(screen1, comment);
 
 	document.getElementById("text_basic1_lower").innerHTML = text_basic;
 	document.getElementById("text_basic1_upper").innerHTML = text_basic.toUpperCase();
@@ -1258,24 +1276,11 @@ function refresh() {
 	//
 	// Create Colorspace Diagram BASIC Demo
 	//
-	var colorspaceMapBASIC = getColorspaceMap3();
-	var data = []
-	for (var i = 0; i < 1000; i++) {
-		var c = colorspaceMapBASIC[i];
-		var comp = componentsFromColor(c);
-		data.push(comp.c1.index << 4 | comp.c2.index);
-		switch (c.f) {
-			case .25: data.push(1); break;
-			case .5:  data.push(2); break;
-			case .75: data.push(3); break;
-			default:  data.push(0); break;
-		}
-	}
 	comment = '';
 	if (mixed != '0') {
 		comment = 'pattern "' + pattern + '"';
 	}
-	text_basic = createBASICProgram(data, comment);
+	text_basic = createBASICProgram(screen2, comment);
 	document.getElementById("text_basic2_lower").innerHTML = text_basic;
 	document.getElementById("text_basic2_upper").innerHTML = text_basic.toUpperCase();
 
