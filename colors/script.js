@@ -1,8 +1,9 @@
 // TODO:
 // * when drawing, sort paired colors by luma
-// * fix mixing style support
+// * fix mixing pattern support
 // * add VIC and TED
 // * VICE VPL palette generation
+// * checkerboard pattern artifact
 
 window.onload = init;
 
@@ -663,10 +664,10 @@ function createBASICProgram(data, comment) {
 
 	text += '200 v=53248:g=8192+16384:s=1024+16384' + '\n';
 
-	text += '240 t(0)=0:u(0)=0' + '\n';
-	text += '210 t(1)=85:u(1)=0' + '\n';
-	text += '220 t(2)=0:u(2)=255' + '\n';
-	text += '230 t(3)=85:u(3)=255' + '\n';
+	text += '240 a(0)=0:b(0)=0' + '\n';
+	text += '210 a(1)=85:b(1)=0' + '\n';
+	text += '220 a(2)=0:b(2)=255' + '\n';
+	text += '230 a(3)=85:b(3)=255' + '\n';
 
 	text += '300 poke56576,peek(56576)and254' + '\n';
 	text += '310 pokev+32,0' + '\n';
@@ -674,8 +675,8 @@ function createBASICProgram(data, comment) {
 	text += '330 pokev+22,peek(v+22)and(255-16)' + '\n';
 	text += '340 pokev+24,peek(v+24)or8' + '\n';
 
-	text += '400 fori=0to' + (data.length / 2 - 1) + ':reada:readb:pokes+i,a' + '\n';
-	text += '410 forj=g+i*8tog+i*8+7step2:pokej,t(b):pokej+1,u(b):next' + '\n';
+	text += '400 fori=0to' + (data.length / 2 - 1) + ':readx:ready:pokes+i,x' + '\n';
+	text += '410 forj=g+i*8tog+i*8+7step2:pokej,a(x):pokej+1,b(x):next' + '\n';
 	text += '420 next' + '\n';
 
 	text += '430 fori=ito999:pokes+i,0:next' + '\n';
