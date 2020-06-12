@@ -187,7 +187,7 @@ li:target {
 				</tr>
 				<tr>
 					<td colspan="2">
-						<label for="lumalevels">VIC-II Rev</label>
+						<label for="lumalevels">VIC-II Rev<sup><a href="#note_levels">(i)</a></sup></label>
 					</td>
 					<td colspan="2">
 						<select name="lumalevels" id="lumalevels" onChange="refresh();">
@@ -198,7 +198,7 @@ li:target {
 				</tr>
 				<tr>
 					<td colspan="2">
-						<label for="mixed">Mixed Colors</label>
+						<label for="mixed">Mixed Colors<sup><a href="#note_mixed">(i)</a></sup></label>
 					</td>
 					<td colspan="2">
 						<select name="mixed" id="mixed" onChange="refresh();">
@@ -210,18 +210,18 @@ li:target {
 				</tr>
 				<tr>
 					<td colspan="2">
-						<label for="maxlumadiff">Max Luma Diff</label>
+						<label for="lumadiff">Max Luma Diff<sup><a href="#note_lumadiff">(i)</a></sup></label>
 					</td>
 					<td>
-						<input id="maxlumadiff" style="width: 20em;" type="range" min="0" max="31" oninput="refresh();">
+						<input id="lumadiff" style="width: 20em;" type="range" min="0" max="31" oninput="refresh();">
 					</td>
 					<td>
-						<span id="maxlumadiff_val"></span>
+						<span id="lumadiff_val"></span>
 					</td>
 				</tr>
-				<tr id="maxlumadiff_div" style="border-bottom: 1px solid black;">
+				<tr id="lumadiff_div" style="border-bottom: 1px solid black;">
 					<td colspan="2">
-						<label for="pattern">Mixing Pattern<sup><a href="#note1">1</a></sup></label>
+						<label for="pattern">Mixing Pattern<sup><a href="#note_pattern">(i)</a></sup></label>
 					</td>
 					<td colspan="2">
 						<select name="pattern" id="pattern" onChange="refresh();">
@@ -417,10 +417,13 @@ li:target {
 
 	<h2>Notes</h2>
 
-	<ol>
-	<li id="note1">On a real system, *alternating columns* and *checkered* will produce nasty vertical low-frequency color stripes ("GEOS effect") for larger areas. The same is true for *checkered 2x* for lower luma diffs. The previews do not account for this.</li>
-	<li id="note2">The color index is defined as follows: The 16 base colors have their natural indexes. Mixed colors are sorted first by luma diff, then by the index of the component with the lower index, then by the component with the higher index.</span></li>
-	</ol>
+	<ul>
+	<li id="note_levels"><b>VIC-II Rev</b>: </li>
+	<li id="note_mixed"><b>Mixed Colors</b>: </li>
+	<li id="note_lumadiff"><b>Max Mula Diff</b>: </li>
+	<li id="note_pattern"><b>Mixing Pattern</b>: On a real system, *alternating columns* and *checkered* will produce nasty vertical low-frequency color stripes ("GEOS effect") for larger areas. The same is true for *checkered 2x* for lower luma diffs. The previews do not account for this.</li>
+	<li id="note_sortby"><b>Sort by</b>: The color index is defined as follows: The 16 base colors have their natural indexes. Mixed colors are sorted first by luma diff, then by the index of the component with the lower index, then by the component with the higher index.</span></li>
+	</li>
 
 	<h2>References</h2>
 

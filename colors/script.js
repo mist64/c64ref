@@ -1,7 +1,6 @@
 // TODO:
 // * when drawing, sort paired colors by luma
 // * add VIC and TED
-// * VICE VPL palette generation
 // * emulate checkerboard pattern artifact
 
 window.onload = init;
@@ -846,7 +845,7 @@ function init() {
 		document.getElementById("mixed").value = urlParams.get('mixed');
 	}
 	if (urlParams.has('lumadiff')) {
-		document.getElementById("maxlumadiff").value = urlParams.get('lumadiff') / 10;
+		document.getElementById("lumadiff").value = urlParams.get('lumadiff') / 10;
 	}
 	if (urlParams.has('b')) {
 		document.getElementById("brightness").value = urlParams.get('b');
@@ -885,7 +884,7 @@ var old_mixed;
 function refresh() {
 	lumalevels = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
 	mixed = document.getElementById("mixed").value;
-	maxlumadiff = parseInt(document.getElementById("maxlumadiff").value) * 10;
+	lumadiff = parseInt(document.getElementById("lumadiff").value) * 10;
 	brightness = document.getElementById("brightness").value;
 	contrast = document.getElementById("contrast").value;
 	saturation = document.getElementById("saturation").value;
@@ -902,7 +901,7 @@ function refresh() {
 	//
 	// copy slider values to text fields
 	//
-	document.getElementById("maxlumadiff_val").innerHTML = maxlumadiff;
+	document.getElementById("lumadiff_val").innerHTML = lumadiff;
 	document.getElementById("brightness_val").innerHTML = brightness;
 	document.getElementById("contrast_val").innerHTML = contrast;
 	document.getElementById("saturation_val").innerHTML = saturation;
@@ -911,14 +910,14 @@ function refresh() {
 	//
 	// enable disable luma threshold slider
 	//
-	maxlumadiff_div = document.getElementById("maxlumadiff_div");
+	lumadiff_div = document.getElementById("lumadiff_div");
 	if (mixed == '0') {
-		maxlumadiff_div.style.pointerEvents = 'none';
-		maxlumadiff_div.style.opacity = '0.5';
-		document.getElementById("maxlumadiff").value = 0;
+		lumadiff_div.style.pointerEvents = 'none';
+		lumadiff_div.style.opacity = '0.5';
+		document.getElementById("lumadiff").value = 0;
 	} else {
-		maxlumadiff_div.style.pointerEvents = null;
-		maxlumadiff_div.style.opacity = null;
+		lumadiff_div.style.pointerEvents = null;
+		lumadiff_div.style.opacity = null;
 	}
 
 	//
@@ -958,7 +957,7 @@ function refresh() {
 	args = {};
 	args['levels'] = lumalevels == 'mc' ? '9' : '5';
 	args['mixed'] = mixed;
-	args['lumadiff'] = maxlumadiff;
+	args['lumadiff'] = lumadiff;
 	switch (sortby) {
 		case 0:
 			args['sortby'] = 'lumadiff';
@@ -1026,7 +1025,6 @@ function refresh() {
 			var c1 = colors[i];
 			for (var j = i+1; j < l; j++) {
 				var c2 = colors[j];
-				lumadiff = Math.abs(c1.y - c2.y);
 				for (var f = .25; f <= .75; f += .25) {
 					if (mixed != '4' && f != .5) {
 						continue;
@@ -1043,7 +1041,7 @@ function refresh() {
 					cm.f = f;
 					cm.component1 = c1;
 					cm.component2 = c2;
-					cm.lumadiff = lumadiff;
+					cm.lumadiff = Math.abs(c1.y - c2.y);
 					colors.push(cm);
 				}
 			}
@@ -1054,7 +1052,7 @@ function refresh() {
 		//
 		var colors_new = []
 		for (var i = 0; i < colors.length; i++) {
-			if (colors[i].lumadiff < maxlumadiff + .001) { // float ftw!
+			if (colors[i].lumadiff < lumadiff + .001) { // float ftw!
 				colors_new.push(colors[i]);
 			}
 		}
@@ -1314,7 +1312,7 @@ function refresh() {
 	allcoltab = document.getElementById("allcoltab");
 	var html = '';
 	html += '<tr>';
-	html += '<th>#<sup><a href="#note2">2</a></sup></th>';
+	html += '<th>#</th>';
 	html += '<th>mix</th>';
 	html += '<th>index 1</th>';
 	html += '<th>index 2</th>';
@@ -1461,10 +1459,10 @@ function hideColorspace(hide) {
 	}
 }
 
-function preset(mixed, maxlumadiff) {
+function preset(mixed, lumadiff) {
 	document.getElementById("lumalevels").selectedIndex = 1; // new VIC-II
 	document.getElementById("mixed").value = mixed;
-	document.getElementById("maxlumadiff").value = maxlumadiff / 10;
+	document.getElementById("lumadiff").value = lumadiff / 10;
 	refresh();
 }
 
