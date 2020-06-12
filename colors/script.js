@@ -309,8 +309,8 @@ function drawScreen(screen) {
 		for (var x = 0; x < xres; x++) {
 			var a = screen.data[oo++];
 			var b = screen.data[oo++];
-			var c1 = colors[a >> 4];
-			var c2 = colors[a & 0xf];
+			var c1 = basecolors[a >> 4];
+			var c2 = basecolors[a & 0xf];
 			for (var x1 = 0; x1 < 8; x1++) {
 				for (var y1 = 0; y1 < 8; y1++) {
 					var fx = x * 8 + x1;
@@ -816,12 +816,16 @@ function init() {
 		}
 	}
 	if (urlParams.has('mixed')) {
-		document.getElementById("mixed").value = urlParams.get('mixed');
+		var mixed = urlParams.get('mixed');
+		document.getElementById("mixed").value = mixed;
+		old_mixed = mixed; // prevent detecting as user-initiated mode switch
 	}
 	if (urlParams.has('lumadiff')) {
 		var lumadiff = urlParams.get('lumadiff') / 10;
+		var is_large = lumadiff > lumadiff_limit1;
+		document.getElementById("limit_lumadiff").checked = !is_large;
+		document.getElementById("lumadiff").max = is_large ? lumadiff_limit2 : lumadiff_limit1;
 		document.getElementById("lumadiff").value = lumadiff;
-		document.getElementById("limit_lumadiff").checked = lumadiff <= lumadiff_limit1;
 	}
 	if (urlParams.has('b')) {
 		document.getElementById("brightness").value = urlParams.get('b');
@@ -902,32 +906,25 @@ function refresh() {
 	//
 	// set up the mixing pattern selector
 	//
+	pattern_div = document.getElementById("pattern_div");
+	if (mixed == '0') {
+		pattern_div.style.pointerEvents = 'none';
+		pattern_div.style.opacity = '0.5';
+	} else {
+		pattern_div.style.pointerEvents = null;
+		pattern_div.style.opacity = null;
+	}
+	if (mixed == '2') {
+		pattern_element.options[0].disabled = false;
+		pattern_element.options[2].disabled = true;
+	} else if (mixed == '4') {
+		pattern_element.options[0].disabled = true;
+		pattern_element.options[2].disabled = false;
+	}
 	if (mixed != old_mixed) {
 		old_mixed = mixed;
-		pattern_div = document.getElementById("pattern_div");
-		if (mixed == '0') {
-			pattern_div.style.pointerEvents = 'none';
-			pattern_div.style.opacity = '0.5';
-		} else {
-			pattern_div.style.pointerEvents = null;
-			pattern_div.style.opacity = null;
-		}
 		pattern_element = document.getElementById("pattern");
-		switch (mixed) {
-			case '0':
-				pattern_element.value = 'h';
-				break;
-			case '2':
-				pattern_element.options[0].disabled = false;
-				pattern_element.options[2].disabled = true;
-				pattern_element.value = 'h';
-				break;
-			case '4':
-				pattern_element.options[0].disabled = true;
-				pattern_element.options[2].disabled = false;
-				pattern_element.value = 'c';
-				break;
-		}
+		pattern_element.value = { '0': 'h', '2': 'h', '4': 'c' }[mixed];
 		pattern = pattern_element.value;
 	}
 
@@ -987,6 +984,7 @@ function refresh() {
 		c.lumadiff = -1;
 		colors.push(c);
 	}
+	basecolors = colors.slice();
 
 	//
 	// create mixed colors

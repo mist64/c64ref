@@ -11,6 +11,10 @@ h2 {
 	font-size: medium;
 }
 
+td {
+	vertical-align: middle;
+}
+
 .colbox {
 	border: none;
 	border-collapse: collapse;
@@ -116,8 +120,8 @@ li:target {
 
 .code {
 	overflow: scroll;
-	width: 300px;
-	height: 100px;
+	width: 320px;
+	height: 180px;
 }
 
 /* forcing td in relation to the one marked with vertical to behave differently */
@@ -207,7 +211,7 @@ li:target {
 						    <option value="4">25%/50%/75%</option>
 						</select>
 						<span style="float: right;">
-							<input type="checkbox" id="limit_lumadiff" onclick="refresh()">
+							<input checked type="checkbox" id="limit_lumadiff" onclick="refresh()">
 							<label for="limit_lumadiff">Limit<sup><a href="#note_limit_lumadiff">(i)</a></sup> ↓</label>
 						</span>
 					</td>
@@ -218,7 +222,6 @@ li:target {
 					</td>
 					<td>
 						<input id="lumadiff" style="width: 20em;" type="range" min="0" max="31" oninput="refresh();">
-<!--						<input id="lumadiff" style="width: 20em;" type="range" min="0" max="10" oninput="refresh();">-->
 					</td>
 					<td style="width: 2em; text-align: center">
 						<span id="lumadiff_val"></span>
@@ -238,7 +241,7 @@ li:target {
 						</select>
 					</td>
 				</tr>
-				<tr style="border-bottom: 1px solid black;">
+				<tr>
 					<td colspan="2">
 						<label for="sortby">Sort by</label>
 					</td>
@@ -248,12 +251,6 @@ li:target {
 						    <option selected value="hue">Hue</option>
 						    <option value="luma">Luma</option>
 						</select>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="4" style="text-align: center;">
-						<b><span id="numcol"></span> colors</b><br/>
-						<a id="collink">Link to this Palette</a>
 					</td>
 				</tr>
 			</table>
@@ -324,7 +321,34 @@ li:target {
 		</tr>
 	</table>
 
+	<b><span id="numcol"></span> colors</b><br/>
+	<a id="collink">Link to this Palette</a>
+
 	<hr/>
+
+	<h2>Colorspace Diagram</h2>
+	<table class="code_table" border="1">
+		<tr>
+			<td>
+				<canvas id="colspace_diagram"></canvas>
+			</td>
+			<td>
+<!--				<span style="text-align: center;">-->
+				<button type="button" onclick="toggleCase('text_basic2_lower', 'text_basic2_upper');">Toggle Case</button>
+				<span style="float: right;">
+					<button type="button" onclick="copyElement('text_basic2_lower', 'text_basic2_upper');">Copy</button>
+				</span>
+<!--				</span>-->
+				<div class="code">
+				<pre id="text_basic2_lower"></pre>
+				<pre id="text_basic2_upper" style="display: none;"></pre>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	<hr/>
+
 	<h2>Palette</h2>
 
 	<input type="checkbox" id="showcomponents" onclick="refresh()">
@@ -351,44 +375,13 @@ li:target {
 
 	<br/>
 
-	<h2>Colorspace Diagram</h2>
-
-	<canvas id="colspace_diagram"></canvas>
-
-	<hr/>
-
-	<table class="code_table" border="1">
-		<tr>
-			<th>
-				BASIC Demo
-			</th>
-			<th>
-				Palette
-			</th>
-		</tr>
-		<tr>
-			<td style="text-align: center;">
-				<button type="button" onclick="toggleCase('text_basic2_lower', 'text_basic2_upper');">Toggle Case</button>
-				<button type="button" onclick="copyElement('text_basic2_lower', 'text_basic2_upper');">Copy</button>
-			</td>
-			<td style="text-align: center;">
-				<button type="button" onclick="copyElement('hexcolors', 'hexcolors');">Copy</button>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<div class="code">
-				<pre id="text_basic2_lower"></pre>
-				<pre id="text_basic2_upper" style="display: none;"></pre>
-				</div>
-			</td>
-			<td>
-				<div class="code">
-				<pre id="hexcolors"></pre>
-				</div>
-			</td>
-		</tr>
-	</table>
+	<p>
+		<button type="button" onclick="copyElement('hexcolors', 'hexcolors');">Copy</button>
+	</p>
+		<div class="code">
+		<pre id="hexcolors"></pre>
+		</div>
+	</p>
 
 	<hr/>
 
