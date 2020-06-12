@@ -208,20 +208,20 @@ li:target {
 						</select>
 					</td>
 				</tr>
-				<tr>
+				<tr id="lumadiff_div">
 					<td colspan="2">
-						<label for="lumadiff">Max Luma Diff<sup><a href="#note_lumadiff">(i)</a></sup></label>
+						<label for="lumadiff">&nbsp;&nbsp;Max Luma Diff<sup><a href="#note_lumadiff">(i)</a></sup></label>
 					</td>
 					<td>
 						<input id="lumadiff" style="width: 20em;" type="range" min="0" max="31" oninput="refresh();">
 					</td>
-					<td>
+					<td style="width: 2em; text-align: center">
 						<span id="lumadiff_val"></span>
 					</td>
 				</tr>
-				<tr id="lumadiff_div" style="border-bottom: 1px solid black;">
+				<tr id="pattern_div" style="border-bottom: 1px solid black;">
 					<td colspan="2">
-						<label for="pattern">Mixing Pattern<sup><a href="#note_pattern">(i)</a></sup></label>
+						<label for="pattern">&nbsp;&nbsp;Mixing Pattern<sup><a href="#note_pattern">(i)</a></sup></label>
 					</td>
 					<td colspan="2">
 						<select name="pattern" id="pattern" onChange="refresh();">
@@ -265,7 +265,7 @@ li:target {
 						    <option>50</option>
 						</datalist>
 					</td>
-					<td>
+					<td style="width: 2em; text-align: center">
 						<span id="brightness_val"></span>
 					</td>
 				</tr>
@@ -279,7 +279,7 @@ li:target {
 						    <option>100</option>
 						</datalist>
 					</td>
-					<td>
+					<td style="text-align: center">
 						<span id="contrast_val"></span>
 					</td>
 				</tr>
@@ -293,7 +293,7 @@ li:target {
 						    <option>50</option>
 						</datalist>
 					</td>
-					<td>
+					<td style="text-align: center">
 						<span id="saturation_val"></span>
 					</td>
 				</tr>
@@ -308,7 +308,7 @@ li:target {
 						    <option>28</option>
 						</datalist>
 					</td>
-					<td>
+					<td style="text-align: center">
 						<span id="gamma_val"></span>
 					</td>
 				</tr>
@@ -423,7 +423,7 @@ li:target {
 	<li id="note_lumadiff"><b>Max Mula Diff</b>: </li>
 	<li id="note_pattern"><b>Mixing Pattern</b>: On a real system, *alternating columns* and *checkered* will produce nasty vertical low-frequency color stripes ("GEOS effect") for larger areas. The same is true for *checkered 2x* for lower luma diffs. The previews do not account for this.</li>
 	<li id="note_sortby"><b>Sort by</b>: The color index is defined as follows: The 16 base colors have their natural indexes. Mixed colors are sorted first by luma diff, then by the index of the component with the lower index, then by the component with the higher index.</span></li>
-	</li>
+	</ul>
 
 	<h2>References</h2>
 

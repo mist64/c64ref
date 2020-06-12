@@ -476,7 +476,7 @@ function getColorspaceMap3() {
 
 
 
-	var hueBucketThresholds = [ 10, 60, 90, 160, 200, 260, 340 ];
+	var hueBucketThresholds = [ 10, 60, 88, 160, 200, 260, 340 ];
 	const hueBuckets = hueBucketThresholds.length;
 
 	var nongraysByHue = [];
@@ -922,14 +922,15 @@ function refresh() {
 	//
 	if (mixed != old_mixed) {
 		old_mixed = mixed;
-		pattern_element = document.getElementById("pattern");
+		pattern_div = document.getElementById("pattern_div");
 		if (mixed == '0') {
-			pattern_element.style.pointerEvents = 'none';
-			pattern_element.style.opacity = '0.5';
+			pattern_div.style.pointerEvents = 'none';
+			pattern_div.style.opacity = '0.5';
 		} else {
-			pattern_element.style.pointerEvents = null;
-			pattern_element.style.opacity = null;
+			pattern_div.style.pointerEvents = null;
+			pattern_div.style.opacity = null;
 		}
+		pattern_element = document.getElementById("pattern");
 		switch (mixed) {
 			case '0':
 				pattern_element.value = 'h';
