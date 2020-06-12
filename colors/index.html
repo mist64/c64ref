@@ -214,6 +214,7 @@ li:target {
 					</td>
 					<td>
 						<input id="lumadiff" style="width: 20em;" type="range" min="0" max="31" oninput="refresh();">
+<!--						<input id="lumadiff" style="width: 20em;" type="range" min="0" max="10" oninput="refresh();">-->
 					</td>
 					<td style="width: 2em; text-align: center">
 						<span id="lumadiff_val"></span>
@@ -348,15 +349,9 @@ li:target {
 
 	<h2>Colorspace Diagram</h2>
 
-	<div id="colorspace" onmousedown="hideColorspace(true);" onmouseup="hideColorspace(false);">
-		<div id="colorspace_rgb">
-			<canvas id="rgb"></canvas>
-		</div>
-		<div id="colorspace_mapped">
-			<canvas id="mapped"></canvas>
-		</div>
+	<div id="colorspace_mapped">
+		<canvas id="mapped"></canvas>
 	</div>
-	<button type="button" onmousedown="hideColorspace(true);" onmouseup="hideColorspace(false);">Compare</button>
 
 	<hr/>
 

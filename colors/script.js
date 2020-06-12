@@ -307,19 +307,10 @@ function drawColorspace(id, colorspaceMap, mapped_colors, pattern) {
 	var imgData = context.getImageData(0, 0, canvas.width, canvas.height);
 	for (var y = 0; y < yres; y++) {
 		for (var x = 0; x < xres; x++) {
-			if (mapped_colors) {
-				var c = colorspaceMap[xres * y + x];
-				var comp = componentsFromColor(c);
-				var c1 = comp.c1;
-				var c2 = comp.c2;
-			} else {
-				h = x * 360 / xres;
-				s = 100;
-				l = y * 100 / yres;
-				c = RGBfromHSL(h, s, l);
-				var c1 = c;
-				var c2 = c;
-			}
+			var c = colorspaceMap[xres * y + x];
+			var comp = componentsFromColor(c);
+			var c1 = comp.c1;
+			var c2 = comp.c2;
 			for (var x1 = 0; x1 < scale; x1++) {
 				for (var y1 = 0; y1 < scale; y1++) {
 					var fx = x * scale + x1;
@@ -561,16 +552,32 @@ function getColorspaceMap3() {
 		return Math.pow(x, 1.5);
 	}
 
+	var paletteheight;
+	if (colors.length <= 160) {
+		paletteheight = 1;
+	} else if (colors.length <= 240) {
+		paletteheight = 8;
+	} else {
+		paletteheight = 8;
+	}
+
 	var xres = 40;
-	var yres = 25 - hueBuckets - 2;
+	var yres = 25 - hueBuckets - 2 - paletteheight;
 	for (var y = 0; y < yres; y++) {
 		for (var x = 0; x < xres; x++) {
 			h = x * 360 / xres;
 			l = f(y / yres) * yres * 100 / yres;
 			rgb = RGBfromHSL(h, 100, l);
 			var c = bestMatch(rgb);
-			colorspaceMap[y * scrx + x] = c;
+			colorspaceMap[(y + paletteheight) * scrx + x] = c;
 		}
+	}
+
+	//
+	//
+	//
+	for (var i = 0; i < colors.length; i++) {
+		colorspaceMap[i] = colors[i];;
 	}
 
 	return colorspaceMap;
@@ -834,8 +841,6 @@ function createBASICProgram(screen, comment) {
 var colors;
 
 function init() {
-	drawColorspace("rgb", null, false, 0);
-	document.getElementById("colorspace_rgb").style = 'display: none;';
 	reset();
 
 	const queryString = window.location.search;
@@ -1459,16 +1464,6 @@ function reset() {
 	document.getElementById("saturation").value = 50;
 	document.getElementById("gamma").value = 28; // PAL: 2.8
 	refresh();
-}
-
-function hideColorspace(hide) {
-	if (hide) {
-		document.getElementById("colorspace_mapped").style.display = 'none';
-		document.getElementById("colorspace_rgb").style.display = '';
-	} else {
-		document.getElementById("colorspace_mapped").style.display = '';
-		document.getElementById("colorspace_rgb").style.display = 'none';
-	}
 }
 
 function preset(mixed, lumadiff) {
