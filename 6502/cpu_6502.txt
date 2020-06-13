@@ -1,17 +1,17 @@
 
 - opcodes
 
-00   BRK       7
+00   BRK  imp  7
 01   ORA  izx  6
-02  *KIL       X
+02  *KIL  imp  X
 03  *SLO  izx  8
 04  *NOP  zp   3
 05   ORA  zp   3
 06   ASL  zp   5
 07  *SLO  zp   5
-08   PHP       3
+08   PHP  imp  3
 09   ORA  imm  2
-0A   ASL       2
+0A   ASL  imp  2
 0B  *ANC  imm  2
 0C  *NOP  abs  4
 0D   ORA  abs  4
@@ -19,15 +19,15 @@
 0F  *SLO  abs  6
 10   BPL  rel  2*
 11   ORA  izy  5*
-12  *KIL       X
+12  *KIL  imp  X
 13  *SLO  izy  8
 14  *NOP  zpx  4
 15   ORA  zpx  4
 16   ASL  zpx  6
 17  *SLO  zpx  6
-18   CLC       2
+18   CLC  imp  2
 19   ORA  aby  4*
-1A  *NOP       2
+1A  *NOP  imp  2
 1B  *SLO  aby  7
 1C  *NOP  abx  4*
 1D   ORA  abx  4*
@@ -35,15 +35,15 @@
 1F  *SLO  abx  7
 20   JSR  abs  6
 21   AND  izx  6
-22  *KIL       X
+22  *KIL  imp  X
 23  *RLA  izx  8
 24   BIT  zp   3
 25   AND  zp   3
 26   ROL  zp   5
 27  *RLA  zp   5
-28   PLP       4
+28   PLP  imp  4
 29   AND  imm  2
-2A   ROL       2
+2A   ROL  imp  2
 2B  *ANC  imm  2
 2C   BIT  abs  4
 2D   AND  abs  4
@@ -51,31 +51,31 @@
 2F  *RLA  abs  6
 30   BMI  rel  2*
 31   AND  izy  5*
-32  *KIL       X
+32  *KIL  imp  X
 33  *RLA  izy  8
 34  *NOP  zpx  4
 35   AND  zpx  4
 36   ROL  zpx  6
 37  *RLA  zpx  6
-38   SEC       2
+38   SEC  imp  2
 39   AND  aby  4*
-3A  *NOP       2
+3A  *NOP  imp  2
 3B  *RLA  aby  7
 3C  *NOP  abx  4*
 3D   AND  abx  4*
 3E   ROL  abx  7
 3F  *RLA  abx  7
-40   RTI       6
+40   RTI  imp  6
 41   EOR  izx  6
-42  *KIL       X
+42  *KIL  imp  X
 43  *SRE  izx  8
 44  *NOP  zp   3
 45   EOR  zp   3
 46   LSR  zp   5
 47  *SRE  zp   5
-48   PHA       3
+48   PHA  imp  3
 49   EOR  imm  2
-4A   LSR       2
+4A   LSR  imp  2
 4B  *ALR  imm  2
 4C   JMP  abs  3
 4D   EOR  abs  4
@@ -83,31 +83,31 @@
 4F  *SRE  abs  6
 50   BVC  rel  2*
 51   EOR  izy  5*
-52  *KIL       X
+52  *KIL  imp  X
 53  *SRE  izy  8
 54  *NOP  zpx  4
 55   EOR  zpx  4
 56   LSR  zpx  6
 57  *SRE  zpx  6
-58   CLI       2
+58   CLI  imp  2
 59   EOR  aby  4*
-5A  *NOP       2
+5A  *NOP  imp  2
 5B  *SRE  aby  7
 5C  *NOP  abx  4*
 5D   EOR  abx  4*
 5E   LSR  abx  7
 5F  *SRE  abx  7
-60   RTS       6
+60   RTS  imp  6
 61   ADC  izx  6
-62  *KIL       X
+62  *KIL  imp  X
 63  *RRA  izx  8
 64  *NOP  zp   3
 65   ADC  zp   3
 66   ROR  zp   5
 67  *RRA  zp   5
-68   PLA       4
+68   PLA  imp  4
 69   ADC  imm  2
-6A   ROR       2
+6A   ROR  imp  2
 6B  *ARR  imm  2
 6C   JMP  ind  5
 6D   ADC  abs  4
@@ -115,15 +115,15 @@
 6F  *RRA  abs  6
 70   BVS  rel  2*
 71   ADC  izy  5*
-72  *KIL       X
+72  *KIL  imp  X
 73  *RRA  izy  8
 74  *NOP  zpx  4
 75   ADC  zpx  4
 76   ROR  zpx  6
 77  *RRA  zpx  6
-78   SEI       2
+78   SEI  imp  2
 79   ADC  aby  4*
-7A  *NOP       2
+7A  *NOP  imp  2
 7B  *RRA  aby  7
 7C  *NOP  abx  4*
 7D   ADC  abx  4*
@@ -137,9 +137,9 @@
 85   STA  zp   3
 86   STX  zp   3
 87  *SAX  zp   3
-88   DEY       2
+88   DEY  imp  2
 89  *NOP  imm  2
-8A   TXA       2
+8A   TXA  imp  2
 8B  *XAA  imm  2
 8C   STY  abs  4
 8D   STA  abs  4
@@ -147,15 +147,15 @@
 8F  *SAX  abs  4
 90   BCC  rel  2*
 91   STA  izy  6
-92  *KIL       X
+92  *KIL  imp  X
 93  *AHX  izy  6
 94   STY  zpx  4
 95   STA  zpx  4
 96   STX  zpy  4
 97  *SAX  zpy  4
-98   TYA       2
+98   TYA  imp  2
 99   STA  aby  5
-9A   TXS       2
+9A   TXS  imp  2
 9B  *TAS  aby  5
 9C  *SHY  abx  5
 9D   STA  abx  5
@@ -169,9 +169,9 @@ A4   LDY  zp   3
 A5   LDA  zp   3
 A6   LDX  zp   3
 A7  *LAX  zp   3
-A8   TAY       2
+A8   TAY  imp  2
 A9   LDA  imm  2
-AA   TAX       2
+AA   TAX  imp  2
 AB  *LAX  imm  2
 AC   LDY  abs  4
 AD   LDA  abs  4
@@ -179,15 +179,15 @@ AE   LDX  abs  4
 AF  *LAX  abs  4
 B0   BCS  rel  2*
 B1   LDA  izy  5*
-B2  *KIL       X
+B2  *KIL  imp  X
 B3  *LAX  izy  5*
 B4   LDY  zpx  4
 B5   LDA  zpx  4
 B6   LDX  zpy  4
 B7  *LAX  zpy  4
-B8   CLV       2
+B8   CLV  imp  2
 B9   LDA  aby  4*
-BA   TSX       2
+BA   TSX  imp  2
 BB  *LAS  aby  4*
 BC   LDY  abx  4*
 BD   LDA  abx  4*
@@ -201,9 +201,9 @@ C4   CPY  zp   3
 C5   CMP  zp   3
 C6   DEC  zp   5
 C7  *DCP  zp   5
-C8   INY       2
+C8   INY  imp  2
 C9   CMP  imm  2
-CA   DEX       2
+CA   DEX  imp  2
 CB  *AXS  imm  2
 CC   CPY  abs  4
 CD   CMP  abs  4
@@ -211,15 +211,15 @@ CE   DEC  abs  6
 CF  *DCP  abs  6
 D0   BNE  rel  2*
 D1   CMP  izy  5*
-D2  *KIL       X
+D2  *KIL  imp  X
 D3  *DCP  izy  8
 D4  *NOP  zpx  4
 D5   CMP  zpx  4
 D6   DEC  zpx  6
 D7  *DCP  zpx  6
-D8   CLD       2
+D8   CLD  imp  2
 D9   CMP  aby  4*
-DA  *NOP       2
+DA  *NOP  imp  2
 DB  *DCP  aby  7
 DC  *NOP  abx  4*
 DD   CMP  abx  4*
@@ -233,9 +233,9 @@ E4   CPX  zp   3
 E5   SBC  zp   3
 E6   INC  zp   5
 E7  *ISC  zp   5
-E8   INX       2
+E8   INX  imp  2
 E9   SBC  imm  2
-EA   NOP       2
+EA   NOP  imp  2
 EB  *SBC  imm  2
 EC   CPX  abs  4
 ED   SBC  abs  4
@@ -243,15 +243,15 @@ EE   INC  abs  6
 EF  *ISC  abs  6
 F0   BEQ  rel  2*
 F1   SBC  izy  5*
-F2  *KIL       X
+F2  *KIL  imp  X
 F3  *ISC  izy  8
 F4  *NOP  zpx  4
 F5   SBC  zpx  4
 F6   INC  zpx  6
 F7  *ISC  zpx  6
-F8   SED       2
+F8   SED  imp  2
 F9   SBC  aby  4*
-FA  *NOP       2
+FA  *NOP  imp  2
 FB  *ISC  aby  7
 FC  *NOP  abx  4*
 FD   SBC  abx  4*
@@ -337,3 +337,18 @@ TXA  *-----*-  A:=X
 TXS  --------  S:=X
 TYA  *-----*-  A:=Y
 XAA  *-----*-  A:=X&#{imm}
+
+- addmodes
+
+imp
+imm  #$00
+zp   $00
+zpx  $00,X
+zpy  $00,Y
+izx  ($00,X)
+izy  ($00),Y
+abs  $0000
+abx  $0000,X
+aby  $0000,Y
+ind  ($0000)
+rel  $0000
