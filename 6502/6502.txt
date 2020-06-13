@@ -1,256 +1,339 @@
- BRK     7
- ORA izx 6
-*KIL
-*SLO izx 8
-*NOP zp  3
- ORA zp  3
- ASL zp  5
-*SLO zp  5
- PHP     3
- ORA imm 2
- ASL     2
-*ANC imm 2
-*NOP abs 4
- ORA abs 4
- ASL abs 6
-*SLO abs 6
- BPL rel 2*
- ORA izy 5*
-*KIL
-*SLO izy 8
-*NOP zpx 4
- ORA zpx 4
- ASL zpx 6
-*SLO zpx 6
- CLC     2
- ORA aby 4*
-*NOP     2
-*SLO aby 7
-*NOP abx 4*
- ORA abx 4*
- ASL abx 7
-*SLO abx 7
- JSR abs 6
- AND izx 6
-*KIL
-*RLA izx 8
- BIT zp  3
- AND zp  3
- ROL zp  5
-*RLA zp  5
- PLP     4
- AND imm 2
- ROL     2
-*ANC imm 2
- BIT abs 4
- AND abs 4
- ROL abs 6
-*RLA abs 6
- BMI rel 2*
- AND izy 5*
-*KIL
-*RLA izy 8
-*NOP zpx 4
- AND zpx 4
- ROL zpx 6
-*RLA zpx 6
- SEC     2
- AND aby 4*
-*NOP     2
-*RLA aby 7
-*NOP abx 4*
- AND abx 4*
- ROL abx 7
-*RLA abx 7
- RTI     6
- EOR izx 6
-*KIL
-*SRE izx 8
-*NOP zp  3
- EOR zp  3
- LSR zp  5
-*SRE zp  5
- PHA     3
- EOR imm 2
- LSR     2
-*ALR imm 2
- JMP abs 3
- EOR abs 4
- LSR abs 6
-*SRE abs 6
- BVC rel 2*
- EOR izy 5*
-*KIL
-*SRE izy 8
-*NOP zpx 4
- EOR zpx 4
- LSR zpx 6
-*SRE zpx 6
- CLI     2
- EOR aby 4*
-*NOP     2
-*SRE aby 7
-*NOP abx 4*
- EOR abx 4*
- LSR abx 7
-*SRE abx 7
- RTS     6
- ADC izx 6
-*KIL
-*RRA izx 8
-*NOP zp  3
- ADC zp  3
- ROR zp  5
-*RRA zp  5
- PLA     4
- ADC imm 2
- ROR     2
-*ARR imm 2
- JMP ind 5
- ADC abs 4
- ROR abs 6
-*RRA abs 6
- BVS rel 2*
- ADC izy 5*
-*KIL
-*RRA izy 8
-*NOP zpx 4
- ADC zpx 4
- ROR zpx 6
-*RRA zpx 6
- SEI     2
- ADC aby 4*
-*NOP     2
-*RRA aby 7
-*NOP abx 4*
- ADC abx 4*
- ROR abx 7
-*RRA abx 7
-*NOP imm 2
- STA izx 6
-*NOP imm 2
-*SAX izx 6
- STY zp  3
- STA zp  3
- STX zp  3
-*SAX zp  3
- DEY     2
-*NOP imm 2
- TXA     2
-*XAA imm 2
- STY abs 4
- STA abs 4
- STX abs 4
-*SAX abs 4
- BCC rel 2*
- STA izy 6
-*KIL
-*AHX izy 6
- STY zpx 4
- STA zpx 4
- STX zpy 4
-*SAX zpy 4
- TYA     2
- STA aby 5
- TXS     2
-*TAS aby 5
-*SHY abx 5
- STA abx 5
-*SHX aby 5
-*AHX aby 5
- LDY imm 2
- LDA izx 6
- LDX imm 2
-*LAX izx 6
- LDY zp  3
- LDA zp  3
- LDX zp  3
-*LAX zp  3
- TAY     2
- LDA imm 2
- TAX     2
-*LAX imm 2
- LDY abs 4
- LDA abs 4
- LDX abs 4
-*LAX abs 4
- BCS rel 2*
- LDA izy 5*
-*KIL
-*LAX izy 5*
- LDY zpx 4
- LDA zpx 4
- LDX zpy 4
-*LAX zpy 4
- CLV     2
- LDA aby 4*
- TSX     2
-*LAS aby 4*
- LDY abx 4*
- LDA abx 4*
- LDX aby 4*
-*LAX aby 4*
- CPY imm 2
- CMP izx 6
-*NOP imm 2
-*DCP izx 8
- CPY zp  3
- CMP zp  3
- DEC zp  5
-*DCP zp  5
- INY     2
- CMP imm 2
- DEX     2
-*AXS imm 2
- CPY abs 4
- CMP abs 4
- DEC abs 6
-*DCP abs 6
- BNE rel 2*
- CMP izy 5*
-*KIL
-*DCP izy 8
-*NOP zpx 4
- CMP zpx 4
- DEC zpx 6
-*DCP zpx 6
- CLD     2
- CMP aby 4*
-*NOP     2
-*DCP aby 7
-*NOP abx 4*
- CMP abx 4*
- DEC abx 7
-*DCP abx 7
- CPX imm 2
- SBC izx 6
-*NOP imm 2
-*ISC izx 8
- CPX zp  3
- SBC zp  3
- INC zp  5
-*ISC zp  5
- INX     2
- SBC imm 2
- NOP     2
-*SBC imm 2
- CPX abs 4
- SBC abs 4
- INC abs 6
-*ISC abs 6
- BEQ rel 2*
- SBC izy 5*
-*KIL
-*ISC izy 8
-*NOP zpx 4
- SBC zpx 4
- INC zpx 6
-*ISC zpx 6
- SED     2
- SBC aby 4*
-*NOP     2
-*ISC aby 7
-*NOP abx 4*
- SBC abx 4*
- INC abx 7
-*ISC abx 7
+
+- opcodes
+
+00   BRK       7
+01   ORA  izx  6
+02  *KIL       X
+03  *SLO  izx  8
+04  *NOP  zp   3
+05   ORA  zp   3
+06   ASL  zp   5
+07  *SLO  zp   5
+08   PHP       3
+09   ORA  imm  2
+0A   ASL       2
+0B  *ANC  imm  2
+0C  *NOP  abs  4
+0D   ORA  abs  4
+0E   ASL  abs  6
+0F  *SLO  abs  6
+10   BPL  rel  2*
+11   ORA  izy  5*
+12  *KIL       X
+13  *SLO  izy  8
+14  *NOP  zpx  4
+15   ORA  zpx  4
+16   ASL  zpx  6
+17  *SLO  zpx  6
+18   CLC       2
+19   ORA  aby  4*
+1A  *NOP       2
+1B  *SLO  aby  7
+1C  *NOP  abx  4*
+1D   ORA  abx  4*
+1E   ASL  abx  7
+1F  *SLO  abx  7
+20   JSR  abs  6
+21   AND  izx  6
+22  *KIL       X
+23  *RLA  izx  8
+24   BIT  zp   3
+25   AND  zp   3
+26   ROL  zp   5
+27  *RLA  zp   5
+28   PLP       4
+29   AND  imm  2
+2A   ROL       2
+2B  *ANC  imm  2
+2C   BIT  abs  4
+2D   AND  abs  4
+2E   ROL  abs  6
+2F  *RLA  abs  6
+30   BMI  rel  2*
+31   AND  izy  5*
+32  *KIL       X
+33  *RLA  izy  8
+34  *NOP  zpx  4
+35   AND  zpx  4
+36   ROL  zpx  6
+37  *RLA  zpx  6
+38   SEC       2
+39   AND  aby  4*
+3A  *NOP       2
+3B  *RLA  aby  7
+3C  *NOP  abx  4*
+3D   AND  abx  4*
+3E   ROL  abx  7
+3F  *RLA  abx  7
+40   RTI       6
+41   EOR  izx  6
+42  *KIL       X
+43  *SRE  izx  8
+44  *NOP  zp   3
+45   EOR  zp   3
+46   LSR  zp   5
+47  *SRE  zp   5
+48   PHA       3
+49   EOR  imm  2
+4A   LSR       2
+4B  *ALR  imm  2
+4C   JMP  abs  3
+4D   EOR  abs  4
+4E   LSR  abs  6
+4F  *SRE  abs  6
+50   BVC  rel  2*
+51   EOR  izy  5*
+52  *KIL       X
+53  *SRE  izy  8
+54  *NOP  zpx  4
+55   EOR  zpx  4
+56   LSR  zpx  6
+57  *SRE  zpx  6
+58   CLI       2
+59   EOR  aby  4*
+5A  *NOP       2
+5B  *SRE  aby  7
+5C  *NOP  abx  4*
+5D   EOR  abx  4*
+5E   LSR  abx  7
+5F  *SRE  abx  7
+60   RTS       6
+61   ADC  izx  6
+62  *KIL       X
+63  *RRA  izx  8
+64  *NOP  zp   3
+65   ADC  zp   3
+66   ROR  zp   5
+67  *RRA  zp   5
+68   PLA       4
+69   ADC  imm  2
+6A   ROR       2
+6B  *ARR  imm  2
+6C   JMP  ind  5
+6D   ADC  abs  4
+6E   ROR  abs  6
+6F  *RRA  abs  6
+70   BVS  rel  2*
+71   ADC  izy  5*
+72  *KIL       X
+73  *RRA  izy  8
+74  *NOP  zpx  4
+75   ADC  zpx  4
+76   ROR  zpx  6
+77  *RRA  zpx  6
+78   SEI       2
+79   ADC  aby  4*
+7A  *NOP       2
+7B  *RRA  aby  7
+7C  *NOP  abx  4*
+7D   ADC  abx  4*
+7E   ROR  abx  7
+7F  *RRA  abx  7
+80  *NOP  imm  2
+81   STA  izx  6
+82  *NOP  imm  2
+83  *SAX  izx  6
+84   STY  zp   3
+85   STA  zp   3
+86   STX  zp   3
+87  *SAX  zp   3
+88   DEY       2
+89  *NOP  imm  2
+8A   TXA       2
+8B  *XAA  imm  2
+8C   STY  abs  4
+8D   STA  abs  4
+8E   STX  abs  4
+8F  *SAX  abs  4
+90   BCC  rel  2*
+91   STA  izy  6
+92  *KIL       X
+93  *AHX  izy  6
+94   STY  zpx  4
+95   STA  zpx  4
+96   STX  zpy  4
+97  *SAX  zpy  4
+98   TYA       2
+99   STA  aby  5
+9A   TXS       2
+9B  *TAS  aby  5
+9C  *SHY  abx  5
+9D   STA  abx  5
+9E  *SHX  aby  5
+9F  *AHX  aby  5
+A0   LDY  imm  2
+A1   LDA  izx  6
+A2   LDX  imm  2
+A3  *LAX  izx  6
+A4   LDY  zp   3
+A5   LDA  zp   3
+A6   LDX  zp   3
+A7  *LAX  zp   3
+A8   TAY       2
+A9   LDA  imm  2
+AA   TAX       2
+AB  *LAX  imm  2
+AC   LDY  abs  4
+AD   LDA  abs  4
+AE   LDX  abs  4
+AF  *LAX  abs  4
+B0   BCS  rel  2*
+B1   LDA  izy  5*
+B2  *KIL       X
+B3  *LAX  izy  5*
+B4   LDY  zpx  4
+B5   LDA  zpx  4
+B6   LDX  zpy  4
+B7  *LAX  zpy  4
+B8   CLV       2
+B9   LDA  aby  4*
+BA   TSX       2
+BB  *LAS  aby  4*
+BC   LDY  abx  4*
+BD   LDA  abx  4*
+BE   LDX  aby  4*
+BF  *LAX  aby  4*
+C0   CPY  imm  2
+C1   CMP  izx  6
+C2  *NOP  imm  2
+C3  *DCP  izx  8
+C4   CPY  zp   3
+C5   CMP  zp   3
+C6   DEC  zp   5
+C7  *DCP  zp   5
+C8   INY       2
+C9   CMP  imm  2
+CA   DEX       2
+CB  *AXS  imm  2
+CC   CPY  abs  4
+CD   CMP  abs  4
+CE   DEC  abs  6
+CF  *DCP  abs  6
+D0   BNE  rel  2*
+D1   CMP  izy  5*
+D2  *KIL       X
+D3  *DCP  izy  8
+D4  *NOP  zpx  4
+D5   CMP  zpx  4
+D6   DEC  zpx  6
+D7  *DCP  zpx  6
+D8   CLD       2
+D9   CMP  aby  4*
+DA  *NOP       2
+DB  *DCP  aby  7
+DC  *NOP  abx  4*
+DD   CMP  abx  4*
+DE   DEC  abx  7
+DF  *DCP  abx  7
+E0   CPX  imm  2
+E1   SBC  izx  6
+E2  *NOP  imm  2
+E3  *ISC  izx  8
+E4   CPX  zp   3
+E5   SBC  zp   3
+E6   INC  zp   5
+E7  *ISC  zp   5
+E8   INX       2
+E9   SBC  imm  2
+EA   NOP       2
+EB  *SBC  imm  2
+EC   CPX  abs  4
+ED   SBC  abs  4
+EE   INC  abs  6
+EF  *ISC  abs  6
+F0   BEQ  rel  2*
+F1   SBC  izy  5*
+F2  *KIL       X
+F3  *ISC  izy  8
+F4  *NOP  zpx  4
+F5   SBC  zpx  4
+F6   INC  zpx  6
+F7  *ISC  zpx  6
+F8   SED       2
+F9   SBC  aby  4*
+FA  *NOP       2
+FB  *ISC  aby  7
+FC  *NOP  abx  4*
+FD   SBC  abx  4*
+FE   INC  abx  7
+FF  *ISC  abx  7
+
+- mnemos
+
+ADC  **----**  A:=A+{adr}
+AHX  --------  {adr}:=A&X&H
+ALR  *-----**  A:=(A&#{imm})/2
+ANC  *-----**  A:=A&#{imm}
+ANC  *-----**  A:=A&#{imm}
+AND  *-----*-  A:=A&{adr}
+ARR  **----**  A:=(A&#{imm})/2
+ASL  *-----**  {adr}:={adr}*2
+AXS  *-----**  X:=A&X-#{imm}
+BCC  --------  branch on C=0
+BCS  --------  branch on C=1
+BEQ  --------  branch on Z=1
+BIT  **----*-  N:=b7 V:=b6 Z:=A&{adr}
+BMI  --------  branch on N=1
+BNE  --------  branch on Z=0
+BPL  --------  branch on N=0
+BRK  ---1-1--  (S)-:=PC,P PC:=($FFFE)
+BVC  --------  branch on V=0
+BVS  --------  branch on V=1
+CLC  -------0  C:=0
+CLD  ----0---  D:=0
+CLI  -----0--  I:=0
+CLV  -0------  V:=0
+CMP  *-----**  A-{adr}
+CPX  *-----**  X-{adr}
+CPY  *-----**  Y-{adr}
+DCP  *-----**  {adr}:={adr}-1 A-{adr}
+DEC  *-----*-  {adr}:={adr}-1
+DEX  *-----*-  X:=X-1
+DEY  *-----*-  Y:=Y-1
+EOR  *-----*-  A:=A exor {adr}
+INC  *-----*-  {adr}:={adr}+1
+INX  *-----*-  X:=X+1
+INY  *-----*-  Y:=Y+1
+ISC  **----**  {adr}:={adr}+1 A:=A-{adr}
+JMP  --------  PC:={adr}
+JSR  --------  (S)-:=PC PC:={adr}
+LAS  *-----*-  A,X,S:={adr}&S
+LAX  *-----*-  A,X:=#{imm}
+LAX  *-----*-  A,X:={adr}
+LDA  *-----*-  A:={adr}
+LDX  *-----*-  X:={adr}
+LDY  *-----*-  Y:={adr}
+LSR  *-----**  {adr}:={adr}/2
+NOP  --------  
+ORA  *-----*-  A:=A or {adr}
+PHA  --------  (S)-:=A
+PHP  --------  (S)-:=P
+PLA  *-----*-  A:=+(S)
+PLP  **--****  P:=+(S)
+RLA  *-----**  {adr}:={adr}rol A:=A and {adr}
+ROL  *-----**  {adr}:={adr}*2+C
+ROR  *-----**  {adr}:={adr}/2+C*128
+RRA  **----**  {adr}:={adr}ror A:=A adc {adr}
+RTI  **--****  P,PC:=+(S)
+RTS  --------  PC:=+(S)
+SAX  --------  {adr}:=A&X
+SBC  **----**  A:=A-#{imm}
+SBC  **----**  A:=A-{adr}
+SEC  -------1  C:=1
+SED  ----1---  D:=1
+SEI  -----1--  I:=1
+SHX  --------  {adr}:=X&H
+SHY  --------  {adr}:=Y&H
+SLO  *-----**  {adr}:={adr}*2 A:=A or {adr}
+SRE  *-----**  {adr}:={adr}/2 A:=A exor {adr}
+STA  --------  {adr}:=A
+STX  --------  {adr}:=X
+STY  --------  {adr}:=Y
+TAS  --------  S:=A&X {adr}:=S&H
+TAX  *-----*-  X:=A
+TAY  *-----*-  Y:=A
+TSX  *-----*-  X:=S
+TXA  *-----*-  A:=X
+TXS  --------  S:=X
+TYA  *-----*-  A:=Y
+XAA  *-----*-  A:=X&#{imm}
