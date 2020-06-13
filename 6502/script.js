@@ -54,14 +54,14 @@ function present(text) {
 				}
 				opcodes[o].cycles = cycles;
 				break;
-			case 'mnemos':
+			case 'operations':
 				var mnemo = line[0];
 				operations[mnemo] = {};
 				operations[mnemo].flags = line[1];
-				operations[mnemo].description = line.slice(2).join(' ');
+				operations[mnemo].type = line[2];
+				operations[mnemo].description = line.slice(3).join(' ');
 				break;
 			case 'addmodes':
-//				console.log(line);
 				var addmode = line[0];
 				addmodes[addmode] = {};
 				addmodes[addmode].description = line[1] ? line[1] : '';
@@ -69,8 +69,8 @@ function present(text) {
 		}
 	}
 //	console.log(opcodes);
-//	console.log(operations);
-	console.log(addmodes);
+	console.log(operations);
+//	console.log(addmodes);
 
 	var opcode_table = document.getElementById('opcode_table');
 	for (var y = 0; y < 16; y++) {
@@ -80,6 +80,8 @@ function present(text) {
 			var td = document.createElement("td");
 			tr.appendChild(td);
 			var o = y << 4 | x;
+			console.log(opcodes[o].mnemo,operations[opcodes[o].mnemo].type);
+			td.className = operations[opcodes[o].mnemo].type;
 			var cell = opcodes[o].mnemo + '</br>';
 			if (opcodes[o].addmode != 'imp') {
 				cell += opcodes[o].addmode + ' ';
@@ -87,7 +89,14 @@ function present(text) {
 			if (opcodes[o].cycles) {
 				cell += opcodes[o].cycles;
 			}
+			if (opcodes[o].extracycle) {
+				cell += '*';
+			}
 			td.innerHTML = cell;
 		}
 	}
 }
+
+// TODO:
+// * 6502 without ROR
+
