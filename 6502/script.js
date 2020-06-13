@@ -3,27 +3,32 @@ window.onload = init;
 const filename_opcodes = 'cpu_6502_opcodes.txt';
 const filename_operations = 'cpu_6502_operations.txt';
 const filename_addmodes = 'cpu_6502_addmodes.txt';
+const filenames = [
+	filename_opcodes,
+	filename_operations,
+	filename_addmodes,
+]
+
+var files_loaded = 0;
+var file_data = {};
 
 function init() {
-	var req1 = new XMLHttpRequest();
-	req1.open("GET", filename_opcodes, false);
-	req1.onload = function() {
-		decode_opcodes(req1.responseText);
-		var req2 = new XMLHttpRequest();
-		req2.open("GET", filename_operations, false);
-		req2.onload = function() {
-			decode_operations(req2.responseText);
-			var req3 = new XMLHttpRequest();
-			req3.open("GET", filename_addmodes, false);
-			req3.onload = function() {
-				decode_operations(req3.responseText);
+	for (var i = 0; i < filenames.length; i++) {
+		var r = new XMLHttpRequest();
+		r.filename = filenames[i];
+		r.open("GET", r.filename, false);
+		r.onload = function() {
+			file_data[r.filename] = r.responseText;
+			files_loaded++;
+			if (files_loaded == filenames.length) {
+				decode_opcodes(file_data[filename_opcodes]);
+				decode_operations(file_data[filename_operations]);
+				decode_addmodes(file_data[filename_addmodes]);
 				show();
 			}
-			req3.send(null);
 		}
-		req2.send(null);
+		r.send(null);
 	}
-	req1.send(null);
 }
 
 var opcodes = [];
@@ -100,7 +105,7 @@ function decode_addmodes(text) {
 function show() {
 //	console.log(opcodes);
 //	console.log(operations);
-	console.log(addmodes);
+//	console.log(addmodes);
 
 	var opcode_table = document.getElementById('opcode_table');
 	for (var y = 0; y < 16; y++) {
