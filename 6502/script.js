@@ -11,12 +11,11 @@ function init() {
 }
 
 function present(text) {
-	div = document.getElementById('test');
-	div.innerHTML = text;
 	text = text.split('\n');
 	var section = '';
 	var opcodes = [];
 	var operations = {};
+	var addmodes = {};
 	for (var i = 0; i <= 255; i++) {
 		opcodes[i] = {};
 	}
@@ -30,9 +29,9 @@ function present(text) {
 			console.log(section);
 			continue;
 		}
+		line = line.split(/\s+/);
 		switch (section) {
 			case 'opcodes':
-				line = line.split(/\s+/);
 				var o = parseInt(line[0], 16);
 				var mnemo = line[1];
 				if (mnemo.startsWith('*')) {
@@ -56,17 +55,39 @@ function present(text) {
 				opcodes[o].cycles = cycles;
 				break;
 			case 'mnemos':
-				line = line.split(/\s+/);
 				var mnemo = line[0];
 				operations[mnemo] = {};
 				operations[mnemo].flags = line[1];
 				operations[mnemo].description = line.slice(2).join(' ');
 				break;
 			case 'addmodes':
-				console.log(line);
+//				console.log(line);
+				var addmode = line[0];
+				addmodes[addmode] = {};
+				addmodes[addmode].description = line[1] ? line[1] : '';
 				break;
 		}
 	}
 //	console.log(opcodes);
 //	console.log(operations);
+	console.log(addmodes);
+
+	var opcode_table = document.getElementById('opcode_table');
+	for (var y = 0; y < 16; y++) {
+		var tr = document.createElement("tr");
+		opcode_table.appendChild(tr);
+		for (var x = 0; x < 16; x++) {
+			var td = document.createElement("td");
+			tr.appendChild(td);
+			var o = y << 4 | x;
+			var cell = opcodes[o].mnemo + '</br>';
+			if (opcodes[o].addmode != 'imp') {
+				cell += opcodes[o].addmode + ' ';
+			}
+			if (opcodes[o].cycles) {
+				cell += opcodes[o].cycles;
+			}
+			td.innerHTML = cell;
+		}
+	}
 }
