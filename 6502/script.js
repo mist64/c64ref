@@ -1,74 +1,103 @@
 window.onload = init;
 
+const filename_opcodes = 'cpu_6502_opcodes.txt';
+const filename_operations = 'cpu_6502_operations.txt';
+const filename_addmodes = 'cpu_6502_addmodes.txt';
+
 function init() {
-	var rawFile = new XMLHttpRequest();
-	rawFile.open("GET", 'cpu_6502.txt', false);
-	rawFile.onload = function ()
-	{
-		present(rawFile.responseText);
+	var req1 = new XMLHttpRequest();
+	req1.open("GET", filename_opcodes, false);
+	req1.onload = function() {
+		decode_opcodes(req1.responseText);
+		var req2 = new XMLHttpRequest();
+		req2.open("GET", filename_operations, false);
+		req2.onload = function() {
+			decode_operations(req2.responseText);
+			var req3 = new XMLHttpRequest();
+			req3.open("GET", filename_addmodes, false);
+			req3.onload = function() {
+				decode_operations(req3.responseText);
+				show();
+			}
+			req3.send(null);
+		}
+		req2.send(null);
 	}
-	rawFile.send(null);
+	req1.send(null);
 }
 
-function present(text) {
+var opcodes = [];
+var operations = {};
+var addmodes = {};
+
+function tidy_text(text) {
 	text = text.split('\n');
-	var section = '';
-	var opcodes = [];
-	var operations = {};
-	var addmodes = {};
-	for (var i = 0; i <= 255; i++) {
-		opcodes[i] = {};
-	}
+	var text2 = [];
 	for (var i = 0; i < text.length; i++) {
 		line = text[i].trim();
 		if (!line) {
 			continue;
 		}
-		if (line.startsWith('-')) {
-			section = line.substring(2);
-			console.log(section);
-			continue;
-		}
 		line = line.split(/\s+/);
-		switch (section) {
-			case 'opcodes':
-				var o = parseInt(line[0], 16);
-				var mnemo = line[1];
-				if (mnemo.startsWith('*')) {
-					mnemo = mnemo.substring(1);
-					opcodes[o].illegal = true;
-				}
-				opcodes[o].illegal = false;
-				opcodes[o].mnemo = mnemo;
-				opcodes[o].addmode = line[2];
-				var cycles = line[3];
-				opcodes[o].extracycle = false;
-				if (cycles == 'X') {
-					cycles = undefined;
-				} else {
-					if (cycles.endsWith('*')) {
-						opcodes[o].extracycle = true;
-						cycles = cycles.substring(0, cycles.length - 1);
-					}
-					cycles = parseInt(cycles);
-				}
-				opcodes[o].cycles = cycles;
-				break;
-			case 'operations':
-				var mnemo = line[0];
-				operations[mnemo] = {};
-				operations[mnemo].flags = line[1];
-				operations[mnemo].type = line[2];
-				operations[mnemo].description = line.slice(3).join(' ');
-				break;
-			case 'addmodes':
-				var addmode = line[0];
-				addmodes[addmode] = {};
-				addmodes[addmode].syntax = line[1] != '-' ? line[1] : '';
-				addmodes[addmode].description = line[2];
-				break;
-		}
+		text2.push(line);
 	}
+	return text2;
+}
+
+function decode_opcodes(text) {
+	text = tidy_text(text);
+	for (var i = 0; i <= 255; i++) {
+		opcodes[i] = {};
+	}
+	for (var i = 0; i < text.length; i++) {
+		var line = text[i];
+		var o = parseInt(line[0], 16);
+		var mnemo = line[1];
+		if (mnemo.startsWith('*')) {
+			mnemo = mnemo.substring(1);
+			opcodes[o].illegal = true;
+		}
+		opcodes[o].illegal = false;
+		opcodes[o].mnemo = mnemo;
+		opcodes[o].addmode = line[2];
+		var cycles = line[3];
+		opcodes[o].extracycle = false;
+		if (cycles == 'X') {
+			cycles = undefined;
+		} else {
+			if (cycles.endsWith('*')) {
+				opcodes[o].extracycle = true;
+				cycles = cycles.substring(0, cycles.length - 1);
+			}
+			cycles = parseInt(cycles);
+		}
+		opcodes[o].cycles = cycles;
+	}
+}
+function decode_operations(text) {
+	text = tidy_text(text);
+	for (var i = 0; i < text.length; i++) {
+		var line = text[i];
+		var mnemo = line[0];
+		operations[mnemo] = {};
+		operations[mnemo].flags = line[1];
+		operations[mnemo].type = line[2];
+		operations[mnemo].description = line.slice(3).join(' ');
+	}
+}
+
+function decode_addmodes(text) {
+	text = tidy_text(text);
+	for (var i = 0; i < text.length; i++) {
+		var line = text[i];
+		var addmode = line[0];
+		addmodes[addmode] = {};
+		addmodes[addmode].syntax = line[1] != '-' ? line[1] : '';
+		addmodes[addmode].description = line[2];
+	}
+}
+
+function show() {
 //	console.log(opcodes);
 //	console.log(operations);
 	console.log(addmodes);

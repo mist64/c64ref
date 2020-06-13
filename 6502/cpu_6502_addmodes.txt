@@ -1,0 +1,12 @@
+imp  -        implied
+imm  #$nn     immediate
+zp   $nn      zero page
+zpx  $nn,X    x-indexed zero page
+zpy  $nn,Y    y-indexed zero page
+izx  ($nn,X)  x-indexed indirect
+izy  ($nn),Y  indirect y-indexed
+abs  $nnnn    absolute
+abx  $nnnn,X  x-indexed absolute
+aby  $nnnn,Y  y-indexed absolute
+ind  ($nnnn)  indirect
+rel  $nnnn    relative
