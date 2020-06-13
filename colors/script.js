@@ -344,66 +344,7 @@ function bestMatch(rgb) {
 	return cr;
 }
 
-function getColorspaceMap(s) {
-	function f(x) {
-		return (Math.pow(x, 1.5));
-	}
-
-	colorspaceMap = [];
-	var xres = 40;
-	var yres = 25;
-	for (var y = 0; y < yres; y++) {
-		for (var x = 0; x < xres; x++) {
-			h = x * 360 / xres;
-			if (s < 0) {
-				var fs = x ? 100 : 0;
-			} else {
-				var fs = s;
-			}
-			l = f(y / yres) * yres * 100 / yres;
-			rgb = RGBfromHSL(h, fs, l);
-			var cr = bestMatch(rgb);
-			colorspaceMap.push(cr);
-		}
-	}
-	return colorspaceMap;
-}
-
-function getColorspaceMap2() {
-	colorspaceMap = [];
-	for (var i = 0; i < 1000; i++) {
-		colorspaceMap.push(0);
-	}
-
-	const scrx = 40;
-	const resx = 40;
-	const resy = 25;
-
-	for (var i = 0; i < colors.length; i++) {
-		var c = colors[i];
-		hsl = HSLfromRGB(c.r, c.g, c.b);
-		if (hsl.s == 0) {
-			x = 0;
-		} else {
-			x = Math.floor(c.h / 360 * (resx - 1) + 1);
-		}
-		var y = Math.floor(Math.min((c.y - 70) * 1.4, (resy - 1) * 10) / 10);
-//		var y = Math.floor(c.s / 100 * resy);
-
-		while (colorspaceMap[y * scrx + x] != 0) {
-			x++;
-//			if (colorspaceMap[y * scrx + x] != 0) {
-//				y++;
-//			}
-		}
-
-		colorspaceMap[y * scrx + x] = c;
-		colorspaceMap[y * scrx + x + 1] = c;
-		colorspaceMap[y * scrx + x + scrx] = c;
-		colorspaceMap[y * scrx + x + scrx + 1] = c;
-	}
-	return colorspaceMap;
-}
+const saturationThreshold = 15; // lower numbers are gray
 
 function getColorspaceMap3() {
 	// put colors into gray and colored buckets
@@ -412,24 +353,19 @@ function getColorspaceMap3() {
 	nongrays = [];
 	for (var i = 0; i < colors.length; i++) {
 		var c = colors[i];
-		if (c.s < 15) {
+		if (c.s < saturationThreshold) {
 			grays.push(c);
 		} else {
 			nongrays.push(c);
 		}
 	}
-	grays = grays.sort((a,b)=>a.y-b.y);
 
-
-
-
+	// put colors into 7 hue buckets
 	var hueBucketThresholds = [ 10, 60, 88, 160, 200, 260, 340 ];
 	const hueBuckets = hueBucketThresholds.length;
-
-	var nongraysByHue = [];
-
+	var colorsByHue = [];
 	for (var hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
-		nongraysByHue[hueBucket] = [];
+		colorsByHue[hueBucket] = [];
 	}
 	for (var i = 0; i < nongrays.length; i++) {
 		for (var hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
@@ -442,23 +378,19 @@ function getColorspaceMap3() {
 				good = true;
 			}
 			if (good) {
-				nongraysByHue[hueBucket].push(c);
+				colorsByHue[hueBucket].push(c);
 				break;
 			}
 		}
 	}
 
+	// sort grays and colors
+	grays = grays.sort((a,b)=>a.y-b.y);
 	for (var hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
-		function sort_hue(a,b) {
-//			if (a.s - b.s < 1) {
-				return a.y - b.y;
-//			} else {
-//				return a.s - b.s;
-//			}
-		}
-		nongraysByHue[hueBucket] = nongraysByHue[hueBucket].sort(sort_hue);
+		colorsByHue[hueBucket] = colorsByHue[hueBucket].sort((a,b)=>a.y-b.y);
 	}
 
+	// init map
 	colorspaceMap = [];
 	for (var i = 0; i < 1000; i++) {
 		colorspaceMap.push(0);
@@ -466,43 +398,22 @@ function getColorspaceMap3() {
 
 	const scrx = 40;
 
-	const spread = false;
-//	const spread = true;
-
+	// draw colors at the bottom
 	for (var hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
-		var l = nongraysByHue[hueBucket].length;
-		for (var i = 0; i < l; i++) {
-			var c = nongraysByHue[hueBucket][i];
-			x1 = Math.floor(i / l * (scrx - 1));
-			if (spread) {
-				x2 = Math.floor((i + 1) / l * (scrx - 1));
-			} else {
-				x1 = i;
-				x2 = x1;
-			}
+		for (var i = 0; i < colorsByHue[hueBucket].length; i++) {
 			y = 24 - hueBuckets + hueBucket;
-			for (var xx = x1; xx <= x2; xx++) {
-				colorspaceMap[y * scrx + xx] = c;
-			}
+			colorspaceMap[y * scrx + i] = colorsByHue[hueBucket][i];
 		}
 	}
 
-	var x = 0;
+	// draw grays at the very bottom
 	var l = grays.length;
 	for (var i = 0; i < l; i++) {
-		var c = grays[i];
-		x1 = Math.floor(i / l * (scrx - 1));
-		if (spread) {
-			x2 = Math.floor((i + 1) / l * (scrx - 1));
-		} else {
-			x1 = i;
-			x2 = x1;
-		}
 		y = 24;
-		for (var xx = x1; xx <= x2; xx++) {
-			colorspaceMap[y * scrx + xx] = c;
-		}
+		colorspaceMap[y * scrx + i] = grays[i];
 	}
+
+	// draw colorspace diagram
 
 	function f(x) {
 		return Math.pow(x, 1.5);
@@ -529,11 +440,9 @@ function getColorspaceMap3() {
 		}
 	}
 
-	//
-	//
-	//
-	for (var i = 0; i < colors.length; i++) {
-		colorspaceMap[i] = colors[i];;
+	// draw colors sorted by lumadiff at the top of the screen
+	for (var i = 0; i < colors_by_lumadiff.length; i++) {
+		colorspaceMap[i] = colors_by_lumadiff[i];
 	}
 
 	return colorspaceMap;
@@ -798,6 +707,7 @@ const lumadiff_limit1 = 5;
 const lumadiff_limit2 = 31;
 
 var colors;
+var colors_by_lumadiff;
 
 function init() {
 	reset();
@@ -1077,8 +987,14 @@ function refresh() {
 			}
 		}
 	}
+
+	colors_by_lumadiff = colors.slice();
+	colors_by_lumadiff.sort(compare_lumadiff_index);
+	console.log(colors_by_lumadiff);
+	console.log(colors);
+
 	if (sortby == 'lumadiff') {
-		colors.sort(compare_lumadiff_index);
+		colors = colors_by_lumadiff;
 	} else if (sortby == 'hue') {
 		colors.sort(compare_h);
 	} else if (sortby == 'luma'){
