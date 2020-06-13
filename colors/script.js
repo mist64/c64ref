@@ -1,5 +1,4 @@
 // TODO:
-// * when drawing, sort paired colors by luma
 // * add VIC and TED
 // * emulate checkerboard pattern artifact
 
@@ -569,14 +568,6 @@ function imageFromColor(c) {
 	return image;
 }
 
-function componentsFromColor(c) {
-	if (c.component1) {
-		return {c1: c.component1, c2: c.component2};
-	} else {
-		return {c1: c, c2: c};
-	}
-}
-
 const bpatterns = {
 	'2': {
 		'h':
@@ -1113,9 +1104,22 @@ function refresh() {
 	screen2.data = [];
 	for (var i = 0; i < 1000; i++) {
 		var c = colorspaceMapBASIC[i];
-		var comp = componentsFromColor(c);
-		screen2.data.push(comp.c1.index << 4 | comp.c2.index);
-		switch (c.f) {
+		var f = c.f;
+		if (c.component1) {
+			var c1 = c.component1;
+			var c2 = c.component2;
+			// always put the brighter color in (y % 2) = 0 rows
+			if (c1.y < c2.y) {
+				c1 = c.component2;
+				c2 = c.component1;
+				f = 1 - f;
+			}
+		} else {
+			var c1 = c;
+			var c2 = c;
+		}
+		screen2.data.push(c1.index << 4 | c2.index);
+		switch (f) {
 			case .25: screen2.data.push(1); break;
 			case .5:  screen2.data.push(2); break;
 			case .75: screen2.data.push(3); break;
