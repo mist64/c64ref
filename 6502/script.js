@@ -64,13 +64,14 @@ function present(text) {
 			case 'addmodes':
 				var addmode = line[0];
 				addmodes[addmode] = {};
-				addmodes[addmode].description = line[1] ? line[1] : '';
+				addmodes[addmode].syntax = line[1] != '-' ? line[1] : '';
+				addmodes[addmode].description = line[2];
 				break;
 		}
 	}
 //	console.log(opcodes);
-	console.log(operations);
-//	console.log(addmodes);
+//	console.log(operations);
+	console.log(addmodes);
 
 	var opcode_table = document.getElementById('opcode_table');
 	for (var y = 0; y < 16; y++) {
@@ -80,7 +81,7 @@ function present(text) {
 			var td = document.createElement("td");
 			tr.appendChild(td);
 			var o = y << 4 | x;
-			console.log(opcodes[o].mnemo,operations[opcodes[o].mnemo].type);
+//			console.log(opcodes[o].mnemo,operations[opcodes[o].mnemo].type);
 			td.className = operations[opcodes[o].mnemo].type;
 			var cell = opcodes[o].mnemo + '</br>';
 			if (opcodes[o].addmode != 'imp') {

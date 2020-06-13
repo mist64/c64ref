@@ -339,15 +339,15 @@ XAA  *-----*-  arith  A:=X&#{imm}
 
 - addmodes
 
-imp
-imm  #$00
-zp   $00
-zpx  $00,X
-zpy  $00,Y
-izx  ($00,X)
-izy  ($00),Y
-abs  $0000
-abx  $0000,X
-aby  $0000,Y
-ind  ($0000)
-rel  $0000
+imp  -        implied
+imm  #$nn     immediate
+zp   $nn      zero page
+zpx  $nn,X    x-indexed zero page
+zpy  $nn,Y    y-indexed zero page
+izx  ($nn,X)  x-indexed indirect
+izy  ($nn),Y  indirect y-indexed
+abs  $nnnn    absolute
+abx  $nnnn,X  x-indexed absolute
+aby  $nnnn,Y  y-indexed absolute
+ind  ($nnnn)  indirect
+rel  $nnnn    relative
