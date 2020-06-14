@@ -27,7 +27,7 @@ DA  PHX
 F2  SBC   (a8)
 FA  PLX
 
-02  *NOP
+02  *NOP #d8
 03  *NOP
 07  *NOP
 0B  *NOP
@@ -36,7 +36,7 @@ FA  PLX
 17  *NOP
 1B  *NOP
 1F  *NOP
-22  *NOP
+22  *NOP #d8
 23  *NOP
 27  *NOP
 2B  *NOP
@@ -45,19 +45,19 @@ FA  PLX
 37  *NOP
 3B  *NOP
 3F  *NOP
-42  *NOP
+42  *NOP #d8
 43  *NOP
-44  *NOP
+44  *NOP #d8
 47  *NOP
 4B  *NOP
 4F  *NOP
 53  *NOP
-54  *NOP
+54  *NOP #d8
 57  *NOP
 5B  *NOP
 5C  *NOP
 5F  *NOP
-62  *NOP
+62  *NOP #d8
 63  *NOP
 67  *NOP
 6B  *NOP
@@ -66,7 +66,7 @@ FA  PLX
 77  *NOP
 7B  *NOP
 7F  *NOP
-82  *NOP
+82  *NOP #d8
 83  *NOP
 87  *NOP
 8B  *NOP
@@ -83,24 +83,24 @@ B3  *NOP
 B7  *NOP
 BB  *NOP
 BF  *NOP
-C2  *NOP
+C2  *NOP #d8
 C3  *NOP
 C7  *NOP
 CB  *NOP
 CF  *NOP
 D3  *NOP
-D4  *NOP
+D4  *NOP #d8
 D7  *NOP
 DB  *NOP
 DC  *NOP
 DF  *NOP
-E2  *NOP
+E2  *NOP #d8
 E3  *NOP
 E7  *NOP
 EB  *NOP
 EF  *NOP
 F3  *NOP
-F4  *NOP
+F4  *NOP #d8
 F7  *NOP
 FB  *NOP
 FC  *NOP
