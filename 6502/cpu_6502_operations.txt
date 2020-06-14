@@ -1,21 +1,16 @@
 ADC  **----**  arith  A:=A+{adr}
-AHX  --------  store  {adr}:=A&X&H
-ALR  *-----**  arith  A:=(A&#{imm})/2
-ANC  *-----**  arith  A:=A&#{imm}
 AND  *-----*-  arith  A:=A&{adr}
-ARR  **----**  arith  A:=(A&#{imm})/2
 ASL  *-----**  arith  {adr}:={adr}*2
-AXS  *-----**  arith  X:=A&X-#{imm}
-BCC  --------  ctrl   branch on C=0
-BCS  --------  ctrl   branch on C=1
-BEQ  --------  ctrl   branch on Z=1
+BCC  --------  bra    branch on C=0
+BCS  --------  bra    branch on C=1
+BEQ  --------  bra    branch on Z=1
 BIT  **----*-  arith  N:=b7 V:=b6 Z:=A&{adr}
-BMI  --------  ctrl   branch on N=1
-BNE  --------  ctrl   branch on Z=0
-BPL  --------  ctrl   branch on N=0
+BMI  --------  bra    branch on N=1
+BNE  --------  bra    branch on Z=0
+BPL  --------  bra    branch on N=0
 BRK  ---1-1--  ctrl   (S)-:=PC,P PC:=($FFFE)
-BVC  --------  ctrl   branch on V=0
-BVS  --------  ctrl   branch on V=1
+BVC  --------  bra    branch on V=0
+BVS  --------  bra    branch on V=1
 CLC  -------0  flags  C:=0
 CLD  ----0---  flags  D:=0
 CLI  -----0--  flags  I:=0
@@ -23,7 +18,6 @@ CLV  -0------  flags  V:=0
 CMP  *-----**  arith  A-{adr}
 CPX  *-----**  arith  X-{adr}
 CPY  *-----**  arith  Y-{adr}
-DCP  *-----**  arith  {adr}:={adr}-1 A-{adr}
 DEC  *-----*-  arith  {adr}:={adr}-1
 DEX  *-----*-  arith  X:=X-1
 DEY  *-----*-  arith  Y:=Y-1
@@ -31,12 +25,8 @@ EOR  *-----*-  arith  A:=A exor {adr}
 INC  *-----*-  arith  {adr}:={adr}+1
 INX  *-----*-  arith  X:=X+1
 INY  *-----*-  arith  Y:=Y+1
-ISC  **----**  arith  {adr}:={adr}+1 A:=A-{adr}
 JMP  --------  ctrl   PC:={adr}
 JSR  --------  ctrl   (S)-:=PC PC:={adr}
-KIL  --------  kil    
-LAS  *-----*-  load   A,X,S:={adr}&S
-LAX  *-----*-  load   A,X:={adr}
 LDA  *-----*-  load   A:={adr}
 LDX  *-----*-  load   X:={adr}
 LDY  *-----*-  load   Y:={adr}
@@ -47,30 +37,20 @@ PHA  --------  stack  (S)-:=A
 PHP  --------  stack  (S)-:=P
 PLA  *-----*-  stack  A:=+(S)
 PLP  **--****  stack  P:=+(S)
-RLA  *-----**  arith  {adr}:={adr}rol A:=A and {adr}
 ROL  *-----**  arith  {adr}:={adr}*2+C
 ROR  *-----**  arith  {adr}:={adr}/2+C*128
-RRA  **----**  arith  {adr}:={adr}ror A:=A adc {adr}
 RTI  **--****  ctrl   P,PC:=+(S)
 RTS  --------  ctrl   PC:=+(S)
-SAX  --------  store  {adr}:=A&X
-SBC  **----**  arith  A:=A-#{imm}
 SBC  **----**  arith  A:=A-{adr}
 SEC  -------1  flags  C:=1
 SED  ----1---  flags  D:=1
 SEI  -----1--  flags  I:=1
-SHX  --------  store  {adr}:=X&H
-SHY  --------  store  {adr}:=Y&H
-SLO  *-----**  arith  {adr}:={adr}*2 A:=A or {adr}
-SRE  *-----**  arith  {adr}:={adr}/2 A:=A exor {adr}
 STA  --------  store  {adr}:=A
 STX  --------  store  {adr}:=X
 STY  --------  store  {adr}:=Y
-TAS  --------  trans  S:=A&X {adr}:=S&H
 TAX  *-----*-  trans  X:=A
 TAY  *-----*-  trans  Y:=A
 TSX  *-----*-  trans  X:=S
 TXA  *-----*-  trans  A:=X
 TXS  --------  trans  S:=X
 TYA  *-----*-  trans  A:=Y
-XAA  *-----*-  arith  A:=X&#{imm}

@@ -114,20 +114,26 @@ function show() {
 		for (var x = 0; x < 16; x++) {
 			var td = document.createElement("td");
 			tr.appendChild(td);
+			td.className = 'opcodecell';
 			var o = y << 4 | x;
-//			console.log(opcodes[o].mnemo,operations[opcodes[o].mnemo].type);
-			td.className = operations[opcodes[o].mnemo].type;
-			var cell = opcodes[o].mnemo + '</br>';
-			if (opcodes[o].addmode != 'imp') {
-				cell += opcodes[o].addmode + ' ';
+			var opcode = opcodes[o];
+
+			if (opcode.mnemo) {
+				td.className += '  ' + operations[opcode.mnemo].type;
+				var cell = opcodes[o].mnemo + '</br>';
+				if (opcodes[o].addmode != 'imp') {
+					cell += opcodes[o].addmode + ' ';
+				}
+				if (opcodes[o].cycles) {
+					cell += opcodes[o].cycles;
+				}
+				if (opcodes[o].extracycle) {
+					cell += '*';
+				}
+				td.innerHTML = cell;
+			} else {
+				td.innerHTML = '-';
 			}
-			if (opcodes[o].cycles) {
-				cell += opcodes[o].cycles;
-			}
-			if (opcodes[o].extracycle) {
-				cell += '*';
-			}
-			td.innerHTML = cell;
 		}
 	}
 }
