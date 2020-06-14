@@ -18,7 +18,7 @@ BBS4
 BBS5
 BBS6
 BBS7
-BRU
+BRA   Branch
 BSR   Branch to Subroutine
 CLE   Clear Extend Disable Flag
 CPZ   Compare Z Register

@@ -55,9 +55,9 @@
 7B  TBA
 7C  JMP   (a16,X)
 7F  BBR7  a8,r8
-80  BRU   r8
+80  BRA   r8
 82  STA   (r8,SP),Y
-83  BRU   r16
+83  BRA   r16
 87  SMB0  a8
 89  BIT   #d8
 8B  STY   a16,X

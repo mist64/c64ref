@@ -1,56 +1,56 @@
-ADC  arith  **----**  A:=A+{adr}
-AND  logic  *-----*-  A:=A&{adr}
-ASL  shift  *-----**  {adr}:={adr}*2
+ADC  arith  NV----ZC  A:=A+{adr}
+AND  logic  N-----Z-  A:=A&{adr}
+ASL  shift  N-----ZC  {adr}:={adr}*2
 BCC  bra    --------  branch on C=0
 BCS  bra    --------  branch on C=1
 BEQ  bra    --------  branch on Z=1
-BIT  logic  **----*-  N:=b7 V:=b6 Z:=A&{adr}
+BIT  logic  NV----Z-  N:=b7 V:=b6 Z:=A&{adr}
 BMI  bra    --------  branch on N=1
 BNE  bra    --------  branch on Z=0
 BPL  bra    --------  branch on N=0
-BRK  ctrl   ---1-1--  (S)-:=PC,P PC:=($FFFE)
+BRK  ctrl   -----1--  (S)-:=PC,P PC:=($FFFE)
 BVC  bra    --------  branch on V=0
 BVS  bra    --------  branch on V=1
 CLC  flags  -------0  C:=0
 CLD  flags  ----0---  D:=0
 CLI  flags  -----0--  I:=0
 CLV  flags  -0------  V:=0
-CMP  arith  *-----**  A-{adr}
-CPX  arith  *-----**  X-{adr}
-CPY  arith  *-----**  Y-{adr}
-DEC  inc    *-----*-  {adr}:={adr}-1
-DEX  inc    *-----*-  X:=X-1
-DEY  inc    *-----*-  Y:=Y-1
-EOR  logic  *-----*-  A:=A exor {adr}
-INC  inc    *-----*-  {adr}:={adr}+1
-INX  inc    *-----*-  X:=X+1
-INY  inc    *-----*-  Y:=Y+1
+CMP  arith  N-----ZC  A-{adr}
+CPX  arith  N-----ZC  X-{adr}
+CPY  arith  N-----ZC  Y-{adr}
+DEC  inc    N-----Z-  {adr}:={adr}-1
+DEX  inc    N-----Z-  X:=X-1
+DEY  inc    N-----Z-  Y:=Y-1
+EOR  logic  N-----Z-  A:=A exor {adr}
+INC  inc    N-----Z-  {adr}:={adr}+1
+INX  inc    N-----Z-  X:=X+1
+INY  inc    N-----Z-  Y:=Y+1
 JMP  ctrl   --------  PC:={adr}
 JSR  ctrl   --------  (S)-:=PC PC:={adr}
-LDA  load   *-----*-  A:={adr}
-LDX  load   *-----*-  X:={adr}
-LDY  load   *-----*-  Y:={adr}
-LSR  shift  *-----**  {adr}:={adr}/2
+LDA  load   N-----Z-  A:={adr}
+LDX  load   N-----Z-  X:={adr}
+LDY  load   N-----Z-  Y:={adr}
+LSR  shift  N-----ZC  {adr}:={adr}/2
 NOP  nop    --------
-ORA  logic  *-----*-  A:=A or {adr}
+ORA  logic  N-----Z-  A:=A or {adr}
 PHA  stack  --------  (S)-:=A
 PHP  stack  --------  (S)-:=P
-PLA  stack  *-----*-  A:=+(S)
-PLP  stack  **--****  P:=+(S)
-ROL  shift  *-----**  {adr}:={adr}*2+C
-ROR  shift  *-----**  {adr}:={adr}/2+C*128
-RTI  ctrl   **--****  P,PC:=+(S)
+PLA  stack  N-----Z-  A:=+(S)
+PLP  stack  NV--DIZC  P:=+(S)
+ROL  shift  N-----ZC  {adr}:={adr}*2+C
+ROR  shift  N-----ZC  {adr}:={adr}/2+C*128
+RTI  ctrl   NV--DIZC  P,PC:=+(S)
 RTS  ctrl   --------  PC:=+(S)
-SBC  arith  **----**  A:=A-{adr}
+SBC  arith  NV----ZC  A:=A-{adr}
 SEC  flags  -------1  C:=1
 SED  flags  ----1---  D:=1
 SEI  flags  -----1--  I:=1
 STA  load   --------  {adr}:=A
 STX  load   --------  {adr}:=X
 STY  load   --------  {adr}:=Y
-TAX  trans  *-----*-  X:=A
-TAY  trans  *-----*-  Y:=A
-TSX  stack  *-----*-  X:=S
-TXA  trans  *-----*-  A:=X
+TAX  trans  N-----Z-  X:=A
+TAY  trans  N-----Z-  Y:=A
+TSX  stack  N-----Z-  X:=S
+TXA  trans  N-----Z-  A:=X
 TXS  stack  --------  S:=X
-TYA  trans  *-----*-  A:=Y
+TYA  trans  N-----Z-  A:=Y
