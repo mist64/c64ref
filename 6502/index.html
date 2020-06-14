@@ -11,6 +11,10 @@ h2 {
 	font-size: medium;
 }
 
+#opcode_table td {
+	border: 1px solid black;
+}
+
 .opcodecell {
 	height: 40px;
 	width: 40px;
@@ -26,38 +30,50 @@ h2 {
 	);
 }
 .ctrl {
-	background-color: #FFF056; /* yellow */
+	background-color: hsl(55, 100%, 60%); /* yellow */
 }
 .bra {
-	background-color: #C3F552; /* yellow-green */
-}
-.load {
-	background-color: #56C1FF; /* blue */
-}
-.store {
-	background-color: #FF968D; /* red */
-}
-.trans {
-	background-color: #AAABC6; /* red-blue */
-}
-.arith {
-	background-color: #73FDEA; /* cyan */
-}
-.stack {
-	background-color: #FF95CA; /* magenta */
+	background-color: hsl(47, 100%, 60%); /* yellow-orange */
 }
 .flags {
-	background-color: #88FA4E; /* green */
+	background-color: hsl(39, 100%, 60%); /* orange */
+}
+
+.load {
+	background-color: hsl(202, 100%, 75%); /* blue */
+}
+.trans {
+	background-color: hsl(253, 100%, 75%); /* red-blue */
+}
+.store {
+	background-color: hsl(5, 100%, 75%); /* red */
+}
+
+.arith {
+	background-color: hsl(110, 50%, 50%);
+}
+.inc {
+	background-color: hsl(110, 50%, 50%);
+}
+.logic {
+	background-color: hsl(140, 60%, 60%);
+}
+.shift {
+	background-color: hsl(160, 70%, 70%);
+}
+
+.stack {
+	background-color: hsl(290, 100%, 79%); /* magenta */
 }
 .nop {
-	background-color: #c0c0c0; /* light gray */
+	background-color: hsl(0, 0%, 75%); /* light gray */
 }
 .kil {
 	background-color: black;
 	color: white;
 }
 .undefined {
-	background-color: #808080; /* gray */
+	background-color: hsl(0, 0%, 90%); /* gray */
 }
 
 </style>
@@ -80,7 +96,7 @@ h2 {
 	<h1>6502 CPU Reference</h1>
 	<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>.</i></p>
 
-	<table id="opcode_table" border="1">
+	<table id="opcode_table">
 	</table>
 
 	<div id="reference">
@@ -90,6 +106,7 @@ h2 {
 
 	<ul>
 	<li><a href="http://www.oxyron.de/html/opcodes02.html">Graham: 6502/6510/8500/8502 Opcode matrix</a></li>
+	<li><a href="http://www.obelisk.me.uk/6502/reference.html">Andrew Jacobs: 6502 Instruction Reference</a></li>
 	<li><a href="http://www.ffd2.com/fridge/docs/6502-NMOS.extra.opcodes">Adam Vardy: Extra Instructions Of The 65XX Series CPU</a></li>
 	<li><a href="http://unusedino.de/ec64/technical/misc/c64/64doc.html">John West, Marko Mäkelä: Documentation for the NMOS 65xx/85xx Instruction Set</a></li>
 	</ul>

@@ -7,7 +7,7 @@ BEQ  Branch if Equal
 BIT  Bit Test
 BMI  Branch if Minus
 BNE  Branch if Not Equal
-BPL  Branch if Positive
+BPL  Branch if Plus
 BRK  Force Interrupt
 BVC  Branch if Overflow Clear
 BVS  Branch if Overflow Set

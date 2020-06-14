@@ -38,8 +38,8 @@ function init() {
 				file_data[r.file_to_load.filename] = r.responseText;
 				files_loaded++;
 				if (files_loaded == files_to_load.length) {
-//					var cpu = '6502';
-					var cpu = '6502ill';
+					var cpu = '6502';
+//					var cpu = '6502ill';
 					decode_opcodes(cpu);
 					decode_operations(cpu);
 					decode_mnemos(cpu);
@@ -100,8 +100,8 @@ function decode_operations(cpu) {
 		var line = text[i];
 		var mnemo = line[0];
 		operations[mnemo] = {};
-		operations[mnemo].flags = line[1];
-		operations[mnemo].type = line[2];
+		operations[mnemo].type = line[1];
+		operations[mnemo].flags = line[2];
 		operations[mnemo].description = line.slice(3).join(' ');
 	}
 }
