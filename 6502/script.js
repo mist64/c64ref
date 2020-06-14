@@ -149,14 +149,24 @@ function decode_timing(cpu) {
 		var line = text[i];
 		var o = parseInt(line[0], 16);
 		var cycles = line[1];
-		cpu_data[cpu].opcodes[o].extracycle = false;
+		cpu_data[cpu].opcodes[o].extracycles = [];
 		if (cycles == 'X') {
 			cycles = null;
 		} else {
-			if (cycles.endsWith('*')) {
-				cpu_data[cpu].opcodes[o].extracycle = true;
-				cycles = cycles.substring(0, cycles.length - 1);
-			}
+			do {
+				var last_char = (cycles[cycles.len - 1]);
+				if (cycles.endsWith('b')) {
+					cpu_data[cpu].opcodes[o].extracycles.push('branch');
+					cycles = cycles.substring(0, cycles.length - 1);
+					continue;
+				}
+				if (cycles.endsWith('p')) {
+					cpu_data[cpu].opcodes[o].extracycles.push('page');
+					cycles = cycles.substring(0, cycles.length - 1);
+					continue;
+				}
+				break;
+			} while (true);
 			cycles = parseInt(cycles);
 		}
 		cpu_data[cpu].opcodes[o].cycles = cycles;
@@ -206,7 +216,7 @@ function generate_opcode_table() {
 				if (cpu_data[cpu].opcodes[o].cycles) {
 					cell += cpu_data[cpu].opcodes[o].cycles;
 				}
-				if (cpu_data[cpu].opcodes[o].extracycle) {
+				if (cpu_data[cpu].opcodes[o].extracycles) {
 					cell += '*';
 				}
 				td.innerHTML = cell;
@@ -276,7 +286,7 @@ function generate_reference() {
 			tr.appendChild(th);
 			th.innerHTML = title;
 		}
-		var needs_note = null;
+		var notes = [];
 		for (var addmode of Object.keys(cpu_data[cpu].addmodes)) {
 			var opcode = opcode_for_mnemo_and_addmode(mnemo, addmode);
 			if (opcode != null) {
@@ -284,7 +294,6 @@ function generate_reference() {
 				table.appendChild(tr);
 				td = document.createElement("td");
 				tr.appendChild(td);
-//				console.log(cpu_data[cpu].addmodes[addmode].description);
 				td.innerHTML = cpu_data[cpu].addmodes[addmode].description;
 				td = document.createElement("td");
 				tr.appendChild(td);
@@ -301,9 +310,17 @@ function generate_reference() {
 				if (cycles == null) {
 					td.innerHTML = '&infin;';
 				} else {
-					if (cpu_data[cpu].opcodes[opcode].extracycle) {
-						cycles += '*';
-						needs_note = cpu_data[cpu].operations[mnemo].type;
+					var note = 1;
+					for (var extracycle of cpu_data[cpu].opcodes[opcode].extracycles) {
+						if (!notes.includes(extracycle)) {
+							notes.push(extracycle);
+						}
+						cycles += '<sup>'
+						if (note > 1) {
+						cycles += ','
+						}
+						cycles += note + '</sup>'
+						note++;
 					}
 					td.innerHTML = cycles;
 				}
@@ -311,14 +328,18 @@ function generate_reference() {
 		}
 
 		// note
-		if (needs_note) {
+		var i = 1;
+		for (var note of notes) {
 			p = document.createElement("p");
 			reference.appendChild(p);
-			if (needs_note == 'branch') {
-				p.innerHTML = '*Add 1 if branch occurs to same page. Add 2 if branch occurs to different page.'
-			} else {
-				p.innerHTML = '*Add 1 when page boundary is crossed.';
+			switch (note) {
+				case 'branch':
+					p.innerHTML = '<sup>' + i + '</sup>Add 1 if branch is taken.'
+					break;
+				case 'page':
+					p.innerHTML = '<sup>' + i + '</sup>Add 1 when page boundary is crossed.';
 			}
+			i++;
 		}
 	}
 }

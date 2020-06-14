@@ -1,33 +1,33 @@
 .basedon cpu_65c02_timing.txt
-07  RMB0  5
-0F  BBR0  2*
-17  RMB1  5
-1F  BBR1  2*
-27  RMB2  5
-2F  BBR2  2*
-37  RMB3  5
-3F  BBR3  2*
-47  RMB4  5
-4F  BBR4  2*
-57  RMB5  5
-5F  BBR5  2*
-67  RMB6  5
-6F  BBR6  2*
-77  RMB7  5
-7F  BBR7  2*
-87  SMB0  5
-8F  BBS0  2*
-97  SMB1  5
-9F  BBS1  2*
-A7  SMB2  5
-AF  BBS2  2*
-B7  SMB3  5
-BF  BBS3  2*
-C7  SMB4  5
-CF  BBS4  2*
-D7  SMB5  5
-DF  BBS5  2*
-E7  SMB6  5
-EF  BBS6  2*
-F7  SMB7  5
-FF  BBS7  2*
+07  5
+0F  5b
+17  5
+1F  5b
+27  5
+2F  5b
+37  5
+3F  5b
+47  5
+4F  5b
+57  5
+5F  5b
+67  5
+6F  5b
+77  5
+7F  5b
+87  5
+8F  5b
+97  5
+9F  5b
+A7  5
+AF  5b
+B7  5
+BF  5b
+C7  5
+CF  5b
+D7  5
+DF  5b
+E7  5
+EF  5b
+F7  5
+FF  5b
