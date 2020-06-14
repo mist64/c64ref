@@ -98,12 +98,13 @@ h2 {
 		<label for="cpu">CPU</label>
 		<select name="cpu" id="cpu" onChange="show();">
 			<option value="6502">MOS 6502</option>
-			<option value="6502ill">MOS 6502 (+illegal)</option>
 			<option value="65c02">WDC 65C02</option>
 			<option value="r65c02">R65C02</option>
 			<option value="65c02s">65C02s</option>
 			<option value="65ce02">CSG 65CE02</option>
 		</select>
+		<input checked type="checkbox" id="showillegal" onclick="show()">
+		<label for="showillegal">Undocumented opcodes</label>
 	</p>
 
 	<table id="opcode_table">
@@ -124,6 +125,7 @@ h2 {
 	<li><a href="http://www.ffd2.com/fridge/docs/6502-NMOS.extra.opcodes">Adam Vardy: Extra Instructions Of The 65XX Series CPU</a></li>
 	<li><a href="http://unusedino.de/ec64/technical/misc/c64/64doc.html">John West, Marko Mäkelä: Documentation for the NMOS 65xx/85xx Instruction Set</a></li>
 	<li><a href="http://anyplatform.net/media/guides/cpus/65xx%20Processor%20Data.txt">Mark Ormston: 65xx Processor Data</a></li>
+	<li><a href="http://6502.org/tutorials/65c02opcodes.html">Bruce Clark: 65C02 Opcodes</a></li>
 	</ul>
 
 	</div>

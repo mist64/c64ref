@@ -54,3 +54,23 @@ TSX  stack  N-----Z-  S → X
 TXA  trans  N-----Z-  X → A
 TXS  stack  --------  X → S
 TYA  trans  N-----Z-  Y → A
+
+AHX  load   --------  {adr}:=A&X&H
+ALR  arith  *-----**  A:=(A&#{imm})/2
+ANC  arith  *-----**  A:=A&#{imm}
+ARR  arith  **----**  A:=(A&#{imm})/2
+AXS  arith  *-----**  X:=A&X-#{imm}
+DCP  arith  *-----**  {adr}:={adr}-1 A-{adr}
+ISC  arith  **----**  {adr}:={adr}+1 A:=A-{adr}
+KIL  kil    --------
+LAS  load   *-----*-  A,X,S:={adr}&S
+LAX  load   *-----*-  A,X:={adr}
+RLA  arith  *-----**  {adr}:={adr}rol A:=A and {adr}
+RRA  arith  **----**  {adr}:={adr}ror A:=A adc {adr}
+SAX  load   --------  {adr}:=A&X
+SHX  load   --------  {adr}:=X&H
+SHY  load   --------  {adr}:=Y&H
+SLO  arith  *-----**  {adr}:={adr}*2 A:=A or {adr}
+SRE  arith  *-----**  {adr}:={adr}/2 A:=A exor {adr}
+TAS  trans  --------  S:=A&X {adr}:=S&H
+XAA  arith  *-----*-  A:=X&#{imm}

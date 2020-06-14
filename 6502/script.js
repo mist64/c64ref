@@ -2,7 +2,6 @@ window.onload = init;
 
 const cpus = [
 	'6502',
-	'6502ill',
 	'65c02',
 	'r65c02',
 	'65c02s',
@@ -14,6 +13,7 @@ var cpu_data = {};
 var files_loaded = 0;
 var file_data = {};
 var cpu;
+var showillegal;
 
 function filename_for_cpu_and_type(cpu, type) {
 	return 'cpu_' + cpu + '_' + type + '.txt';
@@ -186,6 +186,7 @@ function show() {
 //	console.log(cpu_data);
 
 	cpu = document.getElementById('cpu').value;
+	showillegal = document.getElementById('showillegal').checked;
 
 	generate_opcode_table();
 	generate_big_table();
@@ -205,20 +206,25 @@ function generate_opcode_table() {
 			var o = y << 4 | x;
 			var opcode = cpu_data[cpu].opcodes[o];
 
-			if (opcode.mnemo) {
+			if (opcode.mnemo && (showillegal || !opcode.illegal)) {
 				td.className += ' ' + cpu_data[cpu].operations[opcode.mnemo].type;
 				if (opcode.illegal) {
 					td.className += ' ill';
 				}
-				var cell = cpu_data[cpu].opcodes[o].mnemo + '</br>';
-				if (cpu_data[cpu].opcodes[o].addmode != '-') {
-					cell += cpu_data[cpu].opcodes[o].addmode + ' ';
+				var addmode = cpu_data[cpu].opcodes[o].addmode;
+				var cell = cpu_data[cpu].opcodes[o].mnemo + '<br/>';
+				if (addmode != '-') {
+					cell += addmode;
 				}
+				cell += '<br/>';
 				if (cpu_data[cpu].opcodes[o].cycles) {
-					cell += cpu_data[cpu].opcodes[o].cycles;
-				}
-				if (cpu_data[cpu].opcodes[o].extracycles) {
-					cell += '*';
+					cell += '<span style="float: left;">' + cpu_data[cpu].opcodes[o].cycles
+					if (cpu_data[cpu].opcodes[o].extracycles.length) {
+						cell += '*';
+					}
+					cell += '</span>';
+					cell += '<span style="float: right;">' + cpu_data[cpu].addmodes[addmode].bytes;
+					cell += '</span>';
 				}
 				td.innerHTML = cell;
 			} else {
@@ -313,7 +319,6 @@ function generate_big_table() {
 		var h2, table, tr, td, th, p;
 
 		tr = document.createElement("tr");
-		big_table.appendChild(tr);
 
 		td = document.createElement("td");
 		tr.appendChild(td);
@@ -324,6 +329,7 @@ function generate_big_table() {
 		tr.appendChild(td);
 		td.innerHTML = cpu_data[cpu].operations[mnemo].description;
 
+		var row_is_empty = true;
 		for (var addmode of addmodes) {
 			var td1 = document.createElement("td");
 			var td2 = document.createElement("td");
@@ -332,11 +338,15 @@ function generate_big_table() {
 			tr.appendChild(td2);
 			tr.appendChild(td3);
 			var opcode = opcode_for_mnemo_and_addmode(mnemo, addmode);
-			if (opcode != null) {
+			if (opcode != null && (showillegal || !cpu_data[cpu].opcodes[opcode].illegal)) {
 				td1.innerHTML = hex16(opcode);
 				td2.innerHTML = cpu_data[cpu].addmodes[addmode].bytes;
 				td3.innerHTML = cpu_data[cpu].opcodes[opcode].cycles;
+				row_is_empty = false;
 			}
+		}
+		if (!row_is_empty) {
+			big_table.appendChild(tr);
 		}
 
 		for (var i = 0; i < 8; i++) {
@@ -360,11 +370,15 @@ function generate_big_table() {
 function generate_reference() {
 	var reference = document.getElementById('reference');
 	reference.innerHTML = '';
+
 	for (var mnemo of Object.keys(cpu_data[cpu].operations).sort()) {
+		var div = document.createElement("div");
+		var num_rows = 0;
+
 		// heading
 		var h2, table, tr, td, th, p;
 		h2 = document.createElement("h2");
-		reference.appendChild(h2);
+		div.appendChild(h2);
 		var title = mnemo;
 		if (cpu_data[cpu].mnemos[mnemo]) {
 			title += ' - ' + cpu_data[cpu].mnemos[mnemo].description;
@@ -373,12 +387,12 @@ function generate_reference() {
 
 		// description
 		p = document.createElement("p");
-		reference.appendChild(p);
+		div.appendChild(p);
 		p.innerHTML = cpu_data[cpu].operations[mnemo].description;
 
 		// flags
 		table = document.createElement("table");
-		reference.appendChild(table);
+		div.appendChild(table);
 		table.border = 1;
 		tr = document.createElement("tr");
 		table.appendChild(tr);
@@ -408,7 +422,7 @@ function generate_reference() {
 		// addressing mode table
 		table = document.createElement("table");
 		table.border = 1;
-		reference.appendChild(table);
+		div.appendChild(table);
 		tr = document.createElement("tr");
 		table.appendChild(tr);
 		for (var title of ['Addressing Mode', 'Assembly Language Form', 'Opcode', 'No. Bytes', 'No. Cycles']) {
@@ -419,7 +433,9 @@ function generate_reference() {
 		var notes = [];
 		for (var addmode of Object.keys(cpu_data[cpu].addmodes)) {
 			var opcode = opcode_for_mnemo_and_addmode(mnemo, addmode);
-			if (opcode != null) {
+			if (opcode != null && (showillegal || !cpu_data[cpu].opcodes[opcode].illegal)) {
+				num_rows++;
+
 				tr = document.createElement("tr");
 				table.appendChild(tr);
 				td = document.createElement("td");
@@ -461,7 +477,7 @@ function generate_reference() {
 		var i = 1;
 		for (var note of notes) {
 			p = document.createElement("p");
-			reference.appendChild(p);
+			div.appendChild(p);
 			switch (note) {
 				case 'branch':
 					p.innerHTML = '<sup>' + i + '</sup>Add 1 if branch is taken.'
@@ -471,6 +487,15 @@ function generate_reference() {
 			}
 			i++;
 		}
+
+		// if there were no opcodes, don't add the div
+		// this happens if
+		// * all opcodes were illegal and illegals were disabled
+		// * the mnemo was inherited, and the current CPU doesn't have it
+		if (num_rows) {
+			reference.appendChild(div);
+		}
+
 	}
 }
 // TODO:
