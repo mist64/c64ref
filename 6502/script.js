@@ -8,6 +8,7 @@ const cpus = [
 var files_loaded = 0;
 var file_data = {};
 var opcodes = [];
+var mnemos = {};
 var operations = {};
 var addmodes = {};
 
@@ -19,7 +20,7 @@ function init() {
 	var files_to_load = [];
 	for (var i = 0; i < cpus.length; i++) {
 		var cpu = cpus[i];
-		for (var type of ['opcodes', 'operations', 'addmodes', 'timing']) {
+		for (var type of ['opcodes', 'operations', 'mnemos', 'addmodes', 'timing']) {
 			files_to_load.push({
 				cpu: cpu,
 				type: type,
@@ -41,6 +42,7 @@ function init() {
 					var cpu = '6502ill';
 					decode_opcodes(cpu);
 					decode_operations(cpu);
+					decode_mnemos(cpu);
 					decode_addmodes(cpu);
 					decode_timing(cpu);
 					show();
@@ -101,6 +103,16 @@ function decode_operations(cpu) {
 		operations[mnemo].flags = line[1];
 		operations[mnemo].type = line[2];
 		operations[mnemo].description = line.slice(3).join(' ');
+	}
+}
+
+function decode_mnemos(cpu) {
+	text = file_data[filename_for_cpu_and_type(cpu, 'mnemos')];
+	text = decode_text(text);
+	for (var line of text) {
+		var mnemo = line[0];
+		mnemos[mnemo] = {};
+		mnemos[mnemo].description = line.slice(1).join(' ');
 	}
 }
 
@@ -191,13 +203,48 @@ function generate_opcode_table() {
 }
 
 function generate_reference() {
+	console.log(mnemos);
 	var reference = document.getElementById('reference');
-	var mnemos = Object.keys(operations).sort();
-	for (var mnemo of mnemos) {
-		var h2, table, tr, td, th;
+	for (var mnemo of Object.keys(operations).sort()) {
+		// heading
+		var h2, table, tr, td, th, p;
 		h2 = document.createElement("h2");
 		reference.appendChild(h2);
-		h2.innerHTML = mnemo;
+		var title = mnemo;
+		if (mnemos[mnemo]) {
+			title += ' - ' + mnemos[mnemo].description;
+		}
+		h2.innerHTML =  title;
+
+		// description
+		p = document.createElement("p");
+		reference.appendChild(p);
+		p.innerHTML = operations[mnemo].description;
+
+		// flags
+		table = document.createElement("table");
+		reference.appendChild(table);
+		table.border = 1;
+		tr = document.createElement("tr");
+		table.appendChild(tr);
+		for (var title of ['N', 'V', '#', 'B', 'D', 'I', 'Z', 'C']) {
+			th = document.createElement("th");
+			tr.appendChild(th);
+			th.innerHTML = title;
+		}
+		tr = document.createElement("tr");
+		table.appendChild(tr);
+		for (var i = 0; i < 8; i++) {
+			td = document.createElement("td");
+			tr.appendChild(td);
+			if (operations[mnemo].flags.substring(i, i+1) == '*') {
+				td.innerHTML = '&#10003;';
+			} else {
+				td.innerHTML = '-';
+			}
+		}
+
+		// addressing mode table
 		table = document.createElement("table");
 		table.border = 1;
 		reference.appendChild(table);
@@ -240,6 +287,7 @@ function generate_reference() {
 				}
 			}
 		}
+
 		// note
 		if (needs_note) {
 			p = document.createElement("p");
