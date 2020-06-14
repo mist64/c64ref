@@ -1,0 +1,43 @@
+.basedon cpu_6502_mnemos.txt
+BBR0  Branch on Bit 0 Reset
+BBR1  Branch on Bit 1 Reset
+BBR2  Branch on Bit 2 Reset
+BBR3  Branch on Bit 3 Reset
+BBR4  Branch on Bit 4 Reset
+BBR5  Branch on Bit 5 Reset
+BBR6  Branch on Bit 6 Reset
+BBR7  Branch on Bit 7 Reset
+BBS0  Branch on Bit 0 Set
+BBS1  Branch on Bit 1 Set
+BBS2  Branch on Bit 2 Set
+BBS3  Branch on Bit 3 Set
+BBS4  Branch on Bit 4 Set
+BBS5  Branch on Bit 5 Set
+BBS6  Branch on Bit 6 Set
+BBS7  Branch on Bit 7 Set
+BRA   Branch
+PHX   Push X Register
+PHY   Push Y Register
+PLX   Pull X Register
+PLY   Pull Y Register
+RMB0  Reset Memory Bit 0
+RMB1  Reset Memory Bit 1
+RMB2  Reset Memory Bit 2
+RMB3  Reset Memory Bit 3
+RMB4  Reset Memory Bit 4
+RMB5  Reset Memory Bit 5
+RMB6  Reset Memory Bit 6
+RMB7  Reset Memory Bit 7
+SMB0  Set Memory Bit 0
+SMB1  Set Memory Bit 1
+SMB2  Set Memory Bit 2
+SMB3  Set Memory Bit 3
+SMB4  Set Memory Bit 4
+SMB5  Set Memory Bit 5
+SMB6  Set Memory Bit 6
+SMB7  Set Memory Bit 7
+STP   Stop
+STZ   Store Zero
+TRB   Test and Reset Memory Bits
+TSB   Test and Set Memory Bits
+WAI   Wait for Interrupt

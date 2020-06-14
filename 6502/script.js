@@ -3,6 +3,7 @@ window.onload = init;
 const cpus = [
 	'6502',
 	'6502ill',
+	'65c02',
 	'65ce02',
 ]
 
@@ -115,8 +116,13 @@ function decode_mnemos(cpu) {
 	cpu_data[cpu].mnemos = {};
 	for (var line of text) {
 		var mnemo = line[0];
-		cpu_data[cpu].mnemos[mnemo] = {};
-		cpu_data[cpu].mnemos[mnemo].description = line.slice(1).join(' ');
+		var description = line.slice(1).join(' ');
+		if (description) {
+			cpu_data[cpu].mnemos[mnemo] = {};
+			cpu_data[cpu].mnemos[mnemo].description = description;
+		} else {
+			delete cpu_data[cpu].mnemos[mnemo];
+		}
 	}
 }
 
@@ -165,10 +171,7 @@ function opcode_for_mnemo_and_addmode(mnemo, addmode) {
 }
 
 function show() {
-//	console.log(cpu_data[cpu].opcodes);
-//	console.log(cpu_data[cpu].operations);
-//	console.log(cpu_data[cpu].mnemos);
-//	console.log(cpu_data[cpu].addmodes);
+	console.log(cpu_data);
 
 	cpu = document.getElementById('cpu').value;
 

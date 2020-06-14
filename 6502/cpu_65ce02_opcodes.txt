@@ -1,106 +1,56 @@
-.basedon cpu_6502_opcodes.txt
+.basedon cpu_65c02_opcodes.txt
 02  CLE
 03  SEE
-04  TSB   a8
-07  RMB0  a8
 0B  TSY
-0C  TSB   a16
-0F  BBR0  a8,r8
 12  ORA   (a8),Z
 13  BPL   r16
-14  TRB   a8
-17  RMB1  a8
-1A  INC   A
 1B  INZ
-1C  TRB   a16
-1F  BBR1  a8,r8
 22  JSR   (a16)
 23  JSR   (a16,X)
-27  RMB2  a8
 2B  TYS
-2F  BBR2  a8,r8
 32  AND   (a8),Z
 33  BMI   r16
-34  BIT   a8,X
-37  RMB3  a8
-3A  DEC   A
 3B  DEZ
-3C  BIT   a16,X
-3F  BBR3  a8,r8
 42  NEG   A
 43  ASR   A
 44  ASR   a8
-47  RMB4  a8
 4B  TAZ
-4F  BBR4  a8,r8
 52  EOR   (a8),Z
 53  BVC   r16
 54  ASR   a8,X
-57  RMB5  a8
-5A  PHY
 5B  TAB
 5C  AUG
-5F  BBR5  a8,r8
 62  RTN   #d8
 63  BSR   r16
 64  STZ   a8
-67  RMB6  a8
 6B  TZA
-6F  BBR6  a8,r8
 72  ADC   (a8),Z
 73  BVS   r16
-74  STZ   a8,X
-77  RMB7  a8
-7A  PLY
 7B  TBA
-7C  JMP   (a16,X)
-7F  BBR7  a8,r8
-80  BRA   r8
 82  STA   (r8,SP),Y
 83  BRA   r16
-87  SMB0  a8
-89  BIT   #d8
 8B  STY   a16,X
-8F  BBS0  a8,r8
 92  STA   (a8),Z
 93  BCC   r16
-97  SMB1  a8
 9B  STX   a16,Y
-9C  STZ   a16
-9E  STZ   a16,X
-9F  BBS1  a8,r8
 A3  LDZ   #d8
-A7  SMB2  a8
 AB  LDZ   a16
-AF  BBS2  a8,r8
 B2  LDA   (a8),Z
 B3  BCS   r16
-B7  SMB3  a8
 BB  LDZ   a16,X
-BF  BBS3  a8,r8
 C2  CPZ   #d8
 C3  DEW   a8
-C7  SMB4  a8
 CB  ASW   a16
-CF  BBS4  a8,r8
 D2  CMP   (a8),Z
 D3  BNE   r16
 D4  CPZ   a8
-D7  SMB5  a8
-DA  PHX
 DB  PHZ
 DC  CPZ   a16
-DF  BBS5  a8,r8
 E2  LDA   (r8,SP),Y
 E3  INW   a8
-E7  SMB6  a8
 EB  ROW   a16
-EF  BBS6  a8,r8
 F2  SBC   (a8),Z
 F3  BEQ   r16
 F4  PHW   #d16
-F7  SMB7  a8
-FA  PLX
 FB  PLZ
 FC  PHW   a16
-FF  BBS7  a8,r8

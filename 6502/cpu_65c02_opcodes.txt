@@ -1,0 +1,62 @@
+.basedon cpu_6502_opcodes.txt
+
+04  TSB   a8
+07  RMB0  a8
+0C  TSB   a16
+0F  BBR0  a8,r8
+12  ORA   (a8)
+14  TRB   a8
+17  RMB1  a8
+1A  INC   A
+1C  TRB   a16
+1F  BBR1  a8,r8
+27  RMB2  a8
+2F  BBR2  a8,r8
+32  AND   (a8)
+34  BIT   a8,X
+37  RMB3  a8
+3A  DEC   A
+3C  BIT   a16,X
+3F  BBR3  a8,r8
+47  RMB4  a8
+4F  BBR4  a8,r8
+52  EOR   (a8)
+57  RMB5  a8
+5A  PHY
+5F  BBR5  a8,r8
+67  RMB6  a8
+6F  BBR6  a8,r8
+72  ADC   (a8)
+74  STZ   a8,X
+77  RMB7  a8
+7A  PLY
+7C  JMP   (a16,X)
+7F  BBR7  a8,r8
+80  BRA   r8
+87  SMB0  a8
+89  BIT   #d8
+8F  BBS0  a8,r8
+92  STA   (a8)
+97  SMB1  a8
+9C  STZ   a16
+9E  STZ   a16,X
+9F  BBS1  a8,r8
+A7  SMB2  a8
+AF  BBS2  a8,r8
+B2  LDA   (a8)
+B7  SMB3  a8
+BF  BBS3  a8,r8
+C7  SMB4  a8
+CB  WAI
+CF  BBS4  a8,r8
+D2  CMP   (a8)
+D7  SMB5  a8
+DA  PHX
+DB  STP
+DF  BBS5  a8,r8
+E7  SMB6  a8
+EF  BBS6  a8,r8
+F2  SBC   (a8)
+F7  SMB7  a8
+FA  PLX
+FF  BBS7  a8,r8
