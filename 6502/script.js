@@ -239,10 +239,16 @@ function generate_reference() {
 		for (var i = 0; i < 8; i++) {
 			td = document.createElement("td");
 			tr.appendChild(td);
-			if (operations[mnemo].flags.substring(i, i+1) != '-') {
-				td.innerHTML = '&#10003;';
-			} else {
-				td.innerHTML = '-';
+			var flag = operations[mnemo].flags[i];
+			switch (flag) {
+				case '-':
+				case '0':
+				case '1':
+					td.innerHTML = flag;
+					break;
+				default:
+					td.innerHTML = '&#10003;';
+					break;
 			}
 		}
 
