@@ -1,1 +1,1 @@
-.basedon pu_6502_addmodes.txt
+.basedon cpu_6502_addmodes.txt

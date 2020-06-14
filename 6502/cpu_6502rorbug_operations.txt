@@ -1,1 +1,2 @@
 .basedon cpu_6502_operations.txt
+ASL0 shift  N-----Z-  C ← /7...0/ ← 0
