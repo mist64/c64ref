@@ -7,7 +7,7 @@
 0A   ASL
 0D   ORA  a16
 0E   ASL  a16
-10   BPL  rel
+10   BPL  r8
 11   ORA  (a8,X)
 15   ORA  a8,X
 16   ASL  a8,X
@@ -26,7 +26,7 @@
 2C   BIT  a16
 2D   AND  a16
 2E   ROL  a16
-30   BMI  rel
+30   BMI  r8
 31   AND  (a8,X)
 35   AND  a8,X
 36   ROL  a8,X
@@ -44,7 +44,7 @@
 4C   JMP  a16
 4D   EOR  a16
 4E   LSR  a16
-50   BVC  rel
+50   BVC  r8
 51   EOR  (a8,X)
 55   EOR  a8,X
 56   LSR  a8,X
@@ -62,7 +62,7 @@
 6C   JMP  (a16)
 6D   ADC  a16
 6E   ROR  a16
-70   BVS  rel
+70   BVS  r8
 71   ADC  (a8,X)
 75   ADC  a8,X
 76   ROR  a8,X
@@ -79,7 +79,7 @@
 8C   STY  a16
 8D   STA  a16
 8E   STX  a16
-90   BCC  rel
+90   BCC  r8
 91   STA  (a8,X)
 94   STY  a8,X
 95   STA  a8,X
@@ -100,7 +100,7 @@ AA   TAX
 AC   LDY  a16
 AD   LDA  a16
 AE   LDX  a16
-B0   BCS  rel
+B0   BCS  r8
 B1   LDA  (a8,X)
 B4   LDY  a8,X
 B5   LDA  a8,X
@@ -122,7 +122,7 @@ CA   DEX
 CC   CPY  a16
 CD   CMP  a16
 CE   DEC  a16
-D0   BNE  rel
+D0   BNE  r8
 D1   CMP  (a8,X)
 D5   CMP  a8,X
 D6   DEC  a8,X
@@ -141,7 +141,7 @@ EA   NOP
 EC   CPX  a16
 ED   SBC  a16
 EE   INC  a16
-F0   BEQ  rel
+F0   BEQ  r8
 F1   SBC  (a8,X)
 F5   SBC  a8,X
 F6   INC  a8,X

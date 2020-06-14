@@ -1,12 +1,12 @@
-imp    1  -        Implied
-#d8    2  #$nn     immediate
+-      1  -        Implied
+#d8    2  #$nn     Immediate
 a8     2  $nn      Zero Page
 a8,X   2  $nn,X    X-indexed Zero Page
 a8,Y   2  $nn,Y    Y-indexed Zero Page
 (a8,X) 2  ($nn,X)  X-indexed Indirect
 (a8),Y 2  ($nn),Y  Indirect Y-Indexed
-abs    3  $nnnn    Absolute
+a16    3  $nnnn    Absolute
 a16,X  3  $nnnn,X  X-indexed Absolute
 a16,Y  3  $nnnn,Y  Y-indexed Absolute
 (a16)  3  ($nnnn)  Indirect
-rel    2  $nnnn    Relative
+r8     2  $nnnn    Relative

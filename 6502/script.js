@@ -3,6 +3,7 @@ window.onload = init;
 const cpus = [
 	'6502',
 	'6502ill',
+	'65ce02',
 ]
 
 var files_loaded = 0;
@@ -39,7 +40,8 @@ function init() {
 				files_loaded++;
 				if (files_loaded == files_to_load.length) {
 //					var cpu = '6502';
-					var cpu = '6502ill';
+//					var cpu = '6502ill';
+					var cpu = '65ce02';
 					decode_opcodes(cpu);
 					decode_operations(cpu);
 					decode_mnemos(cpu);
@@ -90,7 +92,7 @@ function decode_opcodes(cpu) {
 			opcodes[o].illegal = true;
 		}
 		opcodes[o].mnemo = mnemo;
-		opcodes[o].addmode = line[2] ? line[2] : '';
+		opcodes[o].addmode = line[2] ? line[2] : '-';
 	}
 }
 function decode_operations(cpu) {
@@ -125,7 +127,7 @@ function decode_addmodes(cpu) {
 		addmodes[addmode] = {};
 		addmodes[addmode].bytes = parseInt(line[1]);
 		addmodes[addmode].syntax = line[2] != '-' ? line[2] : '';
-		addmodes[addmode].description = line[3];
+		addmodes[addmode].description = line.slice(3).join(' ');
 	}
 }
 
@@ -160,9 +162,10 @@ function opcode_for_mnemo_and_addmode(mnemo, addmode) {
 }
 
 function show() {
-//	console.log(opcodes);
-//	console.log(operations);
-//	console.log(addmodes);
+	console.log(opcodes);
+	console.log(operations);
+	console.log(mnemos);
+	console.log(addmodes);
 	generate_opcode_table();
 	generate_reference();
 }
@@ -185,7 +188,7 @@ function generate_opcode_table() {
 					td.className += ' ill';
 				}
 				var cell = opcodes[o].mnemo + '</br>';
-				if (opcodes[o].addmode != 'imp') {
+				if (opcodes[o].addmode != '-') {
 					cell += opcodes[o].addmode + ' ';
 				}
 				if (opcodes[o].cycles) {
@@ -203,7 +206,6 @@ function generate_opcode_table() {
 }
 
 function generate_reference() {
-	console.log(mnemos);
 	var reference = document.getElementById('reference');
 	for (var mnemo of Object.keys(operations).sort()) {
 		// heading
@@ -237,7 +239,7 @@ function generate_reference() {
 		for (var i = 0; i < 8; i++) {
 			td = document.createElement("td");
 			tr.appendChild(td);
-			if (operations[mnemo].flags.substring(i, i+1) == '*') {
+			if (operations[mnemo].flags.substring(i, i+1) != '-') {
 				td.innerHTML = '&#10003;';
 			} else {
 				td.innerHTML = '-';
@@ -263,6 +265,7 @@ function generate_reference() {
 				table.appendChild(tr);
 				td = document.createElement("td");
 				tr.appendChild(td);
+//				console.log(addmodes[addmode].description);
 				td.innerHTML = addmodes[addmode].description;
 				td = document.createElement("td");
 				tr.appendChild(td);
