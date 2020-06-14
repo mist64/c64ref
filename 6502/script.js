@@ -6,12 +6,11 @@ const cpus = [
 	'65ce02',
 ]
 
+var cpu_data = {};
+
 var files_loaded = 0;
 var file_data = {};
-var opcodes = [];
-var mnemos = {};
-var operations = {};
-var addmodes = {};
+var cpu;
 
 function filename_for_cpu_and_type(cpu, type) {
 	return 'cpu_' + cpu + '_' + type + '.txt';
@@ -39,14 +38,14 @@ function init() {
 				file_data[r.file_to_load.filename] = r.responseText;
 				files_loaded++;
 				if (files_loaded == files_to_load.length) {
-//					var cpu = '6502';
-//					var cpu = '6502ill';
-					var cpu = '65ce02';
-					decode_opcodes(cpu);
-					decode_operations(cpu);
-					decode_mnemos(cpu);
-					decode_addmodes(cpu);
-					decode_timing(cpu);
+					for (var cpu of cpus) {
+						cpu_data[cpu] = {};
+						decode_opcodes(cpu);
+						decode_operations(cpu);
+						decode_mnemos(cpu);
+						decode_addmodes(cpu);
+						decode_timing(cpu);
+					}
 					show();
 				}
 			} else {
@@ -79,55 +78,59 @@ function decode_text(text) {
 function decode_opcodes(cpu) {
 	text = file_data[filename_for_cpu_and_type(cpu, 'opcodes')];
 	text = decode_text(text);
+	cpu_data[cpu].opcodes = [];
 	for (var i = 0; i <= 255; i++) {
-		opcodes[i] = {};
+		cpu_data[cpu].opcodes[i] = {};
 	}
 	for (var i = 0; i < text.length; i++) {
 		var line = text[i];
 		var o = parseInt(line[0], 16);
 		var mnemo = line[1];
-		opcodes[o].illegal = false;
+		cpu_data[cpu].opcodes[o].illegal = false;
 		if (mnemo.startsWith('*')) {
 			mnemo = mnemo.substring(1);
-			opcodes[o].illegal = true;
+			cpu_data[cpu].opcodes[o].illegal = true;
 		}
-		opcodes[o].mnemo = mnemo;
-		opcodes[o].addmode = line[2] ? line[2] : '-';
+		cpu_data[cpu].opcodes[o].mnemo = mnemo;
+		cpu_data[cpu].opcodes[o].addmode = line[2] ? line[2] : '-';
 	}
 }
 function decode_operations(cpu) {
 	text = file_data[filename_for_cpu_and_type(cpu, 'operations')];
 	text = decode_text(text);
+	cpu_data[cpu].operations = {};
 	for (var i = 0; i < text.length; i++) {
 		var line = text[i];
 		var mnemo = line[0];
-		operations[mnemo] = {};
-		operations[mnemo].type = line[1];
-		operations[mnemo].flags = line[2];
-		operations[mnemo].description = line.slice(3).join(' ');
+		cpu_data[cpu].operations[mnemo] = {};
+		cpu_data[cpu].operations[mnemo].type = line[1];
+		cpu_data[cpu].operations[mnemo].flags = line[2];
+		cpu_data[cpu].operations[mnemo].description = line.slice(3).join(' ');
 	}
 }
 
 function decode_mnemos(cpu) {
 	text = file_data[filename_for_cpu_and_type(cpu, 'mnemos')];
 	text = decode_text(text);
+	cpu_data[cpu].mnemos = {};
 	for (var line of text) {
 		var mnemo = line[0];
-		mnemos[mnemo] = {};
-		mnemos[mnemo].description = line.slice(1).join(' ');
+		cpu_data[cpu].mnemos[mnemo] = {};
+		cpu_data[cpu].mnemos[mnemo].description = line.slice(1).join(' ');
 	}
 }
 
 function decode_addmodes(cpu) {
 	text = file_data[filename_for_cpu_and_type(cpu, 'addmodes')];
 	text = decode_text(text);
+	cpu_data[cpu].addmodes = {};
 	for (var i = 0; i < text.length; i++) {
 		var line = text[i];
 		var addmode = line[0];
-		addmodes[addmode] = {};
-		addmodes[addmode].bytes = parseInt(line[1]);
-		addmodes[addmode].syntax = line[2] != '-' ? line[2] : '';
-		addmodes[addmode].description = line.slice(3).join(' ');
+		cpu_data[cpu].addmodes[addmode] = {};
+		cpu_data[cpu].addmodes[addmode].bytes = parseInt(line[1]);
+		cpu_data[cpu].addmodes[addmode].syntax = line[2] != '-' ? line[2] : '';
+		cpu_data[cpu].addmodes[addmode].description = line.slice(3).join(' ');
 	}
 }
 
@@ -138,23 +141,23 @@ function decode_timing(cpu) {
 		var line = text[i];
 		var o = parseInt(line[0], 16);
 		var cycles = line[1];
-		opcodes[o].extracycle = false;
+		cpu_data[cpu].opcodes[o].extracycle = false;
 		if (cycles == 'X') {
 			cycles = null;
 		} else {
 			if (cycles.endsWith('*')) {
-				opcodes[o].extracycle = true;
+				cpu_data[cpu].opcodes[o].extracycle = true;
 				cycles = cycles.substring(0, cycles.length - 1);
 			}
 			cycles = parseInt(cycles);
 		}
-		opcodes[o].cycles = cycles;
+		cpu_data[cpu].opcodes[o].cycles = cycles;
 	}
 }
 
 function opcode_for_mnemo_and_addmode(mnemo, addmode) {
 	for (var i = 0; i <= 255; i++) {
-		if (opcodes[i].mnemo == mnemo && opcodes[i].addmode == addmode) {
+		if (cpu_data[cpu].opcodes[i].mnemo == mnemo && cpu_data[cpu].opcodes[i].addmode == addmode) {
 			return i;
 		}
 	}
@@ -162,16 +165,20 @@ function opcode_for_mnemo_and_addmode(mnemo, addmode) {
 }
 
 function show() {
-	console.log(opcodes);
-	console.log(operations);
-	console.log(mnemos);
-	console.log(addmodes);
+//	console.log(cpu_data[cpu].opcodes);
+//	console.log(cpu_data[cpu].operations);
+//	console.log(cpu_data[cpu].mnemos);
+//	console.log(cpu_data[cpu].addmodes);
+
+	cpu = document.getElementById('cpu').value;
+
 	generate_opcode_table();
 	generate_reference();
 }
 
 function generate_opcode_table() {
 	var opcode_table = document.getElementById('opcode_table');
+	opcode_table.innerHTML = '';
 	for (var y = 0; y < 16; y++) {
 		var tr = document.createElement("tr");
 		opcode_table.appendChild(tr);
@@ -180,21 +187,21 @@ function generate_opcode_table() {
 			tr.appendChild(td);
 			td.className = 'opcodecell';
 			var o = y << 4 | x;
-			var opcode = opcodes[o];
+			var opcode = cpu_data[cpu].opcodes[o];
 
 			if (opcode.mnemo) {
-				td.className += ' ' + operations[opcode.mnemo].type;
+				td.className += ' ' + cpu_data[cpu].operations[opcode.mnemo].type;
 				if (opcode.illegal) {
 					td.className += ' ill';
 				}
-				var cell = opcodes[o].mnemo + '</br>';
-				if (opcodes[o].addmode != '-') {
-					cell += opcodes[o].addmode + ' ';
+				var cell = cpu_data[cpu].opcodes[o].mnemo + '</br>';
+				if (cpu_data[cpu].opcodes[o].addmode != '-') {
+					cell += cpu_data[cpu].opcodes[o].addmode + ' ';
 				}
-				if (opcodes[o].cycles) {
-					cell += opcodes[o].cycles;
+				if (cpu_data[cpu].opcodes[o].cycles) {
+					cell += cpu_data[cpu].opcodes[o].cycles;
 				}
-				if (opcodes[o].extracycle) {
+				if (cpu_data[cpu].opcodes[o].extracycle) {
 					cell += '*';
 				}
 				td.innerHTML = cell;
@@ -207,21 +214,22 @@ function generate_opcode_table() {
 
 function generate_reference() {
 	var reference = document.getElementById('reference');
-	for (var mnemo of Object.keys(operations).sort()) {
+	reference.innerHTML = '';
+	for (var mnemo of Object.keys(cpu_data[cpu].operations).sort()) {
 		// heading
 		var h2, table, tr, td, th, p;
 		h2 = document.createElement("h2");
 		reference.appendChild(h2);
 		var title = mnemo;
-		if (mnemos[mnemo]) {
-			title += ' - ' + mnemos[mnemo].description;
+		if (cpu_data[cpu].mnemos[mnemo]) {
+			title += ' - ' + cpu_data[cpu].mnemos[mnemo].description;
 		}
 		h2.innerHTML =  title;
 
 		// description
 		p = document.createElement("p");
 		reference.appendChild(p);
-		p.innerHTML = operations[mnemo].description;
+		p.innerHTML = cpu_data[cpu].operations[mnemo].description;
 
 		// flags
 		table = document.createElement("table");
@@ -239,7 +247,7 @@ function generate_reference() {
 		for (var i = 0; i < 8; i++) {
 			td = document.createElement("td");
 			tr.appendChild(td);
-			var flag = operations[mnemo].flags[i];
+			var flag = cpu_data[cpu].operations[mnemo].flags[i];
 			switch (flag) {
 				case '-':
 				case '0':
@@ -264,33 +272,33 @@ function generate_reference() {
 			th.innerHTML = title;
 		}
 		var needs_note = null;
-		for (var addmode of Object.keys(addmodes)) {
+		for (var addmode of Object.keys(cpu_data[cpu].addmodes)) {
 			var opcode = opcode_for_mnemo_and_addmode(mnemo, addmode);
 			if (opcode != null) {
 				tr = document.createElement("tr");
 				table.appendChild(tr);
 				td = document.createElement("td");
 				tr.appendChild(td);
-//				console.log(addmodes[addmode].description);
-				td.innerHTML = addmodes[addmode].description;
+//				console.log(cpu_data[cpu].addmodes[addmode].description);
+				td.innerHTML = cpu_data[cpu].addmodes[addmode].description;
 				td = document.createElement("td");
 				tr.appendChild(td);
-				td.innerHTML = mnemo + ' ' + addmodes[addmode].syntax;
+				td.innerHTML = mnemo + ' ' + cpu_data[cpu].addmodes[addmode].syntax;
 				td = document.createElement("td");
 				tr.appendChild(td);
 				td.innerHTML = '$' + opcode.toString(16).toUpperCase();
 				td = document.createElement("td");
 				tr.appendChild(td);
-				td.innerHTML = addmodes[addmode].bytes;
+				td.innerHTML = cpu_data[cpu].addmodes[addmode].bytes;
 				td = document.createElement("td");
 				tr.appendChild(td);
-				var cycles = opcodes[opcode].cycles;
+				var cycles = cpu_data[cpu].opcodes[opcode].cycles;
 				if (cycles == null) {
 					td.innerHTML = '&infin;';
 				} else {
-					if (opcodes[opcode].extracycle) {
+					if (cpu_data[cpu].opcodes[opcode].extracycle) {
 						cycles += '*';
-						needs_note = operations[mnemo].type;
+						needs_note = cpu_data[cpu].operations[mnemo].type;
 					}
 					td.innerHTML = cycles;
 				}

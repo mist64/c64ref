@@ -18,7 +18,7 @@ h2 {
 .opcodecell {
 	height: 40px;
 	width: 40px;
-	font-size: 8pt;
+	font-size: 7.5pt;
 	font-family: monospace;
 }
 .ill {
@@ -93,6 +93,15 @@ h2 {
 	<div class="main">
 	<h1>6502 CPU Reference</h1>
 	<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>.</i></p>
+
+	<p>
+		<label for="cpu">CPU</label>
+		<select name="cpu" id="cpu" onChange="show();">
+			<option value="6502">MOS 6502</option>
+			<option value="6502ill">MOS 6502 (+illegal)</option>
+			<option value="65ce02">CSG 65CE02</option>
+		</select>
+	</p>
 
 	<table id="opcode_table">
 	</table>
