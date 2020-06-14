@@ -183,11 +183,12 @@ function opcode_for_mnemo_and_addmode(mnemo, addmode) {
 }
 
 function show() {
-	console.log(cpu_data);
+//	console.log(cpu_data);
 
 	cpu = document.getElementById('cpu').value;
 
 	generate_opcode_table();
+	generate_big_table();
 	generate_reference();
 }
 
@@ -222,6 +223,99 @@ function generate_opcode_table() {
 				td.innerHTML = cell;
 			} else {
 				td.className += ' undefined';
+			}
+		}
+	}
+}
+
+const all_sorted_addmodes = [
+	'#d8',
+	'#d16',
+	'a16',
+	'a8',
+	'A',
+	'-',
+	'(a16,X)',
+	'(a8),Y',
+	'(a8)',
+	'(a8),Z',
+	'(r8,SP),Y',
+	'a8,X',
+	'a8,Y',
+	'a16,X',
+	'a16,Y',
+	'r8',
+	'r16',
+	'(a16)',
+	'a8,r8',
+	'(a8,X)',
+];
+
+function hex16(a) {
+	return ('0' + a.toString(16).toUpperCase()).slice(-2);
+}
+
+function generate_big_table() {
+	var big_table = document.getElementById('big_table');
+	big_table.innerHTML = '';
+
+	tr = document.createElement("tr");
+	big_table.appendChild(tr);
+
+	var addmodes = [];
+	for (var addmode of all_sorted_addmodes) {
+		if (Object.keys(cpu_data[cpu].addmodes).includes(addmode)) {
+			addmodes.push(addmode);
+		}
+	}
+
+	for (var title of ['Mnemonic', 'Operation']) {
+		th = document.createElement("th");
+		tr.appendChild(th);
+		th.innerHTML = title;
+	}
+	for (var addmode of addmodes) {
+		th = document.createElement("th");
+		tr.appendChild(th);
+		th.innerHTML = cpu_data[cpu].addmodes[addmode].syntax;
+	}
+
+	for (var mnemo of Object.keys(cpu_data[cpu].operations).sort()) {
+		var h2, table, tr, td, th, p;
+
+		tr = document.createElement("tr");
+		big_table.appendChild(tr);
+
+		td = document.createElement("td");
+		tr.appendChild(td);
+		td.innerHTML = mnemo;
+
+		td = document.createElement("td");
+		tr.appendChild(td);
+		td.innerHTML = cpu_data[cpu].operations[mnemo].description;
+
+		for (var addmode of addmodes) {
+			td = document.createElement("td");
+			tr.appendChild(td);
+			var opcode = opcode_for_mnemo_and_addmode(mnemo, addmode);
+			if (opcode != null) {
+				td.innerHTML = hex16(opcode);
+			}
+		}
+
+		for (var i = 0; i < 8; i++) {
+			td = document.createElement("td");
+			tr.appendChild(td);
+			var flag = cpu_data[cpu].operations[mnemo].flags[i];
+			switch (flag) {
+				case '-':
+				case '0':
+				case '1':
+					td.innerHTML = flag;
+					break;
+				default:
+					td.innerHTML = 'NV#BDIZC'[i];
+					break;
 			}
 		}
 	}
@@ -300,7 +394,7 @@ function generate_reference() {
 				td.innerHTML = mnemo + ' ' + cpu_data[cpu].addmodes[addmode].syntax;
 				td = document.createElement("td");
 				tr.appendChild(td);
-				td.innerHTML = '$' + opcode.toString(16).toUpperCase();
+				td.innerHTML = '$' + hex16(opcode);
 				td = document.createElement("td");
 				tr.appendChild(td);
 				td.innerHTML = cpu_data[cpu].addmodes[addmode].bytes;
