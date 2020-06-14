@@ -1,12 +1,12 @@
-imp  -        implied
-imm  #$nn     immediate
-zp   $nn      zero page
-zpx  $nn,X    x-indexed zero page
-zpy  $nn,Y    y-indexed zero page
-izx  ($nn,X)  x-indexed indirect
-izy  ($nn),Y  indirect y-indexed
-abs  $nnnn    absolute
-abx  $nnnn,X  x-indexed absolute
-aby  $nnnn,Y  y-indexed absolute
-ind  ($nnnn)  indirect
-rel  $nnnn    relative
+imp  1  -        Implied
+imm  2  #$nn     Immediate
+zp   2  $nn      Zero Page
+zpx  2  $nn,X    X-indexed Zero Page
+zpy  2  $nn,Y    Y-indexed Zero Page
+izx  2  ($nn,X)  X-indexed Indirect
+izy  2  ($nn),Y  Indirect Y-Indexed
+abs  3  $nnnn    Absolute
+abx  3  $nnnn,X  X-indexed Absolute
+aby  3  $nnnn,Y  Y-indexed Absolute
+ind  3  ($nnnn)  Indirect
+rel  2  $nnnn    Relative

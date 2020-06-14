@@ -37,6 +37,7 @@ function init() {
 				file_data[r.file_to_load.filename] = r.responseText;
 				files_loaded++;
 				if (files_loaded == files_to_load.length) {
+//					var cpu = '6502';
 					var cpu = '6502ill';
 					decode_opcodes(cpu);
 					decode_operations(cpu);
@@ -45,7 +46,7 @@ function init() {
 					show();
 				}
 			} else {
-				file_data[r.file_to_load.filename] = undefined;
+				file_data[r.file_to_load.filename] = null;
 			}
 		}
 		r.send(null);
@@ -89,7 +90,6 @@ function decode_opcodes(cpu) {
 		opcodes[o].mnemo = mnemo;
 		opcodes[o].addmode = line[2];
 	}
-	console.log(opcodes);
 }
 function decode_operations(cpu) {
 	text = file_data[filename_for_cpu_and_type(cpu, 'operations')];
@@ -111,8 +111,9 @@ function decode_addmodes(cpu) {
 		var line = text[i];
 		var addmode = line[0];
 		addmodes[addmode] = {};
-		addmodes[addmode].syntax = line[1] != '-' ? line[1] : '';
-		addmodes[addmode].description = line[2];
+		addmodes[addmode].bytes = parseInt(line[1]);
+		addmodes[addmode].syntax = line[2] != '-' ? line[2] : '';
+		addmodes[addmode].description = line[3];
 	}
 }
 
@@ -125,7 +126,7 @@ function decode_timing(cpu) {
 		var cycles = line[1];
 		opcodes[o].extracycle = false;
 		if (cycles == 'X') {
-			cycles = undefined;
+			cycles = null;
 		} else {
 			if (cycles.endsWith('*')) {
 				opcodes[o].extracycle = true;
@@ -137,11 +138,24 @@ function decode_timing(cpu) {
 	}
 }
 
+function opcode_for_mnemo_and_addmode(mnemo, addmode) {
+	for (var i = 0; i <= 255; i++) {
+		if (opcodes[i].mnemo == mnemo && opcodes[i].addmode == addmode) {
+			return i;
+		}
+	}
+	return null;
+}
+
 function show() {
 //	console.log(opcodes);
 //	console.log(operations);
 //	console.log(addmodes);
+	generate_opcode_table();
+	generate_reference();
+}
 
+function generate_opcode_table() {
 	var opcode_table = document.getElementById('opcode_table');
 	for (var y = 0; y < 16; y++) {
 		var tr = document.createElement("tr");
@@ -154,7 +168,7 @@ function show() {
 			var opcode = opcodes[o];
 
 			if (opcode.mnemo) {
-				td.className += '  ' + operations[opcode.mnemo].type;
+				td.className += ' ' + operations[opcode.mnemo].type;
 				if (opcode.illegal) {
 					td.className += ' ill';
 				}
@@ -170,12 +184,74 @@ function show() {
 				}
 				td.innerHTML = cell;
 			} else {
-				td.innerHTML = '-';
+				td.className += ' undefined';
 			}
 		}
 	}
 }
 
+function generate_reference() {
+	var reference = document.getElementById('reference');
+	var mnemos = Object.keys(operations).sort();
+	for (var mnemo of mnemos) {
+		var h2, table, tr, td, th;
+		h2 = document.createElement("h2");
+		reference.appendChild(h2);
+		h2.innerHTML = mnemo;
+		table = document.createElement("table");
+		table.border = 1;
+		reference.appendChild(table);
+		tr = document.createElement("tr");
+		table.appendChild(tr);
+		for (var title of ['Addressing Mode', 'Assembly Language Form', 'Opcode', 'No. Bytes', 'No. Cycles']) {
+			th = document.createElement("th");
+			tr.appendChild(th);
+			th.innerHTML = title;
+		}
+		var needs_note = null;
+		for (var addmode of Object.keys(addmodes)) {
+			var opcode = opcode_for_mnemo_and_addmode(mnemo, addmode);
+			if (opcode != null) {
+				tr = document.createElement("tr");
+				table.appendChild(tr);
+				td = document.createElement("td");
+				tr.appendChild(td);
+				td.innerHTML = addmodes[addmode].description;
+				td = document.createElement("td");
+				tr.appendChild(td);
+				td.innerHTML = mnemo + ' ' + addmodes[addmode].syntax;
+				td = document.createElement("td");
+				tr.appendChild(td);
+				td.innerHTML = '$' + opcode.toString(16).toUpperCase();
+				td = document.createElement("td");
+				tr.appendChild(td);
+				td.innerHTML = addmodes[addmode].bytes;
+				td = document.createElement("td");
+				tr.appendChild(td);
+				var cycles = opcodes[opcode].cycles;
+				if (cycles == null) {
+					td.innerHTML = '&infin;';
+				} else {
+					if (opcodes[opcode].extracycle) {
+						cycles += '*';
+						needs_note = operations[mnemo].type;
+					}
+					td.innerHTML = cycles;
+				}
+			}
+		}
+		// note
+		if (needs_note) {
+			p = document.createElement("p");
+			reference.appendChild(p);
+			if (needs_note == 'branch') {
+				p.innerHTML = '*Add 1 if branch occurs to same page. Add 2 if branch occurs to different page.'
+			} else {
+				p.innerHTML = '*Add 1 when page boundary is crossed.';
+			}
+		}
+	}
+}
 // TODO:
 // * 6502 without ROR
 
