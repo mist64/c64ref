@@ -7,6 +7,3 @@ PLY   Pull Y Register
 STZ   Store Zero
 TRB   Test and Reset Memory Bits
 TSB   Test and Set Memory Bits
-
-STP   Stop
-WAI   Wait for Interrupt

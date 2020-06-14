@@ -1,0 +1,3 @@
+.basedon cpu_r65c02_mnemos.txt
+STP   Stop
+WAI   Wait for Interrupt

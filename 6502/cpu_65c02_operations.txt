@@ -7,6 +7,3 @@ PLY  stack N-----Z-
 STZ  load  --------
 TRB  logic ------Z-
 TSB  logic ------Z-
-
-STP  ctrl  --------
-WAI  ctrl  ---1----

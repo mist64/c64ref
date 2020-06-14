@@ -26,6 +26,3 @@ D2  CMP   (a8)
 DA  PHX
 F2  SBC   (a8)
 FA  PLX
-
-CB  WAI
-DB  STP

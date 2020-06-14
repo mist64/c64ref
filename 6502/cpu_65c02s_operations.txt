@@ -1,0 +1,3 @@
+.basedon cpu_r65c02_operations.txt
+STP  ctrl  --------
+WAI  ctrl  ---1----

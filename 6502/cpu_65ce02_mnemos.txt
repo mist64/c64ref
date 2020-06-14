@@ -24,6 +24,3 @@ TBA   Transfer Base Page Register to Accumulator
 TSY   Transfer Stack Pointer to Y
 TYS   Transfer Y to Stack Pointer
 TZA   Transfer Z to Accumulator
-
-STP
-WAI
