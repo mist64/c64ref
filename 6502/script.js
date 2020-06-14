@@ -277,8 +277,37 @@ function generate_big_table() {
 	for (var addmode of addmodes) {
 		th = document.createElement("th");
 		tr.appendChild(th);
+		th.colSpan = 3;
 		th.innerHTML = cpu_data[cpu].addmodes[addmode].syntax;
 	}
+	th = document.createElement("th");
+	tr.appendChild(th);
+	th.colSpan = 8;
+	th.innerHTML = 'Flags';
+
+	tr = document.createElement("tr");
+	big_table.appendChild(tr);
+	th = document.createElement("th");
+	tr.appendChild(th);
+	th = document.createElement("th");
+	tr.appendChild(th);
+	for (var addmode of addmodes) {
+		th = document.createElement("th");
+		tr.appendChild(th);
+		th.innerHTML = 'OP';
+		th = document.createElement("th");
+		tr.appendChild(th);
+		th.innerHTML = 'N';
+		th = document.createElement("th");
+		tr.appendChild(th);
+		th.innerHTML = '#';
+	}
+	for (var i = 0; i < 8; i++) {
+		th = document.createElement("th");
+		tr.appendChild(th);
+		th.innerHTML = 'NV#BDIZC'[i];
+	}
+
 
 	for (var mnemo of Object.keys(cpu_data[cpu].operations).sort()) {
 		var h2, table, tr, td, th, p;
@@ -295,11 +324,17 @@ function generate_big_table() {
 		td.innerHTML = cpu_data[cpu].operations[mnemo].description;
 
 		for (var addmode of addmodes) {
-			td = document.createElement("td");
-			tr.appendChild(td);
+			var td1 = document.createElement("td");
+			var td2 = document.createElement("td");
+			var td3 = document.createElement("td");
+			tr.appendChild(td1);
+			tr.appendChild(td2);
+			tr.appendChild(td3);
 			var opcode = opcode_for_mnemo_and_addmode(mnemo, addmode);
 			if (opcode != null) {
-				td.innerHTML = hex16(opcode);
+				td1.innerHTML = hex16(opcode);
+				td2.innerHTML = cpu_data[cpu].addmodes[addmode].bytes;
+				td3.innerHTML = cpu_data[cpu].opcodes[opcode].cycles;
 			}
 		}
 
