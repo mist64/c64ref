@@ -1,1 +1,65 @@
 .basedon cpu_6502_mnemos.txt
+ASR   Arithmetic Shift Right
+ASW   Arithmetic Shift Left Word
+AUG   Augment
+BBR0
+BBR1
+BBR2
+BBR3
+BBR4
+BBR5
+BBR6
+BBR7
+BBS0
+BBS1
+BBS2
+BBS3
+BBS4
+BBS5
+BBS6
+BBS7
+BRU
+BSR   Branch to Subroutine
+CLE   Clear Extend Disable Flag
+CPZ   Compare Z Register
+DEW   Decrement Word
+DEZ   Decrement Z Register
+INW   Increment Word
+INZ   Increment Z Register
+LDZ   Load Z Register
+NEG   Negate
+PHW   Push Word
+PHX   Push X Register
+PHY   Push Y Register
+PHZ   Push Z Register
+PLX   Pull X Register
+PLY   Pull Y Register
+PLZ   Pull Z Register
+RMB0
+RMB1
+RMB2
+RMB3
+RMB4
+RMB5
+RMB6
+RMB7
+ROW   Rotate Word
+RTN   Return from Kernal
+SEE   Set Stack Extend Disable Flag
+SMB0
+SMB1
+SMB2
+SMB3
+SMB4
+SMB5
+SMB6
+SMB7
+STZ   Store Z Register
+TAB   Transfer Accumulator to Base Page Register
+TAZ   Transfer Accumulator to Z
+TBA   Transfer Base Page Register to Accumulator
+TRB   Test and Reset Memory Bits
+TSB   Test and Set Memory Bits
+TSY   Transfer Stack Pointer to Y
+TYS   Transfer Y to Stack Pointer
+TZA   Transfer Z to Accumulator
