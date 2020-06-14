@@ -1,3 +1,4 @@
+.basedon cpu_6502_operations.txt
 AHX  --------  store  {adr}:=A&X&H
 ALR  *-----**  arith  A:=(A&#{imm})/2
 ANC  *-----**  arith  A:=A&#{imm}

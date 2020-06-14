@@ -1,3 +1,4 @@
+.basedon cpu_6502_opcodes.txt
 02  *KIL  imp  X
 03  *SLO  izx  8
 04  *NOP  zp   3
