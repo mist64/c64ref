@@ -81,14 +81,15 @@ function decode_opcodes(cpu) {
 		var line = text[i];
 		var o = parseInt(line[0], 16);
 		var mnemo = line[1];
+		opcodes[o].illegal = false;
 		if (mnemo.startsWith('*')) {
 			mnemo = mnemo.substring(1);
 			opcodes[o].illegal = true;
 		}
-		opcodes[o].illegal = false;
 		opcodes[o].mnemo = mnemo;
 		opcodes[o].addmode = line[2];
 	}
+	console.log(opcodes);
 }
 function decode_operations(cpu) {
 	text = file_data[filename_for_cpu_and_type(cpu, 'operations')];
@@ -154,6 +155,9 @@ function show() {
 
 			if (opcode.mnemo) {
 				td.className += '  ' + operations[opcode.mnemo].type;
+				if (opcode.illegal) {
+					td.className += ' ill';
+				}
 				var cell = opcodes[o].mnemo + '</br>';
 				if (opcodes[o].addmode != 'imp') {
 					cell += opcodes[o].addmode + ' ';
