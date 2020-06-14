@@ -1,5 +1,4 @@
 .basedon cpu_6502_addmodes.txt
-A         1  A             Accumulator
 #d16      3  #$nnnn        Immediate (word)
 (a8),Z    2  ($nn),Z       Indirect Y-Indexed
 (a16,X)   3  ($nnnn,X)     X-indexed Indirect (Word)
