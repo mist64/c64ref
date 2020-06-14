@@ -1,106 +1,106 @@
 .basedon cpu_6502_opcodes.txt
-02  *KIL  imp  X
-03  *SLO  izx  8
-04  *NOP  zp   3
-07  *SLO  zp   5
-0B  *ANC  imm  2
-0C  *NOP  abs  4
-0F  *SLO  abs  6
-12  *KIL  imp  X
-13  *SLO  izy  8
-14  *NOP  zpx  4
-17  *SLO  zpx  6
-1A  *NOP  imp  2
-1B  *SLO  aby  7
-1C  *NOP  abx  4*
-1F  *SLO  abx  7
-22  *KIL  imp  X
-23  *RLA  izx  8
-27  *RLA  zp   5
-2B  *ANC  imm  2
-2F  *RLA  abs  6
-32  *KIL  imp  X
-33  *RLA  izy  8
-34  *NOP  zpx  4
-37  *RLA  zpx  6
-3A  *NOP  imp  2
-3B  *RLA  aby  7
-3C  *NOP  abx  4*
-3F  *RLA  abx  7
-42  *KIL  imp  X
-43  *SRE  izx  8
-44  *NOP  zp   3
-47  *SRE  zp   5
-4B  *ALR  imm  2
-4F  *SRE  abs  6
-52  *KIL  imp  X
-53  *SRE  izy  8
-54  *NOP  zpx  4
-57  *SRE  zpx  6
-5A  *NOP  imp  2
-5B  *SRE  aby  7
-5C  *NOP  abx  4*
-5F  *SRE  abx  7
-62  *KIL  imp  X
-63  *RRA  izx  8
-64  *NOP  zp   3
-67  *RRA  zp   5
-6B  *ARR  imm  2
-6F  *RRA  abs  6
-72  *KIL  imp  X
-73  *RRA  izy  8
-74  *NOP  zpx  4
-77  *RRA  zpx  6
-7A  *NOP  imp  2
-7B  *RRA  aby  7
-7C  *NOP  abx  4*
-7F  *RRA  abx  7
-80  *NOP  imm  2
-82  *NOP  imm  2
-83  *SAX  izx  6
-87  *SAX  zp   3
-89  *NOP  imm  2
-8B  *XAA  imm  2
-8F  *SAX  abs  4
-92  *KIL  imp  X
-93  *AHX  izy  6
-97  *SAX  zpy  4
-9B  *TAS  aby  5
-9C  *SHY  abx  5
-9E  *SHX  aby  5
-9F  *AHX  aby  5
-A3  *LAX  izx  6
-A7  *LAX  zp   3
-AB  *LAX  imm  2
-AF  *LAX  abs  4
-B2  *KIL  imp  X
-B3  *LAX  izy  5*
-B7  *LAX  zpy  4
-BB  *LAS  aby  4*
-BF  *LAX  aby  4*
-C2  *NOP  imm  2
-C3  *DCP  izx  8
-C7  *DCP  zp   5
-CB  *AXS  imm  2
-CF  *DCP  abs  6
-D2  *KIL  imp  X
-D3  *DCP  izy  8
-D4  *NOP  zpx  4
-D7  *DCP  zpx  6
-DA  *NOP  imp  2
-DB  *DCP  aby  7
-DC  *NOP  abx  4*
-DF  *DCP  abx  7
-E2  *NOP  imm  2
-E3  *ISC  izx  8
-E7  *ISC  zp   5
-EB  *SBC  imm  2
-EF  *ISC  abs  6
-F2  *KIL  imp  X
-F3  *ISC  izy  8
-F4  *NOP  zpx  4
-F7  *ISC  zpx  6
-FA  *NOP  imp  2
-FB  *ISC  aby  7
-FC  *NOP  abx  4*
-FF  *ISC  abx  7
+02  *KIL  imp
+03  *SLO  izx
+04  *NOP  zp
+07  *SLO  zp
+0B  *ANC  imm
+0C  *NOP  abs
+0F  *SLO  abs
+12  *KIL  imp
+13  *SLO  izy
+14  *NOP  zpx
+17  *SLO  zpx
+1A  *NOP  imp
+1B  *SLO  aby
+1C  *NOP  abx
+1F  *SLO  abx
+22  *KIL  imp
+23  *RLA  izx
+27  *RLA  zp
+2B  *ANC  imm
+2F  *RLA  abs
+32  *KIL  imp
+33  *RLA  izy
+34  *NOP  zpx
+37  *RLA  zpx
+3A  *NOP  imp
+3B  *RLA  aby
+3C  *NOP  abx
+3F  *RLA  abx
+42  *KIL  imp
+43  *SRE  izx
+44  *NOP  zp
+47  *SRE  zp
+4B  *ALR  imm
+4F  *SRE  abs
+52  *KIL  imp
+53  *SRE  izy
+54  *NOP  zpx
+57  *SRE  zpx
+5A  *NOP  imp
+5B  *SRE  aby
+5C  *NOP  abx
+5F  *SRE  abx
+62  *KIL  imp
+63  *RRA  izx
+64  *NOP  zp
+67  *RRA  zp
+6B  *ARR  imm
+6F  *RRA  abs
+72  *KIL  imp
+73  *RRA  izy
+74  *NOP  zpx
+77  *RRA  zpx
+7A  *NOP  imp
+7B  *RRA  aby
+7C  *NOP  abx
+7F  *RRA  abx
+80  *NOP  imm
+82  *NOP  imm
+83  *SAX  izx
+87  *SAX  zp
+89  *NOP  imm
+8B  *XAA  imm
+8F  *SAX  abs
+92  *KIL  imp
+93  *AHX  izy
+97  *SAX  zpy
+9B  *TAS  aby
+9C  *SHY  abx
+9E  *SHX  aby
+9F  *AHX  aby
+A3  *LAX  izx
+A7  *LAX  zp
+AB  *LAX  imm
+AF  *LAX  abs
+B2  *KIL  imp
+B3  *LAX  izy
+B7  *LAX  zpy
+BB  *LAS  aby
+BF  *LAX  aby
+C2  *NOP  imm
+C3  *DCP  izx
+C7  *DCP  zp
+CB  *AXS  imm
+CF  *DCP  abs
+D2  *KIL  imp
+D3  *DCP  izy
+D4  *NOP  zpx
+D7  *DCP  zpx
+DA  *NOP  imp
+DB  *DCP  aby
+DC  *NOP  abx
+DF  *DCP  abx
+E2  *NOP  imm
+E3  *ISC  izx
+E7  *ISC  zp
+EB  *SBC  imm
+EF  *ISC  abs
+F2  *KIL  imp
+F3  *ISC  izy
+F4  *NOP  zpx
+F7  *ISC  zpx
+FA  *NOP  imp
+FB  *ISC  aby
+FC  *NOP  abx
+FF  *ISC  abx

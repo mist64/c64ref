@@ -19,7 +19,7 @@ function init() {
 	var files_to_load = [];
 	for (var i = 0; i < cpus.length; i++) {
 		var cpu = cpus[i];
-		for (var type of ['opcodes', 'operations', 'addmodes']) {
+		for (var type of ['opcodes', 'operations', 'addmodes', 'timing']) {
 			files_to_load.push({
 				cpu: cpu,
 				type: type,
@@ -41,6 +41,7 @@ function init() {
 					decode_opcodes(cpu);
 					decode_operations(cpu);
 					decode_addmodes(cpu);
+					decode_timing(cpu);
 					show();
 				}
 			} else {
@@ -87,18 +88,6 @@ function decode_opcodes(cpu) {
 		opcodes[o].illegal = false;
 		opcodes[o].mnemo = mnemo;
 		opcodes[o].addmode = line[2];
-		var cycles = line[3];
-		opcodes[o].extracycle = false;
-		if (cycles == 'X') {
-			cycles = undefined;
-		} else {
-			if (cycles.endsWith('*')) {
-				opcodes[o].extracycle = true;
-				cycles = cycles.substring(0, cycles.length - 1);
-			}
-			cycles = parseInt(cycles);
-		}
-		opcodes[o].cycles = cycles;
 	}
 }
 function decode_operations(cpu) {
@@ -123,6 +112,27 @@ function decode_addmodes(cpu) {
 		addmodes[addmode] = {};
 		addmodes[addmode].syntax = line[1] != '-' ? line[1] : '';
 		addmodes[addmode].description = line[2];
+	}
+}
+
+function decode_timing(cpu) {
+	text = file_data[filename_for_cpu_and_type(cpu, 'timing')];
+	text = decode_text(text);
+	for (var i = 0; i < text.length; i++) {
+		var line = text[i];
+		var o = parseInt(line[0], 16);
+		var cycles = line[1];
+		opcodes[o].extracycle = false;
+		if (cycles == 'X') {
+			cycles = undefined;
+		} else {
+			if (cycles.endsWith('*')) {
+				opcodes[o].extracycle = true;
+				cycles = cycles.substring(0, cycles.length - 1);
+			}
+			cycles = parseInt(cycles);
+		}
+		opcodes[o].cycles = cycles;
 	}
 }
 
