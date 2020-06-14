@@ -1,0 +1,4 @@
+.basedon cpu_6502_operations.txt 
+SAC  flags  --------
+SIR  flags  --------
+BRA  ctrl   --------  Branch Always

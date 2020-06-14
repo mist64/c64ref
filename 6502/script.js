@@ -3,6 +3,7 @@ window.onload = init;
 const cpus = [
 	'6502',
 	'6502rorbug',
+	'65dtv02',
 	'65c02',
 	'r65c02',
 	'65c02s',

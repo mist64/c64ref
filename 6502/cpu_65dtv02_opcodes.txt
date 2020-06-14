@@ -1,0 +1,4 @@
+.basedon cpu_6502_opcodes.txt    
+12  BRA   r8
+32  SAC   #d8
+42  SIR   #d8
