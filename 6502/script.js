@@ -173,13 +173,14 @@ function decode_timing(cpu) {
 	}
 }
 
-function opcode_for_mnemo_and_addmode(mnemo, addmode) {
+function opcodes_for_mnemo_and_addmode(mnemo, addmode) {
+	var res = [];
 	for (var i = 0; i <= 255; i++) {
 		if (cpu_data[cpu].opcodes[i].mnemo == mnemo && cpu_data[cpu].opcodes[i].addmode == addmode) {
-			return i;
+			res.push(i);
 		}
 	}
-	return null;
+	return res;
 }
 
 function show() {
@@ -337,12 +338,18 @@ function generate_big_table() {
 			tr.appendChild(td1);
 			tr.appendChild(td2);
 			tr.appendChild(td3);
-			var opcode = opcode_for_mnemo_and_addmode(mnemo, addmode);
-			if (opcode != null && (showillegal || !cpu_data[cpu].opcodes[opcode].illegal)) {
-				td1.innerHTML = hex16(opcode);
-				td2.innerHTML = cpu_data[cpu].addmodes[addmode].bytes;
-				td3.innerHTML = cpu_data[cpu].opcodes[opcode].cycles;
-				row_is_empty = false;
+			var opcodes = opcodes_for_mnemo_and_addmode(mnemo, addmode);
+			for (var opcode of opcodes) {
+				if (opcode != null && (showillegal || !cpu_data[cpu].opcodes[opcode].illegal)) {
+					var cycles = cpu_data[cpu].opcodes[opcode].cycles;
+					if (cycles == null) {
+						cycles = '&infin;';
+					}
+					td1.innerHTML += hex16(opcode) + '<br/>';
+					td2.innerHTML += cpu_data[cpu].addmodes[addmode].bytes + '<br/>';
+					td3.innerHTML += cycles + '<br/>';
+					row_is_empty = false;
+				}
 			}
 		}
 		if (!row_is_empty) {
@@ -432,43 +439,45 @@ function generate_reference() {
 		}
 		var notes = [];
 		for (var addmode of Object.keys(cpu_data[cpu].addmodes)) {
-			var opcode = opcode_for_mnemo_and_addmode(mnemo, addmode);
-			if (opcode != null && (showillegal || !cpu_data[cpu].opcodes[opcode].illegal)) {
-				num_rows++;
+			var opcodes = opcodes_for_mnemo_and_addmode(mnemo, addmode);
+			for (var opcode of opcodes) {
+				if (opcode != null && (showillegal || !cpu_data[cpu].opcodes[opcode].illegal)) {
+					num_rows++;
 
-				tr = document.createElement("tr");
-				table.appendChild(tr);
-				td = document.createElement("td");
-				tr.appendChild(td);
-				td.innerHTML = cpu_data[cpu].addmodes[addmode].description;
-				td = document.createElement("td");
-				tr.appendChild(td);
-				td.innerHTML = mnemo + ' ' + cpu_data[cpu].addmodes[addmode].syntax;
-				td = document.createElement("td");
-				tr.appendChild(td);
-				td.innerHTML = '$' + hex16(opcode);
-				td = document.createElement("td");
-				tr.appendChild(td);
-				td.innerHTML = cpu_data[cpu].addmodes[addmode].bytes;
-				td = document.createElement("td");
-				tr.appendChild(td);
-				var cycles = cpu_data[cpu].opcodes[opcode].cycles;
-				if (cycles == null) {
-					td.innerHTML = '&infin;';
-				} else {
-					var note = 1;
-					for (var extracycle of cpu_data[cpu].opcodes[opcode].extracycles) {
-						if (!notes.includes(extracycle)) {
-							notes.push(extracycle);
+					tr = document.createElement("tr");
+					table.appendChild(tr);
+					td = document.createElement("td");
+					tr.appendChild(td);
+					td.innerHTML = cpu_data[cpu].addmodes[addmode].description;
+					td = document.createElement("td");
+					tr.appendChild(td);
+					td.innerHTML = mnemo + ' ' + cpu_data[cpu].addmodes[addmode].syntax;
+					td = document.createElement("td");
+					tr.appendChild(td);
+					td.innerHTML = '$' + hex16(opcode);
+					td = document.createElement("td");
+					tr.appendChild(td);
+					td.innerHTML = cpu_data[cpu].addmodes[addmode].bytes;
+					td = document.createElement("td");
+					tr.appendChild(td);
+					var cycles = cpu_data[cpu].opcodes[opcode].cycles;
+					if (cycles == null) {
+						td.innerHTML = '&infin;';
+					} else {
+						var note = 1;
+						for (var extracycle of cpu_data[cpu].opcodes[opcode].extracycles) {
+							if (!notes.includes(extracycle)) {
+								notes.push(extracycle);
+							}
+							cycles += '<sup>'
+							if (note > 1) {
+							cycles += ','
+							}
+							cycles += note + '</sup>'
+							note++;
 						}
-						cycles += '<sup>'
-						if (note > 1) {
-						cycles += ','
-						}
-						cycles += note + '</sup>'
-						note++;
+						td.innerHTML = cycles;
 					}
-					td.innerHTML = cycles;
 				}
 			}
 		}
