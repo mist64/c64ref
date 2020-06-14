@@ -1,4 +1,4 @@
-.basedon cpu_65c02_operations.txt
+.basedon cpu_r65c02_operations.txt
 ASR  shift N-----ZC
 ASW  shift N-----ZC
 AUG  nop   --------

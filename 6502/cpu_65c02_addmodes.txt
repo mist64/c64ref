@@ -1,1 +1,3 @@
 .basedon cpu_6502_addmodes.txt
+(a8)     2  ($nn)      Zero Page Indirect
+(a16,X)  3  ($nnnn,X)  X-indexed Indirect

@@ -1,4 +1,4 @@
-.basedon cpu_65c02_mnemos.txt
+.basedon cpu_r65c02_mnemos.txt
 ASR   Arithmetic Shift Right
 ASW   Arithmetic Shift Left Word
 AUG   Augment

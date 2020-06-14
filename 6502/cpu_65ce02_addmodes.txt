@@ -1,7 +1,5 @@
-.basedon cpu_65c02_addmodes.txt
+.basedon cpu_r65c02_addmodes.txt
 #d16      3  #$nnnn        Immediate (word)
 (a8),Z    2  ($nn),Z       Indirect Y-Indexed
-(a16,X)   3  ($nnnn,X)     X-indexed Indirect (Word)
 r16       3  $nnnn         Relative (word)
-a8,r8     3  $nn,$nnnn     Zero Page, Relative
 (r8,SP),Y 2  ($nnnn,SP),Y  Stack Pointer Indirect, Y-indexed

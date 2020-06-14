@@ -1,0 +1,2 @@
+.basedon cpu_65c02_addmodes.txt
+a8,r8  3  $nn,$nnnn  Zero Page, Relative

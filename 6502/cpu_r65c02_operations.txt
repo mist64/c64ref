@@ -1,0 +1,34 @@
+.basedon cpu_65c02_operations.txt
+BBR0 ctrl  --------
+BBR1 ctrl  --------
+BBR2 ctrl  --------
+BBR3 ctrl  --------
+BBR4 ctrl  --------
+BBR5 ctrl  --------
+BBR6 ctrl  --------
+BBR7 ctrl  --------
+BBS0 ctrl  --------
+BBS1 ctrl  --------
+BBS2 ctrl  --------
+BBS3 ctrl  --------
+BBS4 ctrl  --------
+BBS5 ctrl  --------
+BBS6 ctrl  --------
+BBS7 ctrl  --------
+RMB0 ctrl  --------
+RMB1 ctrl  --------
+RMB2 ctrl  --------
+RMB3 ctrl  --------
+RMB4 ctrl  --------
+RMB5 ctrl  --------
+RMB6 ctrl  --------
+RMB7 ctrl  --------
+SMB0 ctrl  --------
+SMB1 ctrl  --------
+SMB2 ctrl  --------
+SMB3 ctrl  --------
+SMB4 ctrl  --------
+SMB5 ctrl  --------
+SMB6 ctrl  --------
+SMB7 ctrl  --------
+

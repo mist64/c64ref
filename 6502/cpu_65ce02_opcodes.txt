@@ -1,4 +1,4 @@
-.basedon cpu_65c02_opcodes.txt
+.basedon cpu_r65c02_opcodes.txt
 02  CLE
 03  SEE
 0B  TSY
