@@ -1,151 +1,151 @@
-00   BRK  imp
-01   ORA  izx
-05   ORA  zp
-06   ASL  zp
-08   PHP  imp
-09   ORA  imm
-0A   ASL  imp
-0D   ORA  abs
-0E   ASL  abs
+00   BRK
+01   ORA  (a8,X)
+05   ORA  a8
+06   ASL  a8
+08   PHP
+09   ORA  #d8
+0A   ASL
+0D   ORA  a16
+0E   ASL  a16
 10   BPL  rel
-11   ORA  izy
-15   ORA  zpx
-16   ASL  zpx
-18   CLC  imp
-19   ORA  aby
-1D   ORA  abx
-1E   ASL  abx
-20   JSR  abs
-21   AND  izx
-24   BIT  zp
-25   AND  zp
-26   ROL  zp
-28   PLP  imp
-29   AND  imm
-2A   ROL  imp
-2C   BIT  abs
-2D   AND  abs
-2E   ROL  abs
+11   ORA  (a8,X)
+15   ORA  a8,X
+16   ASL  a8,X
+18   CLC
+19   ORA  a16,Y
+1D   ORA  a16,X
+1E   ASL  a16,X
+20   JSR  a16
+21   AND  (a8,X)
+24   BIT  a8
+25   AND  a8
+26   ROL  a8
+28   PLP
+29   AND  #d8
+2A   ROL
+2C   BIT  a16
+2D   AND  a16
+2E   ROL  a16
 30   BMI  rel
-31   AND  izy
-35   AND  zpx
-36   ROL  zpx
-38   SEC  imp
-39   AND  aby
-3D   AND  abx
-3E   ROL  abx
-40   RTI  imp
-41   EOR  izx
-45   EOR  zp
-46   LSR  zp
-48   PHA  imp
-49   EOR  imm
-4A   LSR  imp
-4C   JMP  abs
-4D   EOR  abs
-4E   LSR  abs
+31   AND  (a8,X)
+35   AND  a8,X
+36   ROL  a8,X
+38   SEC
+39   AND  a16,Y
+3D   AND  a16,X
+3E   ROL  a16,X
+40   RTI
+41   EOR  (a8,X)
+45   EOR  a8
+46   LSR  a8
+48   PHA
+49   EOR  #d8
+4A   LSR
+4C   JMP  a16
+4D   EOR  a16
+4E   LSR  a16
 50   BVC  rel
-51   EOR  izy
-55   EOR  zpx
-56   LSR  zpx
-58   CLI  imp
-59   EOR  aby
-5D   EOR  abx
-5E   LSR  abx
-60   RTS  imp
-61   ADC  izx
-65   ADC  zp
-66   ROR  zp
-68   PLA  imp
-69   ADC  imm
-6A   ROR  imp
-6C   JMP  ind
-6D   ADC  abs
-6E   ROR  abs
+51   EOR  (a8,X)
+55   EOR  a8,X
+56   LSR  a8,X
+58   CLI
+59   EOR  a16,Y
+5D   EOR  a16,X
+5E   LSR  a16,X
+60   RTS
+61   ADC  (a8,X)
+65   ADC  a8
+66   ROR  a8
+68   PLA
+69   ADC  #d8
+6A   ROR
+6C   JMP  (a16)
+6D   ADC  a16
+6E   ROR  a16
 70   BVS  rel
-71   ADC  izy
-75   ADC  zpx
-76   ROR  zpx
-78   SEI  imp
-79   ADC  aby
-7D   ADC  abx
-7E   ROR  abx
-81   STA  izx
-84   STY  zp
-85   STA  zp
-86   STX  zp
-88   DEY  imp
-8A   TXA  imp
-8C   STY  abs
-8D   STA  abs
-8E   STX  abs
+71   ADC  (a8,X)
+75   ADC  a8,X
+76   ROR  a8,X
+78   SEI
+79   ADC  a16,Y
+7D   ADC  a16,X
+7E   ROR  a16,X
+81   STA  (a8,X)
+84   STY  a8
+85   STA  a8
+86   STX  a8
+88   DEY
+8A   TXA
+8C   STY  a16
+8D   STA  a16
+8E   STX  a16
 90   BCC  rel
-91   STA  izy
-94   STY  zpx
-95   STA  zpx
-96   STX  zpy
-98   TYA  imp
-99   STA  aby
-9A   TXS  imp
-9D   STA  abx
-A0   LDY  imm
-A1   LDA  izx
-A2   LDX  imm
-A4   LDY  zp
-A5   LDA  zp
-A6   LDX  zp
-A8   TAY  imp
-A9   LDA  imm
-AA   TAX  imp
-AC   LDY  abs
-AD   LDA  abs
-AE   LDX  abs
+91   STA  (a8,X)
+94   STY  a8,X
+95   STA  a8,X
+96   STX  a8,Y
+98   TYA
+99   STA  a16,Y
+9A   TXS
+9D   STA  a16,X
+A0   LDY  #d8
+A1   LDA  (a8,X)
+A2   LDX  #d8
+A4   LDY  a8
+A5   LDA  a8
+A6   LDX  a8
+A8   TAY
+A9   LDA  #d8
+AA   TAX
+AC   LDY  a16
+AD   LDA  a16
+AE   LDX  a16
 B0   BCS  rel
-B1   LDA  izy
-B4   LDY  zpx
-B5   LDA  zpx
-B6   LDX  zpy
-B8   CLV  imp
-B9   LDA  aby
-BA   TSX  imp
-BC   LDY  abx
-BD   LDA  abx
-BE   LDX  aby
-C0   CPY  imm
-C1   CMP  izx
-C4   CPY  zp
-C5   CMP  zp
-C6   DEC  zp
-C8   INY  imp
-C9   CMP  imm
-CA   DEX  imp
-CC   CPY  abs
-CD   CMP  abs
-CE   DEC  abs
+B1   LDA  (a8,X)
+B4   LDY  a8,X
+B5   LDA  a8,X
+B6   LDX  a8,Y
+B8   CLV
+B9   LDA  a16,Y
+BA   TSX
+BC   LDY  a16,X
+BD   LDA  a16,X
+BE   LDX  a16,Y
+C0   CPY  #d8
+C1   CMP  (a8,X)
+C4   CPY  a8
+C5   CMP  a8
+C6   DEC  a8
+C8   INY
+C9   CMP  #d8
+CA   DEX
+CC   CPY  a16
+CD   CMP  a16
+CE   DEC  a16
 D0   BNE  rel
-D1   CMP  izy
-D5   CMP  zpx
-D6   DEC  zpx
-D8   CLD  imp
-D9   CMP  aby
-DD   CMP  abx
-DE   DEC  abx
-E0   CPX  imm
-E1   SBC  izx
-E4   CPX  zp
-E5   SBC  zp
-E6   INC  zp
-E8   INX  imp
-E9   SBC  imm
-EA   NOP  imp
-EC   CPX  abs
-ED   SBC  abs
-EE   INC  abs
+D1   CMP  (a8,X)
+D5   CMP  a8,X
+D6   DEC  a8,X
+D8   CLD
+D9   CMP  a16,Y
+DD   CMP  a16,X
+DE   DEC  a16,X
+E0   CPX  #d8
+E1   SBC  (a8,X)
+E4   CPX  a8
+E5   SBC  a8
+E6   INC  a8
+E8   INX
+E9   SBC  #d8
+EA   NOP
+EC   CPX  a16
+ED   SBC  a16
+EE   INC  a16
 F0   BEQ  rel
-F1   SBC  izy
-F5   SBC  zpx
-F6   INC  zpx
-F8   SED  imp
-F9   SBC  aby
-FD   SBC  abx
-FE   INC  abx
+F1   SBC  (a8,X)
+F5   SBC  a8,X
+F6   INC  a8,X
+F8   SED
+F9   SBC  a16,Y
+FD   SBC  a16,X
+FE   INC  a16,X

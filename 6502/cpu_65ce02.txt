@@ -42,7 +42,7 @@
 29 AND #d8             2     2             N----Z-
 2A ROL A               1     1             N----ZC
 2B TYS                 1     1             -------
-2C  BIT a16            3     4             NV---Z-
+2C BIT a16             3     4             NV---Z-
 2D AND a16             3     4             N----Z-
 2E ROL a16             3     5             N----ZC
 2F BBR2 a8,r8          3     4             -------
@@ -58,7 +58,7 @@
 39 AND a16,Y           3     4             N----Z-
 3A DEC A               1     1             N----Z-
 3B DEZ                 1     1             N----Z-
-3C  BIT a16,X          3     4             NV---Z-
+3C BIT a16,X           3     4             NV---Z-
 3D AND a16,X           3     4             N----Z-
 3E ROL a16,X           3     5             N----ZC
 3F BBR3 a8,r8          3     4             -------

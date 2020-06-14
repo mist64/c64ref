@@ -90,7 +90,7 @@ function decode_opcodes(cpu) {
 			opcodes[o].illegal = true;
 		}
 		opcodes[o].mnemo = mnemo;
-		opcodes[o].addmode = line[2];
+		opcodes[o].addmode = line[2] ? line[2] : '';
 	}
 }
 function decode_operations(cpu) {
