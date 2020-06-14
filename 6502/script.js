@@ -318,6 +318,7 @@ function generate_big_table() {
 		td = document.createElement("td");
 		tr.appendChild(td);
 		td.innerHTML = mnemo;
+		td.className = cpu_data[cpu].operations[mnemo].type;
 
 		td = document.createElement("td");
 		tr.appendChild(td);
@@ -474,4 +475,6 @@ function generate_reference() {
 }
 // TODO:
 // * 6502 without ROR
-
+// * # vs E
+// * (zp) vs (zp),z
+// * stz vs stz

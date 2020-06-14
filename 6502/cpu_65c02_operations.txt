@@ -1,9 +1,9 @@
 .basedon cpu_6502_operations.txt
-BRA  ctrl  --------
-PHX  stack --------
-PHY  stack --------
-PLX  stack N-----Z-
-PLY  stack N-----Z-
-STZ  load  --------
-TRB  logic ------Z-
-TSB  logic ------Z-
+BRA  ctrl  --------  Branch Always
+PHX  stack --------  X → Ms, S - 1 → S
+PHY  stack --------  Y → Ms, S - 1 → S
+PLX  stack N-----Z-  S - 1 → S, Ms → Z
+PLY  stack N-----Z-  S - 1 → S, Ms → Y
+STZ  load  --------  0 → M
+TRB  logic ------Z-  A ∧ M → M
+TSB  logic ------Z-  A ∨ M → M

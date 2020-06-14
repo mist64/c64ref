@@ -1,56 +1,56 @@
-ADC  arith  NV----ZC  A:=A+{adr}
-AND  logic  N-----Z-  A:=A&{adr}
-ASL  shift  N-----ZC  {adr}:={adr}*2
-BCC  bra    --------  branch on C=0
-BCS  bra    --------  branch on C=1
-BEQ  bra    --------  branch on Z=1
-BIT  logic  NV----Z-  N:=b7 V:=b6 Z:=A&{adr}
-BMI  bra    --------  branch on N=1
-BNE  bra    --------  branch on Z=0
-BPL  bra    --------  branch on N=0
-BRK  ctrl   -----1--  (S)-:=PC,P PC:=($FFFE)
-BVC  bra    --------  branch on V=0
-BVS  bra    --------  branch on V=1
-CLC  flags  -------0  C:=0
-CLD  flags  ----0---  D:=0
-CLI  flags  -----0--  I:=0
-CLV  flags  -0------  V:=0
-CMP  arith  N-----ZC  A-{adr}
-CPX  arith  N-----ZC  X-{adr}
-CPY  arith  N-----ZC  Y-{adr}
-DEC  inc    N-----Z-  {adr}:={adr}-1
-DEX  inc    N-----Z-  X:=X-1
-DEY  inc    N-----Z-  Y:=Y-1
-EOR  logic  N-----Z-  A:=A exor {adr}
-INC  inc    N-----Z-  {adr}:={adr}+1
-INX  inc    N-----Z-  X:=X+1
-INY  inc    N-----Z-  Y:=Y+1
-JMP  ctrl   --------  PC:={adr}
-JSR  ctrl   --------  (S)-:=PC PC:={adr}
-LDA  load   N-----Z-  A:={adr}
-LDX  load   N-----Z-  X:={adr}
-LDY  load   N-----Z-  Y:={adr}
-LSR  shift  N-----ZC  {adr}:={adr}/2
-NOP  nop    --------
-ORA  logic  N-----Z-  A:=A or {adr}
-PHA  stack  --------  (S)-:=A
-PHP  stack  --------  (S)-:=P
-PLA  stack  N-----Z-  A:=+(S)
-PLP  stack  NV--DIZC  P:=+(S)
-ROL  shift  N-----ZC  {adr}:={adr}*2+C
-ROR  shift  N-----ZC  {adr}:={adr}/2+C*128
-RTI  ctrl   NV--DIZC  P,PC:=+(S)
-RTS  ctrl   --------  PC:=+(S)
-SBC  arith  NV----ZC  A:=A-{adr}
-SEC  flags  -------1  C:=1
-SED  flags  ----1---  D:=1
-SEI  flags  -----1--  I:=1
-STA  load   --------  {adr}:=A
-STX  load   --------  {adr}:=X
-STY  load   --------  {adr}:=Y
-TAX  trans  N-----Z-  X:=A
-TAY  trans  N-----Z-  Y:=A
-TSX  stack  N-----Z-  X:=S
-TXA  trans  N-----Z-  A:=X
-TXS  stack  --------  S:=X
-TYA  trans  N-----Z-  A:=Y
+ADC  arith  NV----ZC  A + M + C → A, C
+AND  logic  N-----Z-  A ∧ M → A
+ASL  shift  N-----ZC  C ← /7...0/ ← 0
+BCC  bra    --------  Branch on C = 0
+BCS  bra    --------  Branch on C = 1
+BEQ  bra    --------  Branch on Z = 1
+BIT  logic  NV----Z-  A & M, M7 → N, M6 → V
+BMI  bra    --------  Branch on N = 1
+BNE  bra    --------  Branch on Z = 0
+BPL  bra    --------  Branch on N = 0
+BRK  ctrl   -----1--  Break
+BVC  bra    --------  Branch on V = 0
+BVS  bra    --------  Branch on V = 1
+CLC  flags  -------0  0 → C
+CLD  flags  ----0---  0 → D
+CLI  flags  -----0--  0 → I
+CLV  flags  -0------  0 → V
+CMP  arith  N-----ZC  A - M
+CPX  arith  N-----ZC  X - M
+CPY  arith  N-----ZC  Y - M
+DEC  inc    N-----Z-  M - 1 → M
+DEX  inc    N-----Z-  X - 1 → X
+DEY  inc    N-----Z-  Y - 1 → Y
+EOR  logic  N-----Z-  A ⊻ M → A
+INC  inc    N-----Z-  M + 1 → M
+INX  inc    N-----Z-  X + 1 → X
+INY  inc    N-----Z-  Y + 1 → Y
+JMP  ctrl   --------  Jump to new location
+JSR  ctrl   --------  Jump to subroutine
+LDA  load   N-----Z-  M → A
+LDX  load   N-----Z-  M → X
+LDY  load   N-----Z-  M → Y
+LSR  shift  N-----ZC  0 → /7...0/ → C
+NOP  nop    --------  No operation
+ORA  logic  N-----Z-  A ∨ M → A
+PHA  stack  --------  A → Ms, S - 1 → S
+PHP  stack  --------  P → Ms, S - 1 → S
+PLA  stack  N-----Z-  S - 1 → S, Ms → A
+PLP  stack  NV--DIZC  S - 1 → S, Ms → P
+ROL  shift  N-----ZC  C ← /7...0/ ← C
+ROR  shift  N-----ZC  C → /7...0/ → C
+RTI  ctrl   NV--DIZC  Return from interrupt
+RTS  ctrl   --------  Return from subroutine
+SBC  arith  NV----ZC  A - M - C → A
+SEC  flags  -------1  1 → C
+SED  flags  ----1---  1 → D
+SEI  flags  -----1--  1 → I
+STA  load   --------  A → M
+STX  load   --------  X → M
+STY  load   --------  Y → M
+TAX  trans  N-----Z-  A → X
+TAY  trans  N-----Z-  A → Y
+TSX  stack  N-----Z-  S → X
+TXA  trans  N-----Z-  X → A
+TXS  stack  --------  X → S
+TYA  trans  N-----Z-  Y → A
