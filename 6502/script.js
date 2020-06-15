@@ -470,22 +470,22 @@ function generate_opcode_cycle_reference(id, which, filter) {
 	}
 	console.log(filter, mnemos);
 
-	for (var mnemo of mnemos) {
+	for (var addmode of all_sorted_addmodes) {
 		th = document.createElement("th");
 		tr.appendChild(th);
-		th.innerHTML = mnemo;
-		th.className = 'vertical ' + cpu_data[cpu].operations[mnemo].category;
+		if (cpu_data[cpu].addmodes[addmode]) {
+			th.innerHTML = cpu_data[cpu].addmodes[addmode].description;
+//			th.innerHTML = cpu_data[cpu].addmodes[addmode].syntax;
+		}
+//		th.className = 'vertical';
 	}
-	for (var addmode of all_sorted_addmodes) {
+	for (var mnemo of mnemos) {
 		tr = document.createElement("tr");
 		td = document.createElement("td");
 		tr.appendChild(td);
-		if (cpu_data[cpu].addmodes[addmode]) {
-			td.innerHTML = cpu_data[cpu].addmodes[addmode].description;
-//			td.innerHTML = cpu_data[cpu].addmodes[addmode].syntax;
-		}
+		td.innerHTML = mnemo;
 		var row_is_empty = true;
-		for (var mnemo of mnemos) {
+		for (var addmode of all_sorted_addmodes) {
 			td = document.createElement("td");
 			tr.appendChild(td);
 			var opcodes = opcodes_for_mnemo_and_addmode(mnemo, addmode);
