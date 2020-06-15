@@ -17,6 +17,7 @@ var files_loaded = 0;
 var file_data = {};
 var cpu;
 var showillegal;
+var separateillegal;
 
 function filename_for_cpu_and_type(cpu, type) {
 	return 'cpu_' + cpu + '_' + type + '.txt';
@@ -170,12 +171,27 @@ function show() {
 
 	cpu = document.getElementById('cpu').value;
 	showillegal = document.getElementById('showillegal').checked;
+	separateillegal = document.getElementById('separateillegal').checked;
+
+	document.getElementById('separateillegal_box').style.display = showillegal ? '' : 'none';
+
 
 	generate_opcode_table();
 	generate_mnemos_by_category();
 	generate_opcode_cycle_reference('cycle_reference', 'cycle');
 	generate_opcode_cycle_reference('opcode_reference', 'opcode');
-	generate_big_table();
+	if (showillegal) {
+		if (separateillegal) {
+			generate_big_table('big_table1', 'regular');
+			generate_big_table('big_table2', 'illegal');
+		} else {
+			generate_big_table('big_table1', 'all');
+			document.getElementById('big_table2').innerHTML = '';
+		}
+	} else {
+		generate_big_table('big_table1', 'regular');
+		document.getElementById('big_table2').innerHTML = '';
+	}
 	generate_reference();
 }
 
@@ -444,12 +460,10 @@ function generate_opcode_cycle_reference(id, which) {
 			cycle_reference.appendChild(tr);
 		}
 	}
-
-
 }
 
-function generate_big_table() {
-	var big_table = document.getElementById('big_table');
+function generate_big_table(id, filter) {
+	var big_table = document.getElementById(id);
 	big_table.innerHTML = '';
 
 	tr = document.createElement("tr");
@@ -526,13 +540,17 @@ function generate_big_table() {
 			tr.appendChild(td3);
 			var opcodes = opcodes_for_mnemo_and_addmode(mnemo, addmode);
 			for (var opcode of opcodes) {
-				if (opcode != null && (showillegal || !cpu_data[cpu].opcodes[opcode].illegal)) {
-					var cycles = pretty_cycles(cpu_data[cpu].opcodes[opcode]);
-					td1.innerHTML += hex16(opcode) + '<br/>';
-					td2.innerHTML += cpu_data[cpu].addmodes[addmode].bytes + '<br/>';
-					td3.innerHTML += cycles + '<br/>';
-					row_is_empty = false;
+				if (filter == 'regular' && cpu_data[cpu].opcodes[opcode].illegal) {
+					continue;
 				}
+				if (filter == 'illegal' && !cpu_data[cpu].opcodes[opcode].illegal) {
+					continue;
+				}
+				var cycles = pretty_cycles(cpu_data[cpu].opcodes[opcode]);
+				td1.innerHTML += hex16(opcode) + '<br/>';
+				td2.innerHTML += cpu_data[cpu].addmodes[addmode].bytes + '<br/>';
+				td3.innerHTML += cycles + '<br/>';
+				row_is_empty = false;
 			}
 		}
 		if (!row_is_empty) {
@@ -624,7 +642,7 @@ function generate_reference() {
 		for (var addmode of Object.keys(cpu_data[cpu].addmodes)) {
 			var opcodes = opcodes_for_mnemo_and_addmode(mnemo, addmode);
 			for (var opcode of opcodes) {
-				if (opcode != null && (showillegal || !cpu_data[cpu].opcodes[opcode].illegal)) {
+				if (showillegal || !cpu_data[cpu].opcodes[opcode].illegal) {
 					num_rows++;
 
 					tr = document.createElement("tr");
