@@ -203,26 +203,44 @@ function generate_opcode_table() {
 	var opcode_table = document.getElementById('opcode_table');
 	opcode_table.innerHTML = '';
 
+	var style = 1;
+
+	var limx = style ? 32 : 16;
+	var limy = style ? 8 : 16;
+
 	var tr = document.createElement("tr");
 	opcode_table.appendChild(tr);
 	var th = document.createElement("th");
 	tr.appendChild(th);
-	for (var x = 0; x < 16; x++) {
+	for (var x = 0; x < limx; x++) {
 		var th = document.createElement("th");
 		tr.appendChild(th);
-		th.innerHTML = 'x' + x.toString(16).toUpperCase()
+		if (style == 0) {
+			th.innerHTML = 'x' + x.toString(16).toUpperCase()
+		} else {
+			th.innerHTML = hex16(((x << 5) & 0xff) | ((x >> 3) & 3));
+
+		}
 	}
 
-	for (var y = 0; y < 16; y++) {
+	for (var y = 0; y < limy; y++) {
 		var tr = document.createElement("tr");
 		opcode_table.appendChild(tr);
 		var th = document.createElement("th");
 		tr.appendChild(th);
-		th.innerHTML = y.toString(16).toUpperCase() + 'x';
-		for (var x = 0; x < 16; x++) {
+		if (style == 0) {
+			th.innerHTML = y.toString(16).toUpperCase() + 'x';
+		} else {
+			th.innerHTML = hex16(y*4);
+		}
+		for (var x = 0; x < limx; x++) {
 			var td = document.createElement("td");
 			tr.appendChild(td);
-			var o = y << 4 | x;
+			if (style == 0) {
+				var o = y << 4 | x;
+			} else {
+				var o = ((x << 5) & 0xff) | ((x >> 3) & 3) | y << 2;
+			}
 			var opcode = cpu_data[cpu].opcodes[o];
 
 			if (opcode.mnemo && (showillegal || !opcode.illegal)) {
