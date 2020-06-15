@@ -50,9 +50,9 @@ STX  load   --------  X → M
 STY  load   --------  Y → M
 TAX  trans  N-----Z-  A → X
 TAY  trans  N-----Z-  A → Y
-TSX  stack  N-----Z-  S → X
+TSX  trans  N-----Z-  S → X
 TXA  trans  N-----Z-  X → A
-TXS  stack  --------  X → S
+TXS  trans  --------  X → S
 TYA  trans  N-----Z-  Y → A
 
 AHX  load   --------  {adr}:=A&X&H

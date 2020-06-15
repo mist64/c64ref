@@ -8,6 +8,7 @@ const cpus = [
 	'r65c02',
 	'65c02s',
 	'65ce02',
+	'65c816',
 ]
 
 var cpu_data = {};
@@ -186,7 +187,7 @@ function opcodes_for_mnemo_and_addmode(mnemo, addmode) {
 }
 
 function show() {
-//	console.log(cpu_data);
+	console.log(cpu_data['65c816']);
 
 	cpu = document.getElementById('cpu').value;
 	showillegal = document.getElementById('showillegal').checked;
@@ -231,7 +232,6 @@ function generate_opcode_table() {
 	var opcode_table = document.getElementById('opcode_table');
 	opcode_table.innerHTML = '';
 
-	console.log(opcode_table_organization);
 	if (opcode_table_organization == '4-4') {
 		var limx = 16;
 		var limy = 16;
@@ -327,6 +327,35 @@ const all_sorted_addmodes = [
 	'a8,r8',
 	'(a8,X)',
 ];
+
+//	'#d8',
+//	'#d16',
+//	'a16',
+//	'a8',
+//	'A',
+//	'-',
+//	'(a16,X)',
+//	'(a8),Y',
+//	'(a8)',
+//	'(a8),Z', // same as above
+//	'[a8]',
+//	'(r8,SP),Y',
+//	'a8,X',
+//	'a8,Y',
+//	'a16,X',
+//	'a16,Y',
+//	'r8',
+//	'r16',
+//	'(a16)',
+//	'[a16]',
+//	'(a16,X)',
+//	'a8,r8',
+//	'(a8,X)',
+//	'a24',
+//	'a24,X',
+//	'src,dest',
+//	'a8,S',
+//	'(a8,S),Y',
 
 const all_sorted_categories = [
 	'load',

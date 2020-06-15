@@ -11,15 +11,12 @@ h2 {
 	font-size: medium;
 }
 
-#opcode_table td {
-	border: 1px solid black;
-}
-
 #opcode_table {
 	border: none;
 }
 
 #opcode_table td {
+	border: 1px solid white;
 	height: 40px;
 	width: 40px;
 	font-size: 7.5pt;
@@ -150,6 +147,7 @@ h2 {
 			<option value="r65c02">Rockwell R65C02</option>
 			<option value="65c02s">WDC 65C02S</option>
 			<option value="65ce02">CSG 65CE02</option>
+			<option selected value="65c816">WDC 65C816</option>
 		</select>
 		<input type="checkbox" id="showillegal" onclick="show()">
 		<label for="showillegal">Undocumented opcodes</label>
@@ -159,9 +157,9 @@ h2 {
 		<label for="opcode_table_organization">Organization</label>
 		<select name="opcode_table_organization" id="opcode_table_organization" onChange="show();">
 			<option value="4-4">4-4</option>
-			<option selected value="3-3-2a/h">3-3-2 A (horizontal)</option>
+			<option value="3-3-2a/h">3-3-2 A (horizontal)</option>
 			<option value="3-3-2a/v">3-3-2 A (vertical)</option>
-			<option selected value="3-3-2b/h">3-3-2 B (horizontal)</option>
+			<option value="3-3-2b/h">3-3-2 B (horizontal)</option>
 			<option value="3-3-2b/v">3-3-2 B (vertical)</option>
 		</select>
 	</p>
@@ -253,6 +251,9 @@ h2 {
 	<li><a href="http://www.ffd2.com/fridge/docs/6502-NMOS.extra.opcodes">Adam Vardy: Extra Instructions Of The 65XX Series CPU</a></li>
 	<li><a href="http://unusedino.de/ec64/technical/misc/c64/64doc.html">John West, Marko Mäkelä: Documentation for the NMOS 65xx/85xx Instruction Set</a></li>
 	<li><a href="http://6502.org/tutorials/65c02opcodes.html">Bruce Clark: 65C02 Opcodes</a></li>
+	65C816 Opcodes by Bruce Clark
+	<li><a href="http://6502.org/tutorials/65c816opcodes.html">Bruce Clark: 65C816 Opcodes</a></li>
+
 	</ul>
 
 	</div>

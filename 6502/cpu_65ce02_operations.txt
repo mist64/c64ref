@@ -21,6 +21,6 @@ STZ  load  --------  Z → M
 TAB  trans --------  A → B
 TAZ  trans N-----Z-  A → Z
 TBA  trans N-----Z-  B → A
-TSY  stack N-----Z-  S → Y
-TYS  stack --------  Y → S
+TSY  trans N-----Z-  S → Y
+TYS  trans --------  Y → S
 TZA  stack N-----Z-  Z → A

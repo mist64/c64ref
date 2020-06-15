@@ -1,3 +1,3 @@
 .basedon cpu_r65c02_mnemos.txt
-STP   Stop
+STP   Stop the Clock
 WAI   Wait for Interrupt
