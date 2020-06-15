@@ -193,6 +193,8 @@ function show() {
 
 	generate_opcode_table();
 	generate_mnemos_by_category();
+	generate_opcode_cycle_reference('cycle_reference', 'cycle');
+	generate_opcode_cycle_reference('opcode_reference', 'opcode');
 	generate_big_table();
 	generate_reference();
 }
@@ -294,6 +296,24 @@ function hex16(a) {
 	return ('0' + a.toString(16).toUpperCase()).slice(-2);
 }
 
+function pretty_cycles(opcode) {
+	var cycles = opcode.cycles;
+	if (cycles == null) {
+		return '&infin;';
+	} else {
+		var note = 1;
+		for (var extracycle of opcode.extracycles) {
+			cycles += '<sup>'
+			if (note > 1) {
+				cycles += ','
+			}
+			cycles += extracycle[0] + '</sup>'
+			note++;
+		}
+		return cycles;
+	}
+}
+
 function generate_mnemos_by_category() {
 	var mnemos_by_category = document.getElementById('mnemos_by_category');
 	mnemos_by_category.innerHTML = '';
@@ -353,7 +373,51 @@ function generate_mnemos_by_category() {
 		td.innerHTML = html;
 		td.className = column[0];
 	}
+}
 
+function generate_opcode_cycle_reference(id, which) {
+	var cycle_reference = document.getElementById(id);
+	cycle_reference.innerHTML = '';
+
+	tr = document.createElement("tr");
+	cycle_reference.appendChild(tr);
+	th = document.createElement("th");
+	tr.appendChild(th);
+
+	for (var mnemo of Object.keys(cpu_data[cpu].operations).sort()) {
+		th = document.createElement("th");
+		tr.appendChild(th);
+		th.innerHTML = mnemo;
+		th.className = 'vertical';
+	}
+	for (var addmode of all_sorted_addmodes) {
+		tr = document.createElement("tr");
+		td = document.createElement("td");
+		tr.appendChild(td);
+		if (cpu_data[cpu].addmodes[addmode]) {
+			td.innerHTML = cpu_data[cpu].addmodes[addmode].description;
+//			td.innerHTML = cpu_data[cpu].addmodes[addmode].syntax;
+		}
+		var row_is_empty = true;
+		for (var mnemo of Object.keys(cpu_data[cpu].operations).sort()) {
+			td = document.createElement("td");
+			tr.appendChild(td);
+			var opcodes = opcodes_for_mnemo_and_addmode(mnemo, addmode);
+			if (opcodes.length) {
+				var opcode = opcodes[0];
+				if (which == 'opcode') {
+					td.innerHTML = hex16(opcode);
+				} else {
+					td.innerHTML = pretty_cycles(cpu_data[cpu].opcodes[opcode]);
+
+				}
+				row_is_empty = false;
+			}
+		}
+		if (!row_is_empty) {
+			cycle_reference.appendChild(tr);
+		}
+	}
 
 
 }
@@ -567,7 +631,7 @@ function generate_reference() {
 							}
 							cycles += '<sup>'
 							if (note > 1) {
-							cycles += ','
+								cycles += ','
 							}
 							cycles += note + '</sup>'
 							note++;

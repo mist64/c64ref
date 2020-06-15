@@ -42,6 +42,30 @@ h2 {
 	text-align: center;
 }
 
+#cycle_reference {
+	font-size: 10pt;
+}
+
+#opcode_reference {
+	font-size: 10pt;
+}
+
+#big_table {
+	font-size: 10pt;
+}
+
+.vertical {
+   writing-mode: vertical-rl;
+   transform:rotate(270deg);
+   margin: 0px;
+}
+.vertical:before {
+	content: '';
+	padding-top: 110%;/* takes width as reference, + 10% for faking some extra padding */
+	display: inline-block;
+	vertical-align: middle;
+}
+
 .ill {
 	background: repeating-linear-gradient(
 		45deg,
@@ -191,6 +215,14 @@ h2 {
 	<hr/>
 
 	<div id="mnemos_by_category"></div>
+
+	<hr/>
+
+	<table id="cycle_reference" border="1"></table>
+
+	<hr/>
+
+	<table id="opcode_reference" border="1"></table>
 
 	<hr/>
 
