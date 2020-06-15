@@ -139,7 +139,7 @@ function decode_addmodes(cpu) {
 		var line = text[i];
 		var addmode = line[0];
 		cpu_data[cpu].addmodes[addmode] = {};
-		cpu_data[cpu].addmodes[addmode].bytes = parseInt(line[1]);
+		cpu_data[cpu].addmodes[addmode].bytes = line[1];
 		cpu_data[cpu].addmodes[addmode].syntax = line[2] != '-' ? line[2] : '';
 		cpu_data[cpu].addmodes[addmode].description = line.slice(3).join(' ');
 	}
@@ -151,28 +151,7 @@ function decode_timing(cpu) {
 	for (var i = 0; i < text.length; i++) {
 		var line = text[i];
 		var o = parseInt(line[0], 16);
-		var cycles = line[1];
-		cpu_data[cpu].opcodes[o].extracycles = [];
-		if (cycles == 'X') {
-			cycles = null;
-		} else {
-			do {
-				var last_char = (cycles[cycles.len - 1]);
-				if (cycles.endsWith('b')) {
-					cpu_data[cpu].opcodes[o].extracycles.push('branch');
-					cycles = cycles.substring(0, cycles.length - 1);
-					continue;
-				}
-				if (cycles.endsWith('p')) {
-					cpu_data[cpu].opcodes[o].extracycles.push('page');
-					cycles = cycles.substring(0, cycles.length - 1);
-					continue;
-				}
-				break;
-			} while (true);
-			cycles = parseInt(cycles);
-		}
-		cpu_data[cpu].opcodes[o].cycles = cycles;
+		cpu_data[cpu].opcodes[o].cycles = line[1];
 	}
 }
 
@@ -288,9 +267,6 @@ function generate_opcode_table() {
 				cell += '<br/>';
 				if (cpu_data[cpu].opcodes[o].cycles) {
 					cell += '<span style="float: left;">' + cpu_data[cpu].opcodes[o].cycles
-					if (cpu_data[cpu].opcodes[o].extracycles.length) {
-						cell += '+';
-					}
 					cell += '</span>';
 					cell += '<span style="float: right;">' + cpu_data[cpu].addmodes[addmode].bytes;
 					cell += '</span>';
@@ -360,15 +336,6 @@ function pretty_cycles(opcode) {
 	if (cycles == null) {
 		return '&infin;';
 	} else {
-		var note = 1;
-		for (var extracycle of opcode.extracycles) {
-			cycles += '<sup>'
-			if (note > 1) {
-				cycles += ','
-			}
-			cycles += extracycle[0] + '</sup>'
-			note++;
-		}
 		return cycles;
 	}
 }
@@ -560,10 +527,7 @@ function generate_big_table() {
 			var opcodes = opcodes_for_mnemo_and_addmode(mnemo, addmode);
 			for (var opcode of opcodes) {
 				if (opcode != null && (showillegal || !cpu_data[cpu].opcodes[opcode].illegal)) {
-					var cycles = cpu_data[cpu].opcodes[opcode].cycles;
-					if (cycles == null) {
-						cycles = '&infin;';
-					}
+					var cycles = pretty_cycles(cpu_data[cpu].opcodes[opcode]);
 					td1.innerHTML += hex16(opcode) + '<br/>';
 					td2.innerHTML += cpu_data[cpu].addmodes[addmode].bytes + '<br/>';
 					td3.innerHTML += cycles + '<br/>';
@@ -683,18 +647,6 @@ function generate_reference() {
 					if (cycles == null) {
 						td.innerHTML = '&infin;';
 					} else {
-						var note = 1;
-						for (var extracycle of cpu_data[cpu].opcodes[opcode].extracycles) {
-							if (!notes.includes(extracycle)) {
-								notes.push(extracycle);
-							}
-							cycles += '<sup>'
-							if (note > 1) {
-								cycles += ','
-							}
-							cycles += note + '</sup>'
-							note++;
-						}
 						td.innerHTML = cycles;
 					}
 				}
@@ -731,3 +683,6 @@ function generate_reference() {
 // * # vs E
 // * (zp) vs (zp),z
 // * stz vs stz
+// * 65c816:
+//   * support len flags http://6502.org/tutorials/65c816opcodes.html
+//   * support cycle flags

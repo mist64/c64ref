@@ -77,3 +77,16 @@ F7  SBC   [a8],Y
 FB  XCE
 FC  JSR   (a16,X)
 FF  SBC   a24,X
+
+09  ORA   #m:d8/d16
+29  AND   #m:d8/d16
+49  EOR   #m:d8/d16
+69  ADC   #m:d8/d16
+89  BIT   #m:d8/d16
+A0  LDY   #x:d8/d16
+A2  LDX   #x:d8/d16
+A9  LDA   #m:d8/d16
+C0  CPY   #x:d8/d16
+C9  CMP   #m:d8/d16
+E0  CPX   #x:d8/d16
+E9  SBC   #m:d8/d16
