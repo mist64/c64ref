@@ -51,6 +51,11 @@ h2 {
 	font-size: 10pt;
 }
 
+.disabled {
+	pointer-events: none;
+	opacity: 0.25;
+}
+
 .vertical {
    writing-mode: vertical-rl;
    transform:rotate(270deg);
@@ -149,11 +154,13 @@ h2 {
 			<option value="65ce02">CSG 65CE02</option>
 			<option value="65c816">WDC 65C816</option>
 		</select>
-		<input checked type="checkbox" id="showillegal" onclick="show()">
-		<label for="showillegal">Undocumented opcodes</label>
-		<span id="separateillegal_box">
-			<input checked type="checkbox" id="separateillegal" onclick="show()">
-			<label for="separateillegal">Separate</label>
+		<span id="showillegal_box">
+			<input checked type="checkbox" id="showillegal" onclick="show()">
+			<label for="showillegal">Undocumented opcodes</label>
+			<span id="separateillegal_box">
+				<input checked type="checkbox" id="separateillegal" onclick="show()">
+				<label for="separateillegal">Separate</label>
+			</span>
 		</span>
 	</p>
 

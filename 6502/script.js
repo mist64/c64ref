@@ -166,6 +166,15 @@ function opcodes_for_mnemo_and_addmode(mnemo, addmode) {
 	return res;
 }
 
+function cpu_has_illegal(cpu) {
+	for (var i = 0; i <= 255; i++) {
+		if (cpu_data[cpu].opcodes[i].illegal) {
+			return true;
+		}
+	}
+	return false;
+}
+
 function show() {
 	console.log(cpu_data['65c816']);
 
@@ -173,8 +182,8 @@ function show() {
 	showillegal = document.getElementById('showillegal').checked;
 	separateillegal = document.getElementById('separateillegal').checked;
 
-	document.getElementById('separateillegal_box').style.display = showillegal ? '' : 'none';
-
+	document.getElementById('showillegal_box').style.display = cpu_has_illegal(cpu) ? '' : 'none';
+	document.getElementById('separateillegal_box').className = showillegal ? '' : 'disabled';
 
 	generate_opcode_table();
 	generate_mnemos_by_category();
