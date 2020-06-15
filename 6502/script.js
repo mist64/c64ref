@@ -11,6 +11,52 @@ const cpus = [
 	'65c816',
 ]
 
+const all_sorted_addmodes = [
+	'#d8',
+	'#d16',
+	'a16',
+	'a8',
+	'A',
+	'-',
+	'(a16,X)',
+	'(a8),Y',
+	'(a8)',
+	'(a8),Z', // same as above
+	'[a8]',
+	'(r8,SP),Y',
+	'a8,X',
+	'a8,Y',
+	'a16,X',
+	'a16,Y',
+	'r8',
+	'r16',
+	'(a16)',
+	'[a16]',
+	'(a16,X)',
+	'a8,r8',
+	'(a8,X)',
+	'a24',
+	'a24,X',
+	'src,dest',
+	'a8,S',
+	'(a8,S),Y',
+];
+
+const all_sorted_categories = [
+	'load',
+	'trans',
+	'stack',
+	'shift',
+	'logic',
+	'arith',
+	'inc',
+	'ctrl',
+	'bra',
+	'flags',
+	'kil',
+	'nop',
+];
+
 var cpu_data = {};
 
 var files_loaded = 0;
@@ -179,12 +225,13 @@ function show() {
 	cpu = document.getElementById('cpu').value;
 	showillegal = document.getElementById('showillegal').checked;
 	separateillegal = document.getElementById('separateillegal').checked;
+	var has_illegal = cpu_has_illegal(cpu);
 
-	document.getElementById('showillegal_box').style.display = cpu_has_illegal(cpu) ? '' : 'none';
+	document.getElementById('showillegal_box').style.display = has_illegal ? '' : 'none';
 	document.getElementById('separateillegal_box').className = showillegal ? '' : 'disabled';
 
 	var filter1, filter2;
-	if (showillegal) {
+	if (showillegal && has_illegal) {
 		if (separateillegal) {
 			filter1 = 'regular';
 			filter2 = 'illegal';
@@ -309,52 +356,6 @@ function generate_opcode_table() {
 		}
 	}
 }
-
-const all_sorted_addmodes = [
-	'#d8',
-	'#d16',
-	'a16',
-	'a8',
-	'A',
-	'-',
-	'(a16,X)',
-	'(a8),Y',
-	'(a8)',
-	'(a8),Z', // same as above
-	'[a8]',
-	'(r8,SP),Y',
-	'a8,X',
-	'a8,Y',
-	'a16,X',
-	'a16,Y',
-	'r8',
-	'r16',
-	'(a16)',
-	'[a16]',
-	'(a16,X)',
-	'a8,r8',
-	'(a8,X)',
-	'a24',
-	'a24,X',
-	'src,dest',
-	'a8,S',
-	'(a8,S),Y',
-];
-
-const all_sorted_categories = [
-	'load',
-	'trans',
-	'stack',
-	'shift',
-	'logic',
-	'arith',
-	'inc',
-	'ctrl',
-	'bra',
-	'flags',
-	'kil',
-	'nop',
-];
 
 function hex16(a) {
 	return ('0' + a.toString(16).toUpperCase()).slice(-2);
@@ -643,7 +644,7 @@ function generate_reference() {
 		// description
 		p = document.createElement("p");
 		div.appendChild(p);
-		p.innerHTML = cpu_data[cpu].operations[mnemo].description;
+		p.innerHTML = 'Operation: ' + cpu_data[cpu].operations[mnemo].description;
 
 		// flags
 		table = document.createElement("table");
@@ -685,11 +686,12 @@ function generate_reference() {
 			tr.appendChild(th);
 			th.innerHTML = title;
 		}
-		var notes = [];
+		var show_illegal_footnote = false;
 		for (var addmode of Object.keys(cpu_data[cpu].addmodes)) {
 			var opcodes = opcodes_for_mnemo_and_addmode(mnemo, addmode);
 			for (var opcode of opcodes) {
-				if (showillegal || !cpu_data[cpu].opcodes[opcode].illegal) {
+				var illegal = cpu_data[cpu].opcodes[opcode].illegal;
+				if (showillegal || !illegal) {
 					num_rows++;
 
 					tr = document.createElement("tr");
@@ -703,6 +705,10 @@ function generate_reference() {
 					td = document.createElement("td");
 					tr.appendChild(td);
 					td.innerHTML = '$' + hex16(opcode);
+					if (illegal) {
+						td.innerHTML += '*';
+						show_illegal_footnote = true;
+					}
 					td = document.createElement("td");
 					tr.appendChild(td);
 					td.innerHTML = cpu_data[cpu].addmodes[addmode].bytes;
@@ -717,20 +723,10 @@ function generate_reference() {
 				}
 			}
 		}
-
-		// note
-		var i = 1;
-		for (var note of notes) {
+		if (show_illegal_footnote) {
 			p = document.createElement("p");
 			div.appendChild(p);
-			switch (note) {
-				case 'branch':
-					p.innerHTML = '<sup>' + i + '</sup>Add 1 if branch is taken.'
-					break;
-				case 'page':
-					p.innerHTML = '<sup>' + i + '</sup>Add 1 when page boundary is crossed.';
-			}
-			i++;
+			p.innerHTML = '*Undocumented.';
 		}
 
 		// if there were no opcodes, don't add the div
@@ -744,10 +740,11 @@ function generate_reference() {
 	}
 }
 // TODO:
-// * 6502 without ROR
 // * # vs E
 // * (zp) vs (zp),z
 // * stz vs stz
-// * 65c816:
-//   * support len flags http://6502.org/tutorials/65c816opcodes.html
-//   * support cycle flags
+// * add some more description text
+// * switch between illop synonym sets
+// * combine files
+// * CPU summary text
+// * CPU tree
