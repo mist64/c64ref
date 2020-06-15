@@ -108,7 +108,7 @@ function decode_operations(cpu) {
 		var line = text[i];
 		var mnemo = line[0];
 		cpu_data[cpu].operations[mnemo] = {};
-		cpu_data[cpu].operations[mnemo].type = line[1];
+		cpu_data[cpu].operations[mnemo].category = line[1];
 		cpu_data[cpu].operations[mnemo].flags = line[2];
 		cpu_data[cpu].operations[mnemo].description = line.slice(3).join(' ');
 	}
@@ -192,6 +192,7 @@ function show() {
 	showillegal = document.getElementById('showillegal').checked;
 
 	generate_opcode_table();
+	generate_mnemos_by_category();
 	generate_big_table();
 	generate_reference();
 }
@@ -199,18 +200,31 @@ function show() {
 function generate_opcode_table() {
 	var opcode_table = document.getElementById('opcode_table');
 	opcode_table.innerHTML = '';
+
+	var tr = document.createElement("tr");
+	opcode_table.appendChild(tr);
+	var th = document.createElement("th");
+	tr.appendChild(th);
+	for (var x = 0; x < 16; x++) {
+		var th = document.createElement("th");
+		tr.appendChild(th);
+		th.innerHTML = 'x' + x.toString(16).toUpperCase()
+	}
+
 	for (var y = 0; y < 16; y++) {
 		var tr = document.createElement("tr");
 		opcode_table.appendChild(tr);
+		var th = document.createElement("th");
+		tr.appendChild(th);
+		th.innerHTML = y.toString(16).toUpperCase() + 'x';
 		for (var x = 0; x < 16; x++) {
 			var td = document.createElement("td");
 			tr.appendChild(td);
-			td.className = 'opcodecell';
 			var o = y << 4 | x;
 			var opcode = cpu_data[cpu].opcodes[o];
 
 			if (opcode.mnemo && (showillegal || !opcode.illegal)) {
-				td.className += ' ' + cpu_data[cpu].operations[opcode.mnemo].type;
+				td.className += ' ' + cpu_data[cpu].operations[opcode.mnemo].category;
 				if (opcode.illegal) {
 					td.className += ' ill';
 				}
@@ -223,12 +237,13 @@ function generate_opcode_table() {
 				if (cpu_data[cpu].opcodes[o].cycles) {
 					cell += '<span style="float: left;">' + cpu_data[cpu].opcodes[o].cycles
 					if (cpu_data[cpu].opcodes[o].extracycles.length) {
-						cell += '*';
+						cell += '+';
 					}
 					cell += '</span>';
 					cell += '<span style="float: right;">' + cpu_data[cpu].addmodes[addmode].bytes;
 					cell += '</span>';
 				}
+//				cell += '<br/>' + cpu_data[cpu].operations[opcode.mnemo].flags;
 				td.innerHTML = cell;
 			} else {
 				td.className += ' undefined';
@@ -260,8 +275,87 @@ const all_sorted_addmodes = [
 	'(a8,X)',
 ];
 
+const all_sorted_categories = [
+	'load',
+	'trans',
+	'stack',
+	'shift',
+	'logic',
+	'arith',
+	'inc',
+	'ctrl',
+	'bra',
+	'flags',
+	'kil',
+	'nop',
+];
+
 function hex16(a) {
 	return ('0' + a.toString(16).toUpperCase()).slice(-2);
+}
+
+function generate_mnemos_by_category() {
+	var mnemos_by_category = document.getElementById('mnemos_by_category');
+	mnemos_by_category.innerHTML = '';
+
+	// collect data
+	var data = [];
+	for (var category of all_sorted_categories) {
+		var column = [ category ];
+		for (mnemo of Object.keys(cpu_data[cpu].operations)) {
+			if (cpu_data[cpu].operations[mnemo].category == category) {
+
+				var show = false;
+				for (var addmode of all_sorted_addmodes) {
+					var opcodes = opcodes_for_mnemo_and_addmode(mnemo, addmode);
+					for (var opcode of opcodes) {
+						if (showillegal || !cpu_data[cpu].opcodes[opcode].illegal) {
+							show = true;
+							break;
+						}
+					}
+					if (show) {
+						break;
+					}
+				}
+				if (show) {
+					column.push(mnemo);
+				}
+			}
+		}
+		data.push(column);
+	}
+
+	// build table
+	tr = document.createElement("tr");
+	mnemos_by_category.appendChild(tr);
+	for (var column of data) {
+		if (column.length == 1) {
+			continue;
+		}
+		th = document.createElement("th");
+		tr.appendChild(th);
+		th.innerHTML = column[0];
+	}
+	tr = document.createElement("tr");
+	mnemos_by_category.appendChild(tr);
+	for (var column of data) {
+		if (column.length == 1) {
+			continue;
+		}
+		var html = '';
+		for (var line of column.slice(1).sort()) {
+			html += line +  '<br/>'
+		}
+
+		td = document.createElement("td");
+		tr.appendChild(td);
+		td.innerHTML = html;
+		td.className = column[0];
+	}
+
+
+
 }
 
 function generate_big_table() {
@@ -326,7 +420,7 @@ function generate_big_table() {
 		td = document.createElement("td");
 		tr.appendChild(td);
 		td.innerHTML = mnemo;
-		td.className = cpu_data[cpu].operations[mnemo].type;
+		td.className = cpu_data[cpu].operations[mnemo].category;
 
 		td = document.createElement("td");
 		tr.appendChild(td);

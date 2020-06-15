@@ -1,4 +1,4 @@
 .basedon cpu_6502_operations.txt 
-SAC  flags  --------
-SIR  flags  --------
+SAC  flags  --------  Set Accumulator Mapping
+SIR  flags  --------  Set Index Register Mapping
 BRA  ctrl   --------  Branch Always

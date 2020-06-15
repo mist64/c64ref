@@ -15,60 +15,82 @@ h2 {
 	border: 1px solid black;
 }
 
-.opcodecell {
+#opcode_table {
+	border: none;
+}
+
+#opcode_table td {
 	height: 40px;
 	width: 40px;
 	font-size: 7.5pt;
 	font-family: monospace;
+	/* text-shadow: 1px 0px 2px white; */
 }
+
+#opcode_table th {
+	font-size: 7.5pt;
+	font-family: monospace;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#mnemos_by_category td {
+	padding: 8px;
+}
+
+#mnemos_by_category th {
+	text-align: center;
+}
+
 .ill {
 	background: repeating-linear-gradient(
 		45deg,
 		rgba(0, 0, 0, 0),
 		rgba(0, 0, 0, 0) 2px,
-		rgba(0, 0, 0, 0.2) 2px,
-		rgba(0, 0, 0, 0.2) 4px
+		rgba(0, 0, 0, 0.1) 2px,
+		rgba(0, 0, 0, 0.1) 4px
 	);
-}
-.ctrl {
-	background-color: hsl(55, 100%, 60%); /* yellow */
-}
-.bra {
-	background-color: hsl(47, 100%, 60%); /* yellow-orange */
-}
-.flags {
-	background-color: hsl(39, 100%, 60%); /* orange */
 }
 
 .load {
-	background-color: hsl(5, 100%, 75%); /* red */
+	background-color: hsl(5, 100%, 80%); /* red */
 }
 .trans {
-	background-color: hsl(340, 100%, 60%);
+	background-color: hsl(340, 100%, 80%);
+}
+.stack {
+	background-color: hsl(290, 100%, 80%); /* magenta */
 }
 
-.inc {
-	background-color: hsl(90, 50%, 70%);
-}
-.arith {
-	background-color: hsl(130, 50%, 70%);
-}
-.logic {
-	background-color: hsl(200, 60%, 70%);
-}
 .shift {
 	background-color: hsl(220, 70%, 80%);
 }
+.logic {
+	background-color: hsl(200, 70%, 80%);
+}
+.arith {
+	background-color: hsl(130, 70%, 80%);
+}
+.inc {
+	background-color: hsl(90, 70%, 80%);
+}
 
-.stack {
-	background-color: hsl(290, 100%, 79%); /* magenta */
+.ctrl {
+	background-color: hsl(55, 100%, 70%); /* yellow */
 }
-.nop {
-	background-color: hsl(0, 0%, 75%); /* light gray */
+.bra {
+	background-color: hsl(47, 100%, 70%); /* yellow-orange */
 }
+.flags {
+	background-color: hsl(39, 100%, 70%); /* orange */
+}
+
 .kil {
 	background-color: hsl(0, 0%, 20%);
 	color: white;
+}
+.nop {
+	background-color: hsl(0, 0%, 75%); /* light gray */
 }
 .undefined {
 	background-color: hsl(0, 0%, 90%); /* gray */
@@ -105,28 +127,88 @@ h2 {
 			<option value="65c02s">WDC 65C02S</option>
 			<option value="65ce02">CSG 65CE02</option>
 		</select>
-		<input checked type="checkbox" id="showillegal" onclick="show()">
+		<input type="checkbox" id="showillegal" onclick="show()">
 		<label for="showillegal">Undocumented opcodes</label>
 	</p>
 
-	<table id="opcode_table">
+	<table id="opcode_table"></table>
+
+	<table style="font-size: 9pt;">
+		<tr>
+			<td class="load"></td>
+			<td>Load/Store</td>
+		</tr>
+		<tr>
+			<td class="trans"></td>
+			<td>Transfer</td>
+		</tr>
+		<tr>
+			<td class="stack"></td>
+			<td>Stack</td>
+		</tr>
+		<tr>
+			<td class="shift"></td>
+			<td>Shift</td>
+		</tr>
+		<tr>
+			<td class="logic"></td>
+			<td>Logic</td>
+		</tr>
+		<tr>
+			<td class="arith"></td>
+			<td>Arithmetic</td>
+		</tr>
+		<tr>
+			<td class="inc"></td>
+			<td>Arithmetic: Inc/Dec</td>
+		</tr>
+		<tr>
+			<td class="ctrl" width="15px"></td>
+			<td>Control Flow</td>
+		</tr>
+		<tr>
+			<td class="bra"></td>
+			<td>Control Flow: Branch</td>
+		</tr>
+		<tr>
+			<td class="flags"></td>
+			<td>Flags</td>
+		</tr>
+		<tr>
+			<td class="kil"></td>
+			<td>KIL</td>
+		</tr>
+		<tr>
+			<td class="nop"></td>
+			<td>NOP</td>
+		</tr>
+		<tr>
+			<td class="undefined"></td>
+			<td>Undefined</td>
+		</tr>
 	</table>
 
-	<table id="big_table" border="1">
-	</table>
+	<hr/>
 
-	<div id="reference">
-	</div>
+	<div id="mnemos_by_category"></div>
+
+	<hr/>
+
+	<table id="big_table" border="1"></table>
+
+	<hr/>
+
+	<div id="reference"></div>
 
 	<h2>References</h2>
 
 	<ul>
+	<li><a href="http://anyplatform.net/media/guides/cpus/65xx%20Processor%20Data.txt">Mark Ormston: 65xx Processor Data</a></li>
 	<li><a href="http://www.oxyron.de/html/opcodes02.html">Graham: 6502/6510/8500/8502 Opcode matrix</a></li>
 	<li><a href="http://www.obelisk.me.uk/6502/reference.html">Andrew Jacobs: 6502 Instruction Reference</a></li>
 	<li><a href="https://pastraiser.com/cpu/6502/6502_opcodes.html">Pavel Zima: 6502 instruction set</a></li>
 	<li><a href="http://www.ffd2.com/fridge/docs/6502-NMOS.extra.opcodes">Adam Vardy: Extra Instructions Of The 65XX Series CPU</a></li>
 	<li><a href="http://unusedino.de/ec64/technical/misc/c64/64doc.html">John West, Marko Mäkelä: Documentation for the NMOS 65xx/85xx Instruction Set</a></li>
-	<li><a href="http://anyplatform.net/media/guides/cpus/65xx%20Processor%20Data.txt">Mark Ormston: 65xx Processor Data</a></li>
 	<li><a href="http://6502.org/tutorials/65c02opcodes.html">Bruce Clark: 65C02 Opcodes</a></li>
 	</ul>
 

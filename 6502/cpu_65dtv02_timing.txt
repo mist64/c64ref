@@ -1,1 +1,4 @@
 .basedon cpu_6502_timing.txt
+12  2bp
+32  2
+42  2
