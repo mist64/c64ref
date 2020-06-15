@@ -55,22 +55,22 @@ TXA  trans  N-----Z-  X → A
 TXS  trans  --------  X → S
 TYA  trans  N-----Z-  Y → A
 
-AHX  load   --------  {adr}:=A&X&H
-ALR  arith  *-----**  A:=(A&#{imm})/2
-ANC  arith  *-----**  A:=A&#{imm}
-ARR  arith  **----**  A:=(A&#{imm})/2
-AXS  arith  *-----**  X:=A&X-#{imm}
-DCP  arith  *-----**  {adr}:={adr}-1 A-{adr}
-ISC  arith  **----**  {adr}:={adr}+1 A:=A-{adr}
-KIL  kil    --------
-LAS  load   *-----*-  A,X,S:={adr}&S
-LAX  load   *-----*-  A,X:={adr}
-RLA  arith  *-----**  {adr}:={adr}rol A:=A and {adr}
-RRA  arith  **----**  {adr}:={adr}ror A:=A adc {adr}
-SAX  load   --------  {adr}:=A&X
-SHX  load   --------  {adr}:=X&H
-SHY  load   --------  {adr}:=Y&H
-SLO  arith  *-----**  {adr}:={adr}*2 A:=A or {adr}
-SRE  arith  *-----**  {adr}:={adr}/2 A:=A exor {adr}
-TAS  trans  --------  S:=A&X {adr}:=S&H
-XAA  arith  *-----*-  A:=X&#{imm}
+AHX  load   --------  A ∧ X ∧ H → M
+ALR  arith  *-----**  (A ∧ M) / 2 → A
+ANC  arith  *-----**  A ∧ M → A
+ARR  arith  **----**  (A ∧ M) / 2 → A
+AXS  arith  *-----**  (A ∧ X) - M → X
+DCP  arith  *-----**  M - 1 → M, A - M
+ISC  arith  **----**  M + 1 → M, A - M → A
+KIL  kil    --------  Stop execution
+LAS  load   *-----*-  M ∧ S → A, X, S
+LAX  load   *-----*-  M → A, X
+RLA  arith  *-----**  ROL(M) → M, A ∧ M → A
+RRA  arith  **----**  ROR(M) → M, A + M + C → A
+SAX  load   --------  A ∧ X → M
+SHX  load   --------  X ∧ H → M
+SHY  load   --------  Y ∧ H → M
+SLO  arith  *-----**  M * 2 → M, A ∨ M → A
+SRE  arith  *-----**  M / 2 → M, A ⊻ M → A
+TAS  trans  --------  A ∧ X → M, S ∧ H → M
+XAA  arith  *-----*-  X ∧ M → A
