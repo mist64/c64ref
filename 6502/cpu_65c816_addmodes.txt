@@ -1,13 +1,13 @@
 .basedon cpu_65c02_addmodes.txt
 
-[a16]      0  X  Absolute Indirect Long
-(a16,X)    0  X  Absolute Long X-indexed
-[a8]       0  X  Direct Page Indirect Long
-[a8],Y     0  X  Direct Page Indirect Y-indexed Long
-a24        0  X  Absolute Long
-a24,X      0  X  X-indexed Absolute Long
-r16        0  X  Relative (word)
-src,dest   0  X  Block Move
-a8,S       0  X  Stack Relative
-(a8,S),Y   0  X  Stack Relative Indirect Y-indexed
+[a16]      0  [$nnnn]    Absolute Indirect Long
+(a16,X)    0  ($nnnn,X)  Absolute Long X-indexed
+[a8]       0  [$nn]      Direct Page Indirect Long
+[a8],Y     0  [$nn],Y    Direct Page Indirect Y-indexed Long
+a24        0  $nnnnnn    Absolute Long
+a24,X      0  $nnnnnn,X  X-indexed Absolute Long
+r16        0  $nnnn      Relative (word)
+src,dest   0  $nn,$nn    Block Move
+a8,S       0  $nn,S      Stack Relative
+(a8,S),Y   0  ($nn,S),Y  Stack Relative Indirect Y-indexed
 
