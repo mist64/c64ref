@@ -202,14 +202,24 @@ function show() {
 function o_from_x_y(x, y, opcode_table_organization) {
 	if (opcode_table_organization == '4-4') {
 		return y << 4 | x;
-	} else if (opcode_table_organization == '3-3-2h') {
+	} else if (opcode_table_organization == '3-3-2a/h') {
 		var a = x & 7;
 		var b = y & 7;
 		var c = x >> 3;
 		return a << 5 | b << 2 | c;
-	} else if (opcode_table_organization == '3-3-2v') {
+	} else if (opcode_table_organization == '3-3-2a/v') {
 		var a = x & 7;
 		var b = y & 7;
+		var c = y >> 3;
+		return a << 5 | b << 2 | c;
+	} else if (opcode_table_organization == '3-3-2b/h') {
+		var a = y & 7;
+		var b = x & 7;
+		var c = x >> 3;
+		return a << 5 | b << 2 | c;
+	} else if (opcode_table_organization == '3-3-2b/v') {
+		var a = y & 7;
+		var b = x & 7;
 		var c = y >> 3;
 		return a << 5 | b << 2 | c;
 	}
@@ -225,10 +235,10 @@ function generate_opcode_table() {
 	if (opcode_table_organization == '4-4') {
 		var limx = 16;
 		var limy = 16;
-	} else if (opcode_table_organization == '3-3-2h') {
+	} else if (opcode_table_organization.slice(-1) == 'h') {
 		var limx = 32;
 		var limy = 8;
-	} else if (opcode_table_organization == '3-3-2v') {
+	} else {
 		var limx = 8;
 		var limy = 32;
 	}
@@ -242,10 +252,7 @@ function generate_opcode_table() {
 		tr.appendChild(th);
 		if (opcode_table_organization == '4-4') {
 			th.innerHTML = 'x' + x.toString(16).toUpperCase()
-		} else if (opcode_table_organization == '3-3-2h') {
-			var o = o_from_x_y(x, 0, opcode_table_organization);
-			th.innerHTML = hex16(o);
-		} else if (opcode_table_organization == '3-3-2v') {
+		} else {
 			var o = o_from_x_y(x, 0, opcode_table_organization);
 			th.innerHTML = hex16(o);
 		}
@@ -258,10 +265,7 @@ function generate_opcode_table() {
 		tr.appendChild(th);
 		if (opcode_table_organization == '4-4') {
 			th.innerHTML = y.toString(16).toUpperCase() + 'x';
-		} else if (opcode_table_organization == '3-3-2h') {
-			var o = o_from_x_y(0, y, opcode_table_organization);
-			th.innerHTML = hex16(o);
-		} else if (opcode_table_organization == '3-3-2v') {
+		} else {
 			var o = o_from_x_y(0, y, opcode_table_organization);
 			th.innerHTML = hex16(o);
 		}
