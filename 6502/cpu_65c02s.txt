@@ -1,23 +1,20 @@
-[mnemos]
 .basedon r65c02
+
+[mnemos]
 STP   Stop the Clock
 WAI   Wait for Interrupt
 
 [operations]
-.basedon r65c02
 STP  ctrl   --------  Stop the clock
 WAI  ctrl   --------  Wait for interrupt
 
 [addmodes]
-.basedon r65c02
 
 
 [opcodes]
-.basedon r65c02
 CB  WAI
 DB  STP
 
 [timing]
-.basedon r65c02
 CB  3
 DB  3

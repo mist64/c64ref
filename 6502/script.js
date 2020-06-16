@@ -98,29 +98,14 @@ function init() {
 	}
 }
 
-function decode_text(text, section) {
-	text = text.split('\n');
-	var text2 = [];
-	for (var line of text) {
-		line = line.trim();
-		if (!line) {
-			continue;
-		}
-		line = line.split(/\s+/);
-		if (line[0] == '.basedon') {
-			var other_text = decode_text(get_file_data(line[1], section));
-			text2 = text2.concat(other_text);
-		} else {
-			text2.push(line);
-		}
-	}
-	return text2;
-}
-
 function get_file_data(cpu, section) {
 	var text = file_data[cpu][section].text;
-	if (file_data[cpu][section].basedon) {
-		var other_text = get_file_data(file_data[cpu][section].basedon, section);
+	var basedon = file_data[cpu][section].basedon;
+	if (!basedon) {
+		basedon = file_data[cpu].basedon;
+	}
+	if (basedon) {
+		var other_text = get_file_data(basedon, section);
 		text = other_text.concat(text);
 	}
 	return text;
@@ -136,15 +121,21 @@ function split_file_data(cpu, text) {
 			section = line.substr(1, line.length - 2);
 			data_out[section] = {};
 			data_out[section].text = [];
-		} else if (section) {
+		} else {
 			if (!line) {
 				continue;
 			}
 			line = line.split(/\s+/);
 			if (line[0] == '.basedon') {
-				data_out[section].basedon = line[1];
+				if (section) {
+					data_out[section].basedon = line[1];
+				} else {
+					data_out.basedon = line[1];
+				}
 			} else {
-				data_out[section].text.push(line);
+				if (section) {
+					data_out[section].text.push(line);
+				}
 			}
 		}
 	}
@@ -775,7 +766,6 @@ function generate_reference(id, filter) {
 	}
 }
 // TODO:
-// * combine files
 // * # vs E
 // * combine (zp) & (zp),z into one addmode
 // * check stz vs stz
@@ -785,3 +775,4 @@ function generate_reference(id, filter) {
 // * CPU summary text
 // * CPU tree
 // * diff function
+// * evaluate cycle formula

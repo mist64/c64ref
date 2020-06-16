@@ -1,26 +1,23 @@
-[mnemos]
 .basedon 6502
+
+[mnemos]
 SAC  Set Accumulator Mapping
 SIR  Set Index Register Mapping
 BRA  Branch Always
 
 [operations]
-.basedon 6502
 SAC  flags  --------  Set Accumulator Mapping
 SIR  flags  --------  Set Index Register Mapping
 BRA  ctrl   --------  Branch Always
 
 [addmodes]
-.basedon 6502
 
 [opcodes]
-.basedon 6502
 12  BRA   r8
 32  SAC   #d8
 42  SIR   #d8
 
 [timing]
-.basedon 6502
 12  2+t+p
 32  2
 42  2

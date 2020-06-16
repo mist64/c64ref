@@ -1,15 +1,13 @@
-[mnemos]
 .basedon 6502
 
+[mnemos]
+
 [operations]
-.basedon 6502
 ASL0 shift  N-----Z-  /7...0/ ← 0
 
 [addmodes]
-.basedon 6502
 
 [opcodes]
-.basedon 6502
 66  *ASL0  a8
 6A  *ASL0  A
 6E  *ASL0  a16
@@ -17,4 +15,3 @@ ASL0 shift  N-----Z-  /7...0/ ← 0
 7E  *ASL0  a16,X
 
 [timing]
-.basedon 6502
