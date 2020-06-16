@@ -413,7 +413,7 @@ function generate_opcode_table() {
 				}
 				cell += '<br/>';
 				if (cpu_data[cpu].opcodes[o].cycles) {
-					cell += '<span style="float: left;">' + cpu_data[cpu].opcodes[o].cycles
+					cell += '<span style="float: left;">' + pretty_cycles(cpu, o);
 					cell += '</span>';
 					cell += '<span style="float: right;">' + cpu_data[cpu].addmodes[addmode].bytes;
 					cell += '</span>';
@@ -432,9 +432,9 @@ function hex16(a) {
 	return ('0' + a.toString(16).toUpperCase()).slice(-2);
 }
 
-function pretty_cycles(opcode) {
-	var cycles = opcode.cycles;
-	if (cycles == null) {
+function pretty_cycles(cpu, opcode) {
+	var cycles = cpu_data[cpu].opcodes[opcode].cycles;
+	if (cycles == 'X') {
 		return '&infin;';
 	} else {
 		return cycles;
@@ -539,7 +539,7 @@ function generate_opcode_cycle_reference(id, which, filter) {
 				if (which == 'opcode') {
 					td.innerHTML = hex16(opcode);
 				} else {
-					td.innerHTML = pretty_cycles(cpu_data[cpu].opcodes[opcode]);
+					td.innerHTML = pretty_cycles(cpu, opcode);
 
 				}
 				row_is_empty = false;
@@ -624,7 +624,7 @@ function generate_big_table(id, filter) {
 			tr.appendChild(td3);
 			var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter);
 			for (var opcode of opcodes) {
-				var cycles = pretty_cycles(cpu_data[cpu].opcodes[opcode]);
+				var cycles = pretty_cycles(cpu, opcode);
 				td1.innerHTML += hex16(opcode) + '<br/>';
 				td2.innerHTML += cpu_data[cpu].addmodes[addmode].bytes + '<br/>';
 				td3.innerHTML += cycles + '<br/>';
@@ -741,11 +741,7 @@ function generate_reference(id, filter) {
 					td = document.createElement("td");
 					tr.appendChild(td);
 					var cycles = cpu_data[cpu].opcodes[opcode].cycles;
-					if (cycles == null) {
-						td.innerHTML = '&infin;';
-					} else {
-						td.innerHTML = cycles;
-					}
+					td.innerHTML = pretty_cycles(cpu, opcode);
 				}
 			}
 		}
