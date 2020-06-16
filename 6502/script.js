@@ -202,12 +202,12 @@ function fixup_data(cpu) {
 	// get all used mnemos
 	var mnemos = Object.keys(cpu_data[cpu].operations).sort();
 	cpu_data[cpu].all_mnemos = {};
-	for (var filter of ['regular', 'illegal', 'none']) {
+	for (var filter of ['regular', 'illegal', 'all']) {
 		cpu_data[cpu].all_mnemos[filter] = [];
 		for (var mnemo of mnemos) {
 			var found = false;
 			for (var addmode of all_sorted_addmodes) {
-				var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode);
+				var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter);
 				for (var opcode of opcodes) {
 					if (filter == 'regular' && cpu_data[cpu].opcodes[opcode].illegal) {
 						continue;
@@ -231,12 +231,12 @@ function fixup_data(cpu) {
 	// get all used addmodes
 	var mnemos = Object.keys(cpu_data[cpu].operations).sort();
 	cpu_data[cpu].all_addmodes = {};
-	for (var filter of ['regular', 'illegal', 'none']) {
+	for (var filter of ['regular', 'illegal', 'all']) {
 		cpu_data[cpu].all_addmodes[filter] = [];
 		for (var addmode of all_sorted_addmodes) {
 			var found = false;
 			for (var mnemo of mnemos) {
-				var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode);
+				var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter);
 				for (var opcode of opcodes) {
 					if (filter == 'regular' && cpu_data[cpu].opcodes[opcode].illegal) {
 						continue;
@@ -259,11 +259,17 @@ function fixup_data(cpu) {
 	console.log(cpu, cpu_data[cpu].all_mnemos, cpu_data[cpu].all_addmodes);
 }
 
-function opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode) {
+function opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter) {
 	var res = [];
-	for (var i = 0; i <= 255; i++) {
-		if (cpu_data[cpu].opcodes[i].mnemo == mnemo && cpu_data[cpu].opcodes[i].addmode == addmode) {
-			res.push(i);
+	for (var opcode = 0; opcode <= 255; opcode++) {
+		if (cpu_data[cpu].opcodes[opcode].mnemo == mnemo && cpu_data[cpu].opcodes[opcode].addmode == addmode) {
+			if (filter == 'regular' && cpu_data[cpu].opcodes[opcode].illegal) {
+				continue;
+			}
+			if (filter == 'illegal' && !cpu_data[cpu].opcodes[opcode].illegal) {
+				continue;
+			}
+			res.push(opcode);
 		}
 	}
 	return res;
@@ -302,14 +308,14 @@ function show() {
 	}
 
 	generate_opcode_table();
-	generate_mnemos_by_category();
+	generate_mnemos_by_category('mnemos_by_category', 'all');
 	generate_opcode_cycle_reference('cycle_reference1', 'cycle', filter1);
 	generate_opcode_cycle_reference('cycle_reference2', 'cycle', filter2);
 	generate_opcode_cycle_reference('opcode_reference1', 'opcode', filter1);
 	generate_opcode_cycle_reference('opcode_reference2', 'opcode', filter2);
 	generate_big_table('big_table1', filter1);
 	generate_big_table('big_table2', filter2);
-	generate_reference();
+	generate_reference('reference', 'all');
 }
 
 function o_from_x_y(x, y, opcode_table_organization) {
@@ -427,8 +433,8 @@ function pretty_cycles(opcode) {
 	}
 }
 
-function generate_mnemos_by_category() {
-	var mnemos_by_category = document.getElementById('mnemos_by_category');
+function generate_mnemos_by_category(id, filter) {
+	var mnemos_by_category = document.getElementById(id);
 	mnemos_by_category.innerHTML = '';
 
 	// collect data
@@ -440,7 +446,7 @@ function generate_mnemos_by_category() {
 
 				var show = false;
 				for (var addmode of all_sorted_addmodes) {
-					var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode);
+					var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter);
 					for (var opcode of opcodes) {
 						if (showillegal || !cpu_data[cpu].opcodes[opcode].illegal) {
 							show = true;
@@ -519,7 +525,7 @@ function generate_opcode_cycle_reference(id, which, filter) {
 		for (var addmode of cpu_data[cpu].all_addmodes[filter]) {
 			td = document.createElement("td");
 			tr.appendChild(td);
-			var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode);
+			var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter);
 			if (opcodes.length) {
 				var opcode = opcodes[0];
 				if (which == 'opcode') {
@@ -610,14 +616,8 @@ function generate_big_table(id, filter) {
 			tr.appendChild(td1);
 			tr.appendChild(td2);
 			tr.appendChild(td3);
-			var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode);
+			var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter);
 			for (var opcode of opcodes) {
-				if (filter == 'regular' && cpu_data[cpu].opcodes[opcode].illegal) {
-					continue;
-				}
-				if (filter == 'illegal' && !cpu_data[cpu].opcodes[opcode].illegal) {
-					continue;
-				}
 				var cycles = pretty_cycles(cpu_data[cpu].opcodes[opcode]);
 				td1.innerHTML += hex16(opcode) + '<br/>';
 				td2.innerHTML += cpu_data[cpu].addmodes[addmode].bytes + '<br/>';
@@ -647,8 +647,8 @@ function generate_big_table(id, filter) {
 	}
 }
 
-function generate_reference() {
-	var reference = document.getElementById('reference');
+function generate_reference(id, filter) {
+	var reference = document.getElementById(id);
 	reference.innerHTML = '';
 
 	for (var mnemo of Object.keys(cpu_data[cpu].operations).sort()) {
@@ -712,7 +712,7 @@ function generate_reference() {
 		}
 		var show_illegal_footnote = false;
 		for (var addmode of Object.keys(cpu_data[cpu].addmodes)) {
-			var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode);
+			var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter);
 			for (var opcode of opcodes) {
 				var illegal = cpu_data[cpu].opcodes[opcode].illegal;
 				if (showillegal || !illegal) {
