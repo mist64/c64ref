@@ -1,6 +1,6 @@
 [info]
 name      MOS 6502
-year      1976
+year      1975
 id        6502
 
 [mnemos]

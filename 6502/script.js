@@ -319,6 +319,7 @@ function show() {
 			filter2 = 'none';
 	}
 
+	generate_info('info_div');
 	generate_opcode_table('opcode_table1', filter1);
 	generate_opcode_table('opcode_table2', filter2);
 	generate_mnemos_by_category('mnemos_by_category', filter1);
@@ -355,6 +356,22 @@ function o_from_x_y(x, y, opcode_table_organization) {
 		var c = y >> 3;
 		return a << 5 | b << 2 | c;
 	}
+}
+
+function generate_info(id) {
+	var opcode_table = document.getElementById(id);
+
+	html = '';
+	html += '<h3>' + cpu_data[cpu].info.name
+	if (cpu_data[cpu].info.revision) {
+		html += ' (' + cpu_data[cpu].info.revision + ')';
+	}
+	if (cpu_data[cpu].info.year) {
+		html += ' [' + cpu_data[cpu].info.year + ']';
+	}
+	html += '</h3>'
+
+	opcode_table.innerHTML = html;
 }
 
 function generate_opcode_table(id, filter) {
@@ -778,3 +795,4 @@ function generate_reference(id, filter) {
 // * CPU tree
 // * diff function
 // * evaluate cycle formula
+// * addmode table below opcode table
