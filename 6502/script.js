@@ -474,7 +474,6 @@ function generate_opcode_table(id, filter) {
 				if (cpu_data[cpu].opcodes[o].cycles) {
 					cell += '<span style="float: left;">' + pretty_cycles(cpu, o);
 					cell += '</span>';
-					console.log(addmode, cpu_data[cpu].addmodes);
 					cell += '<span style="float: right;">' + cpu_data[cpu].addmodes[addmode].bytes;
 					cell += '</span>';
 				}
@@ -584,6 +583,7 @@ function generate_big_table(id, filter) {
 	showopcodes = document.getElementById('showopcodes').checked;
 	showbytes = document.getElementById('showbytes').checked;
 	showcycles = document.getElementById('showcycles').checked;
+	sortbycat = document.getElementById('sortbycat').checked;
 
 	tr = document.createElement("tr");
 	big_table.appendChild(tr);
@@ -639,7 +639,21 @@ function generate_big_table(id, filter) {
 		th.innerHTML = cpu_data[cpu].flags.names[i];
 	}
 
-	for (var mnemo of cpu_data[cpu].all_mnemos[filter]) {
+	var all_mnemos = cpu_data[cpu].all_mnemos[filter].slice();
+	if (sortbycat) {
+		function sort_by_cat(a, b) {
+			var cat_a = cpu_data[cpu].operations[a].category;
+			var cat_b = cpu_data[cpu].operations[b].category;
+			if (cat_a == cat_b) {
+				return a.localeCompare(b);
+			} else {
+				return all_sorted_categories.findIndex(x => x == cat_a) - all_sorted_categories.findIndex(x => x == cat_b);
+			}
+		}
+		all_mnemos = all_mnemos.sort(sort_by_cat);
+	}
+
+	for (var mnemo of all_mnemos) {
 		var h2, table, tr, td, th, p;
 
 		tr = document.createElement("tr");
