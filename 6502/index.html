@@ -11,11 +11,11 @@ h2 {
 	font-size: medium;
 }
 
-#opcode_table {
+.opcode_table {
 	border: none;
 }
 
-#opcode_table td {
+.opcode_table td {
 	border: 1px solid white;
 	height: 40px;
 	width: 40px;
@@ -24,7 +24,7 @@ h2 {
 	/* text-shadow: 1px 0px 2px white; */
 }
 
-#opcode_table th {
+.opcode_table th {
 	font-size: 7.5pt;
 	font-family: monospace;
 	text-align: center;
@@ -158,7 +158,7 @@ h2 {
 			<input checked type="checkbox" id="showillegal" onclick="show()">
 			<label for="showillegal">Undocumented opcodes</label>
 			<span id="separateillegal_box">
-				<input checked type="checkbox" id="separateillegal" onclick="show()">
+				<input type="checkbox" id="separateillegal" onclick="show()">
 				<label for="separateillegal">Separate</label>
 			</span>
 		</span>
@@ -174,7 +174,9 @@ h2 {
 			<option value="3-3-2b/v">3-3-2 B (vertical)</option>
 		</select>
 	</p>
-	<table id="opcode_table"></table>
+
+	<table class="opcode_table" id="opcode_table1"></table>
+	<table class="opcode_table" id="opcode_table2"></table>
 
 	<table style="font-size: 9pt;">
 		<tr>

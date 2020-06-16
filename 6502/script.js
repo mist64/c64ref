@@ -198,6 +198,16 @@ function decode_timing(cpu) {
 	}
 }
 
+function should_show(filter, opcode) {
+	if (filter == 'regular' && opcode.illegal) {
+		return false;
+	}
+	if (filter == 'illegal' && !opcode.illegal) {
+		return false;
+	}
+	return true;
+}
+
 function fixup_data(cpu) {
 	// get all used mnemos
 	var mnemos = Object.keys(cpu_data[cpu].operations).sort();
@@ -209,14 +219,10 @@ function fixup_data(cpu) {
 			for (var addmode of all_sorted_addmodes) {
 				var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter);
 				for (var opcode of opcodes) {
-					if (filter == 'regular' && cpu_data[cpu].opcodes[opcode].illegal) {
-						continue;
+					if (should_show(filter, cpu_data[cpu].opcodes[opcode])) {
+						found = true;
+						break;
 					}
-					if (filter == 'illegal' && !cpu_data[cpu].opcodes[opcode].illegal) {
-						continue;
-					}
-					found = true;
-					break;
 				}
 				if (found) {
 					break;
@@ -238,14 +244,10 @@ function fixup_data(cpu) {
 			for (var mnemo of mnemos) {
 				var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter);
 				for (var opcode of opcodes) {
-					if (filter == 'regular' && cpu_data[cpu].opcodes[opcode].illegal) {
-						continue;
+					if (should_show(filter, cpu_data[cpu].opcodes[opcode])) {
+						found = true;
+						break;
 					}
-					if (filter == 'illegal' && !cpu_data[cpu].opcodes[opcode].illegal) {
-						continue;
-					}
-					found = true;
-					break;
 				}
 				if (found) {
 					break;
@@ -306,7 +308,8 @@ function show() {
 			filter2 = 'none';
 	}
 
-	generate_opcode_table();
+	generate_opcode_table('opcode_table1', filter1);
+	generate_opcode_table('opcode_table2', filter2);
 	generate_mnemos_by_category('mnemos_by_category', 'all');
 	generate_opcode_cycle_reference('cycle_reference1', 'cycle', filter1);
 	generate_opcode_cycle_reference('cycle_reference2', 'cycle', filter2);
@@ -343,11 +346,15 @@ function o_from_x_y(x, y, opcode_table_organization) {
 	}
 }
 
-function generate_opcode_table() {
+function generate_opcode_table(id, filter) {
 	opcode_table_organization = document.getElementById('opcode_table_organization').value;
 
-	var opcode_table = document.getElementById('opcode_table');
+	var opcode_table = document.getElementById(id);
 	opcode_table.innerHTML = '';
+
+	if (filter == 'none') {
+		return;
+	}
 
 	if (opcode_table_organization == '4-4') {
 		var limx = 16;
@@ -401,13 +408,13 @@ function generate_opcode_table() {
 			var o = o_from_x_y(x, y, opcode_table_organization);
 			var opcode = cpu_data[cpu].opcodes[o];
 
-			if (opcode.mnemo && (showillegal || !opcode.illegal)) {
+			if (opcode.mnemo && should_show(filter, opcode)) {
 				td.className += ' ' + cpu_data[cpu].operations[opcode.mnemo].category;
 				if (opcode.illegal) {
 					td.className += ' ill';
 				}
 				var addmode = cpu_data[cpu].opcodes[o].addmode;
-				var cell = cpu_data[cpu].opcodes[o].mnemo + '<br/>';
+				var cell = '<b>' + cpu_data[cpu].opcodes[o].mnemo + '</b><br/>';
 				if (addmode != '-') {
 					cell += addmode;
 				}
