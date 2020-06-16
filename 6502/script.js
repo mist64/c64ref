@@ -79,7 +79,6 @@ function init() {
 				split_file_data(r.cpu, r.responseText);
 				files_loaded++;
 				if (files_loaded == cpus.length) {
-					console.log(file_data);
 					for (var cpu of cpus) {
 						cpu_data[cpu] = {};
 						decode_opcodes(cpu);
@@ -119,7 +118,12 @@ function decode_text(text, section) {
 }
 
 function get_file_data(cpu, section) {
-	return file_data[cpu][section].text;
+	var text = file_data[cpu][section].text;
+	if (file_data[cpu][section].basedon) {
+		var other_text = get_file_data(file_data[cpu][section].basedon, section);
+		text = other_text.concat(text);
+	}
+	return text;
 }
 
 function split_file_data(cpu, text) {
@@ -145,7 +149,6 @@ function split_file_data(cpu, text) {
 		}
 	}
 	file_data[cpu] = data_out;
-	console.log(data_out);
 }
 
 function decode_opcodes(cpu) {
