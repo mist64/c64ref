@@ -65,7 +65,7 @@ TZA  stack N-----Z-  Z → A
 #d16      3  #$nnnn        Immediate (word)
 (a8),Z    2  ($nn),Z       Indirect Y-Indexed
 r16       3  $nnnn         Relative (word)
-(r8,SP),Y 2  ($nnnn,SP),Y  Stack Pointer Indirect, Y-indexed
+(a8,S),Y  2  ($nnnn,SP),Y  Stack Relative Indirect Y-indexed
 
 a8     2  $nn      Base Page
 a8,X   2  $nn,X    X-indexed Base Page
@@ -102,7 +102,7 @@ a8,Y   2  $nn,Y    Y-indexed Base Page
 72  ADC   (a8),Z
 73  BVS   r16
 7B  TBA
-82  STA   (r8,SP),Y
+82  STA   (a8,S),Y
 83  BRA   r16
 8B  STY   a16,X
 92  STA   (a8),Z
@@ -121,7 +121,7 @@ D3  BNE   r16
 D4  CPZ   a8
 DB  PHZ
 DC  CPZ   a16
-E2  LDA   (r8,SP),Y
+E2  LDA   (a8,S),Y
 E3  INW   a8
 EB  ROW   a16
 F2  SBC   (a8),Z

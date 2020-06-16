@@ -173,7 +173,6 @@ function decode_flags(cpu) {
 	for (id of ids) {
 		names += name[id];
 	}
-	console.log(names);
 
 	cpu_data[cpu].flags = {};
 	cpu_data[cpu].flags.names = names;
@@ -489,6 +488,7 @@ function generate_opcode_table(id, filter) {
 				if (cpu_data[cpu].opcodes[o].cycles) {
 					cell += '<span style="float: left;">' + pretty_cycles(cpu, o);
 					cell += '</span>';
+					console.log(addmode, cpu_data[cpu].addmodes);
 					cell += '<span style="float: right;">' + cpu_data[cpu].addmodes[addmode].bytes;
 					cell += '</span>';
 				}
@@ -729,7 +729,6 @@ function generate_big_table(id, filter) {
 					td.innerHTML = flag;
 					break;
 				default:
-					console.log(cpu_data[cpu].flags);
 					td.innerHTML = cpu_data[cpu].flags.names[i];
 					break;
 			}
@@ -853,8 +852,6 @@ function generate_reference(id, filter) {
 	}
 }
 // TODO:
-// * # vs E
-// * combine (zp) & (zp),z into one addmode
 // * check stz vs stz
 // * combine 65ce02 and 65c816 ($nn,s),y into same addmode
 // * add instruction description text
