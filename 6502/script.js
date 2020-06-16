@@ -310,7 +310,7 @@ function show() {
 
 	generate_opcode_table('opcode_table1', filter1);
 	generate_opcode_table('opcode_table2', filter2);
-	generate_mnemos_by_category('mnemos_by_category', 'all');
+	generate_mnemos_by_category('mnemos_by_category', filter1);
 	generate_opcode_cycle_reference('cycle_reference1', 'cycle', filter1);
 	generate_opcode_cycle_reference('cycle_reference2', 'cycle', filter2);
 	generate_opcode_cycle_reference('opcode_reference1', 'opcode', filter1);
@@ -454,30 +454,18 @@ function generate_mnemos_by_category(id, filter) {
 
 	// collect data
 	var data = [];
+	var max_cat_size = 0;
 	for (var category of all_sorted_categories) {
 		var column = [ category ];
 		for (mnemo of cpu_data[cpu].all_mnemos[filter]) {
 			if (cpu_data[cpu].operations[mnemo].category == category) {
-
-				var show = false;
-				for (var addmode of all_sorted_addmodes) {
-					var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter);
-					for (var opcode of opcodes) {
-						if (showillegal || !cpu_data[cpu].opcodes[opcode].illegal) {
-							show = true;
-							break;
-						}
-					}
-					if (show) {
-						break;
-					}
-				}
-				if (show) {
 					column.push(mnemo);
-				}
 			}
 		}
 		data.push(column);
+		if (max_cat_size < column.length) {
+			max_cat_size = column.length;
+		}
 	}
 
 	// build table
@@ -491,21 +479,21 @@ function generate_mnemos_by_category(id, filter) {
 		tr.appendChild(th);
 		th.innerHTML = column[0];
 	}
-	tr = document.createElement("tr");
-	mnemos_by_category.appendChild(tr);
-	for (var column of data) {
-		if (column.length == 1) {
-			continue;
-		}
-		var html = '';
-		for (var line of column.slice(1).sort()) {
-			html += line +  '<br/>'
-		}
+	for (var i = 1; i < max_cat_size; i++) {
+		tr = document.createElement("tr");
+		mnemos_by_category.appendChild(tr);
+		for (var column of data) {
+			if (column.length == 1) {
+				continue;
+			}
 
-		td = document.createElement("td");
-		tr.appendChild(td);
-		td.innerHTML = html;
-		td.className = column[0];
+			td = document.createElement("td");
+			tr.appendChild(td);
+			if (column[i]) {
+				td.innerHTML = column[i] +  '<br/>'
+				td.className = column[0];
+			}
+		}
 	}
 }
 
