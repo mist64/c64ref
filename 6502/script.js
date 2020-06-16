@@ -71,8 +71,7 @@ function filename_for_cpu_and_type(cpu, type) {
 
 function init() {
 	var files_to_load = [];
-	for (var i = 0; i < cpus.length; i++) {
-		var cpu = cpus[i];
+	for (cpu of cpus) {
 		for (var type of ['opcodes', 'operations', 'mnemos', 'addmodes', 'timing']) {
 			files_to_load.push({
 				cpu: cpu,
@@ -82,9 +81,9 @@ function init() {
 		}
 	}
 
-	for (var i = 0; i < files_to_load.length; i++) {
+	for (var file_to_load of files_to_load) {
 		var r = new XMLHttpRequest();
-		r.file_to_load = files_to_load[i];
+		r.file_to_load = file_to_load;
 		r.open("GET", r.file_to_load.filename, false);
 		r.onload = function() {
 			if (r.status == 200 || r.status == 0) {
@@ -113,8 +112,8 @@ function init() {
 function decode_text(text) {
 	text = text.split('\n');
 	var text2 = [];
-	for (var i = 0; i < text.length; i++) {
-		line = text[i].trim();
+	for (var line of text) {
+		line = line.trim();
 		if (!line) {
 			continue;
 		}
@@ -136,8 +135,7 @@ function decode_opcodes(cpu) {
 	for (var i = 0; i <= 255; i++) {
 		cpu_data[cpu].opcodes[i] = {};
 	}
-	for (var i = 0; i < text.length; i++) {
-		var line = text[i];
+	for (var line of text) {
 		var o = parseInt(line[0], 16);
 		var mnemo = line[1];
 		cpu_data[cpu].opcodes[o].illegal = false;
@@ -153,8 +151,7 @@ function decode_operations(cpu) {
 	text = file_data[filename_for_cpu_and_type(cpu, 'operations')];
 	text = decode_text(text);
 	cpu_data[cpu].operations = {};
-	for (var i = 0; i < text.length; i++) {
-		var line = text[i];
+	for (var line of text) {
 		var mnemo = line[0];
 		cpu_data[cpu].operations[mnemo] = {};
 		cpu_data[cpu].operations[mnemo].category = line[1];
@@ -183,8 +180,7 @@ function decode_addmodes(cpu) {
 	text = file_data[filename_for_cpu_and_type(cpu, 'addmodes')];
 	text = decode_text(text);
 	cpu_data[cpu].addmodes = {};
-	for (var i = 0; i < text.length; i++) {
-		var line = text[i];
+	for (var line of text) {
 		var addmode = line[0];
 		cpu_data[cpu].addmodes[addmode] = {};
 		cpu_data[cpu].addmodes[addmode].bytes = line[1];
@@ -196,8 +192,7 @@ function decode_addmodes(cpu) {
 function decode_timing(cpu) {
 	text = file_data[filename_for_cpu_and_type(cpu, 'timing')];
 	text = decode_text(text);
-	for (var i = 0; i < text.length; i++) {
-		var line = text[i];
+	for (var line of text) {
 		var o = parseInt(line[0], 16);
 		cpu_data[cpu].opcodes[o].cycles = line[1];
 	}
