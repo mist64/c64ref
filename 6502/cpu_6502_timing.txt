@@ -100,7 +100,7 @@ AA  2
 AC  4
 AD  4
 AE  4
-B0  2+t++p
+B0  2+t+p
 B1  5+p
 B4  4
 B5  4

@@ -256,7 +256,6 @@ function fixup_data(cpu) {
 			}
 		}
 	}
-	console.log(cpu, cpu_data[cpu].all_mnemos, cpu_data[cpu].all_addmodes);
 }
 
 function opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter) {
@@ -441,7 +440,7 @@ function generate_mnemos_by_category(id, filter) {
 	var data = [];
 	for (var category of all_sorted_categories) {
 		var column = [ category ];
-		for (mnemo of Object.keys(cpu_data[cpu].operations)) {
+		for (mnemo of cpu_data[cpu].all_mnemos[filter]) {
 			if (cpu_data[cpu].operations[mnemo].category == category) {
 
 				var show = false;
@@ -593,8 +592,7 @@ function generate_big_table(id, filter) {
 		th.innerHTML = 'NV#BDIZC'[i];
 	}
 
-
-	for (var mnemo of Object.keys(cpu_data[cpu].operations).sort()) {
+	for (var mnemo of cpu_data[cpu].all_mnemos[filter]) {
 		var h2, table, tr, td, th, p;
 
 		tr = document.createElement("tr");
@@ -608,7 +606,6 @@ function generate_big_table(id, filter) {
 		tr.appendChild(td);
 		td.innerHTML = cpu_data[cpu].operations[mnemo].description;
 
-		var row_is_empty = true;
 		for (var addmode of cpu_data[cpu].all_addmodes[filter]) {
 			var td1 = document.createElement("td");
 			var td2 = document.createElement("td");
@@ -622,13 +619,9 @@ function generate_big_table(id, filter) {
 				td1.innerHTML += hex16(opcode) + '<br/>';
 				td2.innerHTML += cpu_data[cpu].addmodes[addmode].bytes + '<br/>';
 				td3.innerHTML += cycles + '<br/>';
-				row_is_empty = false;
 			}
 		}
-		if (!row_is_empty) {
-			big_table.appendChild(tr);
-		}
-
+		big_table.appendChild(tr);
 		for (var i = 0; i < 8; i++) {
 			td = document.createElement("td");
 			tr.appendChild(td);
@@ -651,7 +644,7 @@ function generate_reference(id, filter) {
 	var reference = document.getElementById(id);
 	reference.innerHTML = '';
 
-	for (var mnemo of Object.keys(cpu_data[cpu].operations).sort()) {
+	for (var mnemo of cpu_data[cpu].all_mnemos[filter]) {
 		var div = document.createElement("div");
 		var num_rows = 0;
 
@@ -711,7 +704,7 @@ function generate_reference(id, filter) {
 			th.innerHTML = title;
 		}
 		var show_illegal_footnote = false;
-		for (var addmode of Object.keys(cpu_data[cpu].addmodes)) {
+		for (var addmode of cpu_data[cpu].all_addmodes[filter]) {
 			var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter);
 			for (var opcode of opcodes) {
 				var illegal = cpu_data[cpu].opcodes[opcode].illegal;
