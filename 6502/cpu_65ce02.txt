@@ -1,5 +1,10 @@
+[info]
+name      CSG 65CE02
+year      1988
+id        65ce02
+basedon   r65c02
+
 [mnemos]
-.basedon r65c02
 ASR   Arithmetic Shift Right
 ASW   Arithmetic Shift Left Word
 AUG   Augment
@@ -27,7 +32,6 @@ TYS   Transfer Y to Stack Pointer
 TZA   Transfer Z to Accumulator
 
 [operations]
-.basedon r65c02
 ASR  shift N-----ZC  M7 → /7...0/ → C
 ASW  shift N-----ZC  C ← /15...0/ ← 0
 AUG  nop   --------  No Operation
@@ -55,7 +59,6 @@ TYS  trans --------  Y → S
 TZA  stack N-----Z-  Z → A
 
 [addmodes]
-.basedon r65c02
 #d16      3  #$nnnn        Immediate (word)
 (a8),Z    2  ($nn),Z       Indirect Y-Indexed
 r16       3  $nnnn         Relative (word)
@@ -68,7 +71,6 @@ a8,Y   2  $nn,Y    Y-indexed Base Page
 (a8),Y 2  ($nn),Y  Base Page Indirect Y-Indexed
 
 [opcodes]
-.basedon r65c02
 02  CLE
 03  SEE
 0B  TSY
@@ -125,7 +127,7 @@ F4  PHW   #d16
 FB  PLZ
 FC  PHW   a16
 
-[timing]
+[timing] ; not derived, overrides all opcodes
 00  2
 01  2
 02  1

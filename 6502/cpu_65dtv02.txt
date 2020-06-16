@@ -1,4 +1,8 @@
-.basedon 6502
+[info]
+name      65DTV02
+year      2005
+id        65dtv02
+basedon   6502
 
 [mnemos]
 SAC  Set Accumulator Mapping
@@ -17,7 +21,7 @@ BRA  ctrl   --------  Branch Always
 32  SAC   #d8
 42  SIR   #d8
 
-[timing]
+[timing] ; not derived, overrides all opcodes
 00  6
 01  6
 02  X

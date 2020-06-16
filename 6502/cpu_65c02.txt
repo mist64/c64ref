@@ -1,4 +1,8 @@
-.basedon 6502
+[info]
+name      WDC 65C02
+year      1983
+id        65c02
+basedon   6502
 
 [mnemos]
 BRA   Branch

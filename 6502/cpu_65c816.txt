@@ -1,4 +1,8 @@
-.basedon 65c02
+[info]
+name      WDC 65C816
+year      1984
+id        65c816
+basedon   65c02
 
 [mnemos]
 BRL  Branch Long

@@ -81,6 +81,7 @@ function init() {
 				if (files_loaded == cpus.length) {
 					for (var cpu of cpus) {
 						cpu_data[cpu] = {};
+						decode_info(cpu);
 						decode_opcodes(cpu);
 						decode_operations(cpu);
 						decode_mnemos(cpu);
@@ -100,12 +101,11 @@ function init() {
 
 function get_file_data(cpu, section) {
 	var text = file_data[cpu][section].text;
-	var basedon = file_data[cpu][section].basedon;
-	if (!basedon) {
-		basedon = file_data[cpu].basedon;
+	if (!text) {
+		text = [];
 	}
-	if (basedon) {
-		var other_text = get_file_data(basedon, section);
+	if (cpu_data[cpu].info && cpu_data[cpu].info.basedon) {
+		var other_text = get_file_data(cpu_data[cpu].info.basedon, section);
 		text = other_text.concat(text);
 	}
 	return text;
@@ -116,30 +116,32 @@ function split_file_data(cpu, text) {
 	var data_out = {};
 	var section = null;
 	for (var line of lines_in) {
+		line = line.split(';')[0]; // remove comments
 		line = line.trim();
-		if (line[0] == '[' && line[line.length - 1] == ']') {
+		if (!line) {
+			continue;
+		} else 	if (line[0] == '[' && line[line.length - 1] == ']') {
 			section = line.substr(1, line.length - 2);
 			data_out[section] = {};
-			data_out[section].text = [];
 		} else {
-			if (!line) {
-				continue;
-			}
 			line = line.split(/\s+/);
-			if (line[0] == '.basedon') {
-				if (section) {
-					data_out[section].basedon = line[1];
-				} else {
-					data_out.basedon = line[1];
+			if (section) {
+				if (!data_out[section].text) {
+					data_out[section].text = [];
 				}
-			} else {
-				if (section) {
-					data_out[section].text.push(line);
-				}
+				data_out[section].text.push(line);
 			}
 		}
 	}
 	file_data[cpu] = data_out;
+}
+
+function decode_info(cpu) {
+	text = get_file_data(cpu, 'info');
+	cpu_data[cpu].info = {};
+	for (var line of text) {
+		cpu_data[cpu].info[line[0]] = line.slice(1).join(' ');
+	}
 }
 
 function decode_opcodes(cpu) {

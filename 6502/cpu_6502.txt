@@ -1,3 +1,8 @@
+[info]
+name      MOS 6502
+year      1976
+id        6502
+
 [mnemos]
 ADC  Add with Carry
 AND  Logical AND

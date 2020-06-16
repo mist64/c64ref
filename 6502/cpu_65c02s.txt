@@ -1,4 +1,7 @@
-.basedon r65c02
+[info]
+name      WDC 65C02S
+id        65c02s
+basedon   r65c02
 
 [mnemos]
 STP   Stop the Clock
