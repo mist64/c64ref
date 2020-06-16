@@ -373,22 +373,12 @@ function show() {
 function o_from_x_y(x, y, opcode_table_organization) {
 	if (opcode_table_organization == '4-4') {
 		return y << 4 | x;
-	} else if (opcode_table_organization == '3-3-2a/h') {
-		var a = x & 7;
-		var b = y & 7;
-		var c = x >> 3;
-		return a << 5 | b << 2 | c;
-	} else if (opcode_table_organization == '3-3-2a/v') {
-		var a = x & 7;
-		var b = y & 7;
-		var c = y >> 3;
-		return a << 5 | b << 2 | c;
-	} else if (opcode_table_organization == '3-3-2b/h') {
+	} else if (opcode_table_organization == '3-3-2/h') {
 		var a = y & 7;
 		var b = x & 7;
 		var c = x >> 3;
 		return a << 5 | b << 2 | c;
-	} else if (opcode_table_organization == '3-3-2b/v') {
+	} else if (opcode_table_organization == '3-3-2/v') {
 		var a = y & 7;
 		var b = x & 7;
 		var c = y >> 3;
