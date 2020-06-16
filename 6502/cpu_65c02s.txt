@@ -1,0 +1,24 @@
+
+[mnemos]
+.basedon cpu_r65c02_mnemos.txt
+STP   Stop the Clock
+WAI   Wait for Interrupt
+
+[operations]
+.basedon cpu_r65c02_operations.txt
+STP  ctrl   --------  Stop the clock
+WAI  ctrl   --------  Wait for interrupt
+
+[addmodes]
+.basedon cpu_r65c02_addmodes.txt
+
+
+[opcodes]
+.basedon cpu_r65c02_opcodes.txt
+CB  WAI
+DB  STP
+
+[timing]
+.basedon cpu_r65c02_timing.txt
+CB  3
+DB  3

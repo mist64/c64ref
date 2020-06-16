@@ -1,0 +1,669 @@
+
+[mnemos]
+ADC  Add with Carry
+AND  Logical AND
+ASL  Arithmetic Shift Left
+BCC  Branch if Carry Clear
+BCS  Branch if Carry Set
+BEQ  Branch if Equal
+BIT  Bit Test
+BMI  Branch if Minus
+BNE  Branch if Not Equal
+BPL  Branch if Plus
+BRK  Force Interrupt
+BVC  Branch if Overflow Clear
+BVS  Branch if Overflow Set
+CLC  Clear Carry Flag
+CLD  Clear Decimal Mode
+CLI  Clear Interrupt Disable
+CLV  Clear Overflow Flag
+CMP  Compare
+CPX  Compare X Register
+CPY  Compare Y Register
+DEC  Decrement Memory
+DEX  Decrement X Register
+DEY  Decrement Y Register
+EOR  Exclusive OR
+INC  Increment Memory
+INX  Increment X Register
+INY  Increment Y Register
+JMP  Jump
+JSR  Jump to Subroutine
+LDA  Load Accumulator
+LDX  Load X Register
+LDY  Load Y Register
+LSR  Logical Shift Right
+NOP  No Operation
+ORA  Logical OR
+PHA  Push Accumulator
+PHP  Push Processor Status
+PLA  Pull Accumulator
+PLP  Pull Processor Status
+ROL  Rotate Left
+ROR  Rotate Right
+RTI  Return from Interrupt
+RTS  Return from Subroutine
+SBC  Subtract with Carry
+SEC  Set Carry Flag
+SED  Set Decimal Flag
+SEI  Set Interrupt Disable
+STA  Store Accumulator
+STX  Store X Register
+STY  Store Y Register
+TAX  Transfer Accumulator to X
+TAY  Transfer Accumulator to Y
+TSX  Transfer Stack Pointer to X
+TXA  Transfer X to Accumulator
+TXS  Transfer X to Stack Pointer
+TYA  Transfer Y to Accumulator
+
+[operations]
+ADC  arith  NV----ZC  A + M + C → A, C
+AND  logic  N-----Z-  A ∧ M → A
+ASL  shift  N-----ZC  C ← /7...0/ ← 0
+BCC  bra    --------  Branch on C = 0
+BCS  bra    --------  Branch on C = 1
+BEQ  bra    --------  Branch on Z = 1
+BIT  logic  NV----Z-  A & M, M7 → N, M6 → V
+BMI  bra    --------  Branch on N = 1
+BNE  bra    --------  Branch on Z = 0
+BPL  bra    --------  Branch on N = 0
+BRK  ctrl   -----1--  Break
+BVC  bra    --------  Branch on V = 0
+BVS  bra    --------  Branch on V = 1
+CLC  flags  -------0  0 → C
+CLD  flags  ----0---  0 → D
+CLI  flags  -----0--  0 → I
+CLV  flags  -0------  0 → V
+CMP  arith  N-----ZC  A - M
+CPX  arith  N-----ZC  X - M
+CPY  arith  N-----ZC  Y - M
+DEC  inc    N-----Z-  M - 1 → M
+DEX  inc    N-----Z-  X - 1 → X
+DEY  inc    N-----Z-  Y - 1 → Y
+EOR  logic  N-----Z-  A ⊻ M → A
+INC  inc    N-----Z-  M + 1 → M
+INX  inc    N-----Z-  X + 1 → X
+INY  inc    N-----Z-  Y + 1 → Y
+JMP  ctrl   --------  Jump to new location
+JSR  ctrl   --------  Jump to subroutine
+LDA  load   N-----Z-  M → A
+LDX  load   N-----Z-  M → X
+LDY  load   N-----Z-  M → Y
+LSR  shift  N-----ZC  0 → /7...0/ → C
+NOP  nop    --------  No operation
+ORA  logic  N-----Z-  A ∨ M → A
+PHA  stack  --------  A → Ms, S - 1 → S
+PHP  stack  --------  P → Ms, S - 1 → S
+PLA  stack  N-----Z-  S - 1 → S, Ms → A
+PLP  stack  NV--DIZC  S - 1 → S, Ms → P
+ROL  shift  N-----ZC  C ← /7...0/ ← C
+ROR  shift  N-----ZC  C → /7...0/ → C
+RTI  ctrl   NV--DIZC  Return from interrupt
+RTS  ctrl   --------  Return from subroutine
+SBC  arith  NV----ZC  A - M - C → A
+SEC  flags  -------1  1 → C
+SED  flags  ----1---  1 → D
+SEI  flags  -----1--  1 → I
+STA  load   --------  A → M
+STX  load   --------  X → M
+STY  load   --------  Y → M
+TAX  trans  N-----Z-  A → X
+TAY  trans  N-----Z-  A → Y
+TSX  trans  N-----Z-  S → X
+TXA  trans  N-----Z-  X → A
+TXS  trans  --------  X → S
+TYA  trans  N-----Z-  Y → A
+
+AHX  load   --------  A ∧ X ∧ H → M
+ALR  arith  *-----**  (A ∧ M) / 2 → A
+ANC  arith  *-----**  A ∧ M → A
+ARR  arith  **----**  (A ∧ M) / 2 → A
+AXS  arith  *-----**  (A ∧ X) - M → X
+DCP  arith  *-----**  M - 1 → M, A - M
+ISC  arith  **----**  M + 1 → M, A - M → A
+KIL  kil    --------  Stop execution
+LAS  load   *-----*-  M ∧ S → A, X, S
+LAX  load   *-----*-  M → A, X
+RLA  arith  *-----**  ROL(M) → M, A ∧ M → A
+RRA  arith  **----**  ROR(M) → M, A + M + C → A
+SAX  load   --------  A ∧ X → M
+SHX  load   --------  X ∧ H → M
+SHY  load   --------  Y ∧ H → M
+SLO  arith  *-----**  M * 2 → M, A ∨ M → A
+SRE  arith  *-----**  M / 2 → M, A ⊻ M → A
+TAS  trans  --------  A ∧ X → M, S ∧ H → M
+XAA  arith  *-----*-  X ∧ M → A
+
+[addmodes]
+-      1  -        Implied
+A      1  A        Accumulator
+#d8    2  #$nn     Immediate
+a8     2  $nn      Zero Page
+a8,X   2  $nn,X    X-indexed Zero Page
+a8,Y   2  $nn,Y    Y-indexed Zero Page
+(a8,X) 2  ($nn,X)  X-indexed Zero Page Indirect
+(a8),Y 2  ($nn),Y  Zero Page Indirect Y-Indexed
+a16    3  $nnnn    Absolute
+a16,X  3  $nnnn,X  X-indexed Absolute
+a16,Y  3  $nnnn,Y  Y-indexed Absolute
+(a16)  3  ($nnnn)  Indirect
+r8     2  $nnnn    Relative
+
+[opcodes]
+00  BRK
+01  ORA   (a8,X)
+05  ORA   a8
+06  ASL   a8
+08  PHP
+09  ORA   #d8
+0A  ASL   A
+0D  ORA   a16
+0E  ASL   a16
+10  BPL   r8
+11  ORA   (a8),Y
+15  ORA   a8,X
+16  ASL   a8,X
+18  CLC
+19  ORA   a16,Y
+1D  ORA   a16,X
+1E  ASL   a16,X
+20  JSR   a16
+21  AND   (a8,X)
+24  BIT   a8
+25  AND   a8
+26  ROL   a8
+28  PLP
+29  AND   #d8
+2A  ROL   A
+2C  BIT   a16
+2D  AND   a16
+2E  ROL   a16
+30  BMI   r8
+31  AND   (a8),Y
+35  AND   a8,X
+36  ROL   a8,X
+38  SEC
+39  AND   a16,Y
+3D  AND   a16,X
+3E  ROL   a16,X
+40  RTI
+41  EOR   (a8,X)
+45  EOR   a8
+46  LSR   a8
+48  PHA
+49  EOR   #d8
+4A  LSR   A
+4C  JMP   a16
+4D  EOR   a16
+4E  LSR   a16
+50  BVC   r8
+51  EOR   (a8),Y
+55  EOR   a8,X
+56  LSR   a8,X
+58  CLI
+59  EOR   a16,Y
+5D  EOR   a16,X
+5E  LSR   a16,X
+60  RTS
+61  ADC   (a8,X)
+65  ADC   a8
+66  ROR   a8
+68  PLA
+69  ADC   #d8
+6A  ROR   A
+6C  JMP   (a16)
+6D  ADC   a16
+6E  ROR   a16
+70  BVS   r8
+71  ADC   (a8),Y
+75  ADC   a8,X
+76  ROR   a8,X
+78  SEI
+79  ADC   a16,Y
+7D  ADC   a16,X
+7E  ROR   a16,X
+81  STA   (a8,X)
+84  STY   a8
+85  STA   a8
+86  STX   a8
+88  DEY
+8A  TXA
+8C  STY   a16
+8D  STA   a16
+8E  STX   a16
+90  BCC   r8
+91  STA   (a8),Y
+94  STY   a8,X
+95  STA   a8,X
+96  STX   a8,Y
+98  TYA
+99  STA   a16,Y
+9A  TXS
+9D  STA   a16,X
+A0  LDY   #d8
+A1  LDA   (a8,X)
+A2  LDX   #d8
+A4  LDY   a8
+A5  LDA   a8
+A6  LDX   a8
+A8  TAY
+A9  LDA   #d8
+AA  TAX
+AC  LDY   a16
+AD  LDA   a16
+AE  LDX   a16
+B0  BCS   r8
+B1  LDA   (a8),Y
+B4  LDY   a8,X
+B5  LDA   a8,X
+B6  LDX   a8,Y
+B8  CLV
+B9  LDA   a16,Y
+BA  TSX
+BC  LDY   a16,X
+BD  LDA   a16,X
+BE  LDX   a16,Y
+C0  CPY   #d8
+C1  CMP   (a8,X)
+C4  CPY   a8
+C5  CMP   a8
+C6  DEC   a8
+C8  INY
+C9  CMP   #d8
+CA  DEX
+CC  CPY   a16
+CD  CMP   a16
+CE  DEC   a16
+D0  BNE   r8
+D1  CMP   (a8),Y
+D5  CMP   a8,X
+D6  DEC   a8,X
+D8  CLD
+D9  CMP   a16,Y
+DD  CMP   a16,X
+DE  DEC   a16,X
+E0  CPX   #d8
+E1  SBC   (a8,X)
+E4  CPX   a8
+E5  SBC   a8
+E6  INC   a8
+E8  INX
+E9  SBC   #d8
+EA  NOP
+EC  CPX   a16
+ED  SBC   a16
+EE  INC   a16
+F0  BEQ   r8
+F1  SBC   (a8),Y
+F5  SBC   a8,X
+F6  INC   a8,X
+F8  SED
+F9  SBC   a16,Y
+FD  SBC   a16,X
+FE  INC   a16,X
+
+02  *KIL
+03  *SLO  (a8,X)
+04  *NOP  a8
+07  *SLO  a8
+0B  *ANC  #d8
+0C  *NOP  a16
+0F  *SLO  a16
+12  *KIL
+13  *SLO  (a8,X)
+14  *NOP  a8,X
+17  *SLO  a8,X
+1A  *NOP
+1B  *SLO  a16,Y
+1C  *NOP  a16,X
+1F  *SLO  a16,X
+22  *KIL
+23  *RLA  (a8,X)
+27  *RLA  a8
+2B  *ANC  #d8
+2F  *RLA  a16
+32  *KIL
+33  *RLA  (a8,X)
+34  *NOP  a8,X
+37  *RLA  a8,X
+3A  *NOP
+3B  *RLA  a16,Y
+3C  *NOP  a16,X
+3F  *RLA  a16,X
+42  *KIL
+43  *SRE  (a8,X)
+44  *NOP  a8
+47  *SRE  a8
+4B  *ALR  #d8
+4F  *SRE  a16
+52  *KIL
+53  *SRE  (a8,X)
+54  *NOP  a8,X
+57  *SRE  a8,X
+5A  *NOP
+5B  *SRE  a16,Y
+5C  *NOP  a16,X
+5F  *SRE  a16,X
+62  *KIL
+63  *RRA  (a8,X)
+64  *NOP  a8
+67  *RRA  a8
+6B  *ARR  #d8
+6F  *RRA  a16
+72  *KIL
+73  *RRA  (a8,X)
+74  *NOP  a8,X
+77  *RRA  a8,X
+7A  *NOP
+7B  *RRA  a16,Y
+7C  *NOP  a16,X
+7F  *RRA  a16,X
+80  *NOP  #d8
+82  *NOP  #d8
+83  *SAX  (a8,X)
+87  *SAX  a8
+89  *NOP  #d8
+8B  *XAA  #d8
+8F  *SAX  a16
+92  *KIL
+93  *AHX  (a8,X)
+97  *SAX  a8,Y
+9B  *TAS  a16,Y
+9C  *SHY  a16,X
+9E  *SHX  a16,Y
+9F  *AHX  a16,Y
+A3  *LAX  (a8,X)
+A7  *LAX  a8
+AB  *LAX  #d8
+AF  *LAX  a16
+B2  *KIL
+B3  *LAX  (a8,X)
+B7  *LAX  a8,Y
+BB  *LAS  a16,Y
+BF  *LAX  a16,Y
+C2  *NOP  #d8
+C3  *DCP  (a8,X)
+C7  *DCP  a8
+CB  *AXS  #d8
+CF  *DCP  a16
+D2  *KIL
+D3  *DCP  (a8,X)
+D4  *NOP  a8,X
+D7  *DCP  a8,X
+DA  *NOP
+DB  *DCP  a16,Y
+DC  *NOP  a16,X
+DF  *DCP  a16,X
+E2  *NOP  #d8
+E3  *ISC  (a8,X)
+E7  *ISC  a8
+EB  *SBC  #d8
+EF  *ISC  a16
+F2  *KIL
+F3  *ISC  (a8,X)
+F4  *NOP  a8,X
+F7  *ISC  a8,X
+FA  *NOP
+FB  *ISC  a16,Y
+FC  *NOP  a16,X
+FF  *ISC  a16,X
+
+[timing]
+00  7
+01  6
+05  3
+06  5
+08  3
+09  2
+0A  2
+0D  4
+0E  6
+10  2+t+p
+11  5+p
+15  4
+16  6
+18  2
+19  4+p
+1D  4+p
+1E  7
+20  6
+21  6
+24  3
+25  3
+26  5
+28  4
+29  2
+2A  2
+2C  4
+2D  4
+2E  6
+30  2+t+p
+31  5+p
+35  4
+36  6
+38  2
+39  4+p
+3D  4+p
+3E  7
+40  6
+41  6
+45  3
+46  5
+48  3
+49  2
+4A  2
+4C  3
+4D  4
+4E  6
+50  2+t+p
+51  5+p
+55  4
+56  6
+58  2
+59  4+p
+5D  4+p
+5E  7
+60  6
+61  6
+65  3
+66  5
+68  4
+69  2
+6A  2
+6C  5
+6D  4
+6E  6
+70  2+t+p
+71  5+p
+75  4
+76  6
+78  2
+79  4+p
+7D  4+p
+7E  7
+81  6
+84  3
+85  3
+86  3
+88  2
+8A  2
+8C  4
+8D  4
+8E  4
+90  2+t+p
+91  6
+94  4
+95  4
+96  4
+98  2
+99  5
+9A  2
+9D  5
+A0  2
+A1  6
+A2  2
+A4  3
+A5  3
+A6  3
+A8  2
+A9  2
+AA  2
+AC  4
+AD  4
+AE  4
+B0  2+t+p
+B1  5+p
+B4  4
+B5  4
+B6  4
+B8  2
+B9  4+p
+BA  2
+BC  4+p
+BD  4+p
+BE  4+p
+C0  2
+C1  6
+C4  3
+C5  3
+C6  5
+C8  2
+C9  2
+CA  2
+CC  4
+CD  4
+CE  6
+D0  2+t+p
+D1  5+p
+D5  4
+D6  6
+D8  2
+D9  4+p
+DD  4+p
+DE  7
+E0  2
+E1  6
+E4  3
+E5  3
+E6  5
+E8  2
+E9  2
+EA  2
+EC  4
+ED  4
+EE  6
+F0  2+t+p
+F1  5+p
+F5  4
+F6  6
+F8  2
+F9  4+p
+FD  4+p
+FE  7
+
+02  X
+03  8
+04  3
+07  5
+0B  2
+0C  4
+0F  6
+12  X
+13  8
+14  4
+17  6
+1A  2
+1B  7
+1C  4+p
+1F  7
+22  X
+23  8
+27  5
+2B  2
+2F  6
+32  X
+33  8
+34  4
+37  6
+3A  2
+3B  7
+3C  4+p
+3F  7
+42  X
+43  8
+44  3
+47  5
+4B  2
+4F  6
+52  X
+53  8
+54  4
+57  6
+5A  2
+5B  7
+5C  4+p
+5F  7
+62  X
+63  8
+64  3
+67  5
+6B  2
+6F  6
+72  X
+73  8
+74  4
+77  6
+7A  2
+7B  7
+7C  4+p
+7F  7
+80  2
+82  2
+83  6
+87  3
+89  2
+8B  2
+8F  4
+92  X
+93  6
+97  4
+9B  5
+9C  5
+9E  5
+9F  5
+A3  6
+A7  3
+AB  2
+AF  4
+B2  X
+B3  5+p
+B7  4
+BB  4+p
+BF  4+p
+C2  2
+C3  8
+C7  5
+CB  2
+CF  6
+D2  X
+D3  8
+D4  4
+D7  6
+DA  2
+DB  7
+DC  4+p
+DF  7
+E2  2
+E3  8
+E7  5
+EB  2
+EF  6
+F2  X
+F3  8
+F4  4
+F7  6
+FA  2
+FB  7
+FC  4+p
+FF  7

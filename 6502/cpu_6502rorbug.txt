@@ -1,0 +1,21 @@
+
+[mnemos]
+.basedon cpu_6502_mnemos.txt
+
+[operations]
+.basedon cpu_6502_operations.txt
+ASL0 shift  N-----Z-  /7...0/ ← 0
+
+[addmodes]
+.basedon cpu_6502_addmodes.txt
+
+[opcodes]
+.basedon cpu_6502_opcodes.txt
+66  *ASL0  a8
+6A  *ASL0  A
+6E  *ASL0  a16
+76  *ASL0  a8,X
+7E  *ASL0  a16,X
+
+[timing]
+.basedon cpu_6502_timing.txt

@@ -1,0 +1,145 @@
+
+[mnemos]
+.basedon cpu_65c02_mnemos.txt
+BBR0  Branch on Bit 0 Reset
+BBR1  Branch on Bit 1 Reset
+BBR2  Branch on Bit 2 Reset
+BBR3  Branch on Bit 3 Reset
+BBR4  Branch on Bit 4 Reset
+BBR5  Branch on Bit 5 Reset
+BBR6  Branch on Bit 6 Reset
+BBR7  Branch on Bit 7 Reset
+BBS0  Branch on Bit 0 Set
+BBS1  Branch on Bit 1 Set
+BBS2  Branch on Bit 2 Set
+BBS3  Branch on Bit 3 Set
+BBS4  Branch on Bit 4 Set
+BBS5  Branch on Bit 5 Set
+BBS6  Branch on Bit 6 Set
+BBS7  Branch on Bit 7 Set
+RMB0  Reset Memory Bit 0
+RMB1  Reset Memory Bit 1
+RMB2  Reset Memory Bit 2
+RMB3  Reset Memory Bit 3
+RMB4  Reset Memory Bit 4
+RMB5  Reset Memory Bit 5
+RMB6  Reset Memory Bit 6
+RMB7  Reset Memory Bit 7
+SMB0  Set Memory Bit 0
+SMB1  Set Memory Bit 1
+SMB2  Set Memory Bit 2
+SMB3  Set Memory Bit 3
+SMB4  Set Memory Bit 4
+SMB5  Set Memory Bit 5
+SMB6  Set Memory Bit 6
+SMB7  Set Memory Bit 7
+
+
+[operations]
+.basedon cpu_65c02_operations.txt
+BBR0 ctrl  --------  Branch on M0 = 0
+BBR1 ctrl  --------  Branch on M1 = 0
+BBR2 ctrl  --------  Branch on M2 = 0
+BBR3 ctrl  --------  Branch on M3 = 0
+BBR4 ctrl  --------  Branch on M4 = 0
+BBR5 ctrl  --------  Branch on M5 = 0
+BBR6 ctrl  --------  Branch on M6 = 0
+BBR7 ctrl  --------  Branch on M7 = 0
+BBS0 ctrl  --------  Branch on M0 = 1
+BBS1 ctrl  --------  Branch on M1 = 1
+BBS2 ctrl  --------  Branch on M2 = 1
+BBS3 ctrl  --------  Branch on M3 = 1
+BBS4 ctrl  --------  Branch on M4 = 1
+BBS5 ctrl  --------  Branch on M5 = 1
+BBS6 ctrl  --------  Branch on M6 = 1
+BBS7 ctrl  --------  Branch on M7 = 1
+RMB0 logic --------  0 → M0
+RMB1 logic --------  0 → M1
+RMB2 logic --------  0 → M2
+RMB3 logic --------  0 → M3
+RMB4 logic --------  0 → M4
+RMB5 logic --------  0 → M5
+RMB6 logic --------  0 → M6
+RMB7 logic --------  0 → M7
+SMB0 logic --------  1 → M0
+SMB1 logic --------  1 → M1
+SMB2 logic --------  1 → M2
+SMB3 logic --------  1 → M3
+SMB4 logic --------  1 → M4
+SMB5 logic --------  1 → M5
+SMB6 logic --------  1 → M6
+SMB7 logic --------  1 → M7
+
+[addmodes]
+.basedon cpu_65c02_addmodes.txt
+a8,r8  3  $nn,$nnnn  Zero Page, Relative
+
+[opcodes]
+.basedon cpu_65c02_opcodes.txt
+07  RMB0  a8
+0F  BBR0  a8,r8
+17  RMB1  a8
+1F  BBR1  a8,r8
+27  RMB2  a8
+2F  BBR2  a8,r8
+37  RMB3  a8
+3F  BBR3  a8,r8
+47  RMB4  a8
+4F  BBR4  a8,r8
+57  RMB5  a8
+5F  BBR5  a8,r8
+67  RMB6  a8
+6F  BBR6  a8,r8
+77  RMB7  a8
+7F  BBR7  a8,r8
+87  SMB0  a8
+8F  BBS0  a8,r8
+97  SMB1  a8
+9F  BBS1  a8,r8
+A7  SMB2  a8
+AF  BBS2  a8,r8
+B7  SMB3  a8
+BF  BBS3  a8,r8
+C7  SMB4  a8
+CF  BBS4  a8,r8
+D7  SMB5  a8
+DF  BBS5  a8,r8
+E7  SMB6  a8
+EF  BBS6  a8,r8
+F7  SMB7  a8
+FF  BBS7  a8,r8
+
+[timing]
+.basedon cpu_65c02_timing.txt
+07  5
+0F  5+t+p
+17  5
+1F  5+t+p
+27  5
+2F  5+t+p
+37  5
+3F  5+t+p
+47  5
+4F  5+t+p
+57  5
+5F  5+t+p
+67  5
+6F  5+t+p
+77  5
+7F  5+t+p
+87  5
+8F  5+t+p
+97  5
+9F  5+t+p
+A7  5
+AF  5+t+p
+B7  5
+BF  5+t+p
+C7  5
+CF  5+t+p
+D7  5
+DF  5+t+p
+E7  5
+EF  5+t+p
+F7  5
+FF  5+t+p

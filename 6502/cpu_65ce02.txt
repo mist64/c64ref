@@ -1,0 +1,385 @@
+
+[mnemos]
+.basedon cpu_r65c02_mnemos.txt
+ASR   Arithmetic Shift Right
+ASW   Arithmetic Shift Left Word
+AUG   Augment
+BSR   Branch to Subroutine
+CLE   Clear Extend Disable Flag
+CPZ   Compare Z Register
+DEW   Decrement Word
+DEZ   Decrement Z Register
+INW   Increment Word
+INZ   Increment Z Register
+LDZ   Load Z Register
+NEG   Negate
+PHW   Push Word
+PHZ   Push Z Register
+PLZ   Pull Z Register
+ROW   Rotate Word
+RTN   Return from Kernal
+SEE   Set Stack Extend Disable Flag
+STZ   Store Z Register
+TAB   Transfer Accumulator to Base Page Register
+TAZ   Transfer Accumulator to Z
+TBA   Transfer Base Page Register to Accumulator
+TSY   Transfer Stack Pointer to Y
+TYS   Transfer Y to Stack Pointer
+TZA   Transfer Z to Accumulator
+
+[operations]
+.basedon cpu_r65c02_operations.txt
+ASR  shift N-----ZC  M7 → /7...0/ → C
+ASW  shift N-----ZC  C ← /15...0/ ← 0
+AUG  nop   --------  No Operation
+BSR  ctrl  --------  Branch to Subroutine
+CLE  flags --0-----  0 → E
+CPZ  arith N-----ZC  Z - M
+DEW  inc   N-----Z-  Mw - 1 → Mw
+DEZ  inc   N-----Z-  Z - 1 → Z
+INW  inc   N-----Z-  Mw + 1 → Mw
+INZ  inc   N-----Z-  Z + 1 → Z
+LDZ  load  N-----Z-  M → Z
+NEG  arith N-----Z-  0 - A → A
+PHW  stack --------  Mw → Ms, S - 2 → S
+PHZ  stack --------  Z → Ms, S - 1 → S
+PLZ  stack N-----Z-  S - 1 → S, Ms → Z
+ROW  shift N-----ZC  C ← /15...0/ ← C
+RTN  ctrl  --------  Return from Kernal
+SEE  flags --1-----  1 → E
+STZ  load  --------  Z → M
+TAB  trans --------  A → B
+TAZ  trans N-----Z-  A → Z
+TBA  trans N-----Z-  B → A
+TSY  trans N-----Z-  S → Y
+TYS  trans --------  Y → S
+TZA  stack N-----Z-  Z → A
+
+[addmodes]
+.basedon cpu_r65c02_addmodes.txt
+#d16      3  #$nnnn        Immediate (word)
+(a8),Z    2  ($nn),Z       Indirect Y-Indexed
+r16       3  $nnnn         Relative (word)
+(r8,SP),Y 2  ($nnnn,SP),Y  Stack Pointer Indirect, Y-indexed
+
+a8     2  $nn      Base Page
+a8,X   2  $nn,X    X-indexed Base Page
+a8,Y   2  $nn,Y    Y-indexed Base Page
+(a8,X) 2  ($nn,X)  X-indexed Base Page Indirect
+(a8),Y 2  ($nn),Y  Base Page Indirect Y-Indexed
+
+[opcodes]
+.basedon cpu_r65c02_opcodes.txt
+02  CLE
+03  SEE
+0B  TSY
+12  ORA   (a8),Z
+13  BPL   r16
+1B  INZ
+22  JSR   (a16)
+23  JSR   (a16,X)
+2B  TYS
+32  AND   (a8),Z
+33  BMI   r16
+3B  DEZ
+42  NEG   A
+43  ASR   A
+44  ASR   a8
+4B  TAZ
+52  EOR   (a8),Z
+53  BVC   r16
+54  ASR   a8,X
+5B  TAB
+5C  AUG
+62  RTN   #d8
+63  BSR   r16
+64  STZ   a8
+6B  TZA
+72  ADC   (a8),Z
+73  BVS   r16
+7B  TBA
+82  STA   (r8,SP),Y
+83  BRA   r16
+8B  STY   a16,X
+92  STA   (a8),Z
+93  BCC   r16
+9B  STX   a16,Y
+A3  LDZ   #d8
+AB  LDZ   a16
+B2  LDA   (a8),Z
+B3  BCS   r16
+BB  LDZ   a16,X
+C2  CPZ   #d8
+C3  DEW   a8
+CB  ASW   a16
+D2  CMP   (a8),Z
+D3  BNE   r16
+D4  CPZ   a8
+DB  PHZ
+DC  CPZ   a16
+E2  LDA   (r8,SP),Y
+E3  INW   a8
+EB  ROW   a16
+F2  SBC   (a8),Z
+F3  BEQ   r16
+F4  PHW   #d16
+FB  PLZ
+FC  PHW   a16
+
+[timing]
+00  2
+01  2
+02  1
+03  1
+04  2
+05  2
+06  2
+07  2
+08  1
+09  2
+0A  1
+0B  1
+0C  3
+0D  3
+0E  3
+0F  3
+10  2
+11  2
+12  2
+13  3
+14  2
+15  2
+16  2
+17  2
+18  1
+19  3
+1A  1
+1B  1
+1C  3
+1D  3
+1E  3
+1F  3
+20  3
+21  2
+22  3
+23  3
+24  2
+25  2
+26  2
+27  2
+28  1
+29  2
+2A  1
+2B  1
+2C  3
+2D  3
+2E  3
+2F  3
+30  2
+31  2
+32  2
+33  3
+34  2
+35  2
+36  2
+37  2
+38  1
+39  3
+3A  1
+3B  1
+3C  3
+3D  3
+3E  3
+3F  3
+40  1
+41  2
+42  1
+43  1
+44  2
+45  2
+46  2
+47  2
+48  1
+49  2
+4A  1
+4B  1
+4C  3
+4D  3
+4E  3
+4F  3
+50  2
+51  2
+52  2
+53  3
+54  2
+55  2
+56  2
+57  2
+58  1
+59  3
+5A  1
+5B  1
+5C  4
+5D  3
+5E  3
+5F  3
+60  1
+61  2
+62  2
+63  3
+64  2
+65  2
+66  2
+67  2
+68  1
+69  2
+6A  1
+6B  1
+6C  3
+6D  3
+6E  3
+6F  3
+70  2
+71  2
+72  2
+73  3
+74  2
+75  2
+76  2
+77  2
+78  1
+79  3
+7A  1
+7B  1
+7C  3
+7D  3
+7E  3
+7F  3
+80  2
+81  2
+82  2
+83  3
+84  2
+85  2
+86  2
+87  2
+88  1
+89  2
+8A  1
+8B  3
+8C  3
+8D  3
+8E  3
+8F  3
+90  2
+91  2
+92  2
+93  3
+94  2
+95  2
+96  2
+97  2
+98  1
+99  3
+9A  1
+9B  3
+9C  3
+9D  3
+9E  3
+9F  3
+A0  2
+A1  2
+A2  2
+A3  2
+A4  2
+A5  2
+A6  2
+A7  2
+A8  1
+A9  2
+AA  1
+AB  3
+AC  3
+AD  3
+AE  3
+AF  3
+B0  2
+B1  2
+B2  2
+B3  3
+B4  2
+B5  2
+B6  2
+B7  2
+B8  1
+B9  3
+BA  1
+BB  3
+BC  3
+BD  3
+BE  3
+BF  3
+C0  2
+C1  2
+C2  2
+C3  2
+C4  2
+C5  2
+C6  2
+C7  2
+C8  1
+C9  2
+CA  1
+CB  3
+CC  3
+CD  3
+CE  3
+CF  3
+D0  2
+D1  2
+D2  2
+D3  3
+D4  2
+D5  2
+D6  2
+D7  2
+D8  1
+D9  3
+DA  1
+DB  1
+DC  3
+DD  3
+DE  3
+DF  3
+E0  2
+E1  2
+E2  2
+E3  2
+E4  2
+E5  2
+E6  2
+E7  2
+E8  1
+E9  2
+EA  1
+EB  3
+EC  3
+ED  3
+EE  3
+EF  3
+F0  2
+F1  2
+F2  2
+F3  3
+F4  3
+F5  2
+F6  2
+F7  2
+F8  1
+F9  3
+FA  1
+FB  1
+FC  3
+FD  3
+FE  3
+FF  3

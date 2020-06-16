@@ -1,0 +1,246 @@
+
+[mnemos]
+.basedon cpu_6502_mnemos.txt
+BRA   Branch
+PHX   Push X Register
+PHY   Push Y Register
+PLX   Pull X Register
+PLY   Pull Y Register
+STZ   Store Zero
+TRB   Test and Reset Memory Bits
+TSB   Test and Set Memory Bits
+
+[operations]
+.basedon cpu_6502_operations.txt
+BRA  ctrl  --------  Branch Always
+PHX  stack --------  X → Ms, S - 1 → S
+PHY  stack --------  Y → Ms, S - 1 → S
+PLX  stack N-----Z-  S - 1 → S, Ms → Z
+PLY  stack N-----Z-  S - 1 → S, Ms → Y
+STZ  load  --------  0 → M
+TRB  logic ------Z-  A ∧ M → M
+TSB  logic ------Z-  A ∨ M → M
+
+[addmodes]
+.basedon cpu_6502_addmodes.txt
+(a8)     2  ($nn)      Zero Page Indirect
+(a16,X)  3  ($nnnn,X)  X-indexed Indirect
+
+[opcodes]
+.basedon cpu_6502_opcodes.txt
+04  TSB   a8
+0C  TSB   a16
+12  ORA   (a8)
+14  TRB   a8
+1A  INC   A
+1C  TRB   a16
+32  AND   (a8)
+34  BIT   a8,X
+3A  DEC   A
+3C  BIT   a16,X
+52  EOR   (a8)
+5A  PHY
+64  STZ   a8
+72  ADC   (a8)
+74  STZ   a8,X
+7A  PLY
+7C  JMP   (a16,X)
+80  BRA   r8
+89  BIT   #d8
+92  STA   (a8)
+9C  STZ   a16
+9E  STZ   a16,X
+B2  LDA   (a8)
+D2  CMP   (a8)
+DA  PHX
+F2  SBC   (a8)
+FA  PLX
+
+02  *NOP #d8
+03  *NOP
+07  *NOP
+0B  *NOP
+0F  *NOP
+13  *NOP
+17  *NOP
+1B  *NOP
+1F  *NOP
+22  *NOP #d8
+23  *NOP
+27  *NOP
+2B  *NOP
+2F  *NOP
+33  *NOP
+37  *NOP
+3B  *NOP
+3F  *NOP
+42  *NOP #d8
+43  *NOP
+44  *NOP #d8
+47  *NOP
+4B  *NOP
+4F  *NOP
+53  *NOP
+54  *NOP #d8
+57  *NOP
+5B  *NOP
+5C  *NOP
+5F  *NOP
+62  *NOP #d8
+63  *NOP
+67  *NOP
+6B  *NOP
+6F  *NOP
+73  *NOP
+77  *NOP
+7B  *NOP
+7F  *NOP
+82  *NOP #d8
+83  *NOP
+87  *NOP
+8B  *NOP
+8F  *NOP
+93  *NOP
+97  *NOP
+9B  *NOP
+9F  *NOP
+A3  *NOP
+A7  *NOP
+AB  *NOP
+AF  *NOP
+B3  *NOP
+B7  *NOP
+BB  *NOP
+BF  *NOP
+C2  *NOP #d8
+C3  *NOP
+C7  *NOP
+CB  *NOP
+CF  *NOP
+D3  *NOP
+D4  *NOP #d8
+D7  *NOP
+DB  *NOP
+DC  *NOP
+DF  *NOP
+E2  *NOP #d8
+E3  *NOP
+E7  *NOP
+EB  *NOP
+EF  *NOP
+F3  *NOP
+F4  *NOP #d8
+F7  *NOP
+FB  *NOP
+FC  *NOP
+FF  *NOP
+
+[timing]
+.basedon cpu_6502_timing.txt
+04  5
+0C  6
+12  5
+14  5
+1A  2
+1C  6
+32  5
+34  3
+3A  2
+3C  4
+52  5
+5A  3
+64  3
+6c  6
+72  5
+74  4
+7A  4
+7C  6
+80  3+t+p
+89  3
+92  5
+9C  4
+9E  5
+B2  5
+D2  5
+DA  3
+F2  5
+FA  4
+
+02  2
+03  1
+07  1
+0B  1
+0F  1
+13  1
+17  1
+1B  1
+1F  1
+22  2
+23  1
+27  1
+2B  1
+2F  1
+33  1
+37  1
+3B  1
+3F  1
+42  2
+43  1
+44  3
+47  1
+4B  1
+4F  1
+53  1
+54  4
+57  1
+5B  1
+5C  8
+5F  1
+62  2
+63  1
+67  1
+6B  1
+6F  1
+73  1
+77  1
+7B  1
+7F  1
+82  2
+83  1
+87  1
+8B  1
+8F  1
+93  1
+97  1
+9B  1
+9F  1
+A3  1
+A7  1
+AB  1
+AF  1
+B3  1
+B7  1
+BB  1
+BF  1
+C2  2
+C3  1
+C7  1
+CB  1
+CF  1
+D3  1
+D4  4
+D7  1
+DB  1
+DC  4
+DF  1
+E2  2
+E3  1
+E7  1
+EB  1
+EF  1
+F3  1
+F4  4
+F7  1
+FB  1
+FC  4
+FF  1

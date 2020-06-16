@@ -757,13 +757,13 @@ function generate_reference(id, filter) {
 	}
 }
 // TODO:
+// * combine files
 // * # vs E
 // * combine (zp) & (zp),z into one addmode
 // * check stz vs stz
 // * combine 65ce02 and 65c816 ($nn,s),y into same addmode
-// * add some more description text
+// * add instruction description text
 // * switch between illop synonym sets
-// * combine files
 // * CPU summary text
 // * CPU tree
 // * diff function
