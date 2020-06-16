@@ -275,8 +275,8 @@ function opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter) {
 }
 
 function cpu_has_illegal(cpu) {
-	for (var i = 0; i <= 255; i++) {
-		if (cpu_data[cpu].opcodes[i].illegal) {
+	for (var opcode of cpu_data[cpu].opcodes) {
+		if (opcode.illegal) {
 			return true;
 		}
 	}
@@ -352,12 +352,15 @@ function generate_opcode_table() {
 	if (opcode_table_organization == '4-4') {
 		var limx = 16;
 		var limy = 16;
+		var shape = 's';
 	} else if (opcode_table_organization.slice(-1) == 'h') {
 		var limx = 32;
 		var limy = 8;
+		var shape = 'h';
 	} else {
 		var limx = 8;
 		var limy = 32;
+		var shape = 'v';
 	}
 
 	var tr = document.createElement("tr");
@@ -389,6 +392,12 @@ function generate_opcode_table() {
 		for (var x = 0; x < limx; x++) {
 			var td = document.createElement("td");
 			tr.appendChild(td);
+			if (shape == 'h' && (x == 7 || x == 15 || x == 23)) {
+				td.style.borderRight = '8px solid white';
+			}
+			if (shape == 'v' && (y == 7 || y == 15 || y == 23)) {
+				td.style.borderBottom = '8px solid white';
+			}
 			var o = o_from_x_y(x, y, opcode_table_organization);
 			var opcode = cpu_data[cpu].opcodes[o];
 
