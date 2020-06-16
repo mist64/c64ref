@@ -174,9 +174,9 @@ E9  SBC   #m:d8/d16
 
 [timing]
 .basedon 65c02
-00  8-e
+00  8
 01  7-m+w
-02  8-e
+02  8
 03  5-m
 04  7-2*m+w
 05  4-m+w
@@ -190,7 +190,7 @@ E9  SBC   #m:d8/d16
 0D  5-m
 0E  8-2*m
 0F  6-m
-10  2+t+t*e*p
+10  2+t
 11  7-m+w-x+x*p
 12  6-m+w
 13  8-m
@@ -222,7 +222,7 @@ E9  SBC   #m:d8/d16
 2D  5-m
 2E  8-2*m
 2F  6-m
-30  2+t+t*e*p
+30  2+t
 31  7-m+w-x+x*p
 32  6-m+w
 33  8-m
@@ -238,7 +238,7 @@ E9  SBC   #m:d8/d16
 3D  6-m-x+x*p
 3E  9-2*m
 3F  6-m
-40  7-e
+40  7
 41  7-m+w
 42  2
 43  5-m
@@ -254,7 +254,7 @@ E9  SBC   #m:d8/d16
 4D  5-m
 4E  8-2*m
 4F  6-m
-50  2+t+t*e*p
+50  2+t
 51  7-m+w-x+x*p
 52  6-m+w
 53  8-m
@@ -286,7 +286,7 @@ E9  SBC   #m:d8/d16
 6D  5-m
 6E  8-2*m
 6F  6-m
-70  2+t+t*e*p
+70  2+t
 71  7-m+w-x+x*p
 72  6-m+w
 73  8-m
@@ -302,7 +302,7 @@ E9  SBC   #m:d8/d16
 7D  6-m-x+x*p
 7E  9-2*m
 7F  6-m
-80  3+e*p
+80  3
 81  7-m+w
 82  4
 83  5-m
@@ -318,7 +318,7 @@ E9  SBC   #m:d8/d16
 8D  5-m
 8E  5-x
 8F  6-m
-90  2+t+t*e*p
+90  2+t
 91  7-m+w
 92  6-m+w
 93  8-m
@@ -350,7 +350,7 @@ AC  5-x
 AD  5-m
 AE  5-x
 AF  6-m
-B0  2+t+t*e*p
+B0  2+t
 B1  7-m+w-x+x*p
 B2  6-m+w
 B3  8-m
@@ -382,7 +382,7 @@ CC  5-x
 CD  5-m
 CE  8-2*m
 CF  6-m
-D0  2+t+t*e*p
+D0  2+t
 D1  7-m+w-x+x*p
 D2  6-m+w
 D3  8-m
@@ -414,7 +414,7 @@ EC  5-x
 ED  5-m
 EE  8-2*m
 EF  6-m
-F0  2+t+t*e*p
+F0  2+t
 F1  7-m+w-x+x*p
 F2  6-m+w
 F3  8-m
