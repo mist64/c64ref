@@ -82,6 +82,7 @@ function init() {
 					for (var cpu of cpus) {
 						cpu_data[cpu] = {};
 						decode_info(cpu);
+						decode_flags(cpu);
 						decode_opcodes(cpu);
 						decode_operations(cpu);
 						decode_mnemos(cpu);
@@ -100,7 +101,12 @@ function init() {
 }
 
 function get_file_data(cpu, section) {
-	var text = file_data[cpu][section].text;
+	var text;
+	if (!file_data[cpu][section]) {
+		text = [];
+	} else {
+		text = file_data[cpu][section].text;
+	}
 	if (!text) {
 		text = [];
 	}
@@ -141,6 +147,38 @@ function decode_info(cpu) {
 	cpu_data[cpu].info = {};
 	for (var line of text) {
 		cpu_data[cpu].info[line[0]] = line.slice(1).join(' ');
+	}
+}
+
+function decode_flags(cpu) {
+	text = get_file_data(cpu, 'flags');
+	var name = {};
+	var description = {};
+	for (var line of text) {
+		var id = line[0];
+		name[id] = line[1];
+		description[id] = line.slice(2).join(' ');
+	}
+	function sort_id(a, b) {
+		if (a < 10) {
+			a += 20;
+		}
+		if (b < 10) {
+			b += 20;
+		}
+		return b - a;
+	}
+	ids = Object.keys(name).sort(sort_id);
+	var names = '';
+	for (id of ids) {
+		names += name[id];
+	}
+	console.log(names);
+
+	cpu_data[cpu].flags = {};
+	cpu_data[cpu].flags.names = names;
+	for (id of ids) {
+		cpu_data[cpu].flags[name[id]] = description[id];
 	}
 }
 
@@ -621,7 +659,7 @@ function generate_big_table(id, filter) {
 	}
 	th = document.createElement("th");
 	tr.appendChild(th);
-	th.colSpan = 8;
+	th.colSpan = cpu_data[cpu].flags.names.length;
 	th.innerHTML = 'Flags';
 
 	tr = document.createElement("tr");
@@ -641,10 +679,10 @@ function generate_big_table(id, filter) {
 		tr.appendChild(th);
 		th.innerHTML = '#';
 	}
-	for (var i = 0; i < 8; i++) {
+	for (var i = 0; i < cpu_data[cpu].flags.names.length; i++) {
 		th = document.createElement("th");
 		tr.appendChild(th);
-		th.innerHTML = 'NV#BDIZC'[i];
+		th.innerHTML = cpu_data[cpu].flags.names[i];
 	}
 
 	for (var mnemo of cpu_data[cpu].all_mnemos[filter]) {
@@ -677,18 +715,22 @@ function generate_big_table(id, filter) {
 			}
 		}
 		big_table.appendChild(tr);
-		for (var i = 0; i < 8; i++) {
+		for (var i = 0; i < cpu_data[cpu].flags.names.length; i++) {
 			td = document.createElement("td");
 			tr.appendChild(td);
 			var flag = cpu_data[cpu].operations[mnemo].flags[i];
 			switch (flag) {
 				case '-':
+				case undefined:
+					td.innerHTML = '-';
+					break;
 				case '0':
 				case '1':
 					td.innerHTML = flag;
 					break;
 				default:
-					td.innerHTML = 'NV#BDIZC'[i];
+					console.log(cpu_data[cpu].flags);
+					td.innerHTML = cpu_data[cpu].flags.names[i];
 					break;
 			}
 		}
@@ -724,19 +766,22 @@ function generate_reference(id, filter) {
 		table.border = 1;
 		tr = document.createElement("tr");
 		table.appendChild(tr);
-		for (var title of ['N', 'V', '#', 'B', 'D', 'I', 'Z', 'C']) {
+		for (var title of cpu_data[cpu].flags.names) {
 			th = document.createElement("th");
 			tr.appendChild(th);
 			th.innerHTML = title;
 		}
 		tr = document.createElement("tr");
 		table.appendChild(tr);
-		for (var i = 0; i < 8; i++) {
+		for (var i = 0; i < cpu_data[cpu].flags.names.length; i++) {
 			td = document.createElement("td");
 			tr.appendChild(td);
 			var flag = cpu_data[cpu].operations[mnemo].flags[i];
 			switch (flag) {
 				case '-':
+				case undefined:
+					td.innerHTML = '-';
+					break;
 				case '0':
 				case '1':
 					td.innerHTML = flag;

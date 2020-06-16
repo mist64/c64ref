@@ -4,6 +4,11 @@ year      1984
 id        65c816
 basedon   65c02
 
+[flags]
+5  M  Accumulator/Memory Width
+4  X  Index Register Width
+10 E  Emulation Mode
+
 [mnemos]
 BRL  Branch Long
 COP  Coprocessor
@@ -61,7 +66,7 @@ TYX  trans  *-----*-  Y → X
 WAI  ctrl   --------  Wait for interrupt
 WDM  nop    --------  Reserved for future expansion
 XBA  trans  *-----*-  B ↔ A
-XCE  flags  -------*  C ↔ E
+XCE  flags  -------** C ↔ E
 
 [addmodes]
 #d8        2    #$nn        Immediate

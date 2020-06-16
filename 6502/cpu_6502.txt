@@ -3,6 +3,16 @@ name      MOS 6502
 year      1975
 id        6502
 
+[flags]
+7  N  Negative
+6  V  Overflow
+5  #  Unused
+4  B  Break Command
+3  D  Decimal
+2  I  Interrupt Disable
+1  Z  Zero
+0  C  Carry
+
 [mnemos]
 ADC  Add with Carry
 AND  Logical AND
