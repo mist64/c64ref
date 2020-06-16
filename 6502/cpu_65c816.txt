@@ -1,6 +1,5 @@
-
 [mnemos]
-.basedon cpu_65c02_mnemos.txt
+.basedon 65c02
 BRL  Branch Long
 COP  Coprocessor
 JSL  Jump to Subroutine Long
@@ -31,7 +30,7 @@ XCE  Exchange Carry and Emulation Flags
 
 
 [operations]
-.basedon cpu_65c02_operations.txt
+.basedon 65c02
 BRL  ctrl   --------  Branch always long
 COP  ctrl   ----01--  Co-processor empowerment
 JSL  ctrl   --------  Jump to subroutine long
@@ -61,7 +60,7 @@ XBA  trans  *-----*-  B ↔ A
 XCE  flags  -------*  C ↔ E
 
 [addmodes]
-.basedon cpu_65c02_addmodes.txt
+.basedon 65c02
 
 #d8        2    #$nn        Immediate
 #m:d8/d16  3-m  #$nn/$nnnn  Immediate (M)
@@ -80,7 +79,7 @@ a8,S       2    $nn,S       Stack Relative
               
 
 [opcodes]
-.basedon cpu_65c02_opcodes.txt
+.basedon 65c02
 02  COP   #d8
 03  ORA   a8,S
 07  ORA   [a8]
@@ -174,7 +173,7 @@ E0  CPX   #x:d8/d16
 E9  SBC   #m:d8/d16
 
 [timing]
-.basedon cpu_65c02_timing.txt
+.basedon 65c02
 00  8-e
 01  7-m+w
 02  8-e

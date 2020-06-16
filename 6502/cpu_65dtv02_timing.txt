@@ -1,4 +1,0 @@
-.basedon cpu_6502_timing.txt
-12  2+t+p
-32  2
-42  2

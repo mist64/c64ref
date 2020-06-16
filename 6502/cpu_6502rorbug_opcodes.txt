@@ -1,6 +1,0 @@
-.basedon cpu_6502_opcodes.txt
-66  *ASL0  a8
-6A  *ASL0  A
-6E  *ASL0  a16
-76  *ASL0  a8,X
-7E  *ASL0  a16,X

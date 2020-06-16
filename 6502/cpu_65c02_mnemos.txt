@@ -1,9 +1,0 @@
-.basedon cpu_6502_mnemos.txt
-BRA   Branch
-PHX   Push X Register
-PHY   Push Y Register
-PLX   Pull X Register
-PLY   Pull Y Register
-STZ   Store Zero
-TRB   Test and Reset Memory Bits
-TSB   Test and Set Memory Bits

@@ -1,3 +1,0 @@
-.basedon cpu_r65c02_timing.txt
-CB  3
-DB  3

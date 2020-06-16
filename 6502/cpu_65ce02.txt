@@ -1,6 +1,5 @@
-
 [mnemos]
-.basedon cpu_r65c02_mnemos.txt
+.basedon r65c02
 ASR   Arithmetic Shift Right
 ASW   Arithmetic Shift Left Word
 AUG   Augment
@@ -28,7 +27,7 @@ TYS   Transfer Y to Stack Pointer
 TZA   Transfer Z to Accumulator
 
 [operations]
-.basedon cpu_r65c02_operations.txt
+.basedon r65c02
 ASR  shift N-----ZC  M7 → /7...0/ → C
 ASW  shift N-----ZC  C ← /15...0/ ← 0
 AUG  nop   --------  No Operation
@@ -56,7 +55,7 @@ TYS  trans --------  Y → S
 TZA  stack N-----Z-  Z → A
 
 [addmodes]
-.basedon cpu_r65c02_addmodes.txt
+.basedon r65c02
 #d16      3  #$nnnn        Immediate (word)
 (a8),Z    2  ($nn),Z       Indirect Y-Indexed
 r16       3  $nnnn         Relative (word)
@@ -69,7 +68,7 @@ a8,Y   2  $nn,Y    Y-indexed Base Page
 (a8),Y 2  ($nn),Y  Base Page Indirect Y-Indexed
 
 [opcodes]
-.basedon cpu_r65c02_opcodes.txt
+.basedon r65c02
 02  CLE
 03  SEE
 0B  TSY

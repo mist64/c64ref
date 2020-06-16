@@ -65,31 +65,21 @@ var cpu;
 var showillegal;
 var separateillegal;
 
-function filename_for_cpu_and_type(cpu, type) {
-	return 'cpu_' + cpu + '_' + type + '.txt';
+function filename_for_cpu(cpu, type) {
+	return 'cpu_' + cpu + '.txt';
 }
 
 function init() {
-	var files_to_load = [];
-	for (cpu of cpus) {
-		for (var type of ['opcodes', 'operations', 'mnemos', 'addmodes', 'timing']) {
-			files_to_load.push({
-				cpu: cpu,
-				type: type,
-				filename: filename_for_cpu_and_type(cpu, type),
-			});
-		}
-	}
-
-	for (var file_to_load of files_to_load) {
+	for (var cpu of cpus) {
 		var r = new XMLHttpRequest();
-		r.file_to_load = file_to_load;
-		r.open("GET", r.file_to_load.filename, false);
+		r.cpu = cpu;
+		r.open("GET", filename_for_cpu(cpu), false);
 		r.onload = function() {
 			if (r.status == 200 || r.status == 0) {
-				file_data[r.file_to_load.filename] = r.responseText;
+				split_file_data(r.cpu, r.responseText);
 				files_loaded++;
-				if (files_loaded == files_to_load.length) {
+				if (files_loaded == cpus.length) {
+					console.log(file_data);
 					for (var cpu of cpus) {
 						cpu_data[cpu] = {};
 						decode_opcodes(cpu);
@@ -102,14 +92,14 @@ function init() {
 					show();
 				}
 			} else {
-				file_data[r.file_to_load.filename] = null;
+				file_data[r.cpu] = null;
 			}
 		}
 		r.send(null);
 	}
 }
 
-function decode_text(text) {
+function decode_text(text, section) {
 	text = text.split('\n');
 	var text2 = [];
 	for (var line of text) {
@@ -119,7 +109,7 @@ function decode_text(text) {
 		}
 		line = line.split(/\s+/);
 		if (line[0] == '.basedon') {
-			var other_text = decode_text(file_data[line[1]]);
+			var other_text = decode_text(get_file_data(line[1], section));
 			text2 = text2.concat(other_text);
 		} else {
 			text2.push(line);
@@ -128,9 +118,38 @@ function decode_text(text) {
 	return text2;
 }
 
+function get_file_data(cpu, section) {
+	return file_data[cpu][section].text;
+}
+
+function split_file_data(cpu, text) {
+	var lines_in = text.split('\n');
+	var data_out = {};
+	var section = null;
+	for (var line of lines_in) {
+		line = line.trim();
+		if (line[0] == '[' && line[line.length - 1] == ']') {
+			section = line.substr(1, line.length - 2);
+			data_out[section] = {};
+			data_out[section].text = [];
+		} else if (section) {
+			if (!line) {
+				continue;
+			}
+			line = line.split(/\s+/);
+			if (line[0] == '.basedon') {
+				data_out[section].basedon = line[1];
+			} else {
+				data_out[section].text.push(line);
+			}
+		}
+	}
+	file_data[cpu] = data_out;
+	console.log(data_out);
+}
+
 function decode_opcodes(cpu) {
-	text = file_data[filename_for_cpu_and_type(cpu, 'opcodes')];
-	text = decode_text(text);
+	text = get_file_data(cpu, 'opcodes');
 	cpu_data[cpu].opcodes = [];
 	for (var i = 0; i <= 255; i++) {
 		cpu_data[cpu].opcodes[i] = {};
@@ -148,8 +167,7 @@ function decode_opcodes(cpu) {
 	}
 }
 function decode_operations(cpu) {
-	text = file_data[filename_for_cpu_and_type(cpu, 'operations')];
-	text = decode_text(text);
+	text = get_file_data(cpu, 'operations');
 	cpu_data[cpu].operations = {};
 	for (var line of text) {
 		var mnemo = line[0];
@@ -161,8 +179,7 @@ function decode_operations(cpu) {
 }
 
 function decode_mnemos(cpu) {
-	text = file_data[filename_for_cpu_and_type(cpu, 'mnemos')];
-	text = decode_text(text);
+	text = get_file_data(cpu, 'mnemos');
 	cpu_data[cpu].mnemos = {};
 	for (var line of text) {
 		var mnemo = line[0];
@@ -177,8 +194,7 @@ function decode_mnemos(cpu) {
 }
 
 function decode_addmodes(cpu) {
-	text = file_data[filename_for_cpu_and_type(cpu, 'addmodes')];
-	text = decode_text(text);
+	text = get_file_data(cpu, 'addmodes');
 	cpu_data[cpu].addmodes = {};
 	for (var line of text) {
 		var addmode = line[0];
@@ -190,8 +206,7 @@ function decode_addmodes(cpu) {
 }
 
 function decode_timing(cpu) {
-	text = file_data[filename_for_cpu_and_type(cpu, 'timing')];
-	text = decode_text(text);
+	text = get_file_data(cpu, 'timing');
 	for (var line of text) {
 		var o = parseInt(line[0], 16);
 		cpu_data[cpu].opcodes[o].cycles = line[1];

@@ -1,6 +1,5 @@
-
 [mnemos]
-.basedon cpu_6502_mnemos.txt
+.basedon 6502
 BRA   Branch
 PHX   Push X Register
 PHY   Push Y Register
@@ -11,7 +10,7 @@ TRB   Test and Reset Memory Bits
 TSB   Test and Set Memory Bits
 
 [operations]
-.basedon cpu_6502_operations.txt
+.basedon 6502
 BRA  ctrl  --------  Branch Always
 PHX  stack --------  X → Ms, S - 1 → S
 PHY  stack --------  Y → Ms, S - 1 → S
@@ -22,12 +21,12 @@ TRB  logic ------Z-  A ∧ M → M
 TSB  logic ------Z-  A ∨ M → M
 
 [addmodes]
-.basedon cpu_6502_addmodes.txt
+.basedon 6502
 (a8)     2  ($nn)      Zero Page Indirect
 (a16,X)  3  ($nnnn,X)  X-indexed Indirect
 
 [opcodes]
-.basedon cpu_6502_opcodes.txt
+.basedon 6502
 04  TSB   a8
 0C  TSB   a16
 12  ORA   (a8)
@@ -136,7 +135,7 @@ FC  *NOP
 FF  *NOP
 
 [timing]
-.basedon cpu_6502_timing.txt
+.basedon 6502
 04  5
 0C  6
 12  5

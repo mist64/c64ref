@@ -1,6 +1,5 @@
-
 [mnemos]
-.basedon cpu_65c02_mnemos.txt
+.basedon 65c02
 BBR0  Branch on Bit 0 Reset
 BBR1  Branch on Bit 1 Reset
 BBR2  Branch on Bit 2 Reset
@@ -36,7 +35,7 @@ SMB7  Set Memory Bit 7
 
 
 [operations]
-.basedon cpu_65c02_operations.txt
+.basedon 65c02
 BBR0 ctrl  --------  Branch on M0 = 0
 BBR1 ctrl  --------  Branch on M1 = 0
 BBR2 ctrl  --------  Branch on M2 = 0
@@ -71,11 +70,11 @@ SMB6 logic --------  1 → M6
 SMB7 logic --------  1 → M7
 
 [addmodes]
-.basedon cpu_65c02_addmodes.txt
+.basedon 65c02
 a8,r8  3  $nn,$nnnn  Zero Page, Relative
 
 [opcodes]
-.basedon cpu_65c02_opcodes.txt
+.basedon 65c02
 07  RMB0  a8
 0F  BBR0  a8,r8
 17  RMB1  a8
@@ -110,7 +109,7 @@ F7  SMB7  a8
 FF  BBS7  a8,r8
 
 [timing]
-.basedon cpu_65c02_timing.txt
+.basedon 65c02
 07  5
 0F  5+t+p
 17  5

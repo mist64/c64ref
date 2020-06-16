@@ -1,4 +1,0 @@
-.basedon cpu_6502_mnemos.txt     
-SAC  Set Accumulator Mapping
-SIR  Set Index Register Mapping
-BRA  Branch Always

@@ -1,3 +1,0 @@
-.basedon cpu_r65c02_opcodes.txt
-CB  WAI
-DB  STP
