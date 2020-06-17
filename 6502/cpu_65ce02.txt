@@ -6,6 +6,8 @@ basedon   r65c02
 
 [registers]
 Z   8   Z Index Register
+S   16  Stack Pointer
+B   8   Base Page
 
 [flags]
 5  E  Extended Stack Disable

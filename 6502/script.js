@@ -57,6 +57,23 @@ const all_sorted_categories = [
 	'nop',
 ];
 
+const category_descriptions = {
+	'load':      'Load/Store',
+	'trans':     'Transfer',
+	'stack':     'Stack',
+	'shift':     'Shift',
+	'logic':     'Logic',
+	'arith':     'Arithmetic',
+	'inc':       'Arithmetic: Inc/Dec',
+	'ctrl':      'Control Flow',
+	'bra':       'Control Flow: Branch',
+	'flags':     'Flags',
+	'kil':       'KIL',
+	'nop':       'NOP',
+	'undefined': 'Undefined',
+};
+
+
 var cpu_data = {};
 
 var files_loaded = 0;
@@ -367,6 +384,8 @@ function show() {
 	generate_big_table('big_table1', filter1);
 	generate_big_table('big_table2', filter2);
 	generate_reference('reference', 'all');
+
+	generate_legend('legend');
 }
 
 function o_from_x_y(x, y, opcode_table_organization) {
@@ -883,9 +902,27 @@ function generate_reference(id, filter) {
 		if (num_rows) {
 			reference.appendChild(div);
 		}
-
 	}
 }
+
+function generate_legend(id) {
+	var table = document.getElementById(id);
+	table.innerHTML = '';
+
+	for (cat of all_sorted_categories) {
+		tr = document.createElement("tr");
+		table.appendChild(tr);
+		td = document.createElement("td");
+		tr.appendChild(td);
+		td.className = cat;
+		td.style.width = '15px';
+		td = document.createElement("td");
+		tr.appendChild(td);
+		td.innerHTML = category_descriptions[cat];
+	}
+}
+
+
 // TODO:
 // * for instructions, add descriptions & pseudocode
 // * switch between illop synonym sets
