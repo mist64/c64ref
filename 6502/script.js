@@ -375,14 +375,14 @@ function show() {
 	}
 
 	generate_info('info_div');
-	generate_opcode_table('opcode_table1', filter1);
-	generate_opcode_table('opcode_table2', filter2);
-	generate_addmode_table('addmode_table');
+	generate_opcode_table('opcode_div1', filter1);
+	generate_opcode_table('opcode_div2', filter2);
+	generate_addmode_table('addmode_div');
 	generate_mnemos_by_category('mnemos_by_category', filter1);
 	generate_flags_div('flags_div');
 	generate_vectors_div('vectors_div');
-	generate_big_table('big_table1', filter1);
-	generate_big_table('big_table2', filter2);
+	generate_big_table('big_table_div1', filter1);
+	generate_big_table('big_table_div2', filter2);
 	generate_reference('reference', 'all');
 
 	generate_legend('legend');
@@ -423,8 +423,12 @@ function generate_info(id) {
 function generate_opcode_table(id, filter) {
 	opcode_table_organization = document.getElementById('opcode_table_organization').value;
 
-	var opcode_table = document.getElementById(id);
-	opcode_table.innerHTML = '';
+	var opcode_div = document.getElementById(id);
+	opcode_div.innerHTML = '';
+
+	var table = document.createElement("table");
+	opcode_div.appendChild(table);
+	table.className = 'opcode_table';
 
 	if (filter == 'none') {
 		return;
@@ -445,7 +449,7 @@ function generate_opcode_table(id, filter) {
 	}
 
 	var tr = document.createElement("tr");
-	opcode_table.appendChild(tr);
+	table.appendChild(tr);
 	var th = document.createElement("th");
 	tr.appendChild(th);
 	for (var x = 0; x < limx; x++) {
@@ -461,7 +465,7 @@ function generate_opcode_table(id, filter) {
 
 	for (var y = 0; y < limy; y++) {
 		var tr = document.createElement("tr");
-		opcode_table.appendChild(tr);
+		table.appendChild(tr);
 		var th = document.createElement("th");
 		tr.appendChild(th);
 		if (opcode_table_organization == '4-4') {
@@ -509,12 +513,15 @@ function generate_opcode_table(id, filter) {
 }
 
 function generate_addmode_table(id) {
-	var addmode_table = document.getElementById(id);
-	addmode_table.innerHTML = '';
+	var div = document.getElementById(id);
+	div.innerHTML = '';
+
+	var table = document.createElement("table");
+	div.appendChild(table);
 
 	for (var addmode of cpu_data[cpu].all_addmodes['all']) {
 		var tr = document.createElement("tr");
-		addmode_table.appendChild(tr);
+		table.appendChild(tr);
 
 		var td = document.createElement("td");
 		tr.appendChild(td);
@@ -594,29 +601,29 @@ function generate_mnemos_by_category(id, filter) {
 }
 
 function generate_flags_div(id) {
-	var flags_div = document.getElementById(id);
-	flags_div.innerHTML = '';
+	var div = document.getElementById(id);
+	div.innerHTML = '';
 
-	var flags_table1 = document.createElement("table");
-	flags_div.appendChild(flags_table1);
+	var table = document.createElement("table");
+	div.appendChild(table);
 
 	tr = document.createElement("tr");
-	flags_table1.appendChild(tr);
+	table.appendChild(tr);
 	for (var i = 0; i < cpu_data[cpu].flags.names.length; i++) {
 		th = document.createElement("th");
 		tr.appendChild(th);
 		th.innerHTML = cpu_data[cpu].flags.names[i];
 	}
 
-	var flags_table2 = document.createElement("table");
-	flags_div.appendChild(flags_table2);
+	var table = document.createElement("table");
+	div.appendChild(table);
 
 	for (var i = 0; i < cpu_data[cpu].flags.names.length; i++) {
 		var bitno = i >= 8 ? '-' : 7 - i;
 		var name = cpu_data[cpu].flags.names[i];
 		var description = cpu_data[cpu].flags[name];
 		tr = document.createElement("tr");
-		flags_table2.appendChild(tr);
+		table.appendChild(tr);
 		td = document.createElement("td");
 		tr.appendChild(td);
 		td.innerHTML = bitno;
@@ -630,15 +637,15 @@ function generate_flags_div(id) {
 }
 
 function generate_vectors_div(id) {
-	var vectors_div = document.getElementById(id);
-	vectors_div.innerHTML = '';
+	var div = document.getElementById(id);
+	div.innerHTML = '';
 
-	var flags_vectors = document.createElement("table");
-	flags_div.appendChild(flags_vectors);
+	var table = document.createElement("table");
+	div.appendChild(table);
 
 	for (var address of Object.keys(cpu_data[cpu].vectors).sort()) {
 		tr = document.createElement("tr");
-		flags_vectors.appendChild(tr);
+		table.appendChild(tr);
 		td = document.createElement("td");
 		tr.appendChild(td);
 		td.innerHTML = '$' + address;
@@ -650,8 +657,12 @@ function generate_vectors_div(id) {
 }
 
 function generate_big_table(id, filter) {
-	var big_table = document.getElementById(id);
-	big_table.innerHTML = '';
+	var div = document.getElementById(id);
+	div.innerHTML = '';
+
+	var table = document.createElement("table");
+	table.className = 'big_table';
+	div.appendChild(table);
 
 	if (filter == 'none') {
 		return;
@@ -664,7 +675,7 @@ function generate_big_table(id, filter) {
 	sortbycat = document.getElementById('sortbycat').checked;
 
 	tr = document.createElement("tr");
-	big_table.appendChild(tr);
+	table.appendChild(tr);
 
 	th = document.createElement("th");
 	tr.appendChild(th);
@@ -688,7 +699,7 @@ function generate_big_table(id, filter) {
 	th.innerHTML = 'Flags';
 
 	tr = document.createElement("tr");
-	big_table.appendChild(tr);
+	table.appendChild(tr);
 	th = document.createElement("th");
 	if (showoperation) {
 		th.colSpan = 2;
@@ -768,7 +779,7 @@ function generate_big_table(id, filter) {
 				tr.appendChild(td3);
 			}
 		}
-		big_table.appendChild(tr);
+		table.appendChild(tr);
 		for (var i = 0; i < cpu_data[cpu].flags.names.length; i++) {
 			td = document.createElement("td");
 			tr.appendChild(td);
@@ -906,8 +917,12 @@ function generate_reference(id, filter) {
 }
 
 function generate_legend(id) {
-	var table = document.getElementById(id);
-	table.innerHTML = '';
+	var div = document.getElementById(id);
+	div.innerHTML = '';
+
+	table = document.createElement("table");
+	table.style = 'font-size: 9pt;';
+	div.appendChild(table);
 
 	for (cat of all_sorted_categories) {
 		tr = document.createElement("tr");

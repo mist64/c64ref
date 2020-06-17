@@ -47,8 +47,9 @@ h2 {
 	font-size: 10pt;
 }
 
-#big_table {
+.big_table, .big_table td {
 	font-size: 10pt;
+	border: 1px solid black;
 }
 
 .disabled {
@@ -179,12 +180,12 @@ h2 {
 		</select>
 	</p>
 
-	<table class="opcode_table" id="opcode_table1"></table>
-	<table class="opcode_table" id="opcode_table2"></table>
+	<div id="opcode_div1"></div>
+	<div id="opcode_div2"></div>
 
-	<table id="legend" style="font-size: 9pt;"></table>
+	<div id="legend"></div>
 
-	<table id="addmode_table"></table>
+	<div id="addmode_div"></div>
 
 	<hr/>
 
@@ -211,8 +212,8 @@ h2 {
 	<input type="checkbox" id="sortbycat" onclick="show()">
 	<label for="sortbycat">Sort by Category</label>
 
-	<table id="big_table1" border="1"></table>
-	<table id="big_table2" border="1"></table>
+	<div id="big_table_div1"></div>
+	<div id="big_table_div2"></div>
 
 	<hr/>
 
