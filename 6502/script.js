@@ -400,9 +400,9 @@ function show(new_tabno) {
 
 	for (var i = 0; i <= 3; i++) {
 		if (i == tabno) {
-			document.getElementById('tab'+i).style.display = '';
+			document.getElementById('tab'+i+'c').style.display = '';
 		} else {
-			document.getElementById('tab'+i).style.display = 'none';
+			document.getElementById('tab'+i+'c').style.display = 'none';
 		}
 	}
 

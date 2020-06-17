@@ -7,6 +7,74 @@
 <script src="script.js"></script>
 <style>
 
+input#tab0,
+input#tab1,
+input#tab2,
+input#tab3 {
+	display: none;
+}
+
+div#navigation {
+	grid-column: 2;
+	grid-row: 1;
+
+	border-bottom: 1px solid var(--box-border);
+	justify-self: stretch;
+}
+
+nav label {
+	display: inline-block;
+	padding: 15px;
+	border-top: 1px solid var(--box-border);
+	border-right: 1px solid var(--box-border);
+	background: hsl(210,0%,70%);
+	color: hsl(210,0%,30%);
+	text-align: center;
+	width: 8em;
+}
+
+:root {
+	--box-background: #eef;
+	--box-border: black;
+	--info-hue : 200;
+}
+
+nav label:nth-child(1) { border-left: 1px solid var(--box-border); }
+nav label:hover {
+	background: hsl(210, 0%, 60%);
+	color: black;
+}
+nav label:active {
+	background: hsl(210, 0%, 80%);
+	color: black;
+	font-weight: bold;
+}
+
+#tab0:checked ~ div nav label[for="tab0"],
+#tab1:checked ~ div nav label[for="tab1"],
+#tab2:checked ~ div nav label[for="tab2"],
+#tab3:checked ~ div nav label[for="tab3"] {
+	background: var(--box-background);
+	color: black;
+	position: relative;
+	border-bottom: none;
+	font-weight: bold;
+}
+
+#tab0:checked ~ div nav label[for="tab0"]:after,
+#tab1:checked ~ div nav label[for="tab1"]:after,
+#tab2:checked ~ div nav label[for="tab2"]:after,
+#tab3:checked ~ div nav label[for="tab3"]:after {
+	content: "";
+	display: block;
+	position: absolute;
+	height: 3px;
+	width: 100%;
+	background: var(--box-background);
+	left: 0;
+	bottom: -2px;
+}
+
 h2 {
 	font-size: medium;
 }
@@ -170,27 +238,27 @@ h2 {
 		</span>
 	</p>
 
-	<input id="tab_info" type="radio" name="tabs" onchange="show(0);"/>
-	<input checked id="tab_opcodes" type="radio" name="tabs" onchange="show(1);"/>
-	<input id="tab_table" type="radio" name="tabs" onchange="show(2);"/>
-	<input id="tab_reference" type="radio" name="tabs" onchange="show(3);"/>
+	<input id="tab0" type="radio" name="tabs" onchange="show(0);"/>
+	<input checked id="tab1" type="radio" name="tabs" onchange="show(1);"/>
+	<input id="tab2" type="radio" name="tabs" onchange="show(2);"/>
+	<input id="tab3" type="radio" name="tabs" onchange="show(3);"/>
 	<div id="navigation">
 		<nav>
-			<label for="tab_info">Info</label><!--
-			--><label for="tab_opcodes">Opcodes</label><!--
-			--><label for="tab_table">Table</label><!--
-			--><label for="tab_reference">Reference</label><!-- -->
+			<label for="tab0">Info</label><!--
+			--><label for="tab1">Opcodes</label><!--
+			--><label for="tab2">Table</label><!--
+			--><label for="tab3">Reference</label><!-- -->
 		</nav>
 	</div>
 
-	<div id="tab0">
+	<div id="tab0c">
 		<div id="info_div"></div>
 		<div id="registers_div"></div>
 		<div id="flags_div"></div>
 		<div id="vectors_div"></div>
 	</div>
 
-	<div id="tab1">
+	<div id="tab1c">
 		<p>
 			<label for="opcode_table_organization">Organization</label>
 			<select name="opcode_table_organization" id="opcode_table_organization" onChange="show();">
@@ -206,7 +274,7 @@ h2 {
 		<div id="addmode_div"></div>
 	</div>
 
-	<div id="tab2">
+	<div id="tab2c">
 		<input checked type="checkbox" id="showoperation" onclick="show()">
 		<label for="showoperation">Operation</label>
 		<input checked type="checkbox" id="showopcodes" onclick="show()">
@@ -224,7 +292,7 @@ h2 {
 		<div id="legend2"></div>
 	</div>
 
-	<div id="tab3">
+	<div id="tab3c">
 		<div id="mnemos_by_category"></div>
 		<div id="reference"></div>
 	</div>
