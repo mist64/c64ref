@@ -81,7 +81,8 @@ function init() {
 				if (files_loaded == cpus.length) {
 					for (var cpu of cpus) {
 						cpu_data[cpu] = {};
-						decode_info(cpu);
+						decode_generic(cpu, 'info');
+						decode_generic(cpu, 'vectors');
 						decode_flags(cpu);
 						decode_opcodes(cpu);
 						decode_operations(cpu);
@@ -142,11 +143,11 @@ function split_file_data(cpu, text) {
 	file_data[cpu] = data_out;
 }
 
-function decode_info(cpu) {
-	text = get_file_data(cpu, 'info');
-	cpu_data[cpu].info = {};
+function decode_generic(cpu, section) {
+	text = get_file_data(cpu, section);
+	cpu_data[cpu][section] = {};
 	for (var line of text) {
-		cpu_data[cpu].info[line[0]] = line.slice(1).join(' ');
+		cpu_data[cpu][section][line[0]] = line.slice(1).join(' ');
 	}
 }
 
@@ -362,6 +363,7 @@ function show() {
 	generate_addmode_table('addmode_table');
 	generate_mnemos_by_category('mnemos_by_category', filter1);
 	generate_flags_div('flags_div');
+	generate_vectors_div('vectors_div');
 	generate_big_table('big_table1', filter1);
 	generate_big_table('big_table2', filter2);
 	generate_reference('reference', 'all');
@@ -605,6 +607,25 @@ function generate_flags_div(id) {
 		td = document.createElement("td");
 		tr.appendChild(td);
 		td.innerHTML = description;
+	}
+}
+
+function generate_vectors_div(id) {
+	var vectors_div = document.getElementById(id);
+	vectors_div.innerHTML = '';
+
+	var flags_vectors = document.createElement("table");
+	flags_div.appendChild(flags_vectors);
+
+	for (var address of Object.keys(cpu_data[cpu].vectors).sort()) {
+		tr = document.createElement("tr");
+		flags_vectors.appendChild(tr);
+		td = document.createElement("td");
+		tr.appendChild(td);
+		td.innerHTML = '$' + address;
+		td = document.createElement("td");
+		tr.appendChild(td);
+		td.innerHTML = cpu_data[cpu].vectors[address];
 	}
 
 }
@@ -866,10 +887,10 @@ function generate_reference(id, filter) {
 	}
 }
 // TODO:
-// * add instruction description text
+// * for instructions, add descriptions & pseudocode
 // * switch between illop synonym sets
 // * CPU summary text
 // * CPU tree
 // * diff function
 // * evaluate cycle formula
-// * show status flags
+// * registers

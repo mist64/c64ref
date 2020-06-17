@@ -4,6 +4,9 @@ year      1988
 id        65ce02
 basedon   r65c02
 
+[registers]
+Z   8   Z Index Register
+
 [flags]
 5  E  Extended Stack Disable
 

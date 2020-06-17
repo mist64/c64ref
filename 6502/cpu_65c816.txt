@@ -4,6 +4,17 @@ year      1984
 id        65c816
 basedon   65c02
 
+[registers]
+A   16   Accumulator
+X   16   X Index Register
+Y   16   Y Index Register
+P   8    Processor Status
+S   16   Stack Pointer
+DBR 8    Data Bank Register
+D   16   Direct Page Register
+K   8    Program Bank Register
+PC  16   Program Counter
+
 [flags]
 5  M  Accumulator/Memory Width
 4  X  Index Register Width
@@ -435,3 +446,11 @@ FC  8
 FD  6-m-x+x*p
 FE  9-2*m
 FF  6-m
+
+[vectors]
+00FFE4 COP
+00FFE6 BRK
+00FFE8 ABORT
+00FFEA NMI
+00FFEE IRQ
+00FFFC RESET

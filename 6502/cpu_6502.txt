@@ -3,6 +3,14 @@ name      MOS 6502
 year      1975
 id        6502
 
+[registers]
+A   8   Accumulator
+X   8   X Index Register
+Y   8   Y Index Register
+S   8   Stack Pointer
+P   8   Processor Status
+PC  16  Program Counter
+
 [flags]
 7  N  Negative
 6  V  Overflow
@@ -681,3 +689,8 @@ FA  2
 FB  7
 FC  4+p
 FF  7
+
+[vectors]
+FFFA NMI
+FFFC RESET
+FFFE IRQ
