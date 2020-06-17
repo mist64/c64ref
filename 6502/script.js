@@ -108,6 +108,7 @@ function init() {
 						decode_timing(cpu);
 						fixup_data(cpu);
 					}
+					populate_cpu_list();
 					show(1);
 				}
 			} else {
@@ -326,6 +327,20 @@ function fixup_data(cpu) {
 	}
 }
 
+function populate_cpu_list() {
+	var select = document.getElementById('cpu');
+	for (cpu of cpus) {
+		console.log(cpu_data[cpu]);
+		var option = document.createElement("option");
+		option.value = cpu_data[cpu].info.id;
+		option.innerHTML = cpu_data[cpu].info.name;
+		if (cpu_data[cpu].info.revision) {
+			option.innerHTML += ' (' + cpu_data[cpu].info.revision + ')';
+		}
+		select.appendChild(option);
+	}
+}
+
 function opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter) {
 	var res = [];
 	for (var opcode = 0; opcode <= 255; opcode++) {
@@ -343,7 +358,6 @@ function opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter) {
 }
 
 function cpu_has_illegal(cpu) {
-	console.log(cpu, cpu_data);
 	for (var opcode of cpu_data[cpu].opcodes) {
 		if (opcode.illegal) {
 			return true;
@@ -406,7 +420,6 @@ function show(new_tabno) {
 		}
 	}
 
-	console.log(tabno);
 	switch (tabno) {
 		case 0:
 			generate_info('info_div');
@@ -737,8 +750,8 @@ function generate_big_table(id, filter) {
 		th = document.createElement("th");
 		tr.appendChild(th);
 		th.colSpan = (showopcodes ? 1 : 0) + (showbytes ? 1 : 0) + (showcycles ? 1 : 0) ;
-//		th.innerHTML = cpu_data[cpu].addmodes[addmode].syntax;
-		th.innerHTML = cpu_data[cpu].addmodes[addmode].description;
+		th.innerHTML = cpu_data[cpu].addmodes[addmode].syntax;
+//		th.innerHTML = cpu_data[cpu].addmodes[addmode].description;
 	}
 	th = document.createElement("th");
 	tr.appendChild(th);
@@ -801,8 +814,9 @@ function generate_big_table(id, filter) {
 
 		if (showoperation) {
 			td = document.createElement("td");
-			tr.appendChild(td);
+			td.style.whiteSpace = 'nowrap';
 			td.innerHTML = cpu_data[cpu].operations[mnemo].description;
+			tr.appendChild(td);
 		}
 
 		for (var addmode of cpu_data[cpu].all_addmodes[filter]) {
@@ -993,3 +1007,4 @@ function generate_legend(id) {
 // * diff function
 // * evaluate cycle formula
 // * registers
+// * rotate bigtable th

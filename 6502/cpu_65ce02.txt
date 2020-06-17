@@ -70,12 +70,12 @@ TZA  stack N-----Z-  Z → A
 #d16      3  #$nnnn        Immediate (word)
 (a8),Z    2  ($nn),Z       Indirect Y-Indexed
 r16       3  $nnnn         Relative (word)
-(a8,S),Y  2  ($nnnn,SP),Y  Stack Relative Indirect Y-indexed
+(a8,S),Y  2  ($nnnn,SP),Y  Stack Relative Indirect Y-Indexed
 
 a8     2  $nn      Base Page
-a8,X   2  $nn,X    X-indexed Base Page
-a8,Y   2  $nn,Y    Y-indexed Base Page
-(a8,X) 2  ($nn,X)  X-indexed Base Page Indirect
+a8,X   2  $nn,X    X-Indexed Base Page
+a8,Y   2  $nn,Y    Y-Indexed Base Page
+(a8,X) 2  ($nn,X)  X-Indexed Base Page Indirect
 (a8),Y 2  ($nn),Y  Base Page Indirect Y-Indexed
 
 [opcodes]

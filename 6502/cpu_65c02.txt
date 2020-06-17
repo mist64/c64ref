@@ -26,7 +26,7 @@ TSB  logic ------Z-  A ∨ M → M
 
 [addmodes]
 (a8)     2  ($nn)      Zero Page Indirect
-(a16,X)  3  ($nnnn,X)  X-indexed Indirect
+(a16,X)  3  ($nnnn,X)  X-Indexed Indirect
 
 [opcodes]
 04  TSB   a8

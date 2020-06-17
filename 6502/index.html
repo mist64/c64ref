@@ -216,16 +216,7 @@ h2 {
 
 	<p>
 		<label for="cpu">CPU</label>
-		<select name="cpu" id="cpu" onChange="show();">
-			<option selected value="6502">MOS 6502</option>
-			<option value="6502rorbug">MOS 6502 (ROR bug)</option>
-			<option value="65dtv02">65DTV02</option>
-			<option value="65c02">WDC 65C02/65SC02</option>
-			<option value="r65c02">Rockwell R65C02</option>
-			<option value="65c02s">WDC 65C02S</option>
-			<option value="65ce02">CSG 65CE02</option>
-			<option value="65c816">WDC 65C816</option>
-		</select>
+		<select name="cpu" id="cpu" onChange="show();"></select>
 		<span id="showillegal_box">
 			<input checked type="checkbox" id="showillegal" onclick="show()">
 			<label for="showillegal">Undocumented opcodes</label>
@@ -294,6 +285,8 @@ h2 {
 		<div id="mnemos_by_category"></div>
 		<div id="reference"></div>
 	</div>
+
+	<hr/>
 
 	<h2>References</h2>
 

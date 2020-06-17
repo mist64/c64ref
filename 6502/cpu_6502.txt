@@ -162,13 +162,13 @@ XAA  arith  *-----*-  X ∧ M → A
 A      1  A        Accumulator
 #d8    2  #$nn     Immediate
 a8     2  $nn      Zero Page
-a8,X   2  $nn,X    X-indexed Zero Page
-a8,Y   2  $nn,Y    Y-indexed Zero Page
-(a8,X) 2  ($nn,X)  X-indexed Zero Page Indirect
+a8,X   2  $nn,X    X-Indexed Zero Page
+a8,Y   2  $nn,Y    Y-Indexed Zero Page
+(a8,X) 2  ($nn,X)  X-Indexed Zero Page Indirect
 (a8),Y 2  ($nn),Y  Zero Page Indirect Y-Indexed
 a16    3  $nnnn    Absolute
-a16,X  3  $nnnn,X  X-indexed Absolute
-a16,Y  3  $nnnn,Y  Y-indexed Absolute
+a16,X  3  $nnnn,X  X-Indexed Absolute
+a16,Y  3  $nnnn,Y  Y-Indexed Absolute
 (a16)  3  ($nnnn)  Indirect
 r8     2  $nnnn    Relative
 

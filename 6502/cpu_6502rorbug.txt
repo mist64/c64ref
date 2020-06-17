@@ -1,6 +1,6 @@
 [info]
 name      MOS 6502
-revision  ROR bug
+revision  without ROR
 year      1975
 id        6502rorbug
 basedon   6502
