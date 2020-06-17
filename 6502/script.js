@@ -361,6 +361,7 @@ function show() {
 	generate_opcode_table('opcode_table2', filter2);
 	generate_addmode_table('addmode_table');
 	generate_mnemos_by_category('mnemos_by_category', filter1);
+	generate_flags_div('flags_div');
 	generate_big_table('big_table1', filter1);
 	generate_big_table('big_table2', filter2);
 	generate_reference('reference', 'all');
@@ -569,6 +570,43 @@ function generate_mnemos_by_category(id, filter) {
 			}
 		}
 	}
+}
+
+function generate_flags_div(id) {
+	var flags_div = document.getElementById(id);
+	flags_div.innerHTML = '';
+
+	var flags_table1 = document.createElement("table");
+	flags_div.appendChild(flags_table1);
+
+	tr = document.createElement("tr");
+	flags_table1.appendChild(tr);
+	for (var i = 0; i < cpu_data[cpu].flags.names.length; i++) {
+		th = document.createElement("th");
+		tr.appendChild(th);
+		th.innerHTML = cpu_data[cpu].flags.names[i];
+	}
+
+	var flags_table2 = document.createElement("table");
+	flags_div.appendChild(flags_table2);
+
+	for (var i = 0; i < cpu_data[cpu].flags.names.length; i++) {
+		var bitno = i >= 8 ? '-' : 7 - i;
+		var name = cpu_data[cpu].flags.names[i];
+		var description = cpu_data[cpu].flags[name];
+		tr = document.createElement("tr");
+		flags_table2.appendChild(tr);
+		td = document.createElement("td");
+		tr.appendChild(td);
+		td.innerHTML = bitno;
+		td = document.createElement("td");
+		tr.appendChild(td);
+		td.innerHTML = name;
+		td = document.createElement("td");
+		tr.appendChild(td);
+		td.innerHTML = description;
+	}
+
 }
 
 function generate_big_table(id, filter) {
@@ -834,3 +872,4 @@ function generate_reference(id, filter) {
 // * CPU tree
 // * diff function
 // * evaluate cycle formula
+// * show status flags
