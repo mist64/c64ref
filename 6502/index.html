@@ -7,6 +7,11 @@
 <script src="script.js"></script>
 <style>
 
+:root {
+	--box-background: #eef;
+	--box-border: gray;
+}
+
 input#tab0,
 input#tab1,
 input#tab2,
@@ -15,28 +20,22 @@ input#tab3 {
 }
 
 div#navigation {
-	grid-column: 2;
-	grid-row: 1;
-
-	border-bottom: 1px solid var(--box-border);
-	justify-self: stretch;
+	border-bottom: 1px solid black;
 }
 
 nav label {
 	display: inline-block;
-	padding: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 	border-top: 1px solid var(--box-border);
 	border-right: 1px solid var(--box-border);
 	background: hsl(210,0%,70%);
 	color: hsl(210,0%,30%);
 	text-align: center;
-	width: 8em;
-}
-
-:root {
-	--box-background: #eef;
-	--box-border: black;
-	--info-hue : 200;
+	font-size: 11pt;
+	width: 5em;
 }
 
 nav label:nth-child(1) { border-left: 1px solid var(--box-border); }
@@ -47,14 +46,13 @@ nav label:hover {
 nav label:active {
 	background: hsl(210, 0%, 80%);
 	color: black;
-	font-weight: bold;
 }
 
 #tab0:checked ~ div nav label[for="tab0"],
 #tab1:checked ~ div nav label[for="tab1"],
 #tab2:checked ~ div nav label[for="tab2"],
 #tab3:checked ~ div nav label[for="tab3"] {
-	background: var(--box-background);
+	background: var(--main-background);
 	color: black;
 	position: relative;
 	border-bottom: none;
@@ -70,7 +68,7 @@ nav label:active {
 	position: absolute;
 	height: 3px;
 	width: 100%;
-	background: var(--box-background);
+	background: var(--main-background);
 	left: 0;
 	bottom: -2px;
 }
