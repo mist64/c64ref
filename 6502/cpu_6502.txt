@@ -14,7 +14,7 @@ PC  16  Program Counter
 [flags]
 7  N  Negative
 6  V  Overflow
-5  #  Unused
+5  -  (Expansion)
 4  B  Break Command
 3  D  Decimal
 2  I  Interrupt Disable
@@ -86,7 +86,7 @@ ASL  shift  N-----ZC  C ← /7...0/ ← 0
 BCC  bra    --------  Branch on C = 0
 BCS  bra    --------  Branch on C = 1
 BEQ  bra    --------  Branch on Z = 1
-BIT  logic  NV----Z-  A & M, M7 → N, M6 → V
+BIT  logic  NV----Z-  A ∧ M, M7 → N, M6 → V
 BMI  bra    --------  Branch on N = 1
 BNE  bra    --------  Branch on Z = 0
 BPL  bra    --------  Branch on N = 0
@@ -697,6 +697,138 @@ FFFE IRQ
 
 [documentation]
 
+LDA  Load Accumulator with Memory
+     When instruction LDA is executed by the microprocessor, data is transferred from memory to the accumulator and stored in the accumulator.
+     Rather than continuing to give a word picture of the opera­tion, introduced will be the symbolic representation M -> A, where the arrow means "transfer to." Therefore the LDA instruction sym­bolic representation is read, "memory transferred to the accumulator."
+     LDA affects the contents of the accumulator, does not affect the carry or overflow flags; sets the zero flag if the accumulator is zero as a result of the LDA, otherwise resets the zero flag; sets the negative flag if bit 7 of the accumulator is a 1, other­ wise resets the negative flag.
+     Although yet to be developed is the concept of addressing modes, for reference purpose, LDA is a "Group One" instruction and has all of the major addressing modes of the machine available to it as stated in Appendix A. These addressing modes include Immed­ iate; Absolute; Zero Page; Absolute,X; Absolute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
+
+STA  Store Accumulator ln Memory
+     This instruction transfers the contents of the accumulator to memory.
+     The symbolic representation for this instruction is A -> M.
+     This instruction affects none of the flags in the processor status register and does not affect the accumulator.
+     It is a "Group One" instruction and has the following address­ ing modes available to it: Absolute; Zero Page; Absolute,X; Abso- lute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
+
+ADC  Add Memory to Accumulator with Carry
+     This instruction adds the value of memory and carry from the previous operation to the value of the accumulator and stores the result in the accumulator.
+     The symbolic representation for this instruction is A + M + C -> A.
+     This instruction affects the accumulator; sets the carry flag when the sum of a binary add exceeds 255 or when the sum of a decimal add exceeds 99, otherwise carry is reset. The overflow flag is set when the sign or bit 7 is changed due to the result exceeding +127 or -128, otherwise overflow is reset. The negative flag is set if the accumulator result contains bit 7 on, otherwise the negative flag is reset. The zero flag is set if the accumulator result is 0, otherwise the zero flag is reset.
+     It is a "Group One" instruction and has the following address­ ing modes: Immediate; Absolute; Zero Page; Absolute,X; Absolute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
+
+SBC  Subtract Memory from Accumulator with Borrow
+     This instruction subtracts the value of memory and borrow from the value of the accumulator, using two's complement arithmetic, and stores the result in the accumulator. Borrow is defined as the carry flag complemented; therefore, a resultant carry flag indicates that a borrow has not occurred.
+     The symbolic representation for this instruction is A - M - C̅ -> A.
+     This instruction affects the accumulator. The carry flag is set if the result is greater than or equal to 0. The carry flag is reset when the result is less than 0, indicating a borrow. The over­ flow flag is set when the result exceeds +127 or -127, otherwise it is reset. The negative flag is set if the result in the accumulator has bit 7 on, otherwise it is reset. The Z flag is set if the result in the accumulator is 0, otherwise it is reset.
+     It is a "Group One" instruction. It has addressing modes Immediate; Absolute; Zero Page; Absolute,X; Absolute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
+
+AND  Memory with Accumulator
+     The AND instructions transfer the accumulator and memory to the adder which performs a bit-by-bit AND operation and result back in the accumulator.
+     This instruction affects the accumulator; sets if the result in the accumulator is 0, otherwise resets sets the negative flag if the result in the accumulator otherwise resets the negative flag.
+     This is symbolically represented by A ∧ M -> A.
+     AND is a "Group One" instruction having addressing modes of Immediate; Absolute; Zero Page; Absolute,X; Absolute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
+
+ORA  "OR" Memory with Accumulator
+     The ORA instruction transfers the memory and the accumulator to the adder which performs a binary "OR" on a bit-by-bit basis and stores the result in the accumulator.
+     This is indicated symbolically by A ∨ M -> A.
+     This instruction affects the accumulator; sets the zero flag if the result in the accumulator is 0, otherwise resets the zero flag; sets the negative flag if the result in the accumulator has bit 7 on, otherwise resets the negative flag. ORA is a "Group One" instruction. It has the addressing modes Immediate; Absolute; Zero Page; Absolute,X; Absolute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
+
+EOR  "Exclusive OR" Memory with Accumulator
+     The EOR instruction transfers the memory and the accumulator to the adder which performs a binary "EXCLUSIVE OR" on a bit-by-bit basis and stores the result in the accumulator.
+     This is indicated symbolically by A ⊻ M -> A.
+     This instruction affects the accumulator; sets the zero flag if the result in the accumulator is 0, otherwise resets the zero flag sets the negative flag if the result in the accumulator has bit 7 on, otherwise resets the negative flag.
+     EOR is a "Group One" instruction having addressing modes of Immediate; Absolute; Zero Page; Absolute,X; Absolute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
+
+SEC  Set Carry Flag
+     This instruction initializes the carry flag to a 1. This op eration should normally precede a SBC loop. It is also useful when used with a ROL instruction to initialize a bit in memory to a 1.
+     This instruction affects no registers in the microprocessor and no flags other than the carry flag which is set.
+     SEC is a single-byte instruction and its addressing mode is Implied.
+
+CLC  Clear Carry Flag
+     This instruction initializes the carry flag to a 0. This op­ eration should normally precede an ADC loop. It is also useful when used with a R0L instruction to clear a bit in memory.
+     This instruction affects no registers in the microprocessor and no flags other than the carry flag which is reset.
+     CLC is a single-byte instruction and its addressing mode is Implied.
+
+SEI  Set Interrupt Disable
+     This instruction initializes the interrupt disable to a 1. It is used to mask interrupt requests during system reset operations and during interrupt commands.
+     It affects no registers in the microprocessor and no flags other than the interrupt disable which is set.
+     SEI is a single-byte instruction and its addressing mode is Implied.
+
+CLI  Clear Interrupt Disable
+     This instruction initializes the interrupt disable to a 0. This allows the microprocessor to receive interrupts.
+     It affects no registers in the microprocessor and no flags other than the interrupt disable which is cleared.
+     CLI is a single-byte instruction and its addressing mode is Implied.
+
+SED  Set Decimal Mode
+     This instruction sets the decimal mode flag D to a 1. This makes all subsequent ADC and SBC instructions operate as a decimal arithmetic operation.
+     SED affects no registers in the microprocessor and no flags other than the decimal mode which is set to a 1.
+
+CLD  Clear Decimal Mode
+     This instruction sets the decimal mode flag to a 0. This all subsequent ADC and SBC instructions to operate as simple operations.
+     CLD affects no registers in the microprocessor and no flags other than the decimal mode flag which is set to a 0.
+
+CLV  Clear Overflow Flag
+     This instruction clears the overflow flag to a 0. This com­ mand is used in conjunction with the set overflow pin which can change the state of the overflow flag with an external signal.
+     CLV affects no registers in the microprocessor and no flags other than the overflow flag which is set to a 0.
+
+JMP  Jump to New Location
+     In this instruction, the data from the memory location located in the program sequence after the OP CODE is loaded into the low order byte of the program counter (PCL) and the data from the next memory location after that is loaded into the high order byte of the program counter (PCH).
+     The symbolic notation for jump is (PC + l) -> PCL, (PC + 2) -> PCH.
+     As stated earlier, the "( )" means "contents of" a memory location. PC indicates the contents of the program counter at the time the OP CODE is fetched. Therefore (PC + 2) -> PCH reads, "the contents of the program counter two locations beyond the OP CODE fetch location are transferred to the new PC high order byte."
+     The addressing modes are Absolute and Absolute Indirect.
+
+BMI  Branch on Result Minus
+     This instruction takes the conditional branch if the N bit is set.
+     BMI does not affect any of the flags or any other part of the machine other than the program counter and then only if the N bit is on.
+     The mode of addressing for BMI is Relative.
+
+BPL  Branch on Result Plus
+     This instruction is the complementary branch to branch on result minus. It is a conditional branch which takes the branch when the N bit is reset (0). BPL is used to test if the previous result bit 7 was off (0) and branch on result minus is used to determine if the previous result was minus or bit 7 was on (1).
+     The instruction affects no flags or other registers other than the P counter and only affects the P counter when the N bit is reset.
+     The addressing mode is Relative.
+
+BCC  Branch on Carry Clear
+     This instruction tests the state of the carry bit and takes a conditional branch if the carry bit is reset.
+     It affects no flags or registers other than the program counter and then only if the C flag is not on.
+     The addressing mode is Relative.
+
+BCS  Branch on Carry Set
+     This instruction takes the conditional branch if the carry flag is on.
+     BCS does not affect any of the flags or registers except for the program counter and only then if the carry flag is on.
+     The addressing mode is Relative.
+
+BEQ  Branch on Result Zero
+     This instruction could also be called "Branch on Equal."
+     It takes a conditional branch whenever the Z flag is on or the previ­ ous result is equal to 0.
+     BEQ does not affect any of the flags or registers other than the program counter and only then when the Z flag is set.
+     The addressing mode is Relative.
+
+BNE  Branch on Result Not Zero
+     This instruction could also be called "Branch on Not Equal." It tests the Z flag and takes the conditional branch if the Z flag is not on, indicating that the previous result was not zero.
+     BNE does not affect any of the flags or registers other than the program counter and only then if the Z flag is reset.
+     The addressing mode is Relative.
+
+BVS  Branch on Overflow Set
+     This instruction tests the V flag and takes the conditional branch if V is on.
+     BVS does not affect any flags or registers other than the program, counter and only when the overflow flag is set.
+     The addressing mode is Relative.
+
+BVC  Branch on Overflow Clear
+     This instruction tests the status of the V flag and takes the conditional branch if the flag is not set.
+     BVC does not affect any of the flags and registers other than the program counter and only when the overflow flag is reset.
+     The addressing mode is Relative.
+
+CMP  Compare Memory and Accumulator
+     This instruction subtracts the contents of memory from the contents of the accumulator.
+     Its symbolic notation is A - M.
+     The use of the CMP affects the following flags: Z flag is set on an equal comparison, reset otherwise; the N flag is set or reset by the result bit 7, the carry flag is set when the value in memory is less than or equal to the accumulator, reset when it is greater than the accumulator. The accumulator is not affected.
+     It is a "Group One" instruction and therefore has as its addressing modes: Immediate; Zero Page; Zero Page,X; Absolute; Absolute,X; Absolute,Y; (Indirect,X); (Indirect),Y.
+
+BIT  Test Bits in Memory with Accumulator
+     This instruction performs an AND between a memory location and the accumulator but does not store the result of the AND into the accumulator.
+     The symbolic notation is M ∧ A.
+     The bit instruction affects the N flag with N being set to the value of bit 7 of the memory being tested, the V flag with V being set equal to bit 6 of the memory being tested and Z being set by the result of the AND operation between the accumulator and the memory if the result is Zero, Z is reset otherwise. It does not affect the accumulator.
+     The addressing modes are Zero Page and Absolute.
+
 LDX  LOAD INDEX REGISTER X FROM MEMORY
      Load the index register X from memory.
      The symbolic notation is M -> X.
@@ -828,3 +960,56 @@ PLP  PULL PROCESSOR STA TUS FROM STACK
      The PLP instruction affects no registers in the processor other than the status register. This instruction could affect all flags in the status register.
      PLP is a single-byte instruction and the addressing mode is Implied.
 
+RTI  RETURN FROM INTERRUPT
+     This instruction transfers from the stack into the microprocessor the processor status and the program counter location for the instruction which was interrupted. By virtue of the interrupt having stored this data before executing the instruction and thei fact that the RTI reinitializes the microprocessor to the same state as when it was interrupted, the combination of interrupt plus RTI allows truly reentrant coding.
+     The symbolic notation for RTI is ↑P ↑PC.
+     The RTI instruction reinitializes all flags to the position to the point they were at the time the interrupt was taken and sets the program counter back to its pre-interrupt state. It affects no other registers in the microprocessor.
+     RTI is a single byte instruction and its addressing mode is Implied.
+
+JMP  Indirect
+     This instruction establishes a new valne for the program counter.
+     It affects only the program counter in the microprocessor and affects no flags in the status register.
+     JMP Indirect is a three byte instruction.
+
+BRK  BREAK COMMAND
+     The break command causes the microprocessor to go through an inter­ rupt sequence under program control. This means that the program counter of the second byte after the BRK. is automatically stored on the stack along with the processor status at the beginning of the break instruction. The microprocessor then transfers control to the interrupt vector.
+     Symbolic notation for break is PC + 2↓ (FFFE) -> PCL (FFFF) -> PCH.
+     Other than changing the program counter, the break instruction changes no values in either the registers or the flags.
+     The BRK is a single byte instruction and its addressing mode is Implied.
+
+LSR LOGICAL SHIFT RIGHT
+     This instruction shifts either the accumulator or a specified memory location 1 bit to the right, with the higher bit of the result always being set to 0 , and the low bit which is shifted out of the field being stored in the carry' flag.
+     The symbolic notation for LSR is 0 → /7...0/ → C
+     The shift right instruction either affects the accumulator by shift­ ing it right 1 or is a read/modify/write instruction which changes a speci­ fied memory location but does not affect any internal registers. The shift right does not affect the overflow flag. The N flag is always reset. The Z flag is set if the result of the shift is 0 and reset otherwise. The carry is set equal to bit 0 of the input.
+     LSR is a read/write/modify instruction and has the following address­ ing modes: Accumulator; Zero Page; Zero Page,X; Absolute; Absolute,X.
+
+ASL  ARITHMETIC SHIFT LEFT
+     The shift left instruction shifts either the accumulator or the ad­ dress memory location 1 bit to the left, with the bit 0 always being set to 0 and the bit 7 output always being contained in the carry flag. ASL either shifts the accumulator left 1 bit tion that affects only memory.
+     The symbolic notation for ASL is C ← /7...0/ ← 0
+      The instruction does not affect the result bit 7 (bit 6 in the input), sets Z flag if the result is equal to 0, otherwise resets Z and stores the input bit 7 in the carry flag.
+     ASL is a read/modify/write instruction and has the following address­ ing modes: Accumulator; Zero Page; Zero Page,X; Absolute; Absolute,X
+
+ROL ROTATE LEFT
+     The rotate left instruction shifts either the accumulator or addressed memory left 1 bit, with the input carry being stored in bit 0 and with the input bit 7 being stored in the carry flags.
+     The symbolic notation for ROL is C ← /7...0/ ← C
+     The ROL instruction either shifts the accumulator left 1 bit and stores the carry in accumulator bit 0 or does not affect the internal reg­ isters at all. The ROL instruction sets carry equal to the input bit 7, sets N equal to the input bit 6 , sets the Z flag if the result of the ro­ tate is 0, otherwise it resets Z and does not affect the overflow flag at all.
+     ROL is a read/modify/write instruction and it has the following address­ ing modes: Accumulator; Zero Page; Zero Page,X; Absolute; Absolute,X.
+
+ROR  ROTATE RIGHT
+     The rotate right instruction shifts either the accumulator or address:ed memory right 1 bit with bit 0 shifted into the carry and carry shifted into bit 7.
+     The symbolic notation for ROR is C → /7...0/ → C
+     The ROR instruction either shifts the accumulator right 1 bit and stores the carry in accumulator bit 7 or does not affect the internal regis­ ters at all. The ROR instruction sets carry equal to input bit 0, sets N equal to the input carry and sets the Z flag if the result of the rotate is 0; otherwise it resets Z and does not affect the overflow flag at all.
+     ROR is a read/modify/write instruction and it has the following address­ing modes: Accumulator; Zero Page; Absolute; Zero Page,X; Absolute,X.
+	(Available on Microprocessors after June, 1976)
+
+INC  INCREMENT MEMORY BY ONE
+	This instruction adds 1 to the contents of the addressed memory loca­tion.
+	The symbolic notation is M + 1 -> M.
+	The increment memory instruction does not affect any internal registers and does not affect the carry or overflow flags. If bit 7 is on as the result of the increment,N is set, otherwise it is reset; if the increment causes the result to become 0, the Z flag is set on, otherwise it is reset.
+	The addressing modes for increment are: Zero Page; Zero Page,X; Abso­lute; Absolute,X.
+
+DEC  DECREMENT MEMORY BY ONE
+	This instruction subtracts 1, in two's complement, from the contents of the addressed memory location.
+	Symbolic notation for this instruction is M - 1 -> M.
+	The decrement instruction does not affect any internal register in the microprocessor. It does not affect the carry or overflow flags. If bit 7 is on as a result of the decrement, then the N flag is set, otherwise it is reset. If the result of the decrement is 0, the Z flag is set, other­wise it is reset.
+	The addressing modes for decrement are: Zero Page; Zero Page,X; Absolute; Absolute,X.
