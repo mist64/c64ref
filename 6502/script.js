@@ -257,21 +257,22 @@ function decode_addmodes(cpu) {
 	}
 }
 
-function evaluate_single(single, state) {
+function evaluate_single(single, state, encountered_symbols) {
 	if (state[single] != undefined) {
+		encountered_symbols.push(single);
 		return state[single];
 	} else {
 		return parseInt(single);
 	}
 }
 
-function evaluate_component(component, state) {
+function evaluate_component(component, state, encountered_symbols) {
 	var index = component.indexOf('*');
 	if (index < 0) {
-		return evaluate_single(component, state);
+		return evaluate_single(component, state, encountered_symbols);
 	} else {
-		var l = evaluate_single(component.slice(0, index), state);
-		var r = evaluate_single(component.slice(index + 1), state);
+		var l = evaluate_single(component.slice(0, index), state, encountered_symbols);
+		var r = evaluate_single(component.slice(index + 1), state, encountered_symbols);
 		return l * r;
 	}
 }
@@ -287,6 +288,7 @@ function evaluate_cycles(cycles) {
 			state[symbols[j]] = (i >> j) & 1;
 		}
 
+		var encountered_symbols = [];
 		var c = cycles.slice();
 		var operator = '+';
 		var value = 0;
@@ -299,7 +301,7 @@ function evaluate_cycles(cycles) {
 				var component = c.slice(0, index);
 			}
 
-			var value2 = evaluate_component(component, state);
+			var value2 = evaluate_component(component, state, encountered_symbols);
 			if (operator == '+') {
 				value += value2;
 			} else {
@@ -316,7 +318,7 @@ function evaluate_cycles(cycles) {
 		min = Math.min(min, value);
 		max = Math.max(max, value);
 	}
-	return { min: min, max: max };
+	return { min: min, max: max, symbols: encountered_symbols };
 }
 
 function decode_timing(cpu) {
@@ -325,10 +327,11 @@ function decode_timing(cpu) {
 		var o = parseInt(line[0], 16);
 		cpu_data[cpu].opcodes[o].cycles = line[1];
 
-		var minmax = evaluate_cycles(line[1])
+		var evaluated = evaluate_cycles(line[1])
 
-		cpu_data[cpu].opcodes[o].mincycles = minmax.min;
-		cpu_data[cpu].opcodes[o].maxcycles = minmax.max;
+		cpu_data[cpu].opcodes[o].mincycles = evaluated.min;
+		cpu_data[cpu].opcodes[o].maxcycles = evaluated.max;
+		cpu_data[cpu].opcodes[o].cyclesymbols = evaluated.symbols;
 	}
 }
 
@@ -803,6 +806,7 @@ function generate_big_table(id, filter) {
 	showopcodes = document.getElementById('showopcodes').checked;
 	showbytes = document.getElementById('showbytes').checked;
 	showcycles = document.getElementById('showcycles').checked;
+	cycledetails = document.getElementById('cycledetails').checked;
 	sortbycat = document.getElementById('sortbycat').checked;
 
 	tr = document.createElement("tr");
@@ -897,8 +901,11 @@ function generate_big_table(id, filter) {
 			td3.style.whiteSpace = 'nowrap';
 			var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter);
 			for (var opcode of opcodes) {
-//				var cycles = pretty_cycles(cpu, opcode);
-				var cycles = cpu_data[cpu].opcodes[opcode].cycles;
+				if (cycledetails) {
+					var cycles = cpu_data[cpu].opcodes[opcode].cycles;
+				} else {
+					var cycles = pretty_cycles(cpu, opcode);
+				}
 				td1.innerHTML += hex16(opcode) + '<br/>';
 				td2.innerHTML += cpu_data[cpu].addmodes[addmode].bytes + '<br/>';
 				td3.innerHTML += cycles + '<br/>';
@@ -1001,7 +1008,7 @@ function generate_reference(id, filter) {
 			tr.appendChild(th);
 			th.innerHTML = title;
 		}
-		var show_illegal_footnote = false;
+		var footnotes = new Set();
 		for (var addmode of cpu_data[cpu].all_addmodes[filter]) {
 			var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter);
 			for (var opcode of opcodes) {
@@ -1022,7 +1029,7 @@ function generate_reference(id, filter) {
 					td.innerHTML = '$' + hex16(opcode);
 					if (illegal) {
 						td.innerHTML += '*';
-						show_illegal_footnote = true;
+						footnotes.add('*');
 					}
 					td = document.createElement("td");
 					tr.appendChild(td);
@@ -1032,14 +1039,39 @@ function generate_reference(id, filter) {
 					var cycles = cpu_data[cpu].opcodes[opcode].cycles;
 //					td.innerHTML = pretty_cycles(cpu, opcode);
 					td.innerHTML = cpu_data[cpu].opcodes[opcode].cycles;
+
+					cpu_data[cpu].opcodes[opcode].cyclesymbols.forEach(footnotes.add, footnotes)
+
 				}
 			}
 		}
-		if (show_illegal_footnote) {
-			p = document.createElement("p");
-			div.appendChild(p);
-			p.innerHTML = '*Undocumented.';
+		var p = document.createElement("p");
+		div.appendChild(p);
+		var html = '';
+		for (f of footnotes) {
+			switch (f) {
+				case '*':
+					html += '*Undocumented.';
+					break;
+				case 'm':
+					html += 'm: =1 if memory and accumulator are 8 bit.';
+					break;
+				case 'x':
+					html += 'x: =1 if index registers are 8 bit.';
+					break;
+				case 'w':
+					html += 'w: =1 if DL register ≠ 0.';
+					break;
+				case 'p':
+					html += 'p: =1 if page is crossed.';
+					break;
+				case 't':
+					html += 't: =1 if branch is taken.';
+					break;
+			}
+			html += '<br/>'
 		}
+		p.innerHTML = html;
 
 		// if there were no opcodes, don't add the div
 		// this happens if
@@ -1082,4 +1114,5 @@ function generate_legend(id) {
 // * registers
 // * rotate bigtable th
 // * better addmode short forms for opcode matrix
-// * add cycle footnotes: table and reference
+// * navigate to CPU & tab
+// * link mnemos_by_category -> reference
