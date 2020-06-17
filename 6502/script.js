@@ -108,7 +108,7 @@ function init() {
 						decode_timing(cpu);
 						fixup_data(cpu);
 					}
-					show();
+					show(1);
 				}
 			} else {
 				file_data[r.cpu] = null;
@@ -343,6 +343,7 @@ function opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter) {
 }
 
 function cpu_has_illegal(cpu) {
+	console.log(cpu, cpu_data);
 	for (var opcode of cpu_data[cpu].opcodes) {
 		if (opcode.illegal) {
 			return true;
@@ -351,7 +352,7 @@ function cpu_has_illegal(cpu) {
 	return false;
 }
 
-function show() {
+function show(tabno) {
 	cpu = document.getElementById('cpu').value;
 	showillegal = document.getElementById('showillegal').checked;
 	separateillegal = document.getElementById('separateillegal').checked;
@@ -374,18 +375,44 @@ function show() {
 			filter2 = 'none';
 	}
 
-	generate_info('info_div');
-	generate_opcode_table('opcode_div1', filter1);
-	generate_opcode_table('opcode_div2', filter2);
-	generate_addmode_table('addmode_div');
-	generate_mnemos_by_category('mnemos_by_category', filter1);
-	generate_flags_div('flags_div');
-	generate_vectors_div('vectors_div');
-	generate_big_table('big_table_div1', filter1);
-	generate_big_table('big_table_div2', filter2);
-	generate_reference('reference', 'all');
+	for (var id of [
+		'info_div',
+		'flags_div',
+		'vectors_div',
+		'opcode_div1',
+		'opcode_div2',
+		'addmode_div',
+		'legend',
+		'big_table_div1',
+		'big_table_div2',
+		'mnemos_by_category',
+		'reference',
+	]) {
+		document.getElementById(id).innerHTML = '';
+	}
 
-	generate_legend('legend');
+	console.log(tabno);
+	switch (tabno) {
+		case 0:
+			generate_info('info_div');
+			generate_flags_div('flags_div');
+			generate_vectors_div('vectors_div');
+			break;
+		case 1:
+			generate_opcode_table('opcode_div1', filter1);
+			generate_opcode_table('opcode_div2', filter2);
+			generate_addmode_table('addmode_div');
+			generate_legend('legend');
+			break;
+		case 2:
+			generate_big_table('big_table_div1', filter1);
+			generate_big_table('big_table_div2', filter2);
+			break;
+		case 3:
+			generate_mnemos_by_category('mnemos_by_category', filter1);
+			generate_reference('reference', 'all');
+			break;
+	}
 }
 
 function o_from_x_y(x, y, opcode_table_organization) {

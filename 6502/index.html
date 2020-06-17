@@ -165,9 +165,26 @@ h2 {
 		</span>
 	</p>
 
+	<input id="tab_info" type="radio" name="tabs" onchange="show(0);"/>
+	<input checked id="tab_opcodes" type="radio" name="tabs" onchange="show(1);"/>
+	<input id="tab_table" type="radio" name="tabs" onchange="show(2);"/>
+	<input id="tab_reference" type="radio" name="tabs" onchange="show(3);"/>
+	<div id="navigation">
+		<nav>
+			<label for="tab_info">Info</label><!--
+			--><label for="tab_opcodes">Opcodes</label><!--
+			--><label for="tab_table">Table</label><!-- -->
+			--><label for="tab_reference">Reference</label><!-- -->
+		</nav>
+	</div>
+
+
 	<hr/>
 
 	<div id="info_div"></div>
+	<div id="registers_div"></div>
+	<div id="flags_div"></div>
+	<div id="vectors_div"></div>
 
 	<hr/>
 
@@ -190,14 +207,6 @@ h2 {
 	<hr/>
 
 	<div id="mnemos_by_category"></div>
-
-	<hr/>
-
-	<div id="registers_div"></div>
-
-	<div id="flags_div"></div>
-
-	<div id="vectors_div"></div>
 
 	<hr/>
 
