@@ -31,8 +31,13 @@ h2 {
 	vertical-align: middle;
 }
 
+#mnemos_by_category table {
+	border: none;
+}
+
 #mnemos_by_category td {
-	padding: 8px;
+	padding: 2px;
+	font-size: 11pt;
 }
 
 #mnemos_by_category th {
@@ -141,7 +146,7 @@ h2 {
 	</div>
 	<div class="main">
 	<h1>6502 CPU Reference</h1>
-	<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>.</i></p>
+<!--	<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>.</i></p>-->
 
 	<p>
 		<label for="cpu">CPU</label>
@@ -173,60 +178,56 @@ h2 {
 		<nav>
 			<label for="tab_info">Info</label><!--
 			--><label for="tab_opcodes">Opcodes</label><!--
-			--><label for="tab_table">Table</label><!-- -->
+			--><label for="tab_table">Table</label><!--
 			--><label for="tab_reference">Reference</label><!-- -->
 		</nav>
 	</div>
 
+	<div id="tab0">
+		<div id="info_div"></div>
+		<div id="registers_div"></div>
+		<div id="flags_div"></div>
+		<div id="vectors_div"></div>
+	</div>
 
-	<hr/>
+	<div id="tab1">
+		<p>
+			<label for="opcode_table_organization">Organization</label>
+			<select name="opcode_table_organization" id="opcode_table_organization" onChange="show();">
+				<option value="4-4">4-4</option>
+				<option value="3-3-2/h">3-3-2 (horizontal)</option>
+				<option value="3-3-2/v">3-3-2 (vertical)</option>
+			</select>
+		</p>
 
-	<div id="info_div"></div>
-	<div id="registers_div"></div>
-	<div id="flags_div"></div>
-	<div id="vectors_div"></div>
+		<div id="opcode_div1"></div>
+		<div id="opcode_div2"></div>
+		<div id="legend1"></div>
+		<div id="addmode_div"></div>
+	</div>
 
-	<hr/>
+	<div id="tab2">
+		<input checked type="checkbox" id="showoperation" onclick="show()">
+		<label for="showoperation">Operation</label>
+		<input checked type="checkbox" id="showopcodes" onclick="show()">
+		<label for="showopcodes">Opcodes</label>
+		<input checked type="checkbox" id="showbytes" onclick="show()">
+		<label for="showbytes">Bytes</label>
+		<input checked type="checkbox" id="showcycles" onclick="show()">
+		<label for="showcycles">Cycles</label>
+		<input type="checkbox" id="sortbycat" onclick="show()">
+		<label for="sortbycat">Sort by Category</label>
 
-	<p>
-		<label for="opcode_table_organization">Organization</label>
-		<select name="opcode_table_organization" id="opcode_table_organization" onChange="show();">
-			<option value="4-4">4-4</option>
-			<option value="3-3-2/h">3-3-2 (horizontal)</option>
-			<option value="3-3-2/v">3-3-2 (vertical)</option>
-		</select>
-	</p>
+		<div id="big_table_div1"></div>
+		<div id="big_table_div2"></div>
 
-	<div id="opcode_div1"></div>
-	<div id="opcode_div2"></div>
+		<div id="legend2"></div>
+	</div>
 
-	<div id="legend"></div>
-
-	<div id="addmode_div"></div>
-
-	<hr/>
-
-	<div id="mnemos_by_category"></div>
-
-	<hr/>
-
-	<input checked type="checkbox" id="showoperation" onclick="show()">
-	<label for="showoperation">Operation</label>
-	<input checked type="checkbox" id="showopcodes" onclick="show()">
-	<label for="showopcodes">Opcodes</label>
-	<input checked type="checkbox" id="showbytes" onclick="show()">
-	<label for="showbytes">Bytes</label>
-	<input checked type="checkbox" id="showcycles" onclick="show()">
-	<label for="showcycles">Cycles</label>
-	<input type="checkbox" id="sortbycat" onclick="show()">
-	<label for="sortbycat">Sort by Category</label>
-
-	<div id="big_table_div1"></div>
-	<div id="big_table_div2"></div>
-
-	<hr/>
-
-	<div id="reference"></div>
+	<div id="tab3">
+		<div id="mnemos_by_category"></div>
+		<div id="reference"></div>
+	</div>
 
 	<h2>References</h2>
 

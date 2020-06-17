@@ -352,7 +352,13 @@ function cpu_has_illegal(cpu) {
 	return false;
 }
 
-function show(tabno) {
+var tabo;
+
+function show(new_tabno) {
+	if (new_tabno != undefined) {
+		tabno = new_tabno;
+	}
+
 	cpu = document.getElementById('cpu').value;
 	showillegal = document.getElementById('showillegal').checked;
 	separateillegal = document.getElementById('separateillegal').checked;
@@ -382,13 +388,22 @@ function show(tabno) {
 		'opcode_div1',
 		'opcode_div2',
 		'addmode_div',
-		'legend',
+		'legend1',
+		'legend2',
 		'big_table_div1',
 		'big_table_div2',
 		'mnemos_by_category',
 		'reference',
 	]) {
 		document.getElementById(id).innerHTML = '';
+	}
+
+	for (var i = 0; i <= 3; i++) {
+		if (i == tabno) {
+			document.getElementById('tab'+i).style.display = '';
+		} else {
+			document.getElementById('tab'+i).style.display = 'none';
+		}
 	}
 
 	console.log(tabno);
@@ -402,11 +417,12 @@ function show(tabno) {
 			generate_opcode_table('opcode_div1', filter1);
 			generate_opcode_table('opcode_div2', filter2);
 			generate_addmode_table('addmode_div');
-			generate_legend('legend');
+			generate_legend('legend1');
 			break;
 		case 2:
 			generate_big_table('big_table_div1', filter1);
 			generate_big_table('big_table_div2', filter2);
+			generate_legend('legend2');
 			break;
 		case 3:
 			generate_mnemos_by_category('mnemos_by_category', filter1);
@@ -579,8 +595,12 @@ function pretty_cycles(cpu, opcode) {
 }
 
 function generate_mnemos_by_category(id, filter) {
-	var mnemos_by_category = document.getElementById(id);
-	mnemos_by_category.innerHTML = '';
+	var div = document.getElementById(id);
+	div.innerHTML = '';
+
+	table = document.createElement("table");
+	table.id = 'mnemos_by_category';
+	div.appendChild(table);
 
 	// collect data
 	var data = [];
@@ -600,7 +620,7 @@ function generate_mnemos_by_category(id, filter) {
 
 	// build table
 	tr = document.createElement("tr");
-	mnemos_by_category.appendChild(tr);
+	table.appendChild(tr);
 	for (var column of data) {
 		if (column.length == 1) {
 			continue;
@@ -611,7 +631,7 @@ function generate_mnemos_by_category(id, filter) {
 	}
 	for (var i = 1; i < max_cat_size; i++) {
 		tr = document.createElement("tr");
-		mnemos_by_category.appendChild(tr);
+		table.appendChild(tr);
 		for (var column of data) {
 			if (column.length == 1) {
 				continue;
