@@ -82,7 +82,7 @@ TYA  Transfer Y to Accumulator
 [operations]
 ADC  arith  NV----ZC  A + M + C → A, C
 AND  logic  N-----Z-  A ∧ M → A
-ASL  shift  N-----Z0  C ← /7...0/ ← 0
+ASL  shift  N-----Z0  C ← /M7...M0/ ← 0
 BCC  bra    --------  Branch on C = 0
 BCS  bra    --------  Branch on C = 1
 BEQ  bra    --------  Branch on Z = 1
@@ -112,15 +112,15 @@ JSR  ctrl   --------  PC + 2↓, [PC + 1] → PCL, [PC + 2] → PCH
 LDA  load   N-----Z-  M → A
 LDX  load   N-----Z-  M → X
 LDY  load   N-----Z-  M → Y
-LSR  shift  0-----ZC  0 → /7...0/ → C
+LSR  shift  0-----ZC  0 → /M7...M0/ → C
 NOP  nop    --------  No operation
 ORA  logic  N-----Z-  A ∨ M → A
 PHA  stack  --------  A↓
 PHP  stack  --------  P↓
 PLA  stack  N-----Z-  A↑
 PLP  stack  NV--DIZC  P↑
-ROL  shift  N-----ZC  C ← /7...0/ ← C
-ROR  shift  N-----ZC  C → /7...0/ → C
+ROL  shift  N-----ZC  C ← /M7...M0/ ← C
+ROR  shift  N-----ZC  C → /M7...M0/ → C
 RTI  ctrl   NV--DIZC  P↑ PC↑
 RTS  ctrl   --------  PC↑, PC + 1 → PC
 SBC  arith  NV----ZC  A - M - C̅ → A
@@ -147,8 +147,8 @@ INS  arith  **----**  M + 1 → M, A - M → A       ## ISC
 HLT  kil    --------  Stop execution             ## KIL
 LAS  load   *-----*-  M ∧ S → A, X, S
 LAX  load   *-----*-  M → A, X
-RLA  arith  *-----**  ROL(M) → M, A ∧ M → A
-RRA  arith  **----**  ROR(M) → M, A + M + C → A
+RLA  arith  *-----**  C ← /M7...M0/ ← C, A ∧ M → A
+RRA  arith  **----**  C → /M7...M0/ → C, A + M + C → A
 SAX  load   --------  A ∧ X → M
 SHX  load   --------  X ∧ H → M
 SHY  load   --------  Y ∧ H → M
@@ -913,7 +913,7 @@ ASL  Arithmetic Shift Left
 
 ROL Rotate Left
      The rotate left instruction shifts either the accumulator or addressed memory left 1 bit, with the input carry being stored in bit 0 and with the input bit 7 being stored in the carry flags.
-     The ROL instruction either shifts the accumulator left 1 bit and stores the carry in accumulator bit 0 or does not affect the internal reg­ isters at all. The ROL instruction sets carry equal to the input bit 7, sets N equal to the input bit 6 , sets the Z flag if the result of the ro­ tate is 0, otherwise it resets Z and does not affect the overflow flag at all.
+     The ROL instruction either shifts the accumulator left 1 bit and stores the carry in accumulator bit 0 or does not affect the internal reg­isters at all. The ROL instruction sets carry equal to the input bit 7, sets N equal to the input bit 6 , sets the Z flag if the result of the ro­ tate is 0, otherwise it resets Z and does not affect the overflow flag at all.
 
 ROR  Rotate Right
      The rotate right instruction shifts either the accumulator or addressed memory right 1 bit with bit 0 shifted into the carry and carry shifted into bit 7.
@@ -978,3 +978,29 @@ HLT  Halt the CPU
 LAS  "AND" Memory with Stack Pointer
      This instructions performs a bit-by-bit "AND" operation of the stack pointer and memory and stores the result back in the accumulator, the index register X and the stack pointer.
       The LAS instruction does not affect the carry or overflow flags. It sets N if the bit 7 of the result is on, otherwise it is reset. If the result is zero, then the Z flag is set, otherwise it is reset.
+
+LAX  Load Accumulator and Index Register X From Memory
+     The LAX instruction loads the accumulator and the index register X from memory.
+     LAX does not affect the C or V flags; sets Z if the value loaded was zero, otherwise resets it; sets N if the value loaded in bit 7 is a 1; otherwise N is reset, and affects only the X register.
+
+RLA  Rotate Left then "AND" with Accumulator
+     The RLA instruction shifts the addressed memory left 1 bit, with the input carry being stored in bit 0 and with the input bit 7 being stored in the carry flags. It then performs a bit-by-bit AND operation of the result and the value of the accumulator and stores the result back in the accumulator.
+     This instruction affects the accumulator; sets the zero flag if the result in the accumulator is 0, otherwise resets the zero flag; sets the negative flag if the result in the accumulator has bit 7 on, otherwise resets the negative flag.
+
+RRA  Rotate Right ...
+     The RRA instruction shifts the addressed memory right 1 bit with bit 0 shifted into the carry and carry shifted into bit 7. It then adds the result and carry from the previous operation to the value of the accumulator and stores the result in the accumulator.
+     This instruction affects the accumulator; sets the carry flag when the sum of a binary add exceeds 255 or when the sum of a decimal add exceeds 99, otherwise carry is reset. The overflow flag is set when the sign or bit 7 is changed due to the result exceeding +127 or -128, otherwise overflow is reset. The negative flag is set if the accumulator result contains bit 7 on, otherwise the negative flag is reset. The zero flag is set if the accumulator result is 0, otherwise the zero flag is reset.
+     ## XXX are the flags correctly described for decimal mode?
+     ## when happens on CPUs with the ROR bug?
+
+
+
+
+
+SAX
+SHX
+SHY
+SLO
+SRE
+TAS
+XAA
