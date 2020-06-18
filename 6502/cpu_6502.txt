@@ -700,56 +700,46 @@ FFFE IRQ
 LDA  Load Accumulator with Memory
      When instruction LDA is executed by the microprocessor, data is transferred from memory to the accumulator and stored in the accumulator.
      LDA affects the contents of the accumulator, does not affect the carry or overflow flags; sets the zero flag if the accumulator is zero as a result of the LDA, otherwise resets the zero flag; sets the negative flag if bit 7 of the accumulator is a 1, other­ wise resets the negative flag.
-     LDA is a "Group One" instruction and has all of the major addressing modes of the machine available to it as stated in Appendix A. These addressing modes include Immed­ iate; Absolute; Zero Page; Absolute,X; Absolute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
 
 STA  Store Accumulator in Memory
      This instruction transfers the contents of the accumulator to memory.
      This instruction affects none of the flags in the processor status register and does not affect the accumulator.
-     It is a "Group One" instruction and has the following address­ing modes available to it: Absolute; Zero Page; Absolute,X; Abso- lute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
 
 ADC  Add Memory to Accumulator with Carry
      This instruction adds the value of memory and carry from the previous operation to the value of the accumulator and stores the result in the accumulator.
      This instruction affects the accumulator; sets the carry flag when the sum of a binary add exceeds 255 or when the sum of a decimal add exceeds 99, otherwise carry is reset. The overflow flag is set when the sign or bit 7 is changed due to the result exceeding +127 or -128, otherwise overflow is reset. The negative flag is set if the accumulator result contains bit 7 on, otherwise the negative flag is reset. The zero flag is set if the accumulator result is 0, otherwise the zero flag is reset.
-     It is a "Group One" instruction and has the following address­ing modes: Immediate; Absolute; Zero Page; Absolute,X; Absolute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
 
 SBC  Subtract Memory from Accumulator with Borrow
      This instruction subtracts the value of memory and borrow from the value of the accumulator, using two's complement arithmetic, and stores the result in the accumulator. Borrow is defined as the carry flag complemented; therefore, a resultant carry flag indicates that a borrow has not occurred.
      This instruction affects the accumulator. The carry flag is set if the result is greater than or equal to 0. The carry flag is reset when the result is less than 0, indicating a borrow. The over­ flow flag is set when the result exceeds +127 or -127, otherwise it is reset. The negative flag is set if the result in the accumulator has bit 7 on, otherwise it is reset. The Z flag is set if the result in the accumulator is 0, otherwise it is reset.
-     It is a "Group One" instruction. It has addressing modes Immediate; Absolute; Zero Page; Absolute,X; Absolute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
 
 AND  Memory with Accumulator
      The AND instructions transfer the accumulator and memory to the adder which performs a bit-by-bit AND operation and result back in the accumulator.
      This instruction affects the accumulator; sets if the result in the accumulator is 0, otherwise resets sets the negative flag if the result in the accumulator otherwise resets the negative flag.
-     AND is a "Group One" instruction having addressing modes of Immediate; Absolute; Zero Page; Absolute,X; Absolute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
 
 ORA  "OR" Memory with Accumulator
      The ORA instruction transfers the memory and the accumulator to the adder which performs a binary "OR" on a bit-by-bit basis and stores the result in the accumulator.
-     This instruction affects the accumulator; sets the zero flag if the result in the accumulator is 0, otherwise resets the zero flag; sets the negative flag if the result in the accumulator has bit 7 on, otherwise resets the negative flag. ORA is a "Group One" instruction. It has the addressing modes Immediate; Absolute; Zero Page; Absolute,X; Absolute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
+     This instruction affects the accumulator; sets the zero flag if the result in the accumulator is 0, otherwise resets the zero flag; sets the negative flag if the result in the accumulator has bit 7 on, otherwise resets the negative flag.
 
 EOR  "Exclusive OR" Memory with Accumulator
      The EOR instruction transfers the memory and the accumulator to the adder which performs a binary "EXCLUSIVE OR" on a bit-by-bit basis and stores the result in the accumulator.
      This instruction affects the accumulator; sets the zero flag if the result in the accumulator is 0, otherwise resets the zero flag sets the negative flag if the result in the accumulator has bit 7 on, otherwise resets the negative flag.
-     EOR is a "Group One" instruction having addressing modes of Immediate; Absolute; Zero Page; Absolute,X; Absolute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
 
 SEC  Set Carry Flag
      This instruction initializes the carry flag to a 1. This op eration should normally precede a SBC loop. It is also useful when used with a ROL instruction to initialize a bit in memory to a 1.
      This instruction affects no registers in the microprocessor and no flags other than the carry flag which is set.
-     SEC is a single-byte instruction and its addressing mode is Implied.
 
 CLC  Clear Carry Flag
      This instruction initializes the carry flag to a 0. This op­ eration should normally precede an ADC loop. It is also useful when used with a R0L instruction to clear a bit in memory.
      This instruction affects no registers in the microprocessor and no flags other than the carry flag which is reset.
-     CLC is a single-byte instruction and its addressing mode is Implied.
 
 SEI  Set Interrupt Disable
      This instruction initializes the interrupt disable to a 1. It is used to mask interrupt requests during system reset operations and during interrupt commands.
      It affects no registers in the microprocessor and no flags other than the interrupt disable which is set.
-     SEI is a single-byte instruction and its addressing mode is Implied.
 
 CLI  Clear Interrupt Disable
      This instruction initializes the interrupt disable to a 0. This allows the microprocessor to receive interrupts.
      It affects no registers in the microprocessor and no flags other than the interrupt disable which is cleared.
-     CLI is a single-byte instruction and its addressing mode is Implied.
 
 SED  Set Decimal Mode
      This instruction sets the decimal mode flag D to a 1. This makes all subsequent ADC and SBC instructions operate as a decimal arithmetic operation.
@@ -765,209 +755,171 @@ CLV  Clear Overflow Flag
 
 JMP  Jump to New Location
      In this instruction, the data from the memory location located in the program sequence after the OP CODE is loaded into the low order byte of the program counter (PCL) and the data from the next memory location after that is loaded into the high order byte of the program counter (PCH).
-     The addressing modes are Absolute and Absolute Indirect.
 
 BMI  Branch on Result Minus
      This instruction takes the conditional branch if the N bit is set.
      BMI does not affect any of the flags or any other part of the machine other than the program counter and then only if the N bit is on.
-     The mode of addressing for BMI is Relative.
 
 BPL  Branch on Result Plus
      This instruction is the complementary branch to branch on result minus. It is a conditional branch which takes the branch when the N bit is reset (0). BPL is used to test if the previous result bit 7 was off (0) and branch on result minus is used to determine if the previous result was minus or bit 7 was on (1).
      The instruction affects no flags or other registers other than the P counter and only affects the P counter when the N bit is reset.
-     The addressing mode is Relative.
 
 BCC  Branch on Carry Clear
      This instruction tests the state of the carry bit and takes a conditional branch if the carry bit is reset.
      It affects no flags or registers other than the program counter and then only if the C flag is not on.
-     The addressing mode is Relative.
 
 BCS  Branch on Carry Set
      This instruction takes the conditional branch if the carry flag is on.
      BCS does not affect any of the flags or registers except for the program counter and only then if the carry flag is on.
-     The addressing mode is Relative.
 
 BEQ  Branch on Result Zero
      This instruction could also be called "Branch on Equal."
      It takes a conditional branch whenever the Z flag is on or the previ­ ous result is equal to 0.
      BEQ does not affect any of the flags or registers other than the program counter and only then when the Z flag is set.
-     The addressing mode is Relative.
 
 BNE  Branch on Result Not Zero
      This instruction could also be called "Branch on Not Equal." It tests the Z flag and takes the conditional branch if the Z flag is not on, indicating that the previous result was not zero.
      BNE does not affect any of the flags or registers other than the program counter and only then if the Z flag is reset.
-     The addressing mode is Relative.
 
 BVS  Branch on Overflow Set
      This instruction tests the V flag and takes the conditional branch if V is on.
      BVS does not affect any flags or registers other than the program, counter and only when the overflow flag is set.
-     The addressing mode is Relative.
 
 BVC  Branch on Overflow Clear
      This instruction tests the status of the V flag and takes the conditional branch if the flag is not set.
      BVC does not affect any of the flags and registers other than the program counter and only when the overflow flag is reset.
-     The addressing mode is Relative.
 
 CMP  Compare Memory and Accumulator
      This instruction subtracts the contents of memory from the contents of the accumulator.
      The use of the CMP affects the following flags: Z flag is set on an equal comparison, reset otherwise; the N flag is set or reset by the result bit 7, the carry flag is set when the value in memory is less than or equal to the accumulator, reset when it is greater than the accumulator. The accumulator is not affected.
-     It is a "Group One" instruction and therefore has as its addressing modes: Immediate; Zero Page; Zero Page,X; Absolute; Absolute,X; Absolute,Y; (Indirect,X); (Indirect),Y.
 
 BIT  Test Bits in Memory with Accumulator
      This instruction performs an AND between a memory location and the accumulator but does not store the result of the AND into the accumulator.
      The bit instruction affects the N flag with N being set to the value of bit 7 of the memory being tested, the V flag with V being set equal to bit 6 of the memory being tested and Z being set by the result of the AND operation between the accumulator and the memory if the result is Zero, Z is reset otherwise. It does not affect the accumulator.
-     The addressing modes are Zero Page and Absolute.
 
 LDX  LOAD INDEX REGISTER X FROM MEMORY
      Load the index register X from memory.
-     LDX does not affect the C or V flags; sets Z if the value loaded was zero, otherwise resets it; sets N if the value loaded in bit 7 is a 1; otherwise N is reset, and affects only the X register. The addressing modes for LDX are Immediate; Absolute; Zero Page; Absolute Indexed by Y; and Zero Page Indexed by Y.
+     LDX does not affect the C or V flags; sets Z if the value loaded was zero, otherwise resets it; sets N if the value loaded in bit 7 is a 1; otherwise N is reset, and affects only the X register.
 
 LDY  LOAD INDEX REGISTER Y FROM MEMORY
      Load the index register Y from memory.
-     LDY does not affect the C or V flags, sets the N flag if the value loaded in bit 7 is a 1, otherwise resets N, sets Z flag if the loaded value is zero otherwise resets Z and only affects the Y register. The addressing modes for load Y are Immediate; Absolute; Zero Page; Zero Indexed by X, Absolute Indexed by X.
+     LDY does not affect the C or V flags, sets the N flag if the value loaded in bit 7 is a 1, otherwise resets N, sets Z flag if the loaded value is zero otherwise resets Z and only affects the Y register.
 
 STX  STORE INDEX REGISTER X IN MEMORY
      Transfers value of X register to addressed memory location.
-     No flags or registers in the microprocessor are affected by the store operation. The addressing modes for STX are Absolute, Zero Page, and Zero Page Indexed by Y.
+     No flags or registers in the microprocessor are affected by the store operation.
 
 STY  STORE INDEX REGISTER Y IN MEMORY
      Transfer the value of the Y register to the addressed memory location.
-     STY does not affect any flags or registers in the microprocessor. The addressing modes for STY are Absolute; Zero Page; and Zero Page Indexed by X.
+     STY does not affect any flags or registers in the microprocessor.
 
 INX  INCREMENT INDEX REGISTER X BY ONE
      Increment X adds 1 to the current value of the X register. This is an 8-bit increment which does not affect the carry operation, therefore, if the value of X before the increment was FF, the resulting value is 00.
      INX does not affect the carry or overflow flags; it sets the N flag if the result of the increment has a one in bit 7, otherwise resets N; sets the Z flag if the result of the increment is 0, otherwise it resets the Z flag.
-     INX does not affect any other register other than the X register. INX is a single byte instruction and the only addressing mode is Implied.
+     INX does not affect any other register other than the X register.
 
 INY  INCREMENT INDEX REGISTER Y BY ONE
      Increment Y increments or adds one to the current value in the Y register, storing the result in the Y register. As in the case of INX the primary application is to step thru a set of values using the Y register.
      The INY does not affect the carry or overflow flags, sets the N flag if the result of the increment has a one in bit 7, otherwise resets N, sets Z if as a result of the increment the Y register is zero otherwise resets the Z flag.
-     Increment Y is a single byte instruction and the only addressing mode is Implied.
 
 DEX  DECREMENT INDEX REGISTER X B Y ONE
      This instruction subtracts one from the current value of the index register X and stores the result in the index register X.
      DEX does not affect the carry or overflow flag, it sets the N flag if it has bit 7 on as a result of the decrement, otherwise it resets the N flag; sets the Z flag if X is a 0 as a result of the decrement, otherwise it resets the Z flag.
-     DEX is a single byte instruction, the addressing mode is Implied.
-     NOTE: Decrement of the index registers is the most convenient method of using the index registers as a counter, in that the decre­ ment involves setting the value N on as a result of having passed through 0 and sets Z on when the results of the decrement are 0.
 
 DEY  DECREMENT INDEX REGISTER Y B Y ONE
      This instruction subtracts one from the current value in the in­ dex register Y and stores the result into the index register Y. The result does not affect or consider carry so that the value in the index register Y is decremented to 0 and then through 0 to FF.
      Decrement Y does not affect the carry or overflow flags; if the Y register contains bit 7 on as a result of the decrement the N flag is set, otherwise the N flag is reset. If the Y register is 0 as a result of the decrement, the Z flag is set otherwise the Z flag is reset. This instruction only affects the index register Y.
-     DEY is a single byte instruction and the addressing mode is Implied.
-     NOTE: Decrement of the index registers is the most convenient method of using the index registers as a counter, in that the decre­ ment involves setting the value N on as a result of having passed through 0 and sets Z on when the results of the decrement are 0.
 
 CPX  COMPARE INDEX REGISTER X TO MEMORY
      This instruction subtracts the value of the addressed memory location from the content of index register X using the adder but does not store the result; therefore, its only use is to set the N, Z and C flags to allow for comparison between the index register X and the value in memory.
      The CPX instruction does not affect any register in the machine; it also does not affect the overflow flag. It causes the carry to be set on if the absolute value of the index register X is equal to or greater than the data from memory. If the value of the memory is greater than the content of the index register X, carry is reset. If the results of the subtraction contain a bit 7, then the N flag is set, if not, it is reset. If the value in memory is equal to the value in index register X, the Z flag is set, otherwise it is reset.
-     The addressing modes for CPX are Immediate, Absolute and Zero Page.
 
 CPY  COMPARE INDEX REGISTER Y TO MEMORY
      This instruction performs a two's complement subtraction between the index register Y and the specified memory location. The results of the subtraction are not stored anywhere. The instruction is strict­ ly used to set the flags.
      CPY affects no registers in the microprocessor and also does not affect the overflow flag. If the value in the index register Y is equal to or greater than the value in the memory, the carry flag will be set, otherwise it will be cleared. If the results of the subtract- tion contain bit 7 on the N bit will be set, otherwise it will be cleared. If the value in the index register Y and the value in the memory are equal, the zero flag will be set, otherwise it will be cleared.
-     The addressing modes for CPY are Immediate, Absolute and Zero Page.
 
 TAX TRANSFER ACCUMULATOR TO INDEX X
      This instruction takes the value from accumulator A and trans­ fers or loads it into the index register X without disturbing the content of the accumulator A.
      TAX only affects the index register X, does not affect the carry or overflow flags. The N flag is set if the resultant value in the index register X has bit 7 on, otherwise N isreset. The Z bit is set if the content of the register X is 0 as aresult of theopera­ tion, otherwise it is reset.
-     TAX is a single byte instruction and its addressing mode is Implied.
 
 TXA  TRANSFER INDEX X TO A CCUMULA TOR
      This instruction moves the value that is in the index register X to the accumulator A without disturbing the content of the index register X.
      TXA does not affect any register other than the accumula­tor and does not affect the carry or overflow flag. If the result in A has bit 7 on, then the N flag is set, otherwise it is reset. If the resultant value in the accumulator is 0, then the Z flag is set, other­ wise it is reset.
-     The addressing mode is Implied, it is a single byte instruction.
 
 TAY  TRANSFER ACCUMULA TOR TO INDEX Y
      This instruction moves the value of the accumulator into index register Y without affecting the accumulator.
      TAY instruction only affects the Y register and does not affect either the carry or overflow flags. If the index register Y has bit 7 on, then N is set, otherwise it is reset. If the content of the index register Y equals 0 as a result of the operation, Z is set on, otherwise it is reset.
-     TAY is a single byte instruction and the addressing mode is Implied.
 
 TYA  TRANSFER INDEX Y TO ACCUMULATOR
      This instruction moves the value that is in the index register Y to accumulator A without disturbing the content of the register Y.
      TYA does not affect any other register other than the accumula­ tor and does not affect the carry or overflow flag. If the result in the accumulator A has bit 7 on, the N flag is set, otherwise it is reset. If the resultant value in the accumulator A is 0, then the Z flag is set, otherwise it is reset.
-     The addressing mode is Implied and it is a single byte instruc­ tion.
 
 JSR  JUMP TO SUBROUTINE
      This instruction transfers control of the program counter to a subroutine location but leaves a return pointer on the stack to allow the user to return to perform the next instruction in the main program after the subroutine is complete. To accomplish this, JSR instruction stores the program counter address which points to the last byte of the jump instruc­ tion onto the stack using the stack pointer. The stack byte contains the program count high first, followed by program count low. The JSR then transfers the addresses following the jump instruction to the program counter low and the program counter high, thereby directing the program to begin at that new address.
       The JSR instruction affects no flags, causes the stack pointer to be decremented by 2 and substitutes new values into the program counter low and the program counter high.
-      The addressing mode for the JSR is always Absolute.
 
 RTS  RETURN FROM SUBROUTME
       This instruction loads the program count low and program count high from the stack into the program counter and increments the program counter so that it points to the instruction following the JSR. The stack pointer is adjusted by incrementing it twice.
-      The RTS instruction does not affect any flags and affects only PCL and PCH. RTS is a single-byte instruction and its addressing mode is Im­plied.
+      The RTS instruction does not affect any flags and affects only PCL and PCH.
 
 PHA PUSH ACCUMULATOR ON STACK
       This instruction transfers the current value of the accumulator to the next location on the stack, automatically decrementing the stack to point to the next empty location.
       The Push A instruction only affects the stack pointer register which is decremented by 1 as a result of the operation. It affects no flags.
-      PHA is a single-byte instruction and its addressing mode is Implied.
 
 PLA  PULL ACCUMULATOR FROM STACK
       This instruction adds 1 to the current value of the stack pointer and uses it to address the stack and loads the contents of the stack into the A register.
       The PLA instruction does not affect the carry or overflow flags. It sets N if the bit 7 is on in accumulator A as a result of instructions, otherwise it is reset. If accumulator A is zero as a result of the PLA, then the Z flag is set, otherwise it is reset. The PLA instruction changes content of the accumulator A to the contents of the memory location at stack register plus 1 and also increments the stack register.
-      The PLA instruction is a single-byte instruction and the addressing mode is Implied.
 
 TXS  TRANSFER INDEX X TO STACK POINTER
      This instruction transfers the value in the index register X to the stack pointer.
      TXS changes only the stack pointer, making it equal to the content of the index register X. It does not affect any of the flags.
-     TXS is a single-byte instruction and its addressing mode is Implied.
 
 
 TSX  TRANSFER STACK POINTER TO INDEX X
      This instruction transfers the value in the stack pointer to the index register X.
      TSX does not affect the carry or overflow flags. It sets N if bit 7 is on in index X as a result of the instruction, otherwise it is reset. If index X is zero as a result of the TSX, the Z flag is set, other­ wise it is reset. TSX changes the value of index X, making it equal to the content of the stack pointer.
-     TSX is a single-byte instruction and the addressing mode is Implied.
 
 PHP  PUSH PROCESSOR STATUS ON STACK
      This instruction transfers the contents of the processor status reg­ ister unchanged to the stack, as governed by the stack pointer.
      The PHP instruction affects no registers or flags in the micropro­cessor.
-     PHP is a single-byte instruction and the addressing mode is Implied.
 
 PLP  PULL PROCESSOR STA TUS FROM STACK
      This instruction transfers the next value on the stack to the Proces­ sor Status register, thereby changing all of the flags and setting the mode switches to the values from the stack.
      The PLP instruction affects no registers in the processor other than the status register. This instruction could affect all flags in the status register.
-     PLP is a single-byte instruction and the addressing mode is Implied.
 
 RTI  RETURN FROM INTERRUPT
      This instruction transfers from the stack into the microprocessor the processor status and the program counter location for the instruction which was interrupted. By virtue of the interrupt having stored this data before executing the instruction and thei fact that the RTI reinitializes the microprocessor to the same state as when it was interrupted, the combination of interrupt plus RTI allows truly reentrant coding.
      The RTI instruction reinitializes all flags to the position to the point they were at the time the interrupt was taken and sets the program counter back to its pre-interrupt state. It affects no other registers in the microprocessor.
-     RTI is a single byte instruction and its addressing mode is Implied.
 
 JMP  Indirect
      This instruction establishes a new valne for the program counter.
      It affects only the program counter in the microprocessor and affects no flags in the status register.
-     JMP Indirect is a three byte instruction.
 
 BRK  BREAK COMMAND
      The break command causes the microprocessor to go through an inter­ rupt sequence under program control. This means that the program counter of the second byte after the BRK. is automatically stored on the stack along with the processor status at the beginning of the break instruction. The microprocessor then transfers control to the interrupt vector.
      Other than changing the program counter, the break instruction changes no values in either the registers or the flags.
-     The BRK is a single byte instruction and its addressing mode is Implied.
 
 LSR LOGICAL SHIFT RIGHT
      This instruction shifts either the accumulator or a specified memory location 1 bit to the right, with the higher bit of the result always being set to 0 , and the low bit which is shifted out of the field being stored in the carry' flag.
      The shift right instruction either affects the accumulator by shift­ ing it right 1 or is a read/modify/write instruction which changes a speci­ fied memory location but does not affect any internal registers. The shift right does not affect the overflow flag. The N flag is always reset. The Z flag is set if the result of the shift is 0 and reset otherwise. The carry is set equal to bit 0 of the input.
-     LSR is a read/write/modify instruction and has the following address­ing modes: Accumulator; Zero Page; Zero Page,X; Absolute; Absolute,X.
 
 ASL  ARITHMETIC SHIFT LEFT
      The shift left instruction shifts either the accumulator or the ad­ dress memory location 1 bit to the left, with the bit 0 always being set to 0 and the bit 7 output always being contained in the carry flag. ASL either shifts the accumulator left 1 bit tion that affects only memory.
      The instruction does not affect the result bit 7 (bit 6 in the input), sets Z flag if the result is equal to 0, otherwise resets Z and stores the input bit 7 in the carry flag.
-     ASL is a read/modify/write instruction and has the following address­ing modes: Accumulator; Zero Page; Zero Page,X; Absolute; Absolute,X
 
 ROL ROTATE LEFT
      The rotate left instruction shifts either the accumulator or addressed memory left 1 bit, with the input carry being stored in bit 0 and with the input bit 7 being stored in the carry flags.
      The ROL instruction either shifts the accumulator left 1 bit and stores the carry in accumulator bit 0 or does not affect the internal reg­ isters at all. The ROL instruction sets carry equal to the input bit 7, sets N equal to the input bit 6 , sets the Z flag if the result of the ro­ tate is 0, otherwise it resets Z and does not affect the overflow flag at all.
-     ROL is a read/modify/write instruction and it has the following address­ing modes: Accumulator; Zero Page; Zero Page,X; Absolute; Absolute,X.
 
 ROR  ROTATE RIGHT
      The rotate right instruction shifts either the accumulator or address:ed memory right 1 bit with bit 0 shifted into the carry and carry shifted into bit 7.
      The ROR instruction either shifts the accumulator right 1 bit and stores the carry in accumulator bit 7 or does not affect the internal regis­ ters at all. The ROR instruction sets carry equal to input bit 0, sets N equal to the input carry and sets the Z flag if the result of the rotate is 0; otherwise it resets Z and does not affect the overflow flag at all.
-     ROR is a read/modify/write instruction and it has the following address­ing modes: Accumulator; Zero Page; Absolute; Zero Page,X; Absolute,X.
      (Available on Microprocessors after June, 1976)
 
 INC  INCREMENT MEMORY BY ONE
      This instruction adds 1 to the contents of the addressed memory loca­tion.
      The increment memory instruction does not affect any internal registers and does not affect the carry or overflow flags. If bit 7 is on as the result of the increment,N is set, otherwise it is reset; if the increment causes the result to become 0, the Z flag is set on, otherwise it is reset.
-     The addressing modes for increment are: Zero Page; Zero Page,X; Abso­lute; Absolute,X.
 
 DEC  DECREMENT MEMORY BY ONE
      This instruction subtracts 1, in two's complement, from the contents of the addressed memory location.
      The decrement instruction does not affect any internal register in the microprocessor. It does not affect the carry or overflow flags. If bit 7 is on as a result of the decrement, then the N flag is set, otherwise it is reset. If the result of the decrement is 0, the Z flag is set, other­wise it is reset.
-     The addressing modes for decrement are: Zero Page; Zero Page,X; Absolute; Absolute,X.
