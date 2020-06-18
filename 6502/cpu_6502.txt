@@ -141,7 +141,7 @@ SHA  load   --------  A ∧ X ∧ V → M              ## AHX
 ALR  arith  0-----**  (A ∧ M) / 2 → A
 ANC  arith  *-----**  A ∧ M → A, N → C
 ARR  arith  **----**  (A ∧ M) / 2 → A
-AXS  arith  *-----**  (A ∧ X) - M → X
+SBX  arith  *-----**  (A ∧ X) - M → X            ## AXS
 DCP  arith  *-----**  M - 1 → M, A - M
 ISC  arith  **----**  M + 1 → M, A - M → A
 KIL  kil    --------  Stop execution
@@ -407,7 +407,7 @@ BF  *LAX  a16,Y
 C2  *NOP  #d8
 C3  *DCP  (a8,X)
 C7  *DCP  a8
-CB  *AXS  #d8
+CB  *SBX  #d8
 CF  *DCP  a16
 D2  *KIL
 D3  *DCP  (a8),Y
@@ -713,7 +713,7 @@ ADC  Add Memory to Accumulator with Carry
 
 SBC  Subtract Memory from Accumulator with Borrow
      This instruction subtracts the value of memory and borrow from the value of the accumulator, using two's complement arithmetic, and stores the result in the accumulator. Borrow is defined as the carry flag complemented; therefore, a resultant carry flag indicates that a borrow has not occurred.
-     This instruction affects the accumulator. The carry flag is set if the result is greater than or equal to 0. The carry flag is reset when the result is less than 0, indicating a borrow. The over­ flow flag is set when the result exceeds +127 or -127, otherwise it is reset. The negative flag is set if the result in the accumulator has bit 7 on, otherwise it is reset. The Z flag is set if the result in the accumulator is 0, otherwise it is reset.
+     This instruction affects the accumulator. The carry flag is set if the result is greater than or equal to 0. The carry flag is reset when the result is less than 0, indicating a borrow. The over­flow flag is set when the result exceeds +127 or -127, otherwise it is reset. The negative flag is set if the result in the accumulator has bit 7 on, otherwise it is reset. The Z flag is set if the result in the accumulator is 0, otherwise it is reset.
 
 AND  "AND" Memory with Accumulator
      The AND instructions transfer the accumulator and memory to the adder which performs a bit-by-bit AND operation and stores the result back in the accumulator.
@@ -957,3 +957,6 @@ ARR "AND" Accumulator then Rotate Right
      In decimal mode, the V flag is set if bit 6 is different than the original data's bit 6, otherwise the V flag is reset. The C flag is set if (operand & 0xF0) + (operand & 0x10) is greater than 0x50, otherwise the C flag is reset.
      In binary mode, the V flag is set if bit 6 of the result is different than bit 5 of the result, otherwise the V flag is reset. The C flag is set if the result in the accumulator has bit 6 on, otherwise it is reset.
 
+SBX  Subtract Memory from Accumulator "AND" Index Register X
+     This instruction performs a bit-by-bit "AND" of the value of the accumulator and the index register X and subtracts the value of memory from the this result, using two's complement arithmetic, and stores the result in the index register X.
+     This instruction affects the index register X. The carry flag is set if the result is greater than or equal to 0. The carry flag is reset when the result is less than 0, indicating a borrow. The negative flag is set if the result in index register X has bit 7 on, otherwise it is reset. The Z flag is set if the result in index register X is 0, otherwise it is reset. The over­flow flag not affected at all.
