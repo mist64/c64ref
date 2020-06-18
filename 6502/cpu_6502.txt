@@ -139,7 +139,7 @@ TYA  trans  N-----Z-  Y → A
 
 SHA  load   --------  A ∧ X ∧ V → M              ## AHX
 ALR  arith  0-----**  (A ∧ M) / 2 → A
-ANC  arith  *-----**  A ∧ M → A
+ANC  arith  *-----**  A ∧ M → A, N → C
 ARR  arith  **----**  (A ∧ M) / 2 → A
 AXS  arith  *-----**  (A ∧ X) - M → X
 DCP  arith  *-----**  M - 1 → M, A - M
@@ -914,7 +914,7 @@ ROL Rotate Left
      The ROL instruction either shifts the accumulator left 1 bit and stores the carry in accumulator bit 0 or does not affect the internal reg­ isters at all. The ROL instruction sets carry equal to the input bit 7, sets N equal to the input bit 6 , sets the Z flag if the result of the ro­ tate is 0, otherwise it resets Z and does not affect the overflow flag at all.
 
 ROR  Rotate Right
-     The rotate right instruction shifts either the accumulator or address:ed memory right 1 bit with bit 0 shifted into the carry and carry shifted into bit 7.
+     The rotate right instruction shifts either the accumulator or addressed memory right 1 bit with bit 0 shifted into the carry and carry shifted into bit 7.
      The ROR instruction either shifts the accumulator right 1 bit and stores the carry in accumulator bit 7 or does not affect the internal regis­ ters at all. The ROR instruction sets carry equal to input bit 0, sets N equal to the input carry and sets the Z flag if the result of the rotate is 0; otherwise it resets Z and does not affect the overflow flag at all.
      (Available on Microprocessors after June, 1976)
 
@@ -943,5 +943,17 @@ SHA  Store Accumulator "AND" Index Register X "AND" Value
      No flags or registers in the microprocessor are affected by the store operation.
 
 ALR  "AND" then Logical Shift Right
-     The ALR instructions performs a bit-by-bit AND operation of the accumulator and memory, then shifts the accumulator 1 bit to the right, with the higher bit of the result always being set to 0, and the low bit which is shifted out of the field being stored in the carry flag.
+     The ALR instruction performs a bit-by-bit AND operation of the accumulator and memory, then shifts the accumulator 1 bit to the right, with the higher bit of the result always being set to 0, and the low bit which is shifted out of the field being stored in the carry flag.
      This instruction affects the accumulator. It does not affect the overflow flag. The N flag is always reset. The Z flag is set if the result of the shift is 0 and reset otherwise. The carry is set equal to bit 0 of the result of the "AND" operation.
+
+ANC  "AND" Memory with Accumulator then Move Negative Flag to Carry Flag
+     The ANC instruction performs a bit-by-bit AND operation of the accumulator and memory and stores the result back in the accumulator.
+     This instruction affects the accumulator; sets the zero flag if the result in the accumulator is 0, otherwise resets the zero flag; sets the negative flag and the carry flag if the result in the accumulator has bit 7 on, otherwise resets the negative flag and the carry flag.
+
+ARR "AND" Accumulator then Rotate Right
+     The ARR instructions performs a bit-by-bit "AND" operation of the accumulator and memory, then shifts the result right 1 bit with bit 0 shifted into the carry and carry shifted into bit 7. It then stores the result back in the accumulator.
+     If bit 7 of the result is on, then the N flag is set, otherwise it is reset. The instruction sets the Z flag if the result is 0; otherwise it resets Z.
+     The V and C flags depends on the Decimal Mode Flag:
+     In decimal mode, the V flag is set if bit 6 is different than the original data's bit 6, otherwise the V flag is reset. The C flag is set if (operand & 0xF0) + (operand & 0x10) is greater than 0x50, otherwise the C flag is reset.
+     In binary mode, the V flag is set if bit 6 of the result is different than bit 5 of the result, otherwise the V flag is reset. The C flag is set if the result in the accumulator has bit 6 on, otherwise it is reset.
+
