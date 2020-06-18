@@ -142,7 +142,7 @@ ALR  arith  0-----**  (A ∧ M) / 2 → A
 ANC  arith  *-----**  A ∧ M → A, N → C
 ARR  arith  **----**  (A ∧ M) / 2 → A
 SBX  arith  *-----**  (A ∧ X) - M → X            ## AXS
-DCP  arith  *-----**  M - 1 → M, A - M
+DCM  arith  *-----**  M - 1 → M, A - M           ## DCP
 ISC  arith  **----**  M + 1 → M, A - M → A
 KIL  kil    --------  Stop execution
 LAS  load   *-----*-  M ∧ S → A, X, S
@@ -405,18 +405,18 @@ B7  *LAX  a8,Y
 BB  *LAS  a16,Y
 BF  *LAX  a16,Y
 C2  *NOP  #d8
-C3  *DCP  (a8,X)
-C7  *DCP  a8
+C3  *DCM  (a8,X)
+C7  *DCM  a8
 CB  *SBX  #d8
-CF  *DCP  a16
+CF  *DCM  a16
 D2  *KIL
-D3  *DCP  (a8),Y
+D3  *DCM  (a8),Y
 D4  *NOP  a8,X
-D7  *DCP  a8,X
+D7  *DCM  a8,X
 DA  *NOP
-DB  *DCP  a16,Y
+DB  *DCM  a16,Y
 DC  *NOP  a16,X
-DF  *DCP  a16,X
+DF  *DCM  a16,X
 E2  *NOP  #d8
 E3  *ISC  (a8,X)
 E7  *ISC  a8
@@ -958,5 +958,10 @@ ARR "AND" Accumulator then Rotate Right
      In binary mode, the V flag is set if bit 6 of the result is different than bit 5 of the result, otherwise the V flag is reset. The C flag is set if the result in the accumulator has bit 6 on, otherwise it is reset.
 
 SBX  Subtract Memory from Accumulator "AND" Index Register X
-     This instruction performs a bit-by-bit "AND" of the value of the accumulator and the index register X and subtracts the value of memory from the this result, using two's complement arithmetic, and stores the result in the index register X.
+     This instruction performs a bit-by-bit "AND" of the value of the accumulator and the index register X and subtracts the value of memory from this result, using two's complement arithmetic, and stores the result in the index register X.
      This instruction affects the index register X. The carry flag is set if the result is greater than or equal to 0. The carry flag is reset when the result is less than 0, indicating a borrow. The negative flag is set if the result in index register X has bit 7 on, otherwise it is reset. The Z flag is set if the result in index register X is 0, otherwise it is reset. The over­flow flag not affected at all.
+
+DCM  Decrement Memory By One then Compare with Accumulator
+
+     This instruction subtracts 1, in two's complement, from the contents of the addressed memory location. It then subtracts the contents of memory from the contents of the accumulator.
+     The DCM instruction does not affect any internal register in the microprocessor. It does not affect the overflow flag. Z flag is set on an equal comparison, reset otherwise; the N flag is set or reset by the result bit 7, the carry flag is set when the result in memory is less than or equal to the accumulator, reset when it is greater than the accumulator.
