@@ -6,13 +6,13 @@ id        6502rorbug
 basedon   6502
 
 [mnemos]
-; empty
+## empty
 
 [operations]
 ASL0 shift  N-----Z-  /7...0/ ← 0
 
 [addmodes]
-; empty
+## empty
 
 [opcodes]
 66  *ASL0  a8
@@ -22,4 +22,4 @@ ASL0 shift  N-----Z-  /7...0/ ← 0
 7E  *ASL0  a16,X
 
 [timing]
-; empty
+## empty

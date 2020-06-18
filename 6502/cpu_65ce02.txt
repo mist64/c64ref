@@ -135,7 +135,7 @@ F4  PHW   #d16
 FB  PLZ
 FC  PHW   a16
 
-[timing] ; not derived, overrides all opcodes
+[timing] ## not derived, overrides all opcodes
 00  2
 01  2
 02  1

@@ -21,7 +21,7 @@ BRA  ctrl   --------  Branch Always
 32  SAC   #d8
 42  SIR   #d8
 
-[timing] ; "skip internal cycles" mode
+[timing] ## "skip internal cycles" mode
 00  6
 01  6
 02  X

@@ -110,7 +110,8 @@ function init() {
 						fixup_data(cpu);
 					}
 					populate_cpu_list();
-					show(1);
+//					show(1);
+					show(3);
 				}
 			} else {
 				file_data[r.cpu] = null;
@@ -142,7 +143,7 @@ function split_file_data(cpu, text) {
 	var data_out = {};
 	var section = null;
 	for (var line of lines_in) {
-		line = line.split(';')[0]; // remove comments
+		line = line.split('##')[0]; // remove comments
 		var starts_with_space = line[0] == ' ';
 		line = line.trim();
 		if (!line) {
@@ -970,6 +971,7 @@ function generate_reference(id, filter) {
 
 	for (var mnemo of cpu_data[cpu].all_mnemos[filter]) {
 		var div = document.createElement("div");
+		div.className = 'reference';
 		var num_rows = 0;
 
 		// heading
