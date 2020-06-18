@@ -132,7 +132,6 @@ function get_file_data(cpu, section) {
 		text = [];
 	}
 	if (cpu_data[cpu].info && cpu_data[cpu].info.basedon && !(file_data[cpu].noinherit && file_data[cpu].noinherit.includes(section))) {
-//		console.log(cpu, section, file_data[cpu].noinherit);
 		var other_text = get_file_data(cpu_data[cpu].info.basedon, section);
 		text = other_text.concat(text);
 	}
@@ -153,7 +152,6 @@ function split_file_data(cpu, text) {
 			section = line.substr(1, line.length - 2);
 			section = section.split('|');
 			if (section.length > 1) {
-				console.log(section[1]);
 				switch (section[1]) { // options
 					case 'noinherit':
 						if (data_out.noinherit == undefined) {
@@ -179,7 +177,6 @@ function split_file_data(cpu, text) {
 		}
 	}
 	file_data[cpu] = data_out;
-	console.log(data_out);
 }
 
 function decode_generic(cpu, section) {
@@ -1018,6 +1015,7 @@ function generate_reference(id, filter) {
 
 		// flags
 		table = document.createElement("table");
+		table.className = 'reference_flags_table';
 		div.appendChild(table);
 		tr = document.createElement("tr");
 		table.appendChild(tr);
