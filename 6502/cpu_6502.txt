@@ -703,17 +703,17 @@ LDA  Load Accumulator with Memory
      LDA affects the contents of the accumulator, does not affect the carry or overflow flags; sets the zero flag if the accumulator is zero as a result of the LDA, otherwise resets the zero flag; sets the negative flag if bit 7 of the accumulator is a 1, other­ wise resets the negative flag.
      Although yet to be developed is the concept of addressing modes, for reference purpose, LDA is a "Group One" instruction and has all of the major addressing modes of the machine available to it as stated in Appendix A. These addressing modes include Immed­ iate; Absolute; Zero Page; Absolute,X; Absolute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
 
-STA  Store Accumulator ln Memory
+STA  Store Accumulator in Memory
      This instruction transfers the contents of the accumulator to memory.
      The symbolic representation for this instruction is A -> M.
      This instruction affects none of the flags in the processor status register and does not affect the accumulator.
-     It is a "Group One" instruction and has the following address­ ing modes available to it: Absolute; Zero Page; Absolute,X; Abso- lute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
+     It is a "Group One" instruction and has the following address­ing modes available to it: Absolute; Zero Page; Absolute,X; Abso- lute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
 
 ADC  Add Memory to Accumulator with Carry
      This instruction adds the value of memory and carry from the previous operation to the value of the accumulator and stores the result in the accumulator.
      The symbolic representation for this instruction is A + M + C -> A.
      This instruction affects the accumulator; sets the carry flag when the sum of a binary add exceeds 255 or when the sum of a decimal add exceeds 99, otherwise carry is reset. The overflow flag is set when the sign or bit 7 is changed due to the result exceeding +127 or -128, otherwise overflow is reset. The negative flag is set if the accumulator result contains bit 7 on, otherwise the negative flag is reset. The zero flag is set if the accumulator result is 0, otherwise the zero flag is reset.
-     It is a "Group One" instruction and has the following address­ ing modes: Immediate; Absolute; Zero Page; Absolute,X; Absolute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
+     It is a "Group One" instruction and has the following address­ing modes: Immediate; Absolute; Zero Page; Absolute,X; Absolute,Y; Zero Page,X; Indexed Indirect; and Indirect Indexed.
 
 SBC  Subtract Memory from Accumulator with Borrow
      This instruction subtracts the value of memory and borrow from the value of the accumulator, using two's complement arithmetic, and stores the result in the accumulator. Borrow is defined as the carry flag complemented; therefore, a resultant carry flag indicates that a borrow has not occurred.
@@ -981,35 +981,35 @@ LSR LOGICAL SHIFT RIGHT
      This instruction shifts either the accumulator or a specified memory location 1 bit to the right, with the higher bit of the result always being set to 0 , and the low bit which is shifted out of the field being stored in the carry' flag.
      The symbolic notation for LSR is 0 → /7...0/ → C
      The shift right instruction either affects the accumulator by shift­ ing it right 1 or is a read/modify/write instruction which changes a speci­ fied memory location but does not affect any internal registers. The shift right does not affect the overflow flag. The N flag is always reset. The Z flag is set if the result of the shift is 0 and reset otherwise. The carry is set equal to bit 0 of the input.
-     LSR is a read/write/modify instruction and has the following address­ ing modes: Accumulator; Zero Page; Zero Page,X; Absolute; Absolute,X.
+     LSR is a read/write/modify instruction and has the following address­ing modes: Accumulator; Zero Page; Zero Page,X; Absolute; Absolute,X.
 
 ASL  ARITHMETIC SHIFT LEFT
      The shift left instruction shifts either the accumulator or the ad­ dress memory location 1 bit to the left, with the bit 0 always being set to 0 and the bit 7 output always being contained in the carry flag. ASL either shifts the accumulator left 1 bit tion that affects only memory.
      The symbolic notation for ASL is C ← /7...0/ ← 0
       The instruction does not affect the result bit 7 (bit 6 in the input), sets Z flag if the result is equal to 0, otherwise resets Z and stores the input bit 7 in the carry flag.
-     ASL is a read/modify/write instruction and has the following address­ ing modes: Accumulator; Zero Page; Zero Page,X; Absolute; Absolute,X
+     ASL is a read/modify/write instruction and has the following address­ing modes: Accumulator; Zero Page; Zero Page,X; Absolute; Absolute,X
 
 ROL ROTATE LEFT
      The rotate left instruction shifts either the accumulator or addressed memory left 1 bit, with the input carry being stored in bit 0 and with the input bit 7 being stored in the carry flags.
      The symbolic notation for ROL is C ← /7...0/ ← C
      The ROL instruction either shifts the accumulator left 1 bit and stores the carry in accumulator bit 0 or does not affect the internal reg­ isters at all. The ROL instruction sets carry equal to the input bit 7, sets N equal to the input bit 6 , sets the Z flag if the result of the ro­ tate is 0, otherwise it resets Z and does not affect the overflow flag at all.
-     ROL is a read/modify/write instruction and it has the following address­ ing modes: Accumulator; Zero Page; Zero Page,X; Absolute; Absolute,X.
+     ROL is a read/modify/write instruction and it has the following address­ing modes: Accumulator; Zero Page; Zero Page,X; Absolute; Absolute,X.
 
 ROR  ROTATE RIGHT
      The rotate right instruction shifts either the accumulator or address:ed memory right 1 bit with bit 0 shifted into the carry and carry shifted into bit 7.
      The symbolic notation for ROR is C → /7...0/ → C
      The ROR instruction either shifts the accumulator right 1 bit and stores the carry in accumulator bit 7 or does not affect the internal regis­ ters at all. The ROR instruction sets carry equal to input bit 0, sets N equal to the input carry and sets the Z flag if the result of the rotate is 0; otherwise it resets Z and does not affect the overflow flag at all.
      ROR is a read/modify/write instruction and it has the following address­ing modes: Accumulator; Zero Page; Absolute; Zero Page,X; Absolute,X.
-	(Available on Microprocessors after June, 1976)
+     (Available on Microprocessors after June, 1976)
 
 INC  INCREMENT MEMORY BY ONE
-	This instruction adds 1 to the contents of the addressed memory loca­tion.
-	The symbolic notation is M + 1 -> M.
-	The increment memory instruction does not affect any internal registers and does not affect the carry or overflow flags. If bit 7 is on as the result of the increment,N is set, otherwise it is reset; if the increment causes the result to become 0, the Z flag is set on, otherwise it is reset.
-	The addressing modes for increment are: Zero Page; Zero Page,X; Abso­lute; Absolute,X.
+     This instruction adds 1 to the contents of the addressed memory loca­tion.
+     The symbolic notation is M + 1 -> M.
+     The increment memory instruction does not affect any internal registers and does not affect the carry or overflow flags. If bit 7 is on as the result of the increment,N is set, otherwise it is reset; if the increment causes the result to become 0, the Z flag is set on, otherwise it is reset.
+     The addressing modes for increment are: Zero Page; Zero Page,X; Abso­lute; Absolute,X.
 
 DEC  DECREMENT MEMORY BY ONE
-	This instruction subtracts 1, in two's complement, from the contents of the addressed memory location.
-	Symbolic notation for this instruction is M - 1 -> M.
-	The decrement instruction does not affect any internal register in the microprocessor. It does not affect the carry or overflow flags. If bit 7 is on as a result of the decrement, then the N flag is set, otherwise it is reset. If the result of the decrement is 0, the Z flag is set, other­wise it is reset.
-	The addressing modes for decrement are: Zero Page; Zero Page,X; Absolute; Absolute,X.
+     This instruction subtracts 1, in two's complement, from the contents of the addressed memory location.
+     Symbolic notation for this instruction is M - 1 -> M.
+     The decrement instruction does not affect any internal register in the microprocessor. It does not affect the carry or overflow flags. If bit 7 is on as a result of the decrement, then the N flag is set, otherwise it is reset. If the result of the decrement is 0, the Z flag is set, other­wise it is reset.
+     The addressing modes for decrement are: Zero Page; Zero Page,X; Absolute; Absolute,X.

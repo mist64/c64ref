@@ -106,6 +106,7 @@ function init() {
 						decode_mnemos(cpu);
 						decode_addmodes(cpu);
 						decode_timing(cpu);
+						decode_documentation(cpu);
 						fixup_data(cpu);
 					}
 					populate_cpu_list();
@@ -142,6 +143,7 @@ function split_file_data(cpu, text) {
 	var section = null;
 	for (var line of lines_in) {
 		line = line.split(';')[0]; // remove comments
+		var starts_with_space = line[0] == ' ';
 		line = line.trim();
 		if (!line) {
 			continue;
@@ -154,6 +156,9 @@ function split_file_data(cpu, text) {
 				if (!data_out[section].text) {
 					data_out[section].text = [];
 				}
+				if (starts_with_space) {
+					line = [''].concat(line);
+				}
 				data_out[section].text.push(line);
 			}
 		}
@@ -162,7 +167,7 @@ function split_file_data(cpu, text) {
 }
 
 function decode_generic(cpu, section) {
-	text = get_file_data(cpu, section);
+	var text = get_file_data(cpu, section);
 	cpu_data[cpu][section] = {};
 	for (var line of text) {
 		cpu_data[cpu][section][line[0]] = line.slice(1).join(' ');
@@ -170,7 +175,7 @@ function decode_generic(cpu, section) {
 }
 
 function decode_flags(cpu) {
-	text = get_file_data(cpu, 'flags');
+	var text = get_file_data(cpu, 'flags');
 	var name = {};
 	var description = {};
 	for (var line of text) {
@@ -201,7 +206,7 @@ function decode_flags(cpu) {
 }
 
 function decode_opcodes(cpu) {
-	text = get_file_data(cpu, 'opcodes');
+	var text = get_file_data(cpu, 'opcodes');
 	cpu_data[cpu].opcodes = [];
 	for (var i = 0; i <= 255; i++) {
 		cpu_data[cpu].opcodes[i] = {};
@@ -219,7 +224,7 @@ function decode_opcodes(cpu) {
 	}
 }
 function decode_operations(cpu) {
-	text = get_file_data(cpu, 'operations');
+	var text = get_file_data(cpu, 'operations');
 	cpu_data[cpu].operations = {};
 	for (var line of text) {
 		var mnemo = line[0];
@@ -231,7 +236,7 @@ function decode_operations(cpu) {
 }
 
 function decode_mnemos(cpu) {
-	text = get_file_data(cpu, 'mnemos');
+	var text = get_file_data(cpu, 'mnemos');
 	cpu_data[cpu].mnemos = {};
 	for (var line of text) {
 		var mnemo = line[0];
@@ -246,7 +251,7 @@ function decode_mnemos(cpu) {
 }
 
 function decode_addmodes(cpu) {
-	text = get_file_data(cpu, 'addmodes');
+	var text = get_file_data(cpu, 'addmodes');
 	cpu_data[cpu].addmodes = {};
 	for (var line of text) {
 		var addmode = line[0];
@@ -322,7 +327,7 @@ function evaluate_cycles(cycles) {
 }
 
 function decode_timing(cpu) {
-	text = get_file_data(cpu, 'timing');
+	var text = get_file_data(cpu, 'timing');
 	for (var line of text) {
 		var o = parseInt(line[0], 16);
 		cpu_data[cpu].opcodes[o].cycles = line[1];
@@ -332,6 +337,23 @@ function decode_timing(cpu) {
 		cpu_data[cpu].opcodes[o].mincycles = evaluated.min;
 		cpu_data[cpu].opcodes[o].maxcycles = evaluated.max;
 		cpu_data[cpu].opcodes[o].cyclesymbols = evaluated.symbols;
+	}
+}
+
+function decode_documentation(cpu) {
+	var text = get_file_data(cpu, 'documentation');
+	var mnemo;
+	for (var line of text) {
+		if (line[0] != '') {
+			mnemo = line[0];
+			cpu_data[cpu].operations[mnemo].documentation = {};
+			cpu_data[cpu].operations[mnemo].documentation.title = line.slice(1).join(' ');
+		} else {
+			if (cpu_data[cpu].operations[mnemo].documentation.text == undefined) {
+				cpu_data[cpu].operations[mnemo].documentation.text = [];
+			}
+			cpu_data[cpu].operations[mnemo].documentation.text.push(line.slice(1).join(' '));
+		}
 	}
 }
 
@@ -963,7 +985,17 @@ function generate_reference(id, filter) {
 		// description
 		p = document.createElement("p");
 		div.appendChild(p);
-		p.innerHTML = 'Operation: ' + cpu_data[cpu].operations[mnemo].description;
+		p.innerHTML = 'Operation: ' + cpu_data[cpu].operations[mnemo].description + '<br/>';
+
+		if (cpu_data[cpu].operations[mnemo].documentation) {
+			p.innerHTML += '<h3>' + cpu_data[cpu].operations[mnemo].documentation.title + '</h3>';
+
+			for (var line of cpu_data[cpu].operations[mnemo].documentation.text) {
+				p = document.createElement("p");
+				div.appendChild(p);
+				p.innerHTML = line;
+			}
+		}
 
 		// flags
 		table = document.createElement("table");
