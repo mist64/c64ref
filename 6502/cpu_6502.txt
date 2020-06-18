@@ -144,7 +144,7 @@ ARR  arith  **----**  (A ∧ M) / 2 → A
 SBX  arith  *-----**  (A ∧ X) - M → X            ## AXS
 DCM  arith  *-----**  M - 1 → M, A - M           ## DCP
 INS  arith  **----**  M + 1 → M, A - M → A       ## ISC
-KIL  kil    --------  Stop execution
+HLT  kil    --------  Stop execution             ## KIL
 LAS  load   *-----*-  M ∧ S → A, X, S
 LAX  load   *-----*-  M → A, X
 RLA  arith  *-----**  ROL(M) → M, A ∧ M → A
@@ -325,14 +325,14 @@ F9  SBC   a16,Y
 FD  SBC   a16,X
 FE  INC   a16,X
 
-02  *KIL
+02  *HLT
 03  *SLO  (a8,X)
 04  *NOP  a8
 07  *SLO  a8
 0B  *ANC  #d8
 0C  *NOP  a16
 0F  *SLO  a16
-12  *KIL
+12  *HLT
 13  *SLO  (a8),Y
 14  *NOP  a8,X
 17  *SLO  a8,X
@@ -340,12 +340,12 @@ FE  INC   a16,X
 1B  *SLO  a16,Y
 1C  *NOP  a16,X
 1F  *SLO  a16,X
-22  *KIL
+22  *HLT
 23  *RLA  (a8,X)
 27  *RLA  a8
 2B  *ANC  #d8
 2F  *RLA  a16
-32  *KIL
+32  *HLT
 33  *RLA  (a8),Y
 34  *NOP  a8,X
 37  *RLA  a8,X
@@ -353,13 +353,13 @@ FE  INC   a16,X
 3B  *RLA  a16,Y
 3C  *NOP  a16,X
 3F  *RLA  a16,X
-42  *KIL
+42  *HLT
 43  *SRE  (a8,X)
 44  *NOP  a8
 47  *SRE  a8
 4B  *ALR  #d8
 4F  *SRE  a16
-52  *KIL
+52  *HLT
 53  *SRE  (a8),Y
 54  *NOP  a8,X
 57  *SRE  a8,X
@@ -367,13 +367,13 @@ FE  INC   a16,X
 5B  *SRE  a16,Y
 5C  *NOP  a16,X
 5F  *SRE  a16,X
-62  *KIL
+62  *HLT
 63  *RRA  (a8,X)
 64  *NOP  a8
 67  *RRA  a8
 6B  *ARR  #d8
 6F  *RRA  a16
-72  *KIL
+72  *HLT
 73  *RRA  (a8),Y
 74  *NOP  a8,X
 77  *RRA  a8,X
@@ -388,7 +388,7 @@ FE  INC   a16,X
 89  *NOP  #d8
 8B  *XAA  #d8
 8F  *SAX  a16
-92  *KIL
+92  *HLT
 93  *SHA  (a8),Y
 97  *SAX  a8,Y
 9B  *TAS  a16,Y
@@ -399,7 +399,7 @@ A3  *LAX  (a8,X)
 A7  *LAX  a8
 AB  *LAX  #d8
 AF  *LAX  a16
-B2  *KIL
+B2  *HLT
 B3  *LAX  (a8),Y
 B7  *LAX  a8,Y
 BB  *LAS  a16,Y
@@ -409,7 +409,7 @@ C3  *DCM  (a8,X)
 C7  *DCM  a8
 CB  *SBX  #d8
 CF  *DCM  a16
-D2  *KIL
+D2  *HLT
 D3  *DCM  (a8),Y
 D4  *NOP  a8,X
 D7  *DCM  a8,X
@@ -422,7 +422,7 @@ E3  *INS  (a8,X)
 E7  *INS  a8
 EB  *SBC  #d8
 EF  *INS  a16
-F2  *KIL
+F2  *HLT
 F3  *INS  (a8),Y
 F4  *NOP  a8,X
 F7  *INS  a8,X
@@ -971,3 +971,10 @@ INS  Increment Memory By One then SBC then Subtract Memory from Accumulator with
      This instruction adds 1 to the contents of the addressed memory loca­tion. It then subtracts the value of the result in memory and borrow from the value of the accumulator, using two's complement arithmetic, and stores the result in the accumulator.
      This instruction affects the accumulator. The carry flag is set if the result is greater than or equal to 0. The carry flag is reset when the result is less than 0, indicating a borrow. The over­flow flag is set when the result exceeds +127 or -127, otherwise it is reset. The negative flag is set if the result in the accumulator has bit 7 on, otherwise it is reset. The Z flag is set if the result in the accumulator is 0, otherwise it is reset.
      ## XXX are the flags correctly described for decimal mode?
+
+HLT  Halt the CPU
+     This instruction stops execution. The microprocessor will not fetch further instructions, and will neither handle IRQs nor NMIs. It will handle a RESET though.
+
+LAS  "AND" Memory with Stack Pointer
+     This instructions performs a bit-by-bit "AND" operation of the stack pointer and memory and stores the result back in the accumulator, the index register X and the stack pointer.
+      The LAS instruction does not affect the carry or overflow flags. It sets N if the bit 7 of the result is on, otherwise it is reset. If the result is zero, then the Z flag is set, otherwise it is reset.
