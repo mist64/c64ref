@@ -511,7 +511,8 @@ function show(new_tabno) {
 		'big_table_div1',
 		'big_table_div2',
 		'mnemos_by_category',
-		'reference',
+		'reference1',
+		'reference2',
 	]) {
 		document.getElementById(id).innerHTML = '';
 	}
@@ -543,7 +544,8 @@ function show(new_tabno) {
 			break;
 		case 3:
 			generate_mnemos_by_category('mnemos_by_category', filter1);
-			generate_reference('reference', 'all');
+			generate_reference('reference1', filter1);
+			generate_reference('reference2', filter2);
 			break;
 	}
 }
@@ -825,6 +827,24 @@ function generate_vectors_div(id) {
 
 }
 
+function all_mnemos_sorted(cpu, filter, sortbycat) {
+	var all_mnemos = cpu_data[cpu].all_mnemos[filter].slice();
+	if (sortbycat) {
+		function sort_by_cat(a, b) {
+			var cat_a = cpu_data[cpu].operations[a].category;
+			var cat_b = cpu_data[cpu].operations[b].category;
+			if (cat_a == cat_b) {
+				return a.localeCompare(b);
+			} else {
+				return all_sorted_categories.findIndex(x => x == cat_a) - all_sorted_categories.findIndex(x => x == cat_b);
+			}
+		}
+		all_mnemos = all_mnemos.sort(sort_by_cat);
+	}
+	return all_mnemos;
+}
+
+
 function generate_big_table(id, filter) {
 	var div = document.getElementById(id);
 	div.innerHTML = '';
@@ -842,7 +862,7 @@ function generate_big_table(id, filter) {
 	showbytes = document.getElementById('showbytes').checked;
 	showcycles = document.getElementById('showcycles').checked;
 	cycledetails = document.getElementById('cycledetails').checked;
-	sortbycat = document.getElementById('sortbycat').checked;
+	sortbycat = document.getElementById('sortbycat1').checked;
 
 	tr = document.createElement("tr");
 	table.appendChild(tr);
@@ -898,19 +918,7 @@ function generate_big_table(id, filter) {
 		th.innerHTML = cpu_data[cpu].flags.names[i];
 	}
 
-	var all_mnemos = cpu_data[cpu].all_mnemos[filter].slice();
-	if (sortbycat) {
-		function sort_by_cat(a, b) {
-			var cat_a = cpu_data[cpu].operations[a].category;
-			var cat_b = cpu_data[cpu].operations[b].category;
-			if (cat_a == cat_b) {
-				return a.localeCompare(b);
-			} else {
-				return all_sorted_categories.findIndex(x => x == cat_a) - all_sorted_categories.findIndex(x => x == cat_b);
-			}
-		}
-		all_mnemos = all_mnemos.sort(sort_by_cat);
-	}
+	var all_mnemos = all_mnemos_sorted(cpu, filter, sortbycat);
 
 	for (var mnemo of all_mnemos) {
 		var h2, table, tr, td, th, p;
@@ -978,10 +986,14 @@ function generate_big_table(id, filter) {
 }
 
 function generate_reference(id, filter) {
+	sortbycat = document.getElementById('sortbycat2').checked;
+
 	var reference = document.getElementById(id);
 	reference.innerHTML = '';
 
-	for (var mnemo of cpu_data[cpu].all_mnemos[filter]) {
+	var all_mnemos = all_mnemos_sorted(cpu, filter, sortbycat);
+
+	for (var mnemo of all_mnemos) {
 		var div = document.createElement("div");
 		div.className = 'reference_card';
 		div.className += ' ' + cpu_data[cpu].operations[mnemo].category + '_light';
