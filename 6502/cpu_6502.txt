@@ -143,7 +143,7 @@ ANC  arith  *-----**  A ∧ M → A, N → C
 ARR  arith  **----**  (A ∧ M) / 2 → A
 SBX  arith  *-----**  (A ∧ X) - M → X            ## AXS
 DCM  arith  *-----**  M - 1 → M, A - M           ## DCP
-ISC  arith  **----**  M + 1 → M, A - M → A
+INS  arith  **----**  M + 1 → M, A - M → A       ## ISC
 KIL  kil    --------  Stop execution
 LAS  load   *-----*-  M ∧ S → A, X, S
 LAX  load   *-----*-  M → A, X
@@ -418,18 +418,18 @@ DB  *DCM  a16,Y
 DC  *NOP  a16,X
 DF  *DCM  a16,X
 E2  *NOP  #d8
-E3  *ISC  (a8,X)
-E7  *ISC  a8
+E3  *INS  (a8,X)
+E7  *INS  a8
 EB  *SBC  #d8
-EF  *ISC  a16
+EF  *INS  a16
 F2  *KIL
-F3  *ISC  (a8),Y
+F3  *INS  (a8),Y
 F4  *NOP  a8,X
-F7  *ISC  a8,X
+F7  *INS  a8,X
 FA  *NOP
-FB  *ISC  a16,Y
+FB  *INS  a16,Y
 FC  *NOP  a16,X
-FF  *ISC  a16,X
+FF  *INS  a16,X
 
 [timing]
 00  7
@@ -710,10 +710,12 @@ STA  Store Accumulator in Memory
 ADC  Add Memory to Accumulator with Carry
      This instruction adds the value of memory and carry from the previous operation to the value of the accumulator and stores the result in the accumulator.
      This instruction affects the accumulator; sets the carry flag when the sum of a binary add exceeds 255 or when the sum of a decimal add exceeds 99, otherwise carry is reset. The overflow flag is set when the sign or bit 7 is changed due to the result exceeding +127 or -128, otherwise overflow is reset. The negative flag is set if the accumulator result contains bit 7 on, otherwise the negative flag is reset. The zero flag is set if the accumulator result is 0, otherwise the zero flag is reset.
+     ## XXX are the flags correctly described for decimal mode?
 
 SBC  Subtract Memory from Accumulator with Borrow
      This instruction subtracts the value of memory and borrow from the value of the accumulator, using two's complement arithmetic, and stores the result in the accumulator. Borrow is defined as the carry flag complemented; therefore, a resultant carry flag indicates that a borrow has not occurred.
      This instruction affects the accumulator. The carry flag is set if the result is greater than or equal to 0. The carry flag is reset when the result is less than 0, indicating a borrow. The over­flow flag is set when the result exceeds +127 or -127, otherwise it is reset. The negative flag is set if the result in the accumulator has bit 7 on, otherwise it is reset. The Z flag is set if the result in the accumulator is 0, otherwise it is reset.
+     ## XXX are the flags correctly described for decimal mode?
 
 AND  "AND" Memory with Accumulator
      The AND instructions transfer the accumulator and memory to the adder which performs a bit-by-bit AND operation and stores the result back in the accumulator.
@@ -962,6 +964,10 @@ SBX  Subtract Memory from Accumulator "AND" Index Register X
      This instruction affects the index register X. The carry flag is set if the result is greater than or equal to 0. The carry flag is reset when the result is less than 0, indicating a borrow. The negative flag is set if the result in index register X has bit 7 on, otherwise it is reset. The Z flag is set if the result in index register X is 0, otherwise it is reset. The over­flow flag not affected at all.
 
 DCM  Decrement Memory By One then Compare with Accumulator
-
      This instruction subtracts 1, in two's complement, from the contents of the addressed memory location. It then subtracts the contents of memory from the contents of the accumulator.
      The DCM instruction does not affect any internal register in the microprocessor. It does not affect the overflow flag. Z flag is set on an equal comparison, reset otherwise; the N flag is set or reset by the result bit 7, the carry flag is set when the result in memory is less than or equal to the accumulator, reset when it is greater than the accumulator.
+
+INS  Increment Memory By One then SBC then Subtract Memory from Accumulator with Borrow
+     This instruction adds 1 to the contents of the addressed memory loca­tion. It then subtracts the value of the result in memory and borrow from the value of the accumulator, using two's complement arithmetic, and stores the result in the accumulator.
+     This instruction affects the accumulator. The carry flag is set if the result is greater than or equal to 0. The carry flag is reset when the result is less than 0, indicating a borrow. The over­flow flag is set when the result exceeds +127 or -127, otherwise it is reset. The negative flag is set if the result in the accumulator has bit 7 on, otherwise it is reset. The Z flag is set if the result in the accumulator is 0, otherwise it is reset.
+     ## XXX are the flags correctly described for decimal mode?
