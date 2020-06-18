@@ -110,8 +110,8 @@ function init() {
 						fixup_data(cpu);
 					}
 					populate_cpu_list();
-//					show(1);
-					show(3);
+					show(1);
+//					show(3);
 				}
 			} else {
 				file_data[r.cpu] = null;
@@ -723,7 +723,6 @@ function generate_mnemos_by_category(id, filter) {
 	div.innerHTML = '';
 
 	table = document.createElement("table");
-	table.id = 'mnemos_by_category';
 	div.appendChild(table);
 
 	// collect data
@@ -764,8 +763,11 @@ function generate_mnemos_by_category(id, filter) {
 			td = document.createElement("td");
 			tr.appendChild(td);
 			if (column[i]) {
-				td.innerHTML = column[i] +  '<br/>'
 				td.className = column[0];
+				a = document.createElement("a");
+				a.href='#mnemo_' + column[i];
+				a.innerHTML = column[i] +  '<br/>'
+				td.appendChild(a);
 			}
 		}
 	}
@@ -995,6 +997,7 @@ function generate_reference(id, filter) {
 
 	for (var mnemo of all_mnemos) {
 		var div = document.createElement("div");
+		div.id='mnemo_' + mnemo;
 		div.className = 'reference_card';
 		div.className += ' ' + cpu_data[cpu].operations[mnemo].category + '_light';
 		var num_rows = 0;
@@ -1015,7 +1018,7 @@ function generate_reference(id, filter) {
 		// description
 		p = document.createElement("p");
 		div.appendChild(p);
-		p.innerHTML = 'Operation: ' + cpu_data[cpu].operations[mnemo].description + '<br/>';
+		p.innerHTML = '<b>Operation</b>: ' + cpu_data[cpu].operations[mnemo].description + '<br/>';
 
 		if (cpu_data[cpu].operations[mnemo].documentation) {
 			for (var line of cpu_data[cpu].operations[mnemo].documentation.text) {
@@ -1184,4 +1187,3 @@ function generate_legend(id) {
 // * rotate bigtable th
 // * better addmode short forms for opcode matrix
 // * navigate to CPU & tab
-// * link mnemos_by_category -> reference
