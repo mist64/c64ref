@@ -152,7 +152,7 @@ RRA  arith  **----**  C → /M7...M0/ → C, A + M + C → A
 SAX  load   --------  A ∧ X → M
 SHX  load   --------  X ∧ H → M
 SHY  load   --------  Y ∧ H → M
-SLO  arith  *-----**  M * 2 → M, A ∨ M → A
+ASO  arith  *-----**  M * 2 → M, A ∨ M → A       ## SLO
 SRE  arith  *-----**  M / 2 → M, A ⊻ M → A
 TAS  trans  --------  A ∧ X → M, S ∧ H → M
 XAA  arith  *-----*-  X ∧ M → A
@@ -326,20 +326,20 @@ FD  SBC   a16,X
 FE  INC   a16,X
 
 02  *HLT
-03  *SLO  (a8,X)
+03  *ASO  (a8,X)
 04  *NOP  a8
-07  *SLO  a8
+07  *ASO  a8
 0B  *ANC  #d8
 0C  *NOP  a16
-0F  *SLO  a16
+0F  *ASO  a16
 12  *HLT
-13  *SLO  (a8),Y
+13  *ASO  (a8),Y
 14  *NOP  a8,X
-17  *SLO  a8,X
+17  *ASO  a8,X
 1A  *NOP
-1B  *SLO  a16,Y
+1B  *ASO  a16,Y
 1C  *NOP  a16,X
-1F  *SLO  a16,X
+1F  *ASO  a16,X
 22  *HLT
 23  *RLA  (a8,X)
 27  *RLA  a8
@@ -718,7 +718,7 @@ SBC  Subtract Memory from Accumulator with Borrow
      ## XXX are the flags correctly described for decimal mode?
 
 AND  "AND" Memory with Accumulator
-     The AND instructions transfer the accumulator and memory to the adder which performs a bit-by-bit AND operation and stores the result back in the accumulator.
+     The AND instruction transfer the accumulator and memory to the adder which performs a bit-by-bit AND operation and stores the result back in the accumulator.
      This instruction affects the accumulator; sets the zero flag if the result in the accumulator is 0, otherwise resets the zero flag; sets the negative flag if the result in the accumulator has bit 7 on, otherwise resets the negative flag.
 
 ORA  "OR" Memory with Accumulator
@@ -908,7 +908,7 @@ LSR Logical Shift Right
      The shift right instruction either affects the accumulator by shift­ing it right 1 or is a read/modify/write instruction which changes a speci­fied memory location but does not affect any internal registers. The shift right does not affect the overflow flag. The N flag is always reset. The Z flag is set if the result of the shift is 0 and reset otherwise. The carry is set equal to bit 0 of the input.
 
 ASL  Arithmetic Shift Left
-     The shift left instruction shifts either the accumulator or the ad dress memory location 1 bit to the left, with the bit 0 always being set to 0 and the bit 7 output always being contained in the carry flag. ASL either shifts the accumulator left 1 bit tion that affects only memory.
+     The shift left instruction shifts either the accumulator or the address memory location 1 bit to the left, with the bit 0 always being set to 0 and the bit 7 output always being contained in the carry flag. ASL either shifts the accumulator left 1 bit or is a read/modify/write instruction that affects only memory.
      The instruction does not affect the result bit 7 (bit 6 in the input), sets Z flag if the result is equal to 0, otherwise resets Z and stores the input bit 7 in the carry flag.
 
 ROL Rotate Left
@@ -935,72 +935,81 @@ DEC  Decrement Memory By One
 ## Programming Manual.
 
 SAX  Store Accumulator "AND" Index Register X In Memory
-     The SAX instruction performs a bit-by-bit AND operation of the accumulator and the X register and transfers the result to the addressed memory location.
+     The undocumented SAX instruction performs a bit-by-bit AND operation of the accumulator and the X register and transfers the result to the addressed memory location.
      No flags or registers in the microprocessor are affected by the store operation.
 
 SHA  Store Accumulator "AND" Index Register X "AND" Value
-     The SHA instruction performs a bit-by-bit AND operation of the following three operands: The first two are the accumulator and the X register.
+     The undocumented SHA instruction performs a bit-by-bit AND operation of the following three operands: The first two are the accumulator and the X register.
      The third operand depends on the addressing mode. In the zero page indirect Y-indexed case, the third operand is the data in memory at the given zero page address (ignoring the Y offset) plus 1. In the Y-indexed absolute case, it is the upper 8 bits of the given address (ignoring the Y offset), plus 1.
      It then transfers the result to the addressed memory location.
      No flags or registers in the microprocessor are affected by the store operation.
 
 ALR  "AND" then Logical Shift Right
-     The ALR instruction performs a bit-by-bit AND operation of the accumulator and memory, then shifts the accumulator 1 bit to the right, with the higher bit of the result always being set to 0, and the low bit which is shifted out of the field being stored in the carry flag.
+     The undocumented ALR instruction performs a bit-by-bit AND operation of the accumulator and memory, then shifts the accumulator 1 bit to the right, with the higher bit of the result always being set to 0, and the low bit which is shifted out of the field being stored in the carry flag.
      This instruction affects the accumulator. It does not affect the overflow flag. The N flag is always reset. The Z flag is set if the result of the shift is 0 and reset otherwise. The carry is set equal to bit 0 of the result of the "AND" operation.
 
 ANC  "AND" Memory with Accumulator then Move Negative Flag to Carry Flag
-     The ANC instruction performs a bit-by-bit AND operation of the accumulator and memory and stores the result back in the accumulator.
+     The undocumented ANC instruction performs a bit-by-bit AND operation of the accumulator and memory and stores the result back in the accumulator.
      This instruction affects the accumulator; sets the zero flag if the result in the accumulator is 0, otherwise resets the zero flag; sets the negative flag and the carry flag if the result in the accumulator has bit 7 on, otherwise resets the negative flag and the carry flag.
 
 ARR "AND" Accumulator then Rotate Right
-     The ARR instructions performs a bit-by-bit "AND" operation of the accumulator and memory, then shifts the result right 1 bit with bit 0 shifted into the carry and carry shifted into bit 7. It then stores the result back in the accumulator.
+     The undocumented ARR instruction performs a bit-by-bit "AND" operation of the accumulator and memory, then shifts the result right 1 bit with bit 0 shifted into the carry and carry shifted into bit 7. It then stores the result back in the accumulator.
      If bit 7 of the result is on, then the N flag is set, otherwise it is reset. The instruction sets the Z flag if the result is 0; otherwise it resets Z.
      The V and C flags depends on the Decimal Mode Flag:
      In decimal mode, the V flag is set if bit 6 is different than the original data's bit 6, otherwise the V flag is reset. The C flag is set if (operand & 0xF0) + (operand & 0x10) is greater than 0x50, otherwise the C flag is reset.
      In binary mode, the V flag is set if bit 6 of the result is different than bit 5 of the result, otherwise the V flag is reset. The C flag is set if the result in the accumulator has bit 6 on, otherwise it is reset.
 
 SBX  Subtract Memory from Accumulator "AND" Index Register X
-     This instruction performs a bit-by-bit "AND" of the value of the accumulator and the index register X and subtracts the value of memory from this result, using two's complement arithmetic, and stores the result in the index register X.
+     This undocumented instruction performs a bit-by-bit "AND" of the value of the accumulator and the index register X and subtracts the value of memory from this result, using two's complement arithmetic, and stores the result in the index register X.
      This instruction affects the index register X. The carry flag is set if the result is greater than or equal to 0. The carry flag is reset when the result is less than 0, indicating a borrow. The negative flag is set if the result in index register X has bit 7 on, otherwise it is reset. The Z flag is set if the result in index register X is 0, otherwise it is reset. The over­flow flag not affected at all.
 
 DCM  Decrement Memory By One then Compare with Accumulator
-     This instruction subtracts 1, in two's complement, from the contents of the addressed memory location. It then subtracts the contents of memory from the contents of the accumulator.
+     This undocumented instruction subtracts 1, in two's complement, from the contents of the addressed memory location. It then subtracts the contents of memory from the contents of the accumulator.
      The DCM instruction does not affect any internal register in the microprocessor. It does not affect the overflow flag. Z flag is set on an equal comparison, reset otherwise; the N flag is set or reset by the result bit 7, the carry flag is set when the result in memory is less than or equal to the accumulator, reset when it is greater than the accumulator.
 
 INS  Increment Memory By One then SBC then Subtract Memory from Accumulator with Borrow
-     This instruction adds 1 to the contents of the addressed memory loca­tion. It then subtracts the value of the result in memory and borrow from the value of the accumulator, using two's complement arithmetic, and stores the result in the accumulator.
+     This undocumented instruction adds 1 to the contents of the addressed memory loca­tion. It then subtracts the value of the result in memory and borrow from the value of the accumulator, using two's complement arithmetic, and stores the result in the accumulator.
      This instruction affects the accumulator. The carry flag is set if the result is greater than or equal to 0. The carry flag is reset when the result is less than 0, indicating a borrow. The over­flow flag is set when the result exceeds +127 or -127, otherwise it is reset. The negative flag is set if the result in the accumulator has bit 7 on, otherwise it is reset. The Z flag is set if the result in the accumulator is 0, otherwise it is reset.
      ## XXX are the flags correctly described for decimal mode?
 
 HLT  Halt the CPU
-     This instruction stops execution. The microprocessor will not fetch further instructions, and will neither handle IRQs nor NMIs. It will handle a RESET though.
+     This undocumented instruction stops execution. The microprocessor will not fetch further instructions, and will neither handle IRQs nor NMIs. It will handle a RESET though.
 
 LAS  "AND" Memory with Stack Pointer
-     This instructions performs a bit-by-bit "AND" operation of the stack pointer and memory and stores the result back in the accumulator, the index register X and the stack pointer.
+     This undocumented instruction performs a bit-by-bit "AND" operation of the stack pointer and memory and stores the result back in the accumulator, the index register X and the stack pointer.
       The LAS instruction does not affect the carry or overflow flags. It sets N if the bit 7 of the result is on, otherwise it is reset. If the result is zero, then the Z flag is set, otherwise it is reset.
 
 LAX  Load Accumulator and Index Register X From Memory
-     The LAX instruction loads the accumulator and the index register X from memory.
+     The undocumented LAX instruction loads the accumulator and the index register X from memory.
      LAX does not affect the C or V flags; sets Z if the value loaded was zero, otherwise resets it; sets N if the value loaded in bit 7 is a 1; otherwise N is reset, and affects only the X register.
 
 RLA  Rotate Left then "AND" with Accumulator
-     The RLA instruction shifts the addressed memory left 1 bit, with the input carry being stored in bit 0 and with the input bit 7 being stored in the carry flags. It then performs a bit-by-bit AND operation of the result and the value of the accumulator and stores the result back in the accumulator.
+     The undocumented RLA instruction shifts the addressed memory left 1 bit, with the input carry being stored in bit 0 and with the input bit 7 being stored in the carry flags. It then performs a bit-by-bit AND operation of the result and the value of the accumulator and stores the result back in the accumulator.
      This instruction affects the accumulator; sets the zero flag if the result in the accumulator is 0, otherwise resets the zero flag; sets the negative flag if the result in the accumulator has bit 7 on, otherwise resets the negative flag.
 
-RRA  Rotate Right ...
-     The RRA instruction shifts the addressed memory right 1 bit with bit 0 shifted into the carry and carry shifted into bit 7. It then adds the result and carry from the previous operation to the value of the accumulator and stores the result in the accumulator.
+RRA  Rotate Right and Add Memory to Accumulator
+     The undocumented RRA instruction shifts the addressed memory right 1 bit with bit 0 shifted into the carry and carry shifted into bit 7. It then adds the result and generated carry to the value of the accumulator and stores the result in the accumulator.
      This instruction affects the accumulator; sets the carry flag when the sum of a binary add exceeds 255 or when the sum of a decimal add exceeds 99, otherwise carry is reset. The overflow flag is set when the sign or bit 7 is changed due to the result exceeding +127 or -128, otherwise overflow is reset. The negative flag is set if the accumulator result contains bit 7 on, otherwise the negative flag is reset. The zero flag is set if the accumulator result is 0, otherwise the zero flag is reset.
      ## XXX are the flags correctly described for decimal mode?
      ## when happens on CPUs with the ROR bug?
 
+SAX  Store Accumulator "AND" Index Register X in Memory
+     The undocumented SAX instruction performs a bit-by-bit AND operation of the value of the accumulator and the value of the index register X and stores the result in memory.
+     No flags or registers in the microprocessor are affected by the store operation.
+
+SHX  ## TODO
+SHY  ## TODO
+
+ASO  Arithmetic Shift Left then "OR" Memory with Accumulator
+     The undocumented ASO instruction shifts the address memory location 1 bit to the left, with the bit 0 always being set to 0 and the bit 7 output always being contained in the carry flag. It then performs a bit-by-bit "OR" operation on the result and the accumulator and stores the result in the accumulator.
+     The negative flag is set if the accumulator result contains bit 7 on, otherwise the negative flag is reset. It sets Z flag if the result is equal to 0, otherwise resets Z and stores the input bit 7 in the carry flag.
 
 
 
 
-SAX
-SHX
-SHY
-SLO
+
+
+
 SRE
 TAS
 XAA
