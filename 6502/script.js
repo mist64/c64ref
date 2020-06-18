@@ -1053,8 +1053,9 @@ function generate_reference(id, filter) {
 		table.appendChild(tr);
 		for (var title of ['Addressing Mode', 'Assembly Language Form', 'Opcode', 'No. Bytes', 'No. Cycles']) {
 			th = document.createElement("th");
-			tr.appendChild(th);
 			th.innerHTML = title;
+			th.className = cpu_data[cpu].operations[mnemo].category;
+			tr.appendChild(th);
 		}
 		var footnotes = new Set();
 		for (var addmode of cpu_data[cpu].all_addmodes[filter]) {
@@ -1065,6 +1066,11 @@ function generate_reference(id, filter) {
 					num_rows++;
 
 					tr = document.createElement("tr");
+					if (num_rows % 2) {
+						tr.className = cpu_data[cpu].operations[mnemo].category + '_light';
+					} else {
+						tr.style.backgroundColor = 'white';
+					}
 					table.appendChild(tr);
 					td = document.createElement("td");
 					tr.appendChild(td);
