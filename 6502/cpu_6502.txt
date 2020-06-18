@@ -90,7 +90,7 @@ BIT  logic  NV----Z-  A ∧ M, M7 → N, M6 → V
 BMI  bra    --------  Branch on N = 1
 BNE  bra    --------  Branch on Z = 0
 BPL  bra    --------  Branch on N = 0
-BRK  ctrl   -----1--  PC + 2↓, (FFFE) → PCL, (FFFF) → PCH
+BRK  ctrl   -----1--  PC + 2↓, [FFFE] → PCL, [FFFF] → PCH
 BVC  bra    --------  Branch on V = 0
 BVS  bra    --------  Branch on V = 1
 CLC  flags  -------0  0 → C
@@ -107,8 +107,8 @@ EOR  logic  N-----Z-  A ⊻ M → A
 INC  inc    N-----Z-  M + 1 → M
 INX  inc    N-----Z-  X + 1 → X
 INY  inc    N-----Z-  Y + 1 → Y
-JMP  ctrl   --------  (PC + 1) → PCL, (PC + 2) → PCH
-JSR  ctrl   --------  PC + 2↓, (PC + 1) → PCL, (PC + 2) → PCH
+JMP  ctrl   --------  [PC + 1] → PCL, [PC + 2] → PCH
+JSR  ctrl   --------  PC + 2↓, [PC + 1] → PCL, [PC + 2] → PCH
 LDA  load   N-----Z-  M → A
 LDX  load   N-----Z-  M → X
 LDY  load   N-----Z-  M → Y
@@ -137,7 +137,7 @@ TXA  trans  N-----Z-  X → A
 TXS  trans  --------  X → S
 TYA  trans  N-----Z-  Y → A
 
-AHX  load   --------  A ∧ X ∧ H → M
+SHA  load   --------  A ∧ X ∧ (H {+1}) → M              ## AHX
 ALR  arith  *-----**  (A ∧ M) / 2 → A
 ANC  arith  *-----**  A ∧ M → A
 ARR  arith  **----**  (A ∧ M) / 2 → A
@@ -333,7 +333,7 @@ FE  INC   a16,X
 0C  *NOP  a16
 0F  *SLO  a16
 12  *KIL
-13  *SLO  (a8,X)
+13  *SLO  (a8),Y
 14  *NOP  a8,X
 17  *SLO  a8,X
 1A  *NOP
@@ -346,7 +346,7 @@ FE  INC   a16,X
 2B  *ANC  #d8
 2F  *RLA  a16
 32  *KIL
-33  *RLA  (a8,X)
+33  *RLA  (a8),Y
 34  *NOP  a8,X
 37  *RLA  a8,X
 3A  *NOP
@@ -360,7 +360,7 @@ FE  INC   a16,X
 4B  *ALR  #d8
 4F  *SRE  a16
 52  *KIL
-53  *SRE  (a8,X)
+53  *SRE  (a8),Y
 54  *NOP  a8,X
 57  *SRE  a8,X
 5A  *NOP
@@ -374,7 +374,7 @@ FE  INC   a16,X
 6B  *ARR  #d8
 6F  *RRA  a16
 72  *KIL
-73  *RRA  (a8,X)
+73  *RRA  (a8),Y
 74  *NOP  a8,X
 77  *RRA  a8,X
 7A  *NOP
@@ -389,7 +389,7 @@ FE  INC   a16,X
 8B  *XAA  #d8
 8F  *SAX  a16
 92  *KIL
-93  *AHX  (a8,X)
+93  *AHX  (a8),Y
 97  *SAX  a8,Y
 9B  *TAS  a16,Y
 9C  *SHY  a16,X
@@ -400,7 +400,7 @@ A7  *LAX  a8
 AB  *LAX  #d8
 AF  *LAX  a16
 B2  *KIL
-B3  *LAX  (a8,X)
+B3  *LAX  (a8),Y
 B7  *LAX  a8,Y
 BB  *LAS  a16,Y
 BF  *LAX  a16,Y
@@ -410,7 +410,7 @@ C7  *DCP  a8
 CB  *AXS  #d8
 CF  *DCP  a16
 D2  *KIL
-D3  *DCP  (a8,X)
+D3  *DCP  (a8),Y
 D4  *NOP  a8,X
 D7  *DCP  a8,X
 DA  *NOP
@@ -423,7 +423,7 @@ E7  *ISC  a8
 EB  *SBC  #d8
 EF  *ISC  a16
 F2  *KIL
-F3  *ISC  (a8,X)
+F3  *ISC  (a8),Y
 F4  *NOP  a8,X
 F7  *ISC  a8,X
 FA  *NOP
@@ -715,8 +715,8 @@ SBC  Subtract Memory from Accumulator with Borrow
      This instruction subtracts the value of memory and borrow from the value of the accumulator, using two's complement arithmetic, and stores the result in the accumulator. Borrow is defined as the carry flag complemented; therefore, a resultant carry flag indicates that a borrow has not occurred.
      This instruction affects the accumulator. The carry flag is set if the result is greater than or equal to 0. The carry flag is reset when the result is less than 0, indicating a borrow. The over­ flow flag is set when the result exceeds +127 or -127, otherwise it is reset. The negative flag is set if the result in the accumulator has bit 7 on, otherwise it is reset. The Z flag is set if the result in the accumulator is 0, otherwise it is reset.
 
-AND  Memory with Accumulator
-     The AND instructions transfer the accumulator and memory to the adder which performs a bit-by-bit AND operation and result back in the accumulator.
+AND  "AND" Memory with Accumulator
+     The AND instructions transfer the accumulator and memory to the adder which performs a bit-by-bit AND operation and stores the result back in the accumulator.
      This instruction affects the accumulator; sets if the result in the accumulator is 0, otherwise resets sets the negative flag if the result in the accumulator otherwise resets the negative flag.
 
 ORA  "OR" Memory with Accumulator
@@ -903,10 +903,10 @@ BRK  Break Command
 
 LSR Logical Shift Right
      This instruction shifts either the accumulator or a specified memory location 1 bit to the right, with the higher bit of the result always being set to 0 , and the low bit which is shifted out of the field being stored in the carry' flag.
-     The shift right instruction either affects the accumulator by shift­ ing it right 1 or is a read/modify/write instruction which changes a speci­ fied memory location but does not affect any internal registers. The shift right does not affect the overflow flag. The N flag is always reset. The Z flag is set if the result of the shift is 0 and reset otherwise. The carry is set equal to bit 0 of the input.
+     The shift right instruction either affects the accumulator by shift­ing it right 1 or is a read/modify/write instruction which changes a speci­ fied memory location but does not affect any internal registers. The shift right does not affect the overflow flag. The N flag is always reset. The Z flag is set if the result of the shift is 0 and reset otherwise. The carry is set equal to bit 0 of the input.
 
 ASL  Arithmetic Shift Left
-     The shift left instruction shifts either the accumulator or the ad­ dress memory location 1 bit to the left, with the bit 0 always being set to 0 and the bit 7 output always being contained in the carry flag. ASL either shifts the accumulator left 1 bit tion that affects only memory.
+     The shift left instruction shifts either the accumulator or the ad dress memory location 1 bit to the left, with the bit 0 always being set to 0 and the bit 7 output always being contained in the carry flag. ASL either shifts the accumulator left 1 bit tion that affects only memory.
      The instruction does not affect the result bit 7 (bit 6 in the input), sets Z flag if the result is equal to 0, otherwise resets Z and stores the input bit 7 in the carry flag.
 
 ROL Rotate Left
@@ -925,3 +925,19 @@ INC  Increment Memory By One
 DEC  Decrement Memory By One
      This instruction subtracts 1, in two's complement, from the contents of the addressed memory location.
      The decrement instruction does not affect any internal register in the microprocessor. It does not affect the carry or overflow flags. If bit 7 is on as a result of the decrement, then the N flag is set, otherwise it is reset. If the result of the decrement is 0, the Z flag is set, other­wise it is reset.
+
+
+## Undocumented Opcodes
+##
+## This was written by Michael Steil <mist64@mac.com>, imitating the style of the
+## Programming Manual.
+
+SAX  Store Accumulator "AND" Index Register X In Memory
+     The SAX instruction performs a bit-by-bit AND operation of the accumulator and the X register and transfers the result to the addressed memory location.
+     No flags or registers in the microprocessor are affected by the store operation.
+
+SHA  Store High Byte {+1} "AND" Accumulator "AND" Index Register X
+     The SHA instruction performs a bit-by-bit AND operation of the following three operands: The first two are the accumulator and the X register.
+     The third operand depends on the addressing mode. In the zero page indirect Y-indexed case, the third operand is the data in memory at the given zero page address (ignoring the ",Y" offset) plus 1. In the Y-indexed absolute case, it is the upper 8 bits of the given address (ignoring the ",Y" offset), plus 1.
+     It then transfers the result to the addressed memory location.
+     No flags or registers in the microprocessor are affected by the store operation.
