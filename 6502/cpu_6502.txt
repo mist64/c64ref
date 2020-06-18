@@ -82,7 +82,7 @@ TYA  Transfer Y to Accumulator
 [operations]
 ADC  arith  NV----ZC  A + M + C → A, C
 AND  logic  N-----Z-  A ∧ M → A
-ASL  shift  N-----ZC  C ← /7...0/ ← 0
+ASL  shift  N-----Z0  C ← /7...0/ ← 0
 BCC  bra    --------  Branch on C = 0
 BCS  bra    --------  Branch on C = 1
 BEQ  bra    --------  Branch on Z = 1
@@ -112,7 +112,7 @@ JSR  ctrl   --------  PC + 2↓, [PC + 1] → PCL, [PC + 2] → PCH
 LDA  load   N-----Z-  M → A
 LDX  load   N-----Z-  M → X
 LDY  load   N-----Z-  M → Y
-LSR  shift  N-----ZC  0 → /7...0/ → C
+LSR  shift  0-----ZC  0 → /7...0/ → C
 NOP  nop    --------  No operation
 ORA  logic  N-----Z-  A ∨ M → A
 PHA  stack  --------  A↓
@@ -137,8 +137,8 @@ TXA  trans  N-----Z-  X → A
 TXS  trans  --------  X → S
 TYA  trans  N-----Z-  Y → A
 
-SHA  load   --------  A ∧ X ∧ (H {+1}) → M              ## AHX
-ALR  arith  *-----**  (A ∧ M) / 2 → A
+SHA  load   --------  A ∧ X ∧ V → M              ## AHX
+ALR  arith  0-----**  (A ∧ M) / 2 → A
 ANC  arith  *-----**  A ∧ M → A
 ARR  arith  **----**  (A ∧ M) / 2 → A
 AXS  arith  *-----**  (A ∧ X) - M → X
@@ -389,12 +389,12 @@ FE  INC   a16,X
 8B  *XAA  #d8
 8F  *SAX  a16
 92  *KIL
-93  *AHX  (a8),Y
+93  *SHA  (a8),Y
 97  *SAX  a8,Y
 9B  *TAS  a16,Y
 9C  *SHY  a16,X
 9E  *SHX  a16,Y
-9F  *AHX  a16,Y
+9F  *SHA  a16,Y
 A3  *LAX  (a8,X)
 A7  *LAX  a8
 AB  *LAX  #d8
@@ -717,7 +717,7 @@ SBC  Subtract Memory from Accumulator with Borrow
 
 AND  "AND" Memory with Accumulator
      The AND instructions transfer the accumulator and memory to the adder which performs a bit-by-bit AND operation and stores the result back in the accumulator.
-     This instruction affects the accumulator; sets if the result in the accumulator is 0, otherwise resets sets the negative flag if the result in the accumulator otherwise resets the negative flag.
+     This instruction affects the accumulator; sets the zero flag if the result in the accumulator is 0, otherwise resets the zero flag; sets the negative flag if the result in the accumulator has bit 7 on, otherwise resets the negative flag.
 
 ORA  "OR" Memory with Accumulator
      The ORA instruction transfers the memory and the accumulator to the adder which performs a binary "OR" on a bit-by-bit basis and stores the result in the accumulator.
@@ -902,8 +902,8 @@ BRK  Break Command
      Other than changing the program counter, the break instruction changes no values in either the registers or the flags.
 
 LSR Logical Shift Right
-     This instruction shifts either the accumulator or a specified memory location 1 bit to the right, with the higher bit of the result always being set to 0 , and the low bit which is shifted out of the field being stored in the carry' flag.
-     The shift right instruction either affects the accumulator by shift­ing it right 1 or is a read/modify/write instruction which changes a speci­ fied memory location but does not affect any internal registers. The shift right does not affect the overflow flag. The N flag is always reset. The Z flag is set if the result of the shift is 0 and reset otherwise. The carry is set equal to bit 0 of the input.
+     This instruction shifts either the accumulator or a specified memory location 1 bit to the right, with the higher bit of the result always being set to 0, and the low bit which is shifted out of the field being stored in the carry flag.
+     The shift right instruction either affects the accumulator by shift­ing it right 1 or is a read/modify/write instruction which changes a speci­fied memory location but does not affect any internal registers. The shift right does not affect the overflow flag. The N flag is always reset. The Z flag is set if the result of the shift is 0 and reset otherwise. The carry is set equal to bit 0 of the input.
 
 ASL  Arithmetic Shift Left
      The shift left instruction shifts either the accumulator or the ad dress memory location 1 bit to the left, with the bit 0 always being set to 0 and the bit 7 output always being contained in the carry flag. ASL either shifts the accumulator left 1 bit tion that affects only memory.
@@ -936,8 +936,12 @@ SAX  Store Accumulator "AND" Index Register X In Memory
      The SAX instruction performs a bit-by-bit AND operation of the accumulator and the X register and transfers the result to the addressed memory location.
      No flags or registers in the microprocessor are affected by the store operation.
 
-SHA  Store High Byte {+1} "AND" Accumulator "AND" Index Register X
+SHA  Store Accumulator "AND" Index Register X "AND" Value
      The SHA instruction performs a bit-by-bit AND operation of the following three operands: The first two are the accumulator and the X register.
-     The third operand depends on the addressing mode. In the zero page indirect Y-indexed case, the third operand is the data in memory at the given zero page address (ignoring the ",Y" offset) plus 1. In the Y-indexed absolute case, it is the upper 8 bits of the given address (ignoring the ",Y" offset), plus 1.
+     The third operand depends on the addressing mode. In the zero page indirect Y-indexed case, the third operand is the data in memory at the given zero page address (ignoring the Y offset) plus 1. In the Y-indexed absolute case, it is the upper 8 bits of the given address (ignoring the Y offset), plus 1.
      It then transfers the result to the addressed memory location.
      No flags or registers in the microprocessor are affected by the store operation.
+
+ALR  "AND" then Logical Shift Right
+     The ALR instructions performs a bit-by-bit AND operation of the accumulator and memory, then shifts the accumulator 1 bit to the right, with the higher bit of the result always being set to 0, and the low bit which is shifted out of the field being stored in the carry flag.
+     This instruction affects the accumulator. It does not affect the overflow flag. The N flag is always reset. The Z flag is set if the result of the shift is 0 and reset otherwise. The carry is set equal to bit 0 of the result of the "AND" operation.
