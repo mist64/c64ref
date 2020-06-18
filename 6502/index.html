@@ -102,6 +102,10 @@ h3 {
 	padding: 5px 10px 5px 10px;
 }
 
+.reference_table {
+	width: 100%;
+}
+
 .reference_flags_table {
 	position: absolute;
 	top: 20px;
@@ -109,8 +113,29 @@ h3 {
 	border: none;
 }
 
+
+.reference_flags_table tr  {
+    height: 1.5em;
+}
+
+
+.reference_flags_table th,
 .reference_flags_table td {
-	border-top: 1px solid white;
+	padding: 2px;
+	text-align: center;
+	vertical-align: middle;
+    width: 1.5em;
+	border-right: 1px solid gray;
+}
+
+.reference_flags_table th:last-child,
+.reference_flags_table td:last-child {
+	border-right: none;
+}
+
+
+.reference_flags_table td {
+	border-top: 1px solid lightgray;
 }
 
 .opcode_table {
