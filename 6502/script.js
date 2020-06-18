@@ -131,7 +131,8 @@ function get_file_data(cpu, section) {
 	if (!text) {
 		text = [];
 	}
-	if (cpu_data[cpu].info && cpu_data[cpu].info.basedon) {
+	if (cpu_data[cpu].info && cpu_data[cpu].info.basedon && !(file_data[cpu].noinherit && file_data[cpu].noinherit.includes(section))) {
+//		console.log(cpu, section, file_data[cpu].noinherit);
 		var other_text = get_file_data(cpu_data[cpu].info.basedon, section);
 		text = other_text.concat(text);
 	}
@@ -148,8 +149,21 @@ function split_file_data(cpu, text) {
 		line = line.trim();
 		if (!line) {
 			continue;
-		} else 	if (line[0] == '[' && line[line.length - 1] == ']') {
+		} else if (line[0] == '[' && line[line.length - 1] == ']') {
 			section = line.substr(1, line.length - 2);
+			section = section.split('|');
+			if (section.length > 1) {
+				console.log(section[1]);
+				switch (section[1]) { // options
+					case 'noinherit':
+						if (data_out.noinherit == undefined) {
+							data_out.noinherit = [];
+						}
+						data_out.noinherit.push(section[0]);
+						break;
+				}
+			}
+			section = section[0];
 			data_out[section] = {};
 		} else {
 			line = line.split(/\s+/);
@@ -165,6 +179,7 @@ function split_file_data(cpu, text) {
 		}
 	}
 	file_data[cpu] = data_out;
+	console.log(data_out);
 }
 
 function decode_generic(cpu, section) {
@@ -971,7 +986,8 @@ function generate_reference(id, filter) {
 
 	for (var mnemo of cpu_data[cpu].all_mnemos[filter]) {
 		var div = document.createElement("div");
-		div.className = 'reference';
+		div.className = 'reference_card';
+		div.className += ' ' + cpu_data[cpu].operations[mnemo].category + '_light';
 		var num_rows = 0;
 
 		// heading
@@ -979,7 +995,10 @@ function generate_reference(id, filter) {
 		h2 = document.createElement("h2");
 		div.appendChild(h2);
 		var title = mnemo;
-		if (cpu_data[cpu].mnemos[mnemo]) {
+
+		if (cpu_data[cpu].operations[mnemo].documentation && cpu_data[cpu].operations[mnemo].documentation.title) {
+			title += ' - ' + cpu_data[cpu].operations[mnemo].documentation.title;
+		} else if (cpu_data[cpu].mnemos[mnemo]) {
 			title += ' - ' + cpu_data[cpu].mnemos[mnemo].description;
 		}
 		h2.innerHTML =  title;
@@ -990,8 +1009,6 @@ function generate_reference(id, filter) {
 		p.innerHTML = 'Operation: ' + cpu_data[cpu].operations[mnemo].description + '<br/>';
 
 		if (cpu_data[cpu].operations[mnemo].documentation) {
-			p.innerHTML += '<h3>' + cpu_data[cpu].operations[mnemo].documentation.title + '</h3>';
-
 			for (var line of cpu_data[cpu].operations[mnemo].documentation.text) {
 				p = document.createElement("p");
 				div.appendChild(p);
@@ -1002,7 +1019,6 @@ function generate_reference(id, filter) {
 		// flags
 		table = document.createElement("table");
 		div.appendChild(table);
-		table.border = 1;
 		tr = document.createElement("tr");
 		table.appendChild(tr);
 		for (var title of cpu_data[cpu].flags.names) {
@@ -1033,7 +1049,7 @@ function generate_reference(id, filter) {
 
 		// addressing mode table
 		table = document.createElement("table");
-		table.border = 1;
+		table.className = 'reference_table';
 		div.appendChild(table);
 		tr = document.createElement("tr");
 		table.appendChild(tr);
@@ -1058,6 +1074,7 @@ function generate_reference(id, filter) {
 					td = document.createElement("td");
 					tr.appendChild(td);
 					td.innerHTML = mnemo + ' ' + cpu_data[cpu].addmodes[addmode].syntax;
+					td.style.fontFamily = 'monospace';
 					td = document.createElement("td");
 					tr.appendChild(td);
 					td.innerHTML = '$' + hex16(opcode);
@@ -1065,14 +1082,16 @@ function generate_reference(id, filter) {
 						td.innerHTML += '*';
 						footnotes.add('*');
 					}
+					td.style.textAlign = 'center';
 					td = document.createElement("td");
 					tr.appendChild(td);
 					td.innerHTML = cpu_data[cpu].addmodes[addmode].bytes;
+					td.style.textAlign = 'center';
 					td = document.createElement("td");
 					tr.appendChild(td);
 					var cycles = cpu_data[cpu].opcodes[opcode].cycles;
-//					td.innerHTML = pretty_cycles(cpu, opcode);
 					td.innerHTML = cpu_data[cpu].opcodes[opcode].cycles;
+					td.style.textAlign = 'center';
 
 					cpu_data[cpu].opcodes[opcode].cyclesymbols.forEach(footnotes.add, footnotes)
 

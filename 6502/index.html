@@ -81,14 +81,24 @@ h3 {
 	font-size: medium;
 }
 
-.reference {
+.reference_card {
 	border-radius: 10px;
 	border: 1px solid black;
+	box-shadow: 2px 2px 10px gray;
 	background-color: white;
 	margin: 10px;
 	padding: 20px;
 	width: 700px;
 	font-size: 11pt;
+}
+
+.reference_table td, .reference_table th {
+	padding: 0px 10px 0px 10px;
+	background-color: white;
+}
+
+.reference_table th {
+	padding: 5px 10px 5px 10px;
 }
 
 .opcode_table {
@@ -164,49 +174,33 @@ h3 {
 	);
 }
 
-.load {
-	background-color: hsl(5, 100%, 80%); /* red */
-}
-.trans {
-	background-color: hsl(340, 100%, 80%);
-}
-.stack {
-	background-color: hsl(290, 100%, 80%); /* magenta */
-}
+.load { background-color: hsl(5, 100%, 80%); }
+.trans { background-color: hsl(340, 100%, 80%); }
+.stack { background-color: hsl(290, 100%, 80%); }
+.shift { background-color: hsl(220, 70%, 80%); }
+.logic { background-color: hsl(200, 70%, 80%); }
+.arith { background-color: hsl(130, 70%, 80%); }
+.inc { background-color: hsl(90, 70%, 80%); }
+.ctrl { background-color: hsl(55, 100%, 70%); }
+.bra { background-color: hsl(47, 100%, 70%); }
+.flags { background-color: hsl(39, 100%, 70%); }
+.kil { background-color: hsl(0, 0%, 20%); color: white; }
+.nop { background-color: hsl(0, 0%, 75%); }
+.undefined { background-color: hsl(0, 0%, 90%); }
 
-.shift {
-	background-color: hsl(220, 70%, 80%);
-}
-.logic {
-	background-color: hsl(200, 70%, 80%);
-}
-.arith {
-	background-color: hsl(130, 70%, 80%);
-}
-.inc {
-	background-color: hsl(90, 70%, 80%);
-}
-
-.ctrl {
-	background-color: hsl(55, 100%, 70%); /* yellow */
-}
-.bra {
-	background-color: hsl(47, 100%, 70%); /* yellow-orange */
-}
-.flags {
-	background-color: hsl(39, 100%, 70%); /* orange */
-}
-
-.kil {
-	background-color: hsl(0, 0%, 20%);
-	color: white;
-}
-.nop {
-	background-color: hsl(0, 0%, 75%); /* light gray */
-}
-.undefined {
-	background-color: hsl(0, 0%, 90%); /* gray */
-}
+.load_light { background-color: hsl(5, 100%, 95%); }
+.trans_light { background-color: hsl(340, 100%, 95%); }
+.stack_light { background-color: hsl(290, 100%, 95%); }
+.shift_light { background-color: hsl(220, 70%, 95%); }
+.logic_light { background-color: hsl(200, 70%, 95%); }
+.arith_light { background-color: hsl(130, 70%, 95%); }
+.inc_light { background-color: hsl(90, 70%, 95%); }
+.ctrl_light { background-color: hsl(55, 100%, 92.5%); }
+.bra_light { background-color: hsl(47, 100%, 92.5%); }
+.flags_light { background-color: hsl(39, 100%, 92.5%); }
+.kil_light { background-color: hsl(0, 0%, 20%); color: white; }
+.nop_light { background-color: hsl(0, 0%, 93.75%); }
+.undefined_light { background-color: hsl(0, 0%, 97.5%); }
 
 </style>
 

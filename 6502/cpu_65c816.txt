@@ -454,3 +454,5 @@ FF  6-m
 00FFEA NMI
 00FFEE IRQ
 00FFFC RESET
+
+[documentation|noinherit]
