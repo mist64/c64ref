@@ -150,8 +150,8 @@ LAX  load   *-----*-  M → A, X
 RLA  arith  *-----**  C ← /M7...M0/ ← C, A ∧ M → A
 RRA  arith  **----**  C → /M7...M0/ → C, A + M + C → A
 SAX  load   --------  A ∧ X → M
-SHX  load   --------  X ∧ H → M
-SHY  load   --------  Y ∧ H → M
+SHX  load   --------  X ∧ (H + 1) → M
+SHY  load   --------  Y ∧ (H + 1) → M
 ASO  arith  *-----**  M * 2 → M, A ∨ M → A       ## SLO
 LSE  arith  *-----**  M / 2 → M, A ⊻ M → A       ## SRE
 SHS  trans  --------  A ∧ X → S, S ∧ (H + 1) → M ## TAS
@@ -940,7 +940,7 @@ SAX  Store Accumulator "AND" Index Register X In Memory
 
 SHA  Store Accumulator "AND" Index Register X "AND" Value
      The undocumented SHA instruction performs a bit-by-bit AND operation of the following three operands: The first two are the accumulator and the index register X.
-     The third operand depends on the addressing mode. In the zero page indirect Y-indexed case, the third operand is the data in memory at the given zero page address (ignoring the Y offset) plus 1. In the Y-indexed absolute case, it is the upper 8 bits of the given address (ignoring the Y offset), plus 1.
+     The third operand depends on the addressing mode. In the zero page indirect Y-indexed case, the third operand is the data in memory at the given zero page address (ignoring the the addressing mode's Y offset) plus 1. In the Y-indexed absolute case, it is the upper 8 bits of the given address (ignoring the the addressing mode's Y offset), plus 1.
      It then transfers the result to the addressed memory location.
      No flags or registers in the microprocessor are affected by the store operation.
 
@@ -997,8 +997,13 @@ SAX  Store Accumulator "AND" Index Register X in Memory
      The undocumented SAX instruction performs a bit-by-bit AND operation of the value of the accumulator and the value of the index register X and stores the result in memory.
      No flags or registers in the microprocessor are affected by the store operation.
 
-SHX  ## TODO
-SHY  ## TODO
+SHX  Store Index Register X "AND" Value
+     The undocumented SHX instruction performs a bit-by-bit AND operation of the index register X and the upper 8 bits of the given address (ignoring the the addressing mode's Y offset), plus 1. It then transfers the result to the addressed memory location.
+     No flags or registers in the microprocessor are affected by the store operation.
+
+SHY  Store Index Register Y "AND" Value
+     The undocumented SHY instruction performs a bit-by-bit AND operation of the index register Y and the upper 8 bits of the given address (ignoring the the addressing mode's X offset), plus 1. It then transfers the result to the addressed memory location.
+     No flags or registers in the microprocessor are affected by the store operation.
 
 ASO  Arithmetic Shift Left then "OR" Memory with Accumulator
      The undocumented ASO instruction shifts the address memory location 1 bit to the left, with the bit 0 always being set to 0 and the bit 7 output always being contained in the carry flag. It then performs a bit-by-bit "OR" operation on the result and the accumulator and stores the result in the accumulator.
@@ -1012,9 +1017,9 @@ SHS  Transfer Accumulator "AND" Index Register X to Stack Pointer then Store Sta
      The undocumented SHS instruction performs a bit-by-bit AND operation of the value of the accumulator and the value of the index register X and stores the result in the stack pointer. It then performs a bit-by-bit AND operation of the resulting stack pointer and the upper 8 bits of the given address (ignoring the addressing mode's Y offset), plus 1, and transfers the result to the addressed memory location.
      No flags or registers in the microprocessor are affected by the store operation.
 
-XAA  "AND" Accumulator ("OR" Magic), Index Register X and Memory
+XAA  Non-deterministic Operation of Accumulator, Index Register X, Memory and Bus Contents
      The operation of the undocumented XAA instruction depends on the individual microprocessor. On most machines, it performs a bit-by-bit AND operation of the following three operands: The first two are the index register X and memory.
-     The third operand is the result of a bit-by-bit AND operation of the accumulator and a magic component. This magic component depends on the individual microprocessor and is usually one of $00, $EE, $EF, $FE and $FF, and may be influenced by the RDY pin, the temperature of the microprocessor, and other factors.
+     The third operand is the result of a bit-by-bit AND operation of the accumulator and a magic component. This magic component depends on the individual microprocessor and is usually one of $00, $EE, $EF, $FE and $FF, and may be influenced by the RDY pin, leftover contents of the data bus, the temperature of the microprocessor, and other factors.
      On some machines, additional bits of the result may be set or reset depending on non-deterministic factors.
      It then transfers the result to the accumulator.
      XAA does not affect the C or V flags; sets Z if the value loaded was zero, otherwise resets it; sets N if the result in bit 7 is a 1; otherwise N is reset.
