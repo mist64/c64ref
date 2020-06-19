@@ -984,20 +984,20 @@ function generate_big_table(id, filter) {
 	th = document.createElement("th");
 	tr.appendChild(th);
 	th.classList.add('rotate');
-	var div = document.createElement("div");
-	th.appendChild(div);
+	var div2 = document.createElement("div");
+	th.appendChild(div2);
 	var span = document.createElement("span");
-	div.appendChild(span);
+	div2.appendChild(span);
 	span.innerHTML = 'Mnemonic';
 
 	if (showoperation) {
 		th = document.createElement("th");
 		tr.appendChild(th);
 		th.classList.add('rotate');
-		var div = document.createElement("div");
-		th.appendChild(div);
+		var div2 = document.createElement("div");
+		th.appendChild(div2);
 		var span = document.createElement("span");
-		div.appendChild(span);
+		div2.appendChild(span);
 		span.innerHTML = 'Operation';
 	}
 
@@ -1007,10 +1007,10 @@ function generate_big_table(id, filter) {
 			tr.appendChild(th);
 			th.colSpan = (showopcodes ? 1 : 0) + (showbytes ? 1 : 0) + (showcycles ? 1 : 0) ;
 			th.classList.add('rotate');
-			var div = document.createElement("div");
-			th.appendChild(div);
+			var div2 = document.createElement("div");
+			th.appendChild(div2);
 			var span = document.createElement("span");
-			div.appendChild(span);
+			div2.appendChild(span);
 			span.innerHTML = cpu_data[cpu].addmodes[addmode].description;
 			///span.innerHTML = cpu_data[cpu].addmodes[addmode].syntax;
 		}
@@ -1019,10 +1019,10 @@ function generate_big_table(id, filter) {
 	tr.appendChild(th);
 	th.colSpan = cpu_data[cpu].flags.names.length;
 	th.classList.add('rotate');
-	var div = document.createElement("div");
-	th.appendChild(div);
+	var div2 = document.createElement("div");
+	th.appendChild(div2);
 	var span = document.createElement("span");
-	div.appendChild(span);
+	div2.appendChild(span);
 	span.innerHTML = 'Flags';
 
 	tr = document.createElement("tr");
