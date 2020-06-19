@@ -1414,6 +1414,7 @@ function generate_legend(id) {
 // * per-CPU documentation comments
 // * verify undocumented with groepaz doc
 // * better addmode short forms for opcode matrix
+// * 65C02 decimal mode: ADC/SBC +1 cycle
 
 // Visualization
 // * CPU tree

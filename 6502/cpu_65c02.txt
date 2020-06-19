@@ -28,7 +28,7 @@ TSB  logic ------Z-  A ∨ M → M
 
 [addmodes]
 (a8)     2  ($nn)      Zero Page Indirect
-(a16,X)  3  ($nnnn,X)  X-Indexed Indirect
+(a16,X)  3  ($nnnn,X)  Absolute X-Indexed Indirect
 
 [opcodes]
 04  TSB   a8
@@ -246,3 +246,12 @@ F7  1
 FB  1
 FC  4
 FF  1
+
+[documentation-addmodes]
+## http://datasheets.chipdb.org/Western%20Design/W65C02S.pdf
+
+(a8)     Zero Page Indirect
+         With Zero Page Indirect addressing mode, the second byte of the instruction is a zero page indirect address that points to the low byte of a two byte effective address.
+
+(a16,X)  Absolute X-Indexed Indirect
+         With the Absolute Indexed Indirect addressing mode, the X Index Register is added to the second and third byes of the instruction to form an address to a pointer. This address mode is only used with the JMP instruction and the program Counter is loaded with the first and second bytes at this pointer.

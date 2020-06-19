@@ -88,11 +88,11 @@ XCE  flags  -------** C ↔ E
 
 ## new modes
 [a16]      3    [$nnnn]     Absolute Indirect Long
-(a16,X)    3    ($nnnn,X)   Absolute Long X-Indexed
+(a16,X)    3    ($nnnn,X)   Absolute X-Indexed Indirect
 [a8]       2    [$nn]       Direct Page Indirect Long
 [a8],Y     2    [$nn],Y     Direct Page Indirect Y-Indexed Long
 a24        4    $nnnnnn     Absolute Long
-a24,X      4    $nnnnnn,X   X-Indexed Absolute Long
+a24,X      4    $nnnnnn,X   Absolute X-Indexed Long
 r16        3    $nnnn       Relative (word)
 src,dest   3    $nn,$nn     Block Move
 a8,S       2    $nn,S       Stack Relative

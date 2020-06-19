@@ -145,3 +145,9 @@ E7  5
 EF  5+t+p
 F7  5
 FF  5+t+p
+
+[documentation-addmodes]
+## http://archive.6502.org/datasheets/rockwell_r65c00_microprocessors.pdf
+
+a8,r8  Zero Page, Relative
+       This mode bit tests the zero page location specified for bit set/reset per the mask and performs a conditional relative branch based on the results of the bit test.
