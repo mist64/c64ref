@@ -102,7 +102,7 @@ h3 {
 	background-color: white;
 	margin: 10px;
 	padding: 8px 22px;
-	width: 450px;
+	width: 350px;
 	font-size: 11pt;
 }
 
@@ -451,6 +451,12 @@ td.flag {
 
 
 	<div id="tab3c">
+		<input checked type="checkbox" id="showinstructions" onclick="show()">
+		<label for="showinstructions">Show Instructions</label>
+		<span id="sortbycat3_box">
+			<input type="checkbox" id="sortbycat3" onclick="show()">
+			<label for="sortbycat3">Sort by Category</label>
+		</span>
 		<div id="addmode_div"></div>
 	</div>
 
@@ -464,8 +470,10 @@ td.flag {
 		<label for="showbytes">Bytes</label>
 		<input checked type="checkbox" id="showcycles" onclick="show()">
 		<label for="showcycles">Cycles</label>
-		<input type="checkbox" id="cycledetails" onclick="show()">
-		<label for="cycledetails">Detailed Cycles</label>
+		<span id="cycledetails_box">
+			<input type="checkbox" id="cycledetails" onclick="show()">
+			<label for="cycledetails">Details</label>
+		</span>
 		<input type="checkbox" id="sortbycat1" onclick="show()">
 		<label for="sortbycat1">Sort by Category</label>
 
