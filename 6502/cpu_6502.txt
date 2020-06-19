@@ -137,9 +137,10 @@ TXA  trans  N-----Z-  X → A
 TXS  trans  --------  X → S
 TYA  trans  N-----Z-  Y → A
 
+# mnemos are based on VICE
 ANC  arith  *-----**  A ∧ M → A, N → C
 ARR  arith  **----**  (A ∧ M) / 2 → A
-ASR  arith  0-----**  (A ∧ M) / 2 → A            ## Ormston: ALR
+ASR  arith  0-----**  (A ∧ M) / 2 → A            ## Ormston, groepaz: ALR
 DCP  arith  *-----**  M - 1 → M, A - M           ## Ormston: DCM
 ISC  arith  **----**  M + 1 → M, A - M → A       ## Ormston: INS; VICE: ISB
 JAM  kil    --------  Stop execution             ## Ormston: HLT; Graham: KIL
@@ -150,12 +151,12 @@ RRA  arith  **----**  C → /M7...M0/ → C, A + M + C → A
 SAX  load   --------  A ∧ X → M
 SBX  arith  *-----**  (A ∧ X) - M → X            ## Graham: AXS
 SHA  load   --------  A ∧ X ∧ V → M              ## Graham: AHX
-SHS  trans  --------  A ∧ X → S, S ∧ (H + 1) → M ## Graham: TAS
+SHS  trans  --------  A ∧ X → S, S ∧ (H + 1) → M ## Graham, groepaz: TAS
 SHX  load   --------  X ∧ (H + 1) → M
 SHY  load   --------  Y ∧ (H + 1) → M
 SLO  arith  *-----**  M * 2 → M, A ∨ M → A       ## Ormston: ASO
 SRE  arith  *-----**  M / 2 → M, A ⊻ M → A       ## Ormston: LSE
-XAA  arith  *-----*-  (A ∨ V) ∧ X ∧ M → A        ## VICE: ANE
+XAA  arith  *-----*-  (A ∨ V) ∧ X ∧ M → A        ## VICE, groepaz: ANE
 
 [addmodes]
 -      1  -        Implied
@@ -982,6 +983,7 @@ LAS  "AND" Memory with Stack Pointer
 LAX  Load Accumulator and Index Register X From Memory
      The undocumented LAX instruction loads the accumulator and the index register X from memory.
      LAX does not affect the C or V flags; sets Z if the value loaded was zero, otherwise resets it; sets N if the value loaded in bit 7 is a 1; otherwise N is reset, and affects only the X register.
+     ## TODO: according t groepaz, it's more complicated than that
 
 RLA  Rotate Left then "AND" with Accumulator
      The undocumented RLA instruction shifts the addressed memory left 1 bit, with the input carry being stored in bit 0 and with the input bit 7 being stored in the carry flags. It then performs a bit-by-bit AND operation of the result and the value of the accumulator and stores the result back in the accumulator.
@@ -1019,7 +1021,7 @@ SHS  Transfer Accumulator "AND" Index Register X to Stack Pointer then Store Sta
 
 XAA  Non-deterministic Operation of Accumulator, Index Register X, Memory and Bus Contents
      The operation of the undocumented XAA instruction depends on the individual microprocessor. On most machines, it performs a bit-by-bit AND operation of the following three operands: The first two are the index register X and memory.
-     The third operand is the result of a bit-by-bit AND operation of the accumulator and a magic component. This magic component depends on the individual microprocessor and is usually one of $00, $EE, $EF, $FE and $FF, and may be influenced by the RDY pin, leftover contents of the data bus, the temperature of the microprocessor, and other factors.
+     The third operand is the result of a bit-by-bit AND operation of the accumulator and a magic component. This magic component depends on the individual microprocessor and is usually one of $00, $EE, $EF, $FE and $FF, and may be influenced by the RDY pin, leftover contents of the data bus, the temperature of the microprocessor, the supplied voltage, and other factors.
      On some machines, additional bits of the result may be set or reset depending on non-deterministic factors.
      It then transfers the result to the accumulator.
      XAA does not affect the C or V flags; sets Z if the value loaded was zero, otherwise resets it; sets N if the result in bit 7 is a 1; otherwise N is reset.
