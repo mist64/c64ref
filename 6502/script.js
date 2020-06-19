@@ -84,14 +84,16 @@ const cycle_symbol_descriptions = {
 	't': 't: =1 if branch is taken.',
 };
 
+const default_tabno = 1;
 
 var cpu_data = {};
-
 var files_loaded = 0;
 var file_data = {};
-var cpu;
 var showillegal;
 var separateillegal;
+
+var cpu;
+var tabno;
 
 function filename_for_cpu(cpu, type) {
 	return 'cpu_' + cpu + '.txt';
@@ -121,8 +123,8 @@ function init() {
 						fixup_data(cpu);
 					}
 					populate_cpu_list();
-					show(1);
-//					show(3);
+					handle_args();
+					show();
 				}
 			} else {
 				file_data[r.cpu] = null;
@@ -456,6 +458,20 @@ function populate_cpu_list() {
 	}
 }
 
+function handle_args() {
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	if (urlParams.has('cpu')) {
+		document.getElementById('cpu').value = urlParams.get('cpu');
+	}
+	if (urlParams.has('tab')) {
+		tabno = urlParams.get('tab');
+	} else {
+		tabno = default_tabno;
+	}
+	document.getElementById('tab' + tabno).checked = true;
+}
+
 function opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter) {
 	var res = [];
 	for (var opcode = 0; opcode <= 255; opcode++) {
@@ -481,17 +497,39 @@ function cpu_has_illegal(cpu) {
 	return false;
 }
 
-var tabo;
-
-function show(new_tabno) {
-	if (new_tabno != undefined) {
-		tabno = new_tabno;
+function show() {
+	for (tabno = 0; tabno < 4; tabno++) {
+		console.log(tabno);
+		if (document.getElementById('tab' + tabno).checked) {
+			break;
+		}
+	}
+	if (tabno == 4) {
+		tabno = default_tabno;
 	}
 
 	cpu = document.getElementById('cpu').value;
 	showillegal = document.getElementById('showillegal').checked;
 	separateillegal = document.getElementById('separateillegal').checked;
 	var has_illegal = cpu_has_illegal(cpu);
+
+	// create URL
+	var url = window.location.href;
+	url = url.split('?')[0];
+	url = url.split('#')[0];
+	args = [];
+	if (cpu != cpus[0]) {
+		args.push('cpu=' + cpu);
+	}
+	if (tabno != default_tabno) {
+		args.push('tab=' + tabno);
+	}
+	if (args.length) {
+		args = '?' + args.join('&');
+	} else {
+		args = '';
+	}
+	history.pushState({}, null, url + args);
 
 	document.getElementById('showillegal_box').style.display = has_illegal ? '' : 'none';
 	document.getElementById('separateillegal_box').className = showillegal ? '' : 'disabled';
