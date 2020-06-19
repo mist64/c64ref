@@ -1,0 +1,19 @@
+<svg height="260" width="710" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <symbol id="a">
+                <path d="m0 0h7v22h-7z"/>
+        </symbol>
+        <symbol id="b">
+                <path d="m0 22h7v-15a7 7 0 0 0 -7-7z"/>
+        </symbol>
+        <g transform="matrix(10 0 0 10 20 20)">
+                <use xlink:href="#a"/>
+                <use transform="translate(7.5)" xlink:href="#b"/>
+                <use transform="translate(15)" xlink:href="#b"/>
+                <circle cx="33.5" cy="11" r="11"/>
+                <g transform="matrix(0 1 -1 0 67 0)">
+                        <use transform="matrix(-1 0 0 -1 7 22)" xlink:href="#b"/>
+                        <use transform="translate(7.5)" xlink:href="#a"/>
+                        <use transform="translate(15)" xlink:href="#b"/>
+                </g>
+        </g>
+</svg>

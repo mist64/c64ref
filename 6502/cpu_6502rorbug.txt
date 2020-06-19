@@ -1,5 +1,6 @@
 [info]
-name         MOS 6502
+manufacturer MOS
+name         6502
 revision     without ROR
 year         1975
 id           6502rorbug

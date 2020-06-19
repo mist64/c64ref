@@ -1,5 +1,6 @@
 [info]
-name         WDC 65C02
+manufacturer WDC
+name         65C02
 year         1983
 id           65c02
 basedon      6502

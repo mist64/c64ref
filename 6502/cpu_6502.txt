@@ -1,5 +1,6 @@
 [info]
-name         MOS 6502
+manufacturer MOS
+name         6502
 year         1975
 id           6502
 description  This is the (bug-fixed, post June 1976 version of the) original implementation of the 6502 designed by MOS Technology, Inc. in 1975, and manufactured in the NMOS, HMOS or HMOS-2 technologies. All MOS/CSG 65xx/75xx/85xx CPUs, the Rockwell R6502, Synertek SY6502 and Pravetz	CM630 CPUs as well as the Ricoh 2A03 and 2A07 chips in the NES are based on this implementation. 151 opcodes are documented, the remaining 105 have undocumented behavior.

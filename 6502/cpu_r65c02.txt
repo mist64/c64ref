@@ -1,5 +1,6 @@
 [info]
-name         Rockwell 65C02
+manufacturer Rockwell
+name         R65C02
 year         1984
 id           r65c02
 basedon      65c02

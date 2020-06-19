@@ -468,7 +468,7 @@ function populate_cpu_list() {
 	for (cpu of cpus) {
 		var option = document.createElement("option");
 		option.value = cpu_data[cpu].info.id;
-		option.innerHTML = cpu_data[cpu].info.name;
+		option.innerHTML = cpu_name(cpu);
 		if (cpu_data[cpu].info.revision) {
 			option.innerHTML += ' (' + cpu_data[cpu].info.revision + ')';
 		}
@@ -636,13 +636,28 @@ function o_from_x_y(x, y, opcode_table_organization) {
 	}
 }
 
+function cpu_name(cpu) {
+	s = '';
+	if (cpu_data[cpu].info.manufacturer) {
+		s = cpu_data[cpu].info.manufacturer + ' ';
+	}
+	return s + cpu_data[cpu].info.name;
+}
+
 function generate_info(id) {
 	var div = document.getElementById(id);
+
+	if (cpu_data[cpu].info.manufacturer) {
+		var img = document.createElement("img");
+		div.appendChild(img);
+		img.src = cpu_data[cpu].info.manufacturer.toLowerCase() + '.svg';
+		img.className = 'info_logo';
+	}
 
 	var h3 = document.createElement("h3");
 	div.appendChild(h3);
 
-	h3.innerHTML = cpu_data[cpu].info.name;
+	h3.innerHTML = cpu_name(cpu);
 	if (cpu_data[cpu].info.revision) {
 		h3.innerHTML += ' (' + cpu_data[cpu].info.revision + ')';
 	}
@@ -1348,13 +1363,16 @@ function generate_legend(id) {
 // Data
 // * documentation: add pseudocode
 // * better addmode short forms for opcode matrix
+// * per-CPU documentation comments
 
 // Visualization
 // * CPU tree
+// * add Logo
 
 // Features
 // * diff function
 
 // Design Features
-// * rotate bigtable th
 // * "undocumented" badge on reference cards
+// * reference title flows into flags
+// * detailed cycles disabled if cycles is unchecked
