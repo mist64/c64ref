@@ -629,7 +629,7 @@ function show() {
 			generate_reference('reference2', filter2);
 			break;
 		case 3:
-			generate_addmode_table('addmode_div', filter1);
+			generate_addmode_table('addmode_div', filter1, filter2);
 			break;
 		case 4:
 			generate_big_table('big_table_div1', filter1);
@@ -781,7 +781,7 @@ function generate_opcode_table(id, filter) {
 	}
 }
 
-function generate_addmode_table(id, filter) {
+function generate_addmode_table(id, filter1, filter2) {
 	var div = document.getElementById(id);
 	div.innerHTML = '';
 
@@ -812,54 +812,60 @@ function generate_addmode_table(id, filter) {
 			p.innerHTML = cpu_data[cpu].addmodes[addmode].documentation.text
 		}
 
-		table = document.createElement("table");
-		table.className = 'reference_table';
-		div2.appendChild(table);
-		tr = document.createElement("tr");
-		table.appendChild(tr);
-		for (var title of ['Instruction', 'Opcode', 'No. Bytes', 'No. Cycles']) {
-			th = document.createElement("th");
-			th.innerHTML = title;
-			tr.appendChild(th);
-		}
-
 		const sortbycat = true;
-		var num_rows = 0;
 		var footnotes = new Set();
-		for (var mnemo of all_mnemos_sorted(cpu, filter, sortbycat)) {
-			var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter);
-			for (var opcode of opcodes) {
-				var illegal = cpu_data[cpu].opcodes[opcode].illegal;
-				if (showillegal || !illegal) {
-					num_rows++;
 
-					tr = document.createElement("tr");
-					tr.className = cpu_data[cpu].operations[mnemo].category + '_light';
-					table.appendChild(tr);
-					td = document.createElement("td");
-					tr.appendChild(td);
-					td.innerHTML = mnemo + ' ' + cpu_data[cpu].addmodes[addmode].syntax;
-					td.style.fontFamily = 'monospace';
-					td = document.createElement("td");
-					tr.appendChild(td);
-					td.innerHTML = '$' + hex16(opcode);
-					if (illegal) {
-						td.innerHTML += '*';
-						footnotes.add('*');
+		for (var filter of [filter1, filter2]) {
+			var num_rows = 0;
+			table = document.createElement("table");
+			table.className = 'reference_table';
+			tr = document.createElement("tr");
+			table.appendChild(tr);
+			for (var title of ['Instruction', 'Opcode', 'No. Bytes', 'No. Cycles']) {
+				th = document.createElement("th");
+				th.innerHTML = title;
+				tr.appendChild(th);
+			}
+
+			for (var mnemo of all_mnemos_sorted(cpu, filter, sortbycat)) {
+				var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter);
+				for (var opcode of opcodes) {
+					var illegal = cpu_data[cpu].opcodes[opcode].illegal;
+					if (showillegal || !illegal) {
+						num_rows++;
+
+						tr = document.createElement("tr");
+						tr.className = cpu_data[cpu].operations[mnemo].category + '_light';
+						table.appendChild(tr);
+						td = document.createElement("td");
+						tr.appendChild(td);
+						td.innerHTML = mnemo + ' ' + cpu_data[cpu].addmodes[addmode].syntax;
+						td.style.fontFamily = 'monospace';
+						td = document.createElement("td");
+						tr.appendChild(td);
+						td.innerHTML = '$' + hex16(opcode);
+						if (illegal) {
+							td.innerHTML += '*';
+							footnotes.add('*');
+							tr.classList.add('ill');
+						}
+						td.style.textAlign = 'center';
+						td = document.createElement("td");
+						tr.appendChild(td);
+						td.innerHTML = cpu_data[cpu].addmodes[addmode].bytes;
+						td.style.textAlign = 'center';
+						td = document.createElement("td");
+						tr.appendChild(td);
+						var cycles = cpu_data[cpu].opcodes[opcode].cycles;
+						td.innerHTML = cpu_data[cpu].opcodes[opcode].cycles;
+						td.style.textAlign = 'center';
+
+						cpu_data[cpu].opcodes[opcode].cyclesymbols.forEach(footnotes.add, footnotes);
 					}
-					td.style.textAlign = 'center';
-					td = document.createElement("td");
-					tr.appendChild(td);
-					td.innerHTML = cpu_data[cpu].addmodes[addmode].bytes;
-					td.style.textAlign = 'center';
-					td = document.createElement("td");
-					tr.appendChild(td);
-					var cycles = cpu_data[cpu].opcodes[opcode].cycles;
-					td.innerHTML = cpu_data[cpu].opcodes[opcode].cycles;
-					td.style.textAlign = 'center';
-
-					cpu_data[cpu].opcodes[opcode].cyclesymbols.forEach(footnotes.add, footnotes);
 				}
+			}
+			if (num_rows) {
+				div2.appendChild(table);
 			}
 		}
 		var p = document.createElement("p");
