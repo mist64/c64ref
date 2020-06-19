@@ -1185,8 +1185,11 @@ function generate_reference(id, filter) {
 	for (var mnemo of all_mnemos) {
 		var div = document.createElement("div");
 		div.id='mnemo_' + mnemo;
-		div.className = 'reference_card';
-		div.className += ' ' + cpu_data[cpu].operations[mnemo].category + '_light';
+		div.classList.add('reference_card');
+		div.classList.add(cpu_data[cpu].operations[mnemo].category + '_light');
+		if (false) {
+			div.classList.add('ill_big');
+		}
 		var num_rows = 0;
 
 		// flags
