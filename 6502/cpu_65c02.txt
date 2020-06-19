@@ -18,8 +18,8 @@ TSB   Test and Set Memory Bits
 
 [operations]
 BRA  ctrl  --------  Branch Always
-PHX  stack --------  X → Ms, S - 1 → S
-PHY  stack --------  Y → Ms, S - 1 → S
+PHX  stack --------  X↓
+PHY  stack --------  Y↑
 PLX  stack N-----Z-  S - 1 → S, Ms → Z
 PLY  stack N-----Z-  S - 1 → S, Ms → Y
 STZ  load  --------  0 → M

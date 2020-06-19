@@ -52,21 +52,20 @@ WDM  William D. Mensch, Jr.
 XBA  Exchange B and A Accumulator
 XCE  Exchange Carry and Emulation Flags
 
-
 [operations]
 BRL  ctrl   --------  Branch always long
 COP  ctrl   ----01--  Co-processor empowerment
 JSL  ctrl   --------  Jump to subroutine long
 MVN  load   --------  Move memory negative
 MVP  load   --------  Move memory positive
-PEA  stack  --------  M → Ms, S - 2 → S
-PEI  stack  --------  M → Ms, S - 2 → S
-PER  stack  --------  M → Ms, S - 2 → S
-PHB  stack  --------  B → Ms, S - 1 → S
-PHD  stack  --------  D → Ms, S - 1 → S
-PHK  stack  --------  K → Ms, S - 1 → S
-PLB  stack  *-----*-  S - 1 → S, Ms → B
-PLD  stack  *-----*-  S - 1 → S, Ms → D
+PEA  stack  --------  Mw↓
+PEI  stack  --------  Mw↓
+PER  stack  --------  Mw↓
+PHB  stack  --------  B↓
+PHD  stack  --------  D↓
+PHK  stack  --------  K↓
+PLB  stack  *-----*-  B↑
+PLD  stack  *-----*-  D↑
 REP  flags  ********  P ⊼ M → P
 RTL  ctrl   --------  Return from subroutine long
 SEP  flags  ********  P ∨ M → P
