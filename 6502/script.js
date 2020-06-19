@@ -1189,32 +1189,6 @@ function generate_reference(id, filter) {
 		div.className += ' ' + cpu_data[cpu].operations[mnemo].category + '_light';
 		var num_rows = 0;
 
-		// heading
-		var h2, table, tr, td, th, p;
-		h2 = document.createElement("h2");
-		div.appendChild(h2);
-		var title = mnemo;
-
-		if (cpu_data[cpu].operations[mnemo].documentation && cpu_data[cpu].operations[mnemo].documentation.title) {
-			title += ' - ' + cpu_data[cpu].operations[mnemo].documentation.title;
-		} else if (cpu_data[cpu].mnemos[mnemo]) {
-			title += ' - ' + cpu_data[cpu].mnemos[mnemo].description;
-		}
-		h2.innerHTML =  title;
-
-		// description
-		p = document.createElement("p");
-		div.appendChild(p);
-		p.innerHTML = '<b>Operation</b>: ' + cpu_data[cpu].operations[mnemo].description + '<br/>';
-
-		if (cpu_data[cpu].operations[mnemo].documentation) {
-			for (var line of cpu_data[cpu].operations[mnemo].documentation.text) {
-				p = document.createElement("p");
-				div.appendChild(p);
-				p.innerHTML = line;
-			}
-		}
-
 		// flags
 		table = document.createElement("table");
 		table.className = 'reference_flags_table';
@@ -1244,6 +1218,32 @@ function generate_reference(id, filter) {
 				default:
 					td.innerHTML = '&#10003;';
 					break;
+			}
+		}
+
+		// heading
+		var h2, table, tr, td, th, p;
+		h2 = document.createElement("h2");
+		div.appendChild(h2);
+		var title = mnemo;
+
+		if (cpu_data[cpu].operations[mnemo].documentation && cpu_data[cpu].operations[mnemo].documentation.title) {
+			title += ' - ' + cpu_data[cpu].operations[mnemo].documentation.title;
+		} else if (cpu_data[cpu].mnemos[mnemo]) {
+			title += ' - ' + cpu_data[cpu].mnemos[mnemo].description;
+		}
+		h2.innerHTML =  title;
+
+		// description
+		p = document.createElement("p");
+		div.appendChild(p);
+		p.innerHTML = '<b>Operation</b>: ' + cpu_data[cpu].operations[mnemo].description + '<br/>';
+
+		if (cpu_data[cpu].operations[mnemo].documentation) {
+			for (var line of cpu_data[cpu].operations[mnemo].documentation.text) {
+				p = document.createElement("p");
+				div.appendChild(p);
+				p.innerHTML = line;
 			}
 		}
 
