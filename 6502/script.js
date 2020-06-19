@@ -73,6 +73,17 @@ const category_descriptions = {
 	'undefined': 'Undefined',
 };
 
+const all_cycle_symbols = 'mxwpt';
+
+const cycle_symbol_descriptions = {
+	'*': '*Undocumented.',
+	'm': 'm: =1 if memory and accumulator are 8 bit.',
+	'x': 'x: =1 if index registers are 8 bit.',
+	'w': 'w: =1 if DL register ≠ 0.',
+	'p': 'p: =1 if page is crossed.',
+	't': 't: =1 if branch is taken.',
+};
+
 
 var cpu_data = {};
 
@@ -299,7 +310,7 @@ function evaluate_cycles(cycles) {
 	var min = 999;
 	var max = 0;
 
-	const symbols = 'mxwpt';
+	const symbols = all_cycle_symbols;
 	for (var i = 0; i < 1 << symbols.length; i++) {
 		var state = {};
 		for (var j = 0; j < symbols.length; j++) {
@@ -985,6 +996,20 @@ function generate_big_table(id, filter) {
 			}
 		}
 	}
+	if (cycledetails) {
+		p = document.createElement("p");
+		div.appendChild(p);
+		p.innerHTML = description_for_cycle_symbols(all_cycle_symbols);
+	}
+}
+
+function description_for_cycle_symbols(symbols) {
+	html = '';
+	for (s of symbols) {
+		html += cycle_symbol_descriptions[s];
+		html += '<br/>'
+	}
+	return html;
 }
 
 function generate_reference(id, filter) {
@@ -1119,31 +1144,7 @@ function generate_reference(id, filter) {
 		}
 		var p = document.createElement("p");
 		div.appendChild(p);
-		var html = '';
-		for (f of footnotes) {
-			switch (f) {
-				case '*':
-					html += '*Undocumented.';
-					break;
-				case 'm':
-					html += 'm: =1 if memory and accumulator are 8 bit.';
-					break;
-				case 'x':
-					html += 'x: =1 if index registers are 8 bit.';
-					break;
-				case 'w':
-					html += 'w: =1 if DL register ≠ 0.';
-					break;
-				case 'p':
-					html += 'p: =1 if page is crossed.';
-					break;
-				case 't':
-					html += 't: =1 if branch is taken.';
-					break;
-			}
-			html += '<br/>'
-		}
-		p.innerHTML = html;
+		p.innerHTML = description_for_cycle_symbols(footnotes);
 
 		// if there were no opcodes, don't add the div
 		// this happens if
@@ -1178,12 +1179,20 @@ function generate_legend(id) {
 
 
 // TODO:
-// * for instructions, add descriptions & pseudocode
-// * switch between illop synonym sets
+
+// Data
 // * CPU summary text
-// * CPU tree
-// * diff function
-// * registers
-// * rotate bigtable th
+// * documentation: add pseudocode
 // * better addmode short forms for opcode matrix
-// * navigate to CPU & tab
+
+// Visualization
+// * CPU tree
+// * show registers
+
+// Features
+// * navigate to CPU, tab and instruction
+// * diff function
+
+// Design Features
+// * rotate bigtable th
+// * "undocumented" badge on reference cards
