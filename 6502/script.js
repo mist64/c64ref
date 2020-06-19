@@ -1367,7 +1367,6 @@ function generate_legend(id) {
 
 // Visualization
 // * CPU tree
-// * add Logo
 
 // Features
 // * diff function
