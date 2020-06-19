@@ -1228,7 +1228,6 @@ function generate_legend(id) {
 // * show registers
 
 // Features
-// * navigate to CPU, tab and instruction
 // * diff function
 
 // Design Features

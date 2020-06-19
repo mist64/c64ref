@@ -1,13 +1,18 @@
 [info]
-name      65DTV02
-year      2005
-id        65dtv02
-basedon   6502
+name         65DTV02
+year         2005
+id           65dtv02
+basedon      6502
+description  This is a modern reimplementation of the 6502 by Jeri Ellsworth as used in the C64DTV2. It reproduces all quirks of the original 6502 as well as most undocumented opcodes and adds three new instructions. (The timing information corresponds to "skip internal cycles" mode.)
 
 [mnemos]
+# new instructions
 SAC  Set Accumulator Mapping
 SIR  Set Index Register Mapping
 BRA  Branch Always
+
+# differences in undocumented instructions
+9B  *NOP  a16,Y  ## incorrectly implemented (according to VICE)
 
 [operations]
 SAC  flags  --------  Set Accumulator Mapping

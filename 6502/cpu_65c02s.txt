@@ -1,7 +1,8 @@
 [info]
-name      WDC 65C02S
-id        65c02s
-basedon   r65c02
+name         WDC 65C02S
+id           65c02s
+basedon      r65c02
+description  This is the later version of Western Design Center's 65C02, which supports the Rockwell extensions and adds two power saving opcodes borrowed from the 65c816.
 
 [mnemos]
 STP   Stop the Clock

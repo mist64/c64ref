@@ -1,8 +1,9 @@
 [info]
-name      Rockwell 65C02
-year      1984
-id        r65c02
-basedon   65c02
+name         Rockwell 65C02
+year         1984
+id           r65c02
+basedon      65c02
+description  This is the Rockwell-variant of the WDC 65c02, which adds 32 new bit testing and manipulation opcodes.
 
 [mnemos]
 BBR0  Branch on Bit 0 Reset

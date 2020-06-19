@@ -1,8 +1,10 @@
 [info]
-name      WDC 65C816
-year      1984
-id        65c816
-basedon   65c02
+name         WDC 65C816
+year         1984
+id           65c816
+basedon      65c02
+description  This is the original implementation of the 16 bit version of the 65C02 designed by Western Design Center, Inc. It supports all instructions of original WDC 65C02, and adds support support for 16 bit registers, 24 bit addresses, a relocatable zero page and stack-relative addressing, filling all 256 opcodes. (The timing information corresponds to native mode.)
+
 
 [registers]
 A   16   Accumulator
