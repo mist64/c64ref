@@ -112,6 +112,7 @@ function init() {
 					for (var cpu of cpus) {
 						cpu_data[cpu] = {};
 						decode_generic(cpu, 'info');
+						decode_registers(cpu);
 						decode_generic(cpu, 'vectors');
 						decode_flags(cpu);
 						decode_opcodes(cpu);
@@ -197,6 +198,23 @@ function decode_generic(cpu, section) {
 	cpu_data[cpu][section] = {};
 	for (var line of text) {
 		cpu_data[cpu][section][line[0]] = line.slice(1).join(' ');
+	}
+}
+
+function decode_registers(cpu) {
+	var text = get_file_data(cpu, 'registers');
+
+	cpu_data[cpu].registers = {};
+
+	for (var line of text) {
+		var name = line[0];
+		if (name == '#') {
+			cpu_data[cpu].registers.registers = line[1].split(',');
+		} else {
+			cpu_data[cpu].registers[name] = {};
+			cpu_data[cpu].registers[name].size = line[1];
+			cpu_data[cpu].registers[name].description = line.slice(2).join(' ');
+		}
 	}
 }
 
@@ -499,7 +517,6 @@ function cpu_has_illegal(cpu) {
 
 function show() {
 	for (tabno = 0; tabno < 4; tabno++) {
-		console.log(tabno);
 		if (document.getElementById('tab' + tabno).checked) {
 			break;
 		}
@@ -551,10 +568,12 @@ function show() {
 	for (var id of [
 		'info_div',
 		'flags_div',
+		'registers_div',
 		'vectors_div',
 		'opcode_div1',
 		'opcode_div2',
-		'addmode_div',
+		'addmode_div1',
+		'addmode_div2',
 		'legend1',
 		'legend2',
 		'big_table_div1',
@@ -578,12 +597,14 @@ function show() {
 		case 0:
 			generate_info('info_div');
 			generate_flags_div('flags_div');
+			generate_registers_div('registers_div');
+			generate_addmode_table('addmode_div1');
 			generate_vectors_div('vectors_div');
 			break;
 		case 1:
 			generate_opcode_table('opcode_div1', filter1);
 			generate_opcode_table('opcode_div2', filter2);
-			generate_addmode_table('addmode_div');
+			generate_addmode_table('addmode_div2');
 			generate_legend('legend1');
 			break;
 		case 2:
@@ -616,19 +637,22 @@ function o_from_x_y(x, y, opcode_table_organization) {
 }
 
 function generate_info(id) {
-	var info_div = document.getElementById(id);
+	var div = document.getElementById(id);
 
-	html = '';
-	html += '<h3>' + cpu_data[cpu].info.name
+	var h3 = document.createElement("h3");
+	div.appendChild(h3);
+
+	h3.innerHTML = cpu_data[cpu].info.name;
 	if (cpu_data[cpu].info.revision) {
-		html += ' (' + cpu_data[cpu].info.revision + ')';
+		h3.innerHTML += ' (' + cpu_data[cpu].info.revision + ')';
 	}
 	if (cpu_data[cpu].info.year) {
-		html += ' [' + cpu_data[cpu].info.year + ']';
+		h3.innerHTML += ' [' + cpu_data[cpu].info.year + ']';
 	}
-	html += '</h3>'
 
-	info_div.innerHTML = html;
+	var p = document.createElement("p");
+	div.appendChild(p);
+	p.innerHTML = cpu_data[cpu].info.description;
 }
 
 function generate_opcode_table(id, filter) {
@@ -730,6 +754,14 @@ function generate_addmode_table(id) {
 	var table = document.createElement("table");
 	div.appendChild(table);
 
+	tr = document.createElement("tr");
+	table.appendChild(tr);
+	for (var h of ['Short', 'Syntax', 'Description']) {
+		th = document.createElement("th");
+		tr.appendChild(th);
+		th.innerHTML = h;
+	}
+
 	for (var addmode of cpu_data[cpu].all_addmodes['all']) {
 		var tr = document.createElement("tr");
 		table.appendChild(tr);
@@ -819,6 +851,37 @@ function generate_mnemos_by_category(id, filter) {
 				td.appendChild(a);
 			}
 		}
+	}
+}
+
+function generate_registers_div(id) {
+	var div = document.getElementById(id);
+	div.innerHTML = '';
+
+	var table = document.createElement("table");
+	div.appendChild(table);
+
+	tr = document.createElement("tr");
+	table.appendChild(tr);
+	for (var h of ['Name', 'Size', 'Description']) {
+		th = document.createElement("th");
+		tr.appendChild(th);
+		th.innerHTML = h;
+	}
+
+	for (var register of cpu_data[cpu].registers.registers) {
+		tr = document.createElement("tr");
+		table.appendChild(tr);
+		td = document.createElement("td");
+		tr.appendChild(td);
+		td.innerHTML = register;
+		td = document.createElement("td");
+		tr.appendChild(td);
+		td.innerHTML = cpu_data[cpu].registers[register].size;
+		td = document.createElement("td");
+		tr.appendChild(td);
+		td.innerHTML = cpu_data[cpu].registers[register].description;
+	console.log(register, cpu_data[cpu].registers);
 	}
 }
 
@@ -1219,7 +1282,6 @@ function generate_legend(id) {
 // TODO:
 
 // Data
-// * CPU summary text
 // * documentation: add pseudocode
 // * better addmode short forms for opcode matrix
 

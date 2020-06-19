@@ -6,6 +6,7 @@ basedon      r65c02
 description  This is the CMOS-based reimplementation of the 6502 designed by Bill Gardei at Commodore/CSG/MOS. It supports all instructions of the Rockwell 65C02, and adds index register Z as well as support for a relocatable zero page, a 16 bit stack pointer and stack-relative addressing, filling all 256 opcodes.
 
 [registers]
+#   A,X,Y,Z,S,P,B,PC
 Z   8   Z Index Register
 S   16  Stack Pointer
 B   8   Base Page

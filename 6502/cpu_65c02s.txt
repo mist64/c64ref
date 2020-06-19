@@ -9,8 +9,8 @@ STP   Stop the Clock
 WAI   Wait for Interrupt
 
 [operations]
-STP  ctrl   --------  Stop the clock
-WAI  ctrl   --------  Wait for interrupt
+STP  ctrl   --------  Stop the Clock
+WAI  ctrl   --------  Wait for Interrupt
 
 [addmodes]
 
