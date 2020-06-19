@@ -3,7 +3,29 @@ name         65DTV02
 year         2005
 id           65dtv02
 basedon      6502
-description  This is a modern reimplementation of the 6502 by Jeri Ellsworth as used in the C64DTV2. It reproduces all quirks of the original 6502 as well as most undocumented opcodes and adds three new instructions. (The timing information corresponds to "skip internal cycles" mode.)
+description  This is a modern reimplementation of the 6502 by Jeri Ellsworth as used in the C64DTV2. It reproduces all quirks of the original 6502 as well as most undocumented opcodes and adds three new instructions and an MMU. (The timing information corresponds to "skip internal cycles" mode.)
+
+[registers]
+#   A,X,Y,S,P,PC,R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13,R14,R15
+A    8   Accumulator (alias for R0-R15)
+X    8   X Index Register (alias for R0-R15)
+Y    8   Y Index Register (alias for R0-R15)
+R0   8  Default Accumulator
+R1   8  Default Y Register
+R2   8  Default X Register
+R3   8  Reserved
+R4   8  Reserved
+R5   8  Reserved
+R6   8  Reserved
+R7   8  Reserved
+R8   8  Bank 0-3 Access Mode
+R9   8  CPU Control
+R10  8  Base Page Segment
+R11  8  Stack Segment
+R12  8  Bank 0 Segment
+R13  8  Bank 1 Segment
+R14  8  Bank 2 Segment
+R15  8  Bank 3 Segment
 
 [mnemos]
 # new instructions
@@ -11,15 +33,15 @@ SAC  Set Accumulator Mapping
 SIR  Set Index Register Mapping
 BRA  Branch Always
 
-# differences in undocumented instructions
-9B  *NOP  a16,Y  ## incorrectly implemented (according to VICE)
+# bugs in undocumented instructions
+2B  *ANC  #d8    ## https://www.c64-wiki.com/wiki/C64DTV_Programming_Guide
+9B  *NOP  a16,Y  ## VICE source
+##C7  *DCP  a8   ## unclear -- https://www.c64-wiki.com/wiki/C64DTV_Programming_Guide
 
 [operations]
 SAC  flags  --------  Set Accumulator Mapping
 SIR  flags  --------  Set Index Register Mapping
 BRA  ctrl   --------  Branch Always
-
-[addmodes]
 
 [opcodes]
 12  BRA   r8
@@ -283,3 +305,16 @@ FC  4
 FD  4
 FE  5
 FF  5
+
+[documentation-mnemos]
+## https://www.c64-wiki.com/wiki/C64DTV_Programming_Guide
+
+SAC  Set Accumulator Mapping
+     The 65DTV02 has a register file of 16 bytes, some of which double as MMU registers. The lower four bits of the SAC instruction's immediate operand assign the register that will be accessed through read operations to the accumulator, and the upper four bits assign the register that will be accessed through write operations to the accumulator. The default register for the accumulator is 0.
+
+SIR  Set Index Register Mapping
+     The 65DTV02 has a register file of 16 bytes, some of which double as MMU registers. The lower four bits of the SIR instruction's immediate operand assign the register that index register X is mapped to, and the upper four bits assign the register that index register Y is mapped to. The default register for the index register X is 2, and the default for the index register Y is 1.
+
+BRA  Branch Always
+     This instruction takes an unconditional branch.
+     BRA does not affect any of the flags or any other part of the machine other than the program counter.

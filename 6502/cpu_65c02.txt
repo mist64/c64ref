@@ -7,7 +7,7 @@ basedon      6502
 description  This is the CMOS-based reimplementation of the 6502 designed by Western Design Center, Inc. It supports all documented features of the original 6502, fixes all known quirks, adds 27 new opcodes and two addressing modes, and guarantees all undocumented opcodes to be NOPs.
 
 [mnemos]
-BRA   Branch
+BRA   Branch Always
 PHX   Push X Register
 PHY   Push Y Register
 PLX   Pull X Register
@@ -253,7 +253,7 @@ FF  1
 
 [documentation-mnemos]
 ## based on the 6502 docs
-BRA  Branch
+BRA  Branch Always
      This instruction takes an unconditional branch.
      BRA does not affect any of the flags or any other part of the machine other than the program counter.
 
