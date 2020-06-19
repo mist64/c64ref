@@ -180,9 +180,100 @@ h3 {
 	font-size: 10pt;
 }
 
-.big_table, .big_table td {
+.big_table {
+	overflow: scroll;
+	border: none;
+}
+.big_table td,
+.big_table th {
+	vertical-align: top;
+}
+
+.big_table {
+	border: none;
 	font-size: 10pt;
-	border: 1px solid black;
+}
+
+.big_table th {
+	border-top: 0px;
+	border-left: 1px dotted gray;
+}
+
+.big_table th.rotate {
+	border: none;
+	vertical-align: bottom;
+	height: 210px;
+	white-space: nowrap;
+}
+
+.big_table th.rotate > div {
+	transform:
+		translate(1px, -2px)
+		rotate(290deg);
+	width: 30px;
+}
+
+.big_table th.rotate > div > span {
+	padding: 4px 18px;
+	border-top: 2px solid black;
+}
+
+
+.big_table td {
+	border-top: 1px dotted white;
+	border-left: 1px dotted gray;
+	padding: 1px 2px;
+}
+
+.big_table th.leading,
+.big_table td.leading {
+	border-left: 2px solid black;
+}
+
+.opcode,
+.cycles,
+.bytes,
+.flag {
+	text-align: center;
+}
+
+th.operation,
+td.operation {
+	white-space: nowrap;
+}
+
+th.opcode,
+td.opcode {
+	width: 2em;
+	background: #faa3;
+}
+
+th.cycles,
+td.cycles {
+	width: 1em;
+	background: #aca3;
+}
+
+td.cycles {
+	width: 2em;
+	white-space: nowrap;
+}
+
+
+th.cycles.detailed,
+td.cycles.detailed {
+	background: #aca5;
+}
+
+th.bytes,
+td.bytes {
+	width: 1em;
+	background: #aac3;
+}
+
+th.flag,
+td.flag {
+	width: 1em;
 }
 
 .disabled {
@@ -357,3 +448,4 @@ h3 {
 	</div>
 
 </body>
+</html>

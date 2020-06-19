@@ -983,52 +983,92 @@ function generate_big_table(id, filter) {
 
 	th = document.createElement("th");
 	tr.appendChild(th);
-	th.innerHTML = 'Mnemonic';
+	th.classList.add('rotate');
+	var div = document.createElement("div");
+	th.appendChild(div);
+	var span = document.createElement("span");
+	div.appendChild(span);
+	span.innerHTML = 'Mnemonic';
+
 	if (showoperation) {
 		th = document.createElement("th");
 		tr.appendChild(th);
-		th.innerHTML = 'Operation';
+		th.classList.add('rotate');
+		var div = document.createElement("div");
+		th.appendChild(div);
+		var span = document.createElement("span");
+		div.appendChild(span);
+		span.innerHTML = 'Operation';
 	}
 
-	for (var addmode of cpu_data[cpu].all_addmodes[filter]) {
-		th = document.createElement("th");
-		tr.appendChild(th);
-		th.colSpan = (showopcodes ? 1 : 0) + (showbytes ? 1 : 0) + (showcycles ? 1 : 0) ;
-		th.innerHTML = cpu_data[cpu].addmodes[addmode].syntax;
-//		th.innerHTML = cpu_data[cpu].addmodes[addmode].description;
+	if (showcycles || showopcodes || showbytes) {
+		for (var addmode of cpu_data[cpu].all_addmodes[filter]) {
+			th = document.createElement("th");
+			tr.appendChild(th);
+			th.colSpan = (showopcodes ? 1 : 0) + (showbytes ? 1 : 0) + (showcycles ? 1 : 0) ;
+			th.classList.add('rotate');
+			var div = document.createElement("div");
+			th.appendChild(div);
+			var span = document.createElement("span");
+			div.appendChild(span);
+			span.innerHTML = cpu_data[cpu].addmodes[addmode].description;
+			///span.innerHTML = cpu_data[cpu].addmodes[addmode].syntax;
+		}
 	}
 	th = document.createElement("th");
 	tr.appendChild(th);
 	th.colSpan = cpu_data[cpu].flags.names.length;
-	th.innerHTML = 'Flags';
+	th.classList.add('rotate');
+	var div = document.createElement("div");
+	th.appendChild(div);
+	var span = document.createElement("span");
+	div.appendChild(span);
+	span.innerHTML = 'Flags';
 
 	tr = document.createElement("tr");
 	table.appendChild(tr);
 	th = document.createElement("th");
-	if (showoperation) {
-		th.colSpan = 2;
-	}
+	th.classList.add('leading');
 	tr.appendChild(th);
+	if (showoperation) {
+		th = document.createElement("th");
+		th.classList.add('leading');
+		tr.appendChild(th);
+	}
 	for (var addmode of cpu_data[cpu].all_addmodes[filter]) {
 		if (showopcodes) {
 			th = document.createElement("th");
 			tr.appendChild(th);
+			th.classList.add('opcode');
 			th.innerHTML = 'OP';
+			th.classList.add('leading');
 		}
 		if (showbytes) {
 			th = document.createElement("th");
 			tr.appendChild(th);
+			th.classList.add('bytes');
 			th.innerHTML = 'N';
+			if (!showopcodes) {
+				th.classList.add('leading');
+			}
 		}
 		if (showcycles) {
 			th = document.createElement("th");
 			tr.appendChild(th);
+			th.classList.add('cycles');
 			th.innerHTML = '#';
+			if (!showopcodes && !showbytes) {
+				th.classList.add('leading');
+			}
 		}
 	}
 	for (var i = 0; i < cpu_data[cpu].flags.names.length; i++) {
 		th = document.createElement("th");
 		tr.appendChild(th);
+		th.classList.add('flag');
+		if (i == 0) {
+			th.classList.add('leading');
+		}
 		th.innerHTML = cpu_data[cpu].flags.names[i];
 	}
 
@@ -1043,10 +1083,12 @@ function generate_big_table(id, filter) {
 		tr.appendChild(td);
 		td.innerHTML = mnemo;
 		td.className = cpu_data[cpu].operations[mnemo].category;
+		td.classList.add('leading');
 
 		if (showoperation) {
 			td = document.createElement("td");
-			td.style.whiteSpace = 'nowrap';
+			td.classList.add('operation');
+			td.classList.add('leading');
 			td.innerHTML = cpu_data[cpu].operations[mnemo].description;
 			tr.appendChild(td);
 		}
@@ -1055,7 +1097,22 @@ function generate_big_table(id, filter) {
 			var td1 = document.createElement("td");
 			var td2 = document.createElement("td");
 			var td3 = document.createElement("td");
-			td3.style.whiteSpace = 'nowrap';
+			
+			td1.classList.add('opcode');
+			td1.classList.add('leading');
+
+			td2.classList.add('bytes');
+			if (!showopcodes) {
+				td2.classList.add('leading');
+			}
+			td3.classList.add('cycles');
+			if (!showopcodes && !showbytes) {
+				td3.classList.add('leading');
+			}
+			if (cycledetails) {
+				td3.classList.add('detailed');
+			}
+			
 			var opcodes = opcodes_for_mnemo_and_addmode(cpu, mnemo, addmode, filter);
 			for (var opcode of opcodes) {
 				if (cycledetails) {
@@ -1080,6 +1137,10 @@ function generate_big_table(id, filter) {
 		table.appendChild(tr);
 		for (var i = 0; i < cpu_data[cpu].flags.names.length; i++) {
 			td = document.createElement("td");
+			td.classList.add('flag');
+			if (i == 0) {
+				td.classList.add('leading');
+			}
 			tr.appendChild(td);
 			var flag = cpu_data[cpu].operations[mnemo].flags[i];
 			switch (flag) {
