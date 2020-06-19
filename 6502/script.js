@@ -16,6 +16,8 @@ const all_sorted_addmodes = [
 	'A',
 	'#d8',
 	'#d16',
+	'#m:d8/d16',
+	'#x:d8/d16',
 	'a16',
 	'a16,X',
 	'a16,Y',
@@ -72,7 +74,8 @@ const category_descriptions = {
 	'undefined': 'Undefined',
 };
 
-const all_cycle_symbols = 'mxwpt';
+const all_cycle_symbols = 'mxwptd';
+const all_symbols = '*' + all_cycle_symbols;
 
 const cycle_symbol_descriptions = {
 	'*': '*Undocumented.',
@@ -81,6 +84,7 @@ const cycle_symbol_descriptions = {
 	'w': 'w: =1 if DL register ≠ 0.',
 	'p': 'p: =1 if page is crossed.',
 	't': 't: =1 if branch is taken.',
+	'd': 'd: =1 if in decimal mode.',
 };
 
 const default_tabno = 1;
@@ -1302,9 +1306,11 @@ function generate_big_table(id, filter) {
 
 function description_for_cycle_symbols(symbols) {
 	html = '';
-	for (s of symbols) {
-		html += cycle_symbol_descriptions[s];
-		html += '<br/>'
+	for (s of all_symbols) {
+		if (symbols.has(s)) {
+			html += cycle_symbol_descriptions[s];
+			html += '<br/>'
+		}
 	}
 	return html;
 }
@@ -1478,11 +1484,10 @@ function generate_legend(id) {
 
 // Data
 // * documentation: add pseudocode
-// * per-CPU documentation comments
 // * verify undocumented with groepaz doc
 // * better addmode short forms for opcode matrix
-// * 65C02 decimal mode: ADC/SBC +1 cycle
 // * add one line comment to [timing] section, print on all tabs
+// * add search-and-replace lines to private doc (e.g. s/Zero/Direct/)
 
 // Visualization
 // * CPU tree

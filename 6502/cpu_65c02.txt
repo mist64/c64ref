@@ -142,6 +142,26 @@ FF  *NOP
 ## updated timing
 6c  6 ## JMP () fixed, one cycle extra
 
+## ADC instructions add 1 cycle in decimal mode
+61  6+d
+65  3+d
+69  2+d
+6D  4+d
+71  5+p+d
+75  4+d
+79  4+p+d
+7D  4+p+d
+
+## SBC instructions add 1 cycle in decimal mode
+E1  6+d
+E5  3+d
+E9  2+d
+ED  4+d
+F1  5+p+d
+F5  4+d
+F9  4+p+d
+FD  4+p+d
+
 ## new instructions
 04  5
 0C  6
@@ -156,7 +176,7 @@ FF  *NOP
 52  5
 5A  3
 64  3
-72  5
+72  5+d
 74  4
 7A  4
 7C  6
@@ -168,7 +188,7 @@ FF  *NOP
 B2  5
 D2  5
 DA  3
-F2  5
+F2  5+d
 FA  4
 
 ## NOPs
