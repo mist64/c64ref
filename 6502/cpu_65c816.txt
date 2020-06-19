@@ -465,3 +465,5 @@ FF  6-m
 00FFFC RESET
 
 [documentation-mnemos|noinherit]
+
+[documentation-addmodes|noinherit]

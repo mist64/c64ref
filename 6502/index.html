@@ -15,7 +15,8 @@
 input#tab0,
 input#tab1,
 input#tab2,
-input#tab3 {
+input#tab3,
+input#tab4 {
 	display: none;
 }
 
@@ -51,7 +52,8 @@ nav label:active {
 #tab0:checked ~ div nav label[for="tab0"],
 #tab1:checked ~ div nav label[for="tab1"],
 #tab2:checked ~ div nav label[for="tab2"],
-#tab3:checked ~ div nav label[for="tab3"] {
+#tab3:checked ~ div nav label[for="tab3"],
+#tab4:checked ~ div nav label[for="tab4"] {
 	background: var(--main-background);
 	color: black;
 	position: relative;
@@ -62,7 +64,8 @@ nav label:active {
 #tab0:checked ~ div nav label[for="tab0"]:after,
 #tab1:checked ~ div nav label[for="tab1"]:after,
 #tab2:checked ~ div nav label[for="tab2"]:after,
-#tab3:checked ~ div nav label[for="tab3"]:after {
+#tab3:checked ~ div nav label[for="tab3"]:after,
+#tab4:checked ~ div nav label[for="tab4"]:after {
 	content: "";
 	display: block;
 	position: absolute;
@@ -404,12 +407,14 @@ td.flag {
 	<input id="tab1" type="radio" name="tabs" onchange="show();"/>
 	<input id="tab2" type="radio" name="tabs" onchange="show();"/>
 	<input id="tab3" type="radio" name="tabs" onchange="show();"/>
+	<input id="tab4" type="radio" name="tabs" onchange="show();"/>
 	<div id="navigation">
 		<nav>
-			<label for="tab0">Info</label><!--
-			--><label for="tab1">Opcodes</label><!--
-			--><label for="tab2">Table</label><!--
-			--><label for="tab3">Reference</label><!-- -->
+			<label for="tab0">Info</label>
+			<label for="tab1">Opcodes</label>
+			<label for="tab2">Mnemos</label>
+			<label for="tab3">Addressing Modes</label>
+			<label for="tab4">Table</label>
 		</nav>
 	</div>
 
@@ -417,7 +422,6 @@ td.flag {
 		<div id="info_div"></div>
 		<div id="registers_div"></div>
 		<div id="flags_div"></div>
-		<div id="addmode_div1"></div>
 		<div id="vectors_div"></div>
 	</div>
 
@@ -435,10 +439,23 @@ td.flag {
 		<div id="opcode_div1"></div>
 		<div id="opcode_div2"></div>
 		<div id="legend1"></div>
-		<div id="addmode_div2"></div>
 	</div>
 
 	<div id="tab2c">
+		<div id="mnemos_by_category"></div>
+		<input type="checkbox" id="sortbycat2" onclick="show()">
+		<label for="sortbycat2">Sort by Category</label>
+		<div id="reference1"></div>
+		<div id="reference2"></div>
+	</div>
+
+
+	<div id="tab3c">
+		<div id="addmode_div"></div>
+	</div>
+
+
+	<div id="tab4c">
 		<input checked type="checkbox" id="showoperation" onclick="show()">
 		<label for="showoperation">Operation</label>
 		<input checked type="checkbox" id="showopcodes" onclick="show()">
@@ -456,14 +473,6 @@ td.flag {
 		<div id="big_table_div2"></div>
 
 		<div id="legend2"></div>
-	</div>
-
-	<div id="tab3c">
-		<div id="mnemos_by_category"></div>
-		<input type="checkbox" id="sortbycat2" onclick="show()">
-		<label for="sortbycat2">Sort by Category</label>
-		<div id="reference1"></div>
-		<div id="reference2"></div>
 	</div>
 
 	<hr/>

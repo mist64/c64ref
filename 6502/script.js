@@ -84,6 +84,7 @@ const cycle_symbol_descriptions = {
 };
 
 const default_tabno = 1;
+const numtabs = 5;
 
 var cpu_data = {};
 var files_loaded = 0;
@@ -533,12 +534,12 @@ function cpu_has_illegal(cpu) {
 }
 
 function show() {
-	for (tabno = 0; tabno < 4; tabno++) {
+	for (tabno = 0; tabno < numtabs; tabno++) {
 		if (document.getElementById('tab' + tabno).checked) {
 			break;
 		}
 	}
-	if (tabno == 4) {
+	if (tabno == numtabs) {
 		tabno = default_tabno;
 	}
 
@@ -589,8 +590,7 @@ function show() {
 		'vectors_div',
 		'opcode_div1',
 		'opcode_div2',
-		'addmode_div1',
-		'addmode_div2',
+		'addmode_div',
 		'legend1',
 		'legend2',
 		'big_table_div1',
@@ -602,7 +602,7 @@ function show() {
 		document.getElementById(id).innerHTML = '';
 	}
 
-	for (var i = 0; i <= 3; i++) {
+	for (var i = 0; i < numtabs; i++) {
 		if (i == tabno) {
 			document.getElementById('tab'+i+'c').style.display = '';
 		} else {
@@ -610,29 +610,31 @@ function show() {
 		}
 	}
 
+	console.log(tabno);
 	switch (tabno) {
 		case 0:
 			generate_info('info_div');
 			generate_flags_div('flags_div');
 			generate_registers_div('registers_div');
-			generate_addmode_table('addmode_div1');
 			generate_vectors_div('vectors_div');
 			break;
 		case 1:
 			generate_opcode_table('opcode_div1', filter1);
 			generate_opcode_table('opcode_div2', filter2);
-			generate_addmode_table('addmode_div2');
 			generate_legend('legend1');
 			break;
 		case 2:
-			generate_big_table('big_table_div1', filter1);
-			generate_big_table('big_table_div2', filter2);
-			generate_legend('legend2');
-			break;
-		case 3:
 			generate_mnemos_by_category('mnemos_by_category', filter1);
 			generate_reference('reference1', filter1);
 			generate_reference('reference2', filter2);
+			break;
+		case 3:
+			generate_addmode_table('addmode_div');
+			break;
+		case 4:
+			generate_big_table('big_table_div1', filter1);
+			generate_big_table('big_table_div2', filter2);
+			generate_legend('legend2');
 			break;
 	}
 }
