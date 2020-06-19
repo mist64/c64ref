@@ -800,19 +800,20 @@ function generate_opcode_table(id, filter) {
 	}
 }
 
-function create_paragraphs_from_array(div, lines) {
+function create_paragraphs_from_array(container, lines) {
 	for (var line of lines) {
 		if (line == '##PRIVATE##') {
-			var div2 = document.createElement("div");
-			div.appendChild(div2);
-			div2.className = 'bug_box';
-			div = div2;
+			// all lines from now on are private to the current CPU and belong in a box
 			var p = document.createElement("p");
-			div.appendChild(p);
+			container.appendChild(p);
+			p.className = 'bug_box';
+			container = p;
+			var p = document.createElement("p");
+			container.appendChild(p);
 			p.innerHTML = '<b>Note on the ' + cpu_name(cpu) + ':</b><br/>';
 		} else {
 			var p = document.createElement("p");
-			div.appendChild(p);
+			container.appendChild(p);
 			p.innerHTML = line;
 		}
 	}

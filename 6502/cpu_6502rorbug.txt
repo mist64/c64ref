@@ -7,14 +7,8 @@ id           6502rorbug
 basedon      6502
 description  This is the pre June 1976 version of the original implementation of the 6502 designed by MOS Technology, Inc. This version does not have the ROR instruction; the respective opcodes behave differently due to a bug in the mask.
 
-[mnemos]
-## empty
-
 [operations]
 ASL0 shift  N-----Z-  /7...0/ ← 0
-
-[addmodes]
-## empty
 
 [opcodes]
 66  *ASL0  a8
@@ -23,5 +17,10 @@ ASL0 shift  N-----Z-  /7...0/ ← 0
 76  *ASL0  a8,X
 7E  *ASL0  a16,X
 
-[timing]
-## empty
+[documentation-mnemos]
+ASL0 Arithmetic Shift Left Without Updating Carry
+     This instruction shifts either the accumulator or the address memory location 1 bit to the left, with the bit 0 always being set to 0. ASL0 either shifts the accumulator left 1 bit or is a read/modify/write instruction that affects only memory.
+     The instruction does not affect the overflow bit, sets N equal to the result bit 7 (bit 6 in the input), sets Z flag if the result is equal to 0, otherwise resets Z.
+
+[documentation-mnemos~private]
+ASL0 These are the buggy opcodes that were supposed to do a ROR.

@@ -913,7 +913,7 @@ LSR Logical Shift Right
 
 ASL  Arithmetic Shift Left
      The shift left instruction shifts either the accumulator or the address memory location 1 bit to the left, with the bit 0 always being set to 0 and the bit 7 output always being contained in the carry flag. ASL either shifts the accumulator left 1 bit or is a read/modify/write instruction that affects only memory.
-     The instruction does not affect the result bit 7 (bit 6 in the input), sets Z flag if the result is equal to 0, otherwise resets Z and stores the input bit 7 in the carry flag.
+     The instruction does not affect the overflow bit, sets N equal to the result bit 7 (bit 6 in the input), sets Z flag if the result is equal to 0, otherwise resets Z and stores the input bit 7 in the carry flag.
 
 ROL Rotate Left
      The rotate left instruction shifts either the accumulator or addressed memory left 1 bit, with the input carry being stored in bit 0 and with the input bit 7 being stored in the carry flags.
@@ -1031,7 +1031,17 @@ XAA  Non-deterministic Operation of Accumulator, Index Register X, Memory and Bu
      ## http://visual6502.org/wiki/index.php%3Ftitle%3D6502_Opcode_8B_(XAA,_ANE)
 
 [documentation-mnemos~private]
-## TODO ADC, SBC flags
+
+## TODO details
+ADC  In decimal mode, the N, V and Z flags are not set consistent with the decimal result.
+
+SBC  In decimal mode, the N, V and Z flags are not set consistent with the decimal result.
+
+BRK  If an IRQ happens at the same time as a BRK instruction, the BRK instruction is ignored.
+
+SED  The value of the decimal mode flag is indeterminate after a RESET.
+
+CLD  The value of the decimal mode flag is indeterminate after a RESET.
 
 [documentation-addmodes]
 ## http://archive.6502.org/datasheets/mos_6510_mpu.pdf
@@ -1077,4 +1087,8 @@ r8      Relative
         The second byte of-the instruction becomes the operand which is an “Offset" added to the contents of the lower eight bits of the program counter when the counter is set at the next instruction. The range of the offset is —128 to +127 bytes from the next instruction.
 
 [documentation-addmodes~private]
-(a16)   The indirect jump instruction does not increment the page address when the indirect pointer crosses a page boundary.
+(a16)   The indirect jump instruction does not increment the page address when the indirect pointer crosses a page boundary. JMP ($xxFF) will fetch the address from $xxFF and $xx00.
+
+a16,X   The value at the specified address, ignoring the the addressing mode's X offset, is read (and discarded) before the final address is read. This may cause side effects in I/O registers.
+
+a16,Y   The value at the specified address, ignoring the the addressing mode's Y offset, is read (and discarded) before the final address is read. This may cause side effects in I/O registers.
