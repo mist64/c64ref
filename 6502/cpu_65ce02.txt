@@ -72,7 +72,7 @@ TZA  stack N-----Z-  Z → A
 [addmodes]
 ## new modes
 #d16      3  #$nnnn        Immediate (word)
-(a8),Z    2  ($nn),Z       Indirect Y-Indexed
+(a8),Z    2  ($nn),Z       Indirect Z-Indexed
 r16       3  $nnnn         Relative (word)
 (a8,S),Y  2  ($nnnn,SP),Y  Stack Relative Indirect Y-Indexed
 
@@ -397,3 +397,41 @@ FC  3
 FD  3
 FE  3
 FF  3
+
+[documentation-addmodes]
+## https://github.com/MEGA65/c65-specifications/blob/master/c65manualupdated.txt
+
+## new modes
+#d16      Immediate (word)
+          The data used in the operation is taken from the bytes immediately following the opcode in the 3-byte instruction.
+
+(a8),Z    Indirect Z-Indexed
+          The second byte of the two-byte instruction contains the low-order byte, and the B register contains the high-order address byte of two memory locations whose contents are added to the unsigned Z index register to form the address of the memory location to be used by the operation.
+
+r16       Relative (word)
+          The second and third bytes of the three-byte branch instruction are added to the low-order and high-order program counter bytes, respectively. (The program counter now contains the opcode address plus two). If the condition of the branch is true, the sum is stored back into the program counter.
+
+(a8,S),Y  Stack Relative Indirect Y-Indexed
+          The second byte of the two-byte instruction contains an unsigned offset value, d, which is added to the stack pointer (word) to form the address of two memory locations whose contents are added to the unsigned Y register to form the address of the memory location to be used by the operation.
+
+## renamed modes
+a8     Base Page
+       The second byte of the two-byte instruction contains the low-order address byte, and the B register contains the high-order address byte of the memory location to be used by the operation.
+
+a8,X  X-Indexed Base Page
+      The second byte of the two-byte instruction is added to the X index register to form the low-order address byte, and the B register contains the high-order address byte of the memory location to be used by the operation.
+
+
+a8,Y   Y-Indexed Base Page
+   The second byte of the two-byte instruction is added to the Y index register to form the low-order address byte, and the B register contains the high-order address byte of the memory location to be used by the operation.
+
+(a8,X) X-Indexed Base Page Indirect
+   The second byte of the two-byte instruction is added to the contents of the X register to form the low-order address byte, and the contents of the B register contains the high-order address byte, of two memory locations that contain the low-order and high-order address of the memory location to be used by the operation.
+
+(a8),Y Base Page Indirect Y-Indexed
+   The second and third bytes of the three-byte instruction are added to the unsigned contents of the X index register to form the low-order and high-order address bytes, respectively, of two memory locations containing the low-order and high-order JMP or JSR address bytes.
+
+## this is the 65C02 documentation with "zero page" replaced with "base page"
+a8,r8  Base Page, Relative
+       This mode bit tests the base page location specified for bit set/reset per the mask and performs a conditional relative branch based on the results of the bit test.
+
