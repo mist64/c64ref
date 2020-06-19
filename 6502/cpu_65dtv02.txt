@@ -310,10 +310,10 @@ FF  5
 ## https://www.c64-wiki.com/wiki/C64DTV_Programming_Guide
 
 SAC  Set Accumulator Mapping
-     The 65DTV02 has a register file of 16 bytes, some of which double as MMU registers. The lower four bits of the SAC instruction's immediate operand assign the register that will be accessed through read operations to the accumulator, and the upper four bits assign the register that will be accessed through write operations to the accumulator. The default register for the accumulator is 0.
+     The 65DTV02 has a register file of 16 bytes, some of which double as control/MMU registers. The lower four bits of the SAC instruction's immediate operand assign the register that will be accessed through read operations to the accumulator, and the upper four bits assign the register that will be accessed through write operations to the accumulator. The default register for the accumulator is 0.
 
 SIR  Set Index Register Mapping
-     The 65DTV02 has a register file of 16 bytes, some of which double as MMU registers. The lower four bits of the SIR instruction's immediate operand assign the register that index register X is mapped to, and the upper four bits assign the register that index register Y is mapped to. The default register for the index register X is 2, and the default for the index register Y is 1.
+     The 65DTV02 has a register file of 16 bytes, some of which double as control/MMU registers. The lower four bits of the SIR instruction's immediate operand assign the register that index register X is mapped to, and the upper four bits assign the register that index register Y is mapped to. The default register for the index register X is 2, and the default for the index register Y is 1.
 
 BRA  Branch Always
      This instruction takes an unconditional branch.

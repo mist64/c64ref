@@ -1322,7 +1322,7 @@ function generate_reference(id, filter) {
 		div.id='mnemo_' + mnemo;
 		div.classList.add('reference_card');
 		div.classList.add(cpu_data[cpu].operations[mnemo].category + '_light');
-		if (cpu_data[cpu].all_mnemos['illegal'].includes(mnemo)) {
+		if (!cpu_data[cpu].all_mnemos['regular'].includes(mnemo)) {
 			div.classList.add('ill_big');
 		}
 		var num_rows = 0;
