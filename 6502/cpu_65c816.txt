@@ -82,10 +82,11 @@ XBA  trans  *-----*-  B ↔ A
 XCE  flags  -------** C ↔ E
 
 [addmodes]
-#d8        2    #$nn        Immediate
+## new 8/16 bit immediates
 #m:d8/d16  3-m  #$nn/$nnnn  Immediate (M)
 #x:d8/d16  3-m  #$nn/$nnnn  Immediate (X)
 
+## new modes
 [a16]      3    [$nnnn]     Absolute Indirect Long
 (a16,X)    3    ($nnnn,X)   Absolute Long X-Indexed
 [a8]       2    [$nn]       Direct Page Indirect Long
@@ -96,7 +97,13 @@ r16        3    $nnnn       Relative (word)
 src,dest   3    $nn,$nn     Block Move
 a8,S       2    $nn,S       Stack Relative
 (a8,S),Y   2    ($nn,S),Y   Stack Relative Indirect Y-Indexed
-              
+
+## renamed modes (zero page -> direct page)
+a8     2  $nn      Direct Page
+a8,X   2  $nn,X    X-Indexed Direct Page
+a8,Y   2  $nn,Y    Y-Indexed Direct Page
+(a8,X) 2  ($nn,X)  X-Indexed Direct Page Indirect
+(a8),Y 2  ($nn),Y  Direct Page Indirect Y-Indexed
 
 [opcodes]
 02  COP   #d8
@@ -457,4 +464,4 @@ FF  6-m
 00FFEE IRQ
 00FFFC RESET
 
-[documentation|noinherit]
+[documentation-mnemos|noinherit]

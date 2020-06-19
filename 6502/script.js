@@ -12,34 +12,33 @@ const cpus = [
 ]
 
 const all_sorted_addmodes = [
+	'-',
+	'A',
 	'#d8',
 	'#d16',
 	'a16',
-	'a8',
-	'A',
-	'-',
-	'(a16,X)',
-	'(a8),Y',
-	'(a8)',
-	'(a8),Z', // same as above
-	'[a8]',
-	'(r8,SP),Y',
-	'a8,X',
-	'a8,Y',
 	'a16,X',
 	'a16,Y',
-	'r8',
-	'r16',
 	'(a16)',
-	'[a16]',
 	'(a16,X)',
-	'a8,r8',
+	'a8',
+	'a8,X',
+	'a8,Y',
+	'(a8)',
 	'(a8,X)',
+	'(a8),Y',
+	'(a8),Z',
+	'[a8]',
+	'[a16]',
 	'a24',
 	'a24,X',
-	'src,dest',
+	'r8',
+	'r16',
+	'a8,r8',
 	'a8,S',
 	'(a8,S),Y',
+	'(a8,SP),Y',
+	'src,dest',
 ];
 
 const all_sorted_categories = [
@@ -120,7 +119,8 @@ function init() {
 						decode_mnemos(cpu);
 						decode_addmodes(cpu);
 						decode_timing(cpu);
-						decode_documentation(cpu);
+						decode_documentation_mnemos(cpu);
+						decode_documentation_addmodes(cpu);
 						fixup_data(cpu);
 					}
 					populate_cpu_list();
@@ -384,8 +384,8 @@ function decode_timing(cpu) {
 	}
 }
 
-function decode_documentation(cpu) {
-	var text = get_file_data(cpu, 'documentation');
+function decode_documentation_mnemos(cpu) {
+	var text = get_file_data(cpu, 'documentation-mnemos');
 	var mnemo;
 	for (var line of text) {
 		if (line[0] != '') {
@@ -397,6 +397,23 @@ function decode_documentation(cpu) {
 				cpu_data[cpu].operations[mnemo].documentation.text = [];
 			}
 			cpu_data[cpu].operations[mnemo].documentation.text.push(line.slice(1).join(' '));
+		}
+	}
+}
+
+function decode_documentation_addmodes(cpu) {
+	var text = get_file_data(cpu, 'documentation-addmodes');
+	var mnemo;
+	for (var line of text) {
+		if (line[0] != '') {
+			addmode = line[0];
+			cpu_data[cpu].addmodes[addmode].documentation = {};
+			cpu_data[cpu].addmodes[addmode].documentation.title = line.slice(1).join(' ');
+		} else {
+			if (cpu_data[cpu].addmodes[addmode].documentation.text == undefined) {
+				cpu_data[cpu].addmodes[addmode].documentation.text = [];
+			}
+			cpu_data[cpu].addmodes[addmode].documentation.text.push(line.slice(1).join(' '));
 		}
 	}
 }
@@ -766,33 +783,63 @@ function generate_addmode_table(id) {
 	var div = document.getElementById(id);
 	div.innerHTML = '';
 
-	var table = document.createElement("table");
-	div.appendChild(table);
+	if (false) {
+		var table = document.createElement("table");
+		div.appendChild(table);
 
-	tr = document.createElement("tr");
-	table.appendChild(tr);
-	for (var h of ['Short', 'Syntax', 'Description']) {
-		th = document.createElement("th");
-		tr.appendChild(th);
-		th.innerHTML = h;
-	}
-
-	for (var addmode of cpu_data[cpu].all_addmodes['all']) {
-		var tr = document.createElement("tr");
+		tr = document.createElement("tr");
 		table.appendChild(tr);
+		for (var h of ['Short', 'Syntax', 'Description']) {
+			th = document.createElement("th");
+			tr.appendChild(th);
+			th.innerHTML = h;
+		}
 
-		var td = document.createElement("td");
-		tr.appendChild(td);
-		td.innerHTML = addmode;
+		for (var addmode of cpu_data[cpu].all_addmodes['all']) {
+			var tr = document.createElement("tr");
+			table.appendChild(tr);
 
-		var td = document.createElement("td");
-		tr.appendChild(td);
-		td.innerHTML = cpu_data[cpu].addmodes[addmode].syntax;
+			var td = document.createElement("td");
+			tr.appendChild(td);
+			td.innerHTML = addmode;
 
-		var td = document.createElement("td");
-		tr.appendChild(td);
-		td.innerHTML = cpu_data[cpu].addmodes[addmode].description;
+			var td = document.createElement("td");
+			tr.appendChild(td);
+			td.innerHTML = cpu_data[cpu].addmodes[addmode].syntax;
 
+			var td = document.createElement("td");
+			tr.appendChild(td);
+			td.innerHTML = cpu_data[cpu].addmodes[addmode].description;
+
+		}
+	} else {
+		for (var addmode of cpu_data[cpu].all_addmodes['all']) {
+			var div2 = document.createElement("div");
+			div2.classList.add('reference_card_addmode');
+			div.appendChild(div2);
+
+			var h2 = document.createElement("h2");
+			div2.appendChild(h2);
+
+			if (cpu_data[cpu].addmodes[addmode].documentation) {
+				h2.innerHTML = cpu_data[cpu].addmodes[addmode].documentation.title;
+			} else {
+				h2.innerHTML = cpu_data[cpu].addmodes[addmode].description;
+			}
+
+			var span = document.createElement("span");
+			h2.appendChild(span);
+			span.innerHTML = cpu_data[cpu].addmodes[addmode].syntax;
+			span.style.float = 'right';
+
+			if (cpu_data[cpu].addmodes[addmode].documentation) {
+				var p = document.createElement("p");
+				div2.appendChild(p);
+				p.innerHTML = cpu_data[cpu].addmodes[addmode].documentation.text
+			} else {
+
+			}
+		}
 	}
 }
 
@@ -896,7 +943,6 @@ function generate_registers_div(id) {
 		td = document.createElement("td");
 		tr.appendChild(td);
 		td.innerHTML = cpu_data[cpu].registers[register].description;
-	console.log(register, cpu_data[cpu].registers);
 	}
 }
 
@@ -957,6 +1003,9 @@ function generate_vectors_div(id) {
 }
 
 function all_mnemos_sorted(cpu, filter, sortbycat) {
+	if (filter == 'none') {
+		return [];
+	}
 	var all_mnemos = cpu_data[cpu].all_mnemos[filter].slice();
 	if (sortbycat) {
 		function sort_by_cat(a, b) {
@@ -1202,7 +1251,7 @@ function generate_reference(id, filter) {
 		div.id='mnemo_' + mnemo;
 		div.classList.add('reference_card');
 		div.classList.add(cpu_data[cpu].operations[mnemo].category + '_light');
-		if (false) {
+		if (cpu_data[cpu].all_mnemos['illegal'].includes(mnemo)) {
 			div.classList.add('ill_big');
 		}
 		var num_rows = 0;
@@ -1362,8 +1411,9 @@ function generate_legend(id) {
 
 // Data
 // * documentation: add pseudocode
-// * better addmode short forms for opcode matrix
 // * per-CPU documentation comments
+// * verify undocumented with groepaz doc
+// * better addmode short forms for opcode matrix
 
 // Visualization
 // * CPU tree
@@ -1372,6 +1422,5 @@ function generate_legend(id) {
 // * diff function
 
 // Design Features
-// * "undocumented" badge on reference cards
-// * reference title flows into flags
 // * detailed cycles disabled if cycles is unchecked
+// * opcodes table should not be squished

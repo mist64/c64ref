@@ -92,14 +92,15 @@ h3 {
 	font-size: 11pt;
 }
 
-.ill_big {
-	background: repeating-linear-gradient(
-		45deg,
-		rgba(0, 0, 0, 0),
-		rgba(0, 0, 0, 0) 10px,
-		rgba(0, 0, 0, 0.03) 10px,
-		rgba(0, 0, 0, 0.03) 20px
-	);
+.reference_card_addmode {
+	border-radius: 10px;
+	border: 1px solid black;
+	box-shadow: 2px 2px 10px gray;
+	background-color: white;
+	margin: 10px;
+	padding: 8px 22px;
+	width: 350px;
+	font-size: 11pt;
 }
 
 .reference_table td,
@@ -328,6 +329,16 @@ td.flag {
 	);
 }
 
+.ill_big {
+	background: repeating-linear-gradient(
+		45deg,
+		rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0) 10px,
+		rgba(0, 0, 0, 0.05) 10px,
+		rgba(0, 0, 0, 0.05) 20px
+	);
+}
+
 .load { background-color: hsl(5, 100%, 80%); }
 .trans { background-color: hsl(340, 100%, 80%); }
 .stack { background-color: hsl(290, 100%, 80%); }
@@ -415,8 +426,9 @@ td.flag {
 			<label for="opcode_table_organization">Organization</label>
 			<select name="opcode_table_organization" id="opcode_table_organization" onChange="show();">
 				<option value="4-4">4-4</option>
-				<option value="3-3-2/h">3-3-2 (horizontal)</option>
-				<option value="3-3-2/v">3-3-2 (vertical)</option>
+				<option value="3-3-2/h">3-3-2</option>
+<!--				<option value="3-3-2/h">3-3-2 (horizontal)</option>
+				<option value="3-3-2/v">3-3-2 (vertical)</option>-->
 			</select>
 		</p>
 
@@ -468,6 +480,7 @@ td.flag {
 	<li><a href="https://pastraiser.com/cpu/6502/6502_opcodes.html">Pavel Zima: 6502 instruction set</a></li>
 	<li><a href="http://6502.org/tutorials/65c02opcodes.html">Bruce Clark: 65C02 Opcodes</a></li>
 	<li><a href="http://6502.org/tutorials/65c816opcodes.html">Bruce Clark: 65C816 Opcodes</a></li>
+	<li><a href="http://nparker.llx.com/a2/opcodes.html">Neil Parker: The 6502/65C02/65C816 Instruction Set Decoded</a></li>
 	</ul>
 
 	</div>
