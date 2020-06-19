@@ -136,18 +136,22 @@ function init() {
 	}
 }
 
-function get_file_data(cpu, section) {
+function get_file_data(cpu, section, private = false) {
+	var sec = section;
+	if (private) {
+		sec += '~private';
+	}
 	var text;
-	if (!file_data[cpu][section]) {
+	if (!file_data[cpu][sec]) {
 		text = [];
 	} else {
-		text = file_data[cpu][section].text;
+		text = file_data[cpu][sec].text;
 	}
 	if (!text) {
 		text = [];
 	}
-	if (cpu_data[cpu].info && cpu_data[cpu].info.basedon && !(file_data[cpu].noinherit && file_data[cpu].noinherit.includes(section))) {
-		var other_text = get_file_data(cpu_data[cpu].info.basedon, section);
+	if (!private && cpu_data[cpu].info && cpu_data[cpu].info.basedon && !(file_data[cpu].noinherit && file_data[cpu].noinherit.includes(sec))) {
+		var other_text = get_file_data(cpu_data[cpu].info.basedon, sec);
 		text = other_text.concat(text);
 	}
 	return text;
@@ -386,35 +390,51 @@ function decode_timing(cpu) {
 }
 
 function decode_documentation_mnemos(cpu) {
-	var text = get_file_data(cpu, 'documentation-mnemos');
-	var mnemo;
-	for (var line of text) {
-		if (line[0] != '') {
-			mnemo = line[0];
-			cpu_data[cpu].operations[mnemo].documentation = {};
-			cpu_data[cpu].operations[mnemo].documentation.title = line.slice(1).join(' ');
-		} else {
-			if (cpu_data[cpu].operations[mnemo].documentation.text == undefined) {
-				cpu_data[cpu].operations[mnemo].documentation.text = [];
+	for (var private of [false, true]) {
+		var text = get_file_data(cpu, 'documentation-mnemos', private);
+		var mnemo;
+		for (var line of text) {
+			if (line[0] != '' && !cpu_data[cpu].operations[line[0]].documentation) {
+				mnemo = line[0];
+				cpu_data[cpu].operations[mnemo].documentation = {};
+				cpu_data[cpu].operations[mnemo].documentation.title = line.slice(1).join(' ');
+			} else {
+				if (line[0] != '') {
+					mnemo = line[0];
+				}
+				if (cpu_data[cpu].operations[mnemo].documentation.text == undefined) {
+					cpu_data[cpu].operations[mnemo].documentation.text = [];
+				}
+				if (private) {
+					cpu_data[cpu].operations[mnemo].documentation.text.push('##PRIVATE##');
+				}
+				cpu_data[cpu].operations[mnemo].documentation.text.push(line.slice(1).join(' '));
 			}
-			cpu_data[cpu].operations[mnemo].documentation.text.push(line.slice(1).join(' '));
 		}
 	}
 }
 
 function decode_documentation_addmodes(cpu) {
-	var text = get_file_data(cpu, 'documentation-addmodes');
-	var mnemo;
-	for (var line of text) {
-		if (line[0] != '') {
-			addmode = line[0];
-			cpu_data[cpu].addmodes[addmode].documentation = {};
-			cpu_data[cpu].addmodes[addmode].documentation.title = line.slice(1).join(' ');
-		} else {
-			if (cpu_data[cpu].addmodes[addmode].documentation.text == undefined) {
-				cpu_data[cpu].addmodes[addmode].documentation.text = [];
+	for (var private of [false, true]) {
+		var text = get_file_data(cpu, 'documentation-addmodes', private);
+		var addmode;
+		for (var line of text) {
+			if (line[0] != '' && !cpu_data[cpu].addmodes[line[0]].documentation) {
+				addmode = line[0];
+				cpu_data[cpu].addmodes[addmode].documentation = {};
+				cpu_data[cpu].addmodes[addmode].documentation.title = line.slice(1).join(' ');
+			} else {
+				if (line[0] != '') {
+					addmode = line[0];
+				}
+				if (cpu_data[cpu].addmodes[addmode].documentation.text == undefined) {
+					cpu_data[cpu].addmodes[addmode].documentation.text = [];
+				}
+				if (private) {
+					cpu_data[cpu].addmodes[addmode].documentation.text.push('##PRIVATE##');
+				}
+				cpu_data[cpu].addmodes[addmode].documentation.text.push(line.slice(1).join(' '));
 			}
-			cpu_data[cpu].addmodes[addmode].documentation.text.push(line.slice(1).join(' '));
 		}
 	}
 }
@@ -610,7 +630,6 @@ function show() {
 		}
 	}
 
-	console.log(tabno);
 	switch (tabno) {
 		case 0:
 			generate_info('info_div');
@@ -629,7 +648,7 @@ function show() {
 			generate_reference('reference2', filter2);
 			break;
 		case 3:
-			generate_addmode_table('addmode_div', filter1, filter2);
+			generate_addmode_div('addmode_div', filter1, filter2);
 			break;
 		case 4:
 			generate_big_table('big_table_div1', filter1);
@@ -781,7 +800,25 @@ function generate_opcode_table(id, filter) {
 	}
 }
 
-function generate_addmode_table(id, filter1, filter2) {
+function create_paragraphs_from_array(div, lines) {
+	for (var line of lines) {
+		if (line == '##PRIVATE##') {
+			var div2 = document.createElement("div");
+			div.appendChild(div2);
+			div2.className = 'bug_box';
+			div = div2;
+			var p = document.createElement("p");
+			div.appendChild(p);
+			p.innerHTML = '<b>Note on the ' + cpu_name(cpu) + ':</b><br/>';
+		} else {
+			var p = document.createElement("p");
+			div.appendChild(p);
+			p.innerHTML = line;
+		}
+	}
+}
+
+function generate_addmode_div(id, filter1, filter2) {
 	var div = document.getElementById(id);
 	div.innerHTML = '';
 
@@ -812,9 +849,7 @@ function generate_addmode_table(id, filter1, filter2) {
 
 		// documentation
 		if (cpu_data[cpu].addmodes[addmode].documentation) {
-			var p = document.createElement("p");
-			div2.appendChild(p);
-			p.innerHTML = cpu_data[cpu].addmodes[addmode].documentation.text
+			create_paragraphs_from_array(div2, cpu_data[cpu].addmodes[addmode].documentation.text);
 		}
 
 		if (showinstructions) {
@@ -1342,11 +1377,7 @@ function generate_reference(id, filter) {
 		p.innerHTML = '<b>Operation</b>: ' + cpu_data[cpu].operations[mnemo].description + '<br/>';
 
 		if (cpu_data[cpu].operations[mnemo].documentation && cpu_data[cpu].operations[mnemo].documentation.text) {
-			for (var line of cpu_data[cpu].operations[mnemo].documentation.text) {
-				p = document.createElement("p");
-				div.appendChild(p);
-				p.innerHTML = line;
-			}
+			create_paragraphs_from_array(div, cpu_data[cpu].operations[mnemo].documentation.text);
 		}
 
 		// addressing mode table

@@ -173,7 +173,7 @@ a8,Y   2  $nn,Y    Y-Indexed Zero Page
 a16    3  $nnnn    Absolute
 a16,X  3  $nnnn,X  X-Indexed Absolute
 a16,Y  3  $nnnn,Y  Y-Indexed Absolute
-(a16)  3  ($nnnn)  Indirect
+(a16)  3  ($nnnn)  Absolute Indirect
 r8     2  $nnnn    Relative
 
 [opcodes]
@@ -1030,6 +1030,9 @@ XAA  Non-deterministic Operation of Accumulator, Index Register X, Memory and Bu
      XAA does not affect the C or V flags; sets Z if the value loaded was zero, otherwise resets it; sets N if the result in bit 7 is a 1; otherwise N is reset.
      ## http://visual6502.org/wiki/index.php%3Ftitle%3D6502_Opcode_8B_(XAA,_ANE)
 
+[documentation-mnemos~private]
+## TODO ADC, SBC flags
+
 [documentation-addmodes]
 ## http://archive.6502.org/datasheets/mos_6510_mpu.pdf
 
@@ -1073,5 +1076,5 @@ r8      Relative
         Relative addressing is used only with branch instructions and establishes a destination for the conditional branch.
         The second byte of-the instruction becomes the operand which is an “Offset" added to the contents of the lower eight bits of the program counter when the counter is set at the next instruction. The range of the offset is —128 to +127 bytes from the next instruction.
 
-[documentation-addmodes|private]
+[documentation-addmodes~private]
 (a16)   The indirect jump instruction does not increment the page address when the indirect pointer crosses a page boundary.
