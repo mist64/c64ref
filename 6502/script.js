@@ -1351,7 +1351,6 @@ function generate_legend(id) {
 
 // Visualization
 // * CPU tree
-// * show registers
 
 // Features
 // * diff function

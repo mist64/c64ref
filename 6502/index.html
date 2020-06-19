@@ -233,6 +233,10 @@ h3 {
 	padding: 1px 2px;
 }
 
+.big_table tr:nth-child(2n+3) {
+	background: #fff;
+}
+
 .big_table th.leading,
 .big_table td.leading {
 	border-left: 2px solid black;
@@ -253,13 +257,18 @@ td.operation {
 th.opcode,
 td.opcode {
 	width: 2em;
-	background: #faa3;
+	background: #ccc5;
+}
+
+th.bytes,
+td.bytes {
+	width: 1em;
+	background: #ddd5;
 }
 
 th.cycles,
 td.cycles {
-	width: 1em;
-	background: #aca3;
+	background: #eee5;
 }
 
 td.cycles {
@@ -270,13 +279,6 @@ td.cycles {
 
 th.cycles.detailed,
 td.cycles.detailed {
-	background: #aca5;
-}
-
-th.bytes,
-td.bytes {
-	width: 1em;
-	background: #aac3;
 }
 
 th.flag,
