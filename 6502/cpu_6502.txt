@@ -153,9 +153,9 @@ SAX  load   --------  A ∧ X → M
 SHX  load   --------  X ∧ H → M
 SHY  load   --------  Y ∧ H → M
 ASO  arith  *-----**  M * 2 → M, A ∨ M → A       ## SLO
-SRE  arith  *-----**  M / 2 → M, A ⊻ M → A
-TAS  trans  --------  A ∧ X → M, S ∧ H → M
-XAA  arith  *-----*-  X ∧ M → A
+LSE  arith  *-----**  M / 2 → M, A ⊻ M → A       ## SRE
+SHS  trans  --------  A ∧ X → S, S ∧ (H + 1) → M ## TAS
+XAA  arith  *-----*-  (A ∨ V) ∧ X ∧ M → A
 
 [addmodes]
 -      1  -        Implied
@@ -354,19 +354,19 @@ FE  INC   a16,X
 3C  *NOP  a16,X
 3F  *RLA  a16,X
 42  *HLT
-43  *SRE  (a8,X)
+43  *LSE  (a8,X)
 44  *NOP  a8
-47  *SRE  a8
+47  *LSE  a8
 4B  *ALR  #d8
-4F  *SRE  a16
+4F  *LSE  a16
 52  *HLT
-53  *SRE  (a8),Y
+53  *LSE  (a8),Y
 54  *NOP  a8,X
-57  *SRE  a8,X
+57  *LSE  a8,X
 5A  *NOP
-5B  *SRE  a16,Y
+5B  *LSE  a16,Y
 5C  *NOP  a16,X
-5F  *SRE  a16,X
+5F  *LSE  a16,X
 62  *HLT
 63  *RRA  (a8,X)
 64  *NOP  a8
@@ -391,7 +391,7 @@ FE  INC   a16,X
 92  *HLT
 93  *SHA  (a8),Y
 97  *SAX  a8,Y
-9B  *TAS  a16,Y
+9B  *SHS  a16,Y
 9C  *SHY  a16,X
 9E  *SHX  a16,Y
 9F  *SHA  a16,Y
@@ -844,7 +844,7 @@ CPY  Compare Index Register Y To Memory
 
 TAX  Transfer Accumulator To Index X
      This instruction takes the value from accumulator A and trans­ fers or loads it into the index register X without disturbing the content of the accumulator A.
-     TAX only affects the index register X, does not affect the carry or overflow flags. The N flag is set if the resultant value in the index register X has bit 7 on, otherwise N isreset. The Z bit is set if the content of the register X is 0 as aresult of theopera­ tion, otherwise it is reset.
+     TAX only affects the index register X, does not affect the carry or overflow flags. The N flag is set if the resultant value in the index register X has bit 7 on, otherwise N is reset. The Z bit is set if the content of the register X is 0 as aresult of theopera­ tion, otherwise it is reset.
 
 TXA  Transfer Index X To Accumulator
      This instruction moves the value that is in the index register X to the accumulator A without disturbing the content of the index register X.
@@ -939,7 +939,7 @@ SAX  Store Accumulator "AND" Index Register X In Memory
      No flags or registers in the microprocessor are affected by the store operation.
 
 SHA  Store Accumulator "AND" Index Register X "AND" Value
-     The undocumented SHA instruction performs a bit-by-bit AND operation of the following three operands: The first two are the accumulator and the X register.
+     The undocumented SHA instruction performs a bit-by-bit AND operation of the following three operands: The first two are the accumulator and the index register X.
      The third operand depends on the addressing mode. In the zero page indirect Y-indexed case, the third operand is the data in memory at the given zero page address (ignoring the Y offset) plus 1. In the Y-indexed absolute case, it is the upper 8 bits of the given address (ignoring the Y offset), plus 1.
      It then transfers the result to the addressed memory location.
      No flags or registers in the microprocessor are affected by the store operation.
@@ -1004,12 +1004,18 @@ ASO  Arithmetic Shift Left then "OR" Memory with Accumulator
      The undocumented ASO instruction shifts the address memory location 1 bit to the left, with the bit 0 always being set to 0 and the bit 7 output always being contained in the carry flag. It then performs a bit-by-bit "OR" operation on the result and the accumulator and stores the result in the accumulator.
      The negative flag is set if the accumulator result contains bit 7 on, otherwise the negative flag is reset. It sets Z flag if the result is equal to 0, otherwise resets Z and stores the input bit 7 in the carry flag.
 
+LSE  Logical Shift Right then "Exclusive OR" Memory with Accumulator
+     The undocumented LSE instruction shifts the specified memory location 1 bit to the right, with the higher bit of the result always being set to 0, and the low bit which is shifted out of the field being stored in the carry flag. It then performs a bit-by-bit "EXCLUSIVE OR" of the result and the value of the accumulator and stores the result in the accumulator.
+     This instruction affects the accumulator. It does not affect the overflow flag. The negative flag is set if the accumulator result contains bit 7 on, otherwise the negative flag is reset. The Z flag is set if the result is 0 and reset otherwise. The carry is set equal to input bit 0.
 
+SHS  Transfer Accumulator "AND" Index Register X to Stack Pointer then Store Stack Pointer "AND" Hi-Byte In Memory
+     The undocumented SHS instruction performs a bit-by-bit AND operation of the value of the accumulator and the value of the index register X and stores the result in the stack pointer. It then performs a bit-by-bit AND operation of the resulting stack pointer and the upper 8 bits of the given address (ignoring the addressing mode's Y offset), plus 1, and transfers the result to the addressed memory location.
+     No flags or registers in the microprocessor are affected by the store operation.
 
-
-
-
-
-SRE
-TAS
-XAA
+XAA  "AND" Accumulator ("OR" Magic), Index Register X and Memory
+     The operation of the undocumented XAA instruction depends on the individual microprocessor. On most machines, it performs a bit-by-bit AND operation of the following three operands: The first two are the index register X and memory.
+     The third operand is the result of a bit-by-bit AND operation of the accumulator and a magic component. This magic component depends on the individual microprocessor and is usually one of $00, $EE, $EF, $FE and $FF, and may be influenced by the RDY pin, the temperature of the microprocessor, and other factors.
+     On some machines, additional bits of the result may be set or reset depending on non-deterministic factors.
+     It then transfers the result to the accumulator.
+     XAA does not affect the C or V flags; sets Z if the value loaded was zero, otherwise resets it; sets N if the result in bit 7 is a 1; otherwise N is reset.
+     ## http://visual6502.org/wiki/index.php%3Ftitle%3D6502_Opcode_8B_(XAA,_ANE)
