@@ -23,7 +23,7 @@ PHY  stack --------  Y↑
 PLX  stack N-----Z-  S - 1 → S, Ms → Z
 PLY  stack N-----Z-  S - 1 → S, Ms → Y
 STZ  load  --------  0 → M
-TRB  logic ------Z-  A ∧ M → M
+TRB  logic ------Z-  ~A ∧ M → M
 TSB  logic ------Z-  A ∨ M → M
 
 [addmodes]
@@ -139,6 +139,10 @@ FC  *NOP
 FF  *NOP
 
 [timing]
+## updated timing
+6c  6 ## JMP () fixed, one cycle extra
+
+## new instructions
 04  5
 0C  6
 12  5
@@ -152,7 +156,6 @@ FF  *NOP
 52  5
 5A  3
 64  3
-6c  6
 72  5
 74  4
 7A  4
@@ -168,6 +171,7 @@ DA  3
 F2  5
 FA  4
 
+## NOPs
 02  2
 03  1
 07  1
@@ -246,6 +250,41 @@ F7  1
 FB  1
 FC  4
 FF  1
+
+[documentation-mnemos]
+## based on the 6502 docs
+BRA  Branch
+     This instruction takes an unconditional branch.
+     BRA does not affect any of the flags or any other part of the machine other than the program counter.
+
+PHX  Push Index Register X On Stack
+     This instruction transfers the current value of the index register X to the next location on the stack, automatically decrementing the stack to point to the next empty location.
+     The Push X instruction only affects the stack pointer register which is decremented by 1 as a result of the operation. It affects no flags.
+
+PHY  Push Index Register Y On Stack
+     This instruction transfers the current value of the index register Y to the next location on the stack, automatically decrementing the stack to point to the next empty location.
+     The Push Y instruction only affects the stack pointer register which is decremented by 1 as a result of the operation. It affects no flags.
+
+PLX  Pull Index Register X From Stack
+     This instruction adds 1 to the current value of the stack pointer and uses it to address the stack and loads the contents of the stack into the X register.
+     The PLX instruction does not affect the carry or overflow flags. It sets N if the bit 7 is on in index register X as a result of instructions, otherwise it is reset. If index register X is zero as a result of the PLA, then the Z flag is set, otherwise it is reset. The PLX instruction changes content of the index register X to the contents of the memory location at stack register plus 1 and also increments the stack register.
+
+PLY  Pull Index Register Y From Stack
+     This instruction adds 1 to the current value of the stack pointer and uses it to address the stack and loads the contents of the stack into the Y register.
+     The PLY instruction does not affect the carry or overflow flags. It sets N if the bit 7 is on in index register Y as a result of instructions, otherwise it is reset. If index register Y is zero as a result of the PLA, then the Z flag is set, otherwise it is reset. The PLY instruction changes content of the index register Y to the contents of the memory location at stack register plus 1 and also increments the stack register.
+
+STZ  Store Zero In Memory
+     Transfers the value 0 to addressed memory location.
+     No flags or registers in the microprocessor are affected by the store operation.
+
+## https://github.com/MEGA65/c65-specifications/blob/master/c65manualupdated.txt
+TRB  Test And Reset Memory Bits With Accumulator
+     This instruction tests and resets bits in memory, using the accumulator for both a test mask, and a reset mask. It performs a logical AND between the inverted bits of the accumulator and the bits in memory, storing the result back into memory.
+     The zero flag is set if all bits of the result of the AND are zero, otherwise it is reset.
+
+TSB  Test And Set Memory Bits With Accumulator
+     This instruction tests and sets bits in memory, using the accumulator for both a test mask, and a set mask. It performs a logical OR between the bits of the accumulator and the bits in memory, storing the result back into memory.
+     The zero flag is set if all bits of the result of the OR are zero, otherwise it is reset.
 
 [documentation-addmodes]
 ## http://datasheets.chipdb.org/Western%20Design/W65C02S.pdf

@@ -126,7 +126,7 @@ ROL  shift  N-----ZC  C ← /M7...M0/ ← C
 ROR  shift  N-----ZC  C → /M7...M0/ → C
 RTI  ctrl   NV--DIZC  P↑ PC↑
 RTS  ctrl   --------  PC↑, PC + 1 → PC
-SBC  arith  NV----ZC  A - M - C̅ → A
+SBC  arith  NV----ZC  A - M - ~C → A
 SEC  flags  -------1  1 → C
 SED  flags  ----1---  1 → D
 SEI  flags  -----1--  1 → I
@@ -1072,3 +1072,6 @@ a16,Y   Y-Indexed Absolute
 r8      Relative
         Relative addressing is used only with branch instructions and establishes a destination for the conditional branch.
         The second byte of-the instruction becomes the operand which is an “Offset" added to the contents of the lower eight bits of the program counter when the counter is set at the next instruction. The range of the offset is —128 to +127 bytes from the next instruction.
+
+[documentation-addmodes|private]
+(a16)   The indirect jump instruction does not increment the page address when the indirect pointer crosses a page boundary.

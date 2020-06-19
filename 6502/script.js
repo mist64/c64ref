@@ -1341,7 +1341,7 @@ function generate_reference(id, filter) {
 		div.appendChild(p);
 		p.innerHTML = '<b>Operation</b>: ' + cpu_data[cpu].operations[mnemo].description + '<br/>';
 
-		if (cpu_data[cpu].operations[mnemo].documentation) {
+		if (cpu_data[cpu].operations[mnemo].documentation && cpu_data[cpu].operations[mnemo].documentation.text) {
 			for (var line of cpu_data[cpu].operations[mnemo].documentation.text) {
 				p = document.createElement("p");
 				div.appendChild(p);
@@ -1450,6 +1450,7 @@ function generate_legend(id) {
 // * verify undocumented with groepaz doc
 // * better addmode short forms for opcode matrix
 // * 65C02 decimal mode: ADC/SBC +1 cycle
+// * add one line comment to [timing] section, print on all tabs
 
 // Visualization
 // * CPU tree
