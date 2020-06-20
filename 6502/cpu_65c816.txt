@@ -87,7 +87,7 @@ XCE  flags  -------** C ↔ E
 [addmodes]
 ## new 8/16 bit immediates
 #m:d8/d16  3-m  #$nn/$nnnn  Immediate (M)
-#x:d8/d16  3-m  #$nn/$nnnn  Immediate (X)
+#x:d8/d16  3-x  #$nn/$nnnn  Immediate (X)
 
 ## new modes
 [a16]      3    [$nnnn]     Absolute Indirect Long

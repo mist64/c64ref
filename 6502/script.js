@@ -910,6 +910,10 @@ function generate_addmode_div(id, filter1, filter2) {
 			create_paragraphs_from_array(div2, cpu_data[cpu].addmodes[addmode].documentation.text);
 		}
 
+		var p = document.createElement("p");
+		div2.appendChild(p);
+		p.innerHTML = 'Bytes: ' + cpu_data[cpu].addmodes[addmode].bytes;
+
 		if (showinstructions) {
 			var footnotes = new Set();
 
@@ -935,10 +939,17 @@ function generate_addmode_div(id, filter1, filter2) {
 							tr = document.createElement("tr");
 							tr.className = cpu_data[cpu].operations[mnemo].category + '_light';
 							table.appendChild(tr);
+
+							// mnemo + syntax
 							td = document.createElement("td");
 							tr.appendChild(td);
-							td.innerHTML = mnemo + ' ' + cpu_data[cpu].addmodes[addmode].syntax;
 							td.style.fontFamily = 'monospace';
+							a = document.createElement("a");
+							td.appendChild(a);
+							a.innerHTML = mnemo + ' ' + cpu_data[cpu].addmodes[addmode].syntax;
+							a.href = url_from_state(cpu, 2, mnemo);
+
+							// opcode
 							td = document.createElement("td");
 							tr.appendChild(td);
 							td.innerHTML = '$' + hex16(opcode);
@@ -948,6 +959,8 @@ function generate_addmode_div(id, filter1, filter2) {
 								tr.classList.add('ill');
 							}
 							td.style.textAlign = 'center';
+
+							// cycles
 							td = document.createElement("td");
 							tr.appendChild(td);
 							var cycles = cpu_data[cpu].opcodes[opcode].cycles;
