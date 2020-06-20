@@ -842,6 +842,8 @@ function generate_opcode_table(id, filter) {
 					cell += '</span>';
 				}
 //				cell += '<br/>' + cpu_data[cpu].operations[opcode.mnemo].flags;
+				var url = url_from_state(cpu, 2) + '#' + cpu_data[cpu].opcodes[o].mnemo;
+				cell = '<a href="' + url + '">' + cell + '</a>';
 				td.innerHTML = cell;
 			} else {
 				td.className += ' undefined';
@@ -1027,7 +1029,7 @@ function generate_mnemos_by_category(id, filter) {
 			if (column[i]) {
 				td.className = column[0];
 				a = document.createElement("a");
-				a.href='#mnemo_' + column[i];
+				a.href='#' + column[i];
 				a.innerHTML = column[i] +  '<br/>'
 				td.appendChild(a);
 			}
@@ -1392,7 +1394,7 @@ function generate_reference(id, filter) {
 
 	for (var mnemo of all_mnemos) {
 		var div = document.createElement("div");
-		div.id='mnemo_' + mnemo;
+		div.id = mnemo;
 		div.classList.add('reference_card');
 		div.classList.add(cpu_data[cpu].operations[mnemo].category + '_light');
 		if (!cpu_data[cpu].all_mnemos['regular'].includes(mnemo)) {
