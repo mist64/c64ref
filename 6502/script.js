@@ -398,7 +398,7 @@ function decode_documentation_mnemos(cpu) {
 		var text = get_file_data(cpu, 'documentation-mnemos', private);
 		var mnemo;
 		for (var line of text) {
-			if (line[0] != '' && !cpu_data[cpu].operations[line[0]].documentation) {
+			if (line[0] != '' && (!cpu_data[cpu].operations[line[0]].documentation || !private)) {
 				mnemo = line[0];
 				cpu_data[cpu].operations[mnemo].documentation = {};
 				cpu_data[cpu].operations[mnemo].documentation.title = line.slice(1).join(' ');
@@ -423,7 +423,7 @@ function decode_documentation_addmodes(cpu) {
 		var text = get_file_data(cpu, 'documentation-addmodes', private);
 		var addmode;
 		for (var line of text) {
-			if (line[0] != '' && !cpu_data[cpu].addmodes[line[0]].documentation) {
+			if (line[0] != '' && (!cpu_data[cpu].addmodes[line[0]].documentation || !private)) {
 				addmode = line[0];
 				cpu_data[cpu].addmodes[addmode].documentation = {};
 				cpu_data[cpu].addmodes[addmode].documentation.title = line.slice(1).join(' ');
@@ -1483,9 +1483,9 @@ function generate_legend(id) {
 // TODO:
 
 // Data
+// * better addmode short forms for opcode matrix
 // * documentation: add pseudocode
 // * verify undocumented with groepaz doc
-// * better addmode short forms for opcode matrix
 // * add one line comment to [timing] section, print on all tabs
 // * add search-and-replace lines to private doc (e.g. s/Zero/Direct/)
 
