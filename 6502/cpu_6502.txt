@@ -1,3 +1,6 @@
+## This is a description file for a 6502-like CPU.
+## See https://github.com/mist64/c64ref for details.
+
 [info]
 manufacturer MOS
 name         6502

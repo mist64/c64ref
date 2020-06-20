@@ -725,6 +725,7 @@ function generate_info(id) {
 
 	var p = document.createElement("p");
 	div.appendChild(p);
+	p.innerHTML = 'All data on this website is generated from structured .txt files that describe the CPUs.<br/>';
 
 	var first = true;
 	for (var cpu2 of seq.reverse()) {
@@ -1048,8 +1049,6 @@ function generate_registers_div(id) {
 		div.style.border = '1px solid black';
 		div.style.width = cpu_data[cpu].registers[register].size * 10 + 'px';
 		div.innerHTML = cpu_data[cpu].registers[register].size;
-
-
 
 		td = document.createElement("td");
 		tr.appendChild(td);
@@ -1541,7 +1540,6 @@ function generate_legend(id) {
 
 // Visualization
 // * CPU tree
-// * add search-and-replace lines to private doc (e.g. s/Zero/Direct/)?
 
 // Bugs
 // * page load clears #
