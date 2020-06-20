@@ -505,15 +505,55 @@ function fixup_data(cpu) {
 	}
 }
 
+function get_subtree(children, node) {
+	var ch = children[node];
+	if (ch) {
+		var ul = document.createElement("ul");
+		for (var c of ch.sort((a,b) => cpu_data[a].info.year - cpu_data[b].info.year)) {
+			var li = document.createElement("li");
+			ul.append(li);
+			var a = document.createElement('a');
+			li.appendChild(a);
+			a.href = url_from_state(c, tabno);
+			a.innerHTML = cpu_name(c, true, true);
+			var more = get_subtree(children, c);
+			if (more) {
+				li.appendChild(more);
+			}
+		}
+		return ul;
+	} else {
+		return null;
+	}
+}
+
 function populate_cpu_list() {
+	var children = {};
+	for (var cpu of cpus) {
+		var parent = cpu_data[cpu].info.basedon;
+		if (parent) {
+			if (children[parent] == undefined) {
+				children[parent] = [];
+			}
+			children[parent].push(cpu);
+		}
+	}
+	console.log(children);
+
+	children['root'] = [ '6502' ];
+	var list = get_subtree(children, 'root');
+	console.log(list);
+	document.getElementById('tree').appendChild(list);
+
+
+
+
+
 	var select = document.getElementById('cpu');
-	for (cpu of cpus) {
+	for (var cpu of cpus) {
 		var option = document.createElement("option");
 		option.value = cpu_data[cpu].info.id;
-		option.innerHTML = cpu_name(cpu);
-		if (cpu_data[cpu].info.revision) {
-			option.innerHTML += ' (' + cpu_data[cpu].info.revision + ')';
-		}
+		option.innerHTML = cpu_name(cpu, true, false);
 		select.appendChild(option);
 	}
 }
@@ -699,12 +739,20 @@ function o_from_x_y(x, y, opcode_table_organization) {
 	}
 }
 
-function cpu_name(cpu) {
+function cpu_name(cpu, revision, year) {
 	s = '';
 	if (cpu_data[cpu].info.manufacturer) {
 		s = cpu_data[cpu].info.manufacturer + ' ';
 	}
-	return s + cpu_data[cpu].info.name;
+	s += cpu_data[cpu].info.name;
+	if (revision && cpu_data[cpu].info.revision) {
+		s += ' (' + cpu_data[cpu].info.revision + ')';
+	}
+	if (year && cpu_data[cpu].info.year) {
+		s += ' [' + cpu_data[cpu].info.year + ']';
+	}
+	return s;
+
 }
 
 function generate_info(id) {
@@ -720,13 +768,7 @@ function generate_info(id) {
 	var h3 = document.createElement("h3");
 	div.appendChild(h3);
 
-	h3.innerHTML = cpu_name(cpu);
-	if (cpu_data[cpu].info.revision) {
-		h3.innerHTML += ' (' + cpu_data[cpu].info.revision + ')';
-	}
-	if (cpu_data[cpu].info.year) {
-		h3.innerHTML += ' [' + cpu_data[cpu].info.year + ']';
-	}
+	h3.innerHTML = cpu_name(cpu, true, true);
 
 	var p = document.createElement("p");
 	div.appendChild(p);
@@ -738,7 +780,6 @@ function generate_info(id) {
 		seq.push(cpu2);
 		cpu2 = cpu_data[cpu2].info.basedon;
 	} while (cpu2);
-	console.log(seq);
 
 	var h3 = document.createElement("h3");
 	div.appendChild(h3);
@@ -866,7 +907,7 @@ function create_paragraphs_from_array(container, lines) {
 			container = p;
 			var p = document.createElement("p");
 			container.appendChild(p);
-			p.innerHTML = '<b>Note on the ' + cpu_name(cpu) + ':</b><br/>';
+			p.innerHTML = '<b>Note on the ' + cpu_name(cpu, true, false) + ':</b><br/>';
 		} else {
 			var p = document.createElement("p");
 			container.appendChild(p);
@@ -1085,6 +1126,7 @@ function generate_registers_div(id) {
 		td.appendChild(div);
 		div.style.border = '1px solid black';
 		div.style.width = cpu_data[cpu].registers[register].size * 10 + 'px';
+		div.style.float = 'right';
 		div.innerHTML = cpu_data[cpu].registers[register].size;
 
 		td = document.createElement("td");
@@ -1590,9 +1632,6 @@ function generate_legend(id) {
 
 // Visualization
 // * CPU tree
-
-// Bugs
-// * page load clears #
 
 // Features
 // * diff function
