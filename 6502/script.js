@@ -1022,6 +1022,7 @@ function generate_registers_div(id) {
 	div.innerHTML = '';
 
 	var table = document.createElement("table");
+	table.style.border = 'none';
 	div.appendChild(table);
 
 	tr = document.createElement("tr");
@@ -1038,9 +1039,18 @@ function generate_registers_div(id) {
 		td = document.createElement("td");
 		tr.appendChild(td);
 		td.innerHTML = register;
+
 		td = document.createElement("td");
 		tr.appendChild(td);
-		td.innerHTML = cpu_data[cpu].registers[register].size;
+
+		div = document.createElement("div");
+		td.appendChild(div);
+		div.style.border = '1px solid black';
+		div.style.width = cpu_data[cpu].registers[register].size * 10 + 'px';
+		div.innerHTML = cpu_data[cpu].registers[register].size;
+
+
+
 		td = document.createElement("td");
 		tr.appendChild(td);
 		td.innerHTML = cpu_data[cpu].registers[register].description;
