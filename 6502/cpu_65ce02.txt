@@ -43,8 +43,8 @@ TYS   Transfer Y to Stack Pointer
 TZA   Transfer Z to Accumulator
 
 [operations]
-ASR  shift N-----ZC  M7 → /7...0/ → C
-ASW  shift N-----ZC  C ← /15...0/ ← 0
+ASR  shift N-----ZC  M7 → /M7...M0/ → C
+ASW  shift N-----ZC  C ← /M15...M0/ ← 0
 AUG  nop   --------  No Operation
 BSR  ctrl  --------  Branch to Subroutine
 CLE  flags --0-----  0 → E
@@ -398,6 +398,53 @@ FD  3
 FE  3
 FF  3
 
+[documentation-mnemos]
+## some worded after the 6502 reference, some taken from:
+## https://github.com/MEGA65/c65-specifications/blob/master/c65manualupdated.txt
+
+ASR  Arithmetic Shift Right
+     This instruction shifts either the accumulator or a specified memory location 1 bit to the right, with the higher bit retaining its value, and the low bit which is shifted out of the field being stored in the carry flag.
+     ASR does not affect the overflow bit, sets N equal to the result bit 7 (bit 7 in the input), sets Z flag if the result is equal to 0, otherwise resets Z and stores the input bit 0 in the carry flag.
+
+ASW  Arithmetic Shift Left Word
+     The ASW instruction shifts either the 16 bit value at the memory location 1 bit to the left, with the bit 0 always being set to 0 and the bit 15 output always being contained in the carry flag. It is a read/modify/write instruction that affects only memory.
+     The instruction does not affect the overflow bit, sets N equal to the result bit 15 (bit 14 in the input), sets Z flag if the result is equal to 0, otherwise resets Z and stores the input bit 7 in the carry flag.
+
+AUG  Augment
+     The AUG instruction is a 4-byte NOP, and reserved for future expansion.
+
+BSR  Branch to Subroutine
+     The BSR Branch to SubRoutine instruction pushes the two program counter  bytes PCH and PCL onto the stack. It then adds the word-relative signed offset to the program counter. The relative offset is referenced to the address of the BSR opcode + 2, hence, it is relative to the third byte of the three-byte BSR instruction. The return address, on the stack, also points to this address. This was done to make it compatible with the RTS functionality, and to be consistant will other word-relative operations.
+
+CLE  Clear Extend Disable Flag
+     This instruction initializes the extend disable to a 0. This sets the stack pointer to 16 bit mode.
+     It affects no registers in the microprocessor and no flags other than the extend disable which is cleared.
+
+CPZ  Compare Index Register Z To Memory
+     This instruction performs a two's complement subtraction between the index register Z and the specified memory location. The results of the subtraction are not stored anywhere. The instruction is strict­ly used to set the flags.
+     CPZ affects no registers in the microprocessor and also does not affect the overflow flag. If the value in the index register Z is equal to or greater than the value in the memory, the carry flag will be set, otherwise it will be cleared. If the results of the subtract- tion contain bit 7 on the N bit will be set, otherwise it will be cleared. If the value in the index register Z and the value in the memory are equal, the zero flag will be set, otherwise it will be cleared.
+
+## TODO
+DEW  Decrement Word
+DEZ  Decrement Z Register
+INW  Increment Word
+INZ  Increment Z Register
+LDZ  Load Z Register
+NEG  Negate
+PHW  Push Word
+PHZ  Push Z Register
+PLZ  Pull Z Register
+ROW  Rotate Word
+RTN  Return from Kernal
+SEE  Set Stack Extend Disable Flag
+STZ  Store Z Register
+TAB  Transfer Accumulator to Base Page Register
+TAZ  Transfer Accumulator to Z
+TBA  Transfer Base Page Register to Accumulator
+TSY  Transfer Stack Pointer to Y
+TYS  Transfer Y to Stack Pointer
+TZA  Transfer Z to Accumulator
+
 [documentation-addmodes]
 ## https://github.com/MEGA65/c65-specifications/blob/master/c65manualupdated.txt
 
@@ -435,3 +482,5 @@ a8,Y   Y-Indexed Base Page
 a8,r8  Base Page, Relative
        This mode bit tests the base page location specified for bit set/reset per the mask and performs a conditional relative branch based on the results of the bit test.
 
+[documentation-mnemos~private]
+### TODO: PLP does not touch E flag

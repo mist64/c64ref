@@ -8,7 +8,7 @@ basedon      6502
 description  This is the pre June 1976 version of the original implementation of the 6502 designed by MOS Technology, Inc. This version does not have the ROR instruction; the respective opcodes behave differently due to a bug in the mask.
 
 [operations]
-ASL0 shift  N-----Z-  /7...0/ ← 0
+ASL0 shift  N-----Z-  /M7...M0/ ← 0
 
 [opcodes]
 66  *ASL0  a8
