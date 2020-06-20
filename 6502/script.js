@@ -130,7 +130,7 @@ function init() {
 					}
 					populate_cpu_list();
 					handle_args();
-					show();
+					show(true);
 				}
 			} else {
 				file_data[r.cpu] = null;
@@ -557,7 +557,26 @@ function cpu_has_illegal(cpu) {
 	return false;
 }
 
-function show() {
+function url_from_state(cpu, tabno) {
+	var url = window.location.href;
+	url = url.split('?')[0]; // remove args
+	url = url.split('#')[0]; // remove hash
+	var args = [];
+	if (cpu != cpus[0]) {
+		args.push('cpu=' + cpu);
+	}
+	if (tabno != default_tabno) {
+		args.push('tab=' + tabno);
+	}
+	if (args.length) {
+		args = '?' + args.join('&');
+	} else {
+		args = '';
+	}
+	return url + args;
+}
+
+function show(first_load = false) {
 	for (tabno = 0; tabno < numtabs; tabno++) {
 		if (document.getElementById('tab' + tabno).checked) {
 			break;
@@ -572,23 +591,13 @@ function show() {
 	separateillegal = document.getElementById('separateillegal').checked;
 	var has_illegal = cpu_has_illegal(cpu);
 
-	// create URL
-	var url = window.location.href;
-	url = url.split('?')[0];
-	url = url.split('#')[0];
-	args = [];
-	if (cpu != cpus[0]) {
-		args.push('cpu=' + cpu);
-	}
-	if (tabno != default_tabno) {
-		args.push('tab=' + tabno);
-	}
-	if (args.length) {
-		args = '?' + args.join('&');
+	if (first_load) {
+		// save hash, we'll set it again once the page is generated
+		var hash = location.hash;
 	} else {
-		args = '';
+		var url = url_from_state(cpu, tabno);
+		history.pushState({}, null, url);
 	}
-	history.pushState({}, null, url + args);
 
 	document.getElementById('showillegal_box').style.display = has_illegal ? '' : 'none';
 	document.getElementById('separateillegal_box').className = showillegal ? '' : 'disabled';
@@ -659,6 +668,14 @@ function show() {
 			generate_big_table('big_table_div2', filter2);
 			generate_legend('legend2');
 			break;
+	}
+
+	if (first_load) {
+		// The hash seems to be evaluated before the page is generated, that's why
+		// we need to set it after the page is generated. For this to trogger,
+		// we need to clear it first, then set it again.
+	    location.hash = '#';
+	    location.hash = hash;
 	}
 }
 
