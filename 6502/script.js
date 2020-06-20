@@ -1095,6 +1095,19 @@ function all_mnemos_sorted(cpu, filter, sortbycat) {
 	return all_mnemos;
 }
 
+function pretty_operation(cpu, mnemo) {
+	var o = cpu_data[cpu].operations[mnemo].description;
+	for (var i = 15; i >= 0; i--) {
+		o = o.replace(new RegExp('M' + i, 'g'), 'M<sub>' + i + '</sub>');
+	}
+	o = o.replace('Mw', 'M<sub>w</sub>');
+
+	// maybe we want to do something like this?
+//	o = o.replace(new RegExp('\/.*\/'), '<span style="border: 1px solid black;">xxx</span>');
+
+	return o;
+}
+
 
 function generate_big_table(id, filter) {
 	var div = document.getElementById(id);
@@ -1228,7 +1241,7 @@ function generate_big_table(id, filter) {
 			td = document.createElement("td");
 			td.classList.add('operation');
 			td.classList.add('leading');
-			td.innerHTML = cpu_data[cpu].operations[mnemo].description;
+			td.innerHTML = pretty_operation(cpu, mnemo);
 			tr.appendChild(td);
 		}
 
@@ -1381,7 +1394,7 @@ function generate_reference(id, filter) {
 		// description
 		p = document.createElement("p");
 		div.appendChild(p);
-		p.innerHTML = '<b>Operation</b>: ' + cpu_data[cpu].operations[mnemo].description + '<br/>';
+		p.innerHTML = '<b>Operation</b>: ' + pretty_operation(cpu, mnemo) + '<br/>';
 
 		if (cpu_data[cpu].operations[mnemo].documentation && cpu_data[cpu].operations[mnemo].documentation.text) {
 			create_paragraphs_from_array(div, cpu_data[cpu].operations[mnemo].documentation.text);
@@ -1491,6 +1504,9 @@ function generate_legend(id) {
 
 // Visualization
 // * CPU tree
+
+// Bugs
+// * page load clears #
 
 // Features
 // * diff function

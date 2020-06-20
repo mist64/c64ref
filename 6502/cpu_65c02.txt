@@ -20,8 +20,8 @@ TSB   Test and Set Memory Bits
 BRA  ctrl  --------  Branch Always
 PHX  stack --------  X↓
 PHY  stack --------  Y↑
-PLX  stack N-----Z-  S - 1 → S, Ms → Z
-PLY  stack N-----Z-  S - 1 → S, Ms → Y
+PLX  stack N-----Z-  X↑
+PLY  stack N-----Z-  Y↑
 STZ  load  --------  0 → M
 TRB  logic ------Z-  ~A ∧ M → M
 TSB  logic ------Z-  A ∨ M → M
