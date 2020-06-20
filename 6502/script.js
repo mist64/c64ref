@@ -1483,7 +1483,7 @@ function generate_legend(id) {
 // TODO:
 
 // Data
-// * better addmode short forms for opcode matrix
+// * better addmode short forms for opcode matrix - maybe from http://archive.6502.org/datasheets/mos_65ce02_mpu.pdf
 // * documentation: add pseudocode
 // * verify undocumented with groepaz doc
 // * add one line comment to [timing] section, print on all tabs

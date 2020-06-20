@@ -146,8 +146,107 @@ EF  5+t+p
 F7  5
 FF  5+t+p
 
+[documentation-mnemos]
+
+BBR0  Branch on Bit 0 Reset
+      This instruction tests the specified zero page location and branches if bit 0 is clear.
+
+BBR1  Branch on Bit 1 Reset
+      This instruction tests the specified zero page location and branches if bit 1 is clear.
+
+BBR2  Branch on Bit 2 Reset
+      This instruction tests the specified zero page location and branches if bit 2 is clear.
+
+BBR3  Branch on Bit 3 Reset
+      This instruction tests the specified zero page location and branches if bit 3 is clear.
+
+BBR4  Branch on Bit 4 Reset
+      This instruction tests the specified zero page location and branches if bit 4 is clear.
+
+BBR5  Branch on Bit 5 Reset
+      This instruction tests the specified zero page location and branches if bit 5 is clear.
+
+BBR6  Branch on Bit 6 Reset
+      This instruction tests the specified zero page location and branches if bit 6 is clear.
+
+BBR7  Branch on Bit 7 Reset
+      This instruction tests the specified zero page location and branches if bit 7 is clear.
+
+BBS0  Branch on Bit 0 Set
+      This instruction tests the specified zero page location and branches if bit 0 is set.
+
+BBS1  Branch on Bit 1 Set
+      This instruction tests the specified zero page location and branches if bit 1 is set.
+
+BBS2  Branch on Bit 2 Set
+      This instruction tests the specified zero page location and branches if bit 2 is set.
+
+BBS3  Branch on Bit 3 Set
+      This instruction tests the specified zero page location and branches if bit 3 is set.
+
+BBS4  Branch on Bit 4 Set
+      This instruction tests the specified zero page location and branches if bit 4 is set.
+
+BBS5  Branch on Bit 5 Set
+      This instruction tests the specified zero page location and branches if bit 5 is set.
+
+BBS6  Branch on Bit 6 Set
+      This instruction tests the specified zero page location and branches if bit 6 is set.
+
+BBS7  Branch on Bit 7 Set
+      This instruction tests the specified zero page location and branches if bit 7 is set.
+
+RMB0  Reset Memory Bit 0
+      This instruction clears bit 0 in the specified zero page location. It does not affect any flags or registers.
+
+RMB1  Reset Memory Bit 1
+      This instruction clears bit 1 in the specified zero page location. It does not affect any flags or registers.
+
+RMB2  Reset Memory Bit 2
+      This instruction clears bit 2 in the specified zero page location. It does not affect any flags or registers.
+
+RMB3  Reset Memory Bit 3
+      This instruction clears bit 3 in the specified zero page location. It does not affect any flags or registers.
+
+RMB4  Reset Memory Bit 4
+      This instruction clears bit 4 in the specified zero page location. It does not affect any flags or registers.
+
+RMB5  Reset Memory Bit 5
+      This instruction clears bit 5 in the specified zero page location. It does not affect any flags or registers.
+
+RMB6  Reset Memory Bit 6
+      This instruction clears bit 6 in the specified zero page location. It does not affect any flags or registers.
+
+RMB7  Reset Memory Bit 7
+      This instruction clears bit 7 in the specified zero page location. It does not affect any flags or registers.
+
+SMB0  Set Memory Bit 0
+      This instruction sets bit 0 in the specified zero page location. It does not affect any flags or registers.
+
+SMB1  Set Memory Bit 1
+      This instruction sets bit 1 in the specified zero page location. It does not affect any flags or registers.
+
+SMB2  Set Memory Bit 2
+      This instruction sets bit 2 in the specified zero page location. It does not affect any flags or registers.
+
+SMB3  Set Memory Bit 3
+      This instruction sets bit 3 in the specified zero page location. It does not affect any flags or registers.
+
+SMB4  Set Memory Bit 4
+      This instruction sets bit 4 in the specified zero page location. It does not affect any flags or registers.
+
+SMB5  Set Memory Bit 5
+      This instruction sets bit 5 in the specified zero page location. It does not affect any flags or registers.
+
+SMB6  Set Memory Bit 6
+      This instruction sets bit 6 in the specified zero page location. It does not affect any flags or registers.
+
+SMB7  Set Memory Bit 7
+      This instruction sets bit 7 in the specified zero page location. It does not affect any flags or registers.
+
+
 [documentation-addmodes]
-## http://archive.6502.org/datasheets/rockwell_r65c00_microprocessors.pdf
+## http://archive.6502.org/datasheets/mos_65ce02_mpu.pdf
 
 a8,r8  Zero Page, Relative
-       This mode bit tests the zero page location specified for bit set/reset per the mask and performs a conditional relative branch based on the results of the bit test.
+       This mode is used only with the bit-test branch instructions (BBS and BCC). The second byte of the instruction specifies the zero page memory to be tested. The third byte of the instruction is the offset, whose range is -128 to 127 bytes, referenced to the location of the next instruction.

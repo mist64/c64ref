@@ -4,7 +4,7 @@ name         65C02
 year         1983
 id           65c02
 basedon      6502
-description  This is the CMOS-based reimplementation of the 6502 designed by Western Design Center, Inc. It supports all documented features of the original 6502, fixes all known quirks, adds 27 new opcodes and two addressing modes, and guarantees all undocumented opcodes to be NOPs.
+description  This is the CMOS-based reimplementation of the 6502 designed by Western Design Center, Inc. It supports all documented features of the original 6502, fixes all known quirks, adds 27 new opcodes and two addressing modes, and guarantees all undocumented opcodes to be NOPs. To distinguish it from derived versions it is also sometimes called the 65SC02.
 
 [mnemos]
 BRA   Branch Always
