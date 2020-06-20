@@ -4,7 +4,7 @@
 [info]
 manufacturer Rockwell
 name         R65C02
-year         1984
+year         1983 ## https://archive.org/details/micro-6502-journal-60/page/n71/mode/2up?q=65c02
 id           r65c02
 basedon      65c02
 description  This is the Rockwell-variant of the WDC 65c02, which adds 32 new bit testing and manipulation opcodes.

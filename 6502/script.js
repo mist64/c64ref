@@ -515,7 +515,10 @@ function get_subtree(children, node) {
 			var a = document.createElement('a');
 			li.appendChild(a);
 			a.href = url_from_state(c, tabno);
-			a.innerHTML = cpu_name(c, true, true);
+			a.innerHTML = cpu_name(c, true);
+			if (cpu_data[c].info.year) {
+				a.innerHTML += '<span style="float: right;">' + cpu_data[c].info.year + '</span>';
+			}
 			var more = get_subtree(children, c);
 			if (more) {
 				li.appendChild(more);
@@ -543,11 +546,9 @@ function populate_cpu_list() {
 	children['root'] = [ '6502' ];
 	var list = get_subtree(children, 'root');
 	console.log(list);
-	document.getElementById('tree').appendChild(list);
-
-
-
-
+	var tree = document.getElementById('tree')
+	tree.appendChild(list.children[0]);
+	tree.style.width = '250px';
 
 	var select = document.getElementById('cpu');
 	for (var cpu of cpus) {
@@ -1637,5 +1638,5 @@ function generate_legend(id) {
 // * diff function
 
 // Design Features
-// * detailed cycles disabled if cycles is unchecked
 // * opcodes table should not be squished
+// * addressing mode cards 2D?

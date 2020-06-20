@@ -4,6 +4,7 @@
 [info]
 manufacturer WDC
 name         65C02S
+year         1986 ## or earlier; http://forum.6502.org/viewtopic.php?p=38895
 id           65c02s
 basedon      r65c02
 description  This is the later version of Western Design Center's 65C02, which supports the Rockwell extensions and adds two power saving opcodes borrowed from the 65c816.
