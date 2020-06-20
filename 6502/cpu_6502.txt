@@ -1033,9 +1033,9 @@ XAA  Non-deterministic Operation of Accumulator, Index Register X, Memory and Bu
 [documentation-mnemos~private]
 
 ## TODO details
-ADC  In decimal mode, the N, V and Z flags are not set consistent with the decimal result.
+ADC  In decimal mode, the N, V and Z flags are not consistent with the decimal result.
 
-SBC  In decimal mode, the N, V and Z flags are not set consistent with the decimal result.
+SBC  In decimal mode, the N, V and Z flags are not consistent with the decimal result.
 
 BRK  If an IRQ happens at the same time as a BRK instruction, the BRK instruction is ignored.
 

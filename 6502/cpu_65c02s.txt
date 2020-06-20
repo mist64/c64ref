@@ -13,9 +13,6 @@ WAI   Wait for Interrupt
 STP  ctrl   --------  Stop the Clock
 WAI  ctrl   --------  Wait for Interrupt
 
-[addmodes]
-
-
 [opcodes]
 CB  WAI
 DB  STP
@@ -23,3 +20,14 @@ DB  STP
 [timing]
 CB  3
 DB  3
+
+[documentation-mnemos]
+
+STP  Stop the Clock
+     The processor halts until a hardware reset is applied. Power-supply current drops to nearly zero.
+
+WAI  Wait for Interrupt
+     The processor pauses at the current location until the next interrupt occurs. This allows for zero latency interrupt response.
+
+
+

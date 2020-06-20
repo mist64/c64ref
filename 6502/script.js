@@ -710,6 +710,34 @@ function generate_info(id) {
 	var p = document.createElement("p");
 	div.appendChild(p);
 	p.innerHTML = cpu_data[cpu].info.description;
+
+	var seq = []
+	var cpu2 = cpu;
+	do {
+		seq.push(cpu2);
+		cpu2 = cpu_data[cpu2].info.basedon;
+	} while (cpu2);
+	console.log(seq);
+
+	var h3 = document.createElement("h3");
+	div.appendChild(h3);
+	h3.innerHTML = 'Download Description Files';
+
+	var p = document.createElement("p");
+	div.appendChild(p);
+
+	var first = true;
+	for (var cpu2 of seq.reverse()) {
+		if (!first) {
+			p.innerHTML += ' → ';
+		}
+		first = false;
+		var filename = 'cpu_' + cpu2 + '.txt';
+		var a = document.createElement("a");
+		p.appendChild(a);
+		a.href = filename;
+		a.innerHTML = filename;
+	}
 }
 
 function generate_opcode_table(id, filter) {
@@ -1500,10 +1528,10 @@ function generate_legend(id) {
 // * documentation: add pseudocode
 // * verify undocumented with groepaz doc
 // * add one line comment to [timing] section, print on all tabs
-// * add search-and-replace lines to private doc (e.g. s/Zero/Direct/)
 
 // Visualization
 // * CPU tree
+// * add search-and-replace lines to private doc (e.g. s/Zero/Direct/)?
 
 // Bugs
 // * page load clears #

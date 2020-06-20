@@ -24,3 +24,5 @@ ASL0 Arithmetic Shift Left Without Updating Carry
 
 [documentation-mnemos~private]
 ASL0 These are the buggy opcodes that were supposed to do a ROR.
+
+## TODO should inherit from [documentation-mnemos~private] and [documentation-addmodes~private]
