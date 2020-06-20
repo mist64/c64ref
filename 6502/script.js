@@ -557,7 +557,7 @@ function cpu_has_illegal(cpu) {
 	return false;
 }
 
-function url_from_state(cpu, tabno) {
+function url_from_state(cpu, tabno, hash) {
 	var url = window.location.href;
 	url = url.split('?')[0]; // remove args
 	url = url.split('#')[0]; // remove hash
@@ -573,7 +573,11 @@ function url_from_state(cpu, tabno) {
 	} else {
 		args = '';
 	}
-	return url + args;
+	url += args;
+	if (hash) {
+		url += '#' + hash;
+	}
+	return url;
 }
 
 function show(first_load = false) {
@@ -842,7 +846,7 @@ function generate_opcode_table(id, filter) {
 					cell += '</span>';
 				}
 //				cell += '<br/>' + cpu_data[cpu].operations[opcode.mnemo].flags;
-				var url = url_from_state(cpu, 2) + '#' + cpu_data[cpu].opcodes[o].mnemo;
+				var url = url_from_state(cpu, 2, cpu_data[cpu].opcodes[o].mnemo);
 				cell = '<a href="' + url + '">' + cell + '</a>';
 				td.innerHTML = cell;
 			} else {
@@ -883,6 +887,7 @@ function generate_addmode_div(id, filter1, filter2) {
 	for (var addmode of cpu_data[cpu].all_addmodes['all']) {
 		var div2 = document.createElement("div");
 		div2.classList.add('reference_card_addmode');
+		div2.id = addmode;
 		div.appendChild(div2);
 
 		// title
@@ -1485,11 +1490,20 @@ function generate_reference(id, filter) {
 					table.appendChild(tr);
 					td = document.createElement("td");
 					tr.appendChild(td);
-					td.innerHTML = cpu_data[cpu].addmodes[addmode].description;
+
+					// description + link
+					a = document.createElement("a");
+					td.appendChild(a);
+					a.innerHTML = cpu_data[cpu].addmodes[addmode].description;
+					a.href = url_from_state(cpu, 3, addmode);
+
+					// syntax
 					td = document.createElement("td");
 					tr.appendChild(td);
 					td.innerHTML = mnemo + ' ' + cpu_data[cpu].addmodes[addmode].syntax;
 					td.style.fontFamily = 'monospace';
+
+					// opcode
 					td = document.createElement("td");
 					tr.appendChild(td);
 					td.innerHTML = '$' + hex16(opcode);
@@ -1498,10 +1512,14 @@ function generate_reference(id, filter) {
 						footnotes.add('*');
 					}
 					td.style.textAlign = 'center';
+
+					// bytes
 					td = document.createElement("td");
 					tr.appendChild(td);
 					td.innerHTML = cpu_data[cpu].addmodes[addmode].bytes;
 					td.style.textAlign = 'center';
+
+					// cycles
 					td = document.createElement("td");
 					tr.appendChild(td);
 					var cycles = cpu_data[cpu].opcodes[opcode].cycles;
