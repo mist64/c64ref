@@ -541,11 +541,9 @@ function populate_cpu_list() {
 			children[parent].push(cpu);
 		}
 	}
-	console.log(children);
 
 	children['root'] = [ '6502' ];
 	var list = get_subtree(children, 'root');
-	console.log(list);
 	var tree = document.getElementById('tree')
 	tree.appendChild(list.children[0]);
 	tree.style.width = '250px';
@@ -621,6 +619,18 @@ function url_from_state(cpu, tabno, hash) {
 	return url;
 }
 
+function create_link(a, cpu, tabno, hash) {
+	a.href = url_from_state(cpu, tabno, hash);
+	a.setAttribute('onclick','navigateTo(\'' + cpu + '\', ' + tabno + ', \'' + hash + '\');');
+}
+
+function navigateTo(cpu, tabno, hash) {
+	document.getElementById('cpu').value = cpu;
+	document.getElementById('tab' + tabno).checked = true;
+	window.location.hash = hash;
+	show(true);
+}
+
 function show(first_load = false) {
 	for (tabno = 0; tabno < numtabs; tabno++) {
 		if (document.getElementById('tab' + tabno).checked) {
@@ -638,11 +648,10 @@ function show(first_load = false) {
 
 	if (first_load) {
 		// save hash, we'll set it again once the page is generated
-		var hash = location.hash;
-	} else {
-		var url = url_from_state(cpu, tabno);
-		history.pushState({}, null, url);
+		var hash = window.location.hash;
 	}
+	var url = url_from_state(cpu, tabno);
+	history.pushState({}, null, url);
 
 	document.getElementById('showillegal_box').style.display = has_illegal ? '' : 'none';
 	document.getElementById('separateillegal_box').className = showillegal ? '' : 'disabled';
@@ -888,9 +897,11 @@ function generate_opcode_table(id, filter) {
 					cell += '</span>';
 				}
 //				cell += '<br/>' + cpu_data[cpu].operations[opcode.mnemo].flags;
-				var url = url_from_state(cpu, 2, cpu_data[cpu].opcodes[o].mnemo);
-				cell = '<a href="' + url + '">' + cell + '</a>';
-				td.innerHTML = cell;
+
+				var a = document.createElement('a');
+				create_link(a, cpu, 2, cpu_data[cpu].opcodes[o].mnemo);
+				a.innerHTML = cell;
+				td.appendChild(a);
 			} else {
 				td.className += ' undefined';
 			}
@@ -989,7 +1000,7 @@ function generate_addmode_div(id, filter1, filter2) {
 							a = document.createElement("a");
 							td.appendChild(a);
 							a.innerHTML = mnemo + ' ' + cpu_data[cpu].addmodes[addmode].syntax;
-							a.href = url_from_state(cpu, 2, mnemo);
+							create_link(a, cpu, 2, mnemo);
 
 							// opcode
 							td = document.createElement("td");
@@ -1551,7 +1562,8 @@ function generate_reference(id, filter) {
 					a = document.createElement("a");
 					td.appendChild(a);
 					a.innerHTML = cpu_data[cpu].addmodes[addmode].description;
-					a.href = url_from_state(cpu, 3, addmode);
+					console.log(a, cpu, 3, addmode);
+					create_link(a, cpu, 3, addmode);
 
 					// syntax
 					td = document.createElement("td");
@@ -1631,6 +1643,9 @@ function generate_legend(id) {
 // * verify undocumented with groepaz doc
 // * add one line comment to [timing] section, print on all tabs
 
+// Bugs
+// * fix back stack
+
 // Visualization
 // * CPU tree
 
@@ -1638,5 +1653,10 @@ function generate_legend(id) {
 // * diff function
 
 // Design Features
+// * tree-based CPU selection
+// * 2-column info tab
+// * prettier registers
+// * prettier flags
+// * prettier vectors
 // * opcodes table should not be squished
 // * addressing mode cards 2D?
