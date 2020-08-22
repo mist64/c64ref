@@ -371,6 +371,7 @@ td.flag {
 .undefined_light { background-color: hsl(0, 0%, 97.5%); }
 
 /* https://stackoverflow.com/questions/34610932/tree-like-structure-for-nested-ul-lis */
+/*
 * {margin: 0; padding: 0; list-style: none;}
 ul li {
   margin-left: 15px;
@@ -408,6 +409,11 @@ ul li::after {
   background-color: #000;
   top: 12px;
 }
+*/
+
+.selected_cpu {
+	background-color: red;
+}
 
 </style>
 
@@ -442,7 +448,7 @@ ul li::after {
 		</span>
 	</p>
 
-	<div id="tree"></div>
+<!--	<div id="tree"></div> -->
 
 	<input id="tab0" type="radio" name="tabs" onchange="show();"/>
 	<input id="tab1" type="radio" name="tabs" onchange="show();"/>

@@ -516,6 +516,9 @@ function get_subtree(children, node) {
 			li.appendChild(a);
 			a.href = url_from_state(c, tabno);
 			a.innerHTML = cpu_name(c, true);
+			if (c == '65c02') {
+				a.className = 'selected_cpu';
+			}
 			if (cpu_data[c].info.year) {
 				a.innerHTML += '<span style="float: right;">' + cpu_data[c].info.year + '</span>';
 			}
@@ -544,9 +547,9 @@ function populate_cpu_list() {
 
 	children['root'] = [ '6502' ];
 	var list = get_subtree(children, 'root');
-	var tree = document.getElementById('tree')
-	tree.appendChild(list.children[0]);
-	tree.style.width = '250px';
+//	var tree = document.getElementById('tree')
+//	tree.appendChild(list.children[0]);
+//	tree.style.width = '250px';
 
 	var select = document.getElementById('cpu');
 	for (var cpu of cpus) {
