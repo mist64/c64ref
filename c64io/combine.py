@@ -192,12 +192,12 @@ print('<a href="https://github.com/mist64/c64ref" class="github-corner" aria-lab
 
 print('<div class="topnav">')
 print('    <h1>Ultimate Commodore 64 Reference</h1> ')
+print('    <a href="../6502/">6502</a>')
 print('    <a href="../kernal/">KERNAL API</a>')
 print('    <a href="../c64disasm/">ROM Disassembly</a>')
 print('    <a href="../c64mem/">Memory Map</a>')
 print('    <a href="../charset/">Charset · PETSCII · Keyboard</a>')
 print('    <a class="active" href="#">I/O Map</a>')
-#print('    <a href="#">6502 CPU</a>')
 print('    <a class="home" href="https://www.pagetable.com/">pagetable.com</a>')
 print('</div>')
 
