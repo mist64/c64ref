@@ -681,8 +681,7 @@ function show(first_load = false) {
 		'opcode_div1',
 		'opcode_div2',
 		'addmode_div',
-		'legend1',
-		'legend2',
+		'legend',
 		'big_table_div1',
 		'big_table_div2',
 		'mnemos_by_category',
@@ -700,6 +699,8 @@ function show(first_load = false) {
 		}
 	}
 
+	generate_legend('legend');
+
 	switch (tabno) {
 		case 0:
 			generate_info('info_div');
@@ -710,7 +711,6 @@ function show(first_load = false) {
 		case 1:
 			generate_opcode_table('opcode_div1', filter1);
 			generate_opcode_table('opcode_div2', filter2);
-			generate_legend('legend1');
 			break;
 		case 2:
 			generate_mnemos_by_category('mnemos_by_category', filter1);
@@ -723,7 +723,6 @@ function show(first_load = false) {
 		case 4:
 			generate_big_table('big_table_div1', filter1);
 			generate_big_table('big_table_div2', filter2);
-			generate_legend('legend2');
 			break;
 	}
 
@@ -1621,17 +1620,14 @@ function generate_legend(id) {
 	div.innerHTML = '';
 
 	table = document.createElement("table");
-	table.style = 'font-size: 9pt;';
+	table.className = 'legend';
 	div.appendChild(table);
 
 	for (cat of all_sorted_categories) {
 		tr = document.createElement("tr");
 		table.appendChild(tr);
 		td = document.createElement("td");
-		tr.appendChild(td);
 		td.className = cat;
-		td.style.width = '15px';
-		td = document.createElement("td");
 		tr.appendChild(td);
 		td.innerHTML = category_descriptions[cat];
 	}
