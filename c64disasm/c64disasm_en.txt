@@ -5278,7 +5278,7 @@
                                 *** BASIC startup messages
 .:E45F 00 20 42 41 53 49 43 20  basic bytes free
 .:E467 42 59 54 45 53 20 46 52
-.:E46F 45 45 0D 00 93 0D 20 20
+.:E46F 45 45 0D 00
 .:E473 93 0D 20 20 20 20 2A 2A  (clr) **** commodore 64 basic v2 ****
 .:E47B 2A 2A 20 43 4F 4D 4D 4F  (cr) (cr) 64k ram system
 .:E483 44 4F 52 45 20 36 34 20
@@ -5304,7 +5304,7 @@
 .:E4B7 AA AA AA AA AA AA AA AA
 .:E4BF AA AA AA AA AA AA AA AA
 .:E4C7 AA AA AA AA AA AA AA AA
-.:E4CF AA AA AA AA AA
+.:E4CF AA AA AA AA
 
                                 *** flag the RS232 start bit and set the parity
 .,E4D3 85 A9    STA $A9         save the start bit check flag, set start bit received
@@ -6499,7 +6499,7 @@
 
                                 *** keyboard buffer for auto load/run
 .:ECE7 4C 4F 41 44 0D 52 55 4E  'load (cr) run (cr)'
-.:ECEA 44 0D 52 55 4E 0D
+.:ECEF 0D
 
                                 *** low bytes of screen line addresses
 .:ECF0 00 28 50 78 A0 C8 F0 18
@@ -7071,22 +7071,22 @@
 
                                 *** kernel I/O messages
 .:F0BD 0D 49 2F 4F 20 45 52 52  I/O ERROR #
-.:F0C6 52 20 A3 0D 53 45 41 52
+.:F0C5 4F 52 20 A3
 .:F0C9 0D 53 45 41 52 43 48 49  SEARCHING
-.:F0D1 4E 47 A0 46 4F 52 A0 0D
-.:F0D4 46 4F 52 A0 0D 50 52 45  FOR
+.:F0D1 4E 47 A0
+.:F0D4 46 4F 52 A0              FOR
 .:F0D8 0D 50 52 45 53 53 20 50  PRESS PLAY ON TAPE
 .:F0E0 4C 41 59 20 4F 4E 20 54
-.:F0E8 41 50 C5 50 52 45 53 53
+.:F0E8 41 50 C5
 .:F0EB 50 52 45 53 53 20 52 45  PRESS RECORD & PLAY ON TAPE
 .:F0F3 43 4F 52 44 20 26 20 50
 .:F0FB 4C 41 59 20 4F 4E 20 54
-.:F103 41 50 C5 0D 4C 4F 41 44
+.:F103 41 50 C5
 .:F106 0D 4C 4F 41 44 49 4E C7  LOADING
 .:F10E 0D 53 41 56 49 4E 47 A0  SAVING
 .:F116 0D 56 45 52 49 46 59 49  VERIFYING
-.:F11E 4E C7 0D 46 4F 55 4E 44
-.:F120 0D 46 4F 55 4E 44 A0 0D  FOUND
+.:F11E 4E C7
+.:F120 0D 46 4F 55 4E 44 A0     FOUND
 .:F127 0D 4F 4B 8D              OK
 
                                 *** display control I/O message if in direct mode
