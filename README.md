@@ -6,7 +6,7 @@ scripts to present this material to the web.
 
 ---
 
-**⸢ [View Rendered] ⸥ ⸢ [Building] ⸥**
+**⸢ [View Rendered] ⸥ ⸢ [Building] ⸥**
 
 ---
 
