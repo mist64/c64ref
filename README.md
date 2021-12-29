@@ -10,9 +10,11 @@ scripts to present this material to the web.
 
 ---
 
+<br>
+
 ## Material
 
-*Reference material collected in this repo.*
+*Reference material collected in this repository.*
 
 <br>
 
@@ -61,6 +63,8 @@ scripts to present this material to the web.
 | [`C64 KERNAL jump table`][API Frank] | :us: | `Frank Kontros`
 | [`Das neue Commodore-64-intern-Buch`][API Sheldon] | :de: | `Baloui` <br> `Brückmann` <br> `Englisch` <br> `Felt` <br> `Gelfand` <br> `Gerits` <br> `Krsnik`
 
+<br>
+
 ---
 
 ## Contributions
@@ -71,6 +75,8 @@ scripts to present this material to the web.
 - `..` <br>
   ​<br>
   **Are Welcome !**
+
+<br>
 
 ---
 
