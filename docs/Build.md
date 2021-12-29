@@ -8,6 +8,8 @@
 
 ## Generating
 
+**Requires:** [`Python`][Python]
+
 To generate the `html` files,<br>
 simply execute [`generate.sh`][Generate].
 
@@ -22,7 +24,10 @@ This will build the different pages from the repos <br>
 
 ## Testing
 
-To test the generated pages you will need to start a local webserver.
+**Requires:** [`Deno`][Deno]
+
+To test the generated pages you <br>
+will need to start a local webserver.
 
 ```sh
 Test/Webserver.sh
@@ -60,5 +65,8 @@ Use <kbd>F5</kbd> to reload the page.
 <!----------------------------------------------------------------------------->
 
 [Generate]: ../Source/generate.sh
+
+[Python]: https://www.python.org/
+[Deno]: https://deno.land/
 
 [Localhost]: http://localhost:6464/6502/
