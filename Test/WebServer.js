@@ -5,8 +5,11 @@ const
     { log } = console,
     { now } = Date;
 
+const path = new URL('.',import.meta.url)
+    .pathname.replace('%20',' ');
+
 const
-    root = `${ Deno.cwd() }/../Source/`,
+    root = `${ path }../Source/`,
     index = 'index.html',
     port = 6464;
 
@@ -45,12 +48,13 @@ async function Logger(context,next){
 
 async function Timer(context,next){
 
-    const { headers } = context.response;
     const before = now();
 
     await next();
 
     const delta = now() - before;
+
+    const { headers } = context.response;
 
     headers.set('X-Response-Time',`${ delta }ms`);
 }
