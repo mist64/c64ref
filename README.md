@@ -6,7 +6,7 @@ scripts to present this material to the web.
 
 ---
 
-**⸢ [View Rendered] ⸥**
+**⸢ [View Rendered] ⸥ ⸢ [Building] ⸥**
 
 ---
 
@@ -88,6 +88,8 @@ and ***editing*** the collected files was done by **[Michael Steil]**.
 <!----------------------------------------------------------------------------->
 
 [View Rendered]: http://pagetable.com/c64ref
+[Building]: docs/Build.md
+
 [Michael Steil]: mailto:mist64@mac.com
 
 [Disassembly BASIC]: Source/c64disasm/c64disasm_ms.txt
