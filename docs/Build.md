@@ -55,11 +55,11 @@ to navigate to [`http://localhost:6464/6502/`][Localhost]
 
 ##### Tips
 
-Stop the **Webserver** with <kbd>Ctrl</kbd> **+** <kbd>C</kbd>
+Stop the **Webserver** with <kbd>Ctrl</kbd> <kbd>C</kbd>
 
-Open the **Inspector** with either <kbd>Ctrl</kbd> **+** <kbd>Shift</kbd> **+** <kbd>I</kbd> or <kbd>F12</kbd>.
+Open the **Inspector** with either <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>I</kbd> or <kbd>F12</kbd>.
 
-Use <kbd>F5</kbd> to reload the page.
+Use <kbd>F5</kbd> to reload the page.
 
 
 <!----------------------------------------------------------------------------->
