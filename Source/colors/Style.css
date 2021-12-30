@@ -1,0 +1,131 @@
+h2 {
+	font-size: medium;
+}
+
+td {
+	vertical-align: middle;
+}
+
+.colbox {
+	border: none;
+	border-collapse: collapse;
+	padding: 0px;
+	margin: 0px;
+	width: 2em;
+	height: 2em;
+}
+
+.thincolbox25 {
+	border: none;
+	border-collapse: collapse;
+	padding: 0px;
+	margin: 0px;
+	width: .5em;
+	height: 2em;
+}
+
+.thincolbox50 {
+	border: none;
+	border-collapse: collapse;
+	padding: 0px;
+	margin: 0px;
+	width: 1em;
+	height: 2em;
+}
+
+.thincolbox75 {
+	border: none;
+	border-collapse: collapse;
+	padding: 0px;
+	margin: 0px;
+	width: 1.5em;
+	height: 2em;
+}
+
+
+.colbox a {
+	display:block;
+	text-decoration:none;
+}
+
+#colors {
+	border-spacing: 0px 0px;
+	border: none;
+}
+
+table {
+	border: none;
+}
+
+table.paltab {
+	border: 1px solid black;
+}
+
+table.paltab th {
+	color: white;
+	text-shadow: 0px 1px black;
+	background-color: black;
+}
+
+table.paltab > tbody > tr > td {
+	border: 1px solid black;
+	padding: 4px;
+}
+
+
+table.code_table td {
+	padding: 4px;
+}
+
+#colors td {
+	vertical-align: middle;
+}
+
+#allcoltab th:nth-child(6n + 9),
+#allcoltab th:nth-child(6n + 10),
+#allcoltab th:nth-child(6n + 11),
+#allcoltab td:nth-child(6n + 9),
+#allcoltab td:nth-child(6n + 10),
+#allcoltab td:nth-child(6n + 11) {
+	background: #c0e0ff;
+}
+
+#allcoltab td:last-child {
+	font-family: monospace;
+}
+
+#allcoltab td,th {
+	text-align: center;
+	vertical-align: middle;
+	padding: 0px 6px;
+}
+
+tr:target {
+	background-color: white;
+}
+
+li:target {
+	color: black;
+	background-color: white;
+}
+
+.code {
+	overflow: scroll;
+	width: 320px;
+	height: 180px;
+}
+
+/* forcing td in relation to the one marked with vertical to behave differently */
+.vertical-adjust {
+	vertical-align: middle;
+}
+
+.vertical {
+   writing-mode: vertical-rl;
+   transform:rotate(180deg);
+   width: 1em;
+   padding: 2px;
+   margin: 0px;
+   border: solid 1.5px black;
+   font-weight: bold;
+}
