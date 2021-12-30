@@ -8,7 +8,19 @@ window.onload = init;
 // https://www.pepto.de/projects/colorvic/
 // START
 
-var levels = { mc: [ 0 ], fr: [ 0 ] };            // Black (luma switched off)
+
+function byId(...args){
+    return document.getElementById(...args);
+}
+
+function create(...args){
+    return document.createElement(...args);
+}
+
+const { min , max , cos , sin , pow , round , PI } = Math;
+
+
+let levels = { mc: [ 0 ], fr: [ 0 ] };            // Black (luma switched off)
 
 with ( levels )
 {
@@ -32,7 +44,7 @@ with ( levels )
 }
 
 
-var angles = [];
+let angles = [];
 
 angles[ 0x4 ]                 = 2;                // Purple
 angles[ 0x2 ] = angles[ 0xa ] = 4;                // Red
@@ -43,72 +55,85 @@ angles[ 0x5 ] = angles[ 0xd ] = 2 + 8;            // Green
 angles[ 0x3 ]                 = 4 + 8;            // Cyan
 angles[ 0x6 ] = angles[ 0xe ] = 7 + 8;            // Blue
 
-function compose( index, revision, brightness, contrast, saturation )
-{
-    // constants
 
-    var sector = 360/16;
-    var origin = sector/2;
-    var radian = Math.PI/180;
-    var screen = 1/5;
+function compose( index , revision , brightness , contrast , saturation ){
 
-    // normalize
+    const
+        level = levels[revision][index],
+        angle = angles[index];
 
-    brightness -=  50;
-    contrast   /= 100;
-    saturation *=   1 - screen;
 
-    // construct
+    //  Constants
 
-    var components = { u: 0, v: 0 };            // monochrome (chroma switched off)
+    const
+        sector = 360 / 16,
+        origin = sector / 2,
+        radian = PI / 180,
+        screen = 1 / 5;
 
-    if ( angles[ index ] )
-    {
-        var angle = ( origin + angles[ index ] * sector ) * radian;
+    //  Normalize
 
-        components.u = Math.cos( angle ) * saturation;
-        components.v = Math.sin( angle ) * saturation;
+    saturation *= 1 - screen;
+    brightness -= 50;
+    contrast /= 100;
+
+    //  Construct
+
+    const components = { u : 0 , v : 0 }; // monochrome (chroma switched off)
+
+
+    if(angle){
+        const alpha = radian * (origin + angle * sector);
+
+        components.u = cos(alpha) * saturation;
+        components.v = sin(alpha) * saturation;
     }
 
-    components.y = 8 * levels[ revision ][ index ] + brightness;
+    components.y = 8 * level + brightness;
 
-    for ( var i in components )
-    {
-        components[ i ] *= contrast + screen;
-    }
+    for(const component in components)
+        components[component] *= contrast + screen;
 
     return components;
 }
 
-function convert( components, source )
-{
-    // matrix transformation
 
-    var color = {};
+function convert( components , source ){
 
-    color.r = components.y                        + 1.140 * components.v;
-    color.g = components.y - 0.396 * components.u - 0.581 * components.v;
-    color.b = components.y + 2.029 * components.u;
+    const { y , u , v } = components;
 
-    // gamma correction
+    //  Matrix Transformation
 
-    var target = 2.2;                            // sRGB
+    const color = {
+        r : y + 1.140 * v ,
+        g : y - 0.396 * u - 0.581 * v ,
+        b : y + 2.029 * u
+    };
 
-    for ( var i in color )
-    {
-        color[ i ] = Math.max( Math.min( color[ i ], 255 ), 0 );
+    // color.r = components.y                        + 1.140 * components.v;
+    // color.g = components.y - 0.396 * components.u - 0.581 * components.v;
+    // color.b = components.y + 2.029 * components.u;
 
-        color[ i ] = Math.pow( 255, 1 -   source ) * Math.pow( color[ i ],   source );
-        color[ i ] = Math.pow( 255, 1 - 1/target ) * Math.pow( color[ i ], 1/target );
+    //  Gamma Correction
 
-        color[ i ] = Math.round( color[ i ] );
+    const target = 1 / 2.2;                            // sRGB
+
+    for( channel in color ){
+
+        let value = color[channel];
+
+        value = max(min(color[channel],255 ),0);
+        value = (255 ** (1 - source)) * (value ** source);
+        value = (255 ** (1 - target)) * (value ** target);
+
+        color[channel] = round(value);
     }
 
-    color.y = components.y;
-    color.u = components.u;
-    color.v = components.v;
+    // color.y = components.y;
+    // color.u = components.u;
+    // color.v = components.v;
 
-    return color;
+    return { ...color , ...components };
 }
 
 // END
@@ -117,74 +142,19 @@ function convert( components, source )
 
 
 // https://stackoverflow.com/questions/5623838
-function hexFromComponent(c) {
-	var hex = (c | 0).toString(16);
-	return hex.length == 1 ? "0" + hex : hex;
-}
-function hexFromRGB(r, g, b) {
-	return "#" + hexFromComponent(r) + hexFromComponent(g) + hexFromComponent(b);
+
+function hexFromComponent(c){
+	const hex = ( c | 0 ).toString(16);
+    return hex.padStart(2,'0');
+	// return (hex.length == 1) ? '0' + hex : hex;
 }
 
-function yFromRGB(r, g, b) {
-	return (0.2126 * r + 0.7152 * g + 0.0722 * b) | 0;
+function hexFromRGB(r,g,b){
+    return `#${ hexFromComponent(r) }${ hexFromComponent(g) }${ hexFromComponent(b) }`;
+	// return "#" + hexFromComponent(r) + hexFromComponent(g) + hexFromComponent(b);
 }
 
-// https://wisotop.de/rgb-nach-hsv.php
-function HSVfromRGB(r, g, b) {
-	var h, s, v;
-	var min, max, delta;
-	min = Math.min(r, g, b);
-	max = Math.max(r, g, b);
-	v = max;
-	delta = max - min;
-	if (max != 0 ) {
-		s = delta / max;
-	} else {
-		s = 0;
-		h = -1;
-		return { h: h, s: s, v: v };
-	}
-	if (max == min) {
-		h = 0;
-		s = 0;
-		return { h: h, s: s, v: v };
-	}
-	if (r == max) {
-		h = (g - b) / delta;
-	} else if (g == max) {
-		h = 2 + ( b - r ) / delta;
-	} else {
-		h = 4 + ( r - g ) / delta;
-	}
-	h *= 60;
-	if (h < 0) {
-		h += 360;
-	}
-	return { h: h, s: s, v: v };
-}
-function RGBfromHSV(h, s, v) {
-   var i;
-   var f, p, q, t;
-   if (s == 0 ) {
-	return { r: v, g: v, b: v};
-   }
-   h /= 60;
-   i = Math.floor( h );
-   f = h - i;
-   p = v * ( 1 - s );
-   q = v * ( 1 - s * f );
-   t = v * ( 1 - s * ( 1 - f ) );
-   switch( i ) {
-      case 0: r = v; g = t; b = p; break;
-      case 1: r = q; g = v; b = p; break;
-      case 2: r = p; g = v; b = t; break;
-      case 3: r = p; g = q; b = v; break;
-      case 4: r = t; g = p; b = v; break;
-      default:  // case 5:
-         r = v; g = p; b = q; break;
-   }
-   return { r: r, g: g, b: b};
-}
+
 
 // https://css-tricks.com/converting-color-spaces-in-javascript/
 function RGBfromHSL(h,s,l) {
@@ -258,7 +228,7 @@ function LabFromRGB(r, g, b) {
   r /= 255;
   g /= 255;
   b /= 255;
-  var x, y, z;
+  let x, y, z;
 
   r = (r > 0.04045) ? Math.pow((r + 0.055) / 1.055, 2.4) : r / 12.92;
   g = (g > 0.04045) ? Math.pow((g + 0.055) / 1.055, 2.4) : g / 12.92;
@@ -278,44 +248,44 @@ function LabFromRGB(r, g, b) {
 // https://github.com/antimatter15/rgb-lab
 // https://github.com/THEjoezack/ColorMine/blob/master/ColorMine/ColorSpaces/Comparisons/Cie94Comparison.cs
 function deltaE(labA, labB){
-  var deltaL = labA.l - labB.l;
-  var deltaA = labA.a - labB.a;
-  var deltaB = labA.b - labB.b;
-  var c1 = Math.sqrt(labA.a * labA.a + labA.b * labA.b);
-  var c2 = Math.sqrt(labB.a * labB.a + labB.b * labB.b);
-  var deltaC = c1 - c2;
-  var deltaH = deltaA * deltaA + deltaB * deltaB - deltaC * deltaC;
+  let deltaL = labA.l - labB.l;
+  let deltaA = labA.a - labB.a;
+  let deltaB = labA.b - labB.b;
+  let c1 = Math.sqrt(labA.a * labA.a + labA.b * labA.b);
+  let c2 = Math.sqrt(labB.a * labB.a + labB.b * labB.b);
+  let deltaC = c1 - c2;
+  let deltaH = deltaA * deltaA + deltaB * deltaB - deltaC * deltaC;
   deltaH = deltaH < 0 ? 0 : Math.sqrt(deltaH);
-  var sc = 1.0 + 0.045 * c1;
-  var sh = 1.0 + 0.015 * c1;
-  var deltaLKlsl = deltaL / (1.0);
-  var deltaCkcsc = deltaC / (sc);
-  var deltaHkhsh = deltaH / (sh);
-  var i = deltaLKlsl * deltaLKlsl + deltaCkcsc * deltaCkcsc + deltaHkhsh * deltaHkhsh;
+  let sc = 1.0 + 0.045 * c1;
+  let sh = 1.0 + 0.015 * c1;
+  let deltaLKlsl = deltaL / (1.0);
+  let deltaCkcsc = deltaC / (sc);
+  let deltaHkhsh = deltaH / (sh);
+  let i = deltaLKlsl * deltaLKlsl + deltaCkcsc * deltaCkcsc + deltaHkhsh * deltaHkhsh;
   return i < 0 ? 0 : Math.sqrt(i);
 }
 
 function drawScreen(screen) {
-	var xres = 40;
-	var yres = 25;
-	var canvas = document.getElementById('colspace_diagram');
+	let xres = 40;
+	let yres = 25;
+	let canvas = byId('colspace_diagram');
 	canvas.width = xres * 8;
 	canvas.height = yres * 8;
-	var context = canvas.getContext('2d');
-	var imgData = context.getImageData(0, 0, canvas.width, canvas.height);
-	var oo = 0;
-	for (var y = 0; y < yres; y++) {
-		for (var x = 0; x < xres; x++) {
-			var a = screen.data[oo++];
-			var b = screen.data[oo++];
-			var c1 = basecolors[a >> 4];
-			var c2 = basecolors[a & 0xf];
-			for (var x1 = 0; x1 < 8; x1++) {
-				for (var y1 = 0; y1 < 8; y1++) {
-					var fx = x * 8 + x1;
-					var fy = y * 8 + y1;
-					var condition = ((screen.pattern[(b << 2) | (y1 & 3)]) >> (7 - x1)) & 1;
-					var o = 4 * (fy * (xres * 8) + fx)
+	let context = canvas.getContext('2d');
+	let imgData = context.getImageData(0, 0, canvas.width, canvas.height);
+	let oo = 0;
+	for (let y = 0; y < yres; y++) {
+		for (let x = 0; x < xres; x++) {
+			let a = screen.data[oo++];
+			let b = screen.data[oo++];
+			let c1 = basecolors[a >> 4];
+			let c2 = basecolors[a & 0xf];
+			for (let x1 = 0; x1 < 8; x1++) {
+				for (let y1 = 0; y1 < 8; y1++) {
+					let fx = x * 8 + x1;
+					let fy = y * 8 + y1;
+					let condition = ((screen.pattern[(b << 2) | (y1 & 3)]) >> (7 - x1)) & 1;
+					let o = 4 * (fy * (xres * 8) + fx)
 					imgData.data[o] = condition ? c1.r : c2.r;
 					imgData.data[o + 1] = condition ? c1.g : c2.g;
 					imgData.data[o + 2] = condition ? c1.b : c2.b;
@@ -328,13 +298,13 @@ function drawScreen(screen) {
 }
 
 function bestMatch(rgb) {
-	var cr;
-	var mindist = 999;
-	for (var i = 0; i < colors.length; i++) {
+	let cr;
+	let mindist = 999;
+	for (let i = 0; i < colors.length; i++) {
 		c = colors[i];
-		var lab1 = LabFromRGB(c.r, c.g, c.b);
-		var lab2 = LabFromRGB(rgb.r, rgb.g, rgb.b);
-		var dist = deltaE(lab1, lab2);
+		let lab1 = LabFromRGB(c.r, c.g, c.b);
+		let lab2 = LabFromRGB(rgb.r, rgb.g, rgb.b);
+		let dist = deltaE(lab1, lab2);
 		if (dist < mindist) {
 			mindist = dist;
 			cr = c;
@@ -350,8 +320,8 @@ function getColorspaceMap3() {
 	sortedColors = []
 	grays = [];
 	nongrays = [];
-	for (var i = 0; i < colors.length; i++) {
-		var c = colors[i];
+	for (let i = 0; i < colors.length; i++) {
+		let c = colors[i];
 		if (c.s < saturationThreshold) {
 			grays.push(c);
 		} else {
@@ -360,16 +330,16 @@ function getColorspaceMap3() {
 	}
 
 	// put colors into 7 hue buckets
-	var hueBucketThresholds = [ 10, 60, 88, 160, 200, 260, 340 ];
+	let hueBucketThresholds = [ 10, 60, 88, 160, 200, 260, 340 ];
 	const hueBuckets = hueBucketThresholds.length;
-	var colorsByHue = [];
-	for (var hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
+	let colorsByHue = [];
+	for (let hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
 		colorsByHue[hueBucket] = [];
 	}
-	for (var i = 0; i < nongrays.length; i++) {
-		for (var hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
-			var c = nongrays[i];
-			var good = false;
+	for (let i = 0; i < nongrays.length; i++) {
+		for (let hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
+			let c = nongrays[i];
+			let good = false;
 			if (hueBucket == 0 && Math.floor(c.h) > hueBucketThresholds[hueBucketThresholds.length - 1]) {
 				good = true;
 			}
@@ -385,29 +355,29 @@ function getColorspaceMap3() {
 
 	// sort grays and colors
 	grays = grays.sort((a,b)=>a.y-b.y);
-	for (var hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
+	for (let hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
 		colorsByHue[hueBucket] = colorsByHue[hueBucket].sort((a,b)=>a.y-b.y);
 	}
 
 	// init map
 	colorspaceMap = [];
-	for (var i = 0; i < 1000; i++) {
+	for (let i = 0; i < 1000; i++) {
 		colorspaceMap.push(0);
 	}
 
 	const scrx = 40;
 
 	// draw colors at the bottom
-	for (var hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
-		for (var i = 0; i < colorsByHue[hueBucket].length; i++) {
+	for (let hueBucket = 0; hueBucket < hueBuckets; hueBucket++) {
+		for (let i = 0; i < colorsByHue[hueBucket].length; i++) {
 			y = 24 - hueBuckets + hueBucket;
 			colorspaceMap[y * scrx + i] = colorsByHue[hueBucket][i];
 		}
 	}
 
 	// draw grays at the very bottom
-	var l = grays.length;
-	for (var i = 0; i < l; i++) {
+	let l = grays.length;
+	for (let i = 0; i < l; i++) {
 		y = 24;
 		colorspaceMap[y * scrx + i] = grays[i];
 	}
@@ -418,7 +388,7 @@ function getColorspaceMap3() {
 		return Math.pow(x, 1.5);
 	}
 
-	var paletteheight;
+	let paletteheight;
 	if (colors.length <= 160) {
 		paletteheight = 1;
 	} else if (colors.length <= 240) {
@@ -427,61 +397,50 @@ function getColorspaceMap3() {
 		paletteheight = 8;
 	}
 
-	var xres = 40;
-	var yres = 25 - hueBuckets - 2 - paletteheight;
-	for (var y = 0; y < yres; y++) {
-		for (var x = 0; x < xres; x++) {
+	let xres = 40;
+	let yres = 25 - hueBuckets - 2 - paletteheight;
+	for (let y = 0; y < yres; y++) {
+		for (let x = 0; x < xres; x++) {
 			h = x * 360 / xres;
 			l = f(y / yres) * yres * 100 / yres;
 			rgb = RGBfromHSL(h, 100, l);
-			var c = bestMatch(rgb);
+			let c = bestMatch(rgb);
 			colorspaceMap[(y + paletteheight) * scrx + x] = c;
 		}
 	}
 
 	// draw colors sorted by lumadiff at the top of the screen
-	for (var i = 0; i < colors_by_lumadiff.length; i++) {
+	for (let i = 0; i < colors_by_lumadiff.length; i++) {
 		colorspaceMap[i] = colors_by_lumadiff[i];
 	}
 
 	return colorspaceMap;
 }
 
-//function combineColors(c1, c2, f) {
-//	var hsl1 = HSLfromRGB(c1.r * f + c2.r * (1 - f), c1.g * f + c2.g * (1 - f), c1.b * f + c2.b * (1 - f));
-//	var hsl2 = HSLfromRGB(c2.r * f + c1.r * (1 - f), c2.g * f + c1.g * (1 - f), c2.b * f + c1.b * (1 - f));
-//
-//	var fc1 = RGBfromHSL(hsl1.h, hsl1.s, hsl1.l);
-//	var fc2 = RGBfromHSL(hsl2.h, hsl2.s, hsl2.l);
-//
-//	if (fc1.y > fc2.y) {
-//		return { c1: fc1, c2: fc2 };
-//	} else {
-//		return { c1: fc2, c2: fc1 };
-//	}
-//}
 
 function svgForColors(c1, c2, f, pattern) {
-	var hexcolor1 = hexFromRGB(c1.r, c1.g, c1.b);
-	var hexcolor2 = hexFromRGB(c2.r, c2.g, c2.b);
+    let svg;
+
+	let hexcolor1 = hexFromRGB(c1.r, c1.g, c1.b);
+	let hexcolor2 = hexFromRGB(c2.r, c2.g, c2.b);
 	switch (mixed) {
 		case '0':
 		case '2':
 			switch (pattern) {
 				case 'h':
-					var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="2" shape-rendering="auto" viewBox="0 -.5 1 2">'
+					svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="2" shape-rendering="auto" viewBox="0 -.5 1 2">'
 					svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
 					svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
 					svg += '</svg>'
 					break;
 				case 'v':
-					var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="1" shape-rendering="auto" viewBox="0 -.5 2 1">'
+					svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="1" shape-rendering="auto" viewBox="0 -.5 2 1">'
 					svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
 					svg += '<path stroke="' + hexcolor2 + '" d="M1 0h1"></path>'
 					svg += '</svg>'
 					break;
 				case 'c':
-					var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" shape-rendering="auto" viewBox="0 -.5 2 2">'
+					svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" shape-rendering="auto" viewBox="0 -.5 2 2">'
 					svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
 					svg += '<path stroke="' + hexcolor2 + '" d="M1 0h1"></path>'
 					svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
@@ -489,7 +448,7 @@ function svgForColors(c1, c2, f, pattern) {
 					svg += '</svg>'
 					break;
 				case 'c2':
-					var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="2" shape-rendering="auto" viewBox="0 -.5 4 2">'
+					svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="2" shape-rendering="auto" viewBox="0 -.5 4 2">'
 					svg += '<path stroke="' + hexcolor1 + '" d="M0 0h2"></path>'
 					svg += '<path stroke="' + hexcolor2 + '" d="M2 0h2"></path>'
 					svg += '<path stroke="' + hexcolor2 + '" d="M0 1h2"></path>'
@@ -501,29 +460,29 @@ function svgForColors(c1, c2, f, pattern) {
 		case '4':
 			if (f == .25 || f == .75) {
 				if (f == .75) {
-					var hexcolora = hexcolor1;
-					var hexcolorb = hexcolor2;
+					let hexcolora = hexcolor1;
+					let hexcolorb = hexcolor2;
 				} else {
-					var hexcolora = hexcolor2;
-					var hexcolorb = hexcolor1;
+					let hexcolora = hexcolor2;
+					let hexcolorb = hexcolor1;
 				}
 				switch (pattern) {
 					case 'v':
-						var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" shape-rendering="auto" viewBox="0 -.5 2 2">'
+						svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" shape-rendering="auto" viewBox="0 -.5 2 2">'
 						svg += '<path stroke="' + hexcolora + '" d="M0 0h1"></path>'
 						svg += '<path stroke="' + hexcolorb + '" d="M1 0h1"></path>'
 						svg += '<path stroke="' + hexcolora + '" d="M0 1h2"></path>'
 						svg += '</svg>'
 						break;
 					case 'v2':
-						var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="2" shape-rendering="auto" viewBox="0 -.5 4 2">'
+						svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="2" shape-rendering="auto" viewBox="0 -.5 4 2">'
 						svg += '<path stroke="' + hexcolora + '" d="M0 0h2"></path>'
 						svg += '<path stroke="' + hexcolorb + '" d="M2 0h2"></path>'
 						svg += '<path stroke="' + hexcolora + '" d="M0 1h4"></path>'
 						svg += '</svg>'
 						break;
 					case 'c':
-						var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="4" shape-rendering="auto" viewBox="0 -.5 2 4">'
+						svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="4" shape-rendering="auto" viewBox="0 -.5 2 4">'
 						svg += '<path stroke="' + hexcolora + '" d="M0 0h1"></path>'
 						svg += '<path stroke="' + hexcolorb + '" d="M1 0h1"></path>'
 						svg += '<path stroke="' + hexcolora + '" d="M0 1h2"></path>'
@@ -533,7 +492,7 @@ function svgForColors(c1, c2, f, pattern) {
 						svg += '</svg>'
 						break;
 					case 'c2':
-						var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" shape-rendering="auto" viewBox="0 -.5 4 4">'
+						svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" shape-rendering="auto" viewBox="0 -.5 4 4">'
 						svg += '<path stroke="' + hexcolora + '" d="M0 0h2"></path>'
 						svg += '<path stroke="' + hexcolorb + '" d="M2 0h2"></path>'
 						svg += '<path stroke="' + hexcolora + '" d="M0 1h4"></path>'
@@ -544,7 +503,7 @@ function svgForColors(c1, c2, f, pattern) {
 						break;
 				}
 			} else {
-				var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="2" shape-rendering="auto" viewBox="0 -.5 1 2">'
+				svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="2" shape-rendering="auto" viewBox="0 -.5 1 2">'
 				svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
 				svg += '<path stroke="' + hexcolor2 + '" d="M0 1h1"></path>'
 				svg += '</svg>'
@@ -632,7 +591,7 @@ const bpatterns = {
 }
 
 function createBASICProgram(screen, comment) {
-	var text = '0 rem ' + colors.length + ' colors';
+	let text = '0 rem ' + colors.length + ' colors';
 	if (mixed == '2') {
 		text += ', 50% mixed';
 	} else if (mixed == '4') {
@@ -643,16 +602,16 @@ function createBASICProgram(screen, comment) {
 	text += '1 rem ' + comment + '\n';
 	text += '2 rem\n';
 
-	var line = '';
-	var lineno = 100;
-	var start_of_line = true;
-	for (var i = 0; i < screen.data.length; i++) {
+	let line = '';
+	let lineno = 100;
+	let start_of_line = true;
+	for (let i = 0; i < screen.data.length; i++) {
 		if (!start_of_line) {
 			line += ',';
 			start_of_line = false;
 		}
 		start_of_line = false;
-		var a = screen.data[i];
+		let a = screen.data[i];
 		if (a) {
 			line += '' + a;
 		}
@@ -667,7 +626,7 @@ function createBASICProgram(screen, comment) {
 
 	text += '200 v=53248:g=8192+16384:s=1024+16384' + '\n';
 
-	var bpattern = screen.pattern;
+	let bpattern = screen.pattern;
 
 	text += '210 a(0)=' + bpattern[0] + ':b(0)=' + bpattern[1] + ':c(0)=' + bpattern[2] + ':d(0)=' + bpattern[3] + '' + '\n';
 	text += '220 a(1)=' + bpattern[4] + ':b(1)=' + bpattern[5] + ':c(1)=' + bpattern[6] + ':d(1)=' + bpattern[7] + '' + '\n';
@@ -697,8 +656,8 @@ function createBASICProgram(screen, comment) {
 const lumadiff_limit1 = 5;
 const lumadiff_limit2 = 31;
 
-var colors;
-var colors_by_lumadiff;
+let colors;
+let colors_by_lumadiff;
 
 function init() {
 	reset();
@@ -708,97 +667,97 @@ function init() {
 	if (urlParams.has('levels')) {
 		switch (urlParams.get('levels')) {
 			case '5':
-				document.getElementById("lumalevels").selectedIndex = 0;
+				byId("lumalevels").selectedIndex = 0;
 				break;
 			case '7':
 			default:
-				document.getElementById("lumalevels").selectedIndex = 1;
+				byId("lumalevels").selectedIndex = 1;
 				break;
 		}
 	}
 	if (urlParams.has('mixed')) {
-		var mixed = urlParams.get('mixed');
-		document.getElementById("mixed").value = mixed;
+		let mixed = urlParams.get('mixed');
+		byId("mixed").value = mixed;
 		old_mixed = mixed; // prevent detecting as user-initiated mode switch
 	}
 	if (urlParams.has('lumadiff')) {
-		var lumadiff = urlParams.get('lumadiff') / 10;
-		var is_large = lumadiff > lumadiff_limit1;
-		document.getElementById("limit_lumadiff").checked = !is_large;
-		document.getElementById("lumadiff").max = is_large ? lumadiff_limit2 : lumadiff_limit1;
-		document.getElementById("lumadiff").value = lumadiff;
+		let lumadiff = urlParams.get('lumadiff') / 10;
+		let is_large = lumadiff > lumadiff_limit1;
+		byId("limit_lumadiff").checked = !is_large;
+		byId("lumadiff").max = is_large ? lumadiff_limit2 : lumadiff_limit1;
+		byId("lumadiff").value = lumadiff;
 	}
 	if (urlParams.has('b')) {
-		document.getElementById("brightness").value = urlParams.get('b');
+		byId("brightness").value = urlParams.get('b');
 	}
 	if (urlParams.has('c')) {
-		document.getElementById("contrast").value = urlParams.get('c');
+		byId("contrast").value = urlParams.get('c');
 	}
 	if (urlParams.has('s')) {
-		document.getElementById("saturation").value = urlParams.get('s');
+		byId("saturation").value = urlParams.get('s');
 	}
 	if (urlParams.has('g')) {
-		document.getElementById("gamma").value = urlParams.get('g') * 10;
+		byId("gamma").value = urlParams.get('g') * 10;
 	}
 	if (urlParams.has('sortby')) {
-		document.getElementById("sortby").value = urlParams.get('sortby');
+		byId("sortby").value = urlParams.get('sortby');
 	}
 	if (urlParams.has('pattern')) {
-		document.getElementById("pattern").value = urlParams.get('pattern');
+		byId("pattern").value = urlParams.get('pattern');
 	}
 
 	refresh();
 }
 
-var old_mixed;
+let old_mixed;
 
 function refresh() {
 	//
 	// limit luma diff
 	//
-	limit_lumadiff = document.getElementById("limit_lumadiff").checked;
+	limit_lumadiff = byId("limit_lumadiff").checked;
 	if (limit_lumadiff) {
-		document.getElementById("lumadiff").max = lumadiff_limit1;
-		if (document.getElementById("lumadiff").value > lumadiff_limit1) {
-			document.getElementById("lumadiff").value = lumadiff_limit1;
+		byId("lumadiff").max = lumadiff_limit1;
+		if (byId("lumadiff").value > lumadiff_limit1) {
+			byId("lumadiff").value = lumadiff_limit1;
 		}
 	} else {
-		document.getElementById("lumadiff").max = lumadiff_limit2;
+		byId("lumadiff").max = lumadiff_limit2;
 	}
 
-	lumalevels = document.getElementById("lumalevels").selectedIndex ? 'mc': 'fr';
-	mixed = document.getElementById("mixed").value;
-	lumadiff = parseInt(document.getElementById("lumadiff").value) * 10;
-	brightness = document.getElementById("brightness").value;
-	contrast = document.getElementById("contrast").value;
-	saturation = document.getElementById("saturation").value;
-	gamma = document.getElementById("gamma").value / 10;
+	lumalevels = byId("lumalevels").selectedIndex ? 'mc': 'fr';
+	mixed = byId("mixed").value;
+	lumadiff = parseInt(byId("lumadiff").value) * 10;
+	brightness = byId("brightness").value;
+	contrast = byId("contrast").value;
+	saturation = byId("saturation").value;
+	gamma = byId("gamma").value / 10;
 
-	sortby = document.getElementById("sortby").value;
-	showcomponents = document.getElementById("showcomponents").checked;
-	showeffcol = document.getElementById("showeffcol").checked;
-	showmixedcol = document.getElementById("showmixedcol").checked;
-	showluma = document.getElementById("showluma").checked;
+	sortby = byId("sortby").value;
+	showcomponents = byId("showcomponents").checked;
+	showeffcol = byId("showeffcol").checked;
+	showmixedcol = byId("showmixedcol").checked;
+	showluma = byId("showluma").checked;
 
-	pattern = document.getElementById("pattern").value;
+	pattern = byId("pattern").value;
 
 	//
 	// copy slider values to text fields
 	//
-	document.getElementById("lumadiff_val").innerHTML = lumadiff;
-	document.getElementById("brightness_val").innerHTML = brightness;
-	document.getElementById("contrast_val").innerHTML = contrast;
-	document.getElementById("saturation_val").innerHTML = saturation;
-	document.getElementById("gamma_val").innerHTML = gamma;
+	byId("lumadiff_val").innerHTML = lumadiff;
+	byId("brightness_val").innerHTML = brightness;
+	byId("contrast_val").innerHTML = contrast;
+	byId("saturation_val").innerHTML = saturation;
+	byId("gamma_val").innerHTML = gamma;
 
 	//
 	// enable disable luma threshold slider
 	//
-	lumadiff_div = document.getElementById("lumadiff_div");
+	lumadiff_div = byId("lumadiff_div");
 	if (mixed == '0') {
 		lumadiff_div.style.pointerEvents = 'none';
 		lumadiff_div.style.opacity = '0.5';
-		document.getElementById("lumadiff").value = 0;
+		byId("lumadiff").value = 0;
 	} else {
 		lumadiff_div.style.pointerEvents = null;
 		lumadiff_div.style.opacity = null;
@@ -807,7 +766,7 @@ function refresh() {
 	//
 	// set up the mixing pattern selector
 	//
-	pattern_div = document.getElementById("pattern_div");
+	pattern_div = byId("pattern_div");
 	if (mixed == '0') {
 		pattern_div.style.pointerEvents = 'none';
 		pattern_div.style.opacity = '0.5';
@@ -824,7 +783,7 @@ function refresh() {
 	}
 	if (mixed != old_mixed) {
 		old_mixed = mixed;
-		pattern_element = document.getElementById("pattern");
+		pattern_element = byId("pattern");
 		pattern_element.value = { '0': 'h', '2': 'h', '4': 'c' }[mixed];
 		pattern = pattern_element.value;
 	}
@@ -856,9 +815,9 @@ function refresh() {
 	url = window.location.href;
 	url = url.split('?')[0];
 	url = url.split('#')[0];
-	var i = 0;
+	let i = 0;
 	if (Object.keys(args).length) {
-		for (var key in args) {
+		for (let key in args) {
 			if (i == 0) {
 				url += '?'
 			} else {
@@ -868,18 +827,18 @@ function refresh() {
 			i++;
 		}
 	}
-	document.getElementById("collink").href = url;
+	byId("collink").href = url;
 
 
 	//
 	// create Colodore palette
 	//
 	colors = []
-	for (var i = 0; i < 16; i++) {
-		var c = convert(compose(i, lumalevels, brightness, contrast, saturation), gamma);
+	for (let i = 0; i < 16; i++) {
+		let c = convert(compose(i, lumalevels, brightness, contrast, saturation), gamma);
 		c.index = i;
 		c.description = i;
-		var hsl = HSLfromRGB(c.r, c.g, c.b);
+		let hsl = HSLfromRGB(c.r, c.g, c.b);
 		c.h = hsl.h;
 		c.s = hsl.s;
 		c.lumadiff = -1;
@@ -891,16 +850,16 @@ function refresh() {
 	// create mixed colors
 	//
 	if (mixed != '0') {
-		var l = colors.length;
-		for (var i = 0; i < l; i++) {
-			var c1 = colors[i];
-			for (var j = i+1; j < l; j++) {
-				var c2 = colors[j];
-				for (var f = .25; f <= .75; f += .25) {
+		let l = colors.length;
+		for (let i = 0; i < l; i++) {
+			let c1 = colors[i];
+			for (let j = i+1; j < l; j++) {
+				let c2 = colors[j];
+				for (let f = .25; f <= .75; f += .25) {
 					if (mixed != '4' && f != .5) {
 						continue;
 					}
-					var cm = {}
+					let cm = {}
 					cm.r = (c1.r * f + c2.r * (1 - f)) | 0;
 					cm.g = (c1.g * f + c2.g * (1 - f)) | 0;
 					cm.b = (c1.b * f + c2.b * (1 - f)) | 0;
@@ -921,8 +880,8 @@ function refresh() {
 		//
 		// Filter
 		//
-		var colors_new = []
-		for (var i = 0; i < colors.length; i++) {
+		let colors_new = []
+		for (let i = 0; i < colors.length; i++) {
 			if (colors[i].lumadiff < lumadiff + .001) { // float ftw!
 				colors_new.push(colors[i]);
 			}
@@ -960,7 +919,7 @@ function refresh() {
 			// second is a primary color
 			return 1;
 		}
-		var cmp = a.lumadiff - b.lumadiff;
+		let cmp = a.lumadiff - b.lumadiff;
 		if (cmp != 0) {
 			return cmp;
 		} else {
@@ -995,38 +954,38 @@ function refresh() {
 	//
 	// create cells
 	//
-	row0 = document.getElementById("row0");
+	row0 = byId("row0");
 	row0.innerHTML = '';
-	row1 = document.getElementById("row1");
+	row1 = byId("row1");
 	row1.innerHTML = '';
-	row2 = document.getElementById("row2");
+	row2 = byId("row2");
 	row2.innerHTML = '';
-	row3 = document.getElementById("row3");
+	row3 = byId("row3");
 	row3.innerHTML = '';
-	for (var i = 0; i < colors.length; i++) {
+	for (let i = 0; i < colors.length; i++) {
 		if (showcomponents) {
-			var td = document.createElement("td");
+			let td = create("td");
 			td.className='colbox'
 			td.id='ccol' + i;
 			row0.appendChild(td);
 			if (i == colors.length - 1) row0.innerHTML += '<td>C</td>';
 		}
 		if (showeffcol) {
-			var td = document.createElement("td");
+			let td = create("td");
 			td.className='colbox'
 			td.id='col' + i;
 			row1.appendChild(td);
 			if (i == colors.length - 1) row1.innerHTML += '<td>E</td>';
 		}
 		if (showmixedcol) {
-			td = document.createElement("td");
+			td = create("td");
 			td.className='colbox'
 			td.id='mcol' + i;
 			row2.appendChild(td);
 			if (i == colors.length - 1) row2.innerHTML += '<td>M</td>';
 		}
 		if (showluma) {
-			td = document.createElement("td");
+			td = create("td");
 			td.className='colbox'
 			td.id='ycol' + i;
 			row3.appendChild(td);
@@ -1038,57 +997,60 @@ function refresh() {
 	// fill cells with colors
 	//
 	text_hexcolors = '';
-	for (var i = 0; i < colors.length; i++) {
+	for (let i = 0; i < colors.length; i++) {
 		c = colors[i];
 		hexcolor = hexFromRGB(c.r, c.g, c.b);
 		if (showcomponents) {
 			component1 = c.component1;
 			component2 = c.component2;
 			if (component1) {
-				var hexcolor1 = hexFromRGB(component1.r, component1.g, component1.b);
-				var hexcolor2 = hexFromRGB(component2.r, component2.g, component2.b);
+				let hexcolor1 = hexFromRGB(component1.r, component1.g, component1.b);
+				let hexcolor2 = hexFromRGB(component2.r, component2.g, component2.b);
 
-				html = '<table><tr>'
+				html = '<table><tr>';
+
+                let style1,style2;
+
 				switch (c.f) {
 					case .25:
-						var style1 = 'thincolbox25';
-						var style2 = 'thincolbox75';
+						style1 = 'thincolbox25';
+						style2 = 'thincolbox75';
 						break;
 					case .5:
-						var style1 = 'thincolbox50';
-						var style2 = 'thincolbox50';
+						style1 = 'thincolbox50';
+						style2 = 'thincolbox50';
 						break;
 					case .75:
-						var style1 = 'thincolbox75';
-						var style2 = 'thincolbox25';
+						style1 = 'thincolbox75';
+						style2 = 'thincolbox25';
 						break;
 				}
 				html += '<td class="' + style1 + '" style="background-color: ' + hexcolor1 + '"></td>'
 				html += '<td class="' + style2 + '" style="background-color: ' + hexcolor2 + '"></td>'
 				html += '</tr></table>';
-				document.getElementById("ccol"+i).innerHTML = html;
+				byId("ccol"+i).innerHTML = html;
 			}
 		}
 		if (showeffcol) {
-			document.getElementById("col"+i).style = 'background-color: ' + hexcolor;
+			byId("col"+i).style = 'background-color: ' + hexcolor;
 		}
 		if (showmixedcol) {
-			var image = imageFromColor(c);
-			var td = document.getElementById("mcol"+i);
+			let image = imageFromColor(c);
+			let td = byId("mcol"+i);
 			td.style.backgroundImage = image;
 			td.innerHTML = '<a href="#color' + i + '">&nbsp;</a>';
 		}
 		if (showluma) {
 			y = (Math.max(c.y, 0) / 307.2 * 255) | 0;
 			yhexcolor = hexFromRGB(y, y, y);
-			document.getElementById("ycol"+i).style = 'background-color: ' + yhexcolor;
+			byId("ycol"+i).style = 'background-color: ' + yhexcolor;
 		}
 
 		// hex colors
 		text_hexcolors += hexcolor + '\n';
 	}
 
-	var bpattern;
+	let bpattern;
 	if (mixed == '0') {
 		bpattern = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	} else {
@@ -1098,16 +1060,19 @@ function refresh() {
 	//
 	// Create Colorspace Diagram Screen
 	//
-	var colorspaceMapBASIC = getColorspaceMap3();
-	var screen2 = {};
+	let colorspaceMapBASIC = getColorspaceMap3();
+	let screen2 = {};
 	screen2.pattern = bpattern;
 	screen2.data = [];
-	for (var i = 0; i < 1000; i++) {
-		var c = colorspaceMapBASIC[i];
-		var f = c.f;
+	for (let i = 0; i < 1000; i++) {
+		let c = colorspaceMapBASIC[i];
+		let f = c.f;
+
+        let c1 , c2;
+
 		if (c.component1) {
-			var c1 = c.component1;
-			var c2 = c.component2;
+			c1 = c.component1;
+			c2 = c.component2;
 			// always put the brighter color in (y % 2) = 0 rows
 			if (c1.y < c2.y) {
 				c1 = c.component2;
@@ -1115,8 +1080,8 @@ function refresh() {
 				f = 1 - f;
 			}
 		} else {
-			var c1 = c;
-			var c2 = c;
+			c1 = c;
+			c2 = c;
 		}
 		screen2.data.push(c1.index << 4 | c2.index);
 		switch (f) {
@@ -1135,124 +1100,133 @@ function refresh() {
 		comment = 'pattern "' + pattern + '"';
 	}
 	text_basic = createBASICProgram(screen2, comment);
-	document.getElementById("text_basic2_lower").innerHTML = text_basic;
-	document.getElementById("text_basic2_upper").innerHTML = text_basic.toUpperCase();
+	byId("text_basic2_lower").innerHTML = text_basic;
+	byId("text_basic2_upper").innerHTML = text_basic.toUpperCase();
 
 	//
 	// fill hex text field
 	//
-	document.getElementById("hexcolors").innerHTML = text_hexcolors;
+	byId("hexcolors").innerHTML = text_hexcolors;
 
 	//
 	// number of colors
 	//
-	document.getElementById("numcol").innerHTML = colors.length;
+	byId("numcol").innerHTML = colors.length;
 
 	//
 	// colorspace diagram
 	//
-	var colorspaceMaps = [];
+	let colorspaceMaps = [];
 
 	drawScreen(screen2);
 
 //	// analyze how many colors are used in the diagram
-//	for (var i = 0; i < colors.length; i++) {
+//	for (let i = 0; i < colors.length; i++) {
 //		colors[i].localIndex = i;
 //	}
-//	var usedColors = new Set();
-//	for (var j = 0; j < 2; j++) {
-//		for (var i = 0 ; i < colorspaceMaps[j].length; i++) {
+//	let usedColors = new Set();
+//	for (let j = 0; j < 2; j++) {
+//		for (let i = 0 ; i < colorspaceMaps[j].length; i++) {
 //			usedColors.add(colorspaceMaps[j][i].localIndex);
 //		}
 //	}
 //	usedColors = Array.from(usedColors);
 //	usedColors = usedColors.sort((a,b)=>a-b);
-//	for (var j = 1; j < usedColors.length; j++) {
-//		var i = usedColors[j];
+//	for (let j = 1; j < usedColors.length; j++) {
+//		let i = usedColors[j];
 //		colors[i].y = 0;
 //	}
 
 	//
 	// all colors table
 	//
-	allcoltab = document.getElementById("allcoltab");
-	var html = '';
-	html += '<tr>';
-	html += '<th>#</th>';
-	html += '<th>mix</th>';
-	html += '<th>index 1</th>';
-	html += '<th>index 2</th>';
-	html += '<th>f</th>';
-	html += '<th>c1</th>';
-	html += '<th>c2</th>';
-	html += '<th>luma diff</th>';
-	html += '<th>Y</th>';
-	html += '<th>U</th>';
-	html += '<th>V</th>';
-	html += '<th>H</th>';
-	html += '<th>S</th>';
-	html += '<th>L</th>';
-	html += '<th>R</th>';
-	html += '<th>G</th>';
-	html += '<th>B</th>';
-	html += '<th>hex</th>';
-	html += '</tr>';
-	allcoltab.innerHTML = html;
-	for (var i = 0; i < colors.length; i++) {
-		var c = colors[i];
-		var ci1 = '';
-		var ci2 = '';
-		var imagem = imageFromColor(c);
-		var image1 = '';
-		var image2 = '';
+	allcoltab = byId("allcoltab");
+
+    const headers = [
+        '#' , 'mix' , 'index 1' , 'index 2' , 'f' ,
+        'c1' , 'c2' , 'luma diff' , 'Y' , 'U' , 'V' ,
+        'H' , 'S' , 'L' , 'R' , 'G' , 'B' , 'hex'
+    ].map((header) => `<th>${ header }</th>`);
+
+    //
+	// html += '';
+	// html += '<th>#</th>';
+	// html += '<th>mix</th>';
+	// html += '<th>index 1</th>';
+	// html += '<th>index 2</th>';
+	// html += '<th>f</th>';
+	// html += '<th>c1</th>';
+	// html += '<th>c2</th>';
+	// html += '<th>luma diff</th>';
+	// html += '<th>Y</th>';
+	// html += '<th>U</th>';
+	// html += '<th>V</th>';
+	// html += '<th>H</th>';
+	// html += '<th>S</th>';
+	// html += '<th>L</th>';
+	// html += '<th>R</th>';
+	// html += '<th>G</th>';
+	// html += '<th>B</th>';
+	// html += '<th>hex</th>';
+	// html += '</tr>';
+	allcoltab.innerHTML = `<tr>${ headers }</tr>`;
+
+	for (let i = 0; i < colors.length; i++) {
+		let c = colors[i];
+		let ci1 = '';
+		let ci2 = '';
+		let imagem = imageFromColor(c);
+		let image1 = '';
+		let image2 = '';
 		if (c.component1) {
 			ci1 = c.component1.index;
 			ci2 = c.component2.index;
-			var image1 = imageFromColor(c.component1);
-			var image2 = imageFromColor(c.component2);
+			let image1 = imageFromColor(c.component1);
+			let image2 = imageFromColor(c.component2);
 		}
 
-		var tr = document.createElement("tr");
+		let tr = create("tr");
 		tr.id = 'color' + i;
 		allcoltab.appendChild(tr);
-		var td;
+		let td;
 
-		td = document.createElement("td");
+
+		td = create("td");
 		td.innerHTML = c.index;
 		tr.appendChild(td);
 
-		td = document.createElement("td");
+		td = create("td");
 		td.className='colbox'
 		td.style.backgroundImage = imagem;
 		tr.appendChild(td);
 
-		td = document.createElement("td");
+		td = create("td");
 		td.innerHTML = ci1;
 		tr.appendChild(td);
 
-		td = document.createElement("td");
+		td = create("td");
 		td.innerHTML = ci2;
 		tr.appendChild(td);
 
-		td = document.createElement("td");
+		td = create("td");
 		td.innerHTML = c.f ? c.f : '';
 		tr.appendChild(td);
 
-		td = document.createElement("td");
+		td = create("td");
 		td.className='colbox'
 		td.style.backgroundImage = image1;
 		tr.appendChild(td);
 
-		td = document.createElement("td");
+		td = create("td");
 		td.className='colbox'
 		td.style.backgroundImage = image2;
 		tr.appendChild(td);
 
-		td = document.createElement("td");
+		td = create("td");
 		td.innerHTML = c.lumadiff >= 0 ? c.lumadiff.toFixed(1) : '';
 		tr.appendChild(td);
 
-		td = document.createElement("td");
+		td = create("td");
 		y = c.y;
 		td.innerHTML = y.toFixed(1);
 		if (y < 128) {
@@ -1264,83 +1238,53 @@ function refresh() {
 		td.style.backgroundColor = 'rgb(' + y + ',' + y + ',' + y + ')';
 		tr.appendChild(td);
 
-		td = document.createElement("td");
+		td = create("td");
 		if (!c.component1) {
 			td.innerHTML = c.u.toFixed(1);
 		}
 		tr.appendChild(td);
 
-		td = document.createElement("td");
+		td = create("td");
 		if (!c.component1) {
 			td.innerHTML = c.v.toFixed(1);
 		}
 		tr.appendChild(td);
 
 		hsl = HSLfromRGB(c.r, c.g, c.b);
-		td = document.createElement("td");
+		td = create("td");
 		td.innerHTML = hsl.h;
 		tr.appendChild(td);
 
-		td = document.createElement("td");
+		td = create("td");
 		td.innerHTML = hsl.s;
 		tr.appendChild(td);
 
-		td = document.createElement("td");
+		td = create("td");
 		td.innerHTML = hsl.l;
 		tr.appendChild(td);
 
-		td = document.createElement("td");
+		td = create("td");
 		td.innerHTML = c.r;
 		tr.appendChild(td);
 
-		td = document.createElement("td");
+		td = create("td");
 		td.innerHTML = c.g;
 		tr.appendChild(td);
 
-		td = document.createElement("td");
+		td = create("td");
 		td.innerHTML = c.b;
 		tr.appendChild(td);
 
-		td = document.createElement("td");
+		td = create("td");
 		td.innerHTML = hexFromRGB(c.r, c.g, c.b);
 		tr.appendChild(td);
 	}
 }
 
 function reset() {
-	document.getElementById("brightness").value = 50;
-	document.getElementById("contrast").value = 100;
-	document.getElementById("saturation").value = 50;
-	document.getElementById("gamma").value = 28; // PAL: 2.8
+	byId("brightness").value = 50;
+	byId("contrast").value = 100;
+	byId("saturation").value = 50;
+	byId("gamma").value = 28; // PAL: 2.8
 	refresh();
-}
-
-function preset(mixed, lumadiff) {
-	document.getElementById("lumalevels").selectedIndex = 1; // new VIC-II
-	document.getElementById("mixed").value = mixed;
-	document.getElementById("lumadiff").value = lumadiff / 10;
-	refresh();
-}
-
-function toggleCase(id1, id2) {
-	if (document.getElementById(id1).style.display == '') {
-		document.getElementById(id1).style.display = 'none';
-		document.getElementById(id2).style.display = '';
-	} else {
-		document.getElementById(id1).style.display = '';
-		document.getElementById(id2).style.display = 'none';
-	}
-}
-
-function copyElement(id1, id2) {
-	var basic_text = document.getElementById("i_text_basic");
-	if (document.getElementById(id1).style.display == '') {
-		basic_text.value = document.getElementById(id1).innerHTML;
-	} else {
-		basic_text.value = document.getElementById(id2).innerHTML;
-	}
-	basic_text.style = '';
-	basic_text.select();
-	document.execCommand('copy');
-	basic_text.style = 'display: none;';
 }
