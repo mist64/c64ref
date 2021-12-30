@@ -19,6 +19,72 @@ function create(...args){
 
 const { min , max , cos , sin , pow , round , PI } = Math;
 
+UI = [
+    'limit_lumadiff',
+    'saturation',
+    'brightness',
+    'lumalevels',
+    'contrast',
+    'lumadiff',
+    'pattern',
+    'sortby',
+    'gamma',
+    'mixed',
+
+    'showcomponents',
+    'showmixedcol',
+    'showeffcol',
+    'showluma',
+
+    'saturation_val',
+    'brightness_val',
+    'lumadiff_val',
+    'contrast_val',
+    'gamma_val',
+
+    'lumadiff_div',
+    'collink',
+    'numcol',
+    'allcoltab',
+    'hexcolors'
+];
+
+function findComponents(){
+    for(const element of UI)
+        window[`ui_${ element }`] = byId(element);
+    //
+    // var
+    //     ui_limit_lumadiff = byId('limit_lumadiff'),
+    //     ui_saturation = byId('saturation'),
+    //     ui_brightness = byId('brightness'),
+    //     ui_lumalevels = byId('lumalevels'),
+    //     ui_contrast = byId('contrast'),
+    //     ui_lumadiff = byId('lumadiff'),
+    //     ui_pattern = byId('pattern'),
+    //     ui_sortby = byId('sortby'),
+    //     ui_gamma = byId('gamma'),
+    //     ui_mixed = byId('mixed');
+    //
+    // var
+    //     ui_showcomponents = byId('showcomponents'),
+    //     ui_showmixedcol = byId('showmixedcol'),
+    //     ui_showeffcol = byId('showeffcol'),
+    //     ui_showluma = byId('showluma');
+    //
+    //
+    // var
+    //     ui_saturation_val = byId('saturation_val'),
+    //     ui_brightness_val = byId('brightness_val'),
+    //     ui_lumadiff_val = byId('lumadiff_val'),
+    //     ui_contrast_val = byId('contrast_val'),
+    //     ui_gamma_val = byId('gamma_val');
+    //
+    // var
+    //     ui_lumadiff_div = byId('lumadiff_div');
+}
+
+const lumadiff_limit1 = 5;
+const lumadiff_limit2 = 31;
 
 let levels = { mc: [ 0 ], fr: [ 0 ] };            // Black (luma switched off)
 
@@ -419,7 +485,7 @@ function getColorspaceMap3() {
 
 
 function svgForColors(c1, c2, f, pattern) {
-    let svg;
+    let svg = '';
 
 	let hexcolor1 = hexFromRGB(c1.r, c1.g, c1.b);
 	let hexcolor2 = hexFromRGB(c2.r, c2.g, c2.b);
@@ -459,12 +525,15 @@ function svgForColors(c1, c2, f, pattern) {
 			break;
 		case '4':
 			if (f == .25 || f == .75) {
+
+                let hexcolora , hexcolorb;
+
 				if (f == .75) {
-					let hexcolora = hexcolor1;
-					let hexcolorb = hexcolor2;
+					hexcolora = hexcolor1;
+					hexcolorb = hexcolor2;
 				} else {
-					let hexcolora = hexcolor2;
-					let hexcolorb = hexcolor1;
+					hexcolora = hexcolor2;
+					hexcolorb = hexcolor1;
 				}
 				switch (pattern) {
 					case 'v':
@@ -653,137 +722,171 @@ function createBASICProgram(screen, comment) {
 	return text;
 }
 
-const lumadiff_limit1 = 5;
-const lumadiff_limit2 = 31;
+
 
 let colors;
 let colors_by_lumadiff;
 
-function init() {
+function init(){
+
+    findComponents();
 	reset();
-
-	const queryString = window.location.search;
-	const urlParams = new URLSearchParams(queryString);
-	if (urlParams.has('levels')) {
-		switch (urlParams.get('levels')) {
-			case '5':
-				byId("lumalevels").selectedIndex = 0;
-				break;
-			case '7':
-			default:
-				byId("lumalevels").selectedIndex = 1;
-				break;
-		}
-	}
-	if (urlParams.has('mixed')) {
-		let mixed = urlParams.get('mixed');
-		byId("mixed").value = mixed;
-		old_mixed = mixed; // prevent detecting as user-initiated mode switch
-	}
-	if (urlParams.has('lumadiff')) {
-		let lumadiff = urlParams.get('lumadiff') / 10;
-		let is_large = lumadiff > lumadiff_limit1;
-		byId("limit_lumadiff").checked = !is_large;
-		byId("lumadiff").max = is_large ? lumadiff_limit2 : lumadiff_limit1;
-		byId("lumadiff").value = lumadiff;
-	}
-	if (urlParams.has('b')) {
-		byId("brightness").value = urlParams.get('b');
-	}
-	if (urlParams.has('c')) {
-		byId("contrast").value = urlParams.get('c');
-	}
-	if (urlParams.has('s')) {
-		byId("saturation").value = urlParams.get('s');
-	}
-	if (urlParams.has('g')) {
-		byId("gamma").value = urlParams.get('g') * 10;
-	}
-	if (urlParams.has('sortby')) {
-		byId("sortby").value = urlParams.get('sortby');
-	}
-	if (urlParams.has('pattern')) {
-		byId("pattern").value = urlParams.get('pattern');
-	}
-
+    useURLData();
 	refresh();
+}
+
+function useURLData(){
+    const { search } = window.location;
+    const urlParams = new URLSearchParams(search);
+
+    if(urlParams.has('levels'))
+        switch(urlParams.get('levels')){
+        case '5':
+            ui_lumalevels.selectedIndex = 0;
+            break;
+        case '7':
+        default:
+            ui_lumalevels.selectedIndex = 1;
+            break;
+        }
+
+    if(urlParams.has('mixed')){
+        const mixed = urlParams.get('mixed');
+        ui_mixed.value = mixed;
+        // prevent detecting as user-initiated mode switch
+        old_mixed = mixed;
+    }
+
+    if(urlParams.has('lumadiff')){
+
+        const
+            lumaDelta = urlParams.get('lumadiff') / 10,
+            isLarge = lumaDelta > lumadiff_limit1;
+
+        ui_limit_lumadiff.checked = ! is_large;
+
+        ui_lumadiff.value = lumaDelta;
+        ui_lumadiff.max = (isLarge)
+            ? lumadiff_limit2
+            : lumadiff_limit1;
+    }
+
+    if(urlParams.has('b'))
+        ui_brightness.value = urlParams.get('b');
+
+    if(urlParams.has('c'))
+        ui_contrast.value = urlParams.get('c');
+
+    if(urlParams.has('s'))
+        ui_saturation.value = urlParams.get('s');
+
+    if(urlParams.has('g'))
+        ui_gamma.value = urlParams.get('g') * 10;
+
+    if(urlParams.has('sortby'))
+        ui_sortby.value = urlParams.get('sortby');
+
+    if(urlParams.has('pattern'))
+        ui_pattern.value = urlParams.get('pattern');
 }
 
 let old_mixed;
 
-function refresh() {
-	//
-	// limit luma diff
-	//
-	limit_lumadiff = byId("limit_lumadiff").checked;
-	if (limit_lumadiff) {
-		byId("lumadiff").max = lumadiff_limit1;
-		if (byId("lumadiff").value > lumadiff_limit1) {
-			byId("lumadiff").value = lumadiff_limit1;
-		}
-	} else {
-		byId("lumadiff").max = lumadiff_limit2;
-	}
+function refresh(){
 
-	lumalevels = byId("lumalevels").selectedIndex ? 'mc': 'fr';
-	mixed = byId("mixed").value;
-	lumadiff = parseInt(byId("lumadiff").value) * 10;
-	brightness = byId("brightness").value;
-	contrast = byId("contrast").value;
-	saturation = byId("saturation").value;
-	gamma = byId("gamma").value / 10;
+    /*
+     *  Limit luma delta
+     */
 
-	sortby = byId("sortby").value;
-	showcomponents = byId("showcomponents").checked;
-	showeffcol = byId("showeffcol").checked;
-	showmixedcol = byId("showmixedcol").checked;
-	showluma = byId("showluma").checked;
+    const doLimit = ui_limit_lumadiff.checked;
 
-	pattern = byId("pattern").value;
+    ui_lumadiff.max = (doLimit)
+        ? lumadiff_limit1
+        : lumadiff_limit2;
 
-	//
-	// copy slider values to text fields
-	//
-	byId("lumadiff_val").innerHTML = lumadiff;
-	byId("brightness_val").innerHTML = brightness;
-	byId("contrast_val").innerHTML = contrast;
-	byId("saturation_val").innerHTML = saturation;
-	byId("gamma_val").innerHTML = gamma;
+    if(doLimit)
+        ui_lumadiff.value = min(ui_lumadiff.value,lumadiff_limit1);
 
-	//
-	// enable disable luma threshold slider
-	//
-	lumadiff_div = byId("lumadiff_div");
-	if (mixed == '0') {
-		lumadiff_div.style.pointerEvents = 'none';
-		lumadiff_div.style.opacity = '0.5';
-		byId("lumadiff").value = 0;
-	} else {
-		lumadiff_div.style.pointerEvents = null;
-		lumadiff_div.style.opacity = null;
-	}
+    const
+        lumalevels = ui_lumalevels.selectedIndex ? 'mc': 'fr',
+	    mixed = ui_mixed.value,
+        lumadiff = parseInt(ui_lumadiff.value) * 10,
+    	brightness = ui_brightness.value,
+    	contrast = ui_contrast.value,
+    	saturation = ui_saturation.value,
+    	gamma = ui_gamma.value / 10;
+    	sortby = ui_sortby.value,
+    	showcomponents = ui_showcomponents.checked,
+    	showeffcol = ui_showeffcol.checked,
+    	showmixedcol = ui_showmixedcol.checked,
+    	showluma = ui_showluma.checked,
+	    pattern = ui_pattern.value;
 
-	//
-	// set up the mixing pattern selector
-	//
-	pattern_div = byId("pattern_div");
-	if (mixed == '0') {
-		pattern_div.style.pointerEvents = 'none';
-		pattern_div.style.opacity = '0.5';
-	} else {
-		pattern_div.style.pointerEvents = null;
-		pattern_div.style.opacity = null;
-	}
-	if (mixed == '2') {
-		pattern_element.options[0].disabled = false;
-		pattern_element.options[2].disabled = true;
-	} else if (mixed == '4') {
-		pattern_element.options[0].disabled = true;
-		pattern_element.options[2].disabled = false;
-	}
+
+    /*
+     *  Copy slider value to text fields
+     */
+
+    ui_brightness_val.innerText = brightness;
+    ui_saturation_val.innerText = saturation;
+    ui_lumadiff_val.innerText = lumadiff;
+	ui_contrast_val.innerText = contrast;
+	ui_gamma_val.innerText = gamma;
+
+
+    /*
+     *  Enable / Disable luma threshold slider
+     */
+
+    {
+        let
+            pointerEvents,
+            opacity,
+            toggle,
+            invert;
+
+
+
+        if (mixed == '0') {
+    		pattern_div.style.pointerEvents = 'none';
+    		pattern_div.style.opacity = '0.5';
+    	} else {
+    		pattern_div.style.pointerEvents = null;
+    		pattern_div.style.opacity = null;
+    	}
+
+        switch(mixed){
+        case '0':
+            pointerEvents = 'none';
+            opacity = '0.5';
+            ui_lumadiff.value = 0;
+            break;
+        case '2':
+            toggle = true;
+            break;
+        case '4':
+            toggle = true;
+            invert = true;
+            break;
+        }
+
+        const { style : luma } = ui_lumadiff_div;
+        const { style : pattern } = pattern_div;
+
+        luma.pointerEvents = pattern.pointerEvents = pointerEvents;
+        luma.opacity = pattern.opacity = opacity;
+
+        if(toggle){
+            const { options } = pattern_element;
+            options[0].disabled =   invert;
+    		options[2].disabled = ! invert;
+        }
+    }
+
+
 	if (mixed != old_mixed) {
 		old_mixed = mixed;
-		pattern_element = byId("pattern");
+		pattern_element = ui_pattern;
 		pattern_element.value = { '0': 'h', '2': 'h', '4': 'c' }[mixed];
 		pattern = pattern_element.value;
 	}
@@ -827,7 +930,7 @@ function refresh() {
 			i++;
 		}
 	}
-	byId("collink").href = url;
+	ui_collink.href = url;
 
 
 	//
@@ -1106,12 +1209,12 @@ function refresh() {
 	//
 	// fill hex text field
 	//
-	byId("hexcolors").innerHTML = text_hexcolors;
+	ui_hexcolors.innerHTML = text_hexcolors;
 
 	//
 	// number of colors
 	//
-	byId("numcol").innerHTML = colors.length;
+	ui_numcol.innerHTML = colors.length;
 
 	//
 	// colorspace diagram
@@ -1120,27 +1223,11 @@ function refresh() {
 
 	drawScreen(screen2);
 
-//	// analyze how many colors are used in the diagram
-//	for (let i = 0; i < colors.length; i++) {
-//		colors[i].localIndex = i;
-//	}
-//	let usedColors = new Set();
-//	for (let j = 0; j < 2; j++) {
-//		for (let i = 0 ; i < colorspaceMaps[j].length; i++) {
-//			usedColors.add(colorspaceMaps[j][i].localIndex);
-//		}
-//	}
-//	usedColors = Array.from(usedColors);
-//	usedColors = usedColors.sort((a,b)=>a-b);
-//	for (let j = 1; j < usedColors.length; j++) {
-//		let i = usedColors[j];
-//		colors[i].y = 0;
-//	}
 
 	//
 	// all colors table
 	//
-	allcoltab = byId("allcoltab");
+	allcoltab = ui_allcoltab;
 
     const headers = [
         '#' , 'mix' , 'index 1' , 'index 2' , 'f' ,
@@ -1148,27 +1235,7 @@ function refresh() {
         'H' , 'S' , 'L' , 'R' , 'G' , 'B' , 'hex'
     ].map((header) => `<th>${ header }</th>`);
 
-    //
-	// html += '';
-	// html += '<th>#</th>';
-	// html += '<th>mix</th>';
-	// html += '<th>index 1</th>';
-	// html += '<th>index 2</th>';
-	// html += '<th>f</th>';
-	// html += '<th>c1</th>';
-	// html += '<th>c2</th>';
-	// html += '<th>luma diff</th>';
-	// html += '<th>Y</th>';
-	// html += '<th>U</th>';
-	// html += '<th>V</th>';
-	// html += '<th>H</th>';
-	// html += '<th>S</th>';
-	// html += '<th>L</th>';
-	// html += '<th>R</th>';
-	// html += '<th>G</th>';
-	// html += '<th>B</th>';
-	// html += '<th>hex</th>';
-	// html += '</tr>';
+
 	allcoltab.innerHTML = `<tr>${ headers }</tr>`;
 
 	for (let i = 0; i < colors.length; i++) {
@@ -1281,10 +1348,10 @@ function refresh() {
 	}
 }
 
-function reset() {
-	byId("brightness").value = 50;
-	byId("contrast").value = 100;
-	byId("saturation").value = 50;
-	byId("gamma").value = 28; // PAL: 2.8
+function reset(){
+	byId('brightness').value = 50;
+	byId('contrast').value = 100;
+	byId('saturation').value = 50;
+	byId('gamma').value = 28; // PAL: 2.8
 	refresh();
 }
