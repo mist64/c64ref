@@ -4,6 +4,9 @@
 
 window.onload = init;
 
+
+
+
 // START
 // https://www.pepto.de/projects/colorvic/
 // START
@@ -47,6 +50,7 @@ const UI = [
     'numcol',
     'allcoltab',
     'hexcolors',
+    'i_text_basic',
 
     'text_basic2_lower',
     'text_basic2_upper',
@@ -65,6 +69,47 @@ function findComponents(){
     for(const element of UI)
         window[`ui_${ element }`] = byId(element);
 }
+
+/*
+ *  HTML Calls
+ */
+
+function preset(mixed,lumadiff){
+	ui_lumalevels.selectedIndex = 1; // new VIC-II
+	ui_mixed.value = mixed;
+	ui_lumadiff.value = lumadiff / 10;
+	refresh();
+}
+
+function toggleCase(idA,idB){
+
+    const [ styleA , styleB ] = [ byId(idA).style , byId(idB).style ];
+
+    const style = (styleA.display === '')
+        ? [ 'none' , '' ]
+        : [ '' , 'none' ] ;
+
+    [ styleA.display , styleB.display ] = style;
+}
+
+function copyElement(idA,idB){
+
+    const text = ui_i_text_basic;
+
+    const
+        elementA = byId(idA),
+        elementB = byId(idB);
+
+    text.value = (elementA.style.display === '')
+        ? elementA.innerHTML
+        : elementB.innerHTML;
+
+    text.style = '';
+    text.select();
+    document.execCommand('copy');
+    text.style.display = 'none';
+}
+
 
 const lumadiff_limit1 = 5;
 const lumadiff_limit2 = 31;
@@ -198,7 +243,7 @@ function CToHex(component){
         .padStart(2,'0');
 }
 
-function RGBToHex(r,g,b){
+function RGBToHex({ r , g , b }){
     return `#${ CToHex(r) }${ CToHex(g) }${ CToHex(b) }`;
 }
 
@@ -522,9 +567,9 @@ function getColorspaceMap3(){
 
 function svgForColors(colorA,colorB,f,pattern){
 
-    const
-        hexA = RGBToHex(colorA.r,colorA.g,colorA.b),
-        hexB = RGBToHex(colorB.r,colorB.g,colorB.b);
+    let
+        hexA = RGBToHex(colorA),
+        hexB = RGBToHex(colorB);
 
     const path = (color,path) =>
         `<path stroke = '${ color }' d = '${ path }'></path>`;
@@ -538,6 +583,7 @@ function svgForColors(colorA,colorB,f,pattern){
             width = '${ width }'
         >${ strokes.join('') }</svg>`;
 
+    // console.log(mixed,pattern)
 
 	switch(mixed){
 	case '0':
@@ -605,7 +651,7 @@ function svgForColors(colorA,colorB,f,pattern){
                 return svg(2,2,'0 -.5 2 2',[
                     path(hexA,'M0 0h1'),
                     path(hexB,'M1 0h1'),
-                    path(hexA,'M0 1h2'),
+                    path(hexA,'M0 1h2')
                 ]);
 				// const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" shape-rendering="auto" viewBox="0 -.5 2 2">'
 				// svg += '<path stroke="' + hexcolora + '" d="M0 0h1"></path>'
@@ -617,7 +663,7 @@ function svgForColors(colorA,colorB,f,pattern){
                 return svg(4,2,'0 -.5 4 2',[
                     path(hexA,'M0 0h2'),
                     path(hexB,'M2 0h2'),
-                    path(hexA,'M0 1h4'),
+                    path(hexA,'M0 1h4')
                 ]);
 				// const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="2" shape-rendering="auto" viewBox="0 -.5 4 2">'
 				// svg += '<path stroke="' + hexcolora + '" d="M0 0h2"></path>'
@@ -632,7 +678,7 @@ function svgForColors(colorA,colorB,f,pattern){
                     path(hexA,'M0 1h2'),
                     path(hexB,'M0 2h1'),
                     path(hexA,'M1 2h1'),
-                    path(hexA,'M0 3h2'),
+                    path(hexA,'M0 3h2')
                 ]);
 				// const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="2" height="4" shape-rendering="auto" viewBox="0 -.5 2 4">'
 				// svg += '<path stroke="' + hexcolora + '" d="M0 0h1"></path>'
@@ -650,7 +696,7 @@ function svgForColors(colorA,colorB,f,pattern){
                     path(hexA,'M0 1h4'),
                     path(hexB,'M0 2h2'),
                     path(hexA,'M2 2h2'),
-                    path(hexA,'M0 3h4'),
+                    path(hexA,'M0 3h4')
                 ]);
 				// const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" shape-rendering="auto" viewBox="0 -.5 4 4">'
 				// svg += '<path stroke="' + hexcolora + '" d="M0 0h2"></path>'
@@ -665,7 +711,7 @@ function svgForColors(colorA,colorB,f,pattern){
 		} else {
             return svg(1,2,'0 -.5 1 2',[
                 path(hexA,'M0 0h1'),
-                path(hexB,'M0 1h1'),
+                path(hexB,'M0 1h1')
             ]);
 			// const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="2" shape-rendering="auto" viewBox="0 -.5 1 2">'
 			// svg += '<path stroke="' + hexcolor1 + '" d="M0 0h1"></path>'
@@ -680,7 +726,7 @@ function svgForColors(colorA,colorB,f,pattern){
 	}
 }
 
-function imageFromColor(c){
+function imageFromColor(c,pattern){
 
 	component1 = c.component1;
 	component2 = c.component2;
@@ -690,10 +736,10 @@ function imageFromColor(c){
 		component2 = c;
 	}
 
-	svg = svgForColors(component1,component2,c.f,pattern)
-	   .replace(/#/g,'%23');
+	svg = encodeURIComponent(svgForColors(component1,component2,c.f,pattern));
+	   // .replace(/#/g,'%23');
 
-    image = `url('data:image/svg+xml;utf8,${ svg }')`;
+    image = `url("data:image/svg+xml;utf8,${ svg }")`;
 	return image;
 }
 
@@ -857,7 +903,7 @@ function useURLData(){
             lumaDelta = urlParams.get('lumadiff') / 10,
             isLarge = lumaDelta > lumadiff_limit1;
 
-        ui_limit_lumadiff.checked = ! is_large;
+        ui_limit_lumadiff.checked = ! isLarge;
 
         ui_lumadiff.value = lumaDelta;
         ui_lumadiff.max = (isLarge)
@@ -1221,39 +1267,40 @@ function refresh(){
     row3 = ui_row3;
 	row3.innerText = '';
 
-    const type = (() => {
 
-        if(showcomponents)
-            return [ row0 , 'ccol' , 'C' ];
+    const types = [];
 
-        if(showeffcol)
-            return [ row1 ,  'col' , 'E' ];
+    if(showcomponents)
+        types.push([ row0 , 'ccol' , 'C' ]);
 
-        if(showmixedcol)
-            return [ row2 , 'mcol' , 'M' ];
+    if(showeffcol)
+        types.push([ row1 ,  'col' , 'E' ]);
 
-        if(showluma)
-            return [ row3 , 'ycol' , 'L' ];
-    })();
+    if(showmixedcol)
+        types.push([ row2 , 'mcol' , 'M' ]);
 
-    if(type && colors.length > 1){
+    if(showluma)
+        types.push([ row3 , 'ycol' , 'L' ]);
 
-        const [ row , column , value ] = type;
+
+    if(colors.length > 1){
+
         const { length } = colors;
 
-        colors.forEach((color,i) => {
+        for(const [ row , column , value ] of types){
 
-            const cell = create('td');
-			cell.className = 'colbox'
-			cell.id = `${ column }${ i }`;
+            colors.forEach((color,i) => {
 
-			row.appendChild(cell);
+                const cell = create('td');
+    			cell.className = 'colbox'
+    			cell.id = `${ column }${ i }`;
 
-			// if(i == length - 1)
-                // row.innerHTML += `<td>${ value }</td>`;
-        });
+    			row.appendChild(cell);
 
-        row.innerHTML += `<td>${ value }</td>`;
+            });
+
+            row.innerHTML += `<td>${ value }</td>`;
+        }
     }
 
     //
@@ -1294,13 +1341,13 @@ function refresh(){
 	text_hexcolors = '';
 	for (let i = 0; i < colors.length; i++) {
 		c = colors[i];
-		hexcolor = RGBToHex(c.r, c.g, c.b);
+		hexcolor = RGBToHex(c);
 		if (showcomponents) {
 			component1 = c.component1;
 			component2 = c.component2;
 			if (component1) {
-				let hexcolor1 = RGBToHex(component1.r, component1.g, component1.b);
-				let hexcolor2 = RGBToHex(component2.r, component2.g, component2.b);
+				let hexcolor1 = RGBToHex(component1);
+				let hexcolor2 = RGBToHex(component2);
 
 				html = '<table><tr>';
 
@@ -1330,14 +1377,14 @@ function refresh(){
 			byId("col"+i).style = 'background-color: ' + hexcolor;
 		}
 		if (showmixedcol) {
-			let image = imageFromColor(c);
+			let image = imageFromColor(c,pattern);
 			let td = byId("mcol"+i);
 			td.style.backgroundImage = image;
 			td.innerHTML = '<a href="#color' + i + '">&nbsp;</a>';
 		}
 		if (showluma) {
 			y = (Math.max(c.y, 0) / 307.2 * 255) | 0;
-			yhexcolor = RGBToHex(y, y, y);
+			yhexcolor = RGBToHex({ r : y , g : y , b : y });
 			byId("ycol"+i).style = 'background-color: ' + yhexcolor;
 		}
 
@@ -1437,20 +1484,20 @@ function refresh(){
     ].map((header) => `<th>${ header }</th>`);
 
 
-	allcoltab.innerHTML = `<tr>${ headers }</tr>`;
+	allcoltab.innerHTML = `<tr>${ headers.join('') }</tr>`;
 
 	for (let i = 0; i < colors.length; i++) {
 		let c = colors[i];
 		let ci1 = '';
 		let ci2 = '';
-		let imagem = imageFromColor(c);
+		let imagem = imageFromColor(c,pattern);
 		let image1 = '';
 		let image2 = '';
 		if (c.component1) {
 			ci1 = c.component1.index;
 			ci2 = c.component2.index;
-			let image1 = imageFromColor(c.component1);
-			let image2 = imageFromColor(c.component2);
+			let image1 = imageFromColor(c.component1,pattern);
+			let image2 = imageFromColor(c.component2,pattern);
 		}
 
 		let tr = create("tr");
@@ -1544,7 +1591,7 @@ function refresh(){
 		tr.appendChild(td);
 
 		td = create("td");
-		td.innerHTML = RGBToHex(c.r, c.g, c.b);
+		td.innerHTML = RGBToHex(c);
 		tr.appendChild(td);
 	}
 }
