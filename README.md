@@ -73,7 +73,7 @@ scripts to present this material to the web.
 - `Corrections ( Typos & Content )`
 - `Translations`
 - `..` <br>
-  ​<br>
+   <br>
   **Are Welcome !**
 
 <br>
@@ -88,6 +88,7 @@ and ***editing*** the collected files was done by **[Michael Steil]**.
 <!----------------------------------------------------------------------------->
 
 [View Rendered]: http://pagetable.com/c64ref
+
 [Building]: docs/Build.md
 
 [Michael Steil]: mailto:mist64@mac.com
