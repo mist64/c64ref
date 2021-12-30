@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang = 'en-US'>
+
+	<head>
+		<meta http-equiv = 'Content-type' content = 'text/html; charset=utf-8'/>
+		<title>C64 | Colors</title>
+		<link rel = 'stylesheet' href = '../style.css'>
+		<link rel = 'stylesheet' href = 'Style.css'>
+		<script src = 'script.js'defer></script>
+	</head>
+
+	<body>
+		<a href = 'https://github.com/mist64/c64ref' aria-label = 'View source on GitHub'>
+			<object id = 'octocat' type = 'image/svg+xml' data = 'Octocat.svg'></object>
+		</a>
+
+		<div class = 'topnav'>
+			<h1>Ultimate Commodore 64 Reference</h1>
+			<a href = '../kernal/'>KERNAL API</a>
+			<a href = '../c64disasm/'>ROM Disassembly</a>
+			<a href = '../c64mem/'>Memory Map</a>
+			<a href = '../charset/'>Charset · PETSCII · Keyboard</a>
+			<a class = 'active' href = '../colors/'>Colors</a>
+			<a class = 'home' href = 'https://www.pagetable.com/'>Pagetable.com</a>
+		</div>
+
+		<div class = 'main'>
+			<h1>C64 Colors</h1>
+			<p>
+				<i>
+					concieved by <a href = 'http://www.pagetable.com/'><b>Michael Steil</b></a>,
+					based on <a href = 'https://www.pepto.de/projects/colorvic/'><b>Pepto</b></a>'s work.
+				</i>
+			</p>
+
+			<table class = 'paltab'>
+				<tr><th>Palette</th><th>Adjustments</th></tr>
+				<tr><td>
+					<table>
+						<tr>
+							<td class="vertical-adjust" rowspan="3"><span class="vertical">PRESETS</span></td>
+							<td>Plain</td>
+							<td>
+								<button type="button" onclick="preset('0', 0);">16c</button>
+							</td>
+						</tr>
+						<tr>
+							<td class="vertical-adjust">50% Mix</td>
+							<td class="vertical-adjust">
+								<button type="button" onclick="preset('2', 0);">23c</button>
+								<button type="button" onclick="preset('2', 30);">39c</button>
+								<button type="button" onclick="preset('2', 40);">55c</button>
+							</td>
+						</tr>
+						<tr style="border-bottom: 1px solid black;">
+							<td class="vertical-adjust">25/50/75% Mix</td>
+							<td class="vertical-adjust">
+								<button type="button" onclick="preset('4', 0);">37c</button>
+								<button type="button" onclick="preset('4', 20);">73c</button>
+								<button type="button" onclick="preset('4', 40);">133c</button>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<label for="lumalevels">VIC-II Rev<sup><a href="#note_levels">(i)</a></sup></label>
+							</td>
+							<td colspan="2">
+								<select name="lumalevels" id="lumalevels" onChange="refresh();">
+									<option value="lumalevels0">OLD 6569R1 (5 luma levels; rare)</option>
+									<option selected value="lumalevels1">NEW (9 luma levels)</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<label for="mixed">Mixed Colors<sup><a href="#note_mixed">(i)</a></sup></label>
+							</td>
+							<td colspan="2">
+								<select name="mixed" id="mixed" onChange="refresh();">
+									<option value="0">No</option>
+									<option value="2">50%</option>
+									<option value="4">25%/50%/75%</option>
+								</select>
+								<span style="float: right;">
+									<input checked type="checkbox" id="limit_lumadiff" onclick="refresh()">
+									<label for="limit_lumadiff">Limit<sup><a href="#note_limit_lumadiff">(i)</a></sup> ↓</label>
+								</span>
+							</td>
+						</tr>
+						<tr id="lumadiff_div">
+							<td colspan="2">
+								<label for="lumadiff">&nbsp;&nbsp;Max Luma Diff<sup><a href="#note_lumadiff">(i)</a></sup></label>
+							</td>
+							<td>
+								<input id="lumadiff" style="width: 20em;" type="range" min="0" max="31" oninput="refresh();">
+							</td>
+							<td style="width: 2em; text-align: center">
+								<span id="lumadiff_val"></span>
+							</td>
+						</tr>
+						<tr id="pattern_div" style="border-bottom: 1px solid black;">
+							<td colspan="2">
+								<label for="pattern">&nbsp;&nbsp;Mixing Pattern<sup><a href="#note_pattern">(i)</a></sup></label>
+							</td>
+							<td colspan="2">
+								<select name="pattern" id="pattern" onChange="refresh();">
+									<option selected value="h">Alternating Lines</option>
+									<option value="v">Alternating Columns</option>
+									<option value="v2">Alternating Columns h2x</option>
+									<option value="c">Checkered</option>
+									<option value="c2">Checkered h2x</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<label for="sortby">Sort by</label>
+							</td>
+							<td colspan="2">
+								<select name="sortby" id="sortby" onChange="refresh();">
+									<option value="lumadiff">Luma diff</option>
+									<option selected value="hue">Hue</option>
+									<option value="luma">Luma</option>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td>
+					<table>
+						<tr>
+							<td>
+								<label for="brightness">Brightness</label>
+							</td>
+							<td>
+								<input id="brightness" type="range" min="1" max="100" list="slbrightness" oninput="refresh();">
+								<datalist id="slbrightness">
+									<option>50</option>
+								</datalist>
+							</td>
+							<td style="width: 2em; text-align: center">
+								<span id="brightness_val"></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="contrast">Contrast</label>
+							</td>
+							<td>
+								<input id="contrast" type="range" min="1" max="200" list="slcontrast" oninput="refresh();">
+								<datalist id="slcontrast">
+									<option>100</option>
+								</datalist>
+							</td>
+							<td style="text-align: center">
+								<span id="contrast_val"></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="saturation">Saturation</label>
+							</td>
+							<td>
+								<input id="saturation" type="range" min="1" max="100" list="slsaturation" oninput="refresh();">
+								<datalist id="slsaturation">
+									<option>50</option>
+								</datalist>
+							</td>
+							<td style="text-align: center">
+								<span id="saturation_val"></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="gamma">Gamma</label>
+							</td>
+							<td>
+								<input id="gamma" type="range" min="22" max="28" list="slgamma" oninput="refresh();">
+								<datalist id="slgamma">
+									<option>22</option>
+									<option>28</option>
+								</datalist>
+							</td>
+							<td style="text-align: center">
+								<span id="gamma_val"></span>
+							</td>
+						</tr>
+						<tr><td colspan="3" style="text-align: center;"><button type="button" onclick="reset();">Reset</button></td></tr>
+					</table>
+
+				</td>
+			</tr>
+		</table>
+
+		<b><span id="numcol"></span> colors</b><br/>
+		<a id="collink">Link to this Palette</a>
+
+		<hr/>
+
+		<h2>Colorspace Diagram</h2>
+		<table class="code_table" border="1">
+			<tr>
+				<td>
+					<canvas id="colspace_diagram"></canvas>
+				</td>
+				<td>
+					<!--				<span style="text-align: center;">-->
+					<button type="button" onclick="toggleCase('text_basic2_lower', 'text_basic2_upper');">Toggle Case</button>
+					<span style="float: right;">
+						<button type="button" onclick="copyElement('text_basic2_lower', 'text_basic2_upper');">Copy</button>
+					</span>
+					<!--				</span>-->
+					<div class="code">
+						<pre id="text_basic2_lower"></pre>
+						<pre id="text_basic2_upper" style="display: none;"></pre>
+					</div>
+				</td>
+			</tr>
+		</table>
+
+		<hr/>
+
+		<h2>Palette</h2>
+
+		<input type="checkbox" id="showcomponents" onclick="refresh()">
+		<label for="showcomponents"><u>C</u>omponents</label>
+
+		<input type="checkbox" id="showeffcol" onclick="refresh()">
+		<label for="showeffcol"><u>E</u>ffective Color</label>
+
+		<input checked type="checkbox" id="showmixedcol" onclick="refresh()">
+		<label for="showmixedcol"><u>M</u>ixed Color</label>
+
+		<input type="checkbox" id="showluma" onclick="refresh()">
+		<label for="showluma"><u>L</u>uma</label>
+
+		<br/>
+		<br/>
+
+		<table id="colors">
+			<tr id="row0"></tr>
+			<tr id="row1"></tr>
+			<tr id="row2"></tr>
+			<tr id="row3"></tr>
+		</table>
+
+		<br/>
+
+		<p>
+			<button type="button" onclick="copyElement('hexcolors', 'hexcolors');">Copy</button>
+		</p>
+		<div class="code">
+			<pre id="hexcolors"></pre>
+		</div>
+	</p>
+
+	<hr/>
+
+	<table id="allcoltab" border="1">
+	</table>
+
+
+	<textarea style="display: none;" id="i_text_basic"></textarea>
+
+
+	<h2>Notes</h2>
+
+	<ul>
+		<li id="note_levels"><b>VIC-II Rev</b>: </li>
+		<li id="note_mixed"><b>Mixed Colors</b>: </li>
+		<li id="note_lumadiff"><b>Max Luma Diff</b>: </li>
+		<li id="note_limit_lumadiff"><b>Limit Max Luma Diff</b>: </li>
+
+		<li id="note_pattern"><b>Mixing Pattern</b>: On a real system, *alternating columns* and *checkered* will produce nasty vertical low-frequency color stripes ("GEOS effect") for larger areas. The same is true for *checkered 2x* for lower luma diffs. The previews do not account for this.</li>
+		<li id="note_sortby"><b>Sort by</b>: The color index is defined as follows: The 16 base colors have their natural indexes. Mixed colors are sorted first by luma diff, then by the index of the component with the lower index, then by the component with the higher index.</span></li>
+	</ul>
+
+	<h2>References</h2>
+
+	<ul>
+		<li><a href="https://www.pepto.de/projects/colorvic/">pepto: Calculating the color palette of the VIC II</a></li>
+		<li><a href="http://hitmen.c02.at/temp/palstuff/">groepaz: Accurately reproducing the Video Output of a Commodore C64</a></li>
+		<li><a href="https://kodiak64.com/blog/luma-driven-graphics-on-c64">Jon Woods: Luma-Driven Graphics on the Commodore 64</a></li>
+		<li><a href="https://ilesj.wordpress.com/2016/03/30/old-vic-ii-colors-and-color-blending/">Ilkka Sjöstedt: Old VIC-II Colors and Color Blending</a></li>
+		<li><a href="https://og2t.github.io/retro-palette-explorer/">Digger/Elysium: Retro Palette Explorer</a></li>
+		<li><a href="https://csdb.dk/forums/?roomid=13&topicid=90011&showallposts=1">CSDb User Forums: Joe's 136 colors technique</a></li>
+		<li><a href="http://nerdlypleasures.blogspot.com/2018/05/the-search-for-artifact-color-on.html">Great Hierophant: The Search for Artifact Color on the Commodore 64</a></li>
+	</ul>
+
+	</div>
+	</body>
+</html>
