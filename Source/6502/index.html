@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<title>6502 CPU | Ultimate C64 Reference</title>
+<link rel="stylesheet" href="../style.css">
+<script src="script.js"></script>
+<style>
+
+:root {
+	--box-background: #eef;
+	--box-border: gray;
+}
+
+input#tab0,
+input#tab1,
+input#tab2,
+input#tab3,
+input#tab4 {
+	display: none;
+}
+
+div#navigation {
+	border-bottom: 1px solid black;
+	margin-bottom: 10px;
+}
+
+nav label {
+	display: inline-block;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-top: 1px solid var(--box-border);
+	border-right: 1px solid var(--box-border);
+	background: hsl(210,0%,70%);
+	color: hsl(210,0%,30%);
+	text-align: center;
+	font-size: 11pt;
+}
+
+nav label:nth-child(1) { border-left: 1px solid var(--box-border); }
+nav label:hover {
+	background: hsl(210, 0%, 60%);
+	color: black;
+}
+nav label:active {
+	background: hsl(210, 0%, 80%);
+	color: black;
+}
+
+#tab0:checked ~ div nav label[for="tab0"],
+#tab1:checked ~ div nav label[for="tab1"],
+#tab2:checked ~ div nav label[for="tab2"],
+#tab3:checked ~ div nav label[for="tab3"],
+#tab4:checked ~ div nav label[for="tab4"] {
+	background: var(--main-background);
+	color: black;
+	position: relative;
+	border-bottom: none;
+	font-weight: bold;
+}
+
+#tab0:checked ~ div nav label[for="tab0"]:after,
+#tab1:checked ~ div nav label[for="tab1"]:after,
+#tab2:checked ~ div nav label[for="tab2"]:after,
+#tab3:checked ~ div nav label[for="tab3"]:after,
+#tab4:checked ~ div nav label[for="tab4"]:after {
+	content: "";
+	display: block;
+	position: absolute;
+	height: 3px;
+	width: 100%;
+	background: var(--main-background);
+	left: 0;
+	bottom: -2px;
+}
+
+h2 {
+	font-size: large;
+}
+
+h3 {
+	font-size: medium;
+}
+
+.reference_card {
+	border-radius: 10px;
+	border: 1px solid black;
+	box-shadow: 2px 2px 10px gray;
+	background-color: white;
+	margin: 10px;
+	padding: 8px 22px;
+	width: 700px;
+	font-size: 11pt;
+}
+
+.reference_card_addmode {
+	border-radius: 10px;
+	border: 1px solid black;
+	box-shadow: 2px 2px 10px gray;
+	background-color: white;
+	margin: 10px;
+	padding: 8px 22px;
+	width: 350px;
+	font-size: 11pt;
+}
+
+.reference_table td,
+.reference_table th {
+	padding: 1px 10px;
+	vertical-align: middle;
+}
+
+.reference_table th {
+	padding: 5px 10px;
+}
+
+.reference_table {
+	width: 100%;
+}
+
+.reference_flags_table {
+	float: right;
+	margin: 16px 0px 10px 10px;
+	border: none;
+}
+
+
+.reference_flags_table tr  {
+    height: 1.5em;
+}
+
+
+.reference_flags_table th,
+.reference_flags_table td {
+	padding: 2px;
+	text-align: center;
+	vertical-align: middle;
+    width: 1.5em;
+	border-right: 1px solid gray;
+}
+
+.reference_flags_table th:last-child,
+.reference_flags_table td:last-child {
+	border-right: none;
+}
+
+
+.reference_flags_table td {
+	border-top: 1px solid lightgray;
+}
+
+.opcode_table {
+	border: none;
+}
+
+.opcode_table td {
+	border: 1px solid white;
+	height: 40px;
+	width: 40px;
+	font-size: 7.5pt;
+	font-family: monospace;
+	/* text-shadow: 1px 0px 2px white; */
+}
+
+.opcode_table th {
+	font-size: 7.5pt;
+	font-family: monospace;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#mnemos_by_category table {
+	border: none;
+}
+
+#mnemos_by_category td {
+	padding: 2px;
+	font-size: 11pt;
+}
+
+#mnemos_by_category th {
+	text-align: center;
+}
+
+#cycle_reference {
+	font-size: 10pt;
+}
+
+#opcode_reference {
+	font-size: 10pt;
+}
+
+.big_table {
+	overflow: scroll;
+	border: none;
+}
+.big_table td,
+.big_table th {
+	vertical-align: top;
+}
+
+.big_table {
+	border: none;
+	font-size: 10pt;
+}
+
+.big_table th {
+	border-top: 0px;
+	border-left: 1px dotted gray;
+}
+
+.big_table th.rotate {
+	border: none;
+	vertical-align: bottom;
+	height: 210px;
+	white-space: nowrap;
+}
+
+.big_table th.rotate > div {
+	transform:
+		translate(2px, -1px)
+		rotate(290deg);
+	width: 30px;
+}
+
+.big_table th.rotate > div > span {
+	padding: 5px 16px;
+	border-top: 2px solid black;
+}
+
+
+.big_table td {
+	border-top: 1px dotted white;
+	border-left: 1px dotted gray;
+	padding: 1px 2px;
+}
+
+.big_table tr:nth-child(2n+3) {
+	background: #fff;
+}
+
+.big_table th.leading,
+.big_table td.leading {
+	border-left: 2px solid black;
+}
+
+.opcode,
+.cycles,
+.bytes,
+.flag {
+	text-align: center;
+}
+
+th.operation,
+td.operation {
+	white-space: nowrap;
+}
+
+th.opcode,
+td.opcode {
+	width: 2em;
+	background: #ccc5;
+}
+
+th.bytes,
+td.bytes {
+	width: 1em;
+	background: #ddd5;
+}
+
+th.cycles,
+td.cycles {
+	background: #eee5;
+}
+
+td.cycles {
+	width: 2em;
+	white-space: nowrap;
+}
+
+
+th.cycles.detailed,
+td.cycles.detailed {
+}
+
+th.flag,
+td.flag {
+	width: 1em;
+}
+
+.info_logo {
+	float: right;
+	max-height: 100px;
+	max-width: 200px;
+	top: 20px;
+	right: 20px;
+}
+
+.bug_box {
+	border: 1px solid red;
+	padding: 5px;
+}
+
+
+
+.disabled {
+	pointer-events: none;
+	opacity: 0.25;
+}
+
+.vertical {
+   writing-mode: vertical-rl;
+   transform:rotate(270deg);
+   margin: 0px;
+}
+.vertical:before {
+	content: '';
+	padding-top: 110%;/* takes width as reference, + 10% for faking some extra padding */
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.ill {
+	background: repeating-linear-gradient(
+		45deg,
+		rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0) 2px,
+		rgba(0, 0, 0, 0.1) 2px,
+		rgba(0, 0, 0, 0.1) 4px
+	);
+}
+
+.ill_big {
+	background: repeating-linear-gradient(
+		45deg,
+		rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0) 10px,
+		rgba(0, 0, 0, 0.05) 10px,
+		rgba(0, 0, 0, 0.05) 20px
+	);
+}
+
+.load { background-color: hsl(5, 100%, 80%); }
+.trans { background-color: hsl(340, 100%, 80%); }
+.stack { background-color: hsl(290, 100%, 80%); }
+.shift { background-color: hsl(220, 70%, 80%); }
+.logic { background-color: hsl(200, 70%, 80%); }
+.arith { background-color: hsl(130, 70%, 80%); }
+.inc { background-color: hsl(90, 70%, 80%); }
+.ctrl { background-color: hsl(55, 100%, 70%); }
+.bra { background-color: hsl(47, 100%, 70%); }
+.flags { background-color: hsl(39, 100%, 70%); }
+.kil { background-color: hsl(0, 0%, 20%); color: white; }
+.nop { background-color: hsl(0, 0%, 75%); }
+.undefined { background-color: hsl(0, 0%, 90%); }
+
+.load_light { background-color: hsl(5, 100%, 95%); }
+.trans_light { background-color: hsl(340, 100%, 95%); }
+.stack_light { background-color: hsl(290, 100%, 95%); }
+.shift_light { background-color: hsl(220, 70%, 95%); }
+.logic_light { background-color: hsl(200, 70%, 95%); }
+.arith_light { background-color: hsl(130, 70%, 95%); }
+.inc_light { background-color: hsl(90, 70%, 95%); }
+.ctrl_light { background-color: hsl(55, 100%, 92.5%); }
+.bra_light { background-color: hsl(47, 100%, 92.5%); }
+.flags_light { background-color: hsl(39, 100%, 92.5%); }
+.kil_light { background-color: hsl(0, 0%, 70%); }
+.nop_light { background-color: hsl(0, 0%, 93.75%); }
+.undefined_light { background-color: hsl(0, 0%, 97.5%); }
+
+/* https://stackoverflow.com/questions/34610932/tree-like-structure-for-nested-ul-lis */
+/*
+* {margin: 0; padding: 0; list-style: none;}
+ul li {
+  margin-left: 15px;
+  position: relative;
+  padding-left: 5px;
+}
+ul li::before {
+  content: " ";
+  position: absolute;
+  width: 1px;
+  background-color: #000;
+  top: 5px;
+  bottom: -12px;
+  left: -10px;
+}
+body > ul > li:first-child::before {top: 12px;}
+ul li:not(:first-child):last-child::before {display: none;}
+ul li:only-child::before {
+  display: list-item;
+  content: " ";
+  position: absolute;
+  width: 1px;
+  background-color: #000;
+  top: 5px;
+  bottom: 7px;
+  height: 7px;
+  left: -10px;
+}
+ul li::after {
+  content: " ";
+  position: absolute;
+  left: -10px;
+  width: 10px;
+  height: 1px;
+  background-color: #000;
+  top: 12px;
+}
+*/
+
+.selected_cpu {
+	background-color: red;
+}
+
+
+
+#legend {
+	margin: 4px;
+}
+
+.legend {
+	font-size: 9pt;
+	border: 0px solid black;
+}
+
+.legend tr {
+	display: inline;
+}
+
+.legend td {
+	margin: 2px;
+	padding: 2px;
+	border: 1px solid black;
+}
+
+</style>
+
+</head>
+
+<body>
+	<a href="https://github.com/mist64/c64ref" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:var(--main-color); color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+	<div class="topnav">
+	    <h1>Ultimate Commodore 64 Reference</h1>
+	    <a class="active" href="../6502/">6502</a>
+	    <a href="../kernal/">KERNAL API</a>
+	    <a href="../c64disasm/">ROM Disassembly</a>
+	    <a href="../c64mem/">Memory Map</a>
+	    <a href="../charset/">Charset · PETSCII · Keyboard</a>
+<!--	    <a href="../colors/">Colors</a>-->
+	    <a class="home" href="https://www.pagetable.com/">pagetable.com</a>
+	</div>
+
+	<div class="main">
+<!--	<h1>6502 CPU Reference</h1>-->
+<!--	<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>.</i></p>-->
+
+	<p>
+		<label for="cpu">CPU</label>
+		<select name="cpu" id="cpu" onChange="show();"></select>
+		<span id="showillegal_box">
+			<input type="checkbox" id="showillegal" onclick="show()">
+			<label for="showillegal">Undocumented opcodes</label>
+			<span id="separateillegal_box">
+				<input type="checkbox" id="separateillegal" onclick="show()">
+				<label for="separateillegal">Separate</label>
+			</span>
+		</span>
+	</p>
+
+<!--	<div id="tree"></div> -->
+
+	<input id="tab0" type="radio" name="tabs" onchange="show();"/>
+	<input id="tab1" type="radio" name="tabs" onchange="show();"/>
+	<input id="tab2" type="radio" name="tabs" onchange="show();"/>
+	<input id="tab3" type="radio" name="tabs" onchange="show();"/>
+	<input id="tab4" type="radio" name="tabs" onchange="show();"/>
+	<div id="navigation">
+		<nav>
+			<label for="tab0">Info</label><!--
+			--><label for="tab1">Opcodes</label><!--
+			--><label for="tab2">Instructions</label><!--
+			--><label for="tab3">Addressing Modes</label><!--
+			--><label for="tab4">Table</label>
+		</nav>
+	</div>
+
+	<div id="tab0c">
+		<div id="info_div"></div>
+		<div id="registers_div"></div>
+		<div id="flags_div"></div>
+		<div id="vectors_div"></div>
+	</div>
+
+	<div id="tab1c">
+		<p>
+			<label for="opcode_table_organization">Organization</label>
+			<select name="opcode_table_organization" id="opcode_table_organization" onChange="show();">
+				<option value="4-4">4-4</option>
+				<option value="3-3-2/h">3-3-2</option>
+<!--				<option value="3-3-2/h">3-3-2 (horizontal)</option>
+				<option value="3-3-2/v">3-3-2 (vertical)</option>-->
+			</select>
+		</p>
+
+		<div id="opcode_div1"></div>
+		<div id="opcode_div2"></div>
+	</div>
+
+	<div id="tab2c">
+		<div id="mnemos_by_category"></div>
+		<input type="checkbox" id="sortbycat2" onclick="show()">
+		<label for="sortbycat2">Sort by Category</label>
+		<div id="reference1"></div>
+		<div id="reference2"></div>
+	</div>
+
+
+	<div id="tab3c">
+		<input checked type="checkbox" id="showinstructions" onclick="show()">
+		<label for="showinstructions">Show Instructions</label>
+		<span id="sortbycat3_box">
+			<input type="checkbox" id="sortbycat3" onclick="show()">
+			<label for="sortbycat3">Sort by Category</label>
+		</span>
+		<div id="addmode_div"></div>
+	</div>
+
+
+	<div id="tab4c">
+		<input checked type="checkbox" id="showoperation" onclick="show()">
+		<label for="showoperation">Operation</label>
+		<input checked type="checkbox" id="showopcodes" onclick="show()">
+		<label for="showopcodes">Opcodes</label>
+		<input checked type="checkbox" id="showbytes" onclick="show()">
+		<label for="showbytes">Bytes</label>
+		<input checked type="checkbox" id="showcycles" onclick="show()">
+		<label for="showcycles">Cycles</label>
+		<span id="cycledetails_box">
+			<input type="checkbox" id="cycledetails" onclick="show()">
+			<label for="cycledetails">Details</label>
+		</span>
+		<input type="checkbox" id="sortbycat1" onclick="show()">
+		<label for="sortbycat1">Sort by Category</label>
+
+		<div id="big_table_div1"></div>
+		<div id="big_table_div2"></div>
+	</div>
+
+	<hr/>
+	<div id="legend"></div>
+	<hr/>
+
+	<h2>References</h2>
+
+	<ul>
+	<li><a href="http://anyplatform.net/media/guides/cpus/65xx%20Processor%20Data.txt">Mark Ormston: 65xx Processor Data</a></li>
+	<li><a href="https://csdb.dk/release/?id=185341">groepaz: NMOS 6510 Unintended Opcodes</a></li>
+	<li><a href="http://visual6502.org/wiki/index.php%3Ftitle%3D6502_Opcode_8B_(XAA,_ANE)">Michael Steil, Ed Spittles: 6502 Opcode 8B (XAA, ANE)</a></li>
+	<li><a href="https://www.masswerk.at/6502/6502_instruction_set.html">Norbert Landsteiner: 6502 Instruction Set</a></li>
+	<li><a href="http://www.oxyron.de/html/opcodes02.html">Graham: 6502/6510/8500/8502 Opcode matrix</a></li>
+	<li><a href="http://www.obelisk.me.uk/6502/reference.html">Andrew Jacobs: 6502 Instruction Reference</a></li>
+	<li><a href="https://pastraiser.com/cpu/6502/6502_opcodes.html">Pavel Zima: 6502 instruction set</a></li>
+	<li><a href="http://6502.org/tutorials/65c02opcodes.html">Bruce Clark: 65C02 Opcodes</a></li>
+	<li><a href="http://6502.org/tutorials/65c816opcodes.html">Bruce Clark: 65C816 Opcodes</a></li>
+	<li><a href="http://nparker.llx.com/a2/opcodes.html">Neil Parker: The 6502/65C02/65C816 Instruction Set Decoded</a></li>
+	</ul>
+
+	</div>
+
+</body>
+</html>

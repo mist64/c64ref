@@ -1,0 +1,44 @@
+
+@keyframes Wave {
+
+	0% , 100% {
+		transform: rotate(0);
+	}
+
+	20% , 60% {
+		transform: rotate(-25deg);
+	}
+
+	40% , 80% {
+		transform: rotate(10deg);
+	}
+}
+
+@media (max-width:500px){
+
+	.github-corner:hover .octo-arm {
+		animation:none;
+	}
+
+	.github-corner .octo-arm {
+		animation:octocat-wave 560ms ease-in-out;
+	}
+}
+
+svg {
+	fill: var(--main-color);
+	color: #fff;
+}
+
+svg .arm {
+	fill: currentColor;
+	transform-origin: 130px 106px;
+}
+
+svg .body {
+	fill: currentColor;
+}
+
+svg:hover .arm {
+	animation: Wave 560ms ease-in-out;
+}

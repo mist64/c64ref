@@ -1,1 +1,7 @@
-*.html
+Source/c64disasm/*.html
+Source/c64io/*.html
+Source/c64mem/*.html
+Source/charset/*.html
+Source/charset/test/*.html
+Source/kernal/*.html
+Source/*.html
