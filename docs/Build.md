@@ -8,7 +8,13 @@
 
 ## Generating
 
-**Requires:** [`Python`][Python]
+**Requires:** 
+- [`Python`][Python]
+- [`Markdown`][Markdown]
+
+    ```sh
+    pip install markdown
+    ```
 
 To generate the `html` files,<br>
 simply execute [`generate.sh`][Generate].
@@ -66,6 +72,7 @@ Use <kbd>F5</kbd> to reload the page.
 
 [Generate]: ../Source/generate.sh
 
+[Markdown]: https://pypi.org/project/Markdown/
 [Python]: https://www.python.org/
 [Deno]: https://deno.land/
 
