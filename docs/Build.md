@@ -1,6 +1,8 @@
 
 # Building
 
+*How to build this project locally.*
+
 <br>
 
 ## Generating
@@ -22,6 +24,8 @@
 To generate the  `html`  files,<br>
 simply execute  [`generate.sh`][Generate]
 
+<br>
+
 This will build the different pages from the repos <br>
 *reference material* with the help of `python` scripts.
 
@@ -31,6 +35,8 @@ This will build the different pages from the repos <br>
 ## Testing
 
 **Requires:** **[Deno]**
+
+<br>
 
 To test the generated pages you <br>
 will need to start a local webserver.
@@ -67,7 +73,7 @@ To stop the **Webserver**.
 
 <br>
 
-#### <kbd>  Ctrl + Shift + I  </kbd> or <kbd>  F12  </kbd>
+#### <kbd>  Ctrl + Shift + I  </kbd>  or  <kbd>  F12  </kbd>
 
 To open the **Inspector**.
 
