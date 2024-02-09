@@ -26,10 +26,10 @@ scripts to present this material to the web.
 
 <br>
 
-| KERNEL | BASIC | Lang | By / From |
+| KERNAL | BASIC | Lang | By / From |
 |:------:|:-----:|:----:|:---------:|
 |  ◯                       | [⬤][Disassembly BASIC] | :us: | **Microsoft**
-| [⬤][Disassembly KERNEL] |  ◯                      | :us: | **Commodore**
+| [⬤][Disassembly KERNAL] |  ◯                      | :us: | **Commodore**
 | [⬤][Disassembly Lee]    | [⬤][Disassembly Lee]   | :us: | `Lee Davison`
 |  ◯                       | [⬤][Disassembly Bob]   | :us: | `Bob Sander-Cederlof`
 | [⬤][Disassembly Buch]   | [⬤][Disassembly Buch]  | :de: | **Commodore-64-intern-Buch**
@@ -55,7 +55,7 @@ scripts to present this material to the web.
 
 <br>
 
-### KERNEL API
+### KERNAL API
 
 <br>
 
