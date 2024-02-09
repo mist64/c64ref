@@ -415,7 +415,7 @@ $FFF3  IOBASE  Define I/O memory page
                
                
                  **Description**: This routine sets the X and Y registers to the address of
-               the memory section where the memory mapped 110 devices are located. This
+               the memory section where the memory mapped I/O devices are located. This
                address can then be used with an offset to access the memory mapped I/O
                devices in the Commodore 64. The offset is the number of locations from
                the beginning of the page on which the I/O register you want is located.
@@ -663,7 +663,7 @@ $FFF0  PLOT    Set cursor location
                  **Description**: A call to this routine with the accumulator carry flag
                set loads the current position of the cursor on the screen (in X,Y
                coordinates) into the Y and X registers. Y is the column number of the
-               cursor location (6-39), and X is the row number of the location of the
+               cursor location (0-39), and X is the row number of the location of the
                cursor (0-24). A call with the carry bit clear moves the cursor to X,Y
                as determined by the Y and X registers.
                
