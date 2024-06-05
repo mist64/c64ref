@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 #
 # txt2html.py - converts a "c64disasm" commented disassembly txt file
 # into cross-referenced HTML.
