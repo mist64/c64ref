@@ -196,6 +196,18 @@ def add_main(cc):
 
 ### RESOURCES
 
+
+# TODO: copy all the things
+# who copies what
+# all: global: style.css, local: index.html
+#
+# disasm, mem, kernal: only index.html
+# additionally:
+# 6502: *.js, cpu_*.txt
+# charset: *.css, *.js, bin
+# colors: *.js
+
+
 def copy_resources_and_html(cc):
 	category_path = cc.category.path
 	files = cc.resources
