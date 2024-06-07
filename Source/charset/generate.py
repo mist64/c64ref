@@ -331,7 +331,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, link = None, filen
 	scrcode7 = scrcode & 0x7f
 
 	description_html = ''
-		
+
 	if description is not None:
 		description_html = '<div class="char-txt">{}<br/></div>'.format(description)
 		#description_html = '<div class="char-txt"><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></div>'.format(description)
@@ -768,18 +768,18 @@ def html_div_overview_petscii(id, css_class): #petscii_overview
 			print('<br/>')
 
 	print('</div>')
-	
-	
+
+
 def html_div_overview_keyboard(id, css_class): #keyboard_overview
-	
+
 	print('<div id="' + id + '" class="'+ css_class +'">')
 
 	for machine in machines:
 		print(keyboard_layout_html(machine, keyboard_layout[machine]))
 
 	print('</div>')
-	
-	
+
+
 def html_div_selection_machine(id):
 
 	print('<div id="' + id + '">')
@@ -789,7 +789,7 @@ def html_div_selection_machine(id):
 		currentMachine = machines[i];
 		deselection = list(machines);
 		deselection.remove(currentMachine);
-		
+
 		print('    <tr>')
 		print('        <td><input type="radio" name="radios"  id="radio_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'radio_' + currentMachine + '\').checked, [\'{}\']);" /></td>'.format("','".join(deselection)))
 		print('        <td><input class="machine_checkbox" type="checkbox" id="checkbox_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'checkbox_' + currentMachine + '\').checked);" /></td>')
@@ -843,7 +843,7 @@ def html_div_info_screencode(id):
 			print('    </div>')
 
 		print('    <div class="additional-info">')
-		
+
 		print('        <table>')
 		print('            <tr><th colspan="2">PETSCII <th rowspan="2">Keyboard</th><th rowspan="2">Mode</th></tr>')
 		print('            <tr><th>hex</th><th>dec</th></tr>')
@@ -933,7 +933,7 @@ def html_div_info_petscii(id):
 			print('    <div class="control-description">')
 			print('        {}'.format(description))
 			print('    </div>')
-			
+
 		print('    <div class="additional-info">')
 
 		(all_keyboard_html, other_petscii) = all_keyboard_html_from_petscii(petscii, scrcode, other_ok = is_petscii_printable(petscii))
@@ -1138,7 +1138,7 @@ def html_div_table_petscii(id, css_class): #petscii_table_div
 		print('    <tr>')
 
 		print('        <td><a id="petscii_table_{:02x}">${:02X}</a></td>'.format(petscii, petscii))
-		
+
 		scrcode = scrcode_from_petscii[petscii]
 
 		print('        <td>${:02X}</td>'.format(scrcode))
@@ -1232,6 +1232,7 @@ print('    <a class="active" href="#">Charset · PETSCII · Keyboard</a>')
 print('    <a class="home" href="https://www.pagetable.com/">pagetable.com</a>')
 print('</div>')
 
+print('<div class="content">')
 print('<div class="main">')
 print('<h1>Character Set · PETSCII · Keyboard</h1>')
 
@@ -1291,6 +1292,7 @@ print('Note that some keyboard keys (VIC-20/C64/C128/C65: <span class="key-box">
 print('</li>')
 print('</ul>')
 
+print('</div>')
 print('</div>')
 print('</body>')
 print('</html>')

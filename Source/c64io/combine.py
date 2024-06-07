@@ -201,6 +201,7 @@ print('    <a class="active" href="#">I/O Map</a>')
 print('    <a class="home" href="https://www.pagetable.com/">pagetable.com</a>')
 print('</div>')
 
+print('<div class="content">')
 print('<div class="main">')
 print('<h1>C64 I/O Map</h1>')
 
@@ -424,6 +425,7 @@ while(True):
 	print('</tr>')
 
 print('</table>')
+print('</div>')
 print('</div>')
 print('</div>')
 print('</body>')

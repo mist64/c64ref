@@ -164,6 +164,7 @@ print('    <a href="../charset/">Charset · PETSCII · Keyboard</a>')
 print('    <a class="home" href="https://www.pagetable.com/">pagetable.com</a>')
 print('</div>')
 
+print('<div class="content">')
 print('<div class="main">')
 print('<h1>C64 BASIC & KERNAL ROM Disassembly</h1>')
 
@@ -189,13 +190,13 @@ while(True):
 	count += 1
 #	if count > 80:
 #		break
-	
+
 	for i in range(0, files):
 		if linenumber[i] >= len(data[i]):
 			continue
 		while len(data[i][linenumber[i]]) > 0 and (data[i][linenumber[i]][0] == '-' or data[i][linenumber[i]][0] == '#'):
 			linenumber[i] = linenumber[i] + 1
-	
+
 	if asmlinenumber >= len(data[asm_donor_index]):
 		break
 
@@ -206,7 +207,7 @@ while(True):
 		continue
 	if asm[0] == '#' or asm[0] == '-':
 		continue
-	
+
 	has_address = False
 	if asm[0] == '.':
 		hexaddress = asm[2:6]
@@ -269,6 +270,7 @@ while(True):
 	print('</tr>')
 
 print('</table>')
+print('</div>')
 print('</div>')
 print('</div>')
 print('</body>')

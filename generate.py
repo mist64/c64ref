@@ -169,7 +169,7 @@ def add_main(cc):
 
 	# extracting the relevant infos from the generated HTMLs
 	tag = soup.find("main")
-	new_tag = file_soup.find("div", class_="main")
+	new_tag = file_soup.find("div", class_="content")
 	tag.append(new_tag)
 
 	# position in <head> tag at which to insert the additional files:
