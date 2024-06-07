@@ -3,6 +3,8 @@
 import os
 import shutil
 import subprocess
+import fnmatch
+
 from dataclasses import dataclass
 from typing import NamedTuple
 from bs4 import BeautifulSoup
@@ -19,15 +21,16 @@ class RefCategory(NamedTuple):
 	short_title: str
 	generator_type: str = 'HTML'
 	generator_name: str = 'index.html'
+	generator_patterns: list = []
 
 CATEGORIES = [
-	RefCategory('6502',      '6502 Family CPU Reference', '6502'),
+	RefCategory('6502',      '6502 Family CPU Reference', '6502', generator_patterns=["cpu_*.txt", "*.js"]),
 	RefCategory('kernal',    'C64 KERNAL API', 'KERNAL API', 'SCRIPT', 'generate.py'),
 	RefCategory('c64disasm', 'C64 BASIC & KERNAL ROM Disassembly', 'ROM Disassembly', 'SCRIPT', 'combine.py'),
 	RefCategory('c64mem',    'C64 Memory Map', 'Memory Map', 'SCRIPT', 'combine.py'),
 	RefCategory('c64io',     'C64 I/O Map', 'I/O Map', 'SCRIPT', 'combine.py'),
-	RefCategory('charset',   'Character Set · PETSCII · Keyboard', 'Character Set · PETSCII · Keyboard', 'SCRIPT',  'generate.py'),
-	RefCategory('colors',    'C64 Colors', 'Colors'),
+	RefCategory('charset',   'Character Set · PETSCII · Keyboard', 'Character Set · PETSCII · Keyboard', 'SCRIPT',  'generate.py', generator_patterns=["*.js", "*.css", "bin/*.bin"]),
+	RefCategory('colors',    'C64 Colors', 'Colors', generator_patterns=["*.js"],),
 ]
 
 
@@ -197,17 +200,6 @@ def add_main(cc):
 ### RESOURCES
 
 
-# TODO: copy all the things
-# who copies what
-# all: global: style.css, local: index.html
-#
-# disasm, mem, kernal: only index.html
-# additionally:
-# 6502: *.js, cpu_*.txt
-# charset: *.css, *.js, bin
-# colors: *.js
-
-
 def copy_resources_and_html(cc):
 	category_path = cc.category.path
 	files = cc.resources
@@ -221,21 +213,55 @@ def copy_resources_and_html(cc):
 	if not os.path.exists(dest_path):
 		os.makedirs(dest_path)
 
+
 	# copy globals: stylesheet
-	for file in cc.resources:
-		file_in = os.path.join(source_path, file)
-		file_out = os.path.join(dest_path, file)
+	shutil.copy(os.path.join(SOURCE_DIR, "style.css"), BUILD_DIR)
 
-		if not os.path.exists(file_out):
-			print(f'{file_in} > {file_out}')
-			shutil.copy(file_in, file_out)
-		else:
-			print(f'{file_out} already exists')
+# TODO: remove and make the needed things happen via pattern?
+# 	# copy other resources:
+# 	for file in cc.resources:
+# 		file_in = os.path.join(source_path, file)
+# 		file_out = os.path.join(dest_path, file)
+#
+# 		if not os.path.exists(file_out):
+# 			print(f'{file_in} > {file_out}')
+# 			shutil.copy2(file_in, file_out)
+# 		else:
+# 			print(f'{file_out} already exists')
 
-
+	# write index.html
 	filename = os.path.join(dest_path, TARGET_HTML_NAME)
 	with open(filename, 'w', encoding='utf-8') as file:
 		file.write(str(cc.soup.decode(formatter="html5")))
+
+	# get files for generator_patterns and copy those
+	patterns = cc.category.generator_patterns
+	if patterns:
+		unfiltered_files = []
+		for root, dirs, files in os.walk(source_path):
+			for file in files:
+				filename = os.path.join(root, file)
+				filename = os.path.relpath(filename, source_path)
+				unfiltered_files.append(filename) # just the 'local' path
+
+		filtered_files = []
+		for pattern in patterns:
+			for filename in fnmatch.filter(unfiltered_files, pattern):
+				filtered_files.append(filename)
+
+		for file in filtered_files:
+			file_in = os.path.join(source_path, file)
+			file_out = os.path.join(dest_path, file)
+			os.makedirs(os.path.dirname(file_out), exist_ok=True)
+			shutil.copy2(file_in, file_out)
+
+		# # for debugging
+		# leftover_files = [file for file in unfiltered_files if file not in filtered_files]
+		# print(f">>> : {source_path}")
+		# for file in leftover_files:
+		# 	print(file)
+		# print("<<<")
+
 
 
 ### OCTOCAT
