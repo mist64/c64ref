@@ -76,7 +76,7 @@ BASIC_HTML = """
 
 ### MAIN METHOD
 
-def generate_html(category):
+def generate_html(category, revision, date):
 	html_doc = BASIC_HTML
 	soup = BeautifulSoup(html_doc, 'html.parser')
 
@@ -89,7 +89,7 @@ def generate_html(category):
 
 	generate_navigation(cc)
 	add_category_headline(cc)
-	add_category_build_info(cc)
+	add_category_build_info(cc, revision, date)
 
 	add_main(cc)
 
@@ -136,10 +136,9 @@ def add_category_headline(cc):
 	tag = cc.soup.find(id="headline")
 	tag.string = cc.category.long_title
 
-def add_category_build_info(cc):
-	#TODO: get revision and date
-	revision = 'Revision 7bc6e79, 2024-06-05'
-	html_doc = f'<i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>. {revision}</i>'
+def add_category_build_info(cc, revision, date):
+
+	html_doc = f'by <i><a href="http://www.pagetable.com/">Michael Steil</a></i> [<small><a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>, Revision {revision}, {date}</small>]'
 	doc_soup = BeautifulSoup(html_doc, 'html.parser')
 
 	tag = cc.soup.find(id="byline")
@@ -243,5 +242,15 @@ def add_github_corner(soup):
 
 ### MAIN
 
-for category in CATEGORIES:
-  generate_html(category)
+def main():
+	f = os.popen('git log -1 --pretty=format:%h .')
+	revision = f.read()
+
+	f = os.popen('git log -1 --date=short --pretty=format:%cd .')
+	date = f.read()
+
+	for category in CATEGORIES:
+		generate_html(category, revision, date)
+
+
+main()
