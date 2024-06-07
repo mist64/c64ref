@@ -2,6 +2,8 @@
 
 import os
 import shutil
+import subprocess
+from dataclasses import dataclass
 from typing import NamedTuple
 from bs4 import BeautifulSoup
 
@@ -13,20 +15,27 @@ GLOBAL_SHORT_TITLE = "Ultimate C64 Reference"
 
 class RefCategory(NamedTuple):
 	path: str
-	script_name: str
 	long_title: str
 	short_title: str
+	generator_type: str = 'HTML'
+	generator_name: str = 'index.html'
 
 CATEGORIES = [
-	RefCategory('6502',      'generate.py', '6502 Family CPU Reference', '6502'),
-	RefCategory('kernal',    'generate.py', 'C64 KERNAL API', 'KERNAL API'),
-	RefCategory('c64disasm', 'combine.py',  'C64 BASIC & KERNAL ROM Disassembly', 'ROM Disassembly'),
-	RefCategory('c64mem',    'combine.py',  'C64 Memory Map', 'Memory Map'),
-	RefCategory('c64io',     'combine.py',  'C64 I/O Map', 'I/O Map'),
-	RefCategory('charset',   'generate.py', 'Character Set · PETSCII · Keyboard', 'Character Set · PETSCII · Keyboard'),
-	RefCategory('colors',    'generate.py', 'C64 Colors', 'Colors'),
+	RefCategory('6502',      '6502 Family CPU Reference', '6502'),
+	RefCategory('kernal',    'C64 KERNAL API', 'KERNAL API', 'SCRIPT', 'generate.py'),
+	RefCategory('c64disasm', 'C64 BASIC & KERNAL ROM Disassembly', 'ROM Disassembly', 'SCRIPT', 'combine.py'),
+	RefCategory('c64mem',    'C64 Memory Map', 'Memory Map', 'SCRIPT', 'combine.py'),
+	RefCategory('c64io',     'C64 I/O Map', 'I/O Map', 'SCRIPT', 'combine.py'),
+	RefCategory('charset',   'Character Set · PETSCII · Keyboard', 'Character Set · PETSCII · Keyboard', 'SCRIPT',  'generate.py'),
+	RefCategory('colors',    'C64 Colors', 'Colors'),
 ]
 
+
+@dataclass
+class CurrentCategory:
+	category: RefCategory
+	soup: BeautifulSoup
+	resources: set
 
 ### CONFIG
 
@@ -45,7 +54,6 @@ BASIC_HTML = """
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<title>Ultimate C64 Reference</title>
 		<link rel="stylesheet" href="/style.css">
-		<style id="cat_css"></style>
 	</head>
 <body>
 
@@ -57,7 +65,7 @@ BASIC_HTML = """
 <p id="byline"></p>
 </header>
 
-<main class="main">
+<main>
 </main>
 
 </body>
@@ -72,30 +80,29 @@ def generate_html(category):
 	html_doc = BASIC_HTML
 	soup = BeautifulSoup(html_doc, 'html.parser')
 
-	add_category_title(soup, category.short_title)
-	# add_favicons(soup)
+	cc = CurrentCategory(category, soup, set())
 
-	add_github_corner(soup)
+	add_category_title(cc)
+	# add_favicons(cc.soup)
 
-	generate_navigation(soup, category)
-	add_category_headline(soup, category.long_title)
-	add_category_build_info(soup, category)
+	add_github_corner(cc.soup)
+
+	generate_navigation(cc)
+	add_category_headline(cc)
+	add_category_build_info(cc)
+
+	add_main(cc)
 
 	# write and copy to build directory
-	copy_resources(BUILD_DIR)
-
-	out_directory = os.path.join(BUILD_DIR, category.path)
-	filename = os.path.join(out_directory, TARGET_HTML_NAME)
-	if not os.path.exists(out_directory):
-		os.makedirs(out_directory)
-
-	with open(filename, 'w', encoding='utf-8') as file:
-		file.write(str(soup.decode(formatter="html5")))
+	copy_resources_and_html(cc)
 
 
 ### HELPER
 
-def generate_navigation(soup, active_category):
+def generate_navigation(cc):
+	soup = cc.soup
+	active_category = cc.category
+
 	nav_tag = soup.find('nav')
 
 	h1 = soup.new_tag('h1')
@@ -121,33 +128,103 @@ def generate_navigation(soup, active_category):
 	#<link href="/fav/icon.svg" rel="icon" type="image/svg+xml">
 	#<link href="/fav/apple-touch-icon.png" rel="apple-touch-icon">
 
-def add_category_title(soup, title):
-	tag = soup.find("title")
-	tag.string = f"{title} | {GLOBAL_SHORT_TITLE}"
+def add_category_title(cc):
+	tag = cc.soup.find("title")
+	tag.string = f"{cc.category.short_title} | {GLOBAL_SHORT_TITLE}"
 
-def add_category_headline(soup, title):
-	tag = soup.find(id="headline")
-	tag.string = title
+def add_category_headline(cc):
+	tag = cc.soup.find(id="headline")
+	tag.string = cc.category.long_title
 
-def add_category_build_info(soup, category):
+def add_category_build_info(cc):
 	#TODO: get revision and date
 	revision = 'Revision 7bc6e79, 2024-06-05'
 	html_doc = f'<i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>. {revision}</i>'
 	doc_soup = BeautifulSoup(html_doc, 'html.parser')
 
-	tag = soup.find(id="byline")
+	tag = cc.soup.find(id="byline")
 	tag.append(doc_soup)
+
+def add_main(cc):
+	soup = cc.soup
+	category = cc.category
+
+	dir = os.path.join(SOURCE_DIR, category.path)
+	filename = category.generator_name
+
+	file_soup = BeautifulSoup("", 'html.parser')
+	if category.generator_type == 'SCRIPT':
+		result = subprocess.run(['python3', filename], capture_output=True, text=True, cwd=dir)
+		file_soup = BeautifulSoup(result.stdout, 'html.parser')
+
+	elif category.generator_type == 'HTML':
+		path = 	os.path.join(dir, filename)
+		with open(path, 'r') as file:
+			file_soup = BeautifulSoup(file, 'html.parser')
+
+	else:
+		print("Missing generator")
+
+	# extracting the relevant infos from the generated HTMLs
+	tag = soup.find("main")
+	new_tag = file_soup.find("div", class_="main")
+	tag.append(new_tag)
+
+	# position in <head> tag at which to insert the additional files:
+	tag = soup.find("link")
+	files = cc.resources
+
+	for new_tag in file_soup.find_all('style'):
+		tag.insert_after(new_tag)
+
+	# check for tags that reference additional files
+
+	for new_tag in file_soup.find_all('script'):
+		tag.insert_after(new_tag)
+		if new_tag.has_attr('src'):
+			files.add(new_tag['src'])
+
+	for new_tag in file_soup.find_all('link'):
+		tag.insert_after(new_tag)
+		if new_tag.has_attr('href'):
+			files.add(new_tag['href'])
+
+	for new_tag in file_soup.find_all('img'):
+			tag.insert_after(new_tag)
+			if new_tag.has_attr('src'):
+				files.add(new_tag['src'])
 
 
 ### RESOURCES
 
-def copy_resources(out_directory):
-	if not os.path.exists(out_directory):
-		os.makedirs(out_directory)
+def copy_resources_and_html(cc):
+	category_path = cc.category.path
+	files = cc.resources
+
+	source_path = os.path.join(SOURCE_DIR, category_path)
+	dest_path = os.path.join(BUILD_DIR, category_path)
+
+	if not os.path.exists(BUILD_DIR):
+		os.makedirs(BUILD_DIR)
+
+	if not os.path.exists(dest_path):
+		os.makedirs(dest_path)
 
 	# copy globals: stylesheet
-	shutil.copy(os.path.join(SOURCE_DIR, "style.css"), out_directory)
+	for file in cc.resources:
+		file_in = os.path.join(source_path, file)
+		file_out = os.path.join(dest_path, file)
 
+		if not os.path.exists(file_out):
+			print(f'{file_in} > {file_out}')
+			shutil.copy(file_in, file_out)
+		else:
+			print(f'{file_out} already exists')
+
+
+	filename = os.path.join(dest_path, TARGET_HTML_NAME)
+	with open(filename, 'w', encoding='utf-8') as file:
+		file.write(str(cc.soup.decode(formatter="html5")))
 
 
 ### OCTOCAT
