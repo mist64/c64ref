@@ -9,6 +9,8 @@ from dataclasses import dataclass
 from typing import NamedTuple
 from bs4 import BeautifulSoup
 
+REGULAR_BUILD=True
+#REGULAR_BUILD=False #debug
 
 GLOBAL_TITLE = "Ultimate Commodore 64 Reference"
 GLOBAL_SHORT_TITLE = "Ultimate C64 Reference"
@@ -22,15 +24,16 @@ class RefCategory(NamedTuple):
 	generator_type: str = 'HTML'
 	generator_name: str = 'index.html'
 	generator_patterns: list = []
+	enabled: bool = True
 
 CATEGORIES = [
 	RefCategory('6502',      '6502 Family CPU Reference', '6502', generator_patterns=["cpu_*.txt", "*.js"]),
 	RefCategory('kernal',    'C64 KERNAL API', 'KERNAL API', 'SCRIPT', 'generate.py'),
-	RefCategory('c64disasm', 'C64 BASIC & KERNAL ROM Disassembly', 'ROM Disassembly', 'SCRIPT', 'combine.py'),
+	RefCategory('c64disasm', 'C64 BASIC & KERNAL ROM Disassembly', 'ROM Disassembly', 'SCRIPT', 'combine.py', enabled=REGULAR_BUILD),
 	RefCategory('c64mem',    'C64 Memory Map', 'Memory Map', 'SCRIPT', 'combine.py'),
-	RefCategory('c64io',     'C64 I/O Map', 'I/O Map', 'SCRIPT', 'combine.py'),
+	RefCategory('c64io',     'C64 I/O Map', 'I/O Map', 'SCRIPT', 'combine.py', enabled=False),
 	RefCategory('charset',   'Character Set · PETSCII · Keyboard', 'Character Set · PETSCII · Keyboard', 'SCRIPT',  'generate.py', generator_patterns=["*.js", "*.css", "bin/*.bin"]),
-	RefCategory('colors',    'C64 Colors', 'Colors', generator_patterns=["*.js"],),
+	RefCategory('colors',    'C64 Colors', 'Colors', generator_patterns=["*.js"], enabled=False),
 ]
 
 
@@ -114,11 +117,13 @@ def generate_navigation(cc):
 	nav_tag.append(h1)
 
 	for category in CATEGORIES:
-		a = soup.new_tag('a', href=f'/{category.path}/')
-		a.string = category.short_title
-		if category == active_category:
-			a['class'] = 'active'
-		nav_tag.append(a)
+		if category.enabled:
+			href = f'/{category.path}/'
+			a = soup.new_tag('a', href=href)
+			a.string = category.short_title
+			if category == active_category:
+				a['class'] = 'active'
+			nav_tag.append(a)
 
 	a_home = soup.new_tag('a', href='https://www.pagetable.com/')
 	a_home.string = 'pagetable.com'
@@ -288,7 +293,8 @@ def main():
 	date = f.read()
 
 	for category in CATEGORIES:
-		generate_html(category, revision, date)
+		if category.enabled:
+			generate_html(category, revision, date)
 
 
 main()
