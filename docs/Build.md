@@ -6,37 +6,36 @@
 
 ## Generating
 
-<br>
+**Requirements:**
 
-**Requirements:** 
 
--   **[Python]**
--   **[Markdown]**
+-   [Python]
+-   [Markdown]
+-   [Beautiful Soup]
 
-    ```sh
-    pip3 install markdown
-    ```
-    
-The Python package can also be installed into a virtual environment:
-    
+See also [requirements.txt].
+
+The Python packages are installed into a virtual environment like this:
+
 ```sh
 python3 -m venv .venv                       # create a virtual environment
-source .venv/bin/activate                   # activate it 
+source .venv/bin/activate                   # activate it
 python3 -m pip install -r requirements.txt  # install the required packages
 ```
-    
+
 To generate the  `html`  files, simply execute  [`generate.sh`][Generate]
 
 
 This will build the different pages from the repos *reference material* with the help of `python` scripts.
 
-The 6502 reference is all Java Script and does not need to be generated. 
+The 6502 and the color reference are all Java Script and do not need to be generated.
+
 
 ## Testing
 
 For testing start Python's built-in webserver and navigate to the local url:
 ```sh
-python3 -m http.server 
+python3 -m http.server
 ```
 [http://localhost:8000/6502/][Localhost8000]
 
@@ -66,9 +65,11 @@ Navigate using the menu bar or directly going to the specific pages:
 <!----------------------------------------------------------------------------->
 
 [Generate]: ../Source/generate.sh
+[requirements.txt]: ../requirements.txt
 
 [Markdown]: https://pypi.org/project/Markdown/
 [Python]: https://www.python.org/
+[Beautiful Soup]: https://beautiful-soup-4.readthedocs.io/en/latest/
 
 [Localhost8000]: http://localhost:8000/6502/
 [Localhost6464]: http://localhost:6464/6502/

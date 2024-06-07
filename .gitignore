@@ -5,4 +5,5 @@ Source/charset/*.html
 Source/charset/test/*.html
 Source/kernal/*.html
 Source/*.html
+/out/
 .venv
