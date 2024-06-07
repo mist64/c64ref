@@ -102,7 +102,7 @@ and ***editing*** the collected files was done by **[Michael Steil]**.
 
 [Michael Steil]: mailto:mist64@mac.com
 
-[Disassembly KERNEL]: Source/c64disasm/c64disasm_cbm.txt
+[Disassembly KERNAL]: Source/c64disasm/c64disasm_cbm.txt
 [Disassembly Magnus]: Source/c64disasm/c64disasm_mn.txt
 [Disassembly BASIC]: Source/c64disasm/c64disasm_ms.txt
 [Disassembly Marko]: Source/c64disasm/c64disasm_mm.txt
