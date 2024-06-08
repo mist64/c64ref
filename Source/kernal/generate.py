@@ -147,11 +147,6 @@ def smart_join(lines):
 
 files = len(filenames)
 
-f = os.popen('git log -1 --pretty=format:%h .')
-revision = f.read()
-f = os.popen('git log -1 --date=short --pretty=format:%cd .')
-date = f.read()
-
 sources = []
 for filename in filenames:
 	lines = [line.rstrip() for line in open(filename)]
@@ -342,9 +337,6 @@ print('</div>')
 
 print('<div class="content">')
 print('<div class="main">')
-print('<h1>C64 KERNAL API</h1>')
-
-print('<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>. Revision ' + revision + ', ' + date + '</i></p>')
 
 print('<b>This allows you to view different commentaries side-by-side. You can enable/disable individual columns:</b><br/><br/>')
 print('<table class="checkbox_table">')

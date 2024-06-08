@@ -61,12 +61,6 @@ def cross_reference(string):
 	return string
 
 
-
-f = os.popen('git log -1 --pretty=format:%h .')
-revision = f.read()
-f = os.popen('git log -1 --date=short --pretty=format:%cd .')
-date = f.read()
-
 data = []
 linenumber = []
 address = []
@@ -227,9 +221,6 @@ print('</div>')
 
 print('<div class="content">')
 print('<div class="main">')
-print('<h1>C64 Memory Map</h1>')
-
-print('<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>. Revision ' + revision + ', ' + date + '</i></p>')
 
 print('<b>This allows you to view different commentaries side-by-side. You can enable/disable individual columns:</b><br/><br/>')
 print('<table class="checkbox_table">')

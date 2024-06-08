@@ -52,11 +52,6 @@ def cross_reference(string, symbols):
 asm_donor_index = 1
 source_index = 0 # we treat the Microsoft/Commodore source differently
 
-f = os.popen("git log -1 --pretty=format:%h .")
-revision = f.read()
-f = os.popen("git log -1 --date=short --pretty=format:%cd .")
-date = f.read()
-
 symbols = []
 symbol_lines = [line.rstrip() for line in open('../c64mem/c64mem_src.txt')]
 for line in symbol_lines:
@@ -166,9 +161,6 @@ print('</div>')
 
 print('<div class="content">')
 print('<div class="main">')
-print('<h1>C64 BASIC & KERNAL ROM Disassembly</h1>')
-
-print('<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>. Revision ' + revision + ', ' + date + '</i></p>')
 
 print('<b>This allows you to view different commentaries side-by-side. You can enable/disable individual columns:</b><br/><br/>')
 print('<table class="checkbox_table">')
