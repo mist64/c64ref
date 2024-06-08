@@ -41,7 +41,6 @@ CATEGORIES = [
 class CurrentCategory:
 	category: RefCategory
 	soup: BeautifulSoup
-	resources: set
 
 ### CONFIG
 
@@ -86,7 +85,7 @@ def generate_html(category, revision, date):
 	html_doc = BASIC_HTML
 	soup = BeautifulSoup(html_doc, 'html.parser')
 
-	cc = CurrentCategory(category, soup, set())
+	cc = CurrentCategory(category, soup)
 
 	add_category_title(cc)
 	# add_favicons(cc.soup)
@@ -179,34 +178,20 @@ def add_main(cc):
 
 	# position in <head> tag at which to insert the additional files:
 	tag = soup.find("link")
-	files = cc.resources
 
 	for new_tag in file_soup.find_all('style'):
 		tag.insert_after(new_tag)
 
-	# check for tags that reference additional files
-
 	for new_tag in file_soup.find_all('script'):
 		tag.insert_after(new_tag)
-		if new_tag.has_attr('src'):
-			files.add(new_tag['src'])
 
 	for new_tag in file_soup.find_all('link'):
 		tag.insert_after(new_tag)
-		if new_tag.has_attr('href'):
-			files.add(new_tag['href'])
-
-	for new_tag in file_soup.find_all('img'):
-			tag.insert_after(new_tag)
-			if new_tag.has_attr('src'):
-				files.add(new_tag['src'])
-
 
 ### RESOURCES
 
 def copy_resources_and_html(cc):
 	category_path = cc.category.path
-	files = cc.resources
 
 	source_path = os.path.join(SOURCE_DIR, category_path)
 	dest_path = os.path.join(BUILD_DIR, category_path)
@@ -214,18 +199,6 @@ def copy_resources_and_html(cc):
 	if not os.path.exists(dest_path):
 		os.makedirs(dest_path)
 
-
-# TODO: remove and make the needed things happen via pattern?
-# 	# copy other resources:
-# 	for file in cc.resources:
-# 		file_in = os.path.join(source_path, file)
-# 		file_out = os.path.join(dest_path, file)
-#
-# 		if not os.path.exists(file_out):
-# 			print(f'{file_in} > {file_out}')
-# 			shutil.copy2(file_in, file_out)
-# 		else:
-# 			print(f'{file_out} already exists')
 
 	# write index.html
 	filename = os.path.join(dest_path, TARGET_HTML_NAME)
