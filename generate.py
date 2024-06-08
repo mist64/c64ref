@@ -87,7 +87,7 @@ class CurrentCategory:
 
 ### CONFIG
 
-SOURCE_DIR = "Source"
+SOURCE_DIR = "src"
 BUILD_DIR = "out"
 BUILD_DIR_TMP = "out_unmodified"
 

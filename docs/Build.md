@@ -64,7 +64,7 @@ Navigate using the menu bar or directly going to the specific pages:
 
 <!----------------------------------------------------------------------------->
 
-[Generate]: ../Source/generate.sh
+[Generate]: ../src/generate.sh
 [requirements.txt]: ../requirements.txt
 
 [Markdown]: https://pypi.org/project/Markdown/
