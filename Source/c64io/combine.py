@@ -181,17 +181,6 @@ print('</style>')
 print('</head>')
 print('<body>')
 
-print('<div class="topnav">')
-print('    <h1>Ultimate Commodore 64 Reference</h1> ')
-print('    <a href="../6502/">6502</a>')
-print('    <a href="../kernal/">KERNAL API</a>')
-print('    <a href="../c64disasm/">ROM Disassembly</a>')
-print('    <a href="../c64mem/">Memory Map</a>')
-print('    <a href="../charset/">Charset · PETSCII · Keyboard</a>')
-print('    <a class="active" href="#">I/O Map</a>')
-print('    <a class="home" href="https://www.pagetable.com/">pagetable.com</a>')
-print('</div>')
-
 print('<div class="content">')
 print('<div>')
 

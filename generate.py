@@ -165,6 +165,7 @@ def generate_navigation(cc):
 			a = soup.new_tag('a', href=href)
 			a.string = category.short_title
 			if category == active_category:
+				a['href'] = '#'
 				a['class'] = 'active'
 			nav_tag.append(a)
 
