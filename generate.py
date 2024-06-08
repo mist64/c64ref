@@ -17,23 +17,64 @@ GLOBAL_SHORT_TITLE = "Ultimate C64 Reference"
 
 ### CATEGORIES
 
+class Author(NamedTuple):
+	name: str
+	url: str
+
+DEFAULT_AUTHOR = Author("Michael Steil", "http://www.pagetable.com/")
+
+
 class RefCategory(NamedTuple):
 	path: str
 	long_title: str
 	short_title: str
+	authors: list
 	generator_type: str = 'HTML'
 	generator_name: str = 'index.html'
 	generator_patterns: list = []
 	enabled: bool = True
 
+
 CATEGORIES = [
-	RefCategory('6502',      '6502 Family CPU Reference', '6502', generator_patterns=["cpu_*.txt", "*.js"]),
-	RefCategory('kernal',    'C64 KERNAL API', 'KERNAL API', 'SCRIPT', 'generate.py'),
-	RefCategory('c64disasm', 'C64 BASIC & KERNAL ROM Disassembly', 'ROM Disassembly', 'SCRIPT', 'combine.py', enabled=REGULAR_BUILD),
-	RefCategory('c64mem',    'C64 Memory Map', 'Memory Map', 'SCRIPT', 'combine.py'),
-	RefCategory('c64io',     'C64 I/O Map', 'I/O Map', 'SCRIPT', 'combine.py', enabled=False),
-	RefCategory('charset',   'Character Set · PETSCII · Keyboard', 'Charset Set · PETSCII · Keyboard', 'SCRIPT',  'generate.py', generator_patterns=["*.js", "*.css", "bin/*.bin"]),
-	RefCategory('colors',    'C64 Colors', 'Colors', generator_patterns=["*.js"], enabled=False),
+	RefCategory( '6502',
+		'6502 Family CPU Reference', '6502',
+		[DEFAULT_AUTHOR],
+		generator_patterns=["cpu_*.txt", "*.js"]
+	),
+	RefCategory( 'kernal',
+		'C64 KERNAL API', 'KERNAL API',
+		[DEFAULT_AUTHOR],
+		'SCRIPT', 'generate.py'
+	),
+	RefCategory('c64disasm',
+		'C64 BASIC & KERNAL ROM Disassembly', 'ROM Disassembly',
+		[DEFAULT_AUTHOR],
+		'SCRIPT', 'combine.py',
+		enabled=REGULAR_BUILD
+	),
+	RefCategory('c64mem',
+		'C64 Memory Map', 'Memory Map',
+		[DEFAULT_AUTHOR],
+		'SCRIPT', 'combine.py'
+	),
+	RefCategory('c64io',
+		'C64 I/O Map', 'I/O Map',
+		[DEFAULT_AUTHOR],
+		'SCRIPT', 'combine.py',
+		enabled=False
+	),
+	RefCategory('charset',
+		'Character Set · PETSCII · Keyboard', 'Charset Set · PETSCII · Keyboard',
+		[DEFAULT_AUTHOR, Author("Lisa Brodner", None)],
+		'SCRIPT',  'generate.py',
+		generator_patterns=["*.js", "*.css", "bin/*.bin"]
+	),
+	RefCategory('colors',
+		'C64 Colors', 'Colors',
+		[DEFAULT_AUTHOR],
+		generator_patterns=["*.js"],
+		enabled=False
+	),
 ]
 
 
@@ -153,7 +194,16 @@ def add_category_build_info(cc):
 	f = os.popen(f'git log -1 --date=short --pretty=format:%cd {path}')
 	date = f.read()
 
-	html_doc = f'by <i><a href="http://www.pagetable.com/">Michael Steil</a></i> [<small><a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>, revision {revision}, {date}</small>]'
+	author_strings = []
+	for author in cc.category.authors:
+		if author.url:
+			author_string = f'<a href="{author.url}">{author.name}</a>'
+		else:
+			author_string = f'{author.name}'
+		author_strings.append(author_string)
+	authors = ', '.join(author_strings)
+
+	html_doc = f'by <em>{authors}.</em> [<small><a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>, rev {revision}, {date}</small>]'
 	doc_soup = BeautifulSoup(html_doc, 'html.parser')
 
 	tag = cc.soup.find(id="byline")
