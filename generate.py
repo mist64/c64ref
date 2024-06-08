@@ -194,11 +194,7 @@ def copy_resources_and_html(cc):
 	category_path = cc.category.path
 
 	source_path = os.path.join(SOURCE_DIR, category_path)
-	dest_path = os.path.join(BUILD_DIR, category_path)
-
-	if not os.path.exists(dest_path):
-		os.makedirs(dest_path)
-
+	dest_path = ensured_path(BUILD_DIR, category_path, is_dir=True)
 
 	# write index.html
 	filename = os.path.join(dest_path, TARGET_HTML_NAME)
@@ -222,8 +218,7 @@ def copy_resources_and_html(cc):
 
 		for file in filtered_files:
 			file_in = os.path.join(source_path, file)
-			file_out = os.path.join(dest_path, file)
-			os.makedirs(os.path.dirname(file_out), exist_ok=True)
+			file_out = ensured_path(dest_path, file, is_dir=False)
 			shutil.copy2(file_in, file_out)
 
 		# # for debugging
@@ -251,13 +246,24 @@ def add_github_corner(soup):
 	tag = soup.find(id="cat")
 	tag.append(doc_soup)
 
+### HELPER
 
+def ensured_path(path, *paths, is_dir):
+	result = os.path.join(path, *paths)
+
+	dir_name = result
+	if not is_dir:
+		dir_name = os.path.dirname(result)
+
+	if not os.path.exists(dir_name):
+		os.makedirs(dir_name)
+
+	return result
 
 ### MAIN
 
 def generate():
-	if not os.path.exists(BUILD_DIR):
-		os.makedirs(BUILD_DIR)
+	ensured_path(BUILD_DIR, is_dir=True)
 
 	copy_global_resources()
 
