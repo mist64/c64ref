@@ -84,14 +84,16 @@ nav {
     margin-bottom: 1.3rem;
 }
 
-#headline, #byline, footer > div, footer > h2, footer > h3 {
+#headline, #byline, footer > h2, footer > h3 {
     padding-left: 16px;
     padding-right: 16px;
 }
 
-main div>div, main footer>div {
+main > div > div, footer > div {
     padding-left: 1rem;
     padding-right: 1rem;
+    padding-bottom: 0.5rem;
+
 }
 
 footer {
