@@ -46,6 +46,7 @@ class CurrentCategory:
 
 SOURCE_DIR = "Source"
 BUILD_DIR = "out"
+BUILD_DIR_TMP = "out_unmodified"
 
 
 ### HTML GLOBALS
@@ -171,6 +172,11 @@ def add_main(cc):
 	else:
 		print("Missing generator")
 
+	# for debugging: write the original HTML to tmp
+	filename = ensured_path(BUILD_DIR_TMP, category.path, "index.html", is_dir=False)
+	with open(filename, 'w', encoding='utf-8') as file:
+		file.write(str(file_soup.decode(formatter="html5")))
+
 	# extracting the relevant infos from the generated HTMLs
 	tag = soup.find("main")
 	new_tag = file_soup.find("div", class_="content")
@@ -203,14 +209,17 @@ def copy_resources_and_html(cc):
 
 	# get files for generator_patterns and copy those
 	patterns = cc.category.generator_patterns
-	if patterns:
-		unfiltered_files = []
-		for root, dirs, files in os.walk(source_path):
-			for file in files:
-				filename = os.path.join(root, file)
-				filename = os.path.relpath(filename, source_path)
-				unfiltered_files.append(filename) # just the 'local' path
 
+	unfiltered_files = []
+	leftover_files = unfiltered_files
+
+	for root, dirs, files in os.walk(source_path):
+		for file in files:
+			filename = os.path.join(root, file)
+			filename = os.path.relpath(filename, source_path)
+			unfiltered_files.append(filename) # just the 'local' path
+
+	if patterns:
 		filtered_files = []
 		for pattern in patterns:
 			for filename in fnmatch.filter(unfiltered_files, pattern):
@@ -221,12 +230,14 @@ def copy_resources_and_html(cc):
 			file_out = ensured_path(dest_path, file, is_dir=False)
 			shutil.copy2(file_in, file_out)
 
-		# # for debugging
-		# leftover_files = [file for file in unfiltered_files if file not in filtered_files]
-		# print(f">>> : {source_path}")
-		# for file in leftover_files:
-		# 	print(file)
-		# print("<<<")
+		leftover_files = [file for file in unfiltered_files if file not in filtered_files]
+
+	# for debugging
+	filename = ensured_path(BUILD_DIR_TMP, category_path, "files_no_copy.txt", is_dir=False)
+	with open(filename, 'w', encoding='utf-8') as file:
+		for leftover_file in leftover_files:
+			if leftover_file != "index.html" and leftover_file != ".DS_Store":
+				file.write(f"{leftover_file}\n")
 
 def copy_global_resources():
 	# copy globals: stylesheet
@@ -264,6 +275,7 @@ def ensured_path(path, *paths, is_dir):
 
 def generate():
 	ensured_path(BUILD_DIR, is_dir=True)
+	ensured_path(BUILD_DIR_TMP, is_dir=True)
 
 	copy_global_resources()
 
