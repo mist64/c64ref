@@ -32,7 +32,7 @@ CATEGORIES = [
 	RefCategory('c64disasm', 'C64 BASIC & KERNAL ROM Disassembly', 'ROM Disassembly', 'SCRIPT', 'combine.py', enabled=REGULAR_BUILD),
 	RefCategory('c64mem',    'C64 Memory Map', 'Memory Map', 'SCRIPT', 'combine.py'),
 	RefCategory('c64io',     'C64 I/O Map', 'I/O Map', 'SCRIPT', 'combine.py', enabled=False),
-	RefCategory('charset',   'Character Set · PETSCII · Keyboard', 'Character Set · PETSCII · Keyboard', 'SCRIPT',  'generate.py', generator_patterns=["*.js", "*.css", "bin/*.bin"]),
+	RefCategory('charset',   'Character Set · PETSCII · Keyboard', 'Charset Set · PETSCII · Keyboard', 'SCRIPT',  'generate.py', generator_patterns=["*.js", "*.css", "bin/*.bin"]),
 	RefCategory('colors',    'C64 Colors', 'Colors', generator_patterns=["*.js"], enabled=False),
 ]
 
