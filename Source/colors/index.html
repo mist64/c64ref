@@ -2,11 +2,11 @@
 <html lang = 'en-US'>
 
 	<head>
-		<meta http-equiv = 'Content-type' content = 'text/html; charset=utf-8'/>
+		<meta http-equiv = 'Content-type' content = 'text/html; charset=utf-8'>
 		<title>C64 | Colors</title>
 		<link rel = 'stylesheet' href = '../style.css'>
 		<link rel = 'stylesheet' href = 'Style.css'>
-		<script src = 'script.js'defer></script>
+		<script src = 'script.js' defer></script>
 	</head>
 
 	<body>
@@ -25,14 +25,7 @@
 		</div>
 
 		<div class = 'content'>
-		<div class = 'main'>
-			<h1>C64 Colors</h1>
-			<p>
-				<i>
-					concieved by <a href = 'http://www.pagetable.com/'><b>Michael Steil</b></a>,
-					based on <a href = 'https://www.pepto.de/projects/colorvic/'><b>Pepto</b></a>'s work.
-				</i>
-			</p>
+			<p>Based on <a href = 'https://www.pepto.de/projects/colorvic/'><b>Pepto</b></a>'s work.</p>
 
 			<table class = 'paltab'>
 				<tr><th>Palette</th><th>Adjustments</th></tr>
@@ -193,10 +186,10 @@
 			</tr>
 		</table>
 
-		<b><span id="numcol"></span> colors</b><br/>
+		<b><span id="numcol"></span> colors</b><br>
 		<a id="collink">Link to this Palette</a>
 
-		<hr/>
+		<hr>
 
 		<h2>Colorspace Diagram</h2>
 		<table class="code_table" border="1">
@@ -219,7 +212,7 @@
 			</tr>
 		</table>
 
-		<hr/>
+		<hr>
 
 		<h2>Palette</h2>
 
@@ -235,8 +228,8 @@
 		<input type="checkbox" id="showluma" onclick="refresh()">
 		<label for="showluma"><u>L</u>uma</label>
 
-		<br/>
-		<br/>
+		<br>
+		<br>
 
 		<table id="colors">
 			<tr id="row0"></tr>
@@ -245,7 +238,7 @@
 			<tr id="row3"></tr>
 		</table>
 
-		<br/>
+		<br>
 
 		<p>
 			<button type="button" onclick="copyElement('hexcolors', 'hexcolors');">Copy</button>
@@ -255,7 +248,7 @@
 		</div>
 	</p>
 
-	<hr/>
+	<hr>
 
 	<table id="allcoltab" border="1">
 	</table>
@@ -264,31 +257,36 @@
 	<textarea style="display: none;" id="i_text_basic"></textarea>
 
 
-	<h2>Notes</h2>
+	<footer>
+		<h2>Notes</h2>
 
-	<ul>
-		<li id="note_levels"><b>VIC-II Rev</b>: </li>
-		<li id="note_mixed"><b>Mixed Colors</b>: </li>
-		<li id="note_lumadiff"><b>Max Luma Diff</b>: </li>
-		<li id="note_limit_lumadiff"><b>Limit Max Luma Diff</b>: </li>
+		<div>
+		<ul>
+			<li id="note_levels"><b>VIC-II Rev</b>: </li>
+			<li id="note_mixed"><b>Mixed Colors</b>: </li>
+			<li id="note_lumadiff"><b>Max Luma Diff</b>: </li>
+			<li id="note_limit_lumadiff"><b>Limit Max Luma Diff</b>: </li>
 
-		<li id="note_pattern"><b>Mixing Pattern</b>: On a real system, *alternating columns* and *checkered* will produce nasty vertical low-frequency color stripes ("GEOS effect") for larger areas. The same is true for *checkered 2x* for lower luma diffs. The previews do not account for this.</li>
-		<li id="note_sortby"><b>Sort by</b>: The color index is defined as follows: The 16 base colors have their natural indexes. Mixed colors are sorted first by luma diff, then by the index of the component with the lower index, then by the component with the higher index.</span></li>
-	</ul>
+			<li id="note_pattern"><b>Mixing Pattern</b>: On a real system, *alternating columns* and *checkered* will produce nasty vertical low-frequency color stripes ("GEOS effect") for larger areas. The same is true for *checkered 2x* for lower luma diffs. The previews do not account for this.</li>
+			<li id="note_sortby"><b>Sort by</b>: The color index is defined as follows: The 16 base colors have their natural indexes. Mixed colors are sorted first by luma diff, then by the index of the component with the lower index, then by the component with the higher index.</span></li>
+		</ul>
+		</div>
 
-	<h2>References</h2>
+		<h2>References</h2>
 
-	<ul>
-		<li><a href="https://www.pepto.de/projects/colorvic/">pepto: Calculating the color palette of the VIC II</a></li>
-		<li><a href="http://hitmen.c02.at/temp/palstuff/">groepaz: Accurately reproducing the Video Output of a Commodore C64</a></li>
-		<li><a href="https://kodiak64.com/blog/luma-driven-graphics-on-c64">Jon Woods: Luma-Driven Graphics on the Commodore 64</a></li>
-		<li><a href="https://ilesj.wordpress.com/2016/03/30/old-vic-ii-colors-and-color-blending/">Ilkka Sjöstedt: Old VIC-II Colors and Color Blending</a></li>
-		<li><a href="https://og2t.github.io/retro-palette-explorer/">Digger/Elysium: Retro Palette Explorer</a></li>
-		<li><a href="https://csdb.dk/forums/?roomid=13&topicid=90011&showallposts=1">CSDb User Forums: Joe's 136 colors technique</a></li>
-		<li><a href="http://nerdlypleasures.blogspot.com/2018/05/the-search-for-artifact-color-on.html">Great Hierophant: The Search for Artifact Color on the Commodore 64</a></li>
-	</ul>
+		<div>
+			<ul>
+				<li><a href="https://www.pepto.de/projects/colorvic/">pepto: Calculating the color palette of the VIC II</a></li>
+				<li><a href="http://hitmen.c02.at/temp/palstuff/">groepaz: Accurately reproducing the Video Output of a Commodore C64</a></li>
+				<li><a href="https://kodiak64.com/blog/luma-driven-graphics-on-c64">Jon Woods: Luma-Driven Graphics on the Commodore 64</a></li>
+				<li><a href="https://ilesj.wordpress.com/2016/03/30/old-vic-ii-colors-and-color-blending/">Ilkka Sjöstedt: Old VIC-II Colors and Color Blending</a></li>
+				<li><a href="https://og2t.github.io/retro-palette-explorer/">Digger/Elysium: Retro Palette Explorer</a></li>
+				<li><a href="https://csdb.dk/forums/?roomid=13&topicid=90011&showallposts=1">CSDb User Forums: Joe's 136 colors technique</a></li>
+				<li><a href="http://nerdlypleasures.blogspot.com/2018/05/the-search-for-artifact-color-on.html">Great Hierophant: The Search for Artifact Color on the Commodore 64</a></li>
+			</ul>
+		</div>
+	</footer>
 
-	</div>
 	</div>
 	</body>
 </html>

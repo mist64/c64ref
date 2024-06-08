@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 <title>6502 CPU | Ultimate C64 Reference</title>
 <link rel="stylesheet" href="../style.css">
 <script src="script.js"></script>
@@ -455,10 +455,7 @@ ul li::after {
 	</div>
 
 	<div class="content">
-	<div class="main">
-<!--	<h1>6502 CPU Reference</h1>-->
-<!--	<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>.</i></p>-->
-
+	<div>
 	<p>
 		<label for="cpu">CPU</label>
 		<select name="cpu" id="cpu" onChange="show();"></select>
@@ -474,11 +471,12 @@ ul li::after {
 
 <!--	<div id="tree"></div> -->
 
-	<input id="tab0" type="radio" name="tabs" onchange="show();"/>
-	<input id="tab1" type="radio" name="tabs" onchange="show();"/>
-	<input id="tab2" type="radio" name="tabs" onchange="show();"/>
-	<input id="tab3" type="radio" name="tabs" onchange="show();"/>
-	<input id="tab4" type="radio" name="tabs" onchange="show();"/>
+	<input id="tab0" type="radio" name="tabs" onchange="show();">
+	<input id="tab1" type="radio" name="tabs" onchange="show();">
+	<input id="tab2" type="radio" name="tabs" onchange="show();">
+	<input id="tab3" type="radio" name="tabs" onchange="show();">
+	<input id="tab4" type="radio" name="tabs" onchange="show();">
+
 	<div id="navigation">
 		<nav>
 			<label for="tab0">Info</label><!--
@@ -551,27 +549,31 @@ ul li::after {
 		<div id="big_table_div2"></div>
 	</div>
 
-	<hr/>
+	<hr>
 	<div id="legend"></div>
-	<hr/>
-
-	<h2>References</h2>
-
-	<ul>
-	<li><a href="http://anyplatform.net/media/guides/cpus/65xx%20Processor%20Data.txt">Mark Ormston: 65xx Processor Data</a></li>
-	<li><a href="https://csdb.dk/release/?id=185341">groepaz: NMOS 6510 Unintended Opcodes</a></li>
-	<li><a href="http://visual6502.org/wiki/index.php%3Ftitle%3D6502_Opcode_8B_(XAA,_ANE)">Michael Steil, Ed Spittles: 6502 Opcode 8B (XAA, ANE)</a></li>
-	<li><a href="https://www.masswerk.at/6502/6502_instruction_set.html">Norbert Landsteiner: 6502 Instruction Set</a></li>
-	<li><a href="http://www.oxyron.de/html/opcodes02.html">Graham: 6502/6510/8500/8502 Opcode matrix</a></li>
-	<li><a href="http://www.obelisk.me.uk/6502/reference.html">Andrew Jacobs: 6502 Instruction Reference</a></li>
-	<li><a href="https://pastraiser.com/cpu/6502/6502_opcodes.html">Pavel Zima: 6502 instruction set</a></li>
-	<li><a href="http://6502.org/tutorials/65c02opcodes.html">Bruce Clark: 65C02 Opcodes</a></li>
-	<li><a href="http://6502.org/tutorials/65c816opcodes.html">Bruce Clark: 65C816 Opcodes</a></li>
-	<li><a href="http://nparker.llx.com/a2/opcodes.html">Neil Parker: The 6502/65C02/65C816 Instruction Set Decoded</a></li>
-	</ul>
+	<hr>
 
 	</div>
 
-</div>
+	<footer>
+	<h2>References</h2>
+
+	<div>
+		<ul>
+			<li><a href="http://anyplatform.net/media/guides/cpus/65xx%20Processor%20Data.txt">Mark Ormston: 65xx Processor Data</a></li>
+			<li><a href="https://csdb.dk/release/?id=185341">groepaz: NMOS 6510 Unintended Opcodes</a></li>
+			<li><a href="http://visual6502.org/wiki/index.php%3Ftitle%3D6502_Opcode_8B_(XAA,_ANE)">Michael Steil, Ed Spittles: 6502 Opcode 8B (XAA, ANE)</a></li>
+			<li><a href="https://www.masswerk.at/6502/6502_instruction_set.html">Norbert Landsteiner: 6502 Instruction Set</a></li>
+			<li><a href="http://www.oxyron.de/html/opcodes02.html">Graham: 6502/6510/8500/8502 Opcode matrix</a></li>
+			<li><a href="http://www.obelisk.me.uk/6502/reference.html">Andrew Jacobs: 6502 Instruction Reference</a></li>
+			<li><a href="https://pastraiser.com/cpu/6502/6502_opcodes.html">Pavel Zima: 6502 instruction set</a></li>
+			<li><a href="http://6502.org/tutorials/65c02opcodes.html">Bruce Clark: 65C02 Opcodes</a></li>
+			<li><a href="http://6502.org/tutorials/65c816opcodes.html">Bruce Clark: 65C816 Opcodes</a></li>
+			<li><a href="http://nparker.llx.com/a2/opcodes.html">Neil Parker: The 6502/65C02/65C816 Instruction Set Decoded</a></li>
+		</ul>
+	</div>
+	</footer>
+
+	</div>
 </body>
 </html>

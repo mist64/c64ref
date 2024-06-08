@@ -1259,9 +1259,11 @@ print('</div>');
 
 print('<hr/>')
 
-print('<div class="main">')
+print('<footer>')
 
 print('<h2>Notes<a id="notes"></a></h2>')
+
+print('<div>')
 print('<ul>')
 print('<li>')
 print('PET-N is a PET with a ROM version below 4 (i.e. base set of control codes) and a "normal" (chicklet or graphics) keyboard. PET-B is a PET 8xxx with a ROM version of 4 (i.e. extended set of control codes) and a business keyboard. The graphics keyboard also existed for the later PETs, and early PETs could be upgraded with newer ROMs, but for the sake of simplicity, I limitied the PET series to these two systems.')
@@ -1282,8 +1284,10 @@ print('<li>')
 print('Note that some keyboard keys (VIC-20/C64/C128/C65: <span class="key-box">RESTORE</span>, C128/C65: <span class="key-box">CAPS LOCK</span>, C128: <span class="key-box">40/80 DISPLAY</span>) produce no scancode, and therefore no PETSCII code. Other keys (C128/C65: <span class="key-box">NO SCROLL</span>) produce a scancode, but no PETSCII code.')
 print('</li>')
 print('</ul>')
-
 print('</div>')
+
+print('</footer>')
+
 print('</div>')
 print('</body>')
 print('</html>')

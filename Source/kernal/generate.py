@@ -336,7 +336,8 @@ print('    <a class="home" href="https://www.pagetable.com/">pagetable.com</a>')
 print('</div>')
 
 print('<div class="content">')
-print('<div class="main">')
+
+print('<div>')
 
 print('<b>This allows you to view different commentaries side-by-side. You can enable/disable individual columns:</b><br/><br/>')
 print('<table class="checkbox_table">')
@@ -443,9 +444,16 @@ for address in all_addresses:
 
 print('</table>')
 print('</div>')
+print('</div>')
+
+print('<footer>')
+print('<h2>Footnotes</h2>')
+print('<div>')
 print('<p><sup>1)</sup> intended to be called from a cartridge ROM<br/>')
 print('<sup>2)</sup> intended to be called from a replacement IRQ handler</p>')
 print('</div>')
+print('</footer>')
+
 print('</div>')
 print('</body>')
 print('</html>')

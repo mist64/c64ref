@@ -7,6 +7,7 @@
 :root {
     --main-background: #e0f0ff;
     --main-color: #004080;
+    --main-background-recessed: #d2dff4;
 
     --highlight-background: #006ad5;
 
@@ -47,7 +48,7 @@
     --light-color-9: #EEE3FC;
     --light-color-10: #F3FCE3;
     --light-color-11: #D4D4D4;
-    
+
     --cat-color-io: #56C1FF;
     --cat-color-clk: #73FDEA;
     --cat-color-editor: #88FA4E;
@@ -72,9 +73,35 @@ a {
     color: var(--border-color);
 }
 
-div.main {
-    padding: 8px;
+header {
+    background: var(--main-background-recessed);
+    border-bottom: solid 1px #bdc8db;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.6rem;
 }
+
+nav {
+    margin-bottom: 1.3rem;
+}
+
+#headline, #byline, footer > div, footer > h2, footer > h3 {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+main div>div, main footer>div {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+footer {
+    background: var(--main-background-recessed);
+    border-top: solid 1px #bdc8db;
+    margin-top: 1.6rem;
+    padding-top: 0.3rem;
+    padding-bottom: 1.3rem;
+}
+
 
 h1 {
 	font-size: large;
@@ -215,7 +242,7 @@ table.disassembly_table td, table.disassembly_table th {
 }
 
 
-table.disassembly_table th.left_column,  
+table.disassembly_table th.left_column,
 table.disassembly_table th.label_column,
 table.disassembly_table th.cat_column,
 table.disassembly_table th.decimal_column {
