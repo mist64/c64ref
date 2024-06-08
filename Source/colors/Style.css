@@ -130,12 +130,3 @@ li:target {
    font-weight: bold;
 }
 
-
-/* Octocat */
-
-#octocat {
-	position: absolute;
-	top: 0;
-	border: 0;
-	right: 0;
-}
