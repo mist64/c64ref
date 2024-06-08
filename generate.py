@@ -11,6 +11,8 @@ from bs4 import BeautifulSoup
 
 REGULAR_BUILD=True
 #REGULAR_BUILD=False #debug
+#BUILD_WIPS = False
+BUILD_WIPS = True #debug
 
 GLOBAL_TITLE = "Ultimate Commodore 64 Reference"
 GLOBAL_SHORT_TITLE = "Ultimate C64 Reference"
@@ -61,7 +63,7 @@ CATEGORIES = [
 		'C64 I/O Map', 'I/O Map',
 		[DEFAULT_AUTHOR],
 		'SCRIPT', 'combine.py',
-		enabled=False
+		enabled=BUILD_WIPS
 	),
 	RefCategory('charset',
 		'Character Set · PETSCII · Keyboard', 'Charset Set · PETSCII · Keyboard',
@@ -73,7 +75,7 @@ CATEGORIES = [
 		'C64 Colors', 'Colors',
 		[DEFAULT_AUTHOR],
 		generator_patterns=["*.js"],
-		enabled=False
+		enabled=BUILD_WIPS
 	),
 ]
 
