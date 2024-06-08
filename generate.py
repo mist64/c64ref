@@ -204,7 +204,6 @@ def add_main(cc):
 
 ### RESOURCES
 
-
 def copy_resources_and_html(cc):
 	category_path = cc.category.path
 	files = cc.resources
@@ -212,15 +211,9 @@ def copy_resources_and_html(cc):
 	source_path = os.path.join(SOURCE_DIR, category_path)
 	dest_path = os.path.join(BUILD_DIR, category_path)
 
-	if not os.path.exists(BUILD_DIR):
-		os.makedirs(BUILD_DIR)
-
 	if not os.path.exists(dest_path):
 		os.makedirs(dest_path)
 
-
-	# copy globals: stylesheet
-	shutil.copy(os.path.join(SOURCE_DIR, "style.css"), BUILD_DIR)
 
 # TODO: remove and make the needed things happen via pattern?
 # 	# copy other resources:
@@ -267,6 +260,10 @@ def copy_resources_and_html(cc):
 		# 	print(file)
 		# print("<<<")
 
+def copy_global_resources():
+	# copy globals: stylesheet
+	shutil.copy(os.path.join(SOURCE_DIR, "style.css"), BUILD_DIR)
+
 
 
 ### OCTOCAT
@@ -285,7 +282,12 @@ def add_github_corner(soup):
 
 ### MAIN
 
-def main():
+def generate():
+	if not os.path.exists(BUILD_DIR):
+		os.makedirs(BUILD_DIR)
+
+	copy_global_resources()
+
 	f = os.popen('git log -1 --pretty=format:%h .')
 	revision = f.read()
 
@@ -297,4 +299,4 @@ def main():
 			generate_html(category, revision, date)
 
 
-main()
+generate()
