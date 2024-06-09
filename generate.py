@@ -105,6 +105,9 @@ CATEGORIES = [
 class CurrentCategory:
 	category: RefCategory
 	soup: BeautifulSoup
+	source_path: str
+	dest_path: str
+	dest_path_tmp: str
 
 
 ### HTML GLOBALS
@@ -137,54 +140,50 @@ BASIC_HTML = """
 """
 
 
+### FUNCTIONS for things that are longer
 
-
-###
-
-def generate_navigation(cc):
+def add_navigation(cc):
 	soup = cc.soup
-	active_category = cc.category
 
 	nav_tag = soup.find('nav')
 
-	h1 = soup.new_tag('h1')
-	h1.string = GLOBAL_TITLE
+	#
+	# title
+	h1 = f'<h1>{GLOBAL_TITLE}</h1>'
+	tag_append_tag(nav_tag, h1)
 
-	nav_tag.append(h1)
-
+	#
+	# links for each topic
 	for category in CATEGORIES:
 		if category.enabled:
-			href = f'/{category.path}/'
-			a = soup.new_tag('a', href=href)
-			a.string = category.short_title
-			if category == active_category:
-				a['href'] = '#'
-				a['class'] = 'active'
-			nav_tag.append(a)
+			if category == cc.category:
+				a_menu = f'<a class="active" href="#">{category.short_title}</a>'
+			else:
+				a_menu = f'<a href="/{category.path}/">{category.short_title}</a>'
+			tag_append_tag(nav_tag, a_menu)
 
-	a_home = soup.new_tag('a', href='https://www.pagetable.com/')
-	a_home.string = 'pagetable.com'
-	a_home['class'] = 'home'
-	nav_tag.append(a_home)
-
-#def add_favicons(soup):
-	# TODO: favicons
-	#<link href="/favicon.ico" rel="icon" sizes="32x32">
-	#<link href="/fav/icon.svg" rel="icon" type="image/svg+xml">
-	#<link href="/fav/apple-touch-icon.png" rel="apple-touch-icon">
+	#
+	# link to pagetable
+	a_home = f'<a class="home" href="https://www.pagetable.com/">pagetable.com</a>'
+	tag_append_tag(nav_tag, a_home)
 
 
-def add_category_build_info(cc):
-	path = os.path.join(CONFIG.source_dir, cc.category.path)
+def add_byline_and_build_info(cc):
 
-	f = os.popen(f'git log -1 --pretty=format:%h {path}')
+	#
+	# git revision hash with marker if there are uncommited changes
+	f = os.popen(f'git log -1 --pretty=format:%h {cc.source_path}')
 	revision = f.read()
 	if CONFIG.git_has_changes:
 		revision += "+"
 
-	f = os.popen(f'git log -1 --date=short --pretty=format:%cd {path}')
+	#
+	# date of that git commit
+	f = os.popen(f'git log -1 --date=short --pretty=format:%cd {cc.source_path}')
 	date = f.read()
 
+	#
+	# authors for the byline
 	author_strings = []
 	for author in cc.category.authors:
 		if author.url:
@@ -195,108 +194,120 @@ def add_category_build_info(cc):
 	authors = ', '.join(author_strings)
 
 	html_doc = f'by <em>{authors}.</em> [<small><a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>, rev {revision}, {date}</small>]'
-	doc_soup = BeautifulSoup(html_doc, 'html.parser')
 
 	tag = cc.soup.find(id="byline")
-	tag.append(doc_soup)
+	tag_append_tag(tag, html_doc)
 
-def add_main(cc):
-	soup = cc.soup
-	category = cc.category
 
-	dir = os.path.join(CONFIG.source_dir, category.path)
-	filename = category.generator_name
+def add_main_content_from_subdirectories(cc):
 
-	file_soup = BeautifulSoup("", 'html.parser')
-	file_unmodified = ""
-	if category.generator_type == 'SCRIPT':
-		result = subprocess.run(['python3', filename], capture_output=True, text=True, cwd=dir)
-		file_soup = BeautifulSoup(result.stdout, 'html.parser')
-		file_unmodified = result.stdout
-
-	elif category.generator_type == 'HTML':
-		path = 	os.path.join(dir, filename)
+	#
+	# get 'original' index.html for current category
+	#
+	# run python script to generate:
+	if cc.category.generator_type == 'SCRIPT':
+		result = subprocess.run(['python3', cc.category.generator_name], capture_output=True, text=True, cwd=cc.source_path)
+		output_str = result.stdout
+	#
+	# or copy file directly:
+	elif cc.category.generator_type == 'HTML':
+		path = 	os.path.join(cc.source_path, cc.category.generator_name)
 		with open(path, 'r') as file:
-			file_soup = BeautifulSoup(file, 'html.parser')
-			file.seek(0)
-			file_unmodified = file.read()
-
+			output_str = file.read()
+	# or exit
 	else:
-		print("Missing generator")
+		output_str = ""
+		print("Missing generator.")
+		exit()
 
+	#
 	# for debugging: write the original HTML to tmp
-	dir_path = ensured_path(CONFIG.build_dir_tmp, category.path, is_dir=True)
-	filename = os.path.join(dir_path, "index_soup.html")
-	filename_unmodified = os.path.join(dir_path, "index_orig.html")
-
+	#
+	# -> in unmodified version (direct output)
+	filename = os.path.join(cc.dest_path_tmp, "index_orig.html")
 	with open(filename, 'w', encoding='utf-8') as file:
-		file.write(str(file_soup.decode(formatter="html5")))
+		file.write(output_str)
+	#
+	# -> and version that has been through beautiful soup
+	#    for comparing possible changes made to the resulting files through bs4
+	filename = os.path.join(cc.dest_path_tmp, "index_soup.html")
+	src_soup = BeautifulSoup(output_str, 'html.parser')
+	with open(filename, 'w', encoding='utf-8') as file:
+		file.write(str(src_soup.decode(formatter="html5")))
 
-	with open(filename_unmodified, 'w', encoding='utf-8') as file:
-		file.write(file_unmodified)
-
-	# extracting the relevant infos from the generated HTMLs
-	tag = soup.find("main")
-	new_tag = file_soup.find("div", class_="content")
-	tag.append(new_tag)
-
+	#
+	# extract the relevant infos from the generated HTMLs
+	#
+	# main content <div>
+	#
+	tag = cc.soup.find("main")
+	src_tag = src_soup.find("div", class_="content")
+	tag.append(src_tag)
+	#
 	# position in <head> tag at which to insert the additional files:
-	tag = soup.find("link")
+	#
+	tag = cc.soup.find("link")
+	#
+	# transfer all <style>, <script> and <link> tags
+	#
+	for src_tag in src_soup.find_all('style'):
+		tag.insert_after(src_tag)
 
-	for new_tag in file_soup.find_all('style'):
-		tag.insert_after(new_tag)
+	for src_tag in src_soup.find_all('script'):
+		tag.insert_after(src_tag)
 
-	for new_tag in file_soup.find_all('script'):
-		tag.insert_after(new_tag)
-
-	for new_tag in file_soup.find_all('link'):
-		tag.insert_after(new_tag)
+	for src_tag in src_soup.find_all('link'):
+		tag.insert_after(src_tag)
 
 
 ### RESOURCES
 
-def copy_resources_and_html(cc):
-	category_path = cc.category.path
+def copy_resources_to_build_dir(cc):
 
-	source_path = os.path.join(CONFIG.source_dir, category_path)
-	dest_path = ensured_path(CONFIG.build_dir, category_path, is_dir=True)
-
-	# write index.html
-	filename = os.path.join(dest_path, TARGET_HTML_NAME)
-	with open(filename, 'w', encoding='utf-8') as file:
-		file.write(str(cc.soup.decode(formatter="html5")))
-
-	# get files for generator_patterns and copy those
-	patterns = cc.category.generator_patterns
-
-	unfiltered_files = []
-	leftover_files = unfiltered_files
-
-	for root, dirs, files in os.walk(source_path):
+	#
+	# make a list of all files in the directory of the current category
+	# remove the category folder name prefix (eg. c64disasm) from the paths
+	#
+	all_files = []
+	for root, dirs, files in os.walk(cc.source_path):
 		for file in files:
 			filename = os.path.join(root, file)
-			filename = os.path.relpath(filename, source_path)
-			unfiltered_files.append(filename) # just the 'local' path
+			filename = os.path.relpath(filename, cc.source_path)
+			all_files.append(filename) # just the 'local' path
 
+	#
+	# make list of files matching the categories generator_patterns
+	#
+	patterns = cc.category.generator_patterns
 	if patterns:
 		filtered_files = []
 		for pattern in patterns:
-			for filename in fnmatch.filter(unfiltered_files, pattern):
+			for filename in fnmatch.filter(all_files, pattern):
 				filtered_files.append(filename)
 
-		for file in filtered_files:
-			file_in = os.path.join(source_path, file)
-			file_out = ensured_path(dest_path, file, is_dir=False)
-			shutil.copy2(file_in, file_out)
+		#
+		# copy the matched files to the build folder
+		for file_path in filtered_files:
+			file_in = os.path.join(cc.source_path, file_path)
+			file_out = ensured_path(cc.dest_path, file_path, is_dir=False) # ensure because file_path might contain directories
+			shutil.copy(file_in, file_out)
+		#
+		# and track the unmatched files
+		unmatched_files = [file for file in all_files if file not in filtered_files]
 
-		leftover_files = [file for file in unfiltered_files if file not in filtered_files]
+	else:
+		unmatched_files = all_files
 
-	# for debugging
-	filename = ensured_path(CONFIG.build_dir_tmp, category_path, "files_no_copy.txt", is_dir=False)
+	#
+	# for debugging:
+	#     write a .txt containing a list of the unmatched/uncopied files
+	#
+	filename = os.path.join(cc.dest_path_tmp, "files_no_copy.txt")
 	with open(filename, 'w', encoding='utf-8') as file:
-		for leftover_file in leftover_files:
-			if leftover_file != "index.html" and leftover_file != ".DS_Store":
-				file.write(f"{leftover_file}\n")
+		for unmatched_file in unmatched_files:
+			# ignore .DS_Store and the index.html
+			if unmatched_file != "index.html" and unmatched_file != ".DS_Store":
+				file.write(f"{unmatched_file}\n")
 
 
 ### OCTOCAT
@@ -311,12 +322,16 @@ def add_github_corner(soup):
     <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
   </svg>
 </a>"""
-	doc_soup = BeautifulSoup(html_doc, 'html.parser')
 	tag = soup.find(id="cat")
-	tag.append(doc_soup)
+	tag_append_tag(tag, html_doc)
 
 
 ### HELPER
+
+def tag_append_tag(tag, string):
+	new_tag = BeautifulSoup(string, 'html.parser')
+	tag.append(new_tag)
+
 
 def ensured_path(path, *paths, is_dir):
 	result = os.path.join(path, *paths)
@@ -408,28 +423,38 @@ shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), CONFIG.build_dir)
 #
 for category in CATEGORIES:
 	if category.enabled:
+		# ensuring category paths
+		source_path = os.path.join(CONFIG.source_dir, category.path)
+		dest_path = ensured_path(CONFIG.build_dir, category.path, is_dir=True)
+		dest_path_tmp = ensured_path(CONFIG.build_dir_tmp, category.path, is_dir=True)
 
 		soup = BeautifulSoup(BASIC_HTML, 'html.parser')
-		cc = CurrentCategory(category, soup)
+		cc = CurrentCategory(category, soup, source_path, dest_path, dest_path_tmp)
 
 		# html (tab/document) title
-		tag = cc.soup.find("title")
-		tag.string = f"{cc.category.short_title} | {GLOBAL_SHORT_TITLE}"
+		tag = soup.find("title")
+		tag.string = f"{category.short_title} | {GLOBAL_SHORT_TITLE}"
 
 		# main document headline in header
-		tag = cc.soup.find(id="headline")
-		tag.string = cc.category.long_title
+		tag = soup.find(id="headline")
+		tag.string = category.long_title
 
-		generate_navigation(cc)
-		# add_favicons(cc.soup) # TODO XXX
-		add_category_build_info(cc)
-		add_github_corner(cc.soup)
+		add_navigation(cc)
+		add_byline_and_build_info(cc)
+		add_github_corner(soup)
 
-
-		add_main(cc)
+		add_main_content_from_subdirectories(cc)
 
 		# write and copy to build directory
-		copy_resources_and_html(cc)
+		copy_resources_to_build_dir(cc)
+
+		#
+		# write index.html to build dir
+		#
+		filename = os.path.join(dest_path, TARGET_HTML_NAME)
+		with open(filename, 'w', encoding='utf-8') as file:
+			file.write(str(soup.decode(formatter="html5")))
+
 
 ##
 ## DEPLOY
