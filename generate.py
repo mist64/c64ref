@@ -14,48 +14,68 @@ from bs4 import BeautifulSoup
 GLOBAL_TITLE = "Ultimate Commodore 64 Reference"
 GLOBAL_SHORT_TITLE = "Ultimate C64 Reference"
 
-
-### CONFIG
-
+#
+### CONFIG Class
+#
 @dataclass
 class BuildConfig():
-	source_dir: str = "src"
-	build_dir: str = "out"
-	build_dir_tmp: str = "out_unmodified"
+	source_dir: str = "src" # where to look for files
+	build_dir: str = "out" # where to put the output
+	build_dir_tmp: str = "out_unmodified" # where to put the debug output
 
-	server: str = "www.pagetable.com/c64ref"
-	deploy: bool = False
+	server: str = "www.pagetable.com/c64ref" # where to put the files so others can see
 
-	git_has_changes: bool = True
-	git_branch_name: str = "main"
+	deploy: bool = False # set via cli argument "upload"
 
-	fast_build: bool = False
-	build_wips: bool = False
+	git_has_changes: bool = True # set in setup
+	git_branch_name: str = "main" # set in setup
 
+	fast_build: bool = False # helper for disabling slow build steps
+	build_wips: bool = False # helper for disabling unfinished categories
+
+
+### DATA Classses
+
+#
+# small helper for authors
+#
+class Author(NamedTuple):
+	name: str # who?
+	url: str # where to visit them?
+
+#
+# collected 'outside' and header and build info for a category
+#
+class RefCategory(NamedTuple):
+	path: str # folder name
+	long_title: str # title for the html title and the headline
+	short_title: str # title for the menu item
+	authors: list # authors and their urls
+	generator_type: str = 'HTML' # does this need a python script?
+	generator_name: str = 'index.html' # if so: what name?
+	generator_patterns: list = [] # what other files do we need to work?
+	enabled: bool = True # should this show up in the menu and be generated?
+
+#
+# used for the category for which the html is currently generated
+#
+@dataclass
+class CurrentCategory:
+	category: RefCategory # current category
+	soup: BeautifulSoup # soup into which everything else is added
+	source_path: str # where are the source files? (incl. category.path)
+	dest_path: str # where should the build go? (incl. category.path)
+	dest_path_tmp: str # where should the debug files go? (incl. category.path)
+
+
+### CATEGORIES/TOPICS/SUBDIRECTORIES
 
 CONFIG = BuildConfig()
 #CONFIG = BuildConfig(build_wips=True)
 #CONFIG = BuildConfig(fast_build=True)
 
 
-### CATEGORIES
-
-class Author(NamedTuple):
-	name: str
-	url: str
-
 DEFAULT_AUTHOR = Author("Michael Steil", "http://www.pagetable.com/")
-
-
-class RefCategory(NamedTuple):
-	path: str
-	long_title: str
-	short_title: str
-	authors: list
-	generator_type: str = 'HTML'
-	generator_name: str = 'index.html'
-	generator_patterns: list = []
-	enabled: bool = True
 
 
 CATEGORIES = [
@@ -101,19 +121,13 @@ CATEGORIES = [
 ]
 
 
-@dataclass
-class CurrentCategory:
-	category: RefCategory
-	soup: BeautifulSoup
-	source_path: str
-	dest_path: str
-	dest_path_tmp: str
+### HTML GLOBAL
 
-
-### HTML GLOBALS
-
-TARGET_HTML_NAME = "index.html"
-
+#
+# this is the basic outline of the index.html
+# data from the original index.htmls is put into this
+# at specific ids
+#
 BASIC_HTML = """
 <!DOCTYPE html>
 	<html lang="en-US">
@@ -363,7 +377,6 @@ args = parser.parse_args()
 # TODO: add options for local
 CONFIG.deploy = args.deploy_mode == "upload"
 
-
 #
 # get git status
 #
@@ -386,13 +399,12 @@ if CONFIG.deploy:
 
 	CONFIG.fast_build = False # reset for uploading
 
+	print(f"    branch '{CONFIG.git_branch_name}' ->  <{'> <'.join([category.path for category in CATEGORIES])}>")
+
 	if branch_name == "main":
 		CONFIG.build_wips = False # reset for uploading to main
 
-		print(f"{CONFIG.git_branch_name}:")
-		print(f"  [{'|'.join([category.short_title for category in CATEGORIES])}]")
 		response = input("Deploy to production? [Y/N]: ").strip()
-		exit()
 		if response.lower() != 'y':
 			print("Exiting.")
 			exit()
@@ -434,7 +446,6 @@ for category in CATEGORIES:
 		dest_path_tmp = ensured_path(CONFIG.build_dir_tmp, category.path, is_dir=True)
 
 		soup = BeautifulSoup(BASIC_HTML, 'html.parser')
-		cc = CurrentCategory(category, soup, source_path, dest_path, dest_path_tmp)
 
 		# html (tab/document) title
 		tag = soup.find("title")
@@ -445,6 +456,8 @@ for category in CATEGORIES:
 		tag.string = category.long_title
 
 		add_github_corner(soup)
+
+		cc = CurrentCategory(category, soup, source_path, dest_path, dest_path_tmp)
 		add_navigation(cc)
 		add_byline_and_build_info(cc)
 		add_main_content_from_subdirectories(cc)
@@ -452,8 +465,7 @@ for category in CATEGORIES:
 
 		#
 		# write index.html to build dir
-		#
-		filename = os.path.join(dest_path, TARGET_HTML_NAME)
+		filename = os.path.join(dest_path, "index.html")
 		with open(filename, 'w', encoding='utf-8') as file:
 			file.write(str(soup.decode(formatter="html5")))
 
@@ -463,6 +475,10 @@ for category in CATEGORIES:
 ##
 if CONFIG.deploy:
 	print("*** Uploading")
+
+	print(">> !!!! >>Please check the rsync command and the server before actually trying to upload with this") # then delete
+	exit()	# these two lines
+
 	command = f"rsync -Pa {CONFIG.build_dir}/* local@{CONFIG.server}:/var/www/html/"
 	print("    " + command)
-	ret = subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
+	ret = subprocess.run(command, check=True, text=True, shell=True)
