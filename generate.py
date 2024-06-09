@@ -4,10 +4,15 @@ import os
 import shutil
 import subprocess
 import fnmatch
+import argparse
 
 from dataclasses import dataclass
 from typing import NamedTuple
 from bs4 import BeautifulSoup
+
+
+GLOBAL_TITLE = "Ultimate Commodore 64 Reference"
+GLOBAL_SHORT_TITLE = "Ultimate C64 Reference"
 
 
 ### CONFIG
@@ -17,7 +22,10 @@ class BuildConfig():
 	source_dir: str = "src"
 	build_dir: str = "out"
 	build_dir_tmp: str = "out_unmodified"
+	server: str = "www.pagetable.com/c64ref"
+
 	git_has_changes: bool = False
+	git_branch_name: str = "main"
 
 	clear_build_folder: bool = False
 	fast_build: bool = False
@@ -29,8 +37,17 @@ CONFIG = BuildConfig()
 #CONFIG = BuildConfig(fast_build=True)
 
 
-GLOBAL_TITLE = "Ultimate Commodore 64 Reference"
-GLOBAL_SHORT_TITLE = "Ultimate C64 Reference"
+def parse_cli_arguments():
+	parser = argparse.ArgumentParser(description=f"Generate the {GLOBAL_TITLE}")
+	parser.add_argument("-u", "--upload", action="store_true", default=False)
+	args = parser.parse_args()
+
+	print(args)
+	if args.upload:
+		print("upload")
+	else:
+		print("local")
+
 
 ### CATEGORIES
 
@@ -358,7 +375,9 @@ def ensured_path(path, *paths, is_dir):
 
 ### MAIN
 
-def generate():
+def setup():
+	parse_cli_arguments()
+
 	if CONFIG.clear_build_folder:
 		if os.path.exists(CONFIG.build_dir):
 			shutil.rmtree(CONFIG.build_dir)
@@ -368,10 +387,14 @@ def generate():
 	ensured_path(CONFIG.build_dir, is_dir=True)
 	ensured_path(CONFIG.build_dir_tmp, is_dir=True)
 
-	# check for changes
+	# check for git status
 	f = os.popen(f'git ls-files -m | wc -l')
 	if int(f.read()) > 0:
 		CONFIG.git_has_changes = True
+
+	CONFIG.git_branch_name = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
+
+def generate():
 
 	copy_global_resources()
 
@@ -380,4 +403,7 @@ def generate():
 			generate_html(category)
 
 
+### MAIN
+
+setup()
 generate()
