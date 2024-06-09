@@ -12,10 +12,12 @@ from bs4 import BeautifulSoup
 
 ### CONFIG
 
-class BuildConfig(NamedTuple):
-	source_dir : str = "src"
-	build_dir : str = "out"
-	build_dir_tmp : str = "out_unmodified"
+@dataclass
+class BuildConfig():
+	source_dir: str = "src"
+	build_dir: str = "out"
+	build_dir_tmp: str = "out_unmodified"
+	git_has_changes: bool = False
 
 	clear_build_folder: bool = False
 	fast_build: bool = False
@@ -200,6 +202,8 @@ def add_category_build_info(cc):
 
 	f = os.popen(f'git log -1 --pretty=format:%h {path}')
 	revision = f.read()
+	if CONFIG.git_has_changes:
+		revision += "+"
 
 	f = os.popen(f'git log -1 --date=short --pretty=format:%cd {path}')
 	date = f.read()
@@ -363,6 +367,11 @@ def generate():
 
 	ensured_path(CONFIG.build_dir, is_dir=True)
 	ensured_path(CONFIG.build_dir_tmp, is_dir=True)
+
+	# check for changes
+	f = os.popen(f'git ls-files -m | wc -l')
+	if int(f.read()) > 0:
+		CONFIG.git_has_changes = True
 
 	copy_global_resources()
 
