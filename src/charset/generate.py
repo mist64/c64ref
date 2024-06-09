@@ -331,7 +331,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, link = None, filen
 	scrcode7 = scrcode & 0x7f
 
 	description_html = ''
-		
+
 	if description is not None:
 		description_html = '<div class="char-txt">{}<br/></div>'.format(description)
 		#description_html = '<div class="char-txt"><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></div>'.format(description)
@@ -768,18 +768,18 @@ def html_div_overview_petscii(id, css_class): #petscii_overview
 			print('<br/>')
 
 	print('</div>')
-	
-	
+
+
 def html_div_overview_keyboard(id, css_class): #keyboard_overview
-	
+
 	print('<div id="' + id + '" class="'+ css_class +'">')
 
 	for machine in machines:
 		print(keyboard_layout_html(machine, keyboard_layout[machine]))
 
 	print('</div>')
-	
-	
+
+
 def html_div_selection_machine(id):
 
 	print('<div id="' + id + '">')
@@ -789,7 +789,7 @@ def html_div_selection_machine(id):
 		currentMachine = machines[i];
 		deselection = list(machines);
 		deselection.remove(currentMachine);
-		
+
 		print('    <tr>')
 		print('        <td><input type="radio" name="radios"  id="radio_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'radio_' + currentMachine + '\').checked, [\'{}\']);" /></td>'.format("','".join(deselection)))
 		print('        <td><input class="machine_checkbox" type="checkbox" id="checkbox_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'checkbox_' + currentMachine + '\').checked);" /></td>')
@@ -843,7 +843,7 @@ def html_div_info_screencode(id):
 			print('    </div>')
 
 		print('    <div class="additional-info">')
-		
+
 		print('        <table>')
 		print('            <tr><th colspan="2">PETSCII <th rowspan="2">Keyboard</th><th rowspan="2">Mode</th></tr>')
 		print('            <tr><th>hex</th><th>dec</th></tr>')
@@ -933,7 +933,7 @@ def html_div_info_petscii(id):
 			print('    <div class="control-description">')
 			print('        {}'.format(description))
 			print('    </div>')
-			
+
 		print('    <div class="additional-info">')
 
 		(all_keyboard_html, other_petscii) = all_keyboard_html_from_petscii(petscii, scrcode, other_ok = is_petscii_printable(petscii))
@@ -1138,7 +1138,7 @@ def html_div_table_petscii(id, css_class): #petscii_table_div
 		print('    <tr>')
 
 		print('        <td><a id="petscii_table_{:02x}">${:02X}</a></td>'.format(petscii, petscii))
-		
+
 		scrcode = scrcode_from_petscii[petscii]
 
 		print('        <td>${:02X}</td>'.format(scrcode))
@@ -1218,30 +1218,8 @@ print('</head>')
 
 print('<body>')
 
-# http://tholman.com/github-corners/
-print('<a href="https://github.com/mist64/c64ref" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:var(--main-color); color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>')
+print('<div class="content">')
 
-print('<div class="topnav">')
-print('    <h1>Ultimate Commodore 64 Reference</h1> ')
-print('    <a href="../6502/">6502</a>')
-print('    <a href="../kernal/">KERNAL API</a>')
-print('    <a href="../c64disasm/">ROM Disassembly</a>')
-print('    <a href="../c64mem/">Memory Map</a>')
-print('    <a class="active" href="#">Charset · PETSCII · Keyboard</a>')
-#print('    <a  href="../c64io/">I/O Map</a>')
-print('    <a class="home" href="https://www.pagetable.com/">pagetable.com</a>')
-print('</div>')
-
-print('<div class="main">')
-print('<h1>Character Set · PETSCII · Keyboard</h1>')
-
-f = os.popen('git log -1 --pretty=format:%h .')
-revision = f.read()
-f = os.popen('git log -1 --date=short --pretty=format:%cd .')
-date = f.read()
-print('<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, Lisa Brodner, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>. Revision ' + revision + ', ' + date + '</i></p>')
-
-print('</div>')
 print('<div class="tabbed">')
 
 html_div_settings("settings")
@@ -1267,9 +1245,11 @@ print('</div>');
 
 print('<hr/>')
 
-print('<div class="main">')
+print('<footer>')
 
 print('<h2>Notes<a id="notes"></a></h2>')
+
+print('<div>')
 print('<ul>')
 print('<li>')
 print('PET-N is a PET with a ROM version below 4 (i.e. base set of control codes) and a "normal" (chicklet or graphics) keyboard. PET-B is a PET 8xxx with a ROM version of 4 (i.e. extended set of control codes) and a business keyboard. The graphics keyboard also existed for the later PETs, and early PETs could be upgraded with newer ROMs, but for the sake of simplicity, I limitied the PET series to these two systems.')
@@ -1290,6 +1270,9 @@ print('<li>')
 print('Note that some keyboard keys (VIC-20/C64/C128/C65: <span class="key-box">RESTORE</span>, C128/C65: <span class="key-box">CAPS LOCK</span>, C128: <span class="key-box">40/80 DISPLAY</span>) produce no scancode, and therefore no PETSCII code. Other keys (C128/C65: <span class="key-box">NO SCROLL</span>) produce a scancode, but no PETSCII code.')
 print('</li>')
 print('</ul>')
+print('</div>')
+
+print('</footer>')
 
 print('</div>')
 print('</body>')

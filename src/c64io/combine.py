@@ -5,44 +5,20 @@ import pprint
 import markdown
 
 filenames = [
-	'c64mem_mapc64.txt',
-	'c64mem_64er.txt',
-	'c64mem_64intern.txt',
-	'c64mem_sta.txt',
-	'c64mem_src.txt',
-	'c64mem_prg.txt',
-	'c64mem_64map.txt',
-	'c64mem_jb.txt',
+	'c64io_mapc64.txt',
+#	'c64io_prg.txt',
 ]
 names = [
 	'Mapping the Commodore 64',
-	'64\'er [German]',
-	'64 intern [German]',
-	'Joe Forster/STA',
-	'Microsoft/Commodore Source',
 	'Programmer\'s Reference Guide',
-	'64map',
-	'Jim Butterfield',
 ]
 links = [
 	'https://github.com/Project-64/reloaded/blob/master/c64/mapc64/MAPC6412.TXT',
-	'https://archive.org/details/64er_sonderheft_1986_07/page/n6/mode/2up',
-	'https://www.pagetable.com/?p=1015',
-	'http://www.awsm.de/mem64/',
-	'https://github.com/mist64/cbmsrc',
 	'https://github.com/Project-64/reloaded/blob/master/c64/c64prg/C64PRG11.TXT',
-	'https://github.com/Project-64/reloaded/blob/master/c64/64MAP11.TXT',
-	'https://www.atarimagazines.com/compute/issue29/394_1_COMMODORE_64_MEMORY_MAP.php',
 ]
 descriptions = [
 	'Reference from <i>Mapping the Commodore 64</i> by Sheldon Leemon, ISBN 0-942386-23-X.',
-	'German-language reference from <i>Memory Map mit Wandervorschl&auml;gen</i> by Dr. H. Hauck, in 64\'er Sonderheft 1986/07.',
-	'German-language reference from <i>Das neue Commodore-64-intern-Buch</i> by Data Becker, ISBN 3890113079.',
-	'Reference by Joe Forster/STA, with awsm\'s changes applied.',
-	'Comments from the original M6502 BASIC source by Microsoft and the original C64 KERNAL source by Commodore',
 	'Reference from <i>Commodore 64 Programmer\'s Reference Guide</i>.',
-	'Reference as found in "Commodore_64_Memory_Maps.txt" by anonymous.',
-	'Reference by Jim Butterfield in COMPUTE! #29 (October 1982).',
 ]
 
 
@@ -60,12 +36,6 @@ def cross_reference(string):
 			string = string.replace(hex_number, '<a href="../c64disasm/#' + '{:04X}'.format(dec_number) + '">' + hex_number + '</a>')
 	return string
 
-
-
-f = os.popen('git log -1 --pretty=format:%h .')
-revision = f.read()
-f = os.popen('git log -1 --date=short --pretty=format:%cd .')
-date = f.read()
 
 data = []
 linenumber = []
@@ -90,7 +60,7 @@ print('<!DOCTYPE html>')
 print('<html lang="en-US">')
 print('<head>')
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
-print('<title>Memory Map | Ultimate C64 Reference</title>')
+print('<title>I/O Map | Ultimate C64 Reference</title>')
 print('')
 print('<script>')
 print('    window.onload = init;')
@@ -211,24 +181,8 @@ print('</style>')
 print('</head>')
 print('<body>')
 
-# http://tholman.com/github-corners/
-print('<a href="https://github.com/mist64/c64ref" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:var(--main-color); color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>')
-
-print('<div class="topnav">')
-print('    <h1>Ultimate Commodore 64 Reference</h1> ')
-print('    <a href="../6502/">6502</a>')
-print('    <a href="../kernal/">KERNAL API</a>')
-print('    <a href="../c64disasm/">ROM Disassembly</a>')
-print('    <a class="active" href="#">Memory Map</a>')
-print('    <a href="../charset/">Charset · PETSCII · Keyboard</a>')
-#print('    <a  href="../c64io/">I/O Map</a>')
-print('    <a class="home" href="https://www.pagetable.com/">pagetable.com</a>')
-print('</div>')
-
-print('<div class="main">')
-print('<h1>C64 Memory Map</h1>')
-
-print('<p><i>by <a href="http://www.pagetable.com/">Michael Steil</a>, <a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>. Revision ' + revision + ', ' + date + '</i></p>')
+print('<div class="content">')
+print('<div>')
 
 print('<b>This allows you to view different commentaries side-by-side. You can enable/disable individual columns:</b><br/><br/>')
 print('<table class="checkbox_table">')
@@ -448,6 +402,7 @@ while(True):
 	print('</tr>')
 
 print('</table>')
+print('</div>')
 print('</div>')
 print('</div>')
 print('</body>')
