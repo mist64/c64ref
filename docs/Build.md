@@ -6,76 +6,70 @@
 
 ## Generating
 
-<br>
+**Requirements:**
 
-**Requirements:** 
 
--   **[Python]**
--   **[Markdown]**
+-   [Python]
+-   [Markdown]
+-   [Beautiful Soup]
 
-    ```sh
-    pip3 install markdown
-    ```
-    
-The Python package can also be installed into a virtual environment:
-    
+See also [requirements.txt].
+
+The Python packages are installed into a virtual environment like this:
+
 ```sh
 python3 -m venv .venv                       # create a virtual environment
-source .venv/bin/activate                   # activate it 
+source .venv/bin/activate                   # activate it
 python3 -m pip install -r requirements.txt  # install the required packages
 ```
-    
-To generate the  `html`  files, simply execute  [`generate.sh`][Generate]
+
+To generate the  `html`  files, simply execute  [`generate.py`][Generate]
 
 
 This will build the different pages from the repos *reference material* with the help of `python` scripts.
 
-The 6502 reference is all Java Script and does not need to be generated. 
+The 6502 and the color reference are all Java Script and do not need to be generated.
+
 
 ## Testing
 
-**Testing is probably also possible with Python's built-in webserver.**
+For testing start Python's built-in webserver and navigate to the local url:
+```sh
+python3 -m http.server
+```
+[http://localhost:8000/6502/][Localhost8000]
+
+
+If the default port is already taken, choose your own port (eg. 6502):
+
+```sh
+python3 -m http.server 6464
+```
+[http://localhost:6502/6502/][Localhost6464]
+
+
+Navigate using the menu bar or directly going to the specific pages:
+
+*  `6502` for _6502 Family CPU Reference_
+*  `c64disasm` for _C64 BASIC & KERNAL ROM Disassembly_
+<!-- *  `c64io` for _C64 I/O Map -->
+*  `c64mem` for _C64 Memory Map_
+*  `charset` for _Character Set · PETSCII · Keyboard_
+*  `colors` for _C64 Colors_
+*  `kernal` for _C64 KERNAL API_
 
 ---
-
-
-**Requires:** **[Deno]**
-
-
-To test the generated pages you will need to start a local webserver.
-
-```sh
-Test/Webserver.sh
-```
-
-### Permissions
-
-*Make sure the file is executable, otherwise you will likely receive a `Permission Denied` error.*
-
-```sh
-sudo chmod ug+x Test/Webserver.sh # Linux Fix
-```
-
-### Browser
-
-After starting your webserver you will just need to navigate to [`http://localhost:6464/6502/`][Localhost]
-
-### Shortcuts
-
-* Stop the **Webserver**: <kbd>  Ctrl + C  </kbd> 
-
-* Open the **Inspector**: <kbd>  Ctrl + Shift + I  </kbd>  or  <kbd>  F12  </kbd> 
-
-* Reload the page: <kbd>  F5  </kbd>
 
 
 
 <!----------------------------------------------------------------------------->
 
-[Generate]: ../Source/generate.sh
+[Generate]: ../generate.py
+[requirements.txt]: ../requirements.txt
 
 [Markdown]: https://pypi.org/project/Markdown/
 [Python]: https://www.python.org/
-[Deno]: https://deno.land/
+[Beautiful Soup]: https://beautiful-soup-4.readthedocs.io/en/latest/
 
-[Localhost]: http://localhost:6464/6502/
+[Localhost8000]: http://localhost:8000/6502/
+[Localhost6464]: http://localhost:6464/6502/

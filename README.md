@@ -102,34 +102,34 @@ and ***editing*** the collected files was done by **[Michael Steil]**.
 
 [Michael Steil]: mailto:mist64@mac.com
 
-[Disassembly KERNAL]: Source/c64disasm/c64disasm_cbm.txt
-[Disassembly Magnus]: Source/c64disasm/c64disasm_mn.txt
-[Disassembly BASIC]: Source/c64disasm/c64disasm_ms.txt
-[Disassembly Marko]: Source/c64disasm/c64disasm_mm.txt
-[Disassembly Buch]: Source/c64disasm/c64disasm_de.txt
-[Disassembly Bob]: Source/c64disasm/c64disasm_sc.txt
-[Disassembly Lee]: Source/c64disasm/c64disasm_en.txt
+[Disassembly KERNEL]: src/c64disasm/c64disasm_cbm.txt
+[Disassembly Magnus]: src/c64disasm/c64disasm_mn.txt
+[Disassembly BASIC]: src/c64disasm/c64disasm_ms.txt
+[Disassembly Marko]: src/c64disasm/c64disasm_mm.txt
+[Disassembly Buch]: src/c64disasm/c64disasm_de.txt
+[Disassembly Bob]: src/c64disasm/c64disasm_sc.txt
+[Disassembly Lee]: src/c64disasm/c64disasm_en.txt
 
-[Memory Original]: Source/c64mem/c64mem_src.txt
-[Memory Sheldon]: Source/c64mem/c64mem_mapc64.txt
-[Memory Hauck]: Source/c64mem/c64mem_64er.txt
-[Memory Guide]: Source/c64mem/c64mem_prg.txt
-[Memory Buch]: Source/c64mem/c64mem_64intern.txt
-[Memory Joe]: Source/c64mem/c64mem_sta.txt
-[Memory Map]: Source/c64mem/c64mem_64map.txt
-[Memory Jim]: Source/c64mem/c64mem_jb.txt
+[Memory Original]: src/c64mem/c64mem_src.txt
+[Memory Sheldon]: src/c64mem/c64mem_mapc64.txt
+[Memory Hauck]: src/c64mem/c64mem_64er.txt
+[Memory Guide]: src/c64mem/c64mem_prg.txt
+[Memory Buch]: src/c64mem/c64mem_64intern.txt
+[Memory Joe]: src/c64mem/c64mem_sta.txt
+[Memory Map]: src/c64mem/c64mem_64map.txt
+[Memory Jim]: src/c64mem/c64mem_jb.txt
 
-[API Sheldon]: Source/kernal/kernal_mapc64.txt
-[API Guide]: Source/kernal/kernal_prg.txt
-[API Frank]: Source/kernal/kernal_fk.txt
-[API Peter]: Source/kernal/kernal_pm.txt
-[API Craig]: Source/kernal/kernal_ct.txt
-[API Buch]: Source/kernal/kernal_64intern.txt
-[API Todd]: Source/kernal/kernal_mlr.txt
-[API 128]: Source/kernal/kernal_128intern.txt
-[API Dan]: Source/kernal/kernal_dh.txt
-[API Lee]: Source/kernal/kernal_ld.txt
-[API Joe]: Source/kernal/kernal_sta.txt
+[API Sheldon]: src/kernal/kernal_mapc64.txt
+[API Guide]: src/kernal/kernal_prg.txt
+[API Frank]: src/kernal/kernal_fk.txt
+[API Peter]: src/kernal/kernal_pm.txt
+[API Craig]: src/kernal/kernal_ct.txt
+[API Buch]: src/kernal/kernal_64intern.txt
+[API Todd]: src/kernal/kernal_mlr.txt
+[API 128]: src/kernal/kernal_128intern.txt
+[API Dan]: src/kernal/kernal_dh.txt
+[API Lee]: src/kernal/kernal_ld.txt
+[API Joe]: src/kernal/kernal_sta.txt
 
 
 <!---------------------------------[ Buttons ]--------------------------------->
