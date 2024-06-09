@@ -22,31 +22,20 @@ class BuildConfig():
 	source_dir: str = "src"
 	build_dir: str = "out"
 	build_dir_tmp: str = "out_unmodified"
-	server: str = "www.pagetable.com/c64ref"
 
-	git_has_changes: bool = False
+	server: str = "www.pagetable.com/c64ref"
+	deploy: bool = False
+
+	git_has_changes: bool = True
 	git_branch_name: str = "main"
 
-	clear_build_folder: bool = False
 	fast_build: bool = False
 	build_wips: bool = False
 
 
 CONFIG = BuildConfig()
-#CONFIG = BuildConfig(clear_build_folder=True, build_wips=True)
+#CONFIG = BuildConfig(build_wips=True)
 #CONFIG = BuildConfig(fast_build=True)
-
-
-def parse_cli_arguments():
-	parser = argparse.ArgumentParser(description=f"Generate the {GLOBAL_TITLE}")
-	parser.add_argument("-u", "--upload", action="store_true", default=False)
-	args = parser.parse_args()
-
-	print(args)
-	if args.upload:
-		print("upload")
-	else:
-		print("local")
 
 
 ### CATEGORIES
@@ -373,37 +362,83 @@ def ensured_path(path, *paths, is_dir):
 
 	return result
 
-### MAIN
-
-def setup():
-	parse_cli_arguments()
-
-	if CONFIG.clear_build_folder:
-		if os.path.exists(CONFIG.build_dir):
-			shutil.rmtree(CONFIG.build_dir)
-		if os.path.exists(CONFIG.build_dir_tmp):
-			shutil.rmtree(CONFIG.build_dir_tmp)
-
-	ensured_path(CONFIG.build_dir, is_dir=True)
-	ensured_path(CONFIG.build_dir_tmp, is_dir=True)
-
-	# check for git status
-	f = os.popen(f'git ls-files -m | wc -l')
-	if int(f.read()) > 0:
-		CONFIG.git_has_changes = True
-
-	CONFIG.git_branch_name = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
-
-def generate():
-
-	copy_global_resources()
-
-	for category in CATEGORIES:
-		if category.enabled:
-			generate_html(category)
 
 
 ### MAIN
 
-setup()
-generate()
+##
+## SETUP
+##
+
+#
+# parsing command line arguments
+#
+parser = argparse.ArgumentParser(description=f"Generate the {GLOBAL_TITLE}")
+parser.add_argument("deploy_mode", choices=["upload", "local"], nargs='?', default="local",
+					help="the deploy mode (default: %(default)s)")
+args = parser.parse_args()
+
+# TODO: add options for local
+CONFIG.deploy = args.deploy_mode == "upload"
+
+
+#
+# get git status
+#
+f = os.popen(f'git ls-files -m | wc -l')
+if int(f.read()) <= 0:
+	CONFIG.git_has_changes = False
+
+branch_name = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
+CONFIG.git_branch_name = branch_name
+
+#
+# if the current build should be uploaded: do some sanity checking
+#
+if CONFIG.deploy:
+
+	if CONFIG.git_has_changes:
+		print("Generate and upload failed:")
+		print("There are uncommited changes in the working copy.")
+		exit()
+
+	if branch_name == "main":
+		print(f"{CONFIG.git_branch_name}:")
+		response = input("Deploy to production? [Y/N]: ").strip()
+		if response.lower() != 'y':
+			print("Exiting.")
+			exit()
+
+#
+# clean and ensure build directories
+#
+if os.path.exists(CONFIG.build_dir):
+	shutil.rmtree(CONFIG.build_dir)
+if os.path.exists(CONFIG.build_dir_tmp):
+	shutil.rmtree(CONFIG.build_dir_tmp)
+
+ensured_path(CONFIG.build_dir, is_dir=True)
+ensured_path(CONFIG.build_dir_tmp, is_dir=True)
+
+
+##
+## GENERATE HTML in build_dir
+##
+
+print("*** Generating")
+
+copy_global_resources()
+
+for category in CATEGORIES:
+	if category.enabled:
+		generate_html(category)
+
+
+##
+## DEPLOY
+##
+if CONFIG.deploy:
+	print("*** Uploading")
+	command = f"rsync -Pa {CONFIG.build_dir}/* local@{CONFIG.server}:/var/www/html/"
+	print("    " + command)
+	ret = subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
