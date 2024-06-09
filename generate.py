@@ -138,30 +138,8 @@ BASIC_HTML = """
 
 
 
-### MAIN METHOD
 
-def generate_html(category):
-	html_doc = BASIC_HTML
-	soup = BeautifulSoup(html_doc, 'html.parser')
-
-	cc = CurrentCategory(category, soup)
-
-	add_category_title(cc)
-	# add_favicons(cc.soup)
-
-	add_github_corner(cc.soup)
-
-	generate_navigation(cc)
-	add_category_headline(cc)
-	add_category_build_info(cc)
-
-	add_main(cc)
-
-	# write and copy to build directory
-	copy_resources_and_html(cc)
-
-
-### HELPER
+###
 
 def generate_navigation(cc):
 	soup = cc.soup
@@ -195,13 +173,6 @@ def generate_navigation(cc):
 	#<link href="/fav/icon.svg" rel="icon" type="image/svg+xml">
 	#<link href="/fav/apple-touch-icon.png" rel="apple-touch-icon">
 
-def add_category_title(cc):
-	tag = cc.soup.find("title")
-	tag.string = f"{cc.category.short_title} | {GLOBAL_SHORT_TITLE}"
-
-def add_category_headline(cc):
-	tag = cc.soup.find(id="headline")
-	tag.string = cc.category.long_title
 
 def add_category_build_info(cc):
 	path = os.path.join(CONFIG.source_dir, cc.category.path)
@@ -281,6 +252,7 @@ def add_main(cc):
 	for new_tag in file_soup.find_all('link'):
 		tag.insert_after(new_tag)
 
+
 ### RESOURCES
 
 def copy_resources_and_html(cc):
@@ -326,11 +298,6 @@ def copy_resources_and_html(cc):
 			if leftover_file != "index.html" and leftover_file != ".DS_Store":
 				file.write(f"{leftover_file}\n")
 
-def copy_global_resources():
-	# copy globals: stylesheet
-	shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), CONFIG.build_dir)
-
-
 
 ### OCTOCAT
 
@@ -347,6 +314,7 @@ def add_github_corner(soup):
 	doc_soup = BeautifulSoup(html_doc, 'html.parser')
 	tag = soup.find(id="cat")
 	tag.append(doc_soup)
+
 
 ### HELPER
 
@@ -427,12 +395,41 @@ ensured_path(CONFIG.build_dir_tmp, is_dir=True)
 
 print("*** Generating")
 
-copy_global_resources()
+# copy global resources: stylesheet
+shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), CONFIG.build_dir)
 
+#
+# for each category/subdirectory/topic:
+#     take the basic HTML, extract the relevant info from
+#     the script results or HTMLs from the subdirectories
+#     and add them into the basic HTML
+#
+# TODO: make it the other way around, let the scripts generate templates with placeholders for TITLE, NAV etc.
+#
 for category in CATEGORIES:
 	if category.enabled:
-		generate_html(category)
 
+		soup = BeautifulSoup(BASIC_HTML, 'html.parser')
+		cc = CurrentCategory(category, soup)
+
+		# html (tab/document) title
+		tag = cc.soup.find("title")
+		tag.string = f"{cc.category.short_title} | {GLOBAL_SHORT_TITLE}"
+
+		# main document headline in header
+		tag = cc.soup.find(id="headline")
+		tag.string = cc.category.long_title
+
+		generate_navigation(cc)
+		# add_favicons(cc.soup) # TODO XXX
+		add_category_build_info(cc)
+		add_github_corner(cc.soup)
+
+
+		add_main(cc)
+
+		# write and copy to build directory
+		copy_resources_and_html(cc)
 
 ##
 ## DEPLOY
