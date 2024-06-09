@@ -23,7 +23,7 @@ source .venv/bin/activate                   # activate it
 python3 -m pip install -r requirements.txt  # install the required packages
 ```
 
-To generate the  `html`  files, simply execute  [`generate.sh`][Generate]
+To generate the  `html`  files, simply execute  [`generate.py`][Generate]
 
 
 This will build the different pages from the repos *reference material* with the help of `python` scripts.
@@ -64,7 +64,7 @@ Navigate using the menu bar or directly going to the specific pages:
 
 <!----------------------------------------------------------------------------->
 
-[Generate]: ../src/generate.sh
+[Generate]: ../generate.py
 [requirements.txt]: ../requirements.txt
 
 [Markdown]: https://pypi.org/project/Markdown/

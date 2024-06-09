@@ -9,10 +9,23 @@ from dataclasses import dataclass
 from typing import NamedTuple
 from bs4 import BeautifulSoup
 
-REGULAR_BUILD=True
-#REGULAR_BUILD=False #debug
-#BUILD_WIPS = False
-BUILD_WIPS = True #debug
+
+### CONFIG
+
+class BuildConfig(NamedTuple):
+	source_dir : str = "src"
+	build_dir : str = "out"
+	build_dir_tmp : str = "out_unmodified"
+
+	clear_build_folder: bool = False
+	fast_build: bool = False
+	build_wips: bool = False
+
+
+CONFIG = BuildConfig()
+#CONFIG = BuildConfig(clear_build_folder=True, build_wips=True)
+#CONFIG = BuildConfig(fast_build=True)
+
 
 GLOBAL_TITLE = "Ultimate Commodore 64 Reference"
 GLOBAL_SHORT_TITLE = "Ultimate C64 Reference"
@@ -52,7 +65,7 @@ CATEGORIES = [
 		'C64 BASIC & KERNAL ROM Disassembly', 'ROM Disassembly',
 		[DEFAULT_AUTHOR],
 		'SCRIPT', 'combine.py',
-		enabled=REGULAR_BUILD
+		enabled=(not CONFIG.fast_build)
 	),
 	RefCategory('c64mem',
 		'C64 Memory Map', 'Memory Map',
@@ -63,7 +76,7 @@ CATEGORIES = [
 		'C64 I/O Map', 'I/O Map',
 		[DEFAULT_AUTHOR],
 		'SCRIPT', 'combine.py',
-		enabled=BUILD_WIPS
+		enabled=CONFIG.build_wips
 	),
 	RefCategory('charset',
 		'Character Set · PETSCII · Keyboard', 'Charset Set · PETSCII · Keyboard',
@@ -75,7 +88,7 @@ CATEGORIES = [
 		'C64 Colors', 'Colors',
 		[DEFAULT_AUTHOR],
 		generator_patterns=["*.js"],
-		enabled=BUILD_WIPS
+		enabled=CONFIG.build_wips
 	),
 ]
 
@@ -84,12 +97,6 @@ CATEGORIES = [
 class CurrentCategory:
 	category: RefCategory
 	soup: BeautifulSoup
-
-### CONFIG
-
-SOURCE_DIR = "src"
-BUILD_DIR = "out"
-BUILD_DIR_TMP = "out_unmodified"
 
 
 ### HTML GLOBALS
@@ -189,7 +196,7 @@ def add_category_headline(cc):
 	tag.string = cc.category.long_title
 
 def add_category_build_info(cc):
-	path = os.path.join(SOURCE_DIR, cc.category.path)
+	path = os.path.join(CONFIG.source_dir, cc.category.path)
 
 	f = os.popen(f'git log -1 --pretty=format:%h {path}')
 	revision = f.read()
@@ -216,26 +223,36 @@ def add_main(cc):
 	soup = cc.soup
 	category = cc.category
 
-	dir = os.path.join(SOURCE_DIR, category.path)
+	dir = os.path.join(CONFIG.source_dir, category.path)
 	filename = category.generator_name
 
 	file_soup = BeautifulSoup("", 'html.parser')
+	file_unmodified = ""
 	if category.generator_type == 'SCRIPT':
 		result = subprocess.run(['python3', filename], capture_output=True, text=True, cwd=dir)
 		file_soup = BeautifulSoup(result.stdout, 'html.parser')
+		file_unmodified = result.stdout
 
 	elif category.generator_type == 'HTML':
 		path = 	os.path.join(dir, filename)
 		with open(path, 'r') as file:
 			file_soup = BeautifulSoup(file, 'html.parser')
+			file.seek(0)
+			file_unmodified = file.read()
 
 	else:
 		print("Missing generator")
 
 	# for debugging: write the original HTML to tmp
-	filename = ensured_path(BUILD_DIR_TMP, category.path, "index.html", is_dir=False)
+	dir_path = ensured_path(CONFIG.build_dir_tmp, category.path, is_dir=True)
+	filename = os.path.join(dir_path, "index_soup.html")
+	filename_unmodified = os.path.join(dir_path, "index_orig.html")
+
 	with open(filename, 'w', encoding='utf-8') as file:
 		file.write(str(file_soup.decode(formatter="html5")))
+
+	with open(filename_unmodified, 'w', encoding='utf-8') as file:
+		file.write(file_unmodified)
 
 	# extracting the relevant infos from the generated HTMLs
 	tag = soup.find("main")
@@ -259,8 +276,8 @@ def add_main(cc):
 def copy_resources_and_html(cc):
 	category_path = cc.category.path
 
-	source_path = os.path.join(SOURCE_DIR, category_path)
-	dest_path = ensured_path(BUILD_DIR, category_path, is_dir=True)
+	source_path = os.path.join(CONFIG.source_dir, category_path)
+	dest_path = ensured_path(CONFIG.build_dir, category_path, is_dir=True)
 
 	# write index.html
 	filename = os.path.join(dest_path, TARGET_HTML_NAME)
@@ -293,7 +310,7 @@ def copy_resources_and_html(cc):
 		leftover_files = [file for file in unfiltered_files if file not in filtered_files]
 
 	# for debugging
-	filename = ensured_path(BUILD_DIR_TMP, category_path, "files_no_copy.txt", is_dir=False)
+	filename = ensured_path(CONFIG.build_dir_tmp, category_path, "files_no_copy.txt", is_dir=False)
 	with open(filename, 'w', encoding='utf-8') as file:
 		for leftover_file in leftover_files:
 			if leftover_file != "index.html" and leftover_file != ".DS_Store":
@@ -301,7 +318,7 @@ def copy_resources_and_html(cc):
 
 def copy_global_resources():
 	# copy globals: stylesheet
-	shutil.copy(os.path.join(SOURCE_DIR, "style.css"), BUILD_DIR)
+	shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), CONFIG.build_dir)
 
 
 
@@ -338,8 +355,14 @@ def ensured_path(path, *paths, is_dir):
 ### MAIN
 
 def generate():
-	ensured_path(BUILD_DIR, is_dir=True)
-	ensured_path(BUILD_DIR_TMP, is_dir=True)
+	if CONFIG.clear_build_folder:
+		if os.path.exists(CONFIG.build_dir):
+			shutil.rmtree(CONFIG.build_dir)
+		if os.path.exists(CONFIG.build_dir_tmp):
+			shutil.rmtree(CONFIG.build_dir_tmp)
+
+	ensured_path(CONFIG.build_dir, is_dir=True)
+	ensured_path(CONFIG.build_dir_tmp, is_dir=True)
 
 	copy_global_resources()
 

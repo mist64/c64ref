@@ -1,8 +1,0 @@
-(cd ..; mkdir -p out_unmodified/c64disasm)
-(cd ..; mkdir -p out_unmodified/c64mem)
-(cd ..; mkdir -p out_unmodified/kernal)
-(cd ..; mkdir -p out_unmodified/charset)
-(cd c64disasm; ./combine.py > ../../out_unmodified/c64disasm/index.html)
-(cd c64mem; ./combine.py > ../../out_unmodified/c64mem/index.html)
-(cd kernal; ./generate.py > ../../out_unmodified/kernal/index.html)
-(cd charset; ./generate.py > ../../out_unmodified/charset/index.html)
