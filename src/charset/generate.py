@@ -845,8 +845,8 @@ def html_div_info_screencode(id):
 		print('    <div class="additional-info">')
 
 		print('        <table>')
-		print('            <tr><th colspan="2">PETSCII <th rowspan="2">Keyboard</th><th rowspan="2">Mode</th></tr>')
-		print('            <tr><th>hex</th><th>dec</th></tr>')
+		print('            <tr><th colspan="2">PETSCII</th><th rowspan="2">Keyboard</th><th rowspan="2">Mode</th></tr>')
+		print('            <tr><th>hex</th><th>dec</th><!-- 2 x rowspan from above --></tr>')
 
 		run = 0
 		if is_reverse:
