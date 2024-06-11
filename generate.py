@@ -107,7 +107,7 @@ CATEGORIES = [
 		enabled=CONFIG.build_wips
 	),
 	RefCategory('charset',
-		'Character Set · PETSCII · Keyboard', 'Charset Set · PETSCII · Keyboard',
+		'Character Set · PETSCII · Keyboard', 'Charset · PETSCII · Keyboard',
 		[DEFAULT_AUTHOR, Author("Lisa Brodner", None)],
 		'SCRIPT',  'generate.py',
 		generator_patterns=["*.js", "*.css", "bin/*.bin"]
