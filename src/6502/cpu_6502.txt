@@ -947,7 +947,7 @@ SAX  Store Accumulator "AND" Index Register X In Memory
 
 SHA  Store Accumulator "AND" Index Register X "AND" Value
      The undocumented SHA instruction performs a bit-by-bit AND operation of the following three operands: The first two are the accumulator and the index register X.
-     The third operand depends on the addressing mode. In the zero page indirect Y-indexed case, the third operand is the data in memory at the given zero page address (ignoring the the addressing mode's Y offset) plus 1. In the Y-indexed absolute case, it is the upper 8 bits of the given address (ignoring the the addressing mode's Y offset), plus 1.
+     The third operand depends on the addressing mode. In the zero page indirect Y-indexed case, the third operand is the data in memory at the given zero page address (ignoring the addressing mode's Y offset) plus 1. In the Y-indexed absolute case, it is the upper 8 bits of the given address (ignoring the addressing mode's Y offset), plus 1.
      It then transfers the result to the addressed memory location.
      No flags or registers in the microprocessor are affected by the store operation.
 
@@ -1006,11 +1006,11 @@ SAX  Store Accumulator "AND" Index Register X in Memory
      No flags or registers in the microprocessor are affected by the store operation.
 
 SHX  Store Index Register X "AND" Value
-     The undocumented SHX instruction performs a bit-by-bit AND operation of the index register X and the upper 8 bits of the given address (ignoring the the addressing mode's Y offset), plus 1. It then transfers the result to the addressed memory location.
+     The undocumented SHX instruction performs a bit-by-bit AND operation of the index register X and the upper 8 bits of the given address (ignoring the addressing mode's Y offset), plus 1. It then transfers the result to the addressed memory location.
      No flags or registers in the microprocessor are affected by the store operation.
 
 SHY  Store Index Register Y "AND" Value
-     The undocumented SHY instruction performs a bit-by-bit AND operation of the index register Y and the upper 8 bits of the given address (ignoring the the addressing mode's X offset), plus 1. It then transfers the result to the addressed memory location.
+     The undocumented SHY instruction performs a bit-by-bit AND operation of the index register Y and the upper 8 bits of the given address (ignoring the addressing mode's X offset), plus 1. It then transfers the result to the addressed memory location.
      No flags or registers in the microprocessor are affected by the store operation.
 
 SLO  Arithmetic Shift Left then "OR" Memory with Accumulator
@@ -1092,6 +1092,6 @@ r8      Relative
 [documentation-addmodes~private]
 (a16)   The indirect jump instruction does not increment the page address when the indirect pointer crosses a page boundary. JMP ($xxFF) will fetch the address from $xxFF and $xx00.
 
-a16,X   The value at the specified address, ignoring the the addressing mode's X offset, is read (and discarded) before the final address is read. This may cause side effects in I/O registers.
+a16,X   The value at the specified address, ignoring the addressing mode's X offset, is read (and discarded) before the final address is read. This may cause side effects in I/O registers.
 
-a16,Y   The value at the specified address, ignoring the the addressing mode's Y offset, is read (and discarded) before the final address is read. This may cause side effects in I/O registers.
+a16,Y   The value at the specified address, ignoring the addressing mode's Y offset, is read (and discarded) before the final address is read. This may cause side effects in I/O registers.
