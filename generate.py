@@ -23,7 +23,8 @@ class BuildConfig():
 	build_dir: str = "out" # where to put the output
 	build_dir_tmp: str = "out_unmodified" # where to put the debug output
 
-	server: str = "www.pagetable.com/c64ref" # where to put the files so others can see
+	server_path: str = "local@pagetable.com:/var/www/html/c64ref/" # where to put the files so others can see
+	base_dir: str = "c64ref"
 
 	deploy: bool = False # set via cli argument "upload"
 
@@ -191,7 +192,7 @@ def add_navigation(cc):
 			if category == cc.category:
 				a_menu = f'<a class="active" href="#">{category.short_title}</a>'
 			else:
-				a_menu = f'<a href="/{category.path}/">{category.short_title}</a>'
+				a_menu = f'<a href="/{CONFIG.base_dir}/{category.path}/">{category.short_title}</a>'
 			tag_append_tag(nav_tag, a_menu)
 
 	#
@@ -475,10 +476,6 @@ for category in CATEGORIES:
 ##
 if CONFIG.deploy:
 	print("*** Uploading")
-
-	print(">> !!!! >>Please check the rsync command and the server before actually trying to upload with this") # then delete
-	exit()	# these two lines
-
-	command = f"rsync -Pa {CONFIG.build_dir}/* local@{CONFIG.server}:/var/www/html/"
+	command = f"rsync -Pa {CONFIG.build_dir}/* {CONFIG.server_path}/"
 	print("    " + command)
 	ret = subprocess.run(command, check=True, text=True, shell=True)
