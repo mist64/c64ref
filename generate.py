@@ -9,6 +9,8 @@ import argparse
 from dataclasses import dataclass
 from typing import NamedTuple
 from bs4 import BeautifulSoup
+from bs4.formatter import Formatter
+from bs4.dammit import EntitySubstitution
 
 
 GLOBAL_TITLE = "Ultimate Commodore 64 Reference"
@@ -266,7 +268,7 @@ def add_main_content_from_subdirectories(cc):
 	filename = os.path.join(cc.dest_path_tmp, "index_soup.html")
 	src_soup = BeautifulSoup(output_str, 'html.parser')
 	with open(filename, 'w', encoding='utf-8') as file:
-		file.write(str(src_soup.decode(formatter="html5")))
+		file.write(str(src_soup.decode(formatter=UnsortedAttributes())))
 
 	#
 	# extract the relevant infos from the generated HTMLs
@@ -356,6 +358,24 @@ def ensured_path(path, *paths, is_dir):
 		os.makedirs(dir_name)
 
 	return result
+
+
+
+class UnsortedAttributes(Formatter):
+
+	def __init__(
+			self, language=Formatter.HTML, entity_substitution=EntitySubstitution.substitute_xml,
+			void_element_close_prefix=None, cdata_containing_tags=None,
+	):
+		super().__init__()
+
+	def attributes(self, tag):
+		for k, v in tag.attrs.items():
+			if k == 'open' or k == 'checked' or k == 'selected':
+				if v:
+					print(f"v: {v}")
+				v = None
+			yield k, v
 
 
 
@@ -467,7 +487,7 @@ for category in CATEGORIES:
 		# write index.html to build dir
 		filename = os.path.join(dest_path, "index.html")
 		with open(filename, 'w', encoding='utf-8') as file:
-			file.write(str(soup.decode(formatter="html5")))
+			file.write(str(soup.decode(formatter=UnsortedAttributes())))
 
 
 ##
