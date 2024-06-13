@@ -705,9 +705,9 @@ def html_div_settings(id): #settings
 
 def html_div_navigation(id): #navigation
 
-	print('<input checked="checked" id="tab_screencode" type="radio" name="tabs" />')
-	print('<input id="tab_petscii" type="radio" name="tabs" />')
-	print('<input id="tab_keyboard" type="radio" name="tabs" />')
+	print('<input checked="checked" id="tab_screencode" type="radio" name="tabs">')
+	print('<input id="tab_petscii" type="radio" name="tabs">')
+	print('<input id="tab_keyboard" type="radio" name="tabs">')
 
 	print('<div id="' + id + '">')
 	print('    <nav>')
@@ -791,8 +791,8 @@ def html_div_selection_machine(id):
 		deselection.remove(currentMachine);
 
 		print('    <tr>')
-		print('        <td><input type="radio" name="radios"  id="radio_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'radio_' + currentMachine + '\').checked, [\'{}\']);" /></td>'.format("','".join(deselection)))
-		print('        <td><input class="machine_checkbox" type="checkbox" id="checkbox_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'checkbox_' + currentMachine + '\').checked);" /></td>')
+		print('        <td><input type="radio" name="radios"  id="radio_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'radio_' + currentMachine + '\').checked, [\'{}\']);"></td>'.format("','".join(deselection)))
+		print('        <td><input class="machine_checkbox" type="checkbox" id="checkbox_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'checkbox_' + currentMachine + '\').checked);"></td>')
 		print('        <td style="white-space: nowrap;"><b>' + machines[i] + '</b>')
 		print('    </tr>')
 
@@ -1204,7 +1204,7 @@ def html_div_table_petscii(id, css_class): #petscii_table_div
 print('<!DOCTYPE html>')
 print('<html lang="en-US">')
 print('<head>')
-print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
+print('<meta http-equiv="Content-type" content="text/html; charset=utf-8">')
 print('<title>Charset · PETSCII · Keyboard | Ultimate C64 Reference</title>')
 print('')
 print('<script src="script.js"></script>')
