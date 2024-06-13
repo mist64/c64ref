@@ -333,7 +333,7 @@ def pixel_char_html_from_scrcode(scrcode, description = None, link = None, filen
 	description_html = ''
 
 	if description is not None:
-		description_html = '<div class="char-txt">{}<br/></div>'.format(description)
+		description_html = '<div class="char-txt">{}<br></div>'.format(description)
 		#description_html = '<div class="char-txt"><svg viewBox="0 0 10 10"><text x="0" y="15">{}</text></svg></div>'.format(description)
 
 	link_html1 = ''
@@ -705,9 +705,9 @@ def html_div_settings(id): #settings
 
 def html_div_navigation(id): #navigation
 
-	print('<input checked="checked" id="tab_screencode" type="radio" name="tabs" />')
-	print('<input id="tab_petscii" type="radio" name="tabs" />')
-	print('<input id="tab_keyboard" type="radio" name="tabs" />')
+	print('<input checked="checked" id="tab_screencode" type="radio" name="tabs">')
+	print('<input id="tab_petscii" type="radio" name="tabs">')
+	print('<input id="tab_keyboard" type="radio" name="tabs">')
 
 	print('<div id="' + id + '">')
 	print('    <nav>')
@@ -726,7 +726,7 @@ def html_div_overview_screencode(id, css_class): # screencode_overview
 	for scrcode in range(0, 256):
 		print(pixel_char_html_from_scrcode(scrcode, link = 'scrcode_' + hex(scrcode)))
 		if scrcode & 15 == 15:
-			print('<br/>')
+			print('<br>')
 
 	print('</div>')
 
@@ -765,7 +765,7 @@ def html_div_overview_petscii(id, css_class): #petscii_overview
 
 		print(pixel_char_html_from_scrcode(scrcode, description, 'petscii_' + hex(petscii)))
 		if petscii & 15 == 15:
-			print('<br/>')
+			print('<br>')
 
 	print('</div>')
 
@@ -791,8 +791,8 @@ def html_div_selection_machine(id):
 		deselection.remove(currentMachine);
 
 		print('    <tr>')
-		print('        <td><input type="radio" name="radios"  id="radio_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'radio_' + currentMachine + '\').checked, [\'{}\']);" /></td>'.format("','".join(deselection)))
-		print('        <td><input class="machine_checkbox" type="checkbox" id="checkbox_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'checkbox_' + currentMachine + '\').checked);" /></td>')
+		print('        <td><input type="radio" name="radios"  id="radio_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'radio_' + currentMachine + '\').checked, [\'{}\']);"></td>'.format("','".join(deselection)))
+		print('        <td><input class="machine_checkbox" type="checkbox" id="checkbox_' + currentMachine + '" onclick="toggleMachine(\'' + currentMachine + '\', document.getElementById(\'checkbox_' + currentMachine + '\').checked);"></td>')
 		print('        <td style="white-space: nowrap;"><b>' + machines[i] + '</b>')
 		print('    </tr>')
 
@@ -822,7 +822,7 @@ def html_div_info_screencode(id):
 		print('    </div>')
 		print('    <div class="scrcode-title info-title">Screen Code</div>')
 		print('    <div class="scrcode-description">')
-		print('        ${:02X}<br/>'.format(scrcode))
+		print('        ${:02X}<br>'.format(scrcode))
 		print('        {}'.format(scrcode))
 		print('    </div>')
 
@@ -836,17 +836,17 @@ def html_div_info_screencode(id):
 			print('    <div class="unicode-title unicode_{} info-title"{}>Unicode</div>'.format(unicode_map, display))
 
 			print('    <div class="unicode-description unicode_{}"{}>'.format(unicode_map, display))
-			print('        U+{:04X}<br/>'.format(unicode))
+			print('        U+{:04X}<br>'.format(unicode))
 			print('        {}'.format(description_from_unicode[unicode]))
 			if is_reverse:
-				print('        <br/>+ reverse')
+				print('        <br>+ reverse')
 			print('    </div>')
 
 		print('    <div class="additional-info">')
 
 		print('        <table>')
-		print('            <tr><th colspan="2">PETSCII <th rowspan="2">Keyboard</th><th rowspan="2">Mode</th></tr>')
-		print('            <tr><th>hex</th><th>dec</th></tr>')
+		print('            <tr><th colspan="2">PETSCII</th><th rowspan="2">Keyboard</th><th rowspan="2">Mode</th></tr>')
+		print('            <tr><th>hex</th><th>dec</th></tr>') # <!-- 2 x rowspan from above -->
 
 		run = 0
 		if is_reverse:
@@ -899,7 +899,7 @@ def html_div_info_petscii(id):
 
 		print('    <div class="petscii-title info-title">PETSCII</div>')
 		print('    <div class="petscii-description">')
-		print('        <a href="#petscii_table_{:02x}">${:02X}</a><br/>'.format(petscii, petscii))
+		print('        <a href="#petscii_table_{:02x}">${:02X}</a><br>'.format(petscii, petscii))
 		print('        {}'.format(petscii))
 		print('    </div>')
 
@@ -908,7 +908,7 @@ def html_div_info_petscii(id):
 		print('    </div>')
 		print('    <div class="scrcode-title info-title">Screen Code</div>')
 		print('    <div class="scrcode-description">')
-		print('        ${:02X}<br/>'.format(scrcode))
+		print('        ${:02X}<br>'.format(scrcode))
 		print('        {}'.format(scrcode))
 		print('    </div>')
 
@@ -922,7 +922,7 @@ def html_div_info_petscii(id):
 				print('    <div class="unicode-title unicode_{} info-title"{}>Unicode</div>'.format(unicode_map, display))
 
 				print('    <div class="unicode-description unicode_{}"{}>'.format(unicode_map, display))
-				print('        U+{:04X}<br/>'.format(unicode))
+				print('        U+{:04X}<br>'.format(unicode))
 				print('        {}'.format(description_from_unicode[unicode]))
 				print('    </div>')
 
@@ -982,29 +982,29 @@ def html_div_selection_charset(id, charsets):
 
 	print('<div id="' + id + '">')
 
-	print('<label for="charset">Character Set</label><br/>')
+	print('<label for="charset">Character Set</label><br>')
 	print(html_select_charset('charset', 'c64_us_upper', 'charsetSwitch(this.options[this.selectedIndex].value);'))
 
 #	print('')
-#	print('<br/>')
+#	print('<br>')
 #	print('')
-#	print('<label for="unicode">Unicode Map</label><br/>')
+#	print('<label for="unicode">Unicode Map</label><br>')
 #	print('<select name="unicode" id="unicode" onChange="unicodeSwitch(this.selectedIndex);">')
 #	print('    <option value="us_upper">US Upper Case</option>')
 #	print('    <option value="us_lower">US Lower Case</option>')
 #	print('</select>')
 	print('')
-	print('<br/>')
+	print('<br>')
 	print('')
-	print('<label for="controlcodes">Control Codes</label><br/>')
+	print('<label for="controlcodes">Control Codes</label><br>')
 	print('<select name="controlcodes" id="controlcodes" onChange="controlcodesSwitch(this.options[this.selectedIndex].value);">')
 	for machine in machines:
 		print('    <option value="{}">{}</option>'.format(machine, machine))
 	print('</select>')
 	print('')
-	print('<br/>')
+	print('<br>')
 	print('')
-	print('<label for="color_set">Color Scheme</label><br/>')
+	print('<label for="color_set">Color Scheme</label><br>')
 	print('<select name="color_set" id="color_set" onChange="colorsetSwitch(this.selectedIndex);">')
 	print('    <option value="colorset_1">Black on White</option>')
 	print('    <option value="colorset_2">PET</option>')
@@ -1015,9 +1015,9 @@ def html_div_selection_charset(id, charsets):
 	print('    <option value="colorset_7">TED</option>')
 	print('</select>')
 	print('')
-	print('<br/>')
+	print('<br>')
 	print('')
-	print('<label for="aspectratio">Aspect Ratio</label><br/>')
+	print('<label for="aspectratio">Aspect Ratio</label><br>')
 	print('<select name="aspectratio" id="aspectratio" onChange="aspectratioSwitch(this.selectedIndex);">')
 	print('    <option value="aspectratio_1">Square</option>')
 	print('    <option value="aspectratio_2">0.955:1 (C64 PAL)</option>')
@@ -1126,11 +1126,11 @@ def html_div_table_petscii(id, css_class): #petscii_table_div
 	print('        <th colspan="3" class="unicode_lower" style="display: none;">Unicode Lower</th>')
 	i = 0
 	for machine in machines:
-		print('        <th class="petscii_keyboard {}" style="background: var(--title-color-{})">{}<br/>Keyboard</th>'.format(machine, i+1, machine))
+		print('        <th class="petscii_keyboard {}" style="background: var(--title-color-{})">{}<br>Keyboard</th>'.format(machine, i+1, machine))
 		i += 1
 	i = 0
 	for machine in machines:
-		print('        <th class="petscii_control {}" style="background: var(--title-color-{})">{}<br/>Control Code</th>'.format(machine, i+1, machine))
+		print('        <th class="petscii_control {}" style="background: var(--title-color-{})">{}<br>Control Code</th>'.format(machine, i+1, machine))
 		i += 1
 	print('    </tr>')
 
@@ -1204,7 +1204,7 @@ def html_div_table_petscii(id, css_class): #petscii_table_div
 print('<!DOCTYPE html>')
 print('<html lang="en-US">')
 print('<head>')
-print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
+print('<meta http-equiv="Content-type" content="text/html; charset=utf-8">')
 print('<title>Charset · PETSCII · Keyboard | Ultimate C64 Reference</title>')
 print('')
 print('<script src="script.js"></script>')
@@ -1218,7 +1218,7 @@ print('</head>')
 
 print('<body>')
 
-print('<div class="content">')
+print('<main>')
 
 print('<div class="tabbed">')
 
@@ -1243,7 +1243,7 @@ html_div_info_screencode("screencode_boxes")
 html_div_info_petscii("petscii_boxes")
 print('</div>');
 
-print('<hr/>')
+print('<hr>')
 
 print('<footer>')
 
@@ -1274,7 +1274,7 @@ print('</div>')
 
 print('</footer>')
 
-print('</div>')
+print('</main>')
 print('</body>')
 print('</html>')
 

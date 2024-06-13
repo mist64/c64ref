@@ -799,7 +799,7 @@ function generate_info(id) {
 
 	var p = document.createElement("p");
 	div.appendChild(p);
-	p.innerHTML = 'All data on this website is generated from structured .txt files that describe the CPUs.<br/>';
+	p.innerHTML = 'All data on this website is generated from structured .txt files that describe the CPUs.<br>';
 
 	var first = true;
 	for (var cpu2 of seq.reverse()) {
@@ -887,18 +887,18 @@ function generate_opcode_table(id, filter) {
 					td.className += ' ill';
 				}
 				var addmode = cpu_data[cpu].opcodes[o].addmode;
-				var cell = '<b>' + cpu_data[cpu].opcodes[o].mnemo + '</b><br/>';
+				var cell = '<b>' + cpu_data[cpu].opcodes[o].mnemo + '</b><br>';
 				if (addmode != '-') {
 					cell += addmode;
 				}
-				cell += '<br/>';
+				cell += '<br>';
 				if (cpu_data[cpu].opcodes[o].cycles) {
 					cell += '<span style="float: left;">' + pretty_cycles(cpu, o);
 					cell += '</span>';
 					cell += '<span style="float: right;">' + cpu_data[cpu].addmodes[addmode].bytes;
 					cell += '</span>';
 				}
-//				cell += '<br/>' + cpu_data[cpu].operations[opcode.mnemo].flags;
+//				cell += '<br>' + cpu_data[cpu].operations[opcode.mnemo].flags;
 
 				var a = document.createElement('a');
 				create_link(a, cpu, 2, cpu_data[cpu].opcodes[o].mnemo);
@@ -921,7 +921,7 @@ function create_paragraphs_from_array(container, lines) {
 			container = p;
 			var p = document.createElement("p");
 			container.appendChild(p);
-			p.innerHTML = '<b>Note on the ' + cpu_name(cpu, true, false) + ':</b><br/>';
+			p.innerHTML = '<b>Note on the ' + cpu_name(cpu, true, false) + ':</b><br>';
 		} else {
 			var p = document.createElement("p");
 			container.appendChild(p);
@@ -1103,7 +1103,7 @@ function generate_mnemos_by_category(id, filter) {
 				td.className = column[0];
 				a = document.createElement("a");
 				a.href='#' + column[i];
-				a.innerHTML = column[i] +  '<br/>'
+				a.innerHTML = column[i] +  '<br>'
 				td.appendChild(a);
 			}
 		}
@@ -1402,9 +1402,9 @@ function generate_big_table(id, filter) {
 				} else {
 					var cycles = pretty_cycles(cpu, opcode);
 				}
-				td1.innerHTML += hex16(opcode) + '<br/>';
-				td2.innerHTML += cpu_data[cpu].addmodes[addmode].bytes + '<br/>';
-				td3.innerHTML += cycles + '<br/>';
+				td1.innerHTML += hex16(opcode) + '<br>';
+				td2.innerHTML += cpu_data[cpu].addmodes[addmode].bytes + '<br>';
+				td3.innerHTML += cycles + '<br>';
 			}
 			if (showopcodes) {
 				tr.appendChild(td1);
@@ -1452,7 +1452,7 @@ function description_for_cycle_symbols(symbols) {
 	for (s of all_symbols) {
 		if (symbols.has(s)) {
 			html += cycle_symbol_descriptions[s];
-			html += '<br/>'
+			html += '<br>'
 		}
 	}
 	return html;
@@ -1524,7 +1524,7 @@ function generate_reference(id, filter) {
 		// description
 		p = document.createElement("p");
 		div.appendChild(p);
-		p.innerHTML = '<b>Operation</b>: ' + pretty_operation(cpu, mnemo) + '<br/>';
+		p.innerHTML = '<b>Operation</b>: ' + pretty_operation(cpu, mnemo) + '<br>';
 
 		if (cpu_data[cpu].operations[mnemo].documentation && cpu_data[cpu].operations[mnemo].documentation.text) {
 			create_paragraphs_from_array(div, cpu_data[cpu].operations[mnemo].documentation.text);

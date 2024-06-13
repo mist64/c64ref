@@ -83,7 +83,7 @@ for i in range(0, files):
 print('<!DOCTYPE html>')
 print('<html lang="en-US">')
 print('<head>')
-print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
+print('<meta http-equiv="Content-type" content="text/html; charset=utf-8">')
 print('<title>Memory Map | Ultimate C64 Reference</title>')
 print('')
 print('<script>')
@@ -204,20 +204,20 @@ print('')
 print('</style>')
 print('</head>')
 print('<body>')
+print('<main>')
 
-print('<div class="content">')
 print('<div>')
 
-print('<b>This allows you to view different commentaries side-by-side. You can enable/disable individual columns:</b><br/><br/>')
+print('<b>This allows you to view different commentaries side-by-side. You can enable/disable individual columns:</b><br><br>')
 print('<table class="checkbox_table">')
 for i in range(0, len(filenames)):
-	print('<tr><td><input type="checkbox" id="checkbox_' + str(i) + '" checked onclick="hideCol(' + str(i) + ', document.getElementById(\'checkbox_' + str(i) + '\').checked);" /></td><td style="white-space: nowrap;"><b><a href="' + links[i] + '">' + names[i] + '</a></b><td>' + descriptions[i] + '</td></tr>')
+	print('<tr><td><input type="checkbox" id="checkbox_' + str(i) + '" checked onclick="hideCol(' + str(i) + ', document.getElementById(\'checkbox_' + str(i) + '\').checked);"></td><td style="white-space: nowrap;"><b><a href="' + links[i] + '">' + names[i] + '</a></b></td><td>' + descriptions[i] + '</td></tr>')
 print('</table>')
 
 print('<p>')
-print('<input type="checkbox" id="checkbox_decimal" name="checkbox_decimal" onclick="toggleDecimal(document.getElementById(\'checkbox_decimal\').checked);" />')
+print('<input type="checkbox" id="checkbox_decimal" name="checkbox_decimal" onclick="toggleDecimal(document.getElementById(\'checkbox_decimal\').checked);">')
 print('<label for="checkbox_decimal">Show Decimal Address</label>')
-print('<br />')
+print('<br>')
 print('<button id="toggle_details_button" onclick="closeAll()">Hide All Details</button>')
 print('</p>')
 
@@ -395,7 +395,7 @@ while(True):
 			previous_heading = ''
 			for heading in headings:
 				if previous_heading.endswith('.'):
-					heading = '<br/>' + heading
+					heading = '<br>' + heading
 				html_heading = markdown.markdown(heading)
 				html_heading.replace('<p>', '')
 				html_heading.replace('</p>', '')
@@ -429,6 +429,7 @@ print('</table>')
 print('</div>')
 
 print('</div>')
-print('</div>')
+
+print('</main>')
 print('</body>')
 print('</html>')

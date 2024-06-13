@@ -27,7 +27,7 @@ links = [
 	"https://github.com/Project-64/reloaded/blob/master/c64/C64DIS11.TXT"
 ]
 descriptions = [
-	"The original M6502 BASIC source by Microsoft (KIM-1 version, not everything lines up, Commodore extensions are missing, but lots of comments by the original authors)<br/>and the original C64 KERNAL source by Commodore (lots of comments by the original authors)",
+	"The original M6502 BASIC source by Microsoft (KIM-1 version, not everything lines up, Commodore extensions are missing, but lots of comments by the original authors)<br>and the original C64 KERNAL source by Commodore (lots of comments by the original authors)",
 	"German-language comments from <i>Das neue Commodore-64-intern-Buch</i> by Data Becker, ISBN 3890113079. Some minor corrections have been made.",
 	"Comments from <i>The almost completely commented C64 ROM disassembly V1.01</i> by Lee Davison. Some minor corrections have been made.",
 	"Comments adapted from <i>S-C DocuMentor for Applesoft</i> by Bob Sander-Cederlof, for the version of Microsoft BASIC that shipped with the Apple II.",
@@ -88,7 +88,7 @@ for i in range(0, files):
 print('<!DOCTYPE html>')
 print('<html lang="en-US">')
 print('<head>')
-print('<meta http-equiv="Content-type" content="text/html; charset=utf-8" />')
+print('<meta http-equiv="Content-type" content="text/html; charset=utf-8">')
 print('<title>BASIC & KERNAL ROM Disassembly | Ultimate C64 Reference</title>')
 print('')
 print('<script>')
@@ -144,14 +144,14 @@ print('')
 print('</style>')
 print('</head>')
 print('<body>')
+print('<main>')
 
-print('<div class="content">')
 print('<div>')
 
-print('<b>This allows you to view different commentaries side-by-side. You can enable/disable individual columns:</b><br/><br/>')
+print('<b>This allows you to view different commentaries side-by-side. You can enable/disable individual columns:</b><br><br>')
 print('<table class="checkbox_table">')
 for i in range(0, len(filenames)):
-	print('<tr><td><input type="checkbox" id="checkbox_' + str(i) + '" checked onclick="hideCol(' + str(i) + ', document.getElementById(\'checkbox_' + str(i) + '\').checked);" /></td><td style="white-space: nowrap;"><b><a href="' + links[i] + '">' + names[i] + '</a></b><td>' + descriptions[i] + '</td></tr>')
+	print('<tr><td><input type="checkbox" id="checkbox_' + str(i) + '" checked onclick="hideCol(' + str(i) + ', document.getElementById(\'checkbox_' + str(i) + '\').checked);"></td><td style="white-space: nowrap;"><b><a href="' + links[i] + '">' + names[i] + '</a></b></td><td>' + descriptions[i] + '</td></tr>')
 print('</table>')
 
 print('<div class="disassembly_container">')
@@ -231,7 +231,7 @@ while(True):
 					comment = '<b>' + comment + '</b>'
 
 				if len(comment) != 0:
-					comment = '<span class="com">' + comment + '</span><br />'
+					comment = '<span class="com">' + comment + '</span><br>'
 
 			if len(comment) != 0:
 				comments.append(comment)
@@ -251,7 +251,8 @@ print('</table>')
 print('</div>')
 
 print('</div>')
-print('</div>')
+
+print('</main>')
 print('</body>')
 print('</html>')
 

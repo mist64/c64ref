@@ -86,7 +86,7 @@ nav {
     padding-right: 16px;
 }
 
-main > div > div, footer > div {
+main > div, footer > div {
     padding-left: 1rem;
     padding-right: 1rem;
     padding-bottom: 0.5rem;

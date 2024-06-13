@@ -5,14 +5,19 @@ import shutil
 import subprocess
 import fnmatch
 import argparse
+import re
 
 from dataclasses import dataclass
 from typing import NamedTuple
 from bs4 import BeautifulSoup
+from bs4.formatter import Formatter
+from bs4.dammit import EntitySubstitution
 
 
 GLOBAL_TITLE = "Ultimate Commodore 64 Reference"
 GLOBAL_SHORT_TITLE = "Ultimate C64 Reference"
+
+
 
 #
 ### CONFIG Class
@@ -20,19 +25,43 @@ GLOBAL_SHORT_TITLE = "Ultimate C64 Reference"
 @dataclass
 class BuildConfig():
 	source_dir: str = "src" # where to look for files
-	build_dir: str = "out" # where to put the output
+	build_dir: str = "out/c64ref" # where to put the output
 	build_dir_tmp: str = "out_unmodified" # where to put the debug output
 
 	server_path: str = "local@pagetable.com:/var/www/html/c64ref/" # where to put the files so others can see
 	base_dir: str = "c64ref"
 
-	deploy: bool = False # set via cli argument "upload"
+	deploy: bool = False # set via cli argument "upload": upload to server
+	debug: bool = False # set via cli argument "debug": write debug information
+
+	build_wips: bool = False # set via cli flag "--build_wips": helper for disabling unfinished categories
+	fast_build: bool = False # set via cli flag "--fast_build": helper for disabling slow build steps
 
 	git_has_changes: bool = True # set in setup
 	git_branch_name: str = "main" # set in setup
 
-	fast_build: bool = False # helper for disabling slow build steps
-	build_wips: bool = False # helper for disabling unfinished categories
+
+def parse_cli_into_config():
+	#
+	# parsing command line arguments
+	#
+	parser = argparse.ArgumentParser(description=f"Generate the {GLOBAL_TITLE}")
+	parser.add_argument("deploy_mode", choices=["upload", "local", "debug"], nargs='?', default="local",
+						help="the deploy mode (default: %(default)s)")
+	parser.add_argument("--wip", action='store_true',
+						help="also build the categories marked as wips (ignored if uploading to main)")
+	parser.add_argument("--fast", action='store_true',
+						help="disables building steps marked with !fast_build (ignored if uploading)")
+	args = parser.parse_args()
+
+	# TODO: add options for local
+	config = BuildConfig()
+	config.deploy = args.deploy_mode == "upload"
+	config.debug = args.deploy_mode == "debug"
+	config.build_wips = args.wip
+	config.fast_build = args.fast
+	return config
+
 
 
 ### DATA Classses
@@ -63,17 +92,16 @@ class RefCategory(NamedTuple):
 @dataclass
 class CurrentCategory:
 	category: RefCategory # current category
-	soup: BeautifulSoup # soup into which everything else is added
+	header_soup: BeautifulSoup # soup into which the header information is added
 	source_path: str # where are the source files? (incl. category.path)
 	dest_path: str # where should the build go? (incl. category.path)
 	dest_path_tmp: str # where should the debug files go? (incl. category.path)
 
 
+
 ### CATEGORIES/TOPICS/SUBDIRECTORIES
 
-CONFIG = BuildConfig()
-#CONFIG = BuildConfig(build_wips=True)
-#CONFIG = BuildConfig(fast_build=True)
+CONFIG = parse_cli_into_config()
 
 
 DEFAULT_AUTHOR = Author("Michael Steil", "http://www.pagetable.com/")
@@ -108,7 +136,7 @@ CATEGORIES = [
 		enabled=CONFIG.build_wips
 	),
 	RefCategory('charset',
-		'Character Set · PETSCII · Keyboard', 'Charset Set · PETSCII · Keyboard',
+		'Character Set · PETSCII · Keyboard', 'Charset · PETSCII · Keyboard',
 		[DEFAULT_AUTHOR, Author("Lisa Brodner", None)],
 		'SCRIPT',  'generate.py',
 		generator_patterns=["*.js", "*.css", "bin/*.bin"]
@@ -122,12 +150,12 @@ CATEGORIES = [
 ]
 
 
+
 ### HTML GLOBAL
 
 #
 # this is the basic outline of the index.html
-# data from the original index.htmls is put into this
-# at specific ids
+# - just used for generating the header
 #
 BASIC_HTML = """
 <!DOCTYPE html>
@@ -135,7 +163,6 @@ BASIC_HTML = """
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<title>Ultimate C64 Reference</title>
-		<link rel="stylesheet" href="/style.css">
 	</head>
 <body>
 
@@ -155,9 +182,10 @@ BASIC_HTML = """
 """
 
 
+
 ### FUNCTIONS for things that are longer
 
-def add_github_corner(soup):
+def add_github_corner(header_soup):
 
 	#
 	# add a "github corner" with a waving octocat to the top right
@@ -171,14 +199,13 @@ def add_github_corner(soup):
 	<path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
   </svg>
 </a>"""
-	tag = soup.find(id="cat")
+	tag = header_soup.find(id="cat")
 	tag_append_tag(tag, html_doc)
 
 
 def add_navigation(cc):
-	soup = cc.soup
 
-	nav_tag = soup.find('nav')
+	nav_tag = cc.header_soup.find('nav')
 
 	#
 	# title
@@ -228,11 +255,11 @@ def add_byline_and_build_info(cc):
 
 	html_doc = f'by <em>{authors}.</em> [<small><a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>, rev {revision}, {date}</small>]'
 
-	tag = cc.soup.find(id="byline")
+	tag = cc.header_soup.find(id="byline")
 	tag_append_tag(tag, html_doc)
 
 
-def add_main_content_from_subdirectories(cc):
+def get_main_content_from_subdirectories(cc):
 
 	#
 	# get 'original' index.html for current category
@@ -254,41 +281,24 @@ def add_main_content_from_subdirectories(cc):
 		print("Missing generator.")
 		exit()
 
-	#
-	# for debugging: write the original HTML to tmp
-	#
-	# -> in unmodified version (direct output)
-	filename = os.path.join(cc.dest_path_tmp, "index_orig.html")
-	with open(filename, 'w', encoding='utf-8') as file:
-		file.write(output_str)
-	#
-	# -> and version that has been through beautiful soup
-	#    for comparing possible changes made to the resulting files through bs4
-	filename = os.path.join(cc.dest_path_tmp, "index_soup.html")
-	src_soup = BeautifulSoup(output_str, 'html.parser')
-	with open(filename, 'w', encoding='utf-8') as file:
-		file.write(str(src_soup.decode(formatter="html5")))
+	if CONFIG.debug:
+		#
+		# for debugging: write the original HTML to tmp
+		#
+		# -> in unmodified version (direct output)
+		filename = os.path.join(cc.dest_path_tmp, "index_orig.html")
+		with open(filename, 'w', encoding='utf-8') as file:
+			file.write(output_str)
+		#
+		# -> and version that has been through beautiful soup
+		#    for comparing possible changes made to the resulting files through bs4
+		filename = os.path.join(cc.dest_path_tmp, "index_soup.html")
+		src_soup = BeautifulSoup(output_str, 'html.parser')
+		with open(filename, 'w', encoding='utf-8') as file:
+			file.write(str(src_soup.decode(formatter=UnsortedAttributes())))
 
-	#
-	# extract the relevant infos from the generated HTMLs
-	#
-	# main content <div>
-	tag = cc.soup.find("main")
-	src_tag = src_soup.find("div", class_="content")
-	tag.append(src_tag)
-	#
-	# position in <head> tag at which to insert the additional files:
-	tag = cc.soup.find("link")
-	#
-	# transfer all <style>, <script> and <link> tags
-	for src_tag in src_soup.find_all('style'):
-		tag.insert_after(src_tag)
+	return output_str
 
-	for src_tag in src_soup.find_all('script'):
-		tag.insert_after(src_tag)
-
-	for src_tag in src_soup.find_all('link'):
-		tag.insert_after(src_tag)
 
 
 ### RESOURCES
@@ -328,15 +338,18 @@ def copy_resources_to_build_dir(cc):
 	else:
 		unmatched_files = all_files
 
-	#
-	# for debugging:
-	#     write a .txt containing a list of the unmatched files
-	filename = os.path.join(cc.dest_path_tmp, "files_no_copy.txt")
-	with open(filename, 'w', encoding='utf-8') as file:
-		for unmatched_file in unmatched_files:
-			# ignore .DS_Store and the index.html
-			if unmatched_file != "index.html" and unmatched_file != ".DS_Store":
-				file.write(f"{unmatched_file}\n")
+
+	if CONFIG.debug:
+		#
+		# for debugging:
+		#     write a .txt containing a list of the unmatched files
+		filename = os.path.join(cc.dest_path_tmp, "files_no_copy.txt")
+		with open(filename, 'w', encoding='utf-8') as file:
+			for unmatched_file in unmatched_files:
+				# ignore .DS_Store and the index.html
+				if unmatched_file != "index.html" and unmatched_file != ".DS_Store":
+					file.write(f"{unmatched_file}\n")
+
 
 
 ### HELPER
@@ -360,6 +373,24 @@ def ensured_path(path, *paths, is_dir):
 
 
 
+class UnsortedAttributes(Formatter):
+
+	def __init__(
+			self, language=Formatter.HTML, entity_substitution=EntitySubstitution.substitute_xml,
+			void_element_close_prefix=None, cdata_containing_tags=None,
+	):
+		super().__init__()
+
+	def attributes(self, tag):
+		for k, v in tag.attrs.items():
+			if k == 'open' or k == 'checked' or k == 'selected':
+				if v:
+					print(f"v: {v}")
+				v = None
+			yield k, v
+
+
+
 ##################### MAIN #####################
 
 ##
@@ -367,16 +398,6 @@ def ensured_path(path, *paths, is_dir):
 ##
 print("*** Setup")
 
-#
-# parsing command line arguments
-#
-parser = argparse.ArgumentParser(description=f"Generate the {GLOBAL_TITLE}")
-parser.add_argument("deploy_mode", choices=["upload", "local"], nargs='?', default="local",
-					help="the deploy mode (default: %(default)s)")
-args = parser.parse_args()
-
-# TODO: add options for local
-CONFIG.deploy = args.deploy_mode == "upload"
 
 #
 # get git status
@@ -433,11 +454,11 @@ shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), CONFIG.build_dir)
 
 #
 # for each category/subdirectory/topic:
-#     take the basic HTML, extract the relevant info from
-#     the script results or HTMLs from the subdirectories
-#     and add them into the basic HTML
-#
-# TODO: make it the other way around, let the scripts generate templates with placeholders for TITLE, NAV etc.
+#     generate title and header including navigation, title, github
+#     get the script results or HTMLs from the subdirectories
+#     and add the generated title and header into them
+#     copy all necessary files
+#     output the updated index.htmls
 #
 for category in CATEGORIES:
 	if category.enabled:
@@ -446,29 +467,49 @@ for category in CATEGORIES:
 		dest_path = ensured_path(CONFIG.build_dir, category.path, is_dir=True)
 		dest_path_tmp = ensured_path(CONFIG.build_dir_tmp, category.path, is_dir=True)
 
-		soup = BeautifulSoup(BASIC_HTML, 'html.parser')
-
-		# html (tab/document) title
-		tag = soup.find("title")
-		tag.string = f"{category.short_title} | {GLOBAL_SHORT_TITLE}"
-
+		#
+		# create the header information
+		header_soup = BeautifulSoup(BASIC_HTML, 'html.parser')
+		cc = CurrentCategory(category, header_soup, source_path, dest_path, dest_path_tmp)
+		#
 		# main document headline in header
-		tag = soup.find(id="headline")
+		tag = header_soup.find(id="headline")
 		tag.string = category.long_title
-
-		add_github_corner(soup)
-
-		cc = CurrentCategory(category, soup, source_path, dest_path, dest_path_tmp)
+		#
+		add_github_corner(header_soup)
 		add_navigation(cc)
 		add_byline_and_build_info(cc)
-		add_main_content_from_subdirectories(cc)
+
+		#
+		# copy resources to the build directory using the generator_patterns
 		copy_resources_to_build_dir(cc)
+
+		# get the index.html data via script or copying
+		output_str = get_main_content_from_subdirectories(cc)
+
+		#
+		# modify the generated/original output
+		# by replacing some strings with generated versions
+		#
+		# adding the generated title instead of the local title
+		pattern = r"<title>.*?</title>"
+		replacement = f"<title>{category.short_title} | {GLOBAL_SHORT_TITLE}</title>"
+		output_str = re.sub(pattern, replacement, output_str, count=1)
+		#
+		# adding the soup generated header at the placeholder
+		tag = cc.header_soup.find("header")
+		header_str = str(tag.decode(formatter=UnsortedAttributes()))
+		#
+		old = r"<body>"
+		replacement = f"<body>\n{header_str}"
+		output_str = output_str.replace(old, replacement, 1)
+
 
 		#
 		# write index.html to build dir
 		filename = os.path.join(dest_path, "index.html")
 		with open(filename, 'w', encoding='utf-8') as file:
-			file.write(str(soup.decode(formatter="html5")))
+			file.write(output_str)
 
 
 ##
