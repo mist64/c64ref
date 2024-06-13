@@ -30,7 +30,8 @@ class BuildConfig():
 
 	server: str = "www.pagetable.com/c64ref" # where to put the files so others can see
 
-	deploy: bool = False # set via cli argument "upload"
+	deploy: bool = False # set via cli argument "upload": upload to server
+	debug: bool = False # set via cli argument "debug": write debug information
 
 	git_has_changes: bool = True # set in setup
 	git_branch_name: str = "main" # set in setup
@@ -259,20 +260,21 @@ def get_main_content_from_subdirectories(cc):
 		print("Missing generator.")
 		exit()
 
-	#
-	# for debugging: write the original HTML to tmp
-	#
-	# -> in unmodified version (direct output)
-	filename = os.path.join(cc.dest_path_tmp, "index_orig.html")
-	with open(filename, 'w', encoding='utf-8') as file:
-		file.write(output_str)
-	#
-	# -> and version that has been through beautiful soup
-	#    for comparing possible changes made to the resulting files through bs4
-	filename = os.path.join(cc.dest_path_tmp, "index_soup.html")
-	src_soup = BeautifulSoup(output_str, 'html.parser')
-	with open(filename, 'w', encoding='utf-8') as file:
-		file.write(str(src_soup.decode(formatter=UnsortedAttributes())))
+	if CONFIG.debug:
+		#
+		# for debugging: write the original HTML to tmp
+		#
+		# -> in unmodified version (direct output)
+		filename = os.path.join(cc.dest_path_tmp, "index_orig.html")
+		with open(filename, 'w', encoding='utf-8') as file:
+			file.write(output_str)
+		#
+		# -> and version that has been through beautiful soup
+		#    for comparing possible changes made to the resulting files through bs4
+		filename = os.path.join(cc.dest_path_tmp, "index_soup.html")
+		src_soup = BeautifulSoup(output_str, 'html.parser')
+		with open(filename, 'w', encoding='utf-8') as file:
+			file.write(str(src_soup.decode(formatter=UnsortedAttributes())))
 
 	return output_str
 
@@ -315,15 +317,17 @@ def copy_resources_to_build_dir(cc):
 	else:
 		unmatched_files = all_files
 
-	#
-	# for debugging:
-	#     write a .txt containing a list of the unmatched files
-	filename = os.path.join(cc.dest_path_tmp, "files_no_copy.txt")
-	with open(filename, 'w', encoding='utf-8') as file:
-		for unmatched_file in unmatched_files:
-			# ignore .DS_Store and the index.html
-			if unmatched_file != "index.html" and unmatched_file != ".DS_Store":
-				file.write(f"{unmatched_file}\n")
+
+	if CONFIG.debug:
+		#
+		# for debugging:
+		#     write a .txt containing a list of the unmatched files
+		filename = os.path.join(cc.dest_path_tmp, "files_no_copy.txt")
+		with open(filename, 'w', encoding='utf-8') as file:
+			for unmatched_file in unmatched_files:
+				# ignore .DS_Store and the index.html
+				if unmatched_file != "index.html" and unmatched_file != ".DS_Store":
+					file.write(f"{unmatched_file}\n")
 
 
 
@@ -376,12 +380,13 @@ print("*** Setup")
 # parsing command line arguments
 #
 parser = argparse.ArgumentParser(description=f"Generate the {GLOBAL_TITLE}")
-parser.add_argument("deploy_mode", choices=["upload", "local"], nargs='?', default="local",
+parser.add_argument("deploy_mode", choices=["upload", "local", "debug"], nargs='?', default="local",
 					help="the deploy mode (default: %(default)s)")
 args = parser.parse_args()
 
 # TODO: add options for local
 CONFIG.deploy = args.deploy_mode == "upload"
+CONFIG.debug = args.deploy_mode == "debug"
 
 #
 # get git status
