@@ -478,15 +478,16 @@ for category in CATEGORIES:
 		# adding the generated title instead of the local title
 		pattern = r"<title>.*?</title>"
 		replacement = f"<title>{category.short_title} | {GLOBAL_SHORT_TITLE}</title>"
-		output_str = re.sub(pattern, replacement, output_str)
+		output_str = re.sub(pattern, replacement, output_str, count=1)
 		#
 		# adding the soup generated header at the placeholder
 		tag = cc.header_soup.find("header")
 		header_str = str(tag.decode(formatter=UnsortedAttributes()))
 		#
-		pattern = r"<body>"
+		old = r"<body>"
 		replacement = f"<body>\n{header_str}"
-		output_str = re.sub(pattern, replacement, output_str)
+		output_str = output_str.replace(old, replacement, 1)
+
 
 		#
 		# write index.html to build dir
