@@ -20,7 +20,7 @@ HTML_PARAMS='--filterpattern '$REGEXP' '$PARAMS
 
 echo $HTML_PARAMS
 
-echo "HTML:"
+#echo "HTML:"
 vnu --skip-non-html $HTML_PARAMS
 
 # echo -e "\n\n\n CSS:"
