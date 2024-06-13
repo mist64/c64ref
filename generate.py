@@ -25,7 +25,7 @@ GLOBAL_SHORT_TITLE = "Ultimate C64 Reference"
 @dataclass
 class BuildConfig():
 	source_dir: str = "src" # where to look for files
-	build_dir: str = "out" # where to put the output
+	build_dir: str = "out/c64ref" # where to put the output
 	build_dir_tmp: str = "out_unmodified" # where to put the debug output
 
 	server_path: str = "local@pagetable.com:/var/www/html/c64ref/" # where to put the files so others can see
