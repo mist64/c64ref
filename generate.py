@@ -33,11 +33,33 @@ class BuildConfig():
 	deploy: bool = False # set via cli argument "upload": upload to server
 	debug: bool = False # set via cli argument "debug": write debug information
 
+	build_wips: bool = False # set via cli flag "--build_wips": helper for disabling unfinished categories
+	fast_build: bool = False # set via cli flag "--fast_build": helper for disabling slow build steps
+
 	git_has_changes: bool = True # set in setup
 	git_branch_name: str = "main" # set in setup
 
-	fast_build: bool = False # helper for disabling slow build steps
-	build_wips: bool = False # helper for disabling unfinished categories
+
+def parse_cli_into_config():
+	#
+	# parsing command line arguments
+	#
+	parser = argparse.ArgumentParser(description=f"Generate the {GLOBAL_TITLE}")
+	parser.add_argument("deploy_mode", choices=["upload", "local", "debug"], nargs='?', default="local",
+						help="the deploy mode (default: %(default)s)")
+	parser.add_argument("--wip", action='store_true',
+						help="also build the categories marked as wips (ignored if uploading to main)")
+	parser.add_argument("--fast", action='store_true',
+						help="disables building steps marked with !fast_build (ignored if uploading)")
+	args = parser.parse_args()
+
+	# TODO: add options for local
+	config = BuildConfig()
+	config.deploy = args.deploy_mode == "upload"
+	config.debug = args.deploy_mode == "debug"
+	config.build_wips = args.wip
+	config.fast_build = args.fast
+	return config
 
 
 
@@ -78,9 +100,7 @@ class CurrentCategory:
 
 ### CATEGORIES/TOPICS/SUBDIRECTORIES
 
-CONFIG = BuildConfig()
-#CONFIG = BuildConfig(build_wips=True)
-#CONFIG = BuildConfig(fast_build=True)
+CONFIG = parse_cli_into_config()
 
 
 DEFAULT_AUTHOR = Author("Michael Steil", "http://www.pagetable.com/")
@@ -369,6 +389,7 @@ class UnsortedAttributes(Formatter):
 			yield k, v
 
 
+
 ##################### MAIN #####################
 
 ##
@@ -376,17 +397,6 @@ class UnsortedAttributes(Formatter):
 ##
 print("*** Setup")
 
-#
-# parsing command line arguments
-#
-parser = argparse.ArgumentParser(description=f"Generate the {GLOBAL_TITLE}")
-parser.add_argument("deploy_mode", choices=["upload", "local", "debug"], nargs='?', default="local",
-					help="the deploy mode (default: %(default)s)")
-args = parser.parse_args()
-
-# TODO: add options for local
-CONFIG.deploy = args.deploy_mode == "upload"
-CONFIG.debug = args.deploy_mode == "debug"
 
 #
 # get git status
