@@ -5,6 +5,7 @@ import shutil
 import subprocess
 import fnmatch
 import argparse
+import re
 
 from dataclasses import dataclass
 from typing import NamedTuple
@@ -15,6 +16,8 @@ from bs4.dammit import EntitySubstitution
 
 GLOBAL_TITLE = "Ultimate Commodore 64 Reference"
 GLOBAL_SHORT_TITLE = "Ultimate C64 Reference"
+
+
 
 #
 ### CONFIG Class
@@ -34,6 +37,7 @@ class BuildConfig():
 
 	fast_build: bool = False # helper for disabling slow build steps
 	build_wips: bool = False # helper for disabling unfinished categories
+
 
 
 ### DATA Classses
@@ -64,10 +68,11 @@ class RefCategory(NamedTuple):
 @dataclass
 class CurrentCategory:
 	category: RefCategory # current category
-	soup: BeautifulSoup # soup into which everything else is added
+	header_soup: BeautifulSoup # soup into which the header information is added
 	source_path: str # where are the source files? (incl. category.path)
 	dest_path: str # where should the build go? (incl. category.path)
 	dest_path_tmp: str # where should the debug files go? (incl. category.path)
+
 
 
 ### CATEGORIES/TOPICS/SUBDIRECTORIES
@@ -123,12 +128,12 @@ CATEGORIES = [
 ]
 
 
+
 ### HTML GLOBAL
 
 #
 # this is the basic outline of the index.html
-# data from the original index.htmls is put into this
-# at specific ids
+# - just used for generating the header
 #
 BASIC_HTML = """
 <!DOCTYPE html>
@@ -136,7 +141,6 @@ BASIC_HTML = """
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<title>Ultimate C64 Reference</title>
-		<link rel="stylesheet" href="/style.css">
 	</head>
 <body>
 
@@ -156,9 +160,10 @@ BASIC_HTML = """
 """
 
 
+
 ### FUNCTIONS for things that are longer
 
-def add_github_corner(soup):
+def add_github_corner(header_soup):
 
 	#
 	# add a "github corner" with a waving octocat to the top right
@@ -172,14 +177,13 @@ def add_github_corner(soup):
 	<path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
   </svg>
 </a>"""
-	tag = soup.find(id="cat")
+	tag = header_soup.find(id="cat")
 	tag_append_tag(tag, html_doc)
 
 
 def add_navigation(cc):
-	soup = cc.soup
 
-	nav_tag = soup.find('nav')
+	nav_tag = cc.header_soup.find('nav')
 
 	#
 	# title
@@ -229,11 +233,11 @@ def add_byline_and_build_info(cc):
 
 	html_doc = f'by <em>{authors}.</em> [<small><a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>, rev {revision}, {date}</small>]'
 
-	tag = cc.soup.find(id="byline")
+	tag = cc.header_soup.find(id="byline")
 	tag_append_tag(tag, html_doc)
 
 
-def add_main_content_from_subdirectories(cc):
+def get_main_content_from_subdirectories(cc):
 
 	#
 	# get 'original' index.html for current category
@@ -270,26 +274,8 @@ def add_main_content_from_subdirectories(cc):
 	with open(filename, 'w', encoding='utf-8') as file:
 		file.write(str(src_soup.decode(formatter=UnsortedAttributes())))
 
-	#
-	# extract the relevant infos from the generated HTMLs
-	#
-	# main content <div>
-	tag = cc.soup.find("main")
-	src_tag = src_soup.find("div", class_="content")
-	tag.append(src_tag)
-	#
-	# position in <head> tag at which to insert the additional files:
-	tag = cc.soup.find("link")
-	#
-	# transfer all <style>, <script> and <link> tags
-	for src_tag in src_soup.find_all('style'):
-		tag.insert_after(src_tag)
+	return output_str
 
-	for src_tag in src_soup.find_all('script'):
-		tag.insert_after(src_tag)
-
-	for src_tag in src_soup.find_all('link'):
-		tag.insert_after(src_tag)
 
 
 ### RESOURCES
@@ -340,6 +326,7 @@ def copy_resources_to_build_dir(cc):
 				file.write(f"{unmatched_file}\n")
 
 
+
 ### HELPER
 
 def tag_append_tag(tag, string):
@@ -376,7 +363,6 @@ class UnsortedAttributes(Formatter):
 					print(f"v: {v}")
 				v = None
 			yield k, v
-
 
 
 ##################### MAIN #####################
@@ -452,11 +438,11 @@ shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), CONFIG.build_dir)
 
 #
 # for each category/subdirectory/topic:
-#     take the basic HTML, extract the relevant info from
-#     the script results or HTMLs from the subdirectories
-#     and add them into the basic HTML
-#
-# TODO: make it the other way around, let the scripts generate templates with placeholders for TITLE, NAV etc.
+#     generate title and header including navigation, title, github
+#     get the script results or HTMLs from the subdirectories
+#     and add the generated title and header into them
+#     copy all necessary files
+#     output the updated index.htmls
 #
 for category in CATEGORIES:
 	if category.enabled:
@@ -465,29 +451,48 @@ for category in CATEGORIES:
 		dest_path = ensured_path(CONFIG.build_dir, category.path, is_dir=True)
 		dest_path_tmp = ensured_path(CONFIG.build_dir_tmp, category.path, is_dir=True)
 
-		soup = BeautifulSoup(BASIC_HTML, 'html.parser')
-
-		# html (tab/document) title
-		tag = soup.find("title")
-		tag.string = f"{category.short_title} | {GLOBAL_SHORT_TITLE}"
-
+		#
+		# create the header information
+		header_soup = BeautifulSoup(BASIC_HTML, 'html.parser')
+		cc = CurrentCategory(category, header_soup, source_path, dest_path, dest_path_tmp)
+		#
 		# main document headline in header
-		tag = soup.find(id="headline")
+		tag = header_soup.find(id="headline")
 		tag.string = category.long_title
-
-		add_github_corner(soup)
-
-		cc = CurrentCategory(category, soup, source_path, dest_path, dest_path_tmp)
+		#
+		add_github_corner(header_soup)
 		add_navigation(cc)
 		add_byline_and_build_info(cc)
-		add_main_content_from_subdirectories(cc)
+
+		#
+		# copy resources to the build directory using the generator_patterns
 		copy_resources_to_build_dir(cc)
+
+		# get the index.html data via script or copying
+		output_str = get_main_content_from_subdirectories(cc)
+
+		#
+		# modify the generated/original output
+		# by replacing some strings with generated versions
+		#
+		# adding the generated title instead of the local title
+		pattern = r"<title>.*?</title>"
+		replacement = f"<title>{category.short_title} | {GLOBAL_SHORT_TITLE}</title>"
+		output_str = re.sub(pattern, replacement, output_str)
+		#
+		# adding the soup generated header at the placeholder
+		tag = cc.header_soup.find("header")
+		header_str = str(tag.decode(formatter=UnsortedAttributes()))
+		#
+		pattern = r"<body>"
+		replacement = f"<body>\n{header_str}"
+		output_str = re.sub(pattern, replacement, output_str)
 
 		#
 		# write index.html to build dir
 		filename = os.path.join(dest_path, "index.html")
 		with open(filename, 'w', encoding='utf-8') as file:
-			file.write(str(soup.decode(formatter=UnsortedAttributes())))
+			file.write(output_str)
 
 
 ##

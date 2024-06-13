@@ -1218,7 +1218,7 @@ print('</head>')
 
 print('<body>')
 
-print('<div class="content">')
+print('<main>')
 
 print('<div class="tabbed">')
 
@@ -1274,7 +1274,7 @@ print('</div>')
 
 print('</footer>')
 
-print('</div>')
+print('</main>')
 print('</body>')
 print('</html>')
 

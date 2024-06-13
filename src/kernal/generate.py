@@ -320,8 +320,7 @@ print('')
 print('</style>')
 print('</head>')
 print('<body>')
-
-print('<div class="content">')
+print('<main>')
 
 print('<div>')
 
@@ -440,6 +439,6 @@ print('<sup>2)</sup> intended to be called from a replacement IRQ handler</p>')
 print('</div>')
 print('</footer>')
 
-print('</div>')
+print('</main>')
 print('</body>')
 print('</html>')

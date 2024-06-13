@@ -204,8 +204,8 @@ print('')
 print('</style>')
 print('</head>')
 print('<body>')
+print('<main>')
 
-print('<div class="content">')
 print('<div>')
 
 print('<b>This allows you to view different commentaries side-by-side. You can enable/disable individual columns:</b><br><br>')
@@ -429,6 +429,7 @@ print('</table>')
 print('</div>')
 
 print('</div>')
-print('</div>')
+
+print('</main>')
 print('</body>')
 print('</html>')
