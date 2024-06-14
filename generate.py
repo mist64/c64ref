@@ -15,7 +15,6 @@ from bs4.dammit import EntitySubstitution
 
 
 GLOBAL_TITLE = "Ultimate Commodore 64 Reference"
-GLOBAL_SHORT_TITLE = "Ultimate C64 Reference"
 
 
 
@@ -451,7 +450,7 @@ for category in CATEGORIES:
 
 	# adding the generated title instead of the local title
 	pattern = r"<title>.*?</title>"
-	replacement = f"<title>{category.short_title} | {GLOBAL_SHORT_TITLE}</title>"
+	replacement = f"<title>{category.short_title} | {GLOBAL_TITLE}</title>"
 	output_str = re.sub(pattern, replacement, output_str, count=1)
 
 	# adding the soup generated header at the placeholder
