@@ -59,8 +59,12 @@ def parse_cli_into_config():
 	config.debug = args.deploy_mode == "debug"
 	config.build_wips = args.wip
 	config.fast_build = args.fast
-	return config
 
+	if config.deploy and config.fast_build:
+		print("Uploading and building fast at the same time is not supported.")
+		exit()
+
+	return config
 
 
 ### DATA Classses
