@@ -42,9 +42,8 @@ class BuildConfig():
 
 
 def parse_cli_into_config():
-	#
-	# parsing command line arguments
-	#
+
+	# supported command line arguments
 	parser = argparse.ArgumentParser(description=f"Generate the {GLOBAL_TITLE}")
 	parser.add_argument("deploy_mode", choices=["upload", "local", "debug"], nargs='?', default="local",
 						help="the deploy mode (default: %(default)s)")
@@ -52,9 +51,10 @@ def parse_cli_into_config():
 						help="also build the categories marked as wips (ignored if uploading to main)")
 	parser.add_argument("--fast", action='store_true',
 						help="disables building steps marked with !fast_build (ignored if uploading)")
+
+	# parsing command line arguments
 	args = parser.parse_args()
 
-	# TODO: add options for local
 	config = BuildConfig()
 	config.deploy = args.deploy_mode == "upload"
 	config.debug = args.deploy_mode == "debug"
@@ -66,16 +66,13 @@ def parse_cli_into_config():
 
 ### DATA Classses
 
-#
 # small helper for authors
-#
 class Author(NamedTuple):
 	name: str # who?
 	url: str # where to visit them?
 
-#
+
 # collected 'outside' and header and build info for a category
-#
 class RefCategory(NamedTuple):
 	path: str # folder name
 	long_title: str # title for the html title and the headline
@@ -86,9 +83,8 @@ class RefCategory(NamedTuple):
 	generator_patterns: list = [] # what other files do we need to work?
 	enabled: bool = True # should this show up in the menu and be generated?
 
-#
+
 # used for the category for which the html is currently generated
-#
 @dataclass
 class CurrentCategory:
 	category: RefCategory # current category
@@ -103,9 +99,7 @@ class CurrentCategory:
 
 CONFIG = parse_cli_into_config()
 
-
 DEFAULT_AUTHOR = Author("Michael Steil", "http://www.pagetable.com/")
-
 
 CATEGORIES = [
 	RefCategory( '6502',
@@ -150,13 +144,10 @@ CATEGORIES = [
 ]
 
 
-
 ### HTML GLOBAL
 
-#
 # this is the basic outline of the index.html
 # - just used for generating the header
-#
 BASIC_HTML = """
 <!DOCTYPE html>
 	<html lang="en-US">
@@ -182,15 +173,13 @@ BASIC_HTML = """
 """
 
 
-
 ### FUNCTIONS for things that are longer
 
 def add_github_corner(header_soup):
 
-	#
 	# add a "github corner" with a waving octocat to the top right
 	# html source via: http://tholman.com/github-corners/
-	#
+
 	html_doc = """
 <a href="https://github.com/mist64/c64ref" class="github-corner" aria-label="View source on GitHub">
   <svg width="80" height="80" viewBox="0 0 250 250" style="fill:var(--main-color); color:#fff; position: absolute; top: 0; border: 0; right: 0; clip-path: polygon(0 0, 100% 0, 100% 100%);" aria-hidden="true">
@@ -207,12 +196,10 @@ def add_navigation(cc):
 
 	nav_tag = cc.header_soup.find('nav')
 
-	#
 	# title
 	h1 = f'<h1>{GLOBAL_TITLE}</h1>'
 	tag_append_tag(nav_tag, h1)
 
-	#
 	# links for each topic
 	for category in CATEGORIES:
 		if category.enabled:
@@ -222,7 +209,6 @@ def add_navigation(cc):
 				a_menu = f'<a href="/{CONFIG.base_dir}/{category.path}/">{category.short_title}</a>'
 			tag_append_tag(nav_tag, a_menu)
 
-	#
 	# link to pagetable
 	a_home = f'<a class="home" href="https://www.pagetable.com/">pagetable.com</a>'
 	tag_append_tag(nav_tag, a_home)
@@ -230,19 +216,16 @@ def add_navigation(cc):
 
 def add_byline_and_build_info(cc):
 
-	#
-	# git revision hash with marker if there are uncommited changes
+	# git revision hash with marker if there are uncommitted changes
 	f = os.popen(f'git log -1 --pretty=format:%h {cc.source_path}')
 	revision = f.read()
 	if CONFIG.git_has_changes:
 		revision += "+"
 
-	#
 	# date of that git commit
 	f = os.popen(f'git log -1 --date=short --pretty=format:%cd {cc.source_path}')
 	date = f.read()
 
-	#
 	# authors for the byline
 	author_strings = []
 	for author in cc.category.authors:
@@ -261,7 +244,6 @@ def add_byline_and_build_info(cc):
 
 def get_main_content_from_subdirectories(cc):
 
-	#
 	# get 'original' index.html for current category
 	#
 	# run python script to generate:
@@ -274,22 +256,14 @@ def get_main_content_from_subdirectories(cc):
 		path = 	os.path.join(cc.source_path, cc.category.generator_name)
 		with open(path, 'r') as file:
 			output_str = file.read()
-	#
-	# or exit
-	else:
-		output_str = ""
-		print("Missing generator.")
-		exit()
 
 	if CONFIG.debug:
-		#
 		# for debugging: write the original HTML to tmp
-		#
 		# -> in unmodified version (direct output)
 		filename = os.path.join(cc.dest_path_tmp, "index_orig.html")
 		with open(filename, 'w', encoding='utf-8') as file:
 			file.write(output_str)
-		#
+
 		# -> and version that has been through beautiful soup
 		#    for comparing possible changes made to the resulting files through bs4
 		filename = os.path.join(cc.dest_path_tmp, "index_soup.html")
@@ -300,15 +274,12 @@ def get_main_content_from_subdirectories(cc):
 	return output_str
 
 
-
 ### RESOURCES
 
 def copy_resources_to_build_dir(cc):
 
-	#
 	# make a list of all files in the directory of the current category
 	# remove the category folder name prefix (eg. c64disasm) from the paths
-	#
 	all_files = []
 	for root, dirs, files in os.walk(cc.source_path):
 		for file in files:
@@ -316,7 +287,6 @@ def copy_resources_to_build_dir(cc):
 			filename = os.path.relpath(filename, cc.source_path)
 			all_files.append(filename) # just the 'local' path
 
-	#
 	# make list of files matching the categories generator_patterns
 	patterns = cc.category.generator_patterns
 	if patterns:
@@ -325,13 +295,12 @@ def copy_resources_to_build_dir(cc):
 			for filename in fnmatch.filter(all_files, pattern):
 				filtered_files.append(filename)
 
-		#
 		# copy the matched files to the build folder
 		for file_path in filtered_files:
 			file_in = os.path.join(cc.source_path, file_path)
 			file_out = ensured_path(cc.dest_path, file_path, is_dir=False) # ensure because file_path might contain directories
 			shutil.copy(file_in, file_out)
-		#
+
 		# and track the unmatched files
 		unmatched_files = [file for file in all_files if file not in filtered_files]
 
@@ -340,7 +309,6 @@ def copy_resources_to_build_dir(cc):
 
 
 	if CONFIG.debug:
-		#
 		# for debugging:
 		#     write a .txt containing a list of the unmatched files
 		filename = os.path.join(cc.dest_path_tmp, "files_no_copy.txt")
@@ -372,7 +340,6 @@ def ensured_path(path, *paths, is_dir):
 	return result
 
 
-
 class UnsortedAttributes(Formatter):
 
 	def __init__(
@@ -399,19 +366,15 @@ class UnsortedAttributes(Formatter):
 print("*** Setup")
 
 
-#
 # get git status
-#
 f = os.popen(f'git ls-files -m | wc -l')
 if int(f.read()) <= 0:
 	CONFIG.git_has_changes = False
 
-branch_name = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
-CONFIG.git_branch_name = branch_name
+git_branch_name = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
+CONFIG.git_branch_name = git_branch_name
 
-#
 # if the current build should be uploaded: do some sanity checking
-#
 if CONFIG.deploy:
 
 	if CONFIG.git_has_changes:
@@ -423,7 +386,7 @@ if CONFIG.deploy:
 
 	print(f"    branch '{CONFIG.git_branch_name}' ->  <{'> <'.join([category.path for category in CATEGORIES])}>")
 
-	if branch_name == "main":
+	if git_branch_name == "main":
 		CONFIG.build_wips = False # reset for uploading to main
 
 		response = input("Deploy to production? [Y/N]: ").strip()
@@ -431,9 +394,8 @@ if CONFIG.deploy:
 			print("Exiting.")
 			exit()
 
-#
+
 # clean and ensure build directories
-#
 if os.path.exists(CONFIG.build_dir):
 	shutil.rmtree(CONFIG.build_dir)
 if os.path.exists(CONFIG.build_dir_tmp):
@@ -448,68 +410,62 @@ ensured_path(CONFIG.build_dir_tmp, is_dir=True)
 ##
 print("*** Generating")
 
-#
 # copy global resources: stylesheet
 shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), CONFIG.build_dir)
 
-#
 # for each category/subdirectory/topic:
 #     generate title and header including navigation, title, github
 #     get the script results or HTMLs from the subdirectories
 #     and add the generated title and header into them
 #     copy all necessary files
 #     output the updated index.htmls
-#
 for category in CATEGORIES:
-	if category.enabled:
-		# ensuring category paths
-		source_path = os.path.join(CONFIG.source_dir, category.path)
-		dest_path = ensured_path(CONFIG.build_dir, category.path, is_dir=True)
-		dest_path_tmp = ensured_path(CONFIG.build_dir_tmp, category.path, is_dir=True)
+	if not category.enabled:
+		continue
 
-		#
-		# create the header information
-		header_soup = BeautifulSoup(BASIC_HTML, 'html.parser')
-		cc = CurrentCategory(category, header_soup, source_path, dest_path, dest_path_tmp)
-		#
-		# main document headline in header
-		tag = header_soup.find(id="headline")
-		tag.string = category.long_title
-		#
-		add_github_corner(header_soup)
-		add_navigation(cc)
-		add_byline_and_build_info(cc)
+	# ensuring category paths
+	source_path = os.path.join(CONFIG.source_dir, category.path)
+	dest_path = ensured_path(CONFIG.build_dir, category.path, is_dir=True)
+	dest_path_tmp = ensured_path(CONFIG.build_dir_tmp, category.path, is_dir=True)
 
-		#
-		# copy resources to the build directory using the generator_patterns
-		copy_resources_to_build_dir(cc)
+	# create the header information
+	header_soup = BeautifulSoup(BASIC_HTML, 'html.parser')
+	cc = CurrentCategory(category, header_soup, source_path, dest_path, dest_path_tmp)
 
-		# get the index.html data via script or copying
-		output_str = get_main_content_from_subdirectories(cc)
+	# main document headline in header
+	tag = header_soup.find(id="headline")
+	tag.string = category.long_title
 
-		#
-		# modify the generated/original output
-		# by replacing some strings with generated versions
-		#
-		# adding the generated title instead of the local title
-		pattern = r"<title>.*?</title>"
-		replacement = f"<title>{category.short_title} | {GLOBAL_SHORT_TITLE}</title>"
-		output_str = re.sub(pattern, replacement, output_str, count=1)
-		#
-		# adding the soup generated header at the placeholder
-		tag = cc.header_soup.find("header")
-		header_str = str(tag.decode(formatter=UnsortedAttributes()))
-		#
-		old = r"<body>"
-		replacement = f"<body>\n{header_str}"
-		output_str = output_str.replace(old, replacement, 1)
+	add_github_corner(header_soup)
+	add_navigation(cc)
+	add_byline_and_build_info(cc)
+
+	# copy resources to the build directory using the generator_patterns
+	copy_resources_to_build_dir(cc)
+
+	# get the index.html data via script or copying
+	output_str = get_main_content_from_subdirectories(cc)
+
+	# modify the generated/original output
+	# by replacing some strings with generated versions
+
+	# adding the generated title instead of the local title
+	pattern = r"<title>.*?</title>"
+	replacement = f"<title>{category.short_title} | {GLOBAL_SHORT_TITLE}</title>"
+	output_str = re.sub(pattern, replacement, output_str, count=1)
+
+	# adding the soup generated header at the placeholder
+	tag = cc.header_soup.find("header")
+	header_str = str(tag.decode(formatter=UnsortedAttributes()))
+	old = r"<body>"
+	replacement = f"<body>\n{header_str}"
+	output_str = output_str.replace(old, replacement, 1)
 
 
-		#
-		# write index.html to build dir
-		filename = os.path.join(dest_path, "index.html")
-		with open(filename, 'w', encoding='utf-8') as file:
-			file.write(output_str)
+	# write index.html to build dir
+	filename = os.path.join(dest_path, "index.html")
+	with open(filename, 'w', encoding='utf-8') as file:
+		file.write(output_str)
 
 
 ##
