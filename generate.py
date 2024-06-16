@@ -13,19 +13,17 @@ from typing import NamedTuple
 
 GLOBAL_TITLE = "Ultimate Commodore 64 Reference"
 
-
-
 #
 ### CONFIG Class
 #
 @dataclass
 class BuildConfig():
 	source_dir: str = "src" # where to look for files
-	build_dir: str = "out/c64ref" # where to put the output
-	build_dir_tmp: str = "out_unmodified" # where to put the debug output
-
-	server_path: str = "local@pagetable.com:/var/www/html/c64ref/" # where to put the files so others can see
+	build_dir: str = "out" # where to put the output
+	build_dir_tmp: str = "out_debug" # where to put the debug output
 	base_dir: str = "c64ref"
+
+	server_path: str = "local@pagetable.com:/var/www/html/" # where to put the files so others can see
 
 	deploy: bool = False # set via cli argument "upload": upload to server
 	debug: bool = False # set via cli argument "debug": write debug information
@@ -85,7 +83,6 @@ class CurrentCategory:
 	source_path: str # where are the source files? (incl. category.path)
 	dest_path: str # where should the build go? (incl. category.path)
 	dest_path_tmp: str # where should the debug files go? (incl. category.path)
-
 
 
 ### CATEGORIES/TOPICS/SUBDIRECTORIES
@@ -334,6 +331,8 @@ if os.path.exists(CONFIG.build_dir_tmp):
 ensured_path(CONFIG.build_dir, is_dir=True)
 ensured_path(CONFIG.build_dir_tmp, is_dir=True)
 
+build_base_dir = ensured_path(CONFIG.build_dir, CONFIG.base_dir, is_dir=True)
+build_base_dir_tmp = ensured_path(CONFIG.build_dir_tmp, CONFIG.base_dir, is_dir=True)
 
 ##
 ## GENERATE HTML in build_dir
@@ -341,7 +340,7 @@ ensured_path(CONFIG.build_dir_tmp, is_dir=True)
 print("*** Generating")
 
 # copy global resources: stylesheet
-shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), CONFIG.build_dir)
+shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), build_base_dir)
 
 # for each category/subdirectory/topic:
 #     generate title and header including navigation, title, github
@@ -355,8 +354,8 @@ for category in CATEGORIES:
 
 	# ensuring category paths
 	source_path = os.path.join(CONFIG.source_dir, category.path)
-	dest_path = ensured_path(CONFIG.build_dir, category.path, is_dir=True)
-	dest_path_tmp = ensured_path(CONFIG.build_dir_tmp, category.path, is_dir=True)
+	dest_path = ensured_path(build_base_dir, category.path, is_dir=True)
+	dest_path_tmp = ensured_path(build_base_dir_tmp, category.path, is_dir=True)
 
 	# create the header information
 	cc = CurrentCategory(category, source_path, dest_path, dest_path_tmp)
