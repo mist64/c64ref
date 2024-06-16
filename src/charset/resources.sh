@@ -4,4 +4,6 @@
 
 cp -p ../style.css $1
 cp -p *.css *.js $1
-cp -pr bin $1
+
+mkdir $1/bin
+cp -p bin/*.bin $1/bin
