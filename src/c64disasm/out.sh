@@ -1,4 +1,4 @@
-# c64disasm resources
+# c64disasm generate script
 
 ./generate.py > $1/index.html
 

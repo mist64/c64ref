@@ -252,7 +252,7 @@ shutil.copy(os.path.join(CONFIG.source_dir, "style.css"),
 
 # for each category/subdirectory/topic:
 #     generate title and header including navigation, title, github
-#     run the resources.sh to copy (and maybe generate) all needed resources
+#     run the out.sh to copy (and maybe generate) all needed resources
 #     add title and header into the index.html
 for category in CATEGORIES:
 	if not category.enabled:
@@ -268,7 +268,7 @@ for category in CATEGORIES:
 
 	# run python script to copy resources and generate index.html if needed
 	# TODO: XXX destination path nice?
-	subprocess.run(['sh', 'resources.sh', "../../" + destination_path], cwd=source_path)
+	subprocess.run(['sh', 'out.sh', "../../" + destination_path], cwd=source_path)
 
 	# get 'original' index.html for current category:
 	filename = os.path.join(destination_path, "index.html")

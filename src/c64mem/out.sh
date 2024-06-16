@@ -1,4 +1,4 @@
-# c64io resources
+# c64mem generate script
 
 ./generate.py > $1/index.html
 
