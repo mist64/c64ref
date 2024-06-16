@@ -10,7 +10,6 @@
 
 -   [Python]
 -   [Markdown]
--   [Beautiful Soup]
 
 See also [requirements.txt].
 
@@ -78,7 +77,6 @@ It checks for changes in the working copy and won't let you upload if there are 
 
 [Markdown]: https://pypi.org/project/Markdown/
 [Python]: https://www.python.org/
-[Beautiful Soup]: https://beautiful-soup-4.readthedocs.io/en/latest/
 
 [Localhost8000]: http://localhost:8000/6502/
 [Localhost6464]: http://localhost:6464/6502/
