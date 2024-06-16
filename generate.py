@@ -114,7 +114,6 @@ CATEGORIES = [
 ### FUNCTIONS for things that are longer
 
 def get_header_str(current_category):
-
 	# add a "github corner" with a waving octocat to the top right
 	# html source via: http://tholman.com/github-corners/
 
@@ -130,10 +129,10 @@ def get_header_str(current_category):
 	# add nav tag containing all categories
 	# with the current category marked as active
 
-	# title
+	# > title
 	nav_string = f'<h1>{GLOBAL_TITLE}</h1>\n'
 
-	# links for each topic
+	# > links for each topic
 	for category in CATEGORIES:
 		if not category.enabled:
 			continue
@@ -144,20 +143,20 @@ def get_header_str(current_category):
 			a_menu = f'<a href="/{CONFIG.base_dir}/{category.path}/">{category.short_title}</a>'
 		nav_string += f"{a_menu}\n"
 
-	# link to pagetable
+	# > link to pagetable
 	a_home = f'<a class="home" href="https://www.pagetable.com/">pagetable.com</a>'
 	nav_string += f"{a_home}\n"
 
 	# byline information
 
 	source_path = source_path_for_category(current_category)
-	# git revision hash with marker if there are uncommitted changes
+	# > git revision hash with marker if there are uncommitted changes
 	revision = os.popen(f'git log -1 --pretty=format:%h {source_path}').read()
-	# add a + to mark that the working copy had changes at build time
+	# > add a + to mark that the working copy had changes at build time
 	if CONFIG.git_has_changes:
 		revision += "+"
 
-	# date of git commit
+	# > date of git commit
 	date = os.popen(f'git log -1 --date=short --pretty=format:%cd {source_path}').read()
 
 	authors = ', '.join(current_category.authors)
@@ -253,10 +252,8 @@ shutil.copy(os.path.join(CONFIG.source_dir, "style.css"),
 
 # for each category/subdirectory/topic:
 #     generate title and header including navigation, title, github
-#     get the script results or HTMLs from the subdirectories
-#     and add the generated title and header into them
-#     copy all necessary files
-#     output the updated index.html
+#     run the resources.sh to copy (and maybe generate) all needed resources
+#     add title and header into the index.html
 for category in CATEGORIES:
 	if not category.enabled:
 		continue
@@ -266,23 +263,19 @@ for category in CATEGORIES:
 	# create the header information
 	header_str = get_header_str(category)
 
-	# copy resources to the build directory using the generator_patterns
-	#copy_resources_to_build_dir(category)
-
-	# get the index.html data via resources script
 	source_path = source_path_for_category(category)
 	destination_path = destination_path_for_category(category)
 
-	# get 'original' index.html for current category:
 	# run python script to copy resources and generate index.html if needed
 	# TODO: XXX destination path nice?
 	subprocess.run(['sh', 'resources.sh', "../../" + destination_path], cwd=source_path)
 
+	# get 'original' index.html for current category:
 	filename = os.path.join(destination_path, "index.html")
 	with open(filename, 'r', encoding='utf-8') as file:
 		output_str = file.read()
 
-	# modify the generated/original output
+	# modify the original index.html output
 	# by replacing some strings with generated versions:
 	# > adding the generated title instead of the local title
 	pattern = r"<title>.*?</title>"
@@ -294,7 +287,7 @@ for category in CATEGORIES:
 	replacement = f"<body>\n{header_str}"
 	output_str = output_str.replace(old, replacement, 1)
 
-	# write index.html to build dir
+	# write index.html back to build dir including the changes
 	with open(filename, 'w', encoding='utf-8') as file:
 		file.write(output_str)
 
