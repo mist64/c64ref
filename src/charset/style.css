@@ -37,8 +37,8 @@ body {
 #charset_table_div > table,
 #charset_table_div > table th,
 #charset_table_div > table td,
-#petscii_table_div > table, 
-#petscii_table_div > table th, 
+#petscii_table_div > table,
+#petscii_table_div > table th,
 #petscii_table_div > table td {
 	border: solid 1px var(--box-border);;
 }
@@ -64,9 +64,9 @@ dt {
 
 dd {
 	margin-left: 0.7em;
-} 
+}
 
-/* Overview Styling */ 
+/* Overview Styling */
 
 #screencode_overview,
 #petscii_overview {
@@ -79,10 +79,10 @@ dd {
 }
 
 #keyboard_overview > div {
-	
+
 }
 
-/* Tabs */ 
+/* Tabs */
 /* via https://www.mediaevent.de/tutorial/css-tabs.html */
 
 
@@ -107,7 +107,7 @@ input#tab_keyboard:checked ~ div.keyboard_group {
 	min-width: 1170px;
 
 	background: var(--box-background);
-	
+
 	border: solid 1px var(--box-border);
 	border-width: 1px 0px 1px 1px;
 	margin: 0px;
@@ -148,6 +148,11 @@ input#tab_keyboard:checked ~ div.keyboard_group {
 
 /* Navigation */
 
+#navigation nav {
+	margin-bottom: 0rem;
+}
+
+
 nav label {
 	display: inline-block;
 	padding: 15px;
@@ -181,7 +186,7 @@ nav label:active {
 }
 
 #tab_screencode:checked ~ div nav label[for="tab_screencode"]:after,
-#tab_petscii:checked ~ div nav label[for="tab_petscii"]:after, 
+#tab_petscii:checked ~ div nav label[for="tab_petscii"]:after,
 #tab_keyboard:checked ~ div nav label[for="tab_keyboard"]:after {
 	content: "";
 	display: block;
@@ -207,7 +212,7 @@ nav label:active {
 #settings {
 	grid-column: 1;
 	grid-row: 1 / span 2;
-	align-self: stretch; 
+	align-self: stretch;
 	justify-self: stretch;
 }
 
@@ -215,7 +220,7 @@ div#navigation {
 	grid-column: 2;
 	grid-row: 1;
 
-	border-bottom: 1px solid var(--box-border);	
+	border-bottom: 1px solid var(--box-border);
 	justify-self: stretch;
 }
 
@@ -252,7 +257,7 @@ div#navigation {
 }
 
 
-#charset_compare_table_div, 
+#charset_compare_table_div,
 #charset_table_div,
 #petscii_table_div {
 	align-self: center;
@@ -320,7 +325,7 @@ div#navigation {
 	bottom: 0px;
 	width: 100%;
 	height: 100%;
-	
+
 	color: white;
 	text-shadow: 1px 1px black;
 	font-weight: bold;
@@ -331,7 +336,7 @@ div#navigation {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-  
+
 	overflow: hidden;
 	white-space: normal;
 	text-overflow: clip;
@@ -483,8 +488,8 @@ div#navigation {
 .control-title {
 	grid-row:1;
 	grid-column: 2;
-	display: flex; 
-	justify-content: flex-start; 
+	display: flex;
+	justify-content: flex-start;
 	align-items: flex-end;
 }
 
@@ -596,4 +601,4 @@ div.key-box {
 	text-align: left;
 	white-space: nowrap;
 }
- 
+
