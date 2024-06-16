@@ -66,12 +66,6 @@ def parse_cli_into_config():
 
 ### DATA Classses
 
-# small helper for authors
-class Author(NamedTuple):
-	name: str # who?
-	url: str # where to visit them?
-
-
 # collected 'outside' and header and build info for a category
 class RefCategory(NamedTuple):
 	path: str # folder name
@@ -98,7 +92,7 @@ class CurrentCategory:
 
 CONFIG = parse_cli_into_config()
 
-DEFAULT_AUTHOR = Author("Michael Steil", "http://www.pagetable.com/")
+DEFAULT_AUTHOR = '<a href="http://www.pagetable.com/">Michael Steil</a>'
 
 CATEGORIES = [
 	RefCategory( '6502',
@@ -130,7 +124,7 @@ CATEGORIES = [
 	),
 	RefCategory('charset',
 		'Character Set · PETSCII · Keyboard', 'Charset · PETSCII · Keyboard',
-		[DEFAULT_AUTHOR, Author("Lisa Brodner", None)],
+		[DEFAULT_AUTHOR, "Lisa Brodner"],
 		'SCRIPT',  'generate.py',
 		generator_patterns=["*.js", "*.css", "bin/*.bin"]
 	),
@@ -183,26 +177,17 @@ def get_header_str(cc):
 	# byline information
 
 	# git revision hash with marker if there are uncommitted changes
-	f = os.popen(f'git log -1 --pretty=format:%h {cc.source_path}')
-	revision = f.read()
+	revision = os.popen(f'git log -1 --pretty=format:%h {cc.source_path}').read()
+	# add a + to mark that the working copy had changes at build time
 	if CONFIG.git_has_changes:
 		revision += "+"
 
 	# date of git commit
-	f = os.popen(f'git log -1 --date=short --pretty=format:%cd {cc.source_path}')
-	date = f.read()
+	date = os.popen(f'git log -1 --date=short --pretty=format:%cd {cc.source_path}').read()
 
-	# authors for the byline
-	author_strings = []
-	for author in cc.category.authors:
-		if author.url:
-			author_string = f'<a href="{author.url}">{author.name}</a>'
-		else:
-			author_string = f'{author.name}'
-		author_strings.append(author_string)
-	authors = ', '.join(author_strings)
-
-	byline_string = f'by <em>{authors}.</em> [<small><a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>, rev {revision}, {date}</small>]'
+	authors = ', '.join(cc.category.authors)
+	revision_info = f'<a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>, rev {revision}, {date}'
+	byline_string = f'by <em>{authors}.</em> [<small>{revision_info}</small>]'
 
 	return f"""
 	<header>
