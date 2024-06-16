@@ -187,25 +187,6 @@ def get_header_str(current_category):
 	"""
 
 
-def get_main_content_from_subdirectories(current_category):
-
-	source_path = source_path_for_category(current_category)
-
-	# get 'original' index.html for current category:
-	# run python script to generate:
-	if current_category.generator_type == 'SCRIPT':
-		result = subprocess.run(['python3', "generate.py"], capture_output=True, text=True, cwd=source_path)
-		output_str = result.stdout
-
-	# or copy file directly:
-	elif current_category.generator_type == 'HTML':
-		path = os.path.join(source_path, "index.html")
-		with open(path, 'r') as file:
-			output_str = file.read()
-
-	return output_str
-
-
 ### RESOURCES
 
 def copy_resources_to_build_dir(current_category):
@@ -321,7 +302,7 @@ if os.path.exists(CONFIG.build_dir_tmp):
 ##
 ## GENERATE HTML in build_dir
 ##
-print("*** Generating")
+print("*** Generating:")
 
 # copy global resources: stylesheet
 shutil.copy(os.path.join(CONFIG.source_dir, "style.css"),
@@ -337,30 +318,40 @@ for category in CATEGORIES:
 	if not category.enabled:
 		continue
 
+	print(f"\t> {category.path}")
+
 	# create the header information
 	header_str = get_header_str(category)
 
 	# copy resources to the build directory using the generator_patterns
-	copy_resources_to_build_dir(category)
+	#copy_resources_to_build_dir(category)
 
-	# get the index.html data via script or copying
-	output_str = get_main_content_from_subdirectories(category)
+	# get the index.html data via resources script
+	source_path = source_path_for_category(category)
+	destination_path = destination_path_for_category(category)
+
+	# get 'original' index.html for current category:
+	# run python script to copy resources and generate index.html if needed
+	# TODO: XXX destination path nice?
+	subprocess.run(['sh', 'resources.sh', "../../" + destination_path], cwd=source_path)
+
+	filename = os.path.join(destination_path, "index.html")
+	with open(filename, 'r', encoding='utf-8') as file:
+		output_str = file.read()
 
 	# modify the generated/original output
-	# by replacing some strings with generated versions
-
-	# adding the generated title instead of the local title
+	# by replacing some strings with generated versions:
+	# > adding the generated title instead of the local title
 	pattern = r"<title>.*?</title>"
 	replacement = f"<title>{category.short_title} | {GLOBAL_TITLE}</title>"
 	output_str = re.sub(pattern, replacement, output_str, count=1)
 
-	# adding the header at the top of the body
+	# > adding the header at the top of the body
 	old = r"<body>"
 	replacement = f"<body>\n{header_str}"
 	output_str = output_str.replace(old, replacement, 1)
 
 	# write index.html to build dir
-	filename = os.path.join(destination_path_for_category(category), "index.html")
 	with open(filename, 'w', encoding='utf-8') as file:
 		file.write(output_str)
 
