@@ -91,7 +91,6 @@ class RefCategory(NamedTuple):
 @dataclass
 class CurrentCategory:
 	category: RefCategory # current category
-	header_soup: BeautifulSoup # soup into which the header information is added
 	source_path: str # where are the source files? (incl. category.path)
 	dest_path: str # where should the build go? (incl. category.path)
 	dest_path_tmp: str # where should the debug files go? (incl. category.path)
@@ -147,43 +146,14 @@ CATEGORIES = [
 ]
 
 
-### HTML GLOBAL
-
-# this is the basic outline of the index.html
-# - just used for generating the header
-BASIC_HTML = """
-<!DOCTYPE html>
-	<html lang="en-US">
-	<head>
-		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-		<title>Ultimate C64 Reference</title>
-	</head>
-<body>
-
-<header>
-<div id="cat"></div>
-<nav class="topnav"></nav>
-
-<h1 id="headline"></h1>
-<p id="byline"></p>
-</header>
-
-<main>
-</main>
-
-</body>
-</html>
-"""
-
-
 ### FUNCTIONS for things that are longer
 
-def add_github_corner(header_soup):
+def get_header_str(cc):
 
 	# add a "github corner" with a waving octocat to the top right
 	# html source via: http://tholman.com/github-corners/
 
-	html_doc = """
+	octocat_string = """
 <a href="https://github.com/mist64/c64ref" class="github-corner" aria-label="View source on GitHub">
   <svg width="80" height="80" viewBox="0 0 250 250" style="fill:var(--main-color); color:#fff; position: absolute; top: 0; border: 0; right: 0; clip-path: polygon(0 0, 100% 0, 100% 100%);" aria-hidden="true">
 	<path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
@@ -191,33 +161,29 @@ def add_github_corner(header_soup):
 	<path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
   </svg>
 </a>"""
-	tag = header_soup.find(id="cat")
-	tag_append_tag(tag, html_doc)
 
-
-def add_navigation(cc):
-
-	nav_tag = cc.header_soup.find('nav')
+	# add nav tag containing all categories
+	# with the current category marked as active
 
 	# title
-	h1 = f'<h1>{GLOBAL_TITLE}</h1>'
-	tag_append_tag(nav_tag, h1)
+	nav_string = f'<h1>{GLOBAL_TITLE}</h1>\n'
 
 	# links for each topic
 	for category in CATEGORIES:
-		if category.enabled:
-			if category == cc.category:
-				a_menu = f'<a class="active" href="#">{category.short_title}</a>'
-			else:
-				a_menu = f'<a href="/{CONFIG.base_dir}/{category.path}/">{category.short_title}</a>'
-			tag_append_tag(nav_tag, a_menu)
+		if not category.enabled:
+			continue
+
+		if category == cc.category:
+			a_menu = f'<a class="active" href="#">{category.short_title}</a>'
+		else:
+			a_menu = f'<a href="/{CONFIG.base_dir}/{category.path}/">{category.short_title}</a>'
+		nav_string += f"{a_menu}\n"
 
 	# link to pagetable
 	a_home = f'<a class="home" href="https://www.pagetable.com/">pagetable.com</a>'
-	tag_append_tag(nav_tag, a_home)
+	nav_string += f"{a_home}\n"
 
-
-def add_byline_and_build_info(cc):
+	# byline information
 
 	# git revision hash with marker if there are uncommitted changes
 	f = os.popen(f'git log -1 --pretty=format:%h {cc.source_path}')
@@ -225,7 +191,7 @@ def add_byline_and_build_info(cc):
 	if CONFIG.git_has_changes:
 		revision += "+"
 
-	# date of that git commit
+	# date of git commit
 	f = os.popen(f'git log -1 --date=short --pretty=format:%cd {cc.source_path}')
 	date = f.read()
 
@@ -239,10 +205,19 @@ def add_byline_and_build_info(cc):
 		author_strings.append(author_string)
 	authors = ', '.join(author_strings)
 
-	html_doc = f'by <em>{authors}.</em> [<small><a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>, rev {revision}, {date}</small>]'
+	byline_string = f'by <em>{authors}.</em> [<small><a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>, rev {revision}, {date}</small>]'
 
-	tag = cc.header_soup.find(id="byline")
-	tag_append_tag(tag, html_doc)
+	return f"""
+	<header>
+	<div id="cat">{octocat_string}</div>
+	<nav class="topnav">
+	{nav_string}
+	</nav>
+
+	<h1 id="headline">{cc.category.long_title}</h1>
+	<p id="byline">{byline_string}</p>
+	</header>
+	"""
 
 
 def get_main_content_from_subdirectories(cc):
@@ -432,16 +407,8 @@ for category in CATEGORIES:
 	dest_path_tmp = ensured_path(CONFIG.build_dir_tmp, category.path, is_dir=True)
 
 	# create the header information
-	header_soup = BeautifulSoup(BASIC_HTML, 'html.parser')
-	cc = CurrentCategory(category, header_soup, source_path, dest_path, dest_path_tmp)
-
-	# main document headline in header
-	tag = header_soup.find(id="headline")
-	tag.string = category.long_title
-
-	add_github_corner(header_soup)
-	add_navigation(cc)
-	add_byline_and_build_info(cc)
+	cc = CurrentCategory(category, source_path, dest_path, dest_path_tmp)
+	header_str = get_header_str(cc)
 
 	# copy resources to the build directory using the generator_patterns
 	copy_resources_to_build_dir(cc)
@@ -457,9 +424,7 @@ for category in CATEGORIES:
 	replacement = f"<title>{category.short_title} | {GLOBAL_TITLE}</title>"
 	output_str = re.sub(pattern, replacement, output_str, count=1)
 
-	# adding the soup generated header at the placeholder
-	tag = cc.header_soup.find("header")
-	header_str = str(tag.decode(formatter=UnsortedAttributes()))
+	# adding the header at the top of the body
 	old = r"<body>"
 	replacement = f"<body>\n{header_str}"
 	output_str = output_str.replace(old, replacement, 1)
