@@ -68,7 +68,6 @@ class RefCategory(NamedTuple):
 	short_title: str # title for the menu item
 	authors: list # authors and their urls
 	generator_type: str = 'HTML' # does this need a python script?
-	generator_name: str = 'index.html' # if so: what name?
 	generator_patterns: list = [] # what other files do we need to work?
 	enabled: bool = True # should this show up in the menu and be generated?
 
@@ -88,29 +87,29 @@ CATEGORIES = [
 	RefCategory( 'kernal',
 		'C64 KERNAL API', 'KERNAL API',
 		[DEFAULT_AUTHOR],
-		'SCRIPT', 'generate.py'
+		'SCRIPT',
 	),
 	RefCategory('c64disasm',
 		'C64 BASIC & KERNAL ROM Disassembly', 'ROM Disassembly',
 		[DEFAULT_AUTHOR],
-		'SCRIPT', 'combine.py',
+		'SCRIPT',
 		enabled=(not CONFIG.fast_build)
 	),
 	RefCategory('c64mem',
 		'C64 Memory Map', 'Memory Map',
 		[DEFAULT_AUTHOR],
-		'SCRIPT', 'combine.py'
+		'SCRIPT',
 	),
 	RefCategory('c64io',
 		'C64 I/O Map', 'I/O Map',
 		[DEFAULT_AUTHOR],
-		'SCRIPT', 'combine.py',
+		'SCRIPT',
 		enabled=CONFIG.build_wips
 	),
 	RefCategory('charset',
 		'Character Set · PETSCII · Keyboard', 'Charset · PETSCII · Keyboard',
 		[DEFAULT_AUTHOR, "Lisa Brodner"],
-		'SCRIPT',  'generate.py',
+		'SCRIPT',
 		generator_patterns=["*.js", "*.css", "bin/*.bin"]
 	),
 	RefCategory('colors',
@@ -195,12 +194,12 @@ def get_main_content_from_subdirectories(current_category):
 	# get 'original' index.html for current category:
 	# run python script to generate:
 	if current_category.generator_type == 'SCRIPT':
-		result = subprocess.run(['python3', current_category.generator_name], capture_output=True, text=True, cwd=source_path)
+		result = subprocess.run(['python3', "generate.py"], capture_output=True, text=True, cwd=source_path)
 		output_str = result.stdout
 
 	# or copy file directly:
 	elif current_category.generator_type == 'HTML':
-		path = 	os.path.join(source_path, current_category.generator_name)
+		path = os.path.join(source_path, "index.html")
 		with open(path, 'r') as file:
 			output_str = file.read()
 
