@@ -67,8 +67,6 @@ class RefCategory(NamedTuple):
 	long_title: str # title for the html title and the headline
 	short_title: str # title for the menu item
 	authors: list # authors and their urls
-	generator_type: str = 'HTML' # does this need a python script?
-	generator_patterns: list = [] # what other files do we need to work?
 	enabled: bool = True # should this show up in the menu and be generated?
 
 
@@ -82,40 +80,32 @@ CATEGORIES = [
 	RefCategory( '6502',
 		'6502 Family CPU Reference', '6502',
 		[DEFAULT_AUTHOR],
-		generator_patterns=["cpu_*.txt", "*.js"]
 	),
 	RefCategory( 'kernal',
 		'C64 KERNAL API', 'KERNAL API',
 		[DEFAULT_AUTHOR],
-		'SCRIPT',
 	),
 	RefCategory('c64disasm',
 		'C64 BASIC & KERNAL ROM Disassembly', 'ROM Disassembly',
 		[DEFAULT_AUTHOR],
-		'SCRIPT',
 		enabled=(not CONFIG.fast_build)
 	),
 	RefCategory('c64mem',
 		'C64 Memory Map', 'Memory Map',
 		[DEFAULT_AUTHOR],
-		'SCRIPT',
 	),
 	RefCategory('c64io',
 		'C64 I/O Map', 'I/O Map',
 		[DEFAULT_AUTHOR],
-		'SCRIPT',
 		enabled=CONFIG.build_wips
 	),
 	RefCategory('charset',
 		'Character Set · PETSCII · Keyboard', 'Charset · PETSCII · Keyboard',
 		[DEFAULT_AUTHOR, "Lisa Brodner"],
-		'SCRIPT',
-		generator_patterns=["*.js", "*.css", "bin/*.bin"]
 	),
 	RefCategory('colors',
 		'C64 Colors', 'Colors',
 		[DEFAULT_AUTHOR],
-		generator_patterns=["*.js"],
 		enabled=CONFIG.build_wips
 	),
 ]
@@ -185,53 +175,6 @@ def get_header_str(current_category):
 	<p id="byline">{byline_string}</p>
 	</header>
 	"""
-
-
-### RESOURCES
-
-def copy_resources_to_build_dir(current_category):
-
-	source_path = source_path_for_category(current_category)
-	destination_path = destination_path_for_category(current_category)
-
-	# make a list of all files in the directory of the current category
-	# remove the category folder name prefix (eg. c64disasm) from the paths
-	all_files = []
-	for root, dirs, files in os.walk(source_path):
-		for file in files:
-			filename = os.path.join(root, file)
-			filename = os.path.relpath(filename, source_path)
-			all_files.append(filename) # just the 'local' path
-
-	# make list of files matching the categories generator_patterns
-	patterns = current_category.generator_patterns
-	if patterns:
-		filtered_files = []
-		for pattern in patterns:
-			for filename in fnmatch.filter(all_files, pattern):
-				filtered_files.append(filename)
-
-		# copy the matched files to the build folder
-		for file_path in filtered_files:
-			file_in = os.path.join(source_path, file_path)
-			file_out = ensured_path(destination_path, file_path, is_dir=False) # ensure because file_path might contain directories
-			shutil.copy(file_in, file_out)
-
-		# and track the unmatched files
-		unmatched_files = [file for file in all_files if file not in filtered_files]
-	else:
-		unmatched_files = all_files
-
-	if CONFIG.debug:
-		debug_path = debug_path_for_category(current_category)
-
-		# write a .txt containing a list of the unmatched files
-		filename = os.path.join(debug_path, "files_no_copy.txt")
-		with open(filename, 'w', encoding='utf-8') as file:
-			for unmatched_file in unmatched_files:
-				# ignore .DS_Store and the index.html
-				if unmatched_file != "index.html" and unmatched_file != ".DS_Store":
-					file.write(f"{unmatched_file}\n")
 
 
 ### HELPER
