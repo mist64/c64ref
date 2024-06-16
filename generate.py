@@ -6,16 +6,13 @@ import subprocess
 import fnmatch
 import argparse
 import re
-
 from dataclasses import dataclass
 from typing import NamedTuple
 
-
 GLOBAL_TITLE = "Ultimate Commodore 64 Reference"
 
-#
 ### CONFIG Class
-#
+
 @dataclass
 class BuildConfig():
 	source_dir: str = "src" # where to look for files
@@ -76,15 +73,6 @@ class RefCategory(NamedTuple):
 	enabled: bool = True # should this show up in the menu and be generated?
 
 
-# used for the category for which the html is currently generated
-@dataclass
-class CurrentCategory:
-	category: RefCategory # current category
-	source_path: str # where are the source files? (incl. category.path)
-	dest_path: str # where should the build go? (incl. category.path)
-	dest_path_tmp: str # where should the debug files go? (incl. category.path)
-
-
 ### CATEGORIES/TOPICS/SUBDIRECTORIES
 
 CONFIG = parse_cli_into_config()
@@ -136,7 +124,7 @@ CATEGORIES = [
 
 ### FUNCTIONS for things that are longer
 
-def get_header_str(cc):
+def get_header_str(current_category):
 
 	# add a "github corner" with a waving octocat to the top right
 	# html source via: http://tholman.com/github-corners/
@@ -161,7 +149,7 @@ def get_header_str(cc):
 		if not category.enabled:
 			continue
 
-		if category == cc.category:
+		if category == current_category:
 			a_menu = f'<a class="active" href="#">{category.short_title}</a>'
 		else:
 			a_menu = f'<a href="/{CONFIG.base_dir}/{category.path}/">{category.short_title}</a>'
@@ -173,16 +161,17 @@ def get_header_str(cc):
 
 	# byline information
 
+	source_path = source_path_for_category(current_category)
 	# git revision hash with marker if there are uncommitted changes
-	revision = os.popen(f'git log -1 --pretty=format:%h {cc.source_path}').read()
+	revision = os.popen(f'git log -1 --pretty=format:%h {source_path}').read()
 	# add a + to mark that the working copy had changes at build time
 	if CONFIG.git_has_changes:
 		revision += "+"
 
 	# date of git commit
-	date = os.popen(f'git log -1 --date=short --pretty=format:%cd {cc.source_path}').read()
+	date = os.popen(f'git log -1 --date=short --pretty=format:%cd {source_path}').read()
 
-	authors = ', '.join(cc.category.authors)
+	authors = ', '.join(current_category.authors)
 	revision_info = f'<a href="https://github.com/mist64/c64ref">github.com/mist64/c64ref</a>, rev {revision}, {date}'
 	byline_string = f'by <em>{authors}.</em> [<small>{revision_info}</small>]'
 
@@ -193,52 +182,49 @@ def get_header_str(cc):
 	{nav_string}
 	</nav>
 
-	<h1 id="headline">{cc.category.long_title}</h1>
+	<h1 id="headline">{category.long_title}</h1>
 	<p id="byline">{byline_string}</p>
 	</header>
 	"""
 
 
-def get_main_content_from_subdirectories(cc):
+def get_main_content_from_subdirectories(current_category):
 
-	# get 'original' index.html for current category
-	#
+	source_path = source_path_for_category(current_category)
+
+	# get 'original' index.html for current category:
 	# run python script to generate:
-	if cc.category.generator_type == 'SCRIPT':
-		result = subprocess.run(['python3', cc.category.generator_name], capture_output=True, text=True, cwd=cc.source_path)
+	if current_category.generator_type == 'SCRIPT':
+		result = subprocess.run(['python3', current_category.generator_name], capture_output=True, text=True, cwd=source_path)
 		output_str = result.stdout
-	#
+
 	# or copy file directly:
-	elif cc.category.generator_type == 'HTML':
-		path = 	os.path.join(cc.source_path, cc.category.generator_name)
+	elif current_category.generator_type == 'HTML':
+		path = 	os.path.join(source_path, current_category.generator_name)
 		with open(path, 'r') as file:
 			output_str = file.read()
-
-	if CONFIG.debug:
-		# for debugging: write the original HTML to tmp
-		# -> in unmodified version (direct output)
-		filename = os.path.join(cc.dest_path_tmp, "index_orig.html")
-		with open(filename, 'w', encoding='utf-8') as file:
-			file.write(output_str)
 
 	return output_str
 
 
 ### RESOURCES
 
-def copy_resources_to_build_dir(cc):
+def copy_resources_to_build_dir(current_category):
+
+	source_path = source_path_for_category(current_category)
+	destination_path = destination_path_for_category(current_category)
 
 	# make a list of all files in the directory of the current category
 	# remove the category folder name prefix (eg. c64disasm) from the paths
 	all_files = []
-	for root, dirs, files in os.walk(cc.source_path):
+	for root, dirs, files in os.walk(source_path):
 		for file in files:
 			filename = os.path.join(root, file)
-			filename = os.path.relpath(filename, cc.source_path)
+			filename = os.path.relpath(filename, source_path)
 			all_files.append(filename) # just the 'local' path
 
 	# make list of files matching the categories generator_patterns
-	patterns = cc.category.generator_patterns
+	patterns = current_category.generator_patterns
 	if patterns:
 		filtered_files = []
 		for pattern in patterns:
@@ -247,21 +233,20 @@ def copy_resources_to_build_dir(cc):
 
 		# copy the matched files to the build folder
 		for file_path in filtered_files:
-			file_in = os.path.join(cc.source_path, file_path)
-			file_out = ensured_path(cc.dest_path, file_path, is_dir=False) # ensure because file_path might contain directories
+			file_in = os.path.join(source_path, file_path)
+			file_out = ensured_path(destination_path, file_path, is_dir=False) # ensure because file_path might contain directories
 			shutil.copy(file_in, file_out)
 
 		# and track the unmatched files
 		unmatched_files = [file for file in all_files if file not in filtered_files]
-
 	else:
 		unmatched_files = all_files
 
-
 	if CONFIG.debug:
-		# for debugging:
-		#     write a .txt containing a list of the unmatched files
-		filename = os.path.join(cc.dest_path_tmp, "files_no_copy.txt")
+		debug_path = debug_path_for_category(current_category)
+
+		# write a .txt containing a list of the unmatched files
+		filename = os.path.join(debug_path, "files_no_copy.txt")
 		with open(filename, 'w', encoding='utf-8') as file:
 			for unmatched_file in unmatched_files:
 				# ignore .DS_Store and the index.html
@@ -269,8 +254,16 @@ def copy_resources_to_build_dir(cc):
 					file.write(f"{unmatched_file}\n")
 
 
-
 ### HELPER
+
+def source_path_for_category(category):
+	return os.path.join(CONFIG.source_dir, category.path)
+
+def destination_path_for_category(category):
+	return ensured_path(CONFIG.build_dir, CONFIG.base_dir, category.path, is_dir=True)
+
+def debug_path_for_category(category):
+	return ensured_path(CONFIG.build_dir_tmp, CONFIG.base_dir, category.path, is_dir=True)
 
 def ensured_path(path, *paths, is_dir):
 	result = os.path.join(path, *paths)
@@ -278,7 +271,6 @@ def ensured_path(path, *paths, is_dir):
 	dir_name = result
 	if not is_dir:
 		dir_name = os.path.dirname(result)
-
 	if not os.path.exists(dir_name):
 		os.makedirs(dir_name)
 
@@ -291,7 +283,6 @@ def ensured_path(path, *paths, is_dir):
 ## SETUP
 ##
 print("*** Setup")
-
 
 # get git status
 f = os.popen(f'git ls-files -m | wc -l')
@@ -328,44 +319,33 @@ if os.path.exists(CONFIG.build_dir):
 if os.path.exists(CONFIG.build_dir_tmp):
 	shutil.rmtree(CONFIG.build_dir_tmp)
 
-ensured_path(CONFIG.build_dir, is_dir=True)
-ensured_path(CONFIG.build_dir_tmp, is_dir=True)
-
-build_base_dir = ensured_path(CONFIG.build_dir, CONFIG.base_dir, is_dir=True)
-build_base_dir_tmp = ensured_path(CONFIG.build_dir_tmp, CONFIG.base_dir, is_dir=True)
-
 ##
 ## GENERATE HTML in build_dir
 ##
 print("*** Generating")
 
 # copy global resources: stylesheet
-shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), build_base_dir)
+shutil.copy(os.path.join(CONFIG.source_dir, "style.css"),
+			ensured_path(CONFIG.build_dir, CONFIG.base_dir, is_dir=True))
 
 # for each category/subdirectory/topic:
 #     generate title and header including navigation, title, github
 #     get the script results or HTMLs from the subdirectories
 #     and add the generated title and header into them
 #     copy all necessary files
-#     output the updated index.htmls
+#     output the updated index.html
 for category in CATEGORIES:
 	if not category.enabled:
 		continue
 
-	# ensuring category paths
-	source_path = os.path.join(CONFIG.source_dir, category.path)
-	dest_path = ensured_path(build_base_dir, category.path, is_dir=True)
-	dest_path_tmp = ensured_path(build_base_dir_tmp, category.path, is_dir=True)
-
 	# create the header information
-	cc = CurrentCategory(category, source_path, dest_path, dest_path_tmp)
-	header_str = get_header_str(cc)
+	header_str = get_header_str(category)
 
 	# copy resources to the build directory using the generator_patterns
-	copy_resources_to_build_dir(cc)
+	copy_resources_to_build_dir(category)
 
 	# get the index.html data via script or copying
-	output_str = get_main_content_from_subdirectories(cc)
+	output_str = get_main_content_from_subdirectories(category)
 
 	# modify the generated/original output
 	# by replacing some strings with generated versions
@@ -380,12 +360,10 @@ for category in CATEGORIES:
 	replacement = f"<body>\n{header_str}"
 	output_str = output_str.replace(old, replacement, 1)
 
-
 	# write index.html to build dir
-	filename = os.path.join(dest_path, "index.html")
+	filename = os.path.join(destination_path_for_category(category), "index.html")
 	with open(filename, 'w', encoding='utf-8') as file:
 		file.write(output_str)
-
 
 ##
 ## DEPLOY
