@@ -245,9 +245,8 @@ build_path = ensured_path(CONFIG.build_dir, CONFIG.base_dir, is_dir=True)
 # > write index.html for root directory redirect
 default_category="c64disasm"
 if CONFIG.only_build:
-	for category in CATEGORIES:
-		if not default_category in CONFIG.only_build:
-			default_category = CONFIG.only_build[0]
+	if not default_category in CONFIG.only_build:
+		default_category = CONFIG.only_build[0]
 
 root_redirect=f'<meta http-equiv="refresh" content="0; URL=/{CONFIG.base_dir}/{default_category}/">'
 root_path = os.path.join(build_path, "index.html")
