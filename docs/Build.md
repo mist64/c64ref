@@ -32,13 +32,6 @@ This will build the different pages from the repos *reference material* with the
 
 The `6502` and the `color` reference are all Java Script and do not need to be generated while developing, but for release the umbrella `generate.py` adds navigation, matching titles and a link to the github project.
 
-Each category has its own `out.sh` that takes (1) build folder and (2) the name of the category folder itself. It creates the necessary folders and files and copies everything that is needed for the index.html to work. That script could also be used for standalone development.
-
-```
-cd src/6502
-./out.sh ../../out/test 6502
-```
-
 
 ## Testing
 

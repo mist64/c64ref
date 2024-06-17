@@ -110,7 +110,7 @@ CATEGORIES = [
 
 ### FUNCTIONS for things that are longer
 
-def get_header_str(current_category):
+def get_header_str(current_category, source_path):
 	# add a "github corner" with a waving octocat to the top right
 	# html source via: http://tholman.com/github-corners/
 
@@ -146,7 +146,6 @@ def get_header_str(current_category):
 
 	# byline information
 
-	source_path = source_path_for_category(current_category)
 	# > git revision hash with marker if there are uncommitted changes
 	revision = os.popen(f'git log -1 --pretty=format:%h {source_path}').read()
 	# > add a + to mark that the working copy had changes at build time
@@ -176,12 +175,6 @@ def get_header_str(current_category):
 
 
 ### PATH HELPER
-
-def source_path_for_category(category):
-	return os.path.join(CONFIG.source_dir, category.path)
-
-def destination_path_for_build():
-	return ensured_path(CONFIG.build_dir, CONFIG.base_dir, is_dir=True)
 
 def ensured_path(path, *paths, is_dir):
 	result = os.path.join(path, *paths)
@@ -242,9 +235,10 @@ if os.path.exists(CONFIG.build_dir):
 ##
 print("*** Generating:")
 
-# copy global resources: stylesheet
-# TODO: XXX favicons
-# shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), destination_path_for_build())
+# copy global resources: stylesheet # TODO: XXX favicons
+
+build_path = ensured_path(CONFIG.build_dir, CONFIG.base_dir, is_dir=True)
+shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), build_path)
 
 # for each category/subdirectory/topic:
 #     generate title and header including navigation, title, github
@@ -256,18 +250,14 @@ for category in CATEGORIES:
 
 	print(f"\t> {category.path}")
 
-	# create the header information
-	header_str = get_header_str(category)
-
-	source_path = source_path_for_category(category)
-	build_path = destination_path_for_build()
+	source_path = os.path.join(CONFIG.source_dir, category.path)
+	destination_path = ensured_path(build_path, category.path, is_dir=True)
+	filename = os.path.join(destination_path, "index.html")
 
 	# run python script to copy resources and generate index.html if needed
-	# the script also creates the necessary subdirectories
-	subprocess.run(['sh', 'out.sh', "../../" + build_path, category.path], cwd=source_path)
+	subprocess.run(['sh', 'out.sh', "../../" + destination_path], cwd=source_path)
 
 	# get 'original' index.html for current category:
-	filename = os.path.join(build_path, category.path, "index.html")
 	with open(filename, 'r', encoding='utf-8') as file:
 		output_str = file.read()
 
@@ -278,6 +268,8 @@ for category in CATEGORIES:
 	replacement = f"<title>{category.short_title} | {GLOBAL_TITLE}</title>"
 	output_str = re.sub(pattern, replacement, output_str, count=1)
 
+	# > create the header information
+	header_str = get_header_str(category, source_path)
 	# > adding the header at the top of the body
 	old = r"<body>"
 	replacement = f"<body>\n{header_str}"
