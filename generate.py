@@ -238,10 +238,27 @@ if os.path.exists(CONFIG.build_dir):
 ##
 print("*** Generating:")
 
-# copy global resources: stylesheet # TODO: XXX favicons
+# copy global resources:
 
 build_path = ensured_path(CONFIG.build_dir, CONFIG.base_dir, is_dir=True)
+
+# > write index.html for root directory redirect
+default_category="c64disasm"
+if CONFIG.only_build:
+	for category in CATEGORIES:
+		if not default_category in CONFIG.only_build:
+			default_category = CONFIG.only_build[0]
+
+root_redirect=f'<meta http-equiv="refresh" content="0; URL=/{CONFIG.base_dir}/{default_category}/">'
+root_path = os.path.join(build_path, "index.html")
+with open(root_path, 'w', encoding='utf-8') as file:
+	file.write(root_redirect)
+
+# > stylesheet
 shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), build_path)
+
+# > favicons TODO: XXX favicons
+
 
 # for each category/subdirectory/topic:
 #     generate title and header including navigation, title, github
