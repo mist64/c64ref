@@ -7,7 +7,7 @@ DIRECTORY_PATH="out"
 
 REGEXP=".*(" # open regex
 REGEXP="${REGEXP}Empty.heading|Duplicate.ID|The.first.occurrence.of.ID" # fix laters
-REGEXP="${REGEXP}|exceeded.the.column.count.established|not.allowed.as.child.of.element|Use.CSS.instead|Unclosed.element|Bad.character|but.there.were.open.elements|violates.nesting.rules|Probable.causes..Unescaped"
+REGEXP="${REGEXP}|not.allowed.as.child.of.element|Use.CSS.instead|Unclosed.element|Bad.character|but.there.were.open.elements|violates.nesting.rules|Probable.causes..Unescaped"
 REGEXP="${REGEXP}).*" # close regex
 
 # Empty.heading: c64disasm/c64disasm_en.txt above RRBY
