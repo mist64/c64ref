@@ -8,15 +8,12 @@ DIRECTORY_PATH="out"
 REGEXP=".*(" # open regex
 
 # TODO: XXX fix
-# > c64disasm/c64disasm_en.txt above RRBY *** without comment creates empty heading
-REGEXP="${REGEXP}Empty.heading"
 
 # > duplicate ID
-REGEXP="${REGEXP}|Duplicate.ID|The.first.occurrence.of.ID"
+REGEXP="${REGEXP}Duplicate.ID|The.first.occurrence.of.ID"
 
  # > unescaped <Akku> <STOP> from kernal txts
 REGEXP="${REGEXP}|not.allowed.as.child.of.element|Unclosed.element|but.there.were.open.elements|Bad.character|violates.nesting.rules"
-
 # > unescaped <> from c64mem
 REGEXP="${REGEXP}|Probable.causes..Unescaped"
 
