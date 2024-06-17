@@ -73,6 +73,11 @@ table.paltab > tbody > tr > td {
 }
 
 
+table.code_table td,
+#allcoltab td {
+	border: solid black 1px;
+}
+
 table.code_table td {
 	padding: 4px;
 }
