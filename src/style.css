@@ -116,13 +116,17 @@ h1 {
     border-bottom: solid 2px var(--main-color);
 }
 
-.topnav a, .topnav h1 {
+.topnav a, .topnav div {
     float: left;
     text-align: center;
     padding: 8px 10px;
     margin: 0px;
     text-decoration: none;
     font-size: 13px;
+}
+
+.topnav div {
+    font-weight: bold;
 }
 
 .topnav a {

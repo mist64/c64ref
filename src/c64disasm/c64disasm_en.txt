@@ -9606,7 +9606,7 @@
                                 access the memory mapped I/O devices in the computer.
 .,FFF3 4C 00 E5 JMP $E500       return the base address of the I/O devices
 
-                                ***
+                                *** RRBY
 .:FFF6 52 52 42 59              RRBY
 
                                 *** hardware vectors

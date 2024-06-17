@@ -13,12 +13,17 @@
 		<main>
 
 		<div>
-			<p>Based on <a href="https://www.pepto.de/projects/colorvic/"><b>Pepto</b></a>'s work.</p>
-			<hr>
 
-			<table class="paltab">
-				<tr><th>Palette</th><th>Adjustments</th></tr>
-				<tr><td>
+		<p>Based on <a href="https://www.pepto.de/projects/colorvic/"><b>Pepto</b></a>'s work.</p>
+		<hr>
+
+		<table class="paltab">
+			<tr>
+					<th>Palette</th>
+					<th>Adjustments</th>
+			</tr>
+			<tr>
+				<td>
 					<table>
 						<tr>
 							<td class="vertical-adjust" rowspan="3"><span class="vertical">PRESETS</span></td>
@@ -44,7 +49,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td colspan="2">
+							<td>
 								<label for="lumalevels">VIC-II Rev<sup><a href="#note_levels">(i)</a></sup></label>
 							</td>
 							<td colspan="2">
@@ -55,7 +60,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td colspan="2">
+							<td>
 								<label for="mixed">Mixed Colors<sup><a href="#note_mixed">(i)</a></sup></label>
 							</td>
 							<td colspan="2">
@@ -71,18 +76,16 @@
 							</td>
 						</tr>
 						<tr id="lumadiff_div">
-							<td colspan="2">
+							<td>
 								<label for="lumadiff">&nbsp;&nbsp;Max Luma Diff<sup><a href="#note_lumadiff">(i)</a></sup></label>
 							</td>
-							<td>
+							<td colspan="2">
 								<input id="lumadiff" style="width: 20em;" type="range" min="0" max="31" oninput="refresh();">
-							</td>
-							<td style="width: 2em; text-align: center">
-								<span id="lumadiff_val"></span>
+								<span style="width: 2em; text-align: center; display: inline-block;" id="lumadiff_val"></span>
 							</td>
 						</tr>
 						<tr id="pattern_div" style="border-bottom: 1px solid black;">
-							<td colspan="2">
+							<td>
 								<label for="pattern">&nbsp;&nbsp;Mixing Pattern<sup><a href="#note_pattern">(i)</a></sup></label>
 							</td>
 							<td colspan="2">
@@ -96,7 +99,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td colspan="2">
+							<td>
 								<label for="sortby">Sort by</label>
 							</td>
 							<td colspan="2">
@@ -168,9 +171,10 @@
 								<span id="gamma_val"></span>
 							</td>
 						</tr>
-						<tr><td colspan="3" style="text-align: center;"><button type="button" onclick="reset();">Reset</button></td></tr>
+						<tr>
+							<td colspan="3" style="text-align: center;"><button type="button" onclick="reset();">Reset</button></td>
+						</tr>
 					</table>
-
 				</td>
 			</tr>
 		</table>
@@ -181,7 +185,7 @@
 		<hr>
 
 		<h2>Colorspace Diagram</h2>
-		<table class="code_table" border="1">
+		<table class="code_table">
 			<tr>
 				<td>
 					<canvas id="colspace_diagram"></canvas>
@@ -221,10 +225,10 @@
 		<br>
 
 		<table id="colors">
-			<tr id="row0"></tr>
-			<tr id="row1"></tr>
-			<tr id="row2"></tr>
-			<tr id="row3"></tr>
+			<tr id="row0"><td></td></tr>
+			<tr id="row1"><td></td></tr>
+			<tr id="row2"><td></td></tr>
+			<tr id="row3"><td></td></tr>
 		</table>
 
 		<br>
@@ -235,17 +239,17 @@
 		<div class="code">
 			<pre id="hexcolors"></pre>
 		</div>
-	</p>
 
 	<hr>
 
-	<table id="allcoltab" border="1">
+	<table id="allcoltab">
 	</table>
 
 
 	<textarea style="display: none;" id="i_text_basic"></textarea>
 
 	</div>
+
 	<footer>
 		<h2>Notes</h2>
 
@@ -257,7 +261,7 @@
 			<li id="note_limit_lumadiff"><b>Limit Max Luma Diff</b>: </li>
 
 			<li id="note_pattern"><b>Mixing Pattern</b>: On a real system, *alternating columns* and *checkered* will produce nasty vertical low-frequency color stripes ("GEOS effect") for larger areas. The same is true for *checkered 2x* for lower luma diffs. The previews do not account for this.</li>
-			<li id="note_sortby"><b>Sort by</b>: The color index is defined as follows: The 16 base colors have their natural indexes. Mixed colors are sorted first by luma diff, then by the index of the component with the lower index, then by the component with the higher index.</span></li>
+			<li id="note_sortby"><b>Sort by</b>: The color index is defined as follows: The 16 base colors have their natural indexes. Mixed colors are sorted first by luma diff, then by the index of the component with the lower index, then by the component with the higher index.</li>
 		</ul>
 		</div>
 

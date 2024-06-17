@@ -3,10 +3,21 @@
 # Using https://validator.github.io/validator/
 
 
-DIRECTORY_PATH="out out_unmodified"
+DIRECTORY_PATH="out"
 
-REGEXP=".*(Trailing.slash|Consider.adding.a..lang.|Consider.using.the..h1..element.as.a.top.level.heading.only|Stray.end.tag|Duplicate.ID|The.first.occurrence.of.ID|row.group.established.by.a|exceeded.the.column.count.established|not.allowed.as.child.of.element|Use.CSS.instead|Unclosed.element|Bad.character|but.there.were.open.elements|cannot.be.represented.as.XML|A.slash.was.not.immediately.followed.by|not.allowed.on.element|violates.nesting.rules|is.not.serializable.as.XML|Probable.causes..Unescaped|Probable.cause..Matching.quote.missing|missing.immediately.before|Probable.cause..Missing|an.element.of.the.same.type.was.already.open|Empty.heading|No.space.between.attributes|Duplicate.attribute).*"
+REGEXP=".*(" # open regex
 
+# TODO: XXX fix
+
+# > duplicate ID
+REGEXP="${REGEXP}Duplicate.ID|The.first.occurrence.of.ID"
+
+ # > unescaped <Akku> <STOP> from kernal txts
+REGEXP="${REGEXP}|not.allowed.as.child.of.element|Unclosed.element|but.there.were.open.elements|Bad.character|violates.nesting.rules"
+# > unescaped <> from c64mem
+REGEXP="${REGEXP}|Probable.causes..Unescaped"
+
+REGEXP="${REGEXP}).*" # close regex
 
 #REGEXP="" # no filter, all errors/warnings
 

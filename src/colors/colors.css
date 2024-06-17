@@ -73,6 +73,11 @@ table.paltab > tbody > tr > td {
 }
 
 
+table.code_table td,
+#allcoltab td {
+	border: solid black 1px;
+}
+
 table.code_table td {
 	padding: 4px;
 }
@@ -113,6 +118,10 @@ li:target {
 	overflow: scroll;
 	width: 320px;
 	height: 180px;
+	background: #d2dff4;
+	padding: 0px 10px;
+	margin: 4px;
+	border: solid 1px lightgray;
 }
 
 /* forcing td in relation to the one marked with vertical to behave differently */
