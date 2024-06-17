@@ -23,7 +23,7 @@ class BuildConfig():
 	deploy: bool = False # set via cli argument "upload": upload to server
 
 	build_wips: bool = False # set via cli flag "--wip": helper for disabling unfinished categories
-	only_build: list = None # set via cli flag "--only": helper for building only selected categories
+	enabled_paths: list = None # set via cli flag "--only": helper for building only selected categories
 
 	git_has_changes: bool = True # set in setup
 	git_branch_name: str = "main" # set in setup
@@ -47,9 +47,9 @@ def parse_cli_into_config():
 	config.deploy = args.deploy_mode == "upload"
 	config.build_wips = args.wip
 	if args.only:
-		config.only_build = args.only
+		config.enabled_paths = args.only
 
-	if config.deploy and config.only_build:
+	if config.deploy and config.enabled_paths:
 		print("Uploading and building only a few categories at the same time is not supported.")
 		exit()
 
@@ -204,9 +204,9 @@ git_branch_name = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "
 CONFIG.git_branch_name = git_branch_name
 
 # update for only building selected categories:
-if CONFIG.only_build:
+if CONFIG.enabled_paths:
 	for category in CATEGORIES:
-		category.enabled = any(category.path==path for path in CONFIG.only_build)
+		category.enabled = any(category.path==path for path in CONFIG.enabled_paths)
 
 print(f"  > branch '{CONFIG.git_branch_name}' ->  <{'> <'.join([category.path for category in CATEGORIES if category.enabled])}>")
 
@@ -244,11 +244,11 @@ build_path = ensured_path(CONFIG.build_dir, CONFIG.base_dir, is_dir=True)
 
 # > write index.html for root directory redirect
 default_category="c64disasm"
-if CONFIG.only_build:
-	if not default_category in CONFIG.only_build:
-		default_category = CONFIG.only_build[0]
+if CONFIG.enabled_paths:
+	if not default_category in CONFIG.enabled_paths:
+		default_category_path = CONFIG.enabled_paths[0]
 
-root_redirect=f'<meta http-equiv="refresh" content="0; URL=/{CONFIG.base_dir}/{default_category}/">'
+root_redirect=f'<meta http-equiv="refresh" content="0; URL=/{CONFIG.base_dir}/{default_category_path}/">'
 root_path = os.path.join(build_path, "index.html")
 with open(root_path, 'w', encoding='utf-8') as file:
 	file.write(root_redirect)
