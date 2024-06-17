@@ -9,3 +9,5 @@ mkdir -p $DIR
 ./generate.py > $DIR/index.html
 
 cp -p ../style.css $1
+
+# the c64io_*.txt files are only used for generating index.html

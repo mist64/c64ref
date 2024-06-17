@@ -10,3 +10,5 @@ cp -p index.html $DIR
 
 cp -p ../style.css $1
 cp -p *.js cpu_*.txt $DIR
+
+# there are four svgs that are not copied: TODO: XXX maybe add them?
