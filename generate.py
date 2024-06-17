@@ -127,7 +127,7 @@ def get_header_str(current_category):
 	# with the current category marked as active
 
 	# > title
-	nav_string = f'<h1>{GLOBAL_TITLE}</h1>\n'
+	nav_string = f'<div>{GLOBAL_TITLE}</div>\n'
 
 	# > links for each topic
 	for category in CATEGORIES:

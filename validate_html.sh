@@ -5,10 +5,9 @@
 
 DIRECTORY_PATH="out"
 
-REGEXP=".*(Empty.heading|Consider.using.the..h1..element.as.a.top.level.heading.only|Stray.end.tag|Duplicate.ID|The.first.occurrence.of.ID|row.group.established.by.a|exceeded.the.column.count.established|not.allowed.as.child.of.element|Use.CSS.instead|Unclosed.element|Bad.character|but.there.were.open.elements|violates.nesting.rules|Probable.causes..Unescaped).*"
+REGEXP=".*(Empty.heading|Stray.end.tag|Duplicate.ID|The.first.occurrence.of.ID|row.group.established.by.a|exceeded.the.column.count.established|not.allowed.as.child.of.element|Use.CSS.instead|Unclosed.element|Bad.character|but.there.were.open.elements|violates.nesting.rules|Probable.causes..Unescaped).*"
 
 # Empty.heading: c64disasm/c64disasm_en.txt above RRBY
-# Consider.using.the..h1..element.as.a.top.level.heading.only: h1 in navigation must go
 # Stray.end.tag: remove span from colors
 
 #REGEXP="" # no filter, all errors/warnings
