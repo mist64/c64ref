@@ -9,4 +9,4 @@ mkdir -p $DIR
 cp -p index.html $DIR
 
 cp -p ../style.css $1
-cp -p *.js $DIR
+cp -p *.css *.js $DIR
