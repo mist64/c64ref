@@ -17,13 +17,11 @@ GLOBAL_TITLE = "Ultimate Commodore 64 Reference"
 class BuildConfig():
 	source_dir: str = "src" # where to look for files
 	build_dir: str = "out" # where to put the output
-	build_dir_tmp: str = "out_debug" # where to put the debug output
-	base_dir: str = "c64ref"
+	base_dir: str = "c64ref" # base directory
 
 	server_path: str = "local@pagetable.com:/var/www/html/" # where to put the files so others can see
 
 	deploy: bool = False # set via cli argument "upload": upload to server
-	debug: bool = False # set via cli argument "debug": write debug information
 
 	build_wips: bool = False # set via cli flag "--build_wips": helper for disabling unfinished categories
 	fast_build: bool = False # set via cli flag "--fast_build": helper for disabling slow build steps
@@ -36,7 +34,7 @@ def parse_cli_into_config():
 
 	# supported command line arguments
 	parser = argparse.ArgumentParser(description=f"Generate the {GLOBAL_TITLE}")
-	parser.add_argument("deploy_mode", choices=["upload", "local", "debug"], nargs='?', default="local",
+	parser.add_argument("deploy_mode", choices=["upload", "local"], nargs='?', default="local",
 						help="the deploy mode (default: %(default)s)")
 	parser.add_argument("--wip", action='store_true',
 						help="also build the categories marked as wips (ignored if uploading to main)")
@@ -48,7 +46,6 @@ def parse_cli_into_config():
 
 	config = BuildConfig()
 	config.deploy = args.deploy_mode == "upload"
-	config.debug = args.deploy_mode == "debug"
 	config.build_wips = args.wip
 	config.fast_build = args.fast
 
@@ -186,9 +183,6 @@ def source_path_for_category(category):
 def destination_path_for_category(category):
 	return ensured_path(CONFIG.build_dir, CONFIG.base_dir, category.path, is_dir=True)
 
-def debug_path_for_category(category):
-	return ensured_path(CONFIG.build_dir_tmp, CONFIG.base_dir, category.path, is_dir=True)
-
 def ensured_path(path, *paths, is_dir):
 	result = os.path.join(path, *paths)
 
@@ -240,8 +234,6 @@ if CONFIG.deploy:
 # clean and ensure build directories
 if os.path.exists(CONFIG.build_dir):
 	shutil.rmtree(CONFIG.build_dir)
-if os.path.exists(CONFIG.build_dir_tmp):
-	shutil.rmtree(CONFIG.build_dir_tmp)
 
 ##
 ## GENERATE HTML in build_dir
