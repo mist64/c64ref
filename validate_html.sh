@@ -6,12 +6,22 @@
 DIRECTORY_PATH="out"
 
 REGEXP=".*(" # open regex
-REGEXP="${REGEXP}Empty.heading|Duplicate.ID|The.first.occurrence.of.ID|not.allowed.as.child.of.element" # fix laters
-REGEXP="${REGEXP}|Unclosed.element|Bad.character|but.there.were.open.elements|violates.nesting.rules|Probable.causes..Unescaped"
+
+# TODO: XXX fix
+# > c64disasm/c64disasm_en.txt above RRBY *** without comment creates empty heading
+REGEXP="${REGEXP}Empty.heading"
+
+# > duplicate ID
+REGEXP="${REGEXP}|Duplicate.ID|The.first.occurrence.of.ID"
+
+ # > unescaped <Akku> <STOP> from kernal txts
+REGEXP="${REGEXP}|not.allowed.as.child.of.element|Unclosed.element|but.there.were.open.elements|Bad.character|violates.nesting.rules"
+
+# > unescaped <> from c64mem
+REGEXP="${REGEXP}|Probable.causes..Unescaped"
+
 REGEXP="${REGEXP}).*" # close regex
 
-# Empty.heading: c64disasm/c64disasm_en.txt above RRBY
-# not.allowed.as.child.of.element: kernal: unescaped <Akku> and <STOP> from txts
 #REGEXP="" # no filter, all errors/warnings
 
 # show info/warnings and errors
