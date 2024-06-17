@@ -58,7 +58,7 @@ def parse_cli_into_config():
 
 ### DATA Classses
 
-# collected 'outside' and header and build info for a category
+# collected 'outside', header and build information for a category
 class RefCategory(NamedTuple):
 	path: str # folder name
 	long_title: str # title for the html title and the headline
@@ -175,7 +175,7 @@ def get_header_str(current_category):
   """
 
 
-### HELPER
+### PATH HELPER
 
 def source_path_for_category(category):
 	return os.path.join(CONFIG.source_dir, category.path)
@@ -222,6 +222,8 @@ if CONFIG.deploy:
 
 	print(f"    branch '{CONFIG.git_branch_name}' ->  <{'> <'.join([category.path for category in CATEGORIES])}>")
 
+	# this test only makes sense, if the base dir is adjusted for branches
+	# TODO: XXX adjust base dir for branches or take this out
 	if git_branch_name == "main":
 		CONFIG.build_wips = False # reset for uploading to main
 
@@ -231,7 +233,7 @@ if CONFIG.deploy:
 			exit()
 
 
-# clean and ensure build directories
+# clean build directories
 if os.path.exists(CONFIG.build_dir):
 	shutil.rmtree(CONFIG.build_dir)
 
