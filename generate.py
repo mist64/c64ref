@@ -169,7 +169,7 @@ def get_header_str(current_category):
       {nav_string}
     </nav>
 
-    <h1 id="headline">{category.long_title}</h1>
+    <h1 id="headline">{current_category.long_title}</h1>
     <p id="byline">{byline_string}</p>
   </header>
   """
