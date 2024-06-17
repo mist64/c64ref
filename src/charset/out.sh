@@ -1,5 +1,3 @@
-# charset generate script
-
 ./generate.py > $1/index.html
 
 cp -p *.css *.js $1
