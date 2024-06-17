@@ -180,8 +180,8 @@ def get_header_str(current_category):
 def source_path_for_category(category):
 	return os.path.join(CONFIG.source_dir, category.path)
 
-def destination_path_for_category(category):
-	return ensured_path(CONFIG.build_dir, CONFIG.base_dir, category.path, is_dir=True)
+def destination_path_for_build():
+	return ensured_path(CONFIG.build_dir, CONFIG.base_dir, is_dir=True)
 
 def ensured_path(path, *paths, is_dir):
 	result = os.path.join(path, *paths)
@@ -243,8 +243,8 @@ if os.path.exists(CONFIG.build_dir):
 print("*** Generating:")
 
 # copy global resources: stylesheet
-shutil.copy(os.path.join(CONFIG.source_dir, "style.css"),
-			ensured_path(CONFIG.build_dir, CONFIG.base_dir, is_dir=True))
+# TODO: XXX favicons
+# shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), destination_path_for_build())
 
 # for each category/subdirectory/topic:
 #     generate title and header including navigation, title, github
@@ -260,14 +260,14 @@ for category in CATEGORIES:
 	header_str = get_header_str(category)
 
 	source_path = source_path_for_category(category)
-	destination_path = destination_path_for_category(category)
+	build_path = destination_path_for_build()
 
 	# run python script to copy resources and generate index.html if needed
-	# TODO: XXX destination path nice?
-	subprocess.run(['sh', 'out.sh', "../../" + destination_path], cwd=source_path)
+	# the script also creates the necessary subdirectories
+	subprocess.run(['sh', 'out.sh', "../../" + build_path, category.path], cwd=source_path)
 
 	# get 'original' index.html for current category:
-	filename = os.path.join(destination_path, "index.html")
+	filename = os.path.join(build_path, category.path, "index.html")
 	with open(filename, 'r', encoding='utf-8') as file:
 		output_str = file.read()
 

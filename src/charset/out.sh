@@ -1,9 +1,15 @@
 # charset generate script
 
-./generate.py > $1/index.html
+# $1 base directory
+# $2 folder name
+
+DIR=$1/$2
+mkdir -p $DIR
+
+./generate.py > $DIR/index.html
 
 cp -p ../style.css $1
-cp -p *.css *.js $1
+cp -p *.css *.js $DIR
 
-mkdir $1/bin
-cp -p bin/*.bin $1/bin
+mkdir -p $DIR/bin
+cp -p bin/*.bin $DIR/bin
