@@ -131,9 +131,6 @@ def get_header_str(current_category, source_path):
 
 	# > links for each topic
 	for category in CATEGORIES:
-		if not category.enabled:
-			continue
-
 		if category == current_category:
 			a_menu = f'<a class="active" href="#">{category.short_title}</a>'
 		else:
@@ -203,12 +200,14 @@ if int(f.read()) <= 0:
 git_branch_name = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
 CONFIG.git_branch_name = git_branch_name
 
-# update for only building selected categories:
+# update for only building enabled categories:
 if CONFIG.enabled_paths:
-	for category in CATEGORIES:
-		category.enabled = any(category.path==path for path in CONFIG.enabled_paths)
+	CATEGORIES = [category for category in CATEGORIES if category.path in CONFIG.enabled_paths]
+else:
+	CATEGORIES = [category for category in CATEGORIES if category.enabled)]
 
-print(f"  > branch '{CONFIG.git_branch_name}' ->  <{'> <'.join([category.path for category in CATEGORIES if category.enabled])}>")
+
+print(f"  > branch '{CONFIG.git_branch_name}' ->  <{'> <'.join([category.path for category in CATEGORIES])}>")
 
 # if the current build should be uploaded: do some sanity checking
 if CONFIG.deploy:
@@ -244,9 +243,8 @@ build_path = ensured_path(CONFIG.build_dir, CONFIG.base_dir, is_dir=True)
 
 # > write index.html for root directory redirect
 default_category="c64disasm"
-if CONFIG.enabled_paths:
-	if not default_category in CONFIG.enabled_paths:
-		default_category_path = CONFIG.enabled_paths[0]
+if not default_category in [category.path for category in CATEGORIES]:
+	default_category_path = CATEGORIES[0]
 
 root_redirect=f'<meta http-equiv="refresh" content="0; URL=/{CONFIG.base_dir}/{default_category_path}/">'
 root_path = os.path.join(build_path, "index.html")
@@ -264,9 +262,6 @@ shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), build_path)
 #     run the out.sh to copy (and maybe generate) all needed resources
 #     add title and header into the index.html
 for category in CATEGORIES:
-	if not category.enabled:
-		continue
-
 	print(f"\t> {category.path}")
 
 	source_path = os.path.join(CONFIG.source_dir, category.path)
