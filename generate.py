@@ -6,8 +6,7 @@ import subprocess
 import fnmatch
 import argparse
 import re
-from dataclasses import dataclass
-from typing import NamedTuple
+from dataclasses import dataclass, field
 
 GLOBAL_TITLE = "Ultimate Commodore 64 Reference"
 
@@ -23,8 +22,8 @@ class BuildConfig():
 
 	deploy: bool = False # set via cli argument "upload": upload to server
 
-	build_wips: bool = False # set via cli flag "--build_wips": helper for disabling unfinished categories
-	fast_build: bool = False # set via cli flag "--fast_build": helper for disabling slow build steps
+	build_wips: bool = False # set via cli flag "--wip": helper for disabling unfinished categories
+	only_build: list = None # set via cli flag "--only": helper for building only selected categories
 
 	git_has_changes: bool = True # set in setup
 	git_branch_name: str = "main" # set in setup
@@ -38,8 +37,8 @@ def parse_cli_into_config():
 						help="the deploy mode (default: %(default)s)")
 	parser.add_argument("--wip", action='store_true',
 						help="also build the categories marked as wips (ignored if uploading to main)")
-	parser.add_argument("--fast", action='store_true',
-						help="disables building steps marked with !fast_build (ignored if uploading)")
+	parser.add_argument("--only", nargs='+',
+						help="building all following categories using their path (ignored if uploading to main)")
 
 	# parsing command line arguments
 	args = parser.parse_args()
@@ -47,10 +46,11 @@ def parse_cli_into_config():
 	config = BuildConfig()
 	config.deploy = args.deploy_mode == "upload"
 	config.build_wips = args.wip
-	config.fast_build = args.fast
+	if args.only:
+		config.only_build = args.only
 
-	if config.deploy and config.fast_build:
-		print("Uploading and building fast at the same time is not supported.")
+	if config.deploy and config.only_build:
+		print("Uploading and building only a few categories at the same time is not supported.")
 		exit()
 
 	return config
@@ -59,7 +59,8 @@ def parse_cli_into_config():
 ### DATA Classses
 
 # collected 'outside', header and build information for a category
-class RefCategory(NamedTuple):
+@dataclass
+class RefCategory():
 	path: str # folder name
 	long_title: str # title for the html title and the headline
 	short_title: str # title for the menu item
@@ -85,7 +86,6 @@ CATEGORIES = [
 	RefCategory('c64disasm',
 		'C64 BASIC & KERNAL ROM Disassembly', 'ROM Disassembly',
 		[DEFAULT_AUTHOR],
-		enabled=(not CONFIG.fast_build)
 	),
 	RefCategory('c64mem',
 		'C64 Memory Map', 'Memory Map',
@@ -94,7 +94,7 @@ CATEGORIES = [
 	RefCategory('c64io',
 		'C64 I/O Map', 'I/O Map',
 		[DEFAULT_AUTHOR],
-		enabled=CONFIG.build_wips
+		enabled=CONFIG.build_wips,
 	),
 	RefCategory('charset',
 		'Character Set · PETSCII · Keyboard', 'Charset · PETSCII · Keyboard',
@@ -103,7 +103,7 @@ CATEGORIES = [
 	RefCategory('colors',
 		'C64 Colors', 'Colors',
 		[DEFAULT_AUTHOR],
-		enabled=CONFIG.build_wips
+		enabled=CONFIG.build_wips,
 	),
 ]
 
@@ -203,6 +203,13 @@ if int(f.read()) <= 0:
 git_branch_name = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
 CONFIG.git_branch_name = git_branch_name
 
+# update for only building selected categories:
+if CONFIG.only_build:
+	for category in CATEGORIES:
+		category.enabled = any(category.path==path for path in CONFIG.only_build)
+
+print(f"  > branch '{CONFIG.git_branch_name}' ->  <{'> <'.join([category.path for category in CATEGORIES if category.enabled])}>")
+
 # if the current build should be uploaded: do some sanity checking
 if CONFIG.deploy:
 
@@ -210,10 +217,6 @@ if CONFIG.deploy:
 		print("Generating and upload failed:")
 		print("There are uncommited changes in the working copy.")
 		exit()
-
-	CONFIG.fast_build = False # reset for uploading
-
-	print(f"    branch '{CONFIG.git_branch_name}' ->  <{'> <'.join([category.path for category in CATEGORIES])}>")
 
 	# this test only makes sense, if the base dir is adjusted for branches
 	# TODO: XXX adjust base dir for branches or take this out

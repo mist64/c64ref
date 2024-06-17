@@ -27,7 +27,7 @@ This will build the different pages from the repos *reference material* with the
 
 `./generate --wip` builds everything including `colors` and `c64io`.
 
-`./generate --fast` removes `c64disasm` from the categories as it builds slowly.
+`./generate.py --only 6502 colors c64mem` only builds the selected categories (using the category path names as keys).
 
 
 The `6502` and the `color` reference are all Java Script and do not need to be generated while developing, but for release the umbrella `generate.py` adds navigation, matching titles and a link to the github project.
