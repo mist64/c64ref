@@ -23,7 +23,7 @@ class BuildConfig():
 	deploy: bool = False # set via cli argument "upload": upload to server
 
 	build_wips: bool = False # set via cli flag "--wip": helper for disabling unfinished categories
-	only_build: list = None # set via cli flag "--only": helper for building only selected categories
+	enabled_paths: list = None # set via cli flag "--only": helper for building only selected categories
 
 	git_has_changes: bool = True # set in setup
 	git_branch_name: str = "main" # set in setup
@@ -47,9 +47,9 @@ def parse_cli_into_config():
 	config.deploy = args.deploy_mode == "upload"
 	config.build_wips = args.wip
 	if args.only:
-		config.only_build = args.only
+		config.enabled_paths = args.only
 
-	if config.deploy and config.only_build:
+	if config.deploy and config.enabled_paths:
 		print("Uploading and building only a few categories at the same time is not supported.")
 		exit()
 
@@ -131,9 +131,6 @@ def get_header_str(current_category, source_path):
 
 	# > links for each topic
 	for category in CATEGORIES:
-		if not category.enabled:
-			continue
-
 		if category == current_category:
 			a_menu = f'<a class="active" href="#">{category.short_title}</a>'
 		else:
@@ -203,12 +200,14 @@ if int(f.read()) <= 0:
 git_branch_name = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
 CONFIG.git_branch_name = git_branch_name
 
-# update for only building selected categories:
-if CONFIG.only_build:
-	for category in CATEGORIES:
-		category.enabled = any(category.path==path for path in CONFIG.only_build)
+# update for only building enabled categories:
+if CONFIG.enabled_paths:
+	CATEGORIES = [category for category in CATEGORIES if category.path in CONFIG.enabled_paths]
+else:
+	CATEGORIES = [category for category in CATEGORIES if category.enabled)]
 
-print(f"  > branch '{CONFIG.git_branch_name}' ->  <{'> <'.join([category.path for category in CATEGORIES if category.enabled])}>")
+
+print(f"  > branch '{CONFIG.git_branch_name}' ->  <{'> <'.join([category.path for category in CATEGORIES])}>")
 
 # if the current build should be uploaded: do some sanity checking
 if CONFIG.deploy:
@@ -238,19 +237,31 @@ if os.path.exists(CONFIG.build_dir):
 ##
 print("*** Generating:")
 
-# copy global resources: stylesheet # TODO: XXX favicons
+# copy global resources:
 
 build_path = ensured_path(CONFIG.build_dir, CONFIG.base_dir, is_dir=True)
+
+# > write index.html for root directory redirect
+default_category="c64disasm"
+if not default_category in [category.path for category in CATEGORIES]:
+	default_category_path = CATEGORIES[0]
+
+root_redirect=f'<meta http-equiv="refresh" content="0; URL=/{CONFIG.base_dir}/{default_category_path}/">'
+root_path = os.path.join(build_path, "index.html")
+with open(root_path, 'w', encoding='utf-8') as file:
+	file.write(root_redirect)
+
+# > stylesheet
 shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), build_path)
+
+# > favicons TODO: XXX favicons
+
 
 # for each category/subdirectory/topic:
 #     generate title and header including navigation, title, github
 #     run the out.sh to copy (and maybe generate) all needed resources
 #     add title and header into the index.html
 for category in CATEGORIES:
-	if not category.enabled:
-		continue
-
 	print(f"\t> {category.path}")
 
 	source_path = os.path.join(CONFIG.source_dir, category.path)
