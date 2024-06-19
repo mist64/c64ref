@@ -28,6 +28,8 @@ class BuildConfig():
 	git_has_changes: bool = True # set in setup
 	git_branch_name: str = "main" # set in setup
 
+	categories: list = None # set in setup
+
 
 def parse_cli_into_config():
 
@@ -116,7 +118,7 @@ CATEGORIES = [
 
 ### FUNCTIONS for things that are longer
 
-def get_header_str(current_category, source_path, base_path, git_has_changes):
+def get_header_str(current_category, categories, source_path, base_path, git_has_changes):
 	# add a "github corner" with a waving octocat to the top right
 	# html source via: http://tholman.com/github-corners/
 
@@ -136,7 +138,7 @@ def get_header_str(current_category, source_path, base_path, git_has_changes):
 	nav_string = f'<div>{GLOBAL_TITLE}</div>\n'
 
 	# > links for each topic
-	for category in CATEGORIES:
+	for category in categories:
 		if category == current_category:
 			a_menu = f'<a class="active" href="#">{category.short_title}</a>'
 		else:
@@ -198,21 +200,23 @@ def ensured_path(path, *paths, is_dir):
 ##
 print("*** Setup")
 
-CONFIG = parse_cli_into_config()
+config = parse_cli_into_config()
 
 # filter categories with build settings
-if CONFIG.enabled_paths:
-	CATEGORIES = [category for category in CATEGORIES if category.path in CONFIG.enabled_paths]
+if config.enabled_paths:
+	config.categories = [category for category in CATEGORIES if category.path in config.enabled_paths]
 else:
-	if not CONFIG.build_wips:
-		CATEGORIES = [category for category in CATEGORIES if not category.is_wip]
+	if not config.build_wips:
+		config.categories = [category for category in CATEGORIES if not category.is_wip]
+	else:
+		 config.categories = CATEGORIES
 
-print(f"  > branch '{CONFIG.git_branch_name}' ->  <{'> <'.join([category.path for category in CATEGORIES])}>")
+print(f"  > branch '{config.git_branch_name}' ->  <{'> <'.join([category.path for category in config.categories])}>")
 
 # if the current build should be uploaded: do some sanity checking
-if CONFIG.deploy:
+if config.deploy:
 
-	if CONFIG.git_has_changes:
+	if config.git_has_changes:
 		print("Generating and upload failed:")
 		print("There are uncommited changes in the working copy.")
 		exit()
@@ -220,7 +224,7 @@ if CONFIG.deploy:
 	# this test only makes sense, if the base dir is adjusted for branches
 	# TODO: XXX adjust base dir for branches or take this out
 	if git_branch_name == "main":
-		CONFIG.build_wips = False # reset for uploading to main
+		config.build_wips = False # reset for uploading to main
 
 		response = input("Deploy to production? [Y/N]: ").strip()
 		if response.lower() != 'y':
@@ -229,8 +233,8 @@ if CONFIG.deploy:
 
 
 # clean build directories
-if os.path.exists(CONFIG.build_dir):
-	shutil.rmtree(CONFIG.build_dir)
+if os.path.exists(config.build_dir):
+	shutil.rmtree(config.build_dir)
 
 ##
 ## GENERATE HTML in build_dir
@@ -239,20 +243,20 @@ print("*** Generating:")
 
 # copy global resources:
 
-build_path = ensured_path(CONFIG.build_dir, CONFIG.base_dir, is_dir=True)
+build_path = ensured_path(config.build_dir, config.base_dir, is_dir=True)
 
 # > write index.html for root directory redirect
 default_category="c64disasm"
-if not default_category in [category.path for category in CATEGORIES]:
-	default_category_path = CATEGORIES[0]
+if not default_category in [category.path for category in config.categories]:
+	default_category = config.categories[0].path
 
-root_redirect=f'<meta http-equiv="refresh" content="0; URL=/{CONFIG.base_dir}/{default_category_path}/">'
+root_redirect=f'<meta http-equiv="refresh" content="0; URL=/{config.base_dir}/{default_category}/">'
 root_path = os.path.join(build_path, "index.html")
 with open(root_path, 'w', encoding='utf-8') as file:
 	file.write(root_redirect)
 
 # > stylesheet
-shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), build_path)
+shutil.copy(os.path.join(config.source_dir, "style.css"), build_path)
 
 # > favicons TODO: XXX favicons
 
@@ -261,10 +265,10 @@ shutil.copy(os.path.join(CONFIG.source_dir, "style.css"), build_path)
 #     generate title and header including navigation, title, github
 #     run the out.sh to copy (and maybe generate) all needed resources
 #     add title and header into the index.html
-for category in CATEGORIES:
+for category in config.categories:
 	print(f"\t> {category.path}")
 
-	source_path = os.path.join(CONFIG.source_dir, category.path)
+	source_path = os.path.join(config.source_dir, category.path)
 	destination_path = ensured_path(build_path, category.path, is_dir=True)
 	filename = os.path.join(destination_path, "index.html")
 
@@ -283,7 +287,7 @@ for category in CATEGORIES:
 	output_str = re.sub(pattern, replacement, output_str, count=1)
 
 	# > create the header information
-	header_str = get_header_str(category, source_path, CONFIG.base_dir, CONFIG.git_has_changes)
+	header_str = get_header_str(category, config.categories, source_path, config.base_dir, config.git_has_changes)
 	# > adding the header at the top of the body
 	old = r"<body>"
 	replacement = f"<body>\n{header_str}"
@@ -296,8 +300,8 @@ for category in CATEGORIES:
 ##
 ## DEPLOY
 ##
-if CONFIG.deploy:
+if config.deploy:
 	print("*** Uploading")
-	command = f"rsync -Pa {CONFIG.build_dir}/* {CONFIG.server_path}/"
+	command = f"rsync -Pa {config.build_dir}/* {config.server_path}/"
 	print("    " + command)
 	ret = subprocess.run(command, check=True, text=True, shell=True)
