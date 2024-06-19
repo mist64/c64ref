@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 
 GLOBAL_TITLE = "Ultimate Commodore 64 Reference"
 
+
 ### CONFIG Class
 
 @dataclass
@@ -21,7 +22,6 @@ class BuildConfig():
 	server_path: str = "local@pagetable.com:/var/www/html/" # where to put the files so others can see
 
 	deploy: bool = False # set via cli argument "upload": upload to server
-
 	build_wips: bool = False # set via cli flag "--wip": helper for disabling unfinished categories
 	enabled_paths: list = None # set via cli flag "--only": helper for building only selected categories
 
@@ -53,9 +53,15 @@ def parse_cli_into_config():
 		print("Uploading and building only a few categories at the same time is not supported.")
 		exit()
 
-	return config
+	# get git status
+	f = os.popen(f'git ls-files -m | wc -l')
+	if int(f.read()) <= 0:
+		config.git_has_changes = False
 
-CONFIG = parse_cli_into_config()
+	git_branch_name = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
+	config.git_branch_name = git_branch_name
+
+	return config
 
 
 ### DATA Classses
@@ -110,7 +116,7 @@ CATEGORIES = [
 
 ### FUNCTIONS for things that are longer
 
-def get_header_str(current_category, source_path):
+def get_header_str(current_category, source_path, base_path, git_has_changes):
 	# add a "github corner" with a waving octocat to the top right
 	# html source via: http://tholman.com/github-corners/
 
@@ -134,7 +140,7 @@ def get_header_str(current_category, source_path):
 		if category == current_category:
 			a_menu = f'<a class="active" href="#">{category.short_title}</a>'
 		else:
-			a_menu = f'<a href="/{CONFIG.base_dir}/{category.path}/">{category.short_title}</a>'
+			a_menu = f'<a href="/{base_path}/{category.path}/">{category.short_title}</a>'
 		nav_string += f"      {a_menu}\n"
 
 	# > link to pagetable
@@ -146,7 +152,7 @@ def get_header_str(current_category, source_path):
 	# > git revision hash with marker if there are uncommitted changes
 	revision = os.popen(f'git log -1 --pretty=format:%h {source_path}').read()
 	# > add a + to mark that the working copy had changes at build time
-	if CONFIG.git_has_changes:
+	if git_has_changes:
 		revision += "+"
 
 	# > date of git commit
@@ -192,13 +198,7 @@ def ensured_path(path, *paths, is_dir):
 ##
 print("*** Setup")
 
-# get git status
-f = os.popen(f'git ls-files -m | wc -l')
-if int(f.read()) <= 0:
-	CONFIG.git_has_changes = False
-
-git_branch_name = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
-CONFIG.git_branch_name = git_branch_name
+CONFIG = parse_cli_into_config()
 
 # filter categories with build settings
 if CONFIG.enabled_paths:
@@ -206,8 +206,6 @@ if CONFIG.enabled_paths:
 else:
 	if not CONFIG.build_wips:
 		CATEGORIES = [category for category in CATEGORIES if not category.is_wip]
-
-
 
 print(f"  > branch '{CONFIG.git_branch_name}' ->  <{'> <'.join([category.path for category in CATEGORIES])}>")
 
@@ -285,7 +283,7 @@ for category in CATEGORIES:
 	output_str = re.sub(pattern, replacement, output_str, count=1)
 
 	# > create the header information
-	header_str = get_header_str(category, source_path)
+	header_str = get_header_str(category, source_path, CONFIG.base_dir, CONFIG.git_has_changes)
 	# > adding the header at the top of the body
 	old = r"<body>"
 	replacement = f"<body>\n{header_str}"
