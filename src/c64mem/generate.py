@@ -154,44 +154,59 @@ print('')
 
 print('<link rel="stylesheet" href="../style.css">')
 
-address_width=6.4
-label_width=4
-decimal_width=5
+address_width=6
+label_width=4+1
+decimal_width=5+1
 
 print('<style>')
 print('')
-print('div.disassembly_container_with_dec {')
-print('    padding: 1em 0em 1em ' + str(address_width + label_width + decimal_width + 1.6) + 'em;')
-print('    overflow: scroll;')
+print('#disassembly_container {')
+print('    position: relative;')
 print('}')
-print('')
-print('div.disassembly_container_no_dec {')
-print('    padding: 1em 0em 1em ' + str(address_width + label_width + 0.9) + 'em;')
-print('    overflow: scroll;')
+print('table.disassembly_table {')
+print('    border-collapse: separate;')
+print('    border-spacing: 0;')
 print('}')
-print('')
 print('table.disassembly_table>tbody>tr>td, table.disassembly_table>tbody>tr>th.top_row {')
 print('    min-width: 30em;')
 print('    max-width: 40em;')
 print('}')
 print('')
 print('table.disassembly_table th.left_column {')
+print('    left: 1em;')
 print('    width: '+ str(address_width) +'em;')
+print('    min-width: '+ str(address_width) +'em;')
+print('    max-width: '+ str(address_width) +'em;')
+print('    position:sticky;')
+#print('    border-radius: 0;')
+print('    border-color: darkgrey;')
+print('    border-width: 1px 0px 0px 1px;')
 print('}')
 print('')
+print('')
 print('table.disassembly_table th.label_column {')
-print('    width: ' + str(label_width) +'em;')
-print('    left: ' + str(address_width + 3) + 'em;')
+print('    left: ' + str(address_width + 3.3) + 'em;')
+print('    position:sticky;')
 print('    z-index: 12;')
 print('    font-family: monospace;')
 print('    text-align: center;')
 print('    color: yellow;')
+#print('    border-radius: 0;')
+print('    border-color: darkgrey;')
+print('    border-width: 1px 0px 0px 1px;')
 print('}')
 print('')
 print('table.disassembly_table th.decimal_column {')
+print('    left: ' + str(address_width + label_width) + 'em;')
 print('    width: ' + str(decimal_width) + 'em;')
-print('    left: ' + str(address_width + label_width + 1.2) + 'em;')
+print('    min-width: '+ str(decimal_width) +'em;')
+print('    max-width: '+ str(decimal_width) +'em;')
+print('    position:sticky;')
 print('    z-index: 13;')
+print('    border-collapse: collapse;')
+#print('    border-radius: 0;')
+print('    border-color: darkgrey;')
+print('    border-width: 1px 1px 0px 1px;')
 print('}')
 print('')
 print('details {')
@@ -303,7 +318,7 @@ while(True):
 	for address in r:
 		anchors += '<a id="{:04X}"></a>'.format(address)
 	if address1 == last_address1 and address2 == last_address2:
-		print('<th class="left_column" style="visibility:hidden;"> ' + anchors + ' </th>')
+		print('<th class="left_column"> ' + anchors + ' </th>')
 	else:
 		hex_range = '${:04X}'.format(address1)
 		if address2 != None:
@@ -312,13 +327,13 @@ while(True):
 
 	# print symbol
 	if len(symbol) == 0:
-		print('<th class="label_column" style="visibility:hidden;"> </th>')
+		print('<th class="label_column"> </th>')
 	else:
 		print('<th class="label_column">' + symbol + ' <a id="' + symbol + '"></a></th>')
 
 	# print decimal
 	if address1 == last_address1 and address2 == last_address2:
-		print('<th class="decimal_column" style="visibility:hidden;"> </th>')
+		print('<th class="decimal_column"></th>')
 	else:
 		dec_range = str(address1)
 		if address2 != None:
