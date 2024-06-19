@@ -55,6 +55,8 @@ def parse_cli_into_config():
 
 	return config
 
+CONFIG = parse_cli_into_config()
+
 
 ### DATA Classses
 
@@ -65,12 +67,10 @@ class RefCategory():
 	long_title: str # title for the html title and the headline
 	short_title: str # title for the menu item
 	authors: list # authors and their urls
-	enabled: bool = True # should this show up in the menu and be generated?
+	is_wip: bool = False # is this still a work in progress?
 
 
 ### CATEGORIES/TOPICS/SUBDIRECTORIES
-
-CONFIG = parse_cli_into_config()
 
 DEFAULT_AUTHOR = '<a href="http://www.pagetable.com/">Michael Steil</a>'
 
@@ -94,7 +94,7 @@ CATEGORIES = [
 	RefCategory('c64io',
 		'C64 I/O Map', 'I/O Map',
 		[DEFAULT_AUTHOR],
-		enabled=CONFIG.build_wips,
+		is_wip=True
 	),
 	RefCategory('charset',
 		'Character Set · PETSCII · Keyboard', 'Charset · PETSCII · Keyboard',
@@ -103,7 +103,7 @@ CATEGORIES = [
 	RefCategory('colors',
 		'C64 Colors', 'Colors',
 		[DEFAULT_AUTHOR],
-		enabled=CONFIG.build_wips,
+		is_wip=True
 	),
 ]
 
@@ -200,11 +200,13 @@ if int(f.read()) <= 0:
 git_branch_name = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
 CONFIG.git_branch_name = git_branch_name
 
-# update for only building enabled categories:
+# filter categories with build settings
 if CONFIG.enabled_paths:
 	CATEGORIES = [category for category in CATEGORIES if category.path in CONFIG.enabled_paths]
 else:
-	CATEGORIES = [category for category in CATEGORIES if category.enabled)]
+	if not CONFIG.build_wips:
+		CATEGORIES = [category for category in CATEGORIES if not category.is_wip]
+
 
 
 print(f"  > branch '{CONFIG.git_branch_name}' ->  <{'> <'.join([category.path for category in CATEGORIES])}>")
