@@ -72,7 +72,7 @@ print('    has_decimal_column: true,')
 print('    decimal_column: 2') # 0 1 2
 print('};')
 print('</script>')
-print('<script src="script.js"></script>')
+print('<script src="../commentaries.js"></script>')
 print('')
 
 print('<link rel="stylesheet" href="../style.css">')
