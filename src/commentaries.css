@@ -93,6 +93,7 @@ table.checkbox_table tr:nth-of-type(11) td:nth-of-type(2) { background: var(--ti
 #disassembly_container,
 .disassembly_container {
 	padding: 1em 0em 1em 0em;
+	position: relative;
 }
 
 table.disassembly_table h2 {
@@ -103,6 +104,8 @@ table.disassembly_table h2 {
 table.disassembly_table {
 	border: solid grey;
 	border-width:0px 0px 1px 0px;
+/*	border-collapse: separate; */
+	border-spacing: 0;
 }
 
 table.disassembly_table>tbody>tr>td,
