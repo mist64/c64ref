@@ -124,7 +124,6 @@ table.disassembly_table th.label_column,
 table.disassembly_table th.cat_column,
 table.disassembly_table th.decimal_column {
 	border: 1px solid #000;
-	border-radius: 2px;
 	color: var(--main-background);
 	background: var(--border-color);
 }
