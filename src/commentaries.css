@@ -35,7 +35,18 @@
 	--light-color-10: #F3FCE3;
 	--light-color-11: #D4D4D4;
 
+	/* kernal category color */
+	--cat-color-io: #56C1FF;
+	--cat-color-clk: #73FDEA;
+	--cat-color-editor: #88FA4E;
+	--cat-color-time: #73FDEA;
+	--cat-color-ieee: #FFFC66;
+	--cat-color-kbd: #FF968D;
+	--cat-color-mem: #FF8DC6;
+	--cat-color-sys: #D5D5D5;
+
 	/* Duplicates from style.css */
+	--main-color: #004080;
 	--main-background: #e0f0ff;
 	--border-color: #0060a0;
 }
@@ -119,6 +130,18 @@ table.disassembly_table th.label_column {
 	text-align: center;
 	color: yellow;
 }
+
+
+table.disassembly_table tr:nth-of-type(1) th:nth-child(1 of .cat_column) {
+	color: var(--main-background);
+}
+
+table.disassembly_table th.cat_column {
+	font-size: smaller;
+	text-align: center;
+	color: var(--main-color);
+}
+
 
 table.disassembly_table th.empty {
    /* visibility: hidden;*/
