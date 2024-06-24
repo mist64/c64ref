@@ -79,16 +79,20 @@ table.checkbox_table tr:nth-of-type(11) td:nth-of-type(2) { background: var(--ti
 
 /* Main Table */
 
-
 table.disassembly_table h2 {
 	font-family: sans-serif;
 	font-size: smaller;
 }
 
-
 table.disassembly_table {
 	border: solid grey;
 	border-width:0px 0px 1px 0px;
+}
+
+table.disassembly_table>tbody>tr>td,
+table.disassembly_table>tbody>tr>th.top_row {
+	min-width: 30em;
+	max-width: 40em;
 }
 
 table.disassembly_table td,
@@ -110,15 +114,21 @@ table.disassembly_table th.decimal_column {
 	background: var(--border-color);
 }
 
+table.disassembly_table th.label_column {
+	font-family: monospace;
+	text-align: center;
+	color: yellow;
+}
+
 table.disassembly_table th.empty {
    /* visibility: hidden;*/
    border-top-color: var(--border-color);
 }
 
-table.disassembly_table th.left_column {
-	left: 8px;
-	z-index: 11;
-}
+table.disassembly_table th.left_column    { z-index: 11; }
+table.disassembly_table th.label_column   { z-index: 12; }
+table.disassembly_table th.cat_column     { z-index: 13; }
+table.disassembly_table th.decimal_column { z-index: 14; }
 
 
 th.left_column a {
@@ -135,6 +145,14 @@ th.left_column a:target::before {
 	content: "▹";
 }
 */
+
+
+details {
+	font-family: serif;
+}
+summary {
+	font-family: Helvetica;
+}
 
 
 table.disassembly_table th.top_row {
