@@ -255,6 +255,7 @@ print('</script>')
 print('')
 
 print('<link rel="stylesheet" href="../style.css">')
+print('<link rel="stylesheet" href="kernal.css">')
 
 address_width=4
 label_width=4
