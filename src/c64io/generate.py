@@ -226,7 +226,7 @@ while(True):
 	for address in r:
 		anchors += '<a id="{:04X}"></a>'.format(address)
 	if address1 == last_address1 and address2 == last_address2:
-		print('<th class="left_column" style="visibility:hidden;"> ' + anchors + ' </th>')
+		print('<th class="left_column empty"> ' + anchors + ' </th>')
 	else:
 		hex_range = '${:04X}'.format(address1)
 		if address2 != None:
@@ -235,13 +235,13 @@ while(True):
 
 	# print symbol
 	if len(symbol) == 0:
-		print('<th class="label_column" style="visibility:hidden;"> </th>')
+		print('<th class="label_column empty"> </th>')
 	else:
 		print('<th class="label_column">' + symbol + ' <a id="' + symbol + '"></a></th>')
 
 	# print decimal
 	if address1 == last_address1 and address2 == last_address2:
-		print('<th class="decimal_column" style="visibility:hidden;"> </th>')
+		print('<th class="decimal_column empty"> </th>')
 	else:
 		dec_range = str(address1)
 		if address2 != None:

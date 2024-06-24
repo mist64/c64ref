@@ -247,6 +247,10 @@ table.disassembly_table th.decimal_column {
     background: var(--border-color);
 }
 
+table.disassembly_table th.empty {
+   /* visibility: hidden;*/
+   border-top-color: var(--border-color);
+}
 
 table.disassembly_table th.left_column {
     left: 8px;
