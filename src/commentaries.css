@@ -90,6 +90,11 @@ table.checkbox_table tr:nth-of-type(11) td:nth-of-type(2) { background: var(--ti
 
 /* Main Table */
 
+#disassembly_container,
+.disassembly_container {
+	padding: 1em 0em 1em 0em;
+}
+
 table.disassembly_table h2 {
 	font-family: sans-serif;
 	font-size: smaller;
@@ -118,7 +123,6 @@ table.disassembly_table th.left_column,
 table.disassembly_table th.label_column,
 table.disassembly_table th.cat_column,
 table.disassembly_table th.decimal_column {
-	position: absolute;
 	border: 1px solid #000;
 	border-radius: 2px;
 	color: var(--main-background);

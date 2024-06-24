@@ -47,12 +47,10 @@ function toggleDecimal(visible) {
 		tbl.rows[i].cells[config.decimal_column].style.display = visible ? "" : "none";
 	}
 	var key = config.storage_prefix + "column_decimal";
-	var cnt = document.getElementById("disassembly_container");
+	//var cnt = document.getElementById("disassembly_container");
 	if (visible) {
-		cnt.className = "disassembly_container_with_dec";
 		localStorage.setItem(key, "visible");
 	} else {
-		cnt.className = "disassembly_container_no_dec";
 		localStorage.removeItem(key);
 	}
 }

@@ -167,7 +167,7 @@ print('<br>')
 print('<button id="toggle_details_button" onclick="closeAll()">Hide All Details</button>')
 print('</p>')
 
-print('<div class="disassembly_container_no_dec" id="disassembly_container">')
+print('<div id="disassembly_container">')
 print('<table id="disassembly_table" class="disassembly_table">')
 
 print('<tr>')
