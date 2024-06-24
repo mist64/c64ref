@@ -191,7 +191,7 @@ print('')
 print('<script>')
 print('const pageConfiguration = {')
 print('    storage_prefix: "com.pagetable.kernal.",')
-print('    number_of_entries: 11,')
+print('    number_of_entries:' + str(len(filenames)) + ',')
 print('    number_of_header_columns: 4,')
 print('    has_decimal_column: true,')
 print('    decimal_column: 3') # 0 1 2 3
