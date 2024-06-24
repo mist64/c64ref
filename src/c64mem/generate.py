@@ -100,6 +100,7 @@ print('<script src="../commentaries.js"></script>')
 print('')
 
 print('<link rel="stylesheet" href="../style.css">')
+print('<link rel="stylesheet" href="../commentaries.css">')
 
 address_width=6
 label_width=4+1

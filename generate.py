@@ -261,6 +261,7 @@ with open(root_path, 'w', encoding='utf-8') as file:
 
 # > stylesheet
 shutil.copy(os.path.join(config.source_dir, "style.css"), build_path)
+shutil.copy(os.path.join(config.source_dir, "commentaries.css"), build_path)
 # > commentaries.js  - shared java script for the original commentary htmls
 shutil.copy(os.path.join(config.source_dir, "commentaries.js"), build_path)
 

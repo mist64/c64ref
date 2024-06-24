@@ -105,6 +105,7 @@ print('<script src="../commentaries.js"></script>')
 print('')
 
 print('<link rel="stylesheet" href="../style.css">')
+print('<link rel="stylesheet" href="../commentaries.css">')
 print('<style>')
 print('')
 print('h3 {')
