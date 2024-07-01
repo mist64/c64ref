@@ -126,9 +126,14 @@ table.disassembly_table th.left_column,
 table.disassembly_table th.label_column,
 table.disassembly_table th.cat_column,
 table.disassembly_table th.decimal_column {
-	border: 1px solid #000;
+	border: 1px solid black;
+	border-width: 1px 0px 0px 1px;
 	color: var(--main-background);
 	background: var(--border-color);
+}
+
+table.disassembly_table th.decimal_column {
+	border-width: 1px 1px 0px 1px;
 }
 
 table.disassembly_table th.label_column {
