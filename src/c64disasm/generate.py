@@ -106,29 +106,38 @@ print('')
 
 print('<link rel="stylesheet" href="../style.css">')
 print('<link rel="stylesheet" href="../commentaries.css">')
+
 print('<style>')
 print('')
 print('h3 {')
 print('    font-family: serif;')
 print('}')
-print('')
+
 print('.com {')
 print('    white-space: pre;')
 print('}')
-print('')
-print('table.disassembly_table td, table.disassembly_table th {')
+
+print('table.disassembly_table td,')
+print('table.disassembly_table th {')
 print('    font-family: monospace;')
 print('}')
 print('')
-print('table.disassembly_table th.left_column {')
-print('    width: 18em;')
-print('}')
-print('')
+
+for css_name, width, left in [("left_column", 18, 0)]:
+
+	print(f'table.disassembly_table th.{css_name}' + '{')
+	print(f'	left: {left}em;')
+	print(f'	width: {width}em;')
+	print(f'	min-width: {width}em;')
+	print(f'	max-width: {width}em;')
+	print( '}')
+	print('')
+
 print('</style>')
 print('</head>')
+
 print('<body>')
 print('<main>')
-
 print('<div>')
 
 print('<b>This allows you to view different commentaries side-by-side. You can enable/disable individual columns:</b><br><br>')
@@ -234,7 +243,6 @@ print('</table>')
 print('</div>')
 
 print('</div>')
-
 print('</main>')
 print('</body>')
 print('</html>')
