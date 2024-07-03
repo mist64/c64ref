@@ -122,7 +122,7 @@ table {
 tr, td, th {
     margin: 0px;
     text-align:left;
-    vertical-align: text-top;
+    vertical-align: top;
 }
 
 th.com {
