@@ -153,8 +153,8 @@ table.disassembly_table th.cat_column {
 	color: var(--main-color);
 }
 
-
-table.disassembly_table th.empty {
+/* only hide the top border if it is not the first entry */
+table.disassembly_table tr:not(tr:nth-of-type(2)) th.empty {
    /* visibility: hidden;*/
    border-top-color: var(--border-color);
 }
