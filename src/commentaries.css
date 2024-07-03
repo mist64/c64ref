@@ -54,6 +54,16 @@
 
 /* Overview Table: Multicolor */
 
+table.checkbox_table tr, table.checkbox_table td {
+	padding: 4px 8px;
+	border: solid var(--border-color);
+	border-width:1px 0px 1px 0px;
+}
+
+table.checkbox_table a {
+	color: var(--main-background);
+}
+
 table.checkbox_table tr:nth-of-type(1) { background: var(--light-color-1); }
 table.checkbox_table tr:nth-of-type(1) td:nth-of-type(2) { background: var(--title-color-1);}
 

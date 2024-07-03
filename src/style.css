@@ -130,19 +130,6 @@ th.com {
 }
 
 
-/* Overview Table */
-
-table.checkbox_table tr, table.checkbox_table td {
-    padding: 4px 8px;
-    border: solid var(--border-color);
-    border-width:1px 0px 1px 0px;
-}
-
-table.checkbox_table a {
-    color: var(--main-background);
-}
-
-
 /* octocat */
 /* # http://tholman.com/github-corners/ */
 
