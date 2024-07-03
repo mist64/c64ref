@@ -78,31 +78,31 @@ print('')
 print('<link rel="stylesheet" href="../style.css">')
 print('<link rel="stylesheet" href="../commentaries.css">')
 
+print('<style>')
+
 address_width=6.4
 label_width=4
 decimal_width=5
 
-print('<style>')
-print('')
-print('table.disassembly_table th.left_column {')
-print('    width: '+ str(address_width) +'em;')
-print('}')
-print('')
-print('table.disassembly_table th.label_column {')
-print('    width: ' + str(label_width) +'em;')
-print('    left: ' + str(address_width + 3) + 'em;')
-print('}')
-print('')
-print('table.disassembly_table th.decimal_column {')
-print('    width: ' + str(decimal_width) + 'em;')
-print('    left: ' + str(address_width + label_width + 1.2) + 'em;')
-print('}')
-print('')
+for css_name, width, left in [
+		("left_column",    address_width, 0),
+		("label_column",   label_width,   address_width + 3),
+		("decimal_column", decimal_width, address_width + label_width + 1.2)
+	]:
+
+	print(f'table.disassembly_table th.{css_name}' + '{')
+	print(f'	left: {left}em;')
+	print(f'	width: {width}em;')
+	print(f'	min-width: {width}em;')
+	print(f'	max-width: {width}em;')
+	print( '}')
+	print('')
+
 print('</style>')
 print('</head>')
+
 print('<body>')
 print('<main>')
-
 print('<div>')
 
 print('<b>This allows you to view different commentaries side-by-side. You can enable/disable individual columns:</b><br><br>')
@@ -324,8 +324,8 @@ while(True):
 
 print('</table>')
 print('</div>')
-print('</div>')
 
+print('</div>')
 print('</main>')
 print('</body>')
 print('</html>')
