@@ -210,20 +210,22 @@ label_width=4
 cat_width=4.6
 decimal_width=5
 
-for css_name, width, left in [
-		("left_column",    address_width, 1),
-		("label_column",   label_width,   address_width + 2.6),
-		("cat_column",     cat_width,     address_width + label_width + 3.4),
-		("decimal_column", decimal_width, address_width + label_width + cat_width + 1.6)
+widths=0
+for css_name, width, offset in [
+		("left_column",    address_width, 0),
+		("label_column",   label_width,   1.6),
+		("cat_column",     cat_width,     2),
+		("decimal_column", decimal_width, 0.1)
 	]:
 
 	print(f'table.disassembly_table th.{css_name}' + '{')
-	print(f'	left: {left}em;')
+	print(f'	left: {offset + widths}em;')
 	print(f'	width: {width}em;')
 	print(f'	min-width: {width}em;')
 	print(f'	max-width: {width}em;')
 	print( '}')
 	print('')
+	widths += width
 
 print('</style>')
 print('</head>')

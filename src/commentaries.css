@@ -114,7 +114,7 @@ table.disassembly_table h2 {
 table.disassembly_table {
 	border: solid grey;
 	border-width:0px 0px 1px 0px;
-/*	border-collapse: separate; */
+	border-collapse: separate;
 	border-spacing: 0;
 }
 
@@ -140,6 +140,7 @@ table.disassembly_table th.decimal_column {
 	border-width: 1px 0px 0px 1px;
 	color: var(--main-background);
 	background: var(--border-color);
+	position: sticky;
 }
 
 table.disassembly_table th.decimal_column {
