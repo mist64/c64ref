@@ -223,13 +223,17 @@ if config.deploy:
 
 	# this test only makes sense, if the base dir is adjusted for branches
 	# TODO: XXX adjust base dir for branches or take this out
-	if git_branch_name == "main":
+	if config.git_branch_name == "main":
 		config.build_wips = False # reset for uploading to main
 
 		response = input("Deploy to production? [Y/N]: ").strip()
 		if response.lower() != 'y':
 			print("Exiting.")
 			exit()
+
+else:
+	if config.git_branch_name != "main":
+		config.base_dir = "test/" + config.git_branch_name + "/" + config.base_dir
 
 
 # clean build directories
@@ -257,6 +261,9 @@ with open(root_path, 'w', encoding='utf-8') as file:
 
 # > stylesheet
 shutil.copy(os.path.join(config.source_dir, "style.css"), build_path)
+shutil.copy(os.path.join(config.source_dir, "commentaries.css"), build_path)
+# > commentaries.js  - shared java script for the original commentary htmls
+shutil.copy(os.path.join(config.source_dir, "commentaries.js"), build_path)
 
 # > favicons TODO: XXX favicons
 
@@ -305,3 +312,11 @@ if config.deploy:
 	command = f"rsync -Pa {config.build_dir}/* {config.server_path}/"
 	print("    " + command)
 	ret = subprocess.run(command, check=True, text=True, shell=True)
+else:
+	port = "6464"
+	url = f"http://localhost:{port}/{config.base_dir}"
+	print(url)
+	subprocess.run(f"open {url}", check=True, text=True, shell=True)
+
+
+

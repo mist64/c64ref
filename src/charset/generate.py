@@ -675,6 +675,7 @@ charsets = [
 def html_header_css():
 
 	print('<link rel="stylesheet" href="../style.css">')
+	print('<link rel="stylesheet" href="../commentaries.css">')
 	print('<link rel="stylesheet" href="style.css">')
 
 	print('<style>')

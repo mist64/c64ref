@@ -62,126 +62,49 @@ print('<head>')
 print('<meta http-equiv="Content-type" content="text/html; charset=utf-8">')
 print('<title>I/O Map | Ultimate C64 Reference</title>')
 print('')
+
 print('<script>')
-print('    window.onload = init;')
-print('    function init() {')
-print('        var tbl = document.getElementById("disassembly_table");')
-print('        for (var i = 0; i < ' + str(len(filenames)) + '; i++) {')
-print('            var key = "com.pagetable.c64mem.column_" + i;')
-print('            var element_name = "checkbox_" + i;')
-print('            var checked = localStorage.getItem(key) != "hidden";')
-print('            document.getElementById(element_name).checked = checked;')
-print('            hideCol(i, checked);')
-print('        }')
-print('        var key = "com.pagetable.c64mem.column_decimal";')
-print('        var element_name = "checkbox_decimal";')
-print('        var visible = localStorage.getItem(key) == "visible";')
-print('        document.getElementById(element_name).checked = visible;')
-print('        toggleDecimal(visible);')
-print('    }')
-print('    function toggleDecimal(visible) {')
-print('        var tbl = document.getElementById("disassembly_table");')
-print('        for (var i = 0; i < tbl.rows.length; i++) {')
-print('            tbl.rows[i].cells[2].style.display = visible ? "" : "none";')
-print('        }')
-print('        var key = "com.pagetable.c64mem.column_decimal";')
-print('        var cnt = document.getElementById("disassembly_container");')
-print('        if (visible) {')
-print('            cnt.className = "disassembly_container_with_dec";')
-print('            localStorage.setItem(key, "visible");')
-print('        } else {')
-print('            cnt.className = "disassembly_container_no_dec";')
-print('            localStorage.removeItem(key);')
-print('        }')
-print('    }')
-print('    function hideCol(col, checked) {')
-print('        var tbl = document.getElementById("disassembly_table");')
-print('        for (var i = 0; i < tbl.rows.length; i++) {')
-print('            tbl.rows[i].cells[col+3].style.display = checked ? "" : "none";') # data columns start at index 3
-print('        }')
-print('        var key = "com.pagetable.c64mem.column_" + col;')
-print('        if (checked) {')
-print('            localStorage.removeItem(key);')
-print('        } else {')
-print('            localStorage.setItem(key, "hidden");')
-print('        }')
-print('    }')
-print('    function openAll() {')
-print('        var elems = document.getElementsByTagName("details");')
-print('        document.getElementById("toggle_details_button").innerHTML = "Hide All Details";')
-print('        document.getElementById("toggle_details_button").setAttribute("onClick", "javascript: closeAll();");')
-print('')
-print('        for (let item of elems) {')
-print('            item.setAttribute("open", true);')
-print('        }')
-print('    }')
-print('')
-print('    function closeAll() {   ')
-print('        var elems = document.getElementsByTagName("details");')
-print('        document.getElementById("toggle_details_button").setAttribute("onClick", "javascript: openAll();" );')
-print('        document.getElementById("toggle_details_button").innerHTML = "Expand All Details";    ')
-print('        ')
-print('        for (let item of elems) {')
-print('           item.removeAttribute("open");')
-print('        }')
-print('    }')
+print('const pageConfiguration = {')
+print('    storage_prefix: "com.pagetable.c64io.",')
+print('    number_of_entries:' + str(len(filenames)) + ',')
+print('    number_of_header_columns: 3,')
+print('    has_decimal_column: true,')
+print('    decimal_column: 2') # 0 1 2
+print('};')
 print('</script>')
+print('<script src="../commentaries.js"></script>')
 print('')
 
 print('<link rel="stylesheet" href="../style.css">')
+print('<link rel="stylesheet" href="../commentaries.css">')
+
+print('<style>')
 
 address_width=6.4
 label_width=4
-decimal_width=5
+decimal_width=6
 
-print('<style>')
-print('')
-print('div.disassembly_container_with_dec {')
-print('    padding: 1em 0em 1em ' + str(address_width + label_width + decimal_width + 1.6) + 'em;')
-print('    overflow: scroll;')
-print('}')
-print('')
-print('div.disassembly_container_no_dec {')
-print('    padding: 1em 0em 1em ' + str(address_width + label_width + 0.9) + 'em;')
-print('    overflow: scroll;')
-print('}')
-print('')
-print('table.disassembly_table>tbody>tr>td, table.disassembly_table>tbody>tr>th.top_row {')
-print('    min-width: 30em;')
-print('    max-width: 40em;')
-print('}')
-print('')
-print('table.disassembly_table th.left_column {')
-print('    width: '+ str(address_width) +'em;')
-print('}')
-print('')
-print('table.disassembly_table th.label_column {')
-print('    width: ' + str(label_width) +'em;')
-print('    left: ' + str(address_width + 3) + 'em;')
-print('    z-index: 12;')
-print('    font-family: monospace;')
-print('    text-align: center;')
-print('    color: yellow;')
-print('}')
-print('')
-print('table.disassembly_table th.decimal_column {')
-print('    width: ' + str(decimal_width) + 'em;')
-print('    left: ' + str(address_width + label_width + 1.2) + 'em;')
-print('    z-index: 13;')
-print('}')
-print('')
-print('details {')
-print('    font-family: serif;')
-print('}')
-print('summary {')
-print('    font-family: Helvetica;')
-print('}')
-print('')
+widths=0
+for css_name, width, offset in [
+		("left_column",    address_width, 0),
+		("label_column",   label_width,   2),
+		("decimal_column", decimal_width, 0.2)
+	]:
+
+	print(f'table.disassembly_table th.{css_name}' + '{')
+	print(f'	left: {offset + widths}em;')
+	print(f'	width: {width}em;')
+	print(f'	min-width: {width}em;')
+	print(f'	max-width: {width}em;')
+	print( '}')
+	print('')
+	widths += width
+
 print('</style>')
 print('</head>')
+
 print('<body>')
 print('<main>')
-
 print('<div>')
 
 print('<b>This allows you to view different commentaries side-by-side. You can enable/disable individual columns:</b><br><br>')
@@ -197,7 +120,7 @@ print('<br>')
 print('<button id="toggle_details_button" onclick="closeAll()">Hide All Details</button>')
 print('</p>')
 
-print('<div class="disassembly_container_no_dec" id="disassembly_container">')
+print('<div id="disassembly_container">')
 print('<table id="disassembly_table" class="disassembly_table">')
 
 print('<tr>')
@@ -279,7 +202,7 @@ while(True):
 	for address in r:
 		anchors += '<a id="{:04X}"></a>'.format(address)
 	if address1 == last_address1 and address2 == last_address2:
-		print('<th class="left_column" style="visibility:hidden;"> ' + anchors + ' </th>')
+		print('<th class="left_column empty"> ' + anchors + ' </th>')
 	else:
 		hex_range = '${:04X}'.format(address1)
 		if address2 != None:
@@ -288,13 +211,13 @@ while(True):
 
 	# print symbol
 	if len(symbol) == 0:
-		print('<th class="label_column" style="visibility:hidden;"> </th>')
+		print('<th class="label_column empty"> </th>')
 	else:
 		print('<th class="label_column">' + symbol + ' <a id="' + symbol + '"></a></th>')
 
 	# print decimal
 	if address1 == last_address1 and address2 == last_address2:
-		print('<th class="decimal_column" style="visibility:hidden;"> </th>')
+		print('<th class="decimal_column empty"> </th>')
 	else:
 		dec_range = str(address1)
 		if address2 != None:
@@ -403,8 +326,8 @@ while(True):
 
 print('</table>')
 print('</div>')
-print('</div>')
 
+print('</div>')
 print('</main>')
 print('</body>')
 print('</html>')

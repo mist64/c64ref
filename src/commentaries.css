@@ -1,0 +1,258 @@
+:root {
+	--title-color-1: #017100;
+	--title-color-2: #004D7F;
+	--title-color-3: #99195E;
+	--title-color-4: #F8BA00;
+	--title-color-5: #B51700;
+	--title-color-6: #017B76;
+	--title-color-7: #595959;
+	--title-color-8: #714a00;
+	--title-color-9: #37007F;
+	--title-color-10: #507F00;
+	--title-color-11: #404040;
+
+	--dark-color-1: #D8F2CB;
+	--dark-color-2: #C6E2FC;
+	--dark-color-3: #BFB7E8;
+	--dark-color-4: #FCF6CD;
+	--dark-color-5: #F4D2E3;
+	--dark-color-6: #D2F6F0;
+	--dark-color-7: #E0E0E0;
+	--dark-color-8: #F2E4CB;
+	--dark-color-9: #DDC6FC;
+	--dark-color-10: #E8FCC6;
+	--dark-color-11: #C7C7C7;
+
+	--light-color-1: #E5F2DF;
+	--light-color-2: #E3F0FC;
+	--light-color-3: #D5D1E8;
+	--light-color-4: #FCFAE6;
+	--light-color-5: #F5E4EC;
+	--light-color-6: #E1F5F2;
+	--light-color-7: #EDEDED;
+	--light-color-8: #F2EBDF;
+	--light-color-9: #EEE3FC;
+	--light-color-10: #F3FCE3;
+	--light-color-11: #D4D4D4;
+
+	/* kernal category color */
+	--cat-color-io: #56C1FF;
+	--cat-color-clk: #73FDEA;
+	--cat-color-editor: #88FA4E;
+	--cat-color-time: #73FDEA;
+	--cat-color-ieee: #FFFC66;
+	--cat-color-kbd: #FF968D;
+	--cat-color-mem: #FF8DC6;
+	--cat-color-sys: #D5D5D5;
+
+	/* Duplicates from style.css */
+	--main-color: #004080;
+	--main-background: #e0f0ff;
+	--border-color: #0060a0;
+}
+
+
+/* Overview Table: Multicolor */
+
+table.checkbox_table tr, table.checkbox_table td {
+	padding: 4px 8px;
+	border: solid var(--border-color);
+	border-width:1px 0px 1px 0px;
+}
+
+table.checkbox_table a {
+	color: var(--main-background);
+}
+
+table.checkbox_table tr:nth-of-type(1) { background: var(--light-color-1); }
+table.checkbox_table tr:nth-of-type(1) td:nth-of-type(2) { background: var(--title-color-1);}
+
+table.checkbox_table tr:nth-of-type(2) { background: var(--light-color-2); }
+table.checkbox_table tr:nth-of-type(2) td:nth-of-type(2) { background: var(--title-color-2); }
+
+table.checkbox_table tr:nth-of-type(3) { background: var(--light-color-3); }
+table.checkbox_table tr:nth-of-type(3) td:nth-of-type(2) { background: var(--title-color-3); }
+
+table.checkbox_table tr:nth-of-type(4) { background: var(--light-color-4); }
+table.checkbox_table tr:nth-of-type(4) td:nth-of-type(2) { background: var(--title-color-4); }
+
+table.checkbox_table tr:nth-of-type(5) { background: var(--light-color-5); }
+table.checkbox_table tr:nth-of-type(5) td:nth-of-type(2) { background: var(--title-color-5); }
+
+table.checkbox_table tr:nth-of-type(6) { background: var(--light-color-6); }
+table.checkbox_table tr:nth-of-type(6) td:nth-of-type(2) { background: var(--title-color-6); }
+
+table.checkbox_table tr:nth-of-type(7) { background: var(--light-color-7); }
+table.checkbox_table tr:nth-of-type(7) td:nth-of-type(2) { background: var(--title-color-7); }
+
+table.checkbox_table tr:nth-of-type(8) { background: var(--light-color-8); }
+table.checkbox_table tr:nth-of-type(8) td:nth-of-type(2) { background: var(--title-color-8); }
+
+table.checkbox_table tr:nth-of-type(9) { background: var(--light-color-9); }
+table.checkbox_table tr:nth-of-type(9) td:nth-of-type(2) { background: var(--title-color-9); }
+
+table.checkbox_table tr:nth-of-type(10) { background: var(--light-color-10); }
+table.checkbox_table tr:nth-of-type(10) td:nth-of-type(2) { background: var(--title-color-10); }
+
+table.checkbox_table tr:nth-of-type(11) { background: var(--light-color-11); }
+table.checkbox_table tr:nth-of-type(11) td:nth-of-type(2) { background: var(--title-color-11); }
+
+
+/* Main Table */
+
+#disassembly_container,
+.disassembly_container {
+	padding: 1em 0em 1em 0em;
+	position: relative;
+}
+
+table.disassembly_table h2 {
+	font-family: sans-serif;
+	font-size: smaller;
+}
+
+table.disassembly_table {
+	border: solid grey;
+	border-width:0px 0px 1px 0px;
+	border-collapse: separate;
+	border-spacing: 0;
+}
+
+table.disassembly_table>tbody>tr>td,
+table.disassembly_table>tbody>tr>th.top_row {
+	min-width: 30em;
+	max-width: 40em;
+}
+
+table.disassembly_table td,
+table.disassembly_table th {
+	padding: 2px 4px;
+	border: solid grey;
+	border-width:0px 1px 0px 1px;
+}
+
+
+table.disassembly_table th.left_column,
+table.disassembly_table th.label_column,
+table.disassembly_table th.cat_column,
+table.disassembly_table th.decimal_column {
+	border: 1px solid black;
+	border-width: 1px 0px 0px 1px;
+	color: var(--main-background);
+	background: var(--border-color);
+	position: sticky;
+}
+
+table.disassembly_table th.decimal_column {
+	border-width: 1px 1px 0px 1px;
+}
+
+table.disassembly_table th.label_column {
+	font-family: monospace;
+	text-align: center;
+	color: yellow;
+}
+
+
+table.disassembly_table tr:nth-of-type(1) th:nth-child(1 of .cat_column) {
+	color: var(--main-background);
+}
+
+table.disassembly_table th.cat_column {
+	font-size: smaller;
+	text-align: center;
+	color: var(--main-color);
+}
+
+/* only hide the top border if it is not the first entry */
+table.disassembly_table tr:not(tr:nth-of-type(2)) th.empty {
+   /* visibility: hidden;*/
+   border-top-color: var(--border-color);
+}
+
+table.disassembly_table th.left_column    { z-index: 11; }
+table.disassembly_table th.label_column   { z-index: 12; }
+table.disassembly_table th.cat_column     { z-index: 13; }
+table.disassembly_table th.decimal_column { z-index: 14; }
+
+
+th.left_column a {
+	color: var(--main-background);
+}
+
+th.left_column a:target {
+	color: yellow;
+	text-shadow: 0px 1px black;
+}
+
+/*
+th.left_column a:target::before {
+	content: "▹";
+}
+*/
+
+
+details {
+	font-family: serif;
+}
+summary {
+	font-family: Helvetica;
+}
+
+
+table.disassembly_table th.top_row {
+	color: var(--main-background);
+	border-width: 1px;
+}
+
+table.disassembly_table tr { background: #f0f0f0; }
+table.disassembly_table tr:nth-child(even) { background: #ffffff; }
+
+
+/* Main Table: Multicolor */
+
+table.disassembly_table th:nth-child(1 of .top_row) { background: var(--title-color-1); }
+table.disassembly_table th:nth-child(2 of .top_row) { background: var(--title-color-2); }
+table.disassembly_table th:nth-child(3 of .top_row) { background: var(--title-color-3); }
+table.disassembly_table th:nth-child(4 of .top_row) { background: var(--title-color-4); }
+table.disassembly_table th:nth-child(5 of .top_row) { background: var(--title-color-5); }
+table.disassembly_table th:nth-child(6 of .top_row) { background: var(--title-color-6); }
+table.disassembly_table th:nth-child(7 of .top_row) { background: var(--title-color-7); }
+table.disassembly_table th:nth-child(8 of .top_row) { background: var(--title-color-8); }
+table.disassembly_table th:nth-child(9 of .top_row) { background: var(--title-color-9); }
+table.disassembly_table th:nth-child(10 of .top_row) { background: var(--title-color-10); }
+table.disassembly_table th:nth-child(11 of .top_row) { background: var(--title-color-11); }
+
+
+table.disassembly_table tr td:nth-of-type(1) { background: var(--dark-color-1); }
+table.disassembly_table tr:nth-child(even) td:nth-of-type(1) { background: var(--light-color-1); }
+
+table.disassembly_table tr td:nth-of-type(2) { background: var(--dark-color-2); }
+table.disassembly_table tr:nth-child(even) td:nth-of-type(2) { background: var(--light-color-2); }
+
+table.disassembly_table tr td:nth-of-type(3) { background: var(--dark-color-3); }
+table.disassembly_table tr:nth-child(even) td:nth-of-type(3) { background: var(--light-color-3); }
+
+table.disassembly_table tr td:nth-of-type(4) { background: var(--dark-color-4); }
+table.disassembly_table tr:nth-child(even) td:nth-of-type(4) { background: var(--light-color-4); }
+
+table.disassembly_table tr td:nth-of-type(5) { background: var(--dark-color-5); }
+table.disassembly_table tr:nth-child(even) td:nth-of-type(5) { background: var(--light-color-5); }
+
+table.disassembly_table tr td:nth-of-type(6) { background: var(--dark-color-6); }
+table.disassembly_table tr:nth-child(even) td:nth-of-type(6) { background: var(--light-color-6); }
+
+table.disassembly_table tr td:nth-of-type(7) { background: var(--dark-color-7); }
+table.disassembly_table tr:nth-child(even) td:nth-of-type(7) { background: var(--light-color-7); }
+
+table.disassembly_table tr td:nth-of-type(8) { background: var(--dark-color-8); }
+table.disassembly_table tr:nth-child(even) td:nth-of-type(8) { background: var(--light-color-8); }
+
+table.disassembly_table tr td:nth-of-type(9) { background: var(--dark-color-9); }
+table.disassembly_table tr:nth-child(even) td:nth-of-type(9) { background: var(--light-color-9); }
+
+table.disassembly_table tr td:nth-of-type(10) { background: var(--dark-color-10); }
+table.disassembly_table tr:nth-child(even) td:nth-of-type(10) { background: var(--light-color-10); }
+
+table.disassembly_table tr td:nth-of-type(11) { background: var(--dark-color-11); }
+table.disassembly_table tr:nth-child(even) td:nth-of-type(11) { background: var(--light-color-11); }
