@@ -31,6 +31,7 @@ const all_sorted_addmodes = [
 	'(a8),Y',
 	'(a8),Z',
 	'[a8]',
+	'[a8],Y',
 	'[a16]',
 	'a24',
 	'a24,X',
