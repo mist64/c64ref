@@ -214,6 +214,12 @@ side = 8 # character width/height 8px
 # generate scrcode_from_petscii mapping
 scrcode_from_petscii = []
 for c in range(0, 256):
+	# fixes for $FF:
+	# "Code $FF is the BASIC token of the π (pi) symbol. It is converted internally to code $DE when printed and, vice versa, code $DE is converted to $FF when fetched from the screen."
+	# https://sta.c64.org/cbm64pet_orig.html
+	if c == 0xff:
+		c = 0xde;
+
 	if c < 0x20:
 		d = c + 0x80 # inverted control characters
 	elif c < 0x40:
@@ -249,13 +255,15 @@ def modifiers_and_scancodes_html_from_petscii(petscii, scrcode, other_ok = True,
 	modifiers_and_scancodes_html = []
 	modifiers_and_scancodes = modifiers_and_scancodes_from_petscii(petscii, machine)
 	other_petscii = None
+
 	if other_ok and len(modifiers_and_scancodes) == 0 and scrcode is not None:
-		for check_petscii in petscii_from_scrcode[scrcode & 0x7f]:
+		scrcode7 = scrcode & 0x7f
+		for check_petscii in petscii_from_scrcode[scrcode7]:
 			if check_petscii != petscii:
 				other_petscii = check_petscii
-				break
-		if other_petscii:
-			modifiers_and_scancodes = modifiers_and_scancodes_from_petscii(other_petscii, machine)
+				modifiers_and_scancodes = modifiers_and_scancodes_from_petscii(other_petscii, machine)
+				if len(modifiers_and_scancodes) != 0:
+					break
 
 	if len(modifiers_and_scancodes) > 0:
 		for (modifier, scancode) in modifiers_and_scancodes:
@@ -510,6 +518,12 @@ for line in open('C64IALT.TXT'):
 	unicode = int(line[7:12], 16)
 	unicode_from_petscii['lower'][petscii] = unicode
 	description_from_unicode[unicode] = line[14:]
+
+# fixes for $FF:
+# see comment above
+unicode_from_petscii['upper'][0xFF] = unicode_from_petscii['upper'][0xDE]
+unicode_from_petscii['lower'][0xFF] = unicode_from_petscii['upper'][0xDE]
+
 
 #
 # Read Keyboard Tables
@@ -813,7 +827,7 @@ def html_div_info_screencode(id):
 	for scrcode in range(0, 256):
 		scrcode7 = scrcode & 0x7f
 		is_reverse = scrcode >= 0x80
-		petscii = petscii_from_scrcode[scrcode & 0x7f][0]
+		petscii = petscii_from_scrcode[scrcode7][0]
 
 		print('<div id="info_scrcode_{}">'.format(hex(scrcode)))
 		print('  <div class="grid-container">')
@@ -1265,7 +1279,7 @@ print('<li>')
 print('The regular and reverse versions of the C64 system characater sets differ in the \'@\' symbol, and some other machines have various differences and sometimes bugs (flipped bits) in their copies. For simplicity, the viewer is using a single variant for both regular and reverse. You can select the alternative/buggy version in the charset picker.')
 print('</li>')
 print('<li>')
-print('The PETSCII to Unicode conversion is done using the mappings from the <a href="https://en.wikipedia.org/wiki/Symbols_for_Legacy_Computing">Symbols for Legacy Computing</a> additions to Unicode; <a href="https://www.unicode.org/L2/L2019/19025-aux-mappings.zip">19025-aux-mappings.zip</a>. As of mid 2020, common operating systems don\'t support all symbls yet.')
+print('The PETSCII to Unicode conversion is done using the mappings from the <a href="https://en.wikipedia.org/wiki/Symbols_for_Legacy_Computing">Symbols for Legacy Computing</a> additions to Unicode; <a href="https://www.unicode.org/L2/L2019/19025-aux-mappings.zip">19025-aux-mappings.zip</a>. As of mid 2020, common operating systems don\'t support all symbols yet.')
 print('</li>')
 print('<li>')
 print('Note that some keyboard keys (VIC-20/C64/C128/C65: <span class="key-box">RESTORE</span>, C128/C65: <span class="key-box">CAPS LOCK</span>, C128: <span class="key-box">40/80 DISPLAY</span>) produce no scancode, and therefore no PETSCII code. Other keys (C128/C65: <span class="key-box">NO SCROLL</span>) produce a scancode, but no PETSCII code.')
