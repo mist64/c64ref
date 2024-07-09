@@ -214,6 +214,12 @@ side = 8 # character width/height 8px
 # generate scrcode_from_petscii mapping
 scrcode_from_petscii = []
 for c in range(0, 256):
+	# fixes for $FF:
+	# "Code $FF is the BASIC token of the π (pi) symbol. It is converted internally to code $DE when printed and, vice versa, code $DE is converted to $FF when fetched from the screen."
+	# https://sta.c64.org/cbm64pet_orig.html
+	if c == 0xff:
+		c = 0xde;
+
 	if c < 0x20:
 		d = c + 0x80 # inverted control characters
 	elif c < 0x40:
@@ -249,13 +255,15 @@ def modifiers_and_scancodes_html_from_petscii(petscii, scrcode, other_ok = True,
 	modifiers_and_scancodes_html = []
 	modifiers_and_scancodes = modifiers_and_scancodes_from_petscii(petscii, machine)
 	other_petscii = None
+
 	if other_ok and len(modifiers_and_scancodes) == 0 and scrcode is not None:
-		for check_petscii in petscii_from_scrcode[scrcode & 0x7f]:
+		scrcode7 = scrcode & 0x7f
+		for check_petscii in petscii_from_scrcode[scrcode7]:
 			if check_petscii != petscii:
 				other_petscii = check_petscii
-				break
-		if other_petscii:
-			modifiers_and_scancodes = modifiers_and_scancodes_from_petscii(other_petscii, machine)
+				modifiers_and_scancodes = modifiers_and_scancodes_from_petscii(other_petscii, machine)
+				if len(modifiers_and_scancodes) != 0:
+					break
 
 	if len(modifiers_and_scancodes) > 0:
 		for (modifier, scancode) in modifiers_and_scancodes:
@@ -510,6 +518,12 @@ for line in open('C64IALT.TXT'):
 	unicode = int(line[7:12], 16)
 	unicode_from_petscii['lower'][petscii] = unicode
 	description_from_unicode[unicode] = line[14:]
+
+# fixes for $FF:
+# see comment above
+unicode_from_petscii['upper'][0xFF] = unicode_from_petscii['upper'][0xDE]
+unicode_from_petscii['lower'][0xFF] = unicode_from_petscii['upper'][0xDE]
+
 
 #
 # Read Keyboard Tables
@@ -813,7 +827,7 @@ def html_div_info_screencode(id):
 	for scrcode in range(0, 256):
 		scrcode7 = scrcode & 0x7f
 		is_reverse = scrcode >= 0x80
-		petscii = petscii_from_scrcode[scrcode & 0x7f][0]
+		petscii = petscii_from_scrcode[scrcode7][0]
 
 		print('<div id="info_scrcode_{}">'.format(hex(scrcode)))
 		print('  <div class="grid-container">')
