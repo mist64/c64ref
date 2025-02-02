@@ -737,11 +737,11 @@ EOR  "Exclusive OR" Memory with Accumulator
      This instruction affects the accumulator; sets the zero flag if the result in the accumulator is 0, otherwise resets the zero flag sets the negative flag if the result in the accumulator has bit 7 on, otherwise resets the negative flag.
 
 SEC  Set Carry Flag
-     This instruction initializes the carry flag to a 1. This op eration should normally precede a SBC loop. It is also useful when used with a ROL instruction to initialize a bit in memory to a 1.
+     This instruction initializes the carry flag to a 1. This operation should normally precede a SBC loop. It is also useful when used with a ROL instruction to initialize a bit in memory to a 1.
      This instruction affects no registers in the microprocessor and no flags other than the carry flag which is set.
 
 CLC  Clear Carry Flag
-     This instruction initializes the carry flag to a 0. This op­ eration should normally precede an ADC loop. It is also useful when used with a R0L instruction to clear a bit in memory.
+     This instruction initializes the carry flag to a 0. This op­eration should normally precede an ADC loop. It is also useful when used with a R0L instruction to clear a bit in memory.
      This instruction affects no registers in the microprocessor and no flags other than the carry flag which is reset.
 
 SEI  Set Interrupt Disable
@@ -761,7 +761,7 @@ CLD  Clear Decimal Mode
      CLD affects no registers in the microprocessor and no flags other than the decimal mode flag which is set to a 0.
 
 CLV  Clear Overflow Flag
-     This instruction clears the overflow flag to a 0. This com­ mand is used in conjunction with the set overflow pin which can change the state of the overflow flag with an external signal.
+     This instruction clears the overflow flag to a 0. This com­mand is used in conjunction with the set overflow pin which can change the state of the overflow flag with an external signal.
      CLV affects no registers in the microprocessor and no flags other than the overflow flag which is set to a 0.
 
 JMP  Jump to New Location
@@ -785,7 +785,7 @@ BCS  Branch on Carry Set
 
 BEQ  Branch on Result Zero
      This instruction could also be called "Branch on Equal."
-     It takes a conditional branch whenever the Z flag is on or the previ­ ous result is equal to 0.
+     It takes a conditional branch whenever the Z flag is on or the previ­ous result is equal to 0.
      BEQ does not affect any of the flags or registers other than the program counter and only then when the Z flag is set.
 
 BNE  Branch on Result Not Zero
@@ -838,7 +838,7 @@ DEX  Decrement Index Register X By One
      DEX does not affect the carry or overflow flag, it sets the N flag if it has bit 7 on as a result of the decrement, otherwise it resets the N flag; sets the Z flag if X is a 0 as a result of the decrement, otherwise it resets the Z flag.
 
 DEY  Decrement Index Register Y By One
-     This instruction subtracts one from the current value in the in­ dex register Y and stores the result into the index register Y. The result does not affect or consider carry so that the value in the index register Y is decremented to 0 and then through 0 to FF.
+     This instruction subtracts one from the current value in the in­dex register Y and stores the result into the index register Y. The result does not affect or consider carry so that the value in the index register Y is decremented to 0 and then through 0 to FF.
      Decrement Y does not affect the carry or overflow flags; if the Y register contains bit 7 on as a result of the decrement the N flag is set, otherwise the N flag is reset. If the Y register is 0 as a result of the decrement, the Z flag is set otherwise the Z flag is reset. This instruction only affects the index register Y.
 
 CPX  Compare Index Register X To Memory
@@ -847,11 +847,11 @@ CPX  Compare Index Register X To Memory
 
 CPY  Compare Index Register Y To Memory
      This instruction performs a two's complement subtraction between the index register Y and the specified memory location. The results of the subtraction are not stored anywhere. The instruction is strict­ly used to set the flags.
-     CPY affects no registers in the microprocessor and also does not affect the overflow flag. If the value in the index register Y is equal to or greater than the value in the memory, the carry flag will be set, otherwise it will be cleared. If the results of the subtract- tion contain bit 7 on the N bit will be set, otherwise it will be cleared. If the value in the index register Y and the value in the memory are equal, the zero flag will be set, otherwise it will be cleared.
+     CPY affects no registers in the microprocessor and also does not affect the overflow flag. If the value in the index register Y is equal to or greater than the value in the memory, the carry flag will be set, otherwise it will be cleared. If the results of the subtraction contain bit 7 on the N bit will be set, otherwise it will be cleared. If the value in the index register Y and the value in the memory are equal, the zero flag will be set, otherwise it will be cleared.
 
 TAX  Transfer Accumulator To Index X
      This instruction takes the value from accumulator A and trans­ fers or loads it into the index register X without disturbing the content of the accumulator A.
-     TAX only affects the index register X, does not affect the carry or overflow flags. The N flag is set if the resultant value in the index register X has bit 7 on, otherwise N is reset. The Z bit is set if the content of the register X is 0 as aresult of theopera­ tion, otherwise it is reset.
+     TAX only affects the index register X, does not affect the carry or overflow flags. The N flag is set if the resultant value in the index register X has bit 7 on, otherwise N is reset. The Z bit is set if the content of the register X is 0 as a result of the opera­tion, otherwise it is reset.
 
 TXA  Transfer Index X To Accumulator
      This instruction moves the value that is in the index register X to the accumulator A without disturbing the content of the index register X.
@@ -866,7 +866,7 @@ TYA  Transfer Index Y To Accumulator
      TYA does not affect any other register other than the accumulator and does not affect the carry or overflow flag. If the result in the accumulator A has bit 7 on, the N flag is set, otherwise it is reset. If the resultant value in the accumulator A is 0, then the Z flag is set, otherwise it is reset.
 
 JSR  Jump To Subroutine
-     This instruction transfers control of the program counter to a subroutine location but leaves a return pointer on the stack to allow the user to return to perform the next instruction in the main program after the subroutine is complete. To accomplish this, JSR instruction stores the program counter address which points to the last byte of the jump instruc­ tion onto the stack using the stack pointer. The stack byte contains the program count high first, followed by program count low. The JSR then transfers the addresses following the jump instruction to the program counter low and the program counter high, thereby directing the program to begin at that new address.
+     This instruction transfers control of the program counter to a subroutine location but leaves a return pointer on the stack to allow the user to return to perform the next instruction in the main program after the subroutine is complete. To accomplish this, JSR instruction stores the program counter address which points to the last byte of the jump instruc­tion onto the stack using the stack pointer. The stack byte contains the program count high first, followed by program count low. The JSR then transfers the addresses following the jump instruction to the program counter low and the program counter high, thereby directing the program to begin at that new address.
       The JSR instruction affects no flags, causes the stack pointer to be decremented by 2 and substitutes new values into the program counter low and the program counter high.
 
 RTS  Return From Subroutine
@@ -891,23 +891,23 @@ TSX  Transfer Stack Pointer To Index X
      TSX does not affect the carry or overflow flags. It sets N if bit 7 is on in index X as a result of the instruction, otherwise it is reset. If index X is zero as a result of the TSX, the Z flag is set, other­ wise it is reset. TSX changes the value of index X, making it equal to the content of the stack pointer.
 
 PHP  Push Processor Status On Stack
-     This instruction transfers the contents of the processor status reg­ ister unchanged to the stack, as governed by the stack pointer.
+     This instruction transfers the contents of the processor status reg­ister unchanged to the stack, as governed by the stack pointer.
      The PHP instruction affects no registers or flags in the micropro­cessor.
 
 PLP  Pull Processor Status From Stack
-     This instruction transfers the next value on the stack to the Proces­ sor Status register, thereby changing all of the flags and setting the mode switches to the values from the stack.
+     This instruction transfers the next value on the stack to the Proces­sor Status register, thereby changing all of the flags and setting the mode switches to the values from the stack.
      The PLP instruction affects no registers in the processor other than the status register. This instruction could affect all flags in the status register.
 
 RTI  Return From Interrupt
-     This instruction transfers from the stack into the microprocessor the processor status and the program counter location for the instruction which was interrupted. By virtue of the interrupt having stored this data before executing the instruction and thei fact that the RTI reinitializes the microprocessor to the same state as when it was interrupted, the combination of interrupt plus RTI allows truly reentrant coding.
+     This instruction transfers from the stack into the microprocessor the processor status and the program counter location for the instruction which was interrupted. By virtue of the interrupt having stored this data before executing the instruction and the fact that the RTI reinitializes the microprocessor to the same state as when it was interrupted, the combination of interrupt plus RTI allows truly reentrant coding.
      The RTI instruction reinitializes all flags to the position to the point they were at the time the interrupt was taken and sets the program counter back to its pre-interrupt state. It affects no other registers in the microprocessor.
 
 JMP  JMP Indirect
-     This instruction establishes a new valne for the program counter.
+     This instruction establishes a new value for the program counter.
      It affects only the program counter in the microprocessor and affects no flags in the status register.
 
 BRK  Break Command
-     The break command causes the microprocessor to go through an inter­ rupt sequence under program control. This means that the program counter of the second byte after the BRK. is automatically stored on the stack along with the processor status at the beginning of the break instruction. The microprocessor then transfers control to the interrupt vector.
+     The break command causes the microprocessor to go through an inter­rupt sequence under program control. This means that the program counter of the second byte after the BRK. is automatically stored on the stack along with the processor status at the beginning of the break instruction. The microprocessor then transfers control to the interrupt vector.
      Other than changing the program counter, the break instruction changes no values in either the registers or the flags.
 
 LSR  Logical Shift Right
@@ -920,11 +920,11 @@ ASL  Arithmetic Shift Left
 
 ROL Rotate Left
      The rotate left instruction shifts either the accumulator or addressed memory left 1 bit, with the input carry being stored in bit 0 and with the input bit 7 being stored in the carry flags.
-     The ROL instruction either shifts the accumulator left 1 bit and stores the carry in accumulator bit 0 or does not affect the internal reg­isters at all. The ROL instruction sets carry equal to the input bit 7, sets N equal to the input bit 6 , sets the Z flag if the result of the ro­ tate is 0, otherwise it resets Z and does not affect the overflow flag at all.
+     The ROL instruction either shifts the accumulator left 1 bit and stores the carry in accumulator bit 0 or does not affect the internal reg­isters at all. The ROL instruction sets carry equal to the input bit 7, sets N equal to the input bit 6 , sets the Z flag if the result of the ro­tate is 0, otherwise it resets Z and does not affect the overflow flag at all.
 
 ROR  Rotate Right
      The rotate right instruction shifts either the accumulator or addressed memory right 1 bit with bit 0 shifted into the carry and carry shifted into bit 7.
-     The ROR instruction either shifts the accumulator right 1 bit and stores the carry in accumulator bit 7 or does not affect the internal regis­ ters at all. The ROR instruction sets carry equal to input bit 0, sets N equal to the input carry and sets the Z flag if the result of the rotate is 0; otherwise it resets Z and does not affect the overflow flag at all.
+     The ROR instruction either shifts the accumulator right 1 bit and stores the carry in accumulator bit 7 or does not affect the internal regis­ters at all. The ROR instruction sets carry equal to input bit 0, sets N equal to the input carry and sets the Z flag if the result of the rotate is 0; otherwise it resets Z and does not affect the overflow flag at all.
      (Available on Microprocessors after June, 1976)
 
 INC  Increment Memory By One
