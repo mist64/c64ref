@@ -110,8 +110,8 @@
                                 This routine is sets parameters for save, and calls the
                                 save routine. The start and end addresses are obtained
                                 from TXTTAB and VARTAB. Finally, a test is made if any
-                                errors ocured.
-.,E156 20 D4 E1 JSR $E1D4       get SAVE paramerters from text
+                                errors occurred.
+.,E156 20 D4 E1 JSR $E1D4       get SAVE parameters from text
 .,E159 A6 2D    LDX $2D         VARTAB, start of variables
 .,E15B A4 2E    LDY $2E
 .,E15D A9 2B    LDA #$2B        <TXTTAB, start of BASIC text
@@ -125,7 +125,7 @@
                                 setting VERCK accordingly. The LOAD/VERIFY parameters,
                                 filename, device etc. are obtained from text before the
                                 KERNAL routine LOAD is called. A test is made for I/O
-                                errors. At this point, the two functios are distiguished.
+                                errors. At this point, the two functions are distinguished.
                                 VERIFY reads the the status word and prints the message OK
                                 or ?VERIFY error depending on the result of the test. LOAD
                                 reads the I/O status word for a possible ?LOAD error, then
@@ -173,7 +173,7 @@
 .,E1BB 4C 77 A6 JMP $A677       do RESTORE and reset OLDTXT
 
                                 *** OPENT: PERFORM OPEN
-                                This routine extracts paramerters from text and performs
+                                This routine extracts parameters from text and performs
                                 the OPEN routine in KERNAL. A test is made for I/O errors.
 .,E1BE 20 19 E2 JSR $E219       get parameters from text
 .,E1C1 20 C0 FF JSR $FFC0       execute OPEN
@@ -237,7 +237,7 @@
                                 *** CMMERR: CHECK FOR COMMA
                                 This routine confirms that the next character in the text
                                 is a comma. It also test that the comma is not immediately
-                                ollowed by a terminator. If so, exit and do SYNTAX error.
+                                followed by a terminator. If so, exit and do SYNTAX error.
 .,E20E 20 FD AE JSR $AEFD       confirm comma
 .,E211 20 79 00 JSR $0079       get CHRGOT
 .,E214 D0 F7    BNE $E20D       else than null
@@ -249,7 +249,7 @@
                                 the default filename is set to null, and the device number
                                 to #1. The logical filenumber is compulsory, and is
                                 obtained from text and placed in <FORPNT. The other
-                                parameters are optinal and are obtained if present. The
+                                parameters are optional and are obtained if present. The
                                 device number is stored in >FORPNT. The parameters are set
                                 via the KERNAL routines SETNAM and SETLFS.
 .,E219 A9 00    LDA #$00        default filename is null
@@ -266,7 +266,7 @@
 .,E234 86 4A    STX $4A         store in >FORPNT
 .,E236 A0 00    LDY #$00        secondary address = #0
 .,E238 A5 49    LDA $49         logical file number from temp store
-.,E23A E0 03    CPX #$03        test if serial devce
+.,E23A E0 03    CPX #$03        test if serial device
 .,E23C 90 01    BCC $E23F       nope
 .,E23E 88       DEY             if serial, set secondary address to $ff
 .,E23F 20 BA FF JSR $FFBA       SETLFS
@@ -286,7 +286,7 @@
 .,E261 4C BD FF JMP $FFBD       SETNAM and exit
 
                                 *** COS: PERFORM COS
-                                This routine manipulates the input COS to be calcuated
+                                This routine manipulates the input COS to be calculated
                                 with SIN. COS(X) = SIN(X+pi/2), where  X is in radians. We
                                 use it as Fac#1=SIN(fac#1+pi/2), ie pi/2 is added to fac#1
                                 and the following SIN is performed.
@@ -391,7 +391,7 @@
 
 
                                 *** ATNCON: TABLE OF ATN CONSTANTS
-                                The table holds a 1 byte counter and the folloeing 5 byte
+                                The table holds a 1 byte counter and the following 5 byte
                                 flpt constants.
 .:E33E 0B                       ; 13 (one byte counter for ATN series)
 .:E33F 76 B3 83 BD D3           ; -0.000684793912 (ATN constant 1)
@@ -518,7 +518,7 @@
 
                                 *** INITMS: OUTPUT POWER-UP MESSAGE
                                 This routine outputs the startup message. It then
-                                calcuates the number of BASIC bytes free by subatracting
+                                calculates the number of BASIC bytes free by subtracting
                                 the TXTTAB from MEMSIZ, and outputs this number. The
                                 routine exits via NEW.
 .,E422 A5 2B    LDA $2B         read TXTTAB, start of BASIC
@@ -528,8 +528,8 @@
 .,E42B A0 E4    LDY #$E4
 .,E42D 20 1E AB JSR $AB1E       output (A/Y)
 .,E430 A5 37    LDA $37         MEMSIZ, highest address in BASIC
-.,E432 38       SEC             prepare for substract
-.,E433 E5 2B    SBC $2B         substract TXTTAB
+.,E432 38       SEC             prepare for subtract
+.,E433 E5 2B    SBC $2B         subtract TXTTAB
 .,E435 AA       TAX             move to (X)
 .,E436 A5 38    LDA $38         and highbyte
 .,E438 E5 2C    SBC $2C
@@ -540,7 +540,7 @@
 .,E444 4C 44 A6 JMP $A644       perform NEW
 
                                 *** VECTORS
-                                This table contains jump vectors that are transfered to
+                                This table contains jump vectors that are transferred to
                                 $0300-$030b.
 .:E447 8B E3                    IERROR VEC, print basic error message ($e38b)
 .:E449 83 A4                    IMAIN VECTOR, basic warm start ($a483)
@@ -561,7 +561,7 @@
                                 *** WORDS: POWER UP MESSAGE
                                 This is the power up message displayed on the screen when
                                 the 'Commie' is switched on or reset. The strings are
-                                seperated by a zero byte.
+                                separated by a zero byte.
 .:E45F 00 20 42 41 53 49 43 20  basic bytes free
 .:E467 42 59 54 45 53 20 46 52
 .:E46F 45 45 0D 00 93 0D 20 20
@@ -576,7 +576,7 @@
 .:E4AC 5C
 
                                 *** PATCH FOR BASIC CHKOUT CALL
-                                This is a short patch added for the KERNAL ROM to preserv
+                                This is a short patch added for the KERNAL ROM to preserve
                                 (A) when there was no error returned from BASIC calling
                                 the CHKOUT routine. This corrects a bug in the early
                                 versions of PRINT# and CMD.
@@ -622,9 +622,9 @@
 .,E4EB 60       RTS
 
                                 *** RS232 TIMING TABLE - PAL
-                                Timingtable for RS232 NMI for use with PAL machines. This
+                                Timing table for RS232 NMI for use with PAL machines. This
                                 table contains the prescaler values for setting up the
-                                RS232 baudrates. The table containe 10 entries which
+                                RS232 baudrates. The table contains 10 entries which
                                 corresponds to one of the fixed RS232 rates, starting with
                                 lowest (50 baud) and finishing with the highest (2400
                                 baud). Since the clock frequency is different between NTSC
@@ -674,7 +674,7 @@
                                 This routine is part of the KERNAL CINT init routine. I/O
                                 default values are set, <shift+cbm> keys are disabled, and
                                 cursor is switched off. The vector to the keyboard table
-                                is set up, and the length of the keyboardbuffer is set to
+                                is set up, and the length of the keyboard buffer is set to
                                 10 characters. The cursor color is set to lightblue, and
                                 the key-repeat parameters are set up.
 .,E518 20 A0 E5 JSR $E5A0       set I/O defaults
@@ -688,7 +688,7 @@
 .,E52C A9 0A    LDA #$0A        set max number of character is keyboard buffer to 10
 .,E52E 8D 89 02 STA $0289       XMAX
 .,E531 8D 8C 02 STA $028C       How many 1/60 of a second to wait before key is repeated.
-                                Used togeather with $028b
+                                Used together with $028b
 .,E534 A9 0E    LDA #$0E        set character colour to light blue
 .,E536 8D 86 02 STA $0286       COLOR
 .,E539 A9 04    LDA #$04        How many $028c before a new entry is
@@ -738,7 +738,7 @@
 .,E56C A6 D6    LDX $D6         read TBLX
 .,E56E A5 D3    LDA $D3         read PNTR
 .,E570 B4 D9    LDY $D9,X       read value from screen line link table, LDTB1
-.,E572 30 08    BMI $E57C       heavy calcuations??? jump when ready
+.,E572 30 08    BMI $E57C       heavy calculations??? jump when ready
 .,E574 18       CLC
 .,E575 69 28    ADC #$28
 .,E577 85 D3    STA $D3         PNTR
@@ -755,7 +755,7 @@
 .,E58A 10 F6    BPL $E582
 .,E58C 85 D5    STA $D5         store in LMNX, physical screen line length
 .,E58E 4C 24 EA JMP $EA24       sync color pointer
-.,E591 E4 C9    CPX $C9         read LXSP, chech cursor at start of input
+.,E591 E4 C9    CPX $C9         read LXSP, check cursor at start of input
 .,E593 F0 03    BEQ $E598
 .,E595 4C ED E6 JMP $E6ED       retreat cursor
 .,E598 60       RTS
@@ -781,7 +781,7 @@
 .,E5B3 60       RTS
 
                                 *** LP2: GET CHARACTER FROM KEYBOARD BUFFER
-                                It is assumed that there is at leaset one character in the
+                                It is assumed that there is at least one character in the
                                 keyboard buffer. This character is obtained and the rest
                                 of the queue is moved up one by one to overwrite it. On
                                 exit, the character is in (A).
@@ -827,7 +827,7 @@
 .,E5F6 9D 76 02 STA $0276,X     store in keyboard buffer
 .,E5F9 CA       DEX
 .,E5FA D0 F7    BNE $E5F3       all nine characters
-.,E5FC F0 CF    BEQ $E5CD       allways jump
+.,E5FC F0 CF    BEQ $E5CD       always jump
 .,E5FE C9 0D    CMP #$0D        carriage return pressed?
 .,E600 D0 C8    BNE $E5CA       nope, go to start
 .,E602 A4 D5    LDY $D5         get LNMX, screen line length
@@ -842,8 +842,8 @@
 .,E612 A0 00    LDY #$00
 .,E614 8C 92 02 STY $0292       AUTODN
 .,E617 84 D3    STY $D3         PNTR, cursor column
-.,E619 84 D4    STY $D4         QTSW, reset quoute mode
-.,E61B A5 C9    LDA $C9         LXSP, corsor X/Y position
+.,E619 84 D4    STY $D4         QTSW, reset quotes mode
+.,E61B A5 C9    LDA $C9         LXSP, cursor X/Y position
 .,E61D 30 1B    BMI $E63A
 .,E61F A6 D6    LDX $D6         TBLX, cursor line number
 .,E621 20 ED E6 JSR $E6ED       retreat cursor
@@ -924,8 +924,8 @@
                                 The RVS flag is tested to see if reversed characters are
                                 to be printed. If insert mode is on, the insert counter is
                                 decremented by one. When in insert mode, all characters
-                                will be displayd, ie. DEL RVS etc. The character colour is
-                                placed in (X) and the character is printed to the scrren
+                                will be displayed, ie. DEL RVS etc. The character colour is
+                                placed in (X) and the character is printed to the screen
                                 and the cursor advanced.
 .,E691 09 40    ORA #$40
 .,E693 A6 C7    LDX $C7         test RVS, flag for reversed characters
@@ -1011,7 +1011,7 @@
 .,E705 86 D3    STX $D3         set PNTR to zero as well
 .,E707 68       PLA
 .,E708 68       PLA
-.,E709 D0 9D    BNE $E6A8       allways jump
+.,E709 D0 9D    BNE $E6A8       always jump
 .,E70B CA       DEX             decrement TBLX
 .,E70C 86 D6    STX $D6         and store
 .,E70E 20 6C E5 JSR $E56C       set screen pointers
@@ -1026,7 +1026,7 @@
                                 automatically updated and scrolling occurs if necessary.
                                 On entry, (A) must hold the character to be output. On
                                 entry all registers are stored on the stack. For
-                                convinience, the routine is slpit into sections showing
+                                convenience, the routine is split into sections showing
                                 the processing of both shifted and unshifted character.
 .,E716 48       PHA             store (A), (X) and (Y) on stack
 .,E717 85 D7    STA $D7         temp store
@@ -1062,7 +1062,7 @@
 .,E742 4C 93 E6 JMP $E693       setup screen print
 .,E745 A6 D8    LDX $D8         INSRT, insert mode flag
 .,E747 F0 03    BEQ $E74C       mode not set
-.,E749 4C 97 E6 JMP $E697       output reversed charcter
+.,E749 4C 97 E6 JMP $E697       output reversed character
 .,E74C C9 14    CMP #$14        <DEL>?
 .,E74E D0 2E    BNE $E77E       nope
 .,E750 98       TYA             (Y) holds cursor column
@@ -1072,7 +1072,7 @@
 .,E759 20 A1 E8 JSR $E8A1       check line decrement
 .,E75C 88       DEY             decrement cursor column
 .,E75D 84 D3    STY $D3         and store in PNTR
-.,E75F 20 24 EA JSR $EA24       syncronise colour pointer
+.,E75F 20 24 EA JSR $EA24       synchronise colour pointer
 .,E762 C8       INY             copy character at cursor position (Y+1) to (Y)
 .,E763 B1 D1    LDA ($D1),Y     read character
 .,E765 88       DEY
@@ -1088,7 +1088,7 @@
 .,E775 91 D1    STA ($D1),Y     store <SPACE> at end of line
 .,E777 AD 86 02 LDA $0286       COLOR, current character colour
 .,E77A 91 F3    STA ($F3),Y     store colour at end of line
-.,E77C 10 4D    BPL $E7CB       allways jump
+.,E77C 10 4D    BPL $E7CB       always jump
 .,E77E A6 D4    LDX $D4         QTSW, editor in quotes mode
 .,E780 F0 03    BEQ $E785       no
 .,E782 4C 97 E6 JMP $E697       output reversed character
@@ -1132,7 +1132,7 @@
 .,E7D1 4C 44 EC JMP $EC44       do graphics/text control
 
                                 SHIFTED CHARACTERS. These are dealt with in the following
-                                order: Shifted ordinart ASCII and PET graphics characters,
+                                order: Shifted ordinary ASCII and PET graphics characters,
                                 <shift RETURN>, <INST>, <CRSR UP>, <RVS OFF>, <CRSR LEFT>,
                                 <CLR>. If either insert mode is on, or quotes are open,
                                 then the control character is not processed but reversed
@@ -1161,7 +1161,7 @@
 .,E800 F0 24    BEQ $E826       end of logical line, can not insert
 .,E802 20 65 E9 JSR $E965       open space on line
 .,E805 A4 D5    LDY $D5         LNMX
-.,E807 20 24 EA JSR $EA24       syncronise colour pointer
+.,E807 20 24 EA JSR $EA24       synchronise colour pointer
 .,E80A 88       DEY             prepare for move
 .,E80B B1 D1    LDA ($D1),Y     read character at pos (Y)
 .,E80D C8       INY
@@ -1189,7 +1189,7 @@
 .,E838 F0 37    BEQ $E871       at topline, do nothing
 .,E83A C6 D6    DEC $D6         else decrement TBLX
 .,E83C A5 D3    LDA $D3         PNTR
-.,E83E 38       SEC             prepare for substract
+.,E83E 38       SEC             prepare for subtract
 .,E83F E9 28    SBC #$28        back 40 columns for double line
 .,E841 90 04    BCC $E847       skip
 .,E843 85 D3    STA $D3         store PNTR
@@ -1235,7 +1235,7 @@
 .,E88E 4C 6C E5 JMP $E56C       set screen pointers
 
                                 *** OUTPUT <CARRIAGE RETURN>
-                                All editor modes are swithed off and the cursor placed at
+                                All editor modes are switched off and the cursor placed at
                                 the start of the next line.
 .,E891 A2 00    LDX #$00
 .,E893 86 D8    STX $D8         INSRT, disable insert mode
@@ -1284,7 +1284,7 @@
                                 *** SET COLOUR CODE
                                 This routine is called by the output to screen routine.
                                 The Commodore ASCII code in (A) is compared with the ASCII
-                                colout code table. If a match is found, then the table
+                                colour code table. If a match is found, then the table
                                 offset (and hence the colour value) is stored in COLOR.
 .,E8CB A2 0F    LDX #$0F        16 values to be tested
 .,E8CD DD DA E8 CMP $E8DA,X     compare with colour code table
@@ -1319,7 +1319,7 @@
 
                                 *** SCROLL SCREEN
                                 This routine scrolls the screen down by one line. If the
-                                top two lines are linked togeather, then the scroll down
+                                top two lines are linked together, then the scroll down
                                 is repeated. The screen line link pointers are updated,
                                 each screen line is cleared and the line below is moved
                                 up. The keyboard is directly read from CIA#1, and the
@@ -1347,7 +1347,7 @@
 .,E911 30 EC    BMI $E8FF
 .,E913 20 FF E9 JSR $E9FF       clear a screen line
 .,E916 A2 00    LDX #$00
-.,E918 B5 D9    LDA $D9,X       calcuate new screen line link table
+.,E918 B5 D9    LDA $D9,X       calculate new screen line link table
 .,E91A 29 7F    AND #$7F        clear bit7
 .,E91C B4 DA    LDY $DA,X
 .,E91E 10 02    BPL $E922
@@ -1463,8 +1463,8 @@
 .,E9DF 60       RTS
 
                                 *** SYNCHRONISE COLOUR TRANSFER
-                                This routine setd up a temporary pointer in EAL to the
-                                colour RAM address that corresponts to the temporary
+                                This routine sets up a temporary pointer in EAL to the
+                                colour RAM address that corresponds to the temporary
                                 screen address held in EAL.
 .,E9E0 20 24 EA JSR $EA24       synchronise colour pointer
 .,E9E3 A5 AC    LDA $AC         SAL, pointer for screen scroll
@@ -1489,7 +1489,7 @@
 
                                 *** CLEAR SCREEN LINE
                                 The start of line is set and the screen line is cleared by
-                                filloing it with ASCII spaces. The corresponding line of
+                                filling it with ASCII spaces. The corresponding line of
                                 colour RAM is also cleared to the value held in COLOR.
 .,E9FF A0 27    LDY #$27
 .,EA01 20 F0 E9 JSR $E9F0       set start of line
@@ -1509,20 +1509,20 @@
                                 colour in (X) is stored at the equivalent point in the
                                 colour RAM.
 .,EA13 A8       TAY             put print character in (Y)
-.,EA14 A9 02    LDA #$02set the
-.,EA16 85 CD    STA $CD         store in BLNCT, timer to toggle cursor
+.,EA14 A9 02    LDA #$02
+.,EA16 85 CD    STA $CD         store initial value in BLNCT, timer to toggle cursor
 .,EA18 20 24 EA JSR $EA24       synchronise colour pointer
 .,EA1B 98       TYA             print character back to (A)
 .,EA1C A4 D3    LDY $D3         PNTR, cursor column on line
 .,EA1E 91 D1    STA ($D1),Y     store character on screen
 .,EA20 8A       TXA
-.,EA21 91 F3    STA ($F3),Y     stor character colour
+.,EA21 91 F3    STA ($F3),Y     store character colour
 .,EA23 60       RTS
 
                                 *** SYNCHRONISE COLOUR POINTER
                                 The pointer to the colour RAM is set up according to the
                                 current screen line address. This is done by reading the
-                                current screen line address and modefying it to colour RAM
+                                current screen line address and modifying it to colour RAM
                                 pointers and write it to USER at $f3/$f4
 .,EA24 A5 D1    LDA $D1         copy screen line low byte
 .,EA26 85 F3    STA $F3         to colour RAM low byte
@@ -1638,12 +1638,12 @@
 .,EADC 68       PLA             clean up
 
                                 *** PROCESS KEY IMAGE
-                                This routine decodes the pressed key, and calcuates its
+                                This routine decodes the pressed key, and calculates its
                                 ASCII value, by use of the four tables. If the pressed key
                                 is the same key as in the former interrupt, then the key-
                                 repeat-section is entered. The routine tests the RPTFLG if
                                 he key shall repeat. The new key is stored in the keyboard
-                                buffer, and all pointers are uppdated.
+                                buffer, and all pointers are updated.
 .,EADD 6C 8F 02 JMP ($028F)     jump through KEYLOG vector, points to $eae0
 .,EAE0 A4 CB    LDY $CB         SFDX, number of the key we pressed
 .,EAE2 B1 F5    LDA ($F5),Y     get ASCII value from decode table
@@ -1671,7 +1671,7 @@
 .,EB10 F0 05    BEQ $EB17       skip
 .,EB12 CE 8C 02 DEC $028C       decrement DELAY
 .,EB15 D0 2B    BNE $EB42       end
-.,EB17 CE 8B 02 DEC $028B       decremant KOUNT, repeat speed counter
+.,EB17 CE 8B 02 DEC $028B       decrement KOUNT, repeat speed counter
 .,EB1A D0 26    BNE $EB42       end
 .,EB1C A0 04    LDY #$04
 .,EB1E 8C 8B 02 STY $028B       init KOUNT
@@ -1725,11 +1725,11 @@
 .:EB7F 78 EC                    vector to ctrl keyboard, $ec78
 
                                 *** KEYBOARD 1 - UNSHIFTED
-                                This is the first of four keybboard decode tables. The
+                                This is the first of four keyboard decode tables. The
                                 ASCII code for the key pressed is at the intersection of
                                 the row (written to $dc00) and the column (read from
                                 $dc01). The matrix values are shown below. Note that left
-                                and right shift keys are seperated.
+                                and right shift keys are separated.
 .:EB81 14 0D 1D 88 85 86 87 11
 .:EB89 33 57 41 34 5A 53 45 01
 .:EB91 35 52 44 36 43 46 54 58
@@ -1758,7 +1758,7 @@
                                 *** KEYBOARD 3 - COMMODORE
                                 This is the third of four keyboard decode tables. The
                                 ASCII code for the key pressed is at the intersection of
-                                the ro (written to $dc00) and hte column (read from
+                                the ro (written to $dc00) and the column (read from
                                 $dc01). The matrix values are shown below.
 .:EC03 94 8D 9D 8C 89 8A 8B 91
 .:EC0B 96 B3 B0 97 AD AE B1 01
@@ -1779,7 +1779,7 @@
 .,EC46 D0 07    BNE $EC4F       nope
 .,EC48 AD 18 D0 LDA $D018       VIC memory control register
 .,EC4B 09 02    ORA #$02        set bit1
-.,EC4D D0 09    BNE $EC58       allways branch
+.,EC4D D0 09    BNE $EC58       always branch
 .,EC4F C9 8E    CMP #$8E        <switch to upper case>
 .,EC51 D0 0B    BNE $EC5E       nope
 .,EC53 AD 18 D0 LDA $D018       VIC memory control register
@@ -1790,7 +1790,7 @@
 .,EC60 D0 07    BNE $EC69       nope
 .,EC62 A9 80    LDA #$80
 .,EC64 0D 91 02 ORA $0291       disable MODE
-.,EC67 30 09    BMI $EC72       allways jump
+.,EC67 30 09    BMI $EC72       always jump
 .,EC69 C9 09    CMP #$09        <enable <shift-CBM>>
 .,EC6B D0 EE    BNE $EC5B       nope, exit
 .,EC6D A9 7F    LDA #$7F
@@ -1807,7 +1807,7 @@
                                 <ctrl H> - disables the upper/lower case switch
                                 <ctrl I> - enables the upper/lower case switch
                                 <ctrl S> - homes the cursor
-                                <ctrl T> - delets character
+                                <ctrl T> - deletes character
                                 Note that the italic keys only represent a ASCII code, and
                                 not a CBM character.
 .:EC78 FF FF FF FF FF FF FF FF
@@ -1823,14 +1823,14 @@
                                 *** VIDEO CHIP SET UP TABLE
                                 This is a table of the initial values for the VIC chip
                                 registers at start up.
-.:ECB9 00 00                    $d000/1, sprite0 - x,y cordinate
-.:ECBB 00 00                    $d002/3, sprite1 - x,y cordinate
-.:ECBD 00 00                    $d004/5, sprite2 - x,y cordinate
-.:ECBF 00 00                    $d006/7, sprite3 - x,y cordinate
-.:ECC1 00 00                    $d008/9, sprite4 - x,y cordinate
-.:ECC3 00 00                    $d00a/b, sprite5 - x,y cordinate
-.:ECC5 00 00                    $d00c/d, sprite6 - x,y cordinate
-.:ECC7 00 00                    $d00e/f, sprite7 - x,y cordinate
+.:ECB9 00 00                    $d000/1, sprite0 - x,y coordinate
+.:ECBB 00 00                    $d002/3, sprite1 - x,y coordinate
+.:ECBD 00 00                    $d004/5, sprite2 - x,y coordinate
+.:ECBF 00 00                    $d006/7, sprite3 - x,y coordinate
+.:ECC1 00 00                    $d008/9, sprite4 - x,y coordinate
+.:ECC3 00 00                    $d00a/b, sprite5 - x,y coordinate
+.:ECC5 00 00                    $d00c/d, sprite6 - x,y coordinate
+.:ECC7 00 00                    $d00e/f, sprite7 - x,y coordinate
 .:ECC9 00                       $d010, sprite MSB
 .:ECCA 9B                       $d011, VIC control register
 .:ECCB 37                       $d012,
@@ -1888,7 +1888,7 @@
                                 (#$3f) and UNLISTEN (#$5f) are also sent via this routine,
                                 but their values are set on entry. If there is a character
                                 waiting to go out on the bus, then this is output.
-                                Handshaking is performed, and ATN (attension) is set low
+                                Handshaking is performed, and ATN (attention) is set low
                                 so that the byte is interpreted as a command. The routine
                                 drops through to the next one to output the byte on the
                                 serial bus. Note that on conclusion, ATN must be set high.
@@ -1993,19 +1993,19 @@
 .,EDB2 20 1C FE JSR $FE1C       set I/O status word
 .,EDB5 58       CLI
 .,EDB6 18       CLC
-.,EDB7 90 4A    BCC $EE03       allways jump, do final handshake
+.,EDB7 90 4A    BCC $EE03       always jump, do final handshake
 
                                 *** SECOND: SEND LISTEN SA
                                 The KERNAL routine SECOND ($ff93) is vectored here. On
                                 entry, (A) holds the secondary address. This is placed in
                                 the serial buffer and sent to the serial bus "under
-                                attension". Finally the routine drops through to the next
+                                attention". Finally the routine drops through to the next
                                 routine to set ATN false.
 .,EDB9 85 95    STA $95         store (A) in BSOUT, buffer for the serial bus
 .,EDBB 20 36 ED JSR $ED36       handshake and send byte.
 
                                 *** CLEAR ATN
-                                The ATN, attension, line on the serial bus is set to 1,
+                                The ATN, attention, line on the serial bus is set to 1,
                                 ie. ATN is now false and data sent on the serial bus will
                                 not be interpreted as a command.
 .,EDBE AD 00 DD LDA $DD00       serial bus I/O port
@@ -2017,14 +2017,14 @@
                                 The KERNAL routine TKSA ($ff96) is vectored here. On
                                 entry, (A) holds the secondary address. This is placed in
                                 the serial buffer and sent out to the serial bus "under
-                                attension". The routine drops through to the next routine
+                                attention". The routine drops through to the next routine
                                 to wait for CLK and clear ATN.
 .,EDC7 85 95    STA $95         BSOUR, the serial bus buffer
 .,EDC9 20 36 ED JSR $ED36       handshake and send byte to the bus
 
                                 *** WAIT FOR CLOCK
                                 This routine sets data = 0, ATN = 1 and CLK = 1. It then
-                                waits to recieve CLK = 0 from the serial bus.
+                                waits to receive CLK = 0 from the serial bus.
 .,EDCC 78       SEI             disable interrupts
 .,EDCD 20 A0 EE JSR $EEA0       set data 0
 .,EDD0 20 BE ED JSR $EDBE       set ATN 1
@@ -2077,13 +2077,13 @@
 
                                 *** ACPTR: RECIEVE FROM SERIAL BUS
                                 The KERNAL routine ACPTR ($ffa5) points to this routine. A
-                                timing loop is enteredusing the CIA timer, and if a byte
+                                timing loop is entered using the CIA timer, and if a byte
                                 is not received in 65 ms, ST is set to #$02, ie. a read
                                 timeout. A test is made for EOI and if this occurs, ST is
                                 set to #$40, indicating end of file. The byte is then
                                 received from the serial bus and built up bit by bit in
-                                the temporary stora at #$a4. This is transfered to (A) on
-                                exit, unless EOI has occured.
+                                the temporary store at #$a4. This is transferred to (A) on
+                                exit, unless EOI has occurred.
 .,EE13 78       SEI
 .,EE14 A9 00    LDA #$00
 .,EE16 85 A5    STA $A5         CNTDN, counter
@@ -2174,11 +2174,11 @@
 
                                 *** GET SERIAL DATA AND CLOCK IN
                                 The serial port I/O register is stabilised and read. The
-                                data is shifteed into carry and CLK into bit 7. This way,
+                                data is shifted into carry and CLK into bit 7. This way,
                                 both the data and clock can bee determined by flags in the
                                 processor status register. Note that the values read are
-                                true, and do not nead to be reversed in the same way as
-                                the outuput line do.
+                                true, and do not need to be reversed in the same way as
+                                the output line do.
 .,EEA9 AD 00 DD LDA $DD00       serial port I/O register
 .,EEAC CD 00 DD CMP $DD00       compare
 .,EEAF D0 F8    BNE $EEA9       wait for bus to settle
@@ -2193,7 +2193,7 @@
 .,EEB3 8A       TXA             move (X) to (A)
 .,EEB4 A2 B8    LDX #$B8        start value
 .,EEB6 CA       DEX             decrement
-.,EEB7 D0 FD    BNE $EEB6       untill zero
+.,EEB7 D0 FD    BNE $EEB6       until zero
 .,EEB9 AA       TAX             (A) to (X)
 .,EEBA 60       RTS
 
@@ -2223,8 +2223,8 @@
 .,EED4 85 B5    STA $B5         NXTBIT, next RS232 bit to send
 .,EED6 60       RTS
 .,EED7 A9 20    LDA #$20
-.,EED9 2C 94 02 BIT $0294       M51CDR, 6551 command register immage
-.,EEDC F0 14    BEQ $EEF2       no patity
+.,EED9 2C 94 02 BIT $0294       M51CDR, 6551 command register image
+.,EEDC F0 14    BEQ $EEF2       no parity
 .,EEDE 30 1C    BMI $EEFC       mark/space transmit
 .,EEE0 70 14    BVS $EEF6       even parity
 .,EEE2 A5 BD    LDA $BD         ROPRTY, out parity
@@ -2249,7 +2249,7 @@
                                 *** SEND NEW RS232 BYTE
                                 This routine sets up the system variables ready to send a
                                 new byte to the RS232 port. A test is made for 3-line or
-                                X-line modus. In X-line mode, DSR and  CTS are checked.
+                                X-line mode. In X-line mode, DSR and  CTS are checked.
 .,EF06 AD 94 02 LDA $0294       M51CDR, 6551 command register
 .,EF09 4A       LSR             test handshake mode
 .,EF0A 90 07    BCC $EF13       3-line mode (no handshake)
@@ -2345,8 +2345,8 @@
 .,EF8D 4C 3B EF JMP $EF3B       disable timer and exit
 
                                 *** PROCESS RS232 BYTE
-                                The byte recieved from the RS232 port is checked against
-                                parity. This involvs checking the input parity options
+                                The byte received from the RS232 port is checked against
+                                parity. This involves checking the input parity options
                                 selected, and then verifying the parity bit calculated
                                 against that input. If the test is passed, then the byte
                                 is stored in the in-buffer. Otherwise an error is flagged
@@ -2398,7 +2398,7 @@
                                 *** SUBMIT TO RS232
                                 This routine is called when data is required from the
                                 RS232 port. Its function is to perform the handshaking on
-                                the poort needed to receive the data. If 3 line mode is
+                                the port needed to receive the data. If 3 line mode is
                                 used, then no handshaking is implemented and the routine
                                 exits.
 .,EFE1 85 9A    STA $9A         DFLTO, default output device
@@ -2548,7 +2548,7 @@
                                 control which message is printed. The routine tests if we
                                 are in program mode or direct mode. If in program mode,
                                 the routine exits. Else, the routine prints character
-                                after caracter untill it reaches a character with bit7
+                                after character until it reaches a character with bit7
                                 set.
 .,F12B 24 9D    BIT $9D         MSGFLG, test if direct or program mode
 .,F12D 10 0D    BPL $F13C       program mode, don't print message
@@ -2558,7 +2558,7 @@
 .,F135 20 D2 FF JSR $FFD2       output character using CHROUT
 .,F138 C8       INY             increment pointer to next character
 .,F139 28       PLP             retrieve message
-.,F13A 10 F3    BPL $F12F       untill bit7 was set
+.,F13A 10 F3    BPL $F12F       until bit7 was set
 .,F13C 18       CLC             clear carry to indicate no error
 .,F13D 60       RTS
 
@@ -2639,10 +2639,10 @@
 
                                 *** GET FROM SERIAL/RS232
                                 These routines, actually two different, is entered from
-                                the previous routine. The serial sectionchecks the state
-                                of ST. If zero, then the data is recieved from the bus,
+                                the previous routine. The serial section checks the state
+                                of ST. If zero, then the data is received from the bus,
                                 otherwise carriage return (#0d) is returned in (A). In the
-                                second section, the recieved byte is read from the RS232
+                                second section, the received byte is read from the RS232
                                 port.
 .,F1AD A5 90    LDA $90         STATUS, I/O status word
 .,F1AF F0 04    BEQ $F1B5       status OK
@@ -2728,7 +2728,7 @@
 .,F223 C9 02    CMP #$02        RS232
 .,F225 D0 03    BNE $F22A       nope
 .,F227 4C 4D F0 JMP $F04D       input from RS232
-.,F22A A6 B9    LDX $B9         SA, current secondart address
+.,F22A A6 B9    LDX $B9         SA, current secondary address
 .,F22C E0 60    CPX #$60
 .,F22E F0 03    BEQ $F233
 .,F230 4C 0A F7 JMP $F70A       I/O error #6, not output file
@@ -2749,7 +2749,7 @@
 
                                 *** CHKOUT: SET OUTPUT DEVICE
                                 The KERNAL routine CHKOUT ($ffc9) is vectored to this
-                                routinr. On entry (X) must hold the logical filenumber. A
+                                routine. On entry (X) must hold the logical filenumber. A
                                 test is made to see if the file is open, or ?FILE NOT OPEN
                                 error. If the device is 0, ie. the keyboard, or the file
                                 is not an output file, then ?FILE OUTPUT FILE error is
@@ -2774,7 +2774,7 @@
 .,F271 E0 60    CPX #$60
 .,F273 F0 EA    BEQ $F25F       not output file error
 .,F275 85 9A    STA $9A         DFLTO, default output device
-.,F277 18       CLC             clear carry to incicate no errors
+.,F277 18       CLC             clear carry to indicate no errors
 .,F278 60       RTS
 .,F279 AA       TAX             file (X) to (A)
 .,F27A 20 0C ED JSR $ED0C       send LISTEN to serial device
@@ -2853,7 +2853,7 @@
 .,F2F5 E4 98    CPX $98         compare LDTND to (X)
 .,F2F7 F0 14    BEQ $F30D       equal, closed file = last file in table
 .,F2F9 A4 98    LDY $98         else, move last entry to position of closed entry
-.,F2FB B9 59 02 LDA $0259,Y     LAT, active filenumbers
+.,F2FB B9 59 02 LDA $0259,Y     LAT, active file numbers
 .,F2FE 9D 59 02 STA $0259,X
 .,F301 B9 63 02 LDA $0263,Y     FAT, active device numbers
 .,F304 9D 63 02 STA $0263,X
@@ -2919,7 +2919,7 @@
 
                                 *** OPEN: OPEN FILE
                                 The KERNAL routine OPEN ($ffc0) is vectored here. The file
-                                paramerters must be set before entry. The routine reads
+                                parameters must be set before entry. The routine reads
                                 the LAT, to see if file already exists, which will result
                                 in I/O error #2, ?FILE OPEN. A test is made to see if more
                                 than 10 files are open. If so, I/O error #1, ?TOO MANY
@@ -2927,7 +2927,7 @@
                                 their respective tables. The device number is checked, and
                                 each kind of device jumps to their own routine. Keyboard
                                 and screen will exit here with no further actions. RS232
-                                is opened via a seperate routine. SA, secondary address,
+                                is opened via a separate routine. SA, secondary address,
                                 and filename will be sent on the serial bus.
 .,F34A A6 B8    LDX $B8         LA, current logical number
 .,F34C D0 03    BNE $F351
@@ -2943,7 +2943,7 @@
 .,F364 A5 B8    LDA $B8         LA
 .,F366 9D 59 02 STA $0259,X     store in LAT, table of active file numbers
 .,F369 A5 B9    LDA $B9         SA
-.,F36B 09 60    ORA #$60        fixx
+.,F36B 09 60    ORA #$60        fix
 .,F36D 85 B9    STA $B9         store in SA
 .,F36F 9D 6D 02 STA $026D,X     store in SAT, table of active secondary addresses
 .,F372 A5 BA    LDA $BA         FA
@@ -2995,7 +2995,7 @@
 
                                 *** SEND SA
                                 This routine exits if there is no secondary address or
-                                filename specifyed. The I/O status word, ST, is reset, and
+                                filename specified. The I/O status word, ST, is reset, and
                                 the serial device is commanded to LISTEN. A check is made
                                 for a possible ?DEVICE NOT PRESENT error. Finally, the
                                 filename is sent to the device.
@@ -3092,7 +3092,7 @@
 .,F49D 60       RTS
 
                                 *** LOAD: LOAD RAM
-                                The kernal routine LOAD ($ffd5) is vectoed here. If a
+                                The kernal routine LOAD ($ffd5) is vectored here. If a
                                 relocated load is desired, then the start address is set
                                 in MEMUSS. The load/verify flag is set, and the I/O status
                                 word is reset. A test is done on the device number, less
@@ -3114,12 +3114,12 @@
                                 sent with the TALK command and secondary address to the
                                 serial bus. If EOI occurs at this point, then ?FILE NOT
                                 FOUND is displayed. The message 'LOADING' or 'VERIFYING'
-                                is output and a loop is entered, which recieves a byte
+                                is output and a loop is entered, which receives a byte
                                 from the serial bus, checks the <STOP> key and either
                                 stores the received byte, or compares it to the memory,
                                 depending on the state of VERCK. Finally the bus is
                                 UNTALKed.
-.,F4B6 90 7B    BCC $F533       device < 3, eg tape or RS232, illegal device
+.,F4B6 90 7B    BCC $F533       device < 3, e.g. tape or RS232, illegal device
 .,F4B8 A4 B7    LDY $B7         FNLEN, length of filename
 .,F4BA D0 03    BNE $F4BF       if length not is zero
 .,F4BC 4C 10 F7 JMP $F710       'MISSING FILENAME'
@@ -3138,7 +3138,7 @@
 .,F4DC 4A       LSR
 .,F4DD 4A       LSR
 .,F4DE B0 50    BCS $F530       EOI set, file not found
-.,F4E0 20 13 EE JSR $EE13       recieve from serial bus
+.,F4E0 20 13 EE JSR $EE13       receive from serial bus
 .,F4E3 85 AF    STA $AF         load address, >EAL
 .,F4E5 8A       TXA             retrieve SA and test relocated load
 .,F4E6 D0 08    BNE $F4F0
@@ -3153,7 +3153,7 @@
 .,F4F9 20 E1 FF JSR $FFE1       scan <STOP>
 .,F4FC D0 03    BNE $F501       not stopped
 .,F4FE 4C 33 F6 JMP $F633
-.,F501 20 13 EE JSR $EE13      ACPTR, recrive from serial bus
+.,F501 20 13 EE JSR $EE13      ACPTR, receive from serial bus
 .,F504 AA       TAX
 .,F505 A5 90    LDA $90
 .,F507 4A       LSR
@@ -3164,7 +3164,7 @@
 .,F50E F0 0C    BEQ $F51C       jump to LOAD
 .,F510 A0 00    LDY #$00
 .,F512 D1 AE    CMP ($AE),Y     compare with memory
-.,F514 F0 08    BEQ $F51E       veryfied byte OK
+.,F514 F0 08    BEQ $F51E       verified byte OK
 .,F516 A9 10    LDA #$10
 .,F518 20 1C FE JSR $FE1C
 .:F51B 2C       .BYTE $2C       mask next write command
@@ -3241,7 +3241,7 @@
 
                                 *** LOAD END
                                 This is the last part of the loader routine which sets the
-                                (X/Y) register with the endaddress of the loaded program,
+                                (X/Y) register with the end address of the loaded program,
                                 clears carry and exit.
 .,F5A9 18       CLC
 .,F5AA A6 AE    LDX $AE
@@ -3291,7 +3291,7 @@
                                 entry, (X/Y) must hold the end address+1 of the area of
                                 memory to be saved. (A) holds the pointer to the start
                                 address of the block, held in zeropage. The current device
-                                number is checked to ensure that it is niether keyboard
+                                number is checked to ensure that it is neither keyboard
                                 (0) or screen (3). Both of these result in ?ILLEGAL DEVICE
                                 NUMBER.
 .,F5DD 86 AE    STX $AE         EAL , end address of block +1
@@ -3315,7 +3315,7 @@
                                 and the filename is sent along with the secondary address.
                                 The message 'SAVING' is printed, and a loop sends a byte
                                 to the serial bus and checks <STOP> key until the whole
-                                specifyed block of memory has been saved. Note that the
+                                specified block of memory has been saved. Note that the
                                 first two bytes sent are the start address of the block.
                                 Finally the serial bus is UNLISTENed.
 .,F5FA A9 61    LDA #$61
@@ -3411,7 +3411,7 @@
 .,F6A3 D0 02    BNE $F6A7
 .,F6A5 E6 A0    INC $A0         high byte of jiffy clock
 .,F6A7 38       SEC
-.,F6A8 A5 A2    LDA $A2         substract $4f1a01
+.,F6A8 A5 A2    LDA $A2         subtract $4f1a01
 .,F6AA E9 01    SBC #$01
 .,F6AC A5 A1    LDA $A1
 .,F6AE E9 1A    SBC #$1A
@@ -3434,7 +3434,7 @@
 .,F6C9 8E 00 DC STX $DC00       keyboard write register
 .,F6CC AE 01 DC LDX $DC01       keyboard read register
 .,F6CF EC 01 DC CPX $DC01
-.,F6D2 D0 F8    BNE $F6CC       wiat for value to settle
+.,F6D2 D0 F8    BNE $F6CC       wait for value to settle
 .,F6D4 8D 00 DC STA $DC00
 .,F6D7 E8       INX
 .,F6D8 D0 02    BNE $F6DC
@@ -3456,11 +3456,11 @@
                                 *** SETTIM: SET TIME
                                 The KERNAL routine SETTIM ($ffdb) jumps to this routine.
                                 On entry, (A/X/Y) must hold the value to be stored in the
-                                clock. The forman is high/mid/low, and clock resolution is
+                                clock. The format is high/mid/low, and clock resolution is
                                 1/60 second. SEI is included since part of the IRQ routine
                                 is to update the clock.
 .,F6E4 78       SEI             disable interrupt
-.,F6E5 85 A2    STA $A2         wrine TIME
+.,F6E5 85 A2    STA $A2         write TIME
 .,F6E7 86 A1    STX $A1
 .,F6E9 84 A0    STY $A0
 .,F6EB 58       CLI             enable interrupts
@@ -3468,7 +3468,7 @@
 
                                 *** STOP: CHECK <STOP> KEY
                                 The KERNAL routine STOP ($ffe1) is vectored here. If STKEY
-                                =#7f, then <STOP> was pressed and logged whilest the jiffy
+                                =#7f, then <STOP> was pressed and logged whilst the jiffy
                                 clock was being updated, so all I/O channels are closed
                                 and the keyboard buffer reset.
 .,F6ED A5 91    LDA $91         STKEY
@@ -4240,10 +4240,10 @@
                                 is the first routine executed when the computer is
                                 switched on. The routine firstly sets the stackpointer to
                                 #ff, disables interrupts and clears the decimal flag. It
-                                jumps to a routine at $fd02 which checks for autostart-
-                                cartridges. If so, an indirectjump is performed to the
+                                jumps to a routine at $fd02 which checks for autostart
+                                cartridges. If so, an indirect jump is performed to the
                                 cartridge coldstart vector at $8000. I/O chips are
-                                initiated, and system constants are set up. Finaly the IRQ
+                                initiated, and system constants are set up. Finally the IRQ
                                 is enabled, and an indirect jump is performed to $a000,
                                 the basic cold start vector.
 .,FCE2 A2 FF    LDX #$FF
@@ -4252,7 +4252,7 @@
 .,FCE6 D8       CLD
 .,FCE7 20 02 FD JSR $FD02       Check ROM at $8000
 .,FCEA D0 03    BNE $FCEF
-.,FCEC 6C 00 80 JMP ($8000)     Jump to autostartvector
+.,FCEC 6C 00 80 JMP ($8000)     Jump to autostart vector
 .,FCEF 8E 16 D0 STX $D016
 .,FCF2 20 A3 FD JSR $FDA3       Init I/O
 .,FCF5 20 50 FD JSR $FD50       Init system constants
@@ -4262,10 +4262,10 @@
 .,FCFF 6C 00 A0 JMP ($A000)     Basic coldstart
 
                                 *** CHECK FOR 8-ROM
-                                Checks for the ROM autostartparametrar at $8004-$8008. It
+                                Checks for the ROM autostart parameters at $8004-$8008. It
                                 compares data with $fd10, and if equal, set Z=1.
 .,FD02 A2 05    LDX #$05        5 bytes to check
-.,FD04 BD 0F FD LDA $FD0F,X     Identifyer at $fd10
+.,FD04 BD 0F FD LDA $FD0F,X     Identifier at $fd10
 .,FD07 DD 03 80 CMP $8003,X     Compare with $8004
 .,FD0A D0 03    BNE $FD0F       NOT equal!
 .,FD0C CA       DEX
@@ -4273,15 +4273,15 @@
 .,FD0F 60       RTS
 
                                 *** 8-ROM IDENTIFYER
-                                The following 5 bytes contains the 8-ROM identifyer,
+                                The following 5 bytes contains the 8-ROM identifier,
                                 reading "CBM80" with CBM ASCII. It is used with
-                                autostartcartridges. See $fd02.
+                                autostart cartridges. See $fd02.
 .:FD10 C3 C2 CD 38 30           CBM80
 
 
                                 *** RESTOR: KERNAL RESET
                                 The KERNAL routine RESTOR ($ff8a) jumps to this routine.
-                                It restores (copys) the KERNAL vectors at $fd30 to $0314-
+                                It restores (copies) the KERNAL vectors at $fd30 to $0314-
                                 $0333. Continues through VECTOR.
 .,FD15 A2 30    LDX #$30        $fd30 - table of KERNAL vectors
 .,FD17 A0 FD    LDY #$FD        Clear carry to SET values.
@@ -4289,13 +4289,13 @@
 
                                 *** VECTOR: KERNAL MOVE
                                 The KERNAL routine VECTOR ($ff8d) jumps to this routine.
-                                It reads or sets the vactors at $0314-$0333 depending on
-                                state of carry. X/Y contains the adress to read/write
+                                It reads or sets the vectors at $0314-$0333 depending on
+                                state of carry. X/Y contains the address to read/write
                                 area, normally $fd30. See $fd15.
                                 A problem is that the RAM under the ROM at $fd30 always
                                 gets a copy of the contents in the ROM then you perform
                                 the copy.
-.,FD1A 86 C3    STX $C3         MEMUSS - c3/c4 temporary used for adress
+.,FD1A 86 C3    STX $C3         MEMUSS - c3/c4 temporary used for address
 .,FD1C 84 C4    STY $C4
 .,FD1E A0 1F    LDY #$1F        Number of bytes to transfer
 .,FD20 B9 14 03 LDA $0314,Y
@@ -4308,7 +4308,7 @@
 .,FD2F 60       RTS
 
                                 *** KERNAL RESET VECTORS
-                                These are the vectors that is copyed to $0314-$0333 when
+                                These are the vectors that is copied to $0314-$0333 when
                                 RESTOR is called.
 .:FD30 31 EA                    CINV VECTOR: hardware interrupt ($ea31)
 .:FD32 66 FE                    CBINV VECTOR: software interrupt ($fe66)
@@ -4454,7 +4454,7 @@
                                 The routine checks if the current devicenumber is 2, (ie
                                 RS232) then the value of RSSTAT (the ACIA 6551 status)is
                                 returned in (A), and RSSTAT is cleared. Else it reads and
-                                returnes the value of STATUS.
+                                returns the value of STATUS.
 .,FE07 A5 BA    LDA $BA         read current device number from FA
 .,FE09 C9 02    CMP #$02        device = RS232?
 .,FE0B D0 0D    BNE $FE1A       nope, read STATUS
@@ -4539,7 +4539,7 @@
                                 default values, I/O vectors initialised and a jump to
                                 ($a002), the Basic warm start vector.
                                 The NMI routine continues at $fe72 by checking the RS232,
-                                if there is anyting to send.
+                                if there is anything to send.
 .,FE66 20 15 FD JSR $FD15       KERNAL reset
 .,FE69 20 A3 FD JSR $FDA3       init I/O
 .,FE6C 20 18 E5 JSR $E518       init I/O
@@ -4550,7 +4550,7 @@
 .,FE73 2D A1 02 AND $02A1       mask with ENABL, RS232 enable
 .,FE76 AA       TAX             temp store in (X)
 .,FE77 29 01    AND #$01        test if sending (%00000001)
-.,FE79 F0 28    BEQ $FEA3       nope, jump to recieve test
+.,FE79 F0 28    BEQ $FEA3       nope, jump to receive test
 .,FE7B AD 00 DD LDA $DD00       load CIA#1 DRA
 .,FE7E 29 FB    AND #$FB        mask bit2 (RS232 send)
 .,FE80 05 B5    ORA $B5         NXTBIT, next bit to send
@@ -4558,10 +4558,10 @@
 .,FE85 AD A1 02 LDA $02A1
 .,FE88 8D 0D DD STA $DD0D       write ENABL to CIA#2 I.C.R
 .,FE8B 8A       TXA             get temp
-.,FE8C 29 12    AND #$12        test if recieving (bit1), or waiting for reciever
+.,FE8C 29 12    AND #$12        test if receiving (bit1), or waiting for receiver
                                 edge (bit4) ($12 = %00010010)
-.,FE8E F0 0D    BEQ $FE9D       nope, skip reciever routine
-.,FE90 29 02    AND #$02        test if recieving
+.,FE8E F0 0D    BEQ $FE9D       nope, skip receiver routine
+.,FE90 29 02    AND #$02        test if receiving
 .,FE92 F0 06    BEQ $FE9A       nope
 .,FE94 20 D6 FE JSR $FED6       jump to NMI RS232 in
 .,FE97 4C 9D FE JMP $FE9D
@@ -4587,8 +4587,8 @@
 .,FEC1 40       RTI             back from NMI
 
                                 *** RS232 TIMING TABLE - NTSC
-                                Timingtable for RS232 NMI for use with NTSC machines. The
-                                table containe 10 entries which corresponds to one of the
+                                Timing table for RS232 NMI for use with NTSC machines. The
+                                table contains 10 entries which corresponds to one of the
                                 fixed RS232 rates, starting with lowest (50 baud) and
                                 finishing with the highest (2400 baud). Since the clock
                                 frequency is different between NTSC and PAL systems, there
@@ -4607,7 +4607,7 @@
                                 *** NMI RS232 IN
                                 This routine inputs a bit from the RS232 port and sets the
                                 baudrate timing for the next bit. Continues to the RS232
-                                recieve routine.
+                                receive routine.
 .,FED6 AD 01 DD LDA $DD01       RS232 I/O port
 .,FED9 29 01    AND #$01        test bit0, received data
 .,FEDB 85 A7    STA $A7         store in INBIT
@@ -4692,7 +4692,7 @@
 .,FF5B 20 18 E5 JSR $E518       original I/O init
 .,FF5E AD 12 D0 LDA $D012       wait for top of screen
 .,FF61 D0 FB    BNE $FF5E       at line zero
-.,FF63 AD 19 D0 LDA $D019       Check IRQ flag register if interrupt occured
+.,FF63 AD 19 D0 LDA $D019       Check IRQ flag register if interrupt occurred
 .,FF66 29 01    AND #$01        only first bit
 .,FF68 8D A6 02 STA $02A6       store in PAL/NTSC flag
 .,FF6B 4C DD FD JMP $FDDD       jump to ENABLE TIMER
@@ -4701,7 +4701,7 @@
                                 This routine starts the CIA#1 timer and jumps into a
                                 routine that handles the serial clock.
 .,FF6E A9 81    LDA #$81        Enable IRQ when timer B reaches zero
-.,FF70 8D 0D DC STA $DC0D       CIA#1 interrupt controll register
+.,FF70 8D 0D DC STA $DC0D       CIA#1 interrupt control register
 .,FF73 AD 0E DC LDA $DC0E       CIA#1 control register A
 .,FF76 29 80    AND #$80
 .,FF78 09 11    ORA #$11        Force load of timer A values -bit4, and start -bit0
@@ -4743,7 +4743,7 @@
 .,FFC6 6C 1E 03 JMP ($031E)     CHKIN, prepare channel for input
 .,FFC9 6C 20 03 JMP ($0320)     CHKOUT, prepare channel for output
 .,FFCC 6C 22 03 JMP ($0322)     CLRCHN, close all I/O
-.,FFCF 6C 24 03 JMP ($0324)     CHRIN, inpup byte from channel
+.,FFCF 6C 24 03 JMP ($0324)     CHRIN, input byte from channel
 .,FFD2 6C 26 03 JMP ($0326)     CHROUT, output byte to channel
 .,FFD5 4C 9E F4 JMP $F49E       LOAD, load from serial device
 .,FFD8 4C DD F5 JMP $F5DD       SAVE, save to serial device
