@@ -182,7 +182,7 @@ $D000-$D02E               VIC-II Chip Registers
 
                           As you can see, the first and last bytes are all 0's, so nothing will
                           be displayed there.  The middle byte has six 1's, so it will be
-                          displayed as a line six dots long.  By adding the values of these dix
+                          displayed as a line six dots long.  By adding the values of these six
                           bits (64+32+16+8+4+2), we get a byte value of 126.  Let's try another
                           line.
 
@@ -411,10 +411,10 @@ $D011        SCROY        Vertical Fine Scrolling and Control Register
                           scroll bits goes from 7 to 0, or from 0 to 7.  This is accomplished by
                           moving the display data for each line by 40 bytes in either direction,
                           overwriting the data for the last line, and introducing a line of data
-                          at the opposite end of screen memory to replace it.  Obviously, ony a
+                          at the opposite end of screen memory to replace it.  Obviously, only a
                           machine language program can move all of these lines quickly enough to
                           maintain the effect of smooth motion.  The following BASIC program,
-                          however, will give you an iea of what vertical fine scrolling is like:
+                          however, will give you an idea of what vertical fine scrolling is like:
 
                               10 POKE 53281,0:PRINTCHR$(5);CHR$(147)
                               20 FORI=1 TO 27:
@@ -447,7 +447,7 @@ $D011        SCROY        Vertical Fine Scrolling and Control Register
                           Bit 4.  Bit 4 of this register controls the screen blanking feature.
                           When this bit is set to 0, no data can be displayed on the screen.
                           Instead, the whole screen will be filled with the color of the frame
-                          (which is controlled by th eBorder Color Register at 53280 ($D020)).
+                          (which is controlled by the Border Color Register at 53280 ($D020)).
 
                           Screen blanking is useful because of the way in which the VIC-II chip
                           interacts with the 6510 microprocessor.  Since the VIC-II and the 6510
@@ -458,7 +458,7 @@ $D011        SCROY        Vertical Fine Scrolling and Control Register
                           The VIC-II chip was designed so that it fetches most of the data it
                           needs during the part of the cycle in which the 6510 is not using the
                           data bus.  But certain operations, such as reading the 40 screen codes
-                          needed for each line of text from video mmeory, or fetching sprite
+                          needed for each line of text from video memory, or fetching sprite
                           data, require that the VIC-II chip get data at a faster rate than is
                           possible just by using the off half of the 6510 cycle.
 
@@ -598,7 +598,7 @@ $D011        SCROY        Vertical Fine Scrolling and Control Register
                           fairly easy to transfer text characters to a bitmap screen, but it is
                           somewhat awkward finding the bit which affects the screen dot having a
                           given X-Y coordinate.  First, you must find the byte BY in which the
-                          bit resides, and then you must POKE a vlue into that byte which turns
+                          bit resides, and then you must POKE a value into that byte which turns
                           the desired bit on or off.  Given that the horizontal position of the
                           dot is stored in the variable X, its vertical position is in the
                           variable Y, and the base address of the bitmap area is in the variable
@@ -614,7 +614,7 @@ $D011        SCROY        Vertical Fine Scrolling and Control Register
 
                               POKE BY, PEEK(BY) AND (255-2^(NOTX AND 7))
 
-                          The exponentation function takes a lot of time.  To speed things up,
+                          The exponentiation function takes a lot of time.  To speed things up,
                           an array can be created, each of whose elements corresponds to a power
                           of two.
 
@@ -639,9 +639,9 @@ $D011        SCROY        Vertical Fine Scrolling and Control Register
                               120 GOTO 120: REM LET IT STAY ON SCREEN
 
                           As you can see, using BASIC to draw in bit-graphics mode is somewhat
-                          slow and tedious.  Machine language is much more suiable for
+                          slow and tedious.  Machine language is much more suitable for
                           bit-graphics plotting.  For a program that lets you replace some BASIC
-                          ommands with high-res drawing commands, see the article "Hi-Res
+                          commands with high-res drawing commands, see the article "Hi-Res
                           Graphics Made Simple," by Paul F. Schatz, in COMPUTE!'s First Book of
                           Commodore 64 Sound and Graphics.
 
@@ -1015,7 +1015,7 @@ $D016        SCROLX       Horizontal Fine Scrolling and Control Register
 
                           If you are not in bitmap mode, and you select multicolor text
                           character mode by setting this bit to 1, characters with a color
-                          nybble whose value is less than 8 are displyed normally.  There will
+                          nybble whose value is less than 8 are displayed normally.  There will
                           be one background color and one foreground color.  But each dot of a
                           character with a color nybble whose value is over 7 can have any one
                           of four different colors.
@@ -1064,7 +1064,7 @@ $D016        SCROLX       Horizontal Fine Scrolling and Control Register
 
                           Given that the horizontal position (0-159) of the dot is stored in the
                           variable X, its vertical position is in the variable Y, and the base
-                          address of the bitmap area ia in the variable BASE, you can find the
+                          address of the bitmap area is in the variable BASE, you can find the
                           desired byte with the formula:
 
                           BY=BASE+(Y AND 248)*40+(Y AND 7)+(2*X AND 504)
@@ -1197,7 +1197,7 @@ $D018        VMCSB        VIC-II Chip Memory Control Register
                           of VIC- II memory, and the video chip is using Bank 2 (32768-49151),
                           the actual starting address of screen memory is 32768+1024=33792
                           ($8400).  For examples of how to change the video memory area, and of
-                          how to relocate the screen, see the entro for 56576 ($DD00).
+                          how to relocate the screen, see the entry for 56576 ($DD00).
 
 $D019        VICIRQ       VIC Interrupt Flag Register
 
@@ -1308,7 +1308,7 @@ $D01A        IRQMASK      IRQ Mask Register
                           At the exact moment that the raster beam line number equals the number
                           written to the register, Bit 0 of the status register will be set to
                           1, showing that the conditions for a Raster Compare Interrupt have
-                          been fulfulled.  If the raster interrupt is enabled then,
+                          been fulfilled.  If the raster interrupt is enabled then,
                           simultaneously, the interrupt program will be executed.  This allows
                           the user to reset any of the VIC-II registers at any point in the
                           display, and thus change character sets, background color, or graphics
@@ -1363,7 +1363,7 @@ $D01A        IRQMASK      IRQ Mask Register
                           Another thing that you should keep in mind is that at least two raster
                           interrupts are required if you want to change only a part of the
                           screen.  Not only must the interrupt routine change the display, but
-                          it must also set up another raster interrput that will change it back.
+                          it must also set up another raster interrupt that will change it back.
 
                           The sample program below uses a raster-scan interrupt to divide the
                           display into three sections.  The first 80 scan lines are in
@@ -1387,7 +1387,7 @@ $D01A        IRQMASK      IRQ Mask Register
                           If you look at lines 49264-49276 of the BASIC program, you will see
                           REMark statements that explain which VIC-II registers are affected by
                           the DATA statements in each line.  The number in these DATA
-                          startements appear in the reverse order in which they are put into the
+                          statements appear in the reverse order in which they are put into the
                           VIC register.  For example, line 49273 holds the data that will go
                           into Control Register 2.  The last number, 8, is the one that will be
                           placed into Control Register 2 while the top part of the screen is
@@ -1486,7 +1486,7 @@ $D01A        IRQMASK      IRQ Mask Register
                           registers (53267-8, $D013-4).
 
                           Bit 2 enables the sprite-foreground collision interrupt.  This
-                          interrupt can occur if one of the srpte character's dots is touching
+                          interrupt can occur if one of the sprite character's dots is touching
                           one of the dots from the foreground display of either text character
                           or bitmap graphics.
 
@@ -1701,7 +1701,7 @@ $D022        BGCOL1       Background Color 1
 $D023        BGCOL2       Background Color 2
 
                           This register sets the color for the 10 bit-pair of multicolor
-                          character graphics, and the background color for characters habing
+                          character graphics, and the background color for characters having
                           screen codes 128-191 in extended background color text mode.  The
                           default color value is 2 (red).
 
@@ -1795,7 +1795,7 @@ $D400-$D41C               Sound Interface Device (SID) Registers
                           the Control Register.  The waveform control lets you select one of
                           four different waveforms, each of which has varying harmonic content
                           that affects the tone quality of the sound.  By writing a 1 to the
-                          gate bit, you start the Attack/ Delay/Sustain cycle.  Afer rising to a
+                          gate bit, you start the Attack/ Delay/Sustain cycle.  After rising to a
                           peak and declining to the Sustain volume, the volume will continue at
                           the same level until you write a 0 to the gate bit.  Then, the Release
                           cycle will start.  Make sure that you keep the same waveform bit set
@@ -1914,7 +1914,7 @@ $D404        VCREG1       Voice 1 Control Register
                           1.  It can be used to imitate the sound of explosions, drums, and
                           other unpitched noises.
 
-                          One of the four waveforms must be chosed in order to create a sound.
+                          One of the four waveforms must be chosen in order to create a sound.
                           Setting more than one of these bits will result in a logical ANDing of
                           the waveforms.  Particularly, the combination of the noise waveform
                           and another is not recommended.
@@ -1929,7 +1929,7 @@ $D405-$D406               Voice 1 Envelope (ADSR) Control
                           The first phase of the envelope, in which the volume builds to a peak,
                           is known as the attack phase.  The second, in which it declines to an
                           intermediate level, is called the decay phase.  The third, in which
-                          the intermediate leve of volume is held, is known as the sustain
+                          the intermediate level of volume is held, is known as the sustain
                           period.  The final interval, in which the sound fades away, is called
                           the release part of the cycle.
 
@@ -2207,7 +2207,7 @@ $D419-$D41A               Game Paddle Inputs
                           the voltage to two pins of the SID chip between 0 and +5 volts.
                           Analog-to-digital (A/D) converters in the chip interpret these voltage
                           levels as binary values and store the values in these registers.
-                          These registers return a number from 0 (minumum resistance) to 255
+                          These registers return a number from 0 (minimum resistance) to 255
                           (maximum resistance) for each paddle in either of the ports, depending
                           on the position of the paddle knob.
 
@@ -2241,7 +2241,7 @@ $D419-$D41A               Game Paddle Inputs
                           Port B, if Bit 2 is set to 0, button 3 is pushed, and if Bit 3 is set
                           to 0, button 4 is pushed.
 
-                          The BASIC statements to test these buttons, thereore, are:
+                          The BASIC statements to test these buttons, therefore, are:
 
                               PB(1)=(PEEK(56321)AND4)/4
                               PB(2)=(PEEK(56321)AND8)/8
@@ -2389,7 +2389,7 @@ $D800-$DBFF               Color RAM
                           clear the screen, and return the background color in the desired
                           value.
 
-                          The various garphics modes use this area differently than does the
+                          The various graphics modes use this area differently than does the
                           regular text mode.  In high-resolution bitmap mode, this area is not
                           used at all, but in multicolor bitmap mode it is used to determine the
                           color of the 11 bit-pair for a given 8 by 8 dot area.
@@ -2644,7 +2644,7 @@ $DC02-$DC03               CIA #1 Data Direction Registers A and B
 
                           These Data Direction Registers control the direction of data flow over
                           Data Ports A and B.  Each bit controls the direction of the data on
-                          the corresponding bit of the port.  If teh bit of the Direction
+                          the corresponding bit of the port.  If the bit of the Direction
                           Register is set to a 1, the corresponding Data Port bit will be used
                           for data output.  If the bit is set to a 0, the corresponding Data
                           Port bit will be used for data input.  For example, Bit 7 of Data
@@ -3092,7 +3092,7 @@ $DD00-$DD01               CIA #2 Data Ports A and B
                           however, the Serial Bus is at least eight times slower than the IEEE.
                           It is presently used to control the 1541 Disk Drive and 1525 printer,
                           and other devices (such as printer interface for Centronics- type
-                          parallel pritners and stringy floppy wafer tape storage units) can be
+                          parallel printers and stringy floppy wafer tape storage units) can be
                           placed on this bus.
 
                           Data Port A is used for communication with the Serial Bus.  Bits 5 and
@@ -3127,7 +3127,7 @@ $DD00-$DD01               CIA #2 Data Ports A and B
                           The advanced features of the CIA chip make almost any type of
                           interfacing application possible, and in the near future we will
                           probably see many interesting applications for the User Port on the
-                          64.  A pin description of tthe User Port connector is provided below:
+                          64.  A pin description of the User Port connector is provided below:
 
                           | User Port Pin | CIA Line | RS-232 DB-25 Pin |      Description				    |
                           |---------------|----------|------------------|--------------------------------     ----------------|
@@ -3216,7 +3216,7 @@ $DD00-$DD01               CIA #2 Data Ports A and B
                           BASIC programs do not interfere, this area is wide open for sprite
                           shapes, character graphics, and bitmap graphics.
 
-                          The drawbacks to useing this bank are the unavailability of the
+                          The drawbacks to using this bank are the unavailability of the
                           character ROM and the limitation on BASIC program space (as little as
                           14K).  The absence of the character ROM is a relatively minor
                           nuisance, because you can always switch in the ROM and copy any or all
@@ -3312,7 +3312,7 @@ $DD00-$DD01               CIA #2 Data Ports A and B
                           Below is a sample program which switches to Bank 3.  It includes a
                           machine language transfer routine to move the ROM character set to
                           RAM, and a short interrupt routine to correct the RESTORE key problem.
-                          After the switch is made, a loop isused to POKE characters into the
+                          After the switch is made, a loop is used to POKE characters into the
                           new screen memory area.  Next, the character data is slowly erased, to
                           show that the character set is now in RAM.  Then, a loop is used to
                           read the locations of the character set, and write to the same
@@ -3561,7 +3561,7 @@ $DE00-$DEFF               Reserved for I/O Expansion
 $DF00-$DFFF               CIA #2 Register Images
 
                           This range of locations is not used directly by the 64's internal
-                          hardward, but is accessible via pin 10 of the Expansion Port.  One
+                          hardware, but is accessible via pin 10 of the Expansion Port.  One
                           possible use for this I/O memory that Commodore has mentioned is an
                           inexpensive parallel disk drive (which presumable would be much faster
                           than the current serial model).
