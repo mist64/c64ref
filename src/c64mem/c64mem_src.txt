@@ -269,7 +269,7 @@ $0065        FACLO   Least sig byte of mantissa.
 
 $0066        FACSGN  Sign of FAC (0 or -1) when unpacked.
 
-$0067        SGNFLG  Sign of FAC is preserved bere by "FIN".
+$0067        SGNFLG  Sign of FAC is preserved here by "FIN".
 
 $0067        DEGREE  A count used by polynomials.
 
@@ -494,7 +494,7 @@ $00D3        PNTR    Pointer to column
 
 $00D4        QTSW    Quote switch
 
-$00D5        LNMX    40/80 max positon
+$00D5        LNMX    40/80 max position
 
 $00D6        TBLX
 

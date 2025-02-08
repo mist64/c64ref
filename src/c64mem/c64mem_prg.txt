@@ -40,7 +40,7 @@ $0008        ENDCHR  Flag: Scan for Quote at End of String
 $0009        TRMPOS  Screen Column From Last TAB
 $000A        VERCK   Flag: 0 = Load, 1 = Verify
 $000B        COUNT   Input Buffer Pointer / No. of Subscripts
-$000C        DIMFLG  Flag: Default Array DiMension
+$000C        DIMFLG  Flag: Default Array Dimension
 $000D        VALTYP  Data Type: $FF = String, $00 = Numeric
 $000E        INTFLG  Data Type: $80 = Integer, $00 = Floating
 $000F        GARBFL  Flag: DATA scan/LIST quote/Garbage Coll

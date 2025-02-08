@@ -166,7 +166,7 @@ $FFB1  LISTEN  Command devices on serial bus to LISTEN.
                
 $FFD5  LOAD    Load RAM from a device.
 
-               LOAD. The computer will perform either the LOAD or the VERIFY command. If the ac cumulator is a 1, then LOAD; if 0, then verify.
+               LOAD. The computer will perform either the LOAD or the VERIFY command. If the accumulator is a 1, then LOAD; if 0, then verify.
                
                    ;Load a program into memory.
                         LDA #$08

@@ -8,7 +8,7 @@
 - as found in the ROMs of the Apple II. C64 BASIC V2 and Applesoft BASIC
 - are both based on Microsoft BASIC for 6502, albeit on different versions,
 - and they both add incompatible extensions. Nevertheless, they are still
-- extremely similar, so that Bob Sander-Cederlof's Applestoft comments could
+- extremely similar, so that Bob Sander-Cederlof's Applesoft comments could
 - be semi-automatically ported over to the version of BASIC in the ROM of
 - the Commodore 64.
 -

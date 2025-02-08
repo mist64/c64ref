@@ -48,7 +48,7 @@ $FF81  CINT    Initialize Screen Editor and VIC-II Chip
                
 $FF84  IOINIT  Initialize CIA I/O Devices
                
-               This routine intializes the Complex Interface Adapter (CIA)
+               This routine initializes the Complex Interface Adapter (CIA)
                devices, and turns the volume of the SID chip off.  As part of this
                initialization, it sets CIA #1 Timer A to cause an IRQ interrupt every
                sixtieth of a second.
@@ -91,7 +91,7 @@ $FF8D  VECTOR  Set the RAM Vector Table from the Table Pointed to by .X and .Y
 $FF90  SETMSG  Set the Message Control Flag
                
                This routine controls the printing of error messages and control
-               messages by the Kernal.  It Bit 6 is seto to 1 (bit value of 64),
+               messages by the Kernal.  It Bit 6 is set to 1 (bit value of 64),
                Kernal control messages can be printed.  These messages include
                SEARCHING FOR, LOADING, and the like.  If Bit 6 is cleared to 0, these
                messages will not be printed (BASIC will clear this bit when a program
@@ -132,7 +132,7 @@ $FF99  MEMTOP  Read/Set Top of RAM Pointer
 $FF9C  MEMBOT  Read/Set Bottom of RAM Pointer
                
                This routine can be used to either read or set the bottom of RAM pointer.  If
-               called with the Carry flag set, the address in the pointer willbe
+               called with the Carry flag set, the address in the pointer will be
                loaded into the .X and .Y registers.  If called with the Carry flag
                cleared, the pointer will be changed to the address found in the .X
                and .Y registers.
@@ -249,7 +249,7 @@ $FFC3  CLOSE   Close a Logical I/O File
                routine.
                
                Closing an RS-232 file will de-allocate space at the top of memory for
-               the receiving and trasmit buffers.  Closing a cassette file that was
+               the receiving and transmit buffers.  Closing a cassette file that was
                opened for writing will force the last block to be written to
                cassette, even if it is not a full 192 bytes.  Closing a serial bus
                device will send an UNLISTEN command on the bus.  Remember, it is
@@ -397,7 +397,7 @@ $FFE4  GETIN   Get One Byte from the Input Device
                
                The routine jumps through a RAM vector at 810 ($32A).
                Its function is to get a character from the current input device
-               (whose device number is stored at 153 ($99)).  In practive, it
+               (whose device number is stored at 153 ($99)).  In practice, it
                operates identically to the CHRIN routine below for all devices except
                for the keyboard.  If the keyboard is the current input device, this
                routine gets one character from the keyboard buffer at 631 ($277).  It

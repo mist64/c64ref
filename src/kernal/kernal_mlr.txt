@@ -78,7 +78,7 @@ $FFC9  CHKOUT  CHKOUT
                The routine sets the output channel (location $9A) to the
                device number for the specified file. If the device is RS-232
                (device number 2), the routine also enables the CLA #2 inter-
-               rupts for RS-232 transmission. fi a serial device (device num-
+               rupts for RS-232 transmission. If a serial device (device num-
                ber 4 or greater) is specified, the device is also made a listener
                on the serial bus.
 
@@ -325,11 +325,11 @@ $FF84  IOINIT  IOINIT
 
                This routine initializes the CIA chips' registers to their default
                values, along with related RAM locations. All processor reg-
-               isters are affected. For the 128, the routine also initiatizes the
+               isters are affected. For the 128, the routine also initializes the
                VIC and VDC chip registers (a step which is part of the Kernal
                CINT routine on the 64). In addition, the 128 routine sets all
                SID chip registers to zero and calls the Kernal DLCHR routine
-               to initiahze the character set for the 80-column chip.
+               to initialize the character set for the 80-column chip.
 
 $FFB1  LISTEN  LISTEN
 
@@ -351,7 +351,7 @@ $FFD5  LOAD    LOAD
                routines for details.
 
                SETLFS establishes the device number and secondary ad-
-               dress for the operation. fThe logical file number isn't significant
+               dress for the operation. The logical file number isn't significant
                for loading or verifying.) The secondary-address value deter-
                mines whether the load/verify will be absolute or relocating.
                If bit 0 of the secondary address is %0 (if the value is 0 or any
@@ -375,7 +375,7 @@ $FFD5  LOAD    LOAD
                The status-register carry bit will be clear upon return if
                the file was successfully loaded, or set if an error occurred or if
                the RUN/STOP key was pressed to abort the load. When
-               carry is se t upon return, the accumulator will hold a Kernal er-
+               carry is set upon return, the accumulator will hold a Kernal er-
                ror-code value indicating the problem. Possible error codes in-
                clude 4 (file was not found), 5 (device was not present), 8 (no
                name was specified for a serial load), 9 (an illegal device num-
@@ -478,7 +478,7 @@ $FFDE  RDTIM   RDTIM
                reset, or the number of jiffies since midnight if the dock value
                has been set. The low byte of the clock value (location $A2) is
                returned in .A, the middle byte (location $A1) in .X, and the
-               high byte loocation $A0) in .Y.
+               high byte location $A0) in .Y.
 
 $FFB7  READST  READST
 
@@ -502,7 +502,7 @@ $FFB7  READST  READST
                |     |         |                       |                                       |                          |
                | 5   |  32/$20 |                       | checksum mismatch                     |                          |
                | 6   |  64/$40 | EOI (end of file)     | end of file                           | DSR missing              |
-               | 7   | 128/$80 | device nol present    | end of tape                           | break                    |
+               | 7   | 128/$80 | device not present    | end of tape                           | break                    |
   
 $FF8A  RESTOR  RESTOR
 
@@ -660,7 +660,7 @@ $FFB4  TALK    TALK
 $FF96  TKSA    TKSA
 
                This low-level serial 1/0 routine sends a secondary address to
-               a device which has previously been commanded to taLk. The
+               a device which has previously been commanded to talk. The
                success of the operation will be indicated by the value in the
                serial status flag upon return. (See READST for details.)
 
@@ -670,7 +670,7 @@ $FFEA  UDTIM   UDTIM
                keyboard column containing the RUN/STOP key. (The 128
                version of the routine also decrements a countdown timer.)
                This routine is normally called every 1 /60 second as part of
-               the standard lRQ service routine.
+               the standard IRQ service routine.
 
 $FFAE  UNLSN   UNLSN
 
@@ -704,7 +704,7 @@ $FF53  BOOT_CALL BOOT_CALL
                number—not the actual drive number. The single drive in
                1541 and 1571 units is drive 0; in this case, use 48, the charac-
                ter code for zero. If the specified drive is not present or is
-               tumed off, or if the disk in the drive does not contain a valid
+               turned off, or if the disk in the drive does not contain a valid
                boot sector, the routine will return with the status-register
                carry bit set. If a boot sector is found, it will be loaded into
                locations $0B00-$0BFF. Additional boot sectors may be loaded

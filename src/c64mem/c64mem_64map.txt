@@ -55,7 +55,7 @@ $0017-$0018  LASTPT  Last temporary String Address.
 $0019-$0021  TEMPST  Stack for temporary Strings.
 $0022-$0025  INDEX   Utility Pointer Area.
 $0022-$0023  INDEX1  First Utility Pointer.
-$0024-$0025  INDEX2  Secong Utility Pointer.
+$0024-$0025  INDEX2  Second Utility Pointer.
 $0026-$002A  RES     Floating point product of Multiply and
                      Divide.
 $002B-$002C  TXTTAB  Pointer: Start of BASIC Text Area ($0801).
@@ -83,7 +83,7 @@ $004B-$004C  VARTXT  Temporary storage for TXTPTR during READ,
                      INPUT and GET.
 $004D        OPMASK  Mask used during FRMEVL.
 $004E-$0052  TEMPF3  Temporary storage for FLPT value.
-$0053        FOUR6   Length of String Variable during Garbege
+$0053        FOUR6   Length of String Variable during Garbage
                      collection.
 $0054-$0056  JMPER   Jump Vector used in Function Evaluation -
                      JMP followed by Address ($4C,$LB,$MB).

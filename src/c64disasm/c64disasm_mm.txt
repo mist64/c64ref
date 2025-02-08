@@ -275,10 +275,10 @@
 .:A342 5A A2                    0E illegal quantity
 .:A344 6A A2                    0F overflow
 .:A346 72 A2                    10 out of memory
-.:A348 7F A2                    11 undef'd statment
+.:A348 7F A2                    11 undef'd statement
 .:A34A 90 A2                    12 bad subscript
 .:A34C 9D A2                    13 redim'd array
-.:A34E AA A2                    14 devision by zero
+.:A34E AA A2                    14 division by zero
 .:A350 BA A2                    15 illegal direct
 .:A352 C8 A2                    16 type mismatch
 .:A354 D5 A2                    17 string too long
@@ -1321,7 +1321,7 @@
 .,AA7D 91 49    STA ($49),Y     
 .,AA7F 60       RTS             
 
-                                *** PRINT# comand
+                                *** PRINT# command
 .,AA80 20 86 AA JSR $AA86       
 .,AA83 4C B5 AB JMP $ABB5       
 
@@ -1646,7 +1646,7 @@
 .,ACF8 4C 1E AB JMP $AB1E       
 .,ACFB 60       RTS             
 
-                                *** messages used dring READ
+                                *** messages used during READ
 .:ACFC 3F 45 58 54 52 41 20 49  ?EXTRA IGNORED
 .:AD04 47 4E 4F 52 45 44 0D 00  
 .:AD0C 3F 52 45 44 4F 20 46 52  ?REDO FROM START
@@ -1927,7 +1927,7 @@
 .,AF08 A2 0B    LDX #$0B        error number
 .,AF0A 4C 37 A4 JMP $A437       
 
-                                *** recursive geet value
+                                *** recursive get value
 .,AF0D A0 15    LDY #$15        
 .,AF0F 68       PLA             
 .,AF10 68       PLA             
@@ -4327,7 +4327,7 @@
 .,BFBC 85 66    STA $66         
 .,BFBE 60       RTS             
 
-                                *** floating point constands for EXP
+                                *** floating point constants for EXP
                                 1/LOG(2)
 .:BFBF 81 38 AA 3B 29           
 
@@ -4835,7 +4835,7 @@
 .,E3C8 A0 B2    LDY #$B2        high B248
 .,E3CA 8D 11 03 STA $0311       
 .,E3CD 8C 12 03 STY $0312       
-.,E3D0 A9 91    LDA #$91        lowh B391
+.,E3D0 A9 91    LDA #$91        low  B391
 .,E3D2 A0 B3    LDY #$B3        high B391
 .,E3D4 85 05    STA $05         
 .,E3D6 84 06    STY $06         
@@ -4950,7 +4950,7 @@
 .,E4DD 91 F3    STA ($F3),Y     
 .,E4DF 60       RTS             
 
-                                *** pause after finding a file on casette
+                                *** pause after finding a file on cassette
 .,E4E0 69 02    ADC #$02        
 .,E4E2 A4 91    LDY $91         
 .,E4E4 C8       INY             
@@ -5032,7 +5032,7 @@
 .,E568 84 D3    STY $D3         
 .,E56A 84 D6    STY $D6         
 
-                                *** set address of curent screen line
+                                *** set address of current screen line
 .,E56C A6 D6    LDX $D6         
 .,E56E A5 D3    LDA $D3         
 .,E570 B4 D9    LDY $D9,X       
@@ -5686,7 +5686,7 @@
 
                                 *** set cursor flash timing and colour memory addresses
 .,EA13 A8       TAY             
-.,EA14 A9 02    LDA #$02set the 
+.,EA14 A9 02    LDA #$02
 .,EA16 85 CD    STA $CD         
 .,EA18 20 24 EA JSR $EA24       
 .,EA1B 98       TYA             
@@ -5698,7 +5698,7 @@
 .,EA21 91 F3    STA ($F3),Y     
 .,EA23 60       RTS             
 
-                                *** set colour memory adress parallel to screen
+                                *** set colour memory address parallel to screen
 .,EA24 A5 D1    LDA $D1         
 .,EA26 85 F3    STA $F3         
 .,EA28 A5 D2    LDA $D2         
@@ -5729,7 +5729,7 @@
 .,EA5A A5 CE    LDA $CE         
 .,EA5C 49 80    EOR #$80        
 .,EA5E 20 1C EA JSR $EA1C       display cursor
-.,EA61 A5 01    LDA $01         checl cassette sense
+.,EA61 A5 01    LDA $01         check cassette sense
 .,EA63 29 10    AND #$10        
 .,EA65 F0 0A    BEQ $EA71       
 .,EA67 A0 00    LDY #$00        
@@ -6441,7 +6441,7 @@
 .,F049 8D 0E DD STA $DD0E       
 .,F04C 60       RTS             
 
-                                *** initalise RS-232 input
+                                *** initialise RS-232 input
 .,F04D 85 99    STA $99         
 .,F04F AD 94 02 LDA $0294       
 .,F052 4A       LSR             
@@ -6485,7 +6485,7 @@
 .,F0A1 A9 00    LDA #$00        
 .,F0A3 60       RTS             
 
-                                *** protect serial/casette routine from RS-232 NMI's
+                                *** protect serial/cassette routine from RS-232 NMI's
 .,F0A4 48       PHA             
 .,F0A5 AD A1 02 LDA $02A1       
 .,F0A8 F0 11    BEQ $F0BB       
@@ -7935,7 +7935,7 @@
 .,FB94 85 AC    STA $AC         
 .,FB96 60       RTS             
 
-                                *** initalise cassette read/write variables
+                                *** initialise cassette read/write variables
 .,FB97 A9 08    LDA #$08        
 .,FB99 85 A3    STA $A3         
 .,FB9B A9 00    LDA #$00        
@@ -7946,7 +7946,7 @@
 .,FBA5 60       RTS             
 
                                 *** schedule CIA1 timer B and
-                                invert casette write line
+                                invert cassette write line
 .,FBA6 A5 BD    LDA $BD         
 .,FBA8 4A       LSR             
 .,FBA9 A9 60    LDA #$60        
@@ -8177,7 +8177,7 @@
 .:FD4C A5 F4                    load ram
 .:FD4E ED F5                    save ram
 
-                                *** initalise memory pointers
+                                *** initialise memory pointers
 .,FD50 A9 00    LDA #$00        
 .,FD52 A8       TAY             
 .,FD53 99 02 00 STA $0002,Y     
@@ -8225,7 +8225,7 @@
 .:FD9F 31 EA                    standard IRQ
 .:FDA1 2C F9                    cassette read
 
-                                *** initaliase I/O devices
+                                *** initialise I/O devices
 .,FDA3 A9 7F    LDA #$7F        
 .,FDA5 8D 0D DC STA $DC0D       
 .,FDA8 8D 0D DD STA $DD0D       
@@ -8250,7 +8250,7 @@
 .,FDD9 A9 2F    LDA #$2F        
 .,FDDB 85 00    STA $00         
 
-                                *** initalise TAL1/TAH1 fpr 1/60 of a second
+                                *** initialise TAL1/TAH1 for 1/60 of a second
 .,FDDD AD A6 02 LDA $02A6       
 .,FDE0 F0 0A    BEQ $FDEC       
 .,FDE2 A9 25    LDA #$25        
@@ -8263,13 +8263,13 @@
 .,FDF3 8D 05 DC STA $DC05       
 .,FDF6 4C 6E FF JMP $FF6E       
 
-                                *** initalise file name parameters
+                                *** initialise file name parameters
 .,FDF9 85 B7    STA $B7         
 .,FDFB 86 BB    STX $BB         
 .,FDFD 84 BC    STY $BC         
 .,FDFF 60       RTS             
 
-                                *** inatalise file parameters
+                                *** initialise file parameters
 .,FE00 85 B8    STA $B8         
 .,FE02 86 BA    STX $BA         
 .,FE04 84 B9    STY $B9         
@@ -8297,7 +8297,7 @@
 .,FE1E 85 90    STA $90         
 .,FE20 60       RTS             
 
-                                *** set timeout on serail bus
+                                *** set timeout on serial bus
 .,FE21 8D 85 02 STA $0285       
 .,FE24 60       RTS             
 
@@ -8465,7 +8465,7 @@
 .,FF55 6C 16 03 JMP ($0316)     normally FE66
 .,FF58 6C 14 03 JMP ($0314)     normally EA31
 
-                                *** addition to I/O device initalisation
+                                *** addition to I/O device initialisation
 .,FF5B 20 18 E5 JSR $E518       
 .,FF5E AD 12 D0 LDA $D012       
 .,FF61 D0 FB    BNE $FF5E       
@@ -8485,9 +8485,9 @@
 .:FF80 03                       kernal version number
 
                                 *** kernal vectors
-.,FF81 4C 5B FF JMP $FF5B       initalise screen and keyboard
-.,FF84 4C A3 FD JMP $FDA3       initalise I/O devices
-.,FF87 4C 50 FD JMP $FD50       initalise memory pointers
+.,FF81 4C 5B FF JMP $FF5B       initialise screen and keyboard
+.,FF84 4C A3 FD JMP $FDA3       initialise I/O devices
+.,FF87 4C 50 FD JMP $FD50       initialise memory pointers
 .,FF8A 4C 15 FD JMP $FD15       restore I/O vectors
 .,FF8D 4C 1A FD JMP $FD1A       set I/O vectors from XY
 .,FF90 4C 18 FE JMP $FE18       control kernal messages
@@ -8496,7 +8496,7 @@
 .,FF99 4C 25 FE JMP $FE25       read/set top of memory
 .,FF9C 4C 34 FE JMP $FE34       read/set bottom of memory
 .,FF9F 4C 87 EA JMP $EA87       scan keyboard
-.,FFA2 4C 21 FE JMP $FE21       set timout for serial bus
+.,FFA2 4C 21 FE JMP $FE21       set timeout for serial bus
 .,FFA5 4C 13 EE JMP $EE13       input on serial bus
 .,FFA8 4C DD ED JMP $EDDD       output byte on serial bus
 .,FFAB 4C EF ED JMP $EDEF       send untalk on serial bus

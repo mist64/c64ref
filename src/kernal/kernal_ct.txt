@@ -27,7 +27,7 @@ $FF81  CINT    Setup VIC, screen values, (128: 8563)...
                     Registers Out : None.
                     Memory Changed: Screen Editor Locations.
                
-$FF84  IOINIT  Initializes pertinant display and i/o devices
+$FF84  IOINIT  Initializes pertinent display and i/o devices
                
                     Registers In  : C64: None. | C128: $0A04/bit 7
                                                |          0 - Full Setup.
@@ -109,7 +109,7 @@ $FFA2  SETMO
                
                     This is a routine who's code never made it into any versions
                     of the KERNAL on the C64, Vic-20 and C128.  Thus it is of no
-                    pratical use.
+                    practical use.
                
 $FFA5  ACPTR   Get byte from current talker.
                
@@ -164,7 +164,7 @@ $FFBA  SETLFS  Set logical file #, device #, secondary # for I/O.
                     Registers Out : None.
                     Memory Changed: None.
                
-$FFBD  SETNAM  Sets pointer to filename in preperation for OPEN.
+$FFBD  SETNAM  Sets pointer to filename in preparation for OPEN.
                
                     Registers In  : .A = string length, .XY = string address.
                     Registers Out : None.
@@ -210,7 +210,7 @@ $FFCF  BASIN   Read character from current input channel.
                     Cassette - Returned one character a time from cassette buffer.
                     Rs-232   - Return one character at a time, waiting until 
                                character is ready.
-                    Serial   - Returned one character at time, waiting if nessc.
+                    Serial   - Returned one character at time, waiting if needed.
                     Screen   - Read from current cursor position.
                     Keyboard - Read characters as a string, then return them 
                                individually upon each call until all characters
@@ -236,7 +236,7 @@ $FFD5  LOAD    Loads file into memory (setup via SETLFS,SETNAM)..
                
 $FFD8  SAVE    Save section of memory to a file.
                
-                    Registers In  : .A = Z-page ptr to start adress
+                    Registers In  : .A = Z-page ptr to start address
                                     .XY = end address
                     Registers Out : .A = error code, .C = 1 if error.
                                     .XY = used.
@@ -281,7 +281,7 @@ $FFE7  CLALL   Close all open files and channels.
                     Registers Out : .AX used.
                     Memory Changed: None.
                     Note          : This routine does not _actually_ close the files, rather it
-                                    removes their prescense from the file tables held in memory.
+                                    removes their presence from the file tables held in memory.
                                     It's recommended to use close to close files instead of using
                                     this routine.
                

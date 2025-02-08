@@ -860,7 +860,7 @@ $FFD5  LOAD    LOAD/VERIFY to RAM
                For tape LOAD/VERIFY, the LOAD routine first checks if
                the tape buffer is located in memory >= 0200. If so, it loads
                the tape buffer with a header retrieved from the tape. If a file-
-               name has been specified, a specific he,ader with this filename
+               name has been specified, a specific header with this filename
                is loaded; if there is no filename, it loads the next header on
                the tape. Only tape headers with tape identifiers of 1 or 3 are
                acceptable for LOAD/VERIFY. A tape identifier of 5 indicates
@@ -1147,7 +1147,7 @@ $FFF0  PLOT    Read or set cursor location
                
                If the carry bit is clear at entry, move the cursor to the
                specified location. The contents of the the X register determine
-               the new cursor row andthe contents of the Y register deter-
+               the new cursor row and the contents of the Y register deter-
                mine the new cursor column.
                
                If the carry bit is set at entry, read the cursor location and
@@ -1335,7 +1335,7 @@ $FFB7  READST  Read or reset status
                buffer. This allows routines to test the status so they don't
                loop waiting for data.
                
-               **Receiver Buffer Overun**: The RS-232 input buffer is full and
+               **Receiver Buffer Overrun**: The RS-232 input buffer is full and
                another byte has been received.
                
                
@@ -1708,7 +1708,7 @@ $FDF9          Set Filename Location and Number of Characters FDF9/FE49-FDFF/FE4
                **Called by**: JMP from Kernal SETNAM vector at FFBD.
                
                The location of the filename is placed in a pointer at (BB),
-               and the nurnber of characters in the filename is placed in B7.
+               and the number of characters in the filename is placed in B7.
                
                This routine sets filename information for later use of the
                Kernal routines OPEN, SAVE, and LOAD. If no filename is
