@@ -1734,15 +1734,15 @@ $D028        SP1COL       Sprite 1 Color Register (the default color value is 2,
 
 $D029        SP2COL       Sprite 2 Color Register (the default color value is 3, cyan)
 
-$D01A        SP3COL       Sprite 3 Color Register (the default color value is 4, purple)
+$D02A        SP3COL       Sprite 3 Color Register (the default color value is 4, purple)
 
-$D01B        SP4COL       Sprite 4 Color Register (the default color value is 5, green)
+$D02B        SP4COL       Sprite 4 Color Register (the default color value is 5, green)
 
-$D01C        SP5COL       Sprite 5 Color Register (the default color value is 6, blue)
+$D02C        SP5COL       Sprite 5 Color Register (the default color value is 6, blue)
 
-$D01D        SP6COL       Sprite 6 Color Register (the default color value is 7, yellow)
+$D02D        SP6COL       Sprite 6 Color Register (the default color value is 7, yellow)
 
-$D01E        SP7COL       Sprite 7 Color Register (the default color value is 12, medium gray)
+$D02E        SP7COL       Sprite 7 Color Register (the default color value is 12, medium gray)
 
 $D02F-$D03F               Not Connected
 
