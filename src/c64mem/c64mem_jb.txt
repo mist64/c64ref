@@ -120,7 +120,7 @@ $00B5        NXTBIT  Tp EOT/RS232 next bit to send
 $00B6        RODATA  Read character error/outbyte buf
 $00B7        FNLEN   # characters in file name
 $00B8        LA      Current logical file
-$00B9        SA      Current secndy address
+$00B9        SA      Current secondary address
 $00BA        FA      Current device
 $00BB-$00BC  FNADR   Pointer to file name
 $00BD        ROPRTY  Wr shift word/Rd input char
@@ -144,7 +144,7 @@ $00D1-$00D2  PNT     Pointer to screen line
 $00D3        PNTR    Position of cursor on above line
 $00D4        QTSW    0 = direct cursor, else programmed
 $00D5        LNMX    Current screen line length
-$00D6        TBLX    Row where curosr lives
+$00D6        TBLX    Row where cursor lives
 $00D7        DATA    Last inkey/checksum/buffer
 $00D8        INSRT   # of INSERTs outstanding
 $00D9-$00F2  LDTB1   Screen line link table

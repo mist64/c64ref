@@ -417,15 +417,15 @@ AUG  Augment
      The AUG instruction is a 4-byte NOP, and reserved for future expansion.
 
 BSR  Branch to Subroutine
-     The BSR Branch to SubRoutine instruction pushes the two program counter  bytes PCH and PCL onto the stack. It then adds the word-relative signed offset to the program counter. The relative offset is referenced to the address of the BSR opcode + 2, hence, it is relative to the third byte of the three-byte BSR instruction. The return address, on the stack, also points to this address. This was done to make it compatible with the RTS functionality, and to be consistant will other word-relative operations.
+     The BSR Branch to SubRoutine instruction pushes the two program counter  bytes PCH and PCL onto the stack. It then adds the word-relative signed offset to the program counter. The relative offset is referenced to the address of the BSR opcode + 2, hence, it is relative to the third byte of the three-byte BSR instruction. The return address, on the stack, also points to this address. This was done to make it compatible with the RTS functionality, and to be consistent will other word-relative operations.
 
 CLE  Clear Extend Disable Flag
      This instruction initializes the extend disable to a 0. This sets the stack pointer to 16 bit mode.
      It affects no registers in the microprocessor and no flags other than the extend disable which is cleared.
 
 CPZ  Compare Index Register Z To Memory
-     This instruction performs a two's complement subtraction between the index register Z and the specified memory location. The results of the subtraction are not stored anywhere. The instruction is strict­ly used to set the flags.
-     CPZ affects no registers in the microprocessor and also does not affect the overflow flag. If the value in the index register Z is equal to or greater than the value in the memory, the carry flag will be set, otherwise it will be cleared. If the results of the subtract- tion contain bit 7 on the N bit will be set, otherwise it will be cleared. If the value in the index register Z and the value in the memory are equal, the zero flag will be set, otherwise it will be cleared.
+     This instruction performs a two's complement subtraction between the index register Z and the specified memory location. The results of the subtraction are not stored anywhere. The instruction is strictly used to set the flags.
+     CPZ affects no registers in the microprocessor and also does not affect the overflow flag. If the value in the index register Z is equal to or greater than the value in the memory, the carry flag will be set, otherwise it will be cleared. If the results of the subtraction contain bit 7 on the N bit will be set, otherwise it will be cleared. If the value in the index register Z and the value in the memory are equal, the zero flag will be set, otherwise it will be cleared.
 
 ## TODO
 DEW  Decrement Word

@@ -290,7 +290,7 @@ $0090        STATUS  Value of ST variable, device status for serial bus and data
 
                      Serial bus bits:
 
-                     * Bit #0: Transfer direction during which the timeout occured; 0 = Input; 1 = Output.
+                     * Bit #0: Transfer direction during which the timeout occurred; 0 = Input; 1 = Output.
                      * Bit #1: 1 = Timeout occurred.
                      * Bit #4: 1 = VERIFY error occurred (only during VERIFY), the file read from the device did not match that in the memory.
                      * Bit #6: 1 = End of file has been reached.
@@ -789,7 +789,7 @@ $0302-$0303  IMAIN   Execution address of BASIC idle loop.
 
                      Default: $A483.
 
-$0304-$0305  ICRNCH  Execution address of BASIC line tokenizater routine.
+$0304-$0305  ICRNCH  Execution address of BASIC line tokenizer routine.
 
                      Default: $A57C.
 
@@ -851,7 +851,7 @@ $0320-$0321  ICKOUT  Execution address of CHKOUT, routine defining file as defau
 
                      Default: $F250.
 
-$0322-$0323  ICLRCH  Execution address of CLRCHN, routine initializating input/output.
+$0322-$0323  ICLRCH  Execution address of CLRCHN, routine initializing input/output.
 
                      Default: $F333.
 

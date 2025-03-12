@@ -1307,7 +1307,7 @@
                                 *** check and evaluate numeric digit
 .,AA1D B1 22    LDA ($22),Y     get byte from string
 .,AA1F 20 80 00 JSR $0080       clear Cb if numeric. this call should be to $84
-                                as the code from $80 first comapres the byte with
+                                as the code from $80 first compares the byte with
                                 [SPACE] and does a BASIC increment and get if it is
 .,AA22 90 03    BCC $AA27       branch if numeric
 .,AA24 4C 48 B2 JMP $B248       do illegal quantity error then warm start
@@ -1666,7 +1666,7 @@
 .,AC8E 20 C2 A9 JSR $A9C2       assign value to numeric variable
 .,AC91 20 79 00 JSR $0079       scan memory
 .,AC94 F0 07    BEQ $AC9D       branch if ":" or [EOL]
-.,AC96 C9 2C    CMP #$2C        comparte with ","
+.,AC96 C9 2C    CMP #$2C        compare with ","
 .,AC98 F0 03    BEQ $AC9D       branch if ","
 .,AC9A 4C 4D AB JMP $AB4D       else go do bad input routine
                                 string terminated with ":", "," or $00
@@ -1773,7 +1773,7 @@
 .,AD70 BD 11 01 LDA $0111,X     get BASIC execute pointer high byte
 .,AD73 85 7B    STA $7B         save BASIC execute pointer high byte
 .,AD75 4C AE A7 JMP $A7AE       go do interpreter inner loop
-                                NEXT loop comlete
+                                NEXT loop complete
 .,AD78 8A       TXA             stack copy to A
 .,AD79 69 11    ADC #$11        add $12, $11 + carry, to dump FOR structure
 .,AD7B AA       TAX             copy back to index
@@ -1795,11 +1795,11 @@
                                 type match check, set C for string, clear C for numeric
 .,AD90 24 0D    BIT $0D         test data type flag, $FF = string, $00 = numeric
 .,AD92 30 03    BMI $AD97       branch if string
-.,AD94 B0 03    BCS $AD99       if destiantion is numeric do type missmatch error
+.,AD94 B0 03    BCS $AD99       if destination is numeric do type mismatch error
 .,AD96 60       RTS             
 .,AD97 B0 FD    BCS $AD96       exit if destination is string
-                                do type missmatch error
-.,AD99 A2 16    LDX #$16        error code $16, type missmatch error
+                                do type mismatch error
+.,AD99 A2 16    LDX #$16        error code $16, type mismatch error
 .,AD9B 4C 37 A4 JMP $A437       do error #X then warm start
 
                                 *** evaluate expression
@@ -1816,7 +1816,7 @@
 .,ADAE 20 FB A3 JSR $A3FB       check room on stack for A*2 bytes
 .,ADB1 20 83 AE JSR $AE83       get value from line
 .,ADB4 A9 00    LDA #$00        clear A
-.,ADB6 85 4D    STA $4D         clear comparrison evaluation flag
+.,ADB6 85 4D    STA $4D         clear comparison evaluation flag
 .,ADB8 20 79 00 JSR $0079       scan memory
 .,ADBB 38       SEC             set carry for subtract
 .,ADBC E9 B1    SBC #$B1        subtract the token for ">"
@@ -1827,13 +1827,13 @@
 .,ADC4 C9 01    CMP #$01        compare with token for =
 .,ADC6 2A       ROL             *2, b0 = carry (=1 if token was = or <)
 .,ADC7 49 01    EOR #$01        toggle b0
-.,ADC9 45 4D    EOR $4D         EOR with comparrison evaluation flag
-.,ADCB C5 4D    CMP $4D         compare with comparrison evaluation flag
+.,ADC9 45 4D    EOR $4D         EOR with comparison evaluation flag
+.,ADCB C5 4D    CMP $4D         compare with comparison evaluation flag
 .,ADCD 90 61    BCC $AE30       if < saved flag do syntax error then warm start
-.,ADCF 85 4D    STA $4D         save new comparrison evaluation flag
+.,ADCF 85 4D    STA $4D         save new comparison evaluation flag
 .,ADD1 20 73 00 JSR $0073       increment and scan memory
 .,ADD4 4C BB AD JMP $ADBB       go do next character
-.,ADD7 A6 4D    LDX $4D         get comparrison evaluation flag
+.,ADD7 A6 4D    LDX $4D         get comparison evaluation flag
 .,ADD9 D0 2C    BNE $AE07       branch if compare function
 .,ADDB B0 7B    BCS $AE58       go do functions
                                 else was < TK_GT so is operator or lower
@@ -1871,7 +1871,7 @@
 .,AE11 C6 7A    DEC $7A         decrement BASIC execute pointer low byte
 .,AE13 A0 1B    LDY #$1B        
                                 set offset to = operator precedence entry
-.,AE15 85 4D    STA $4D         save new comparrison evaluation flag
+.,AE15 85 4D    STA $4D         save new comparison evaluation flag
 .,AE17 D0 D7    BNE $ADF0       branch always
 .,AE19 D9 80 A0 CMP $A080,Y     compare with stacked function precedence
 .,AE1C B0 48    BCS $AE66       if A >=, pop FAC2 and return
@@ -1885,7 +1885,7 @@
                                 now push sign, round FAC1 and put on stack
 .,AE28 20 33 AE JSR $AE33       function will return here, then the next RTS will call
                                 the function
-.,AE2B A5 4D    LDA $4D         get comparrison evaluation flag
+.,AE2B A5 4D    LDA $4D         get comparison evaluation flag
 .,AE2D 4C A9 AD JMP $ADA9       continue evaluating expression
 .,AE30 4C 08 AF JMP $AF08       do syntax error then warm start
 .,AE33 A5 66    LDA $66         get FAC1 sign (b7)
@@ -2099,7 +2099,7 @@
 .,AF66 C8       INY             increment index
 .,AF67 B1 64    LDA ($64),Y     get integer variable high byte
 .,AF69 A8       TAY             copy to Y
-.,AF6A 8A       TXA             copy loa byte to A
+.,AF6A 8A       TXA             copy low byte to A
 .,AF6B 4C 91 B3 JMP $B391       convert fixed integer AY to float FAC1 and return
                                 variable name set-up, variable is float
 .,AF6E 20 14 AF JSR $AF14       check address range
@@ -2222,7 +2222,7 @@
                                 do string < compare
 .,B02E A9 00    LDA #$00        clear byte
 .,B030 85 0D    STA $0D         clear data type flag, $FF = string, $00 = numeric
-.,B032 C6 4D    DEC $4D         clear < bit in comparrison evaluation flag
+.,B032 C6 4D    DEC $4D         clear < bit in comparison evaluation flag
 .,B034 20 A6 B6 JSR $B6A6       pop string off descriptor stack, or from top of string
                                 space returns with A = length, X = pointer low byte,
                                 Y = pointer high byte
@@ -2620,9 +2620,9 @@
 .,B292 AA       TAX             copy low byte to X
 .,B293 68       PLA             pull dimension size high byte
 .,B294 69 00    ADC #$00        add carry to high byte
-.,B296 C8       INY             incement index to dimension size high byte
+.,B296 C8       INY             increment index to dimension size high byte
 .,B297 91 5F    STA ($5F),Y     save dimension size high byte
-.,B299 C8       INY             incement index to dimension size low byte
+.,B299 C8       INY             increment index to dimension size low byte
 .,B29A 8A       TXA             copy dimension size low byte
 .,B29B 91 5F    STA ($5F),Y     save dimension size low byte
 .,B29D 20 4C B3 JSR $B34C       compute array size
@@ -2643,7 +2643,7 @@
 .,B2B9 20 08 A4 JSR $A408       check available memory, do out of memory error if no room
 .,B2BC 85 31    STA $31         set end of arrays low byte
 .,B2BE 84 32    STY $32         set end of arrays high byte
-                                now the aray is created we need to zero all the elements in it
+                                now the array is created we need to zero all the elements in it
 .,B2C0 A9 00    LDA #$00        clear A for array clear
 .,B2C2 E6 72    INC $72         increment array size high byte, now block count
 .,B2C4 A4 71    LDY $71         get array size low byte, now index to block
@@ -2667,7 +2667,7 @@
 .,B2E5 A5 0C    LDA $0C         get default DIM flag
 .,B2E7 D0 62    BNE $B34B       exit if this was a DIM command
                                 else, find element
-.,B2E9 C8       INY             set index to # of dimensions, the dimension indeces
+.,B2E9 C8       INY             set index to # of dimensions, the dimension indexes
                                 are on the stack and will be removed as the position
                                 of the array element is calculated
 .,B2EA B1 5F    LDA ($5F),Y     get array's dimension count
@@ -3109,7 +3109,7 @@
 .,B5A6 65 22    ADC $22         add pointer low byte
 .,B5A8 85 22    STA $22         save pointer low byte
 .,B5AA 90 02    BCC $B5AE       branch if no rollover
-.,B5AC E6 23    INC $23         else increment pointer hgih byte
+.,B5AC E6 23    INC $23         else increment pointer high byte
 .,B5AE A6 23    LDX $23         get pointer high byte
 .,B5B0 E4 59    CPX $59         compare pointer high byte with end of this array high byte
 .,B5B2 D0 04    BNE $B5B8       branch if not there yet
@@ -4132,12 +4132,12 @@
                                 round FAC1 (no check)
 .,BC23 20 6F B9 JSR $B96F       increment FAC1 mantissa
 .,BC26 D0 F2    BNE $BC1A       branch if no overflow
-.,BC28 4C 38 B9 JMP $B938       nornalise FAC1 for C=1 and return
+.,BC28 4C 38 B9 JMP $B938       normalise FAC1 for C=1 and return
 
                                 *** get FAC1 sign
                                 return A = $FF, Cb = 1/-ve A = $01, Cb = 0/+ve, A = $00, Cb = ?/0
 .,BC2B A5 61    LDA $61         get FAC1 exponent
-.,BC2D F0 09    BEQ $BC38       exit if zero (allready correct SGN(0)=0)
+.,BC2D F0 09    BEQ $BC38       exit if zero (already correct SGN(0)=0)
 
                                 *** return A = $FF, Cb = 1/-ve A = $01, Cb = 0/+ve
                                 no = 0 check
@@ -4253,7 +4253,7 @@
                                 *** perform INT()
 .,BCCC A5 61    LDA $61         get FAC1 exponent
 .,BCCE C9 A0    CMP #$A0        compare with max int
-.,BCD0 B0 20    BCS $BCF2       exit if >= (allready int, too big for fractional part!)
+.,BCD0 B0 20    BCS $BCF2       exit if >= (already int, too big for fractional part!)
 .,BCD2 20 9B BC JSR $BC9B       convert FAC1 floating to fixed
 .,BCD5 84 70    STY $70         save FAC1 rounding byte
 .,BCD7 A5 66    LDA $66         get FAC1 sign (b7)
@@ -5210,7 +5210,7 @@
 .,E3E5 95 73    STA $73,X       save the byte in page zero
 .,E3E7 CA       DEX             decrement the count
 .,E3E8 10 F8    BPL $E3E2       loop if not all done
-                                clear descriptors, strings, program area and mamory pointers
+                                clear descriptors, strings, program area and memory pointers
 .,E3EA A9 03    LDA #$03        set the step size, collecting descriptors
 .,E3EC 85 53    STA $53         save the garbage collection step size
 .,E3EE A9 00    LDA #$00        clear A
@@ -5295,7 +5295,7 @@
 .,E4AD 48       PHA             save the flag byte
 .,E4AE 20 C9 FF JSR $FFC9       open channel for output
 .,E4B1 AA       TAX             copy the returned flag byte
-.,E4B2 68       PLA             restore the alling flag byte
+.,E4B2 68       PLA             restore the calling flag byte
 .,E4B3 90 01    BCC $E4B6       if there is no error skip copying the error flag
 .,E4B5 8A       TXA             else copy the error flag
 .,E4B6 60       RTS             
@@ -6122,7 +6122,7 @@
 
                                 *** print character A and colour X
 .,EA13 A8       TAY             copy the character
-.,EA14 A9 02    LDA #$02set the count to $02, usually $14 ??
+.,EA14 A9 02    LDA #$02        set the count to $02, usually $14 ??
 .,EA16 85 CD    STA $CD         save the cursor countdown
 .,EA18 20 24 EA JSR $EA24       calculate the pointer to colour RAM
 .,EA1B 98       TYA             get the character back
@@ -6467,7 +6467,7 @@
                                  2  1 = sprite to sprite collision interrupt
                                  1  1 = sprite to foreground collision interrupt
                                  0  1 = raster compare interrupt
-.:ECD3 00                       all vic IRQs disabeld
+.:ECD3 00                       all vic IRQs disabled
                                 IRQ enable
                                 bit function
                                 --- -------
@@ -6518,7 +6518,7 @@
                                 *** send a control character
 .,ED11 48       PHA             save device address
 .,ED12 24 94    BIT $94         test deferred character flag
-.,ED14 10 0A    BPL $ED20       if no defered character continue
+.,ED14 10 0A    BPL $ED20       if no deferred character continue
 .,ED16 38       SEC             else flag EOI
 .,ED17 66 A3    ROR $A3         rotate into EOI flag byte
 .,ED19 20 40 ED JSR $ED40       Tx byte on serial bus
@@ -6527,7 +6527,7 @@
 .,ED20 68       PLA             restore the device address
 
                                 *** defer a command
-.,ED21 85 95    STA $95         save as serial defered character
+.,ED21 85 95    STA $95         save as serial deferred character
 .,ED23 78       SEI             disable the interrupts
 .,ED24 20 97 EE JSR $EE97       set the serial data out high
 .,ED27 C9 3F    CMP #$3F        compare read byte with $3F
@@ -6599,7 +6599,7 @@
 .,ED8E C6 A5    DEC $A5         decrement the serial bus bit count
 .,ED90 D0 D4    BNE $ED66       loop if not all done
                                 now all eight bits have been sent it's up to the peripheral to signal the byte was
-                                received by pulling the serial data low. this should be done within one milisecond
+                                received by pulling the serial data low. this should be done within one millisecond
 .,ED92 A9 04    LDA #$04        wait for up to about 1ms
 .,ED94 8D 07 DC STA $DC07       save VIA 1 timer B high byte
 .,ED97 A9 19    LDA #$19        load timer B, timer B single shot, start timer B
@@ -6623,7 +6623,7 @@
 .,EDB7 90 4A    BCC $EE03       ATN high, delay, clock high then data high, branch always
 
                                 *** send secondary address after LISTEN
-.,EDB9 85 95    STA $95         save the defered Tx byte
+.,EDB9 85 95    STA $95         save the deferred Tx byte
 .,EDBB 20 36 ED JSR $ED36       set the serial clk/data, wait and Tx the byte
 
                                 *** set serial ATN high
@@ -6633,7 +6633,7 @@
 .,EDC6 60       RTS             
 
                                 *** send secondary address after TALK
-.,EDC7 85 95    STA $95         save the defered Tx byte
+.,EDC7 85 95    STA $95         save the deferred Tx byte
 .,EDC9 20 36 ED JSR $ED36       set the serial clk/data, wait and Tx the byte
 
                                 *** wait for the serial bus end after send
@@ -6649,14 +6649,14 @@
 
                                 *** output a byte to the serial bus
 .,EDDD 24 94    BIT $94         test the deferred character flag
-.,EDDF 30 05    BMI $EDE6       if there is a defered character go send it
+.,EDDF 30 05    BMI $EDE6       if there is a deferred character go send it
 .,EDE1 38       SEC             set carry
 .,EDE2 66 94    ROR $94         shift into the deferred character flag
 .,EDE4 D0 05    BNE $EDEB       save the byte and exit, branch always
 .,EDE6 48       PHA             save the byte
 .,EDE7 20 40 ED JSR $ED40       Tx byte on serial bus
 .,EDEA 68       PLA             restore the byte
-.,EDEB 85 95    STA $95         save the defered Tx byte
+.,EDEB 85 95    STA $95         save the deferred Tx byte
 .,EDED 18       CLC             flag ok
 .,EDEE 60       RTS             
 
@@ -6684,7 +6684,7 @@
 
                                 *** input a byte from the serial bus
 .,EE13 78       SEI             disable the interrupts
-.,EE14 A9 00    LDA #$00        set 0 bits to do, will flag EOI on timeour
+.,EE14 A9 00    LDA #$00        set 0 bits to do, will flag EOI on timeout
 .,EE16 85 A5    STA $A5         save the serial bus bit count
 .,EE18 20 85 EE JSR $EE85       set the serial clock out high
 .,EE1B 20 A9 EE JSR $EEA9       get the serial data status in Cb
@@ -6704,7 +6704,7 @@
                                 timer A timed out
 .,EE3E A5 A5    LDA $A5         get the serial bus bit count
 .,EE40 F0 05    BEQ $EE47       if not already EOI then go flag EOI
-.,EE42 A9 02    LDA #$02        else error $02, read timeour
+.,EE42 A9 02    LDA #$02        else error $02, read timeout
 .,EE44 4C B2 ED JMP $EDB2       set the serial status and exit
 .,EE47 20 A0 EE JSR $EEA0       set the serial data out low
 .,EE4A 20 85 EE JSR $EE85       set the serial clock out high
@@ -6832,7 +6832,7 @@
 
                                 *** setup next RS232 Tx byte
 .,EF06 AD 94 02 LDA $0294       read the 6551 pseudo command register
-.,EF09 4A       LSR             handshake bit inot Cb
+.,EF09 4A       LSR             handshake bit into Cb
 .,EF0A 90 07    BCC $EF13       if 3 line interface go ??
 .,EF0C 2C 01 DD BIT $DD01       test VIA 2 DRB, RS232 port
 .,EF0F 10 1D    BPL $EF2E       if DSR = 0 set DSR signal not present and exit
@@ -6967,7 +6967,7 @@
 .,EFF0 D0 20    BNE $F012       if RTS = 1 just exit
 .,EFF2 AD A1 02 LDA $02A1       get the RS-232 interrupt enable byte
 .,EFF5 29 02    AND #$02        mask 0000 00x0, timer B interrupt
-.,EFF7 D0 F9    BNE $EFF2       loop while the timer B interrupt is enebled
+.,EFF7 D0 F9    BNE $EFF2       loop while the timer B interrupt is enabled
 .,EFF9 2C 01 DD BIT $DD01       test VIA 2 DRB, RS232 port
 .,EFFC 70 FB    BVS $EFF9       loop while CTS high
 .,EFFE AD 01 DD LDA $DD01       read VIA 2 DRB, RS232 port
@@ -7036,7 +7036,7 @@
 .,F07A 4C 3B EF JMP $EF3B       set VIA 2 ICR from A and return
 .,F07D AD A1 02 LDA $02A1       get the RS-232 interrupt enable byte
 .,F080 29 12    AND #$12        mask 000x 00x0
-.,F082 F0 F3    BEQ $F077       if FLAG or timer B bits set go enable the FLAG inetrrupt
+.,F082 F0 F3    BEQ $F077       if FLAG or timer B bits set go enable the FLAG interrupt
 .,F084 18       CLC             flag ok
 .,F085 60       RTS             
 
@@ -7390,7 +7390,7 @@
 
                                 *** find file A
 .,F314 A6 98    LDX $98         get the open file count
-.,F316 CA       DEX             decrememnt the count to give the index
+.,F316 CA       DEX             decrement the count to give the index
 .,F317 30 15    BMI $F32E       if no files just exit
 .,F319 DD 59 02 CMP $0259,X     compare the logical file number with the table logical
                                 file number
@@ -8374,7 +8374,7 @@
 .,F9C3 A5 A3    LDA $A3         get EOI flag byte
 .,F9C5 10 30    BPL $F9F7       
 .,F9C7 30 BF    BMI $F988       
-.,F9C9 A2 A6    LDX #$A6        set timimg max byte
+.,F9C9 A2 A6    LDX #$A6        set timing max byte
 .,F9CB 20 E2 F8 JSR $F8E2       set timing
 .,F9CE A5 9B    LDA $9B         
 .,F9D0 D0 B9    BNE $F98B       
@@ -8406,7 +8406,7 @@
 .,FA02 30 C5    BMI $F9C9       
 .,FA04 46 D7    LSR $D7         
 .,FA06 66 BF    ROR $BF         parity count
-.,FA08 A2 DA    LDX #$DA        set timimg max byte
+.,FA08 A2 DA    LDX #$DA        set timing max byte
 .,FA0A 20 E2 F8 JSR $F8E2       set timing
 .,FA0D 4C BC FE JMP $FEBC       restore registers and exit interrupt
 .,FA10 A5 96    LDA $96         get cassette block synchronization number
@@ -8422,7 +8422,7 @@
 .,FA24 E5 B1    SBC $B1         subtract tape timing constant max byte
 .,FA26 65 B0    ADC $B0         add tape timing constant min byte
 .,FA28 0A       ASL             
-.,FA29 AA       TAX             copy timimg high byte
+.,FA29 AA       TAX             copy timing high byte
 .,FA2A 20 E2 F8 JSR $F8E2       set timing
 .,FA2D E6 9C    INC $9C         
 .,FA2F A5 B4    LDA $B4         
@@ -8452,7 +8452,7 @@
                                 *** # store character
 .,FA60 20 97 FB JSR $FB97       new tape byte setup
 .,FA63 85 9C    STA $9C         clear byte received flag
-.,FA65 A2 DA    LDX #$DA        set timimg max byte
+.,FA65 A2 DA    LDX #$DA        set timing max byte
 .,FA67 20 E2 F8 JSR $F8E2       set timing
 .,FA6A A5 BE    LDA $BE         get copies count
 .,FA6C F0 02    BEQ $FA70       
@@ -8653,7 +8653,7 @@
                                 stops the tape
 .,FBCD A5 A8    LDA $A8         get start bit first cycle done flag
 .,FBCF D0 12    BNE $FBE3       if first cycle done go do rest of byte
-                                each byte sent starts with two half cycles of $0110 ststem clocks and the whole block
+                                each byte sent starts with two half cycles of $0110 system clocks and the whole block
                                 ends with two more such half cycles
 .,FBD1 A9 10    LDA #$10        set first start cycle time constant low byte
 .,FBD3 A2 01    LDX #$01        set first start cycle time constant high byte
@@ -8670,7 +8670,7 @@
                                 so the routine drops straight through to here
 .,FBE3 A5 A9    LDA $A9         get start bit check flag
 .,FBE5 D0 09    BNE $FBF0       if the start bit is complete go send the byte bits
-                                after the two half cycles of $0110 ststem clocks the start bit is completed with two
+                                after the two half cycles of $0110 system clocks the start bit is completed with two
                                 half cycles of $00B0 system clocks. this is the same as the first part of a 1 bit
 .,FBE7 20 AD FB JSR $FBAD       set time constant for bit = 1 and toggle tape
 .,FBEA D0 1D    BNE $FC09       if first half cycle go restore registers and exit
@@ -8858,7 +8858,7 @@
                                 *** scan for autostart ROM at $8000, returns Zb=1 if ROM found
 .,FD02 A2 05    LDX #$05        five characters to test
 .,FD04 BD 0F FD LDA $FD0F,X     get test character
-.,FD07 DD 03 80 CMP $8003,X     compare wiith byte in ROM space
+.,FD07 DD 03 80 CMP $8003,X     compare with byte in ROM space
 .,FD0A D0 03    BNE $FD0F       exit if no match
 .,FD0C CA       DEX             decrement index
 .,FD0D D0 F5    BNE $FD04       loop if not all done
@@ -8992,7 +8992,7 @@
 .,FDC4 8E 18 D4 STX $D418       clear the volume and filter select register
 .,FDC7 CA       DEX             set X = $FF
 .,FDC8 8E 02 DC STX $DC02       save VIA 1 DDRA, keyboard column
-.,FDCB A9 07    LDA #$07        DATA out high, CLK out high, ATN out high, RE232 Tx DATA
+.,FDCB A9 07    LDA #$07        DATA out high, CLK out high, ATN out high, RS232 Tx DATA
                                 high, video address 15 = 1, video address 14 = 1
 .,FDCD 8D 00 DD STA $DD00       save VIA 2 DRA, serial port and video address
 .,FDD0 A9 3F    LDA #$3F        set serial DATA input, serial CLK input
@@ -9610,6 +9610,6 @@
 .:FFF6 52 52 42 59              RRBY
 
                                 *** hardware vectors
-.:FFFA 43 FE                    NMI Vektor
-.:FFFC E2 FC                    RESET Vektor
-.:FFFE 48 FF                    IRQ Vektor
+.:FFFA 43 FE                    NMI Vector
+.:FFFC E2 FC                    RESET Vector
+.:FFFE 48 FF                    IRQ Vector
