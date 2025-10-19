@@ -4313,7 +4313,7 @@
 .:FD30 31 EA                    CINV VECTOR: hardware interrupt ($ea31)
 .:FD32 66 FE                    CBINV VECTOR: software interrupt ($fe66)
 .:FD34 47 FE                    NMINV VECTOR: hardware nmi interrupt ($fe47)
-.:FD36 4A F3                    IOPEN VECTOR: KERNAL open routine ($f3a4)
+.:FD36 4A F3                    IOPEN VECTOR: KERNAL open routine ($f34a)
 .:FD38 91 F2                    ICLOSE VECTOR: KERNAL close routine ($f291)
 .:FD3A 0E F2                    ICHKIN VECTOR: KERNAL chkin routine ($f20e)
 .:FD3C 50 F2                    ICKOUT VECTOR: KERNAL chkout routine ($f250)

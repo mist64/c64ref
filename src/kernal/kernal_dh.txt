@@ -581,7 +581,7 @@ $F2F1          Common Exit for Close Logical File Routines F2F1/F3B1-F30E/F3CE
                **Called by**: Falls through after JSR to Close Logical File for Serial Device
                at F2EE/FEAE, BEQ at F29F/F358 and F2A3/F35C in Deter-
                mine Device to Close, BEQ at in F2CC/F391 Close Logical File
-               for Tape, BNE at F2E4/F3A4 in Close Logical File for Tape ,
+               for Tape, BNE at F2E4/F34A in Close Logical File for Tape ,
                JMP at F2EB/F3AB in Close Logical File for Tape; alternate en-
                try at F2F2/F3B2 by JSR at F2AC/F365 in Close Logical File
                for RS-232 Device.
