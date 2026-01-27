@@ -630,8 +630,8 @@ $002D-$002E  VARTAB  Pointer to the Start of the BASIC Variable Storage Area
                      The seventh bit of one or both of these bytes can be set (which would
                      add 128 to the ASCII value of the letter).  This indicates the
                      variable type.  If neither byte has the seventh bit set, the variable
-                     is the regular floating point type.  If only the first byte has its
-                     seventh bit set, the variable is a string.  If only the second byte
+                     is the regular floating point type.  If only the second byte has its
+                     seventh bit set, the variable is a string.  If only the first byte
                      has its seventh bit set, the variable is a defined function (FN).  If
                      both bytes have the seventh bit set, the variable is an integer.
                      
