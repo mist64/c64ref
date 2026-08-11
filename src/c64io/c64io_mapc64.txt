@@ -365,7 +365,7 @@ $D010        MSIGX        Most Significant Bits of Sprites 0-7 Horizontal Positi
                           the horizontal position of the corresponding sprite to a value of 255
                           or less
 
-$D011        SCROY        Vertical Fine Scrolling and Control Register
+$D011        SCROLY       Vertical Fine Scrolling and Control Register
 
                      0-2  Fine scroll display vertically by X scan lines (0-7)
                      3    Select a 24-row or 25-row text display (1=25 rows, 0=24 rows)
@@ -807,7 +807,7 @@ $D011        SCROY        Vertical Fine Scrolling and Control Register
                           WAIT 53265,128, but BASIC is usually not fast enough to execute the
                           next statement while still in the blanking interval.
 
-$D012        RASTE        Read Current Raster Scan Line/Write Line to Compare for Raster IRQ
+$D012        RASTER       Read Current Raster Scan Line/Write Line to Compare for Raster IRQ
 
                           The Raster Compare register has two different functions, depending on
                           whether you are reading from it or writing to it.  When this register
@@ -2180,7 +2180,7 @@ $D418        SIGVOL       Volume and Filter Select Register
                      4    Select low-pass filter, 1=low-pass on
                      5    Select band-pass filter, 1=band-pass on
                      6    Select high-pass filter, 1=high-pass on
-                     7    Disconnect output of voice 4, 1=voice 3 off
+                     7    Disconnect output of voice 3, 1=voice 3 off
 
                           Bits 0-3 control the volume of all outputs.  The possible volume
                           levels range from 0 (no volume) to 15 (maximum volume).  Some level of
